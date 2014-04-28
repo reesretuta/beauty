@@ -136,14 +136,56 @@ h2 {
 .store-item-wrapper {
   max-width: 210px;
   margin: 0 auto 30px;
+  min-height: 350px;
 }
-.store-item-wrapper img {
+.store-item-wrapper img,
+.image-zoom img {
   -moz-transform: scale(.9);
--webkit-transform: scale(.9);
--o-transform: scale(.9);
--ms-transform: scale(.9);
-transform: scale(.9);
+  -webkit-transform: scale(.9);
+  -o-transform: scale(.9);
+  -ms-transform: scale(.9);
+  transform: scale(.9);
+
+  -webkit-transition: -webkit-transform 200ms ease;
+  -moz-transition: -moz-transform 200ms ease;
+  -ms-transition: -ms-transform 200ms ease;
+  -o-transition: -o-transform 200ms ease;
+  transition: transform 200ms ease;
 }
+.store-item-wrapper img:hover,
+.image-zoom img:hover {
+  -moz-transform: scale(.95);
+  -webkit-transform: scale(.95);
+  -o-transform: scale(.95);
+  -ms-transform: scale(.95);
+  transform: scale(.95);
+}
+/*a.primary-cta, button.primary-cta {
+  -moz-transform: scale(1);
+  -webkit-transform: scale(1);
+  -o-transform: scale(1);
+  -ms-transform: scale(1);
+  transform: scale(1);
+  -webkit-transition: background-color 200ms ease, -webkit-transform 200ms ease;
+  -moz-transition: background-color 200ms ease, -moz-transform 200ms ease;
+  -ms-transition: background-color 200ms ease, -ms-transform 200ms ease;
+  -o-transition: background-color 200ms ease, -o-transform 200ms ease;
+  transition: background-color 200ms ease, transform 200ms ease;
+}
+a.primary-cta:hover, a.primary-cta:focus,
+button.primary-cta:hover, button.primary-cta:focus  {
+  -moz-transform: scale(1.05);
+  -webkit-transform: scale(1.05);
+  -o-transform: scale(1.05);
+  -ms-transform: scale(1.05);
+  transform: scale(1.05);
+  -webkit-transition: background-color 200ms ease, -webkit-transform 200ms ease;
+  -moz-transition: background-color 200ms ease, -moz-transform 200ms ease;
+  -ms-transition: background-color 200ms ease, -ms-transform 200ms ease;
+  -o-transition: background-color 200ms ease, -o-transform 200ms ease;
+  transition: background-color 200ms ease, transform 200ms ease;
+}*/
+
 .store-item-title {
   height: 2.5em;
 }
@@ -156,6 +198,32 @@ transform: scale(.9);
   text-decoration: line-through;
   color: gray;
 }
+.saleflag {
+  display: block;
+  position: absolute;
+  top: 5px; 
+  right: 20px;
+  text-transform: uppercase;
+  font-size: 10px;
+  font-weight: normal !important;
+  color: #fff;
+  background: #AA73B1;
+  padding: 5px 8px;
+  box-shadow: -1px 2px 1px rgba(0,0,0,.25);
+}
+.saleflag:after {
+  content: " ";
+  display:block;
+  position:absolute;
+  right:0;
+  bottom:-8px;
+  width: 0px;
+height: 0px;
+border-style: solid;
+border-width: 8px 8px 0 0;
+border-color: #865A8B transparent transparent transparent;
+}
+
 .qty-input {
   max-width: 4em;
   text-align: center;

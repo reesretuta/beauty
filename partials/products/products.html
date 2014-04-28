@@ -12,6 +12,7 @@
               <span ng-repeat="detailprice in product.pricing.detailprice">
                 <span ng-if="detailprice.pricetype=='sale'" class="item-price-sale">
                   ${{detailprice.price}}
+                  <span class="brand-font saleflag">On Sale !</span>
                 </span>
                 <span ng-if="detailprice.pricetype=='retail'" class="item-price-strike">
                   ${{detailprice.price}}
@@ -26,19 +27,19 @@
                 &nbsp;&nbsp;<span class="item-measure">{{product.sellingquantity}}</span>
               </p>
             </div>
-            <p><form name="product{{product.itemnumber}}" role="form" class="form-inline store-item-add">
+            <!-- <p><form name="product{{product.itemnumber}}" role="form" class="form-inline store-item-add">
               <div class="form-group">
                 <label for="qty3">qty:</label>
                 <input type="integer" class="form-control qty-input" id="qty3" placeholder="1" ng-model="quantities[product.itemnumber]">
               </div>
-            </form></p>
+            </form></p> -->
             <p ng-if="product.productflag.type == 'product'">
-              <a class="btn btn-primary" ng-click="addToCart(product)">
+              <a class="btn btn-primary primary-cta" ng-click="addToCart(product)">
                 <i class="fa fa-shopping-cart"></i> Add to Cart
               </a>
             </p>
             <p ng-if="product.productflag.type == 'kit'">
-              <a class="btn btn-primary" ng-href="#/products/{{product.itemnumber}}">
+              <a class="btn btn-primary primary-cta" ng-href="#/products/{{product.itemnumber}}">
                 <i class="fa fa-cogs"></i> Configure
               </a>
             </p>
@@ -49,16 +50,14 @@
           <div class="store-item-wrapper" ng-if="product.groupid!=''">
             <a ng-href="#/products/{{product.groupid}}"><img class="img-responsive" src="/{{product.images.path}}"></a>
             <div class="store-item-info">
+              <p class="store-item-sku">&nbsp; <!-- leave empty for UI --></p>
               <p class="store-item-title"><a ng-href="#/products/{{product.groupid}}">{{product.productname}}</a></p>
               <p class="store-item-price">
-
-             
-
                 &nbsp;&nbsp;<span class="item-measure">{{product.sellingquantity}}</span>
               </p>
             </div>
             <p>
-              <a class="btn btn-primary" ng-href="#/products/{{product.groupid}}">
+              <a class="btn btn-primary primary-cta" ng-href="#/products/{{product.groupid}}">
                 <i class="fa fa-th"></i> Pick Color
               </a>
             </p>
