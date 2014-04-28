@@ -25,6 +25,9 @@ angular.module('app.controllers.products')
                     $scope.product = product;
                     //$log.debug("initializing objects");
                 }
+
+                $rootScope.page = product.productname;
+
                 $scope.loading = false;
             }, function (data) {
                 //$log.debug('refreshProducts(): groupName=' + groupName + ' failure', data);
