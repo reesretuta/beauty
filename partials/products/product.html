@@ -21,15 +21,9 @@
 
             <!-- Tab panes -->
             <div class="tab-content">
-              <div class="tab-pane fade active in" id="summary">
-                {{product.marketingdescription}}
-              </div>
-              <div class="tab-pane fade" id="ingredients">
-                {{product.ingredients}}
-              </div>
-              <div class="tab-pane fade" id="usage">
-                {{product.usage}}
-              </div>
+              <div class="tab-pane fade active in" id="summary" ng-bind-html="product.marketingdescription | unsafe"></div>
+              <div class="tab-pane fade" id="ingredients" ng-bind-html="product.ingredients | unsafe"></div>
+              <div class="tab-pane fade" id="usage" ng-bind-html="product.usage | unsafe"></div>
             </div>
           </div>
 
