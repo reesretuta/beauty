@@ -1,26 +1,20 @@
 angular.module('app.controllers.categories')
-    .controller('CategoryController', function ($scope, $document, $rootScope, $routeParams, $log, Categories, $http) {
-        $log.debug("CategoryController");
+    .controller('CategoriesController', function ($scope, $document, $rootScope, $routeParams, $log, Categories) {
+        $log.debug("CategoriesController");
         $scope.categories = [];
         var loadCategories = function () {
             //var start = new Date().getTime();
-            
-            $http.get('/api/categories.xml').success(function(data) {
-                var categories = $.xml2json(data);
-                $scope.categories = categories.categorydetail;
+
+            Categories.query({}, function(categories, responseHeaders) {
+                $log.debug("got categories on success", categories);
+                $scope.categories = categories;
+                $scope.loading = true;
+            }, function (data) {
+                //Hide loader
+                $scope.loading = false;
+                // Set Error message
+                $scope.errorMessage = "An error occurred while retrieving category list.";
             });
-        
-            
-//            var categories = cattojson.query({}, function (value, responseHeaders) {
-//                $log.debug("got categories", categories);
-//                $scope.categories = categories;
-//                $scope.loading = true;
-//            }, function (data) {
-//                //Hide loader
-//                $scope.loading = false;
-//                // Set Error message
-//                $scope.errorMessage = "An error occurred while retrieving category list.";
-//            });
         }
         // kick off the first refresh
         loadCategories();

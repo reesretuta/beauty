@@ -30,7 +30,7 @@
 
   <body ng-controller="MainController">
     Categories:<br>
-    <ul ng-controller="CategoryController">
+    <ul ng-controller="CategoriesController">
       <li ng-repeat="category in categories">
           <a ng-href="#/products?category={{category.id}}">{{category.name}}</a>
           <ul ng-if="category.childcategory">
@@ -48,21 +48,7 @@
 
 
     <div ng-view class="ngview"></div>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
 
     <!-- JavaScript -->
     <script src="/lib/jquery-resize/jquery.ba-resize.min.js"></script>
@@ -83,9 +69,9 @@
     <script src="/lib/string.js/lib/string.min.js"></script>
     <script src="/lib/ladda-bootstrap/dist/spin.min.js"></script>
     <script src="/lib/ladda-bootstrap/dist/ladda.min.js"></script>
+    <script src="/lib/jquery-xml2json/src/xml2json.js"></script>
 
     <script src="/js/util.js"></script>
-    <script src="/js/jquery.xml2json.js"></script>
 
     <script src="/js/angular/modules/ladda.js"></script>
 

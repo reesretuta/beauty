@@ -15,7 +15,8 @@ angular.module('app.controllers.products')
 
         var loadProducts = function () {
             //var start = new Date().getTime();
-            var products = Products.query({"category": $scope.category}, function (value, responseHeaders) {
+            Products.query({"categoryId": $scope.category}, function(products, responseHeaders) {
+                $log.debug("got products", products);
                 // We do this here to eliminate the flickering.  When Products.query returns initially,
                 // it returns an empty array, which is then populated after the response is obtained from the server.
                 // This causes the table to first be emptied, then re-updated with the new data.
