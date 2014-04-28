@@ -6,10 +6,10 @@
             <div class="store-item-wrapper">
               <a href="#"><img class="img-responsive" src="/img/item.jpeg"></a>
               <div class="store-item-info">
-                <p class="store-item-sku">Item #{{product.id}}</p>
+                <p class="store-item-sku">Item #{{product.itemnumber}}</p>
                 <p class="store-item-title"><a href="#">{{product.productname}}</a></p>
                 <p class="store-item-price">
-                  <span class="item-price">$42.00</span>&nbsp;&nbsp;<span class="item-measure">1.7 fl. oz.</span>
+                  <span class="item-price">$42.00</span>&nbsp;&nbsp;<span class="item-measure">{{product.sellingquantity}}</span>
                 </p>
               </div>
               <p><form role="form" class="form-inline store-item-add">
