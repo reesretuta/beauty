@@ -6,48 +6,183 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title ng:bind-template="MyJAFRA Store Prototype - {{page}}">MyJAFRA Store Prototype</title>
+    <title ng:bind-template="{{page}} - MyJAFRA Store Prototype">MyJAFRA Store Prototype</title>
 
-    <link type="image/x-icon" href="/images/favicon.ico' />" rel="shortcut icon">
+    <link type="image/x-icon" href="/images/favicon.ico" rel="shortcut icon">
 
     <link rel="stylesheet" type="text/css" href="/lib/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/lib/bootstrap/dist/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="/lib/ladda-bootstrap/dist/ladda-themeless.min.css">
+    <link rel="stylesheet" href="/styles/offcanvas.css">
 
-    <!-- Add custom CSS here -->
-    <link rel="stylesheet/less" href="/styles/main.less">
+    <!-- Google Font News Cycle (Similar to News Gothic) -->
+    <link href="http://fonts.googleapis.com/css?family=News+Cycle:400,700" rel="stylesheet">
 
-    <!-- Process our less before body -->
-    <script src="/lib/less.js/dist/less-1.4.2.min.js"></script>
+    <!-- JAFRA Custom CSS -->
+    <link rel="stylesheet" href="/styles/style.css">
 
     <!-- Prevent flickering by including angular here and ensure jquery is loaded beforehand to prevent memory leaks-->
     <script src="/lib/jquery/dist/jquery.min.js"></script>
     <script src="/lib/jquery-migrate/jquery-migrate.min.js"></script>
     <script src="/lib/angular/angular.js"></script>
     <script src="/lib/purl/purl.js"></script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
   </head>
 
   <body ng-controller="MainController">
-    Categories:<br>
-    <ul ng-controller="CategoriesController">
-      <li ng-repeat="category in categories">
-          <a ng-href="#/products?category={{category.id}}">{{category.name}}</a>
-          <ul ng-if="category.childcategory">
-              <li ng-repeat="category in category.childcategory">
-                <a ng-href="#/products?category={{category.id}}">{{category.name}}</a>
-                <ul ng-if="category.childcategory">
-                    <li ng-repeat="category in category.childcategory">
-                        <a ng-href="#/products?category={{category.id}}">{{category.name}}</a>
-                    </li>              
-                </ul>
-              </li>              
-          </ul>
-      </li>
-    </ul>
+    <header id="shop_header" class="navbar" role="navigation">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-3 navbar-left">
+            <a class="navbar-brand" href="#"><img class="img-responsive" src="/img/logo.png" alt="JAFRA | The Power to Transform Lives."></a>
+          </div><!--/span-->
+          
+          <div class="col-sm-3 navbar-right">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
 
+          <div class="col-xs-12 col-sm-9 clearfix">
+            <div class="row">
+              <div class="col-xs-12 col-sm-6 consultant-info">
+
+                <a href="#">
+                  <img src="http://placehold.it/40x40" alt="profile photo" class="img-circle pull-left consultant-photo">
+                </a>
+                <a href="#"><span class="consultant-name">Denise Paxton</span></a>
+                <p>Your JAFRA Beauty Consultant </p>
+
+              </div>
+              <div class="col-xs-12 col-sm-6 login-info">
+                <div class="navbar-right">
+                  <a href="#">Sign In</a>
+
+                  <a href="cart.html"><i class="fa fa-shopping-cart"></i> view cart(0)</a>
+
+                  <img src="http://jafrausa.com/regional/images/en_US/template/icons/flag.png">
+                  <select>
+                    <option>English</option>
+                    <option>Spanish</option>
+                  </select>
+                </div>
+              </div>
+            </div><!--/span-->
+          </div>
+
+          <div class="col-xs-12 col-sm-9 collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+              <li><a href="#">Home</a></li>
+              <li><a href="#">About</a></li>
+              <li><a href="#">Opportunity</a></li>
+              <li><a ng-href="#/">Shop Now</a></li>
+              <li><a href="#">Party With Us</a></li>
+              <li><a href="#">Media</a></li>
+              <li><a href="#">My Page</a></li>
+            </ul>
+          </div><!-- /.nav-collapse -->
+        </div>
+      </div><!-- /.container -->
+    </header><!-- /header.navbar -->
+
+    <div class="container">
+
+    <div class="row store-heading">
+        <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8">
+          <h1>{{page}}</h1>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+          <p>&nbsp;</p>
+        </div>
+      </div><!-- /row -->
+
+      <div class="row store-heading-nav">
+        <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8">
+
+        <!-- BreadCrumbs -->
+          <ol class="breadcrumb">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Category</a></li>
+            <li><a href="#">SubCategory</a></li>
+            <li><a href="#">SubSubCategory</a></li>
+            <li>Product</li>
+          </ol>
+        <!-- /BreadCrumbs -->
+
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+          <div class="input-group">
+            <input class="form-control" type="search" placeholder="Search Products">
+            <span class="input-group-btn">
+              <button class="btn btn-primary" type="button"><i class="fa fa-search fa-fw"></i></button>
+            </span>
+          </div>
+        </div>
+    </div><!-- /row -->
+
+    <div class="row row-offcanvas row-offcanvas-left">
+
+    <!-- Sidebar Navigation -->
+    <div class="col-xs-8 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+      <aside id="shop_menu">
+        <a ng-href="#/" class="pull-left visible-xs store-nav-toggle" data-toggle="offcanvas"><i class="fa fa-bars"></i></a>
+        <ul ng-controller="CategoriesController">
+          <li ng-repeat="category in categories">
+              <a ng-href="#/products?category={{category.id}}"><span>{{category.name}}</span></a>
+              <ul ng-if="category.childcategory">
+                  <li ng-repeat="category in category.childcategory">
+                    <a ng-href="#/products?category={{category.id}}"><span>{{category.name}}</span></a>
+                    <ul ng-if="category.childcategory">
+                        <li ng-repeat="category in category.childcategory">
+                            <a ng-href="#/products?category={{category.id}}"><span>{{category.name}}</span></a>
+                        </li>              
+                    </ul>   
+                  </li>              
+              </ul>
+          </li>
+        </ul>
+      </aside>
+    </div><!--/span-->
+    <!-- /Sidebar Navigation -->
 
     <div ng-view class="ngview"></div>
+
+    
+    </div><!--/row.offcanvas-->
+
+    <hr>
+
+
+
+    <footer>
+        <div class="pull-right footer-logos">
+            <a href="#" class="jafra-logo"><span class="sr-only">Jafra Usa</span></a>
+            <a href="#" class="vorwerk-logo"><span class="sr-only">Vorwerk</span></a>
+            <a href="#" class="dsa-logo"><span class="sr-only">DSA</span></a>
+        </div>
+
+        <div class="legalcopy">
+          <p>
+            <a href="#" class="btn btn-link">Terms</a>
+             | 
+            <a href="#" class="btn btn-link">Privacy</a>
+          </p>
+          <p>&copy; 2014 - JAFRA Cosmetics International - All Rights Reserved</p>
+        </div>
+    </footer>
+
+
+    </div><!-- /.container -->
+
 
 
     <!-- JavaScript -->

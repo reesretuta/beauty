@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<products>
+    <productdetail>
+        <id>352</id>
+        <itemnumber>13027</itemnumber>
+        <productname>Royal Jelly Body Complex</productname>
+        <sellingquantity>6.7 fl. oz.</sellingquantity>
+        <images>
+            <path><![CDATA[img/13027_1.jpg]]></path>
+        </images>
+        <pricing>
+            <detailprice>
+                <pricetype>retail</pricetype>
+                <price>61.00</price>
+            </detailprice>
+            <detailprice>
+                <pricetype>sale</pricetype>
+                <price>48.80</price>
+            </detailprice>
+        </pricing>
+        <categories>
+            <category>
+                <id>113</id>
+            </category>
+        </categories>
+    </productdetail>
+    <productdetail>
+        <id>7528</id>
+        <itemnumber>15522</itemnumber>
+        <productname>Royal Jelly Milk Balm Advanced</productname>
+        <sellingquantity>1 fl. oz.</sellingquantity>
+        <images>
+            <path><![CDATA[img/15522_1.jpg]]></path>
+        </images>
+        <pricing>
+            <detailprice>
+                <pricetype>retail</pricetype>
+                <price>71.00</price>
+            </detailprice>
+        </pricing>
+        <categories>
+            <category>
+                <id>113</id>
+            </category>
+        </categories>
+    </productdetail>
+</products>
