@@ -185,7 +185,10 @@ button.primary-cta:hover, button.primary-cta:focus  {
   -o-transition: background-color 200ms ease, -o-transform 200ms ease;
   transition: background-color 200ms ease, transform 200ms ease;
 }*/
-
+.store-item-sku {
+  font-size: 13px;
+  margin-bottom: 0px;
+}
 .store-item-title {
   height: 2.5em;
 }
