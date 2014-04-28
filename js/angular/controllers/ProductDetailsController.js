@@ -1,5 +1,5 @@
 angular.module('app.controllers.products')
-    .controller('ProductDetailsController', function ($sce, HashKeyCopier, Products, $scope, $rootScope, $routeParams, $location, $timeout, $window, $log, $modal, $document) {
+    .controller('ProductDetailsController', function ($sce, HashKeyCopier, Products, $scope, $rootScope, $routeParams, $location, $timeout, $window, $log, $modal, $document, Cart) {
 
         $rootScope.page = "Product Details";
 
@@ -7,6 +7,20 @@ angular.module('app.controllers.products')
         $scope.loading = true;
 
         $scope.productId = $routeParams.productId;
+        
+        $scope.quantities = {};
+
+        $scope.addToCart = function(product) {
+            $log.debug("adding product", product);
+            var qty = $scope.quantities[product.itemnumber];
+            if (qty == null) {
+                qty = 1;
+            }
+            $log.debug("adding product", product, qty);
+            var p = angular.copy(product);
+            p.quantity = qty;
+            Cart.addToCart(p);
+        }
 
         /*=== LOAD DATA ====*/
 

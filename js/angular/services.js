@@ -31,8 +31,14 @@ angular.module('app.services', ['ngResource'])
 
         cartService.getItemCount = function() {
             var cart = getCart();
+//            var count = new Array();
+            var count = 0;
+            angular.forEach(cart.items, function(product) {
+                count += parseInt(product.quantity);
+            });
+            
             $log.debug("getItemCount()");
-            return Object.keys(cart.items).length;
+            return count;
         };
 
         cartService.getItems = function() {
@@ -42,13 +48,14 @@ angular.module('app.services', ['ngResource'])
 
         cartService.addToCart = function(p) {
             var cart = getCart();
+            var getIndex;
             angular.forEach(cart.items, function(product) {
                 if (product.itemnumber == p.itemnumber) {
                     
                   var newQty = parseInt(p.quantity) + parseInt(product.quantity);
                   
-                  var getIndex=cart.items.indexOf(product);
-                  cart.items.splice(getIndex,1);     
+                  getIndex=cart.items.indexOf(product);
+                  cart.items.splice(getIndex,1);                    
                   
                   p.quantity = newQty;
                   return p;
@@ -58,7 +65,26 @@ angular.module('app.services', ['ngResource'])
             });
             
             $log.debug("addToCart()", cart);
-            cart.items.push(p);
+//            cart.items.push(p);
+            cart.items.splice(getIndex,0,p);
+        };
+        
+        cartService.updateCart = function(p) {
+            var cart = getCart();
+            var getIndex;
+            angular.forEach(cart.items, function(product) {
+                if (product.itemnumber == p.itemnumber) {
+                    
+                  getIndex=cart.items.indexOf(product);
+                  cart.items.splice(getIndex,1);  
+                  return getIndex;
+
+                } 
+                
+            });
+
+            $log.debug("updateCart()", cart);
+            cart.items.splice(getIndex,0,p);
         };
 
         cartService.removeFromCart = function(p) {

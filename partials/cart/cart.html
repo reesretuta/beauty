@@ -41,7 +41,19 @@
           </td>
           <td align=right>
             <!-- TODO: Compute each product Qty. -->
-            <input type="email" class="form-control qty-input" id="qty12345" value="{{product.quantity}}">
+            
+            
+            <p><form name="product{{product.itemnumber}}" role="form" class="form-inline store-item-add">
+              <div class="form-group">
+                <label for="qty3">qty:</label>
+                <input type="integer" class="form-control qty-input" id="qty3" ng-model="quantities[product.itemnumber]" ng-keyup="updateCart(product)" value="{{product.quantity}}">
+              </div>
+            </form></p>
+            
+            
+            
+            
+            <!--<input ng-model="quantities[product.itemnumber]" ng-keyup="addToCart(product)" type="integer" class="form-control qty-input" id="qty12345" value="{{product.quantity}}">-->
           </td>
         </tr><!--/table row-->
 
