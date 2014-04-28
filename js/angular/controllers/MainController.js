@@ -23,4 +23,9 @@ angular.module('app.controllers.main')
             $log.debug("items count", count);
             return count;
         }
+        
+        $scope.removeFromCart = function(product) {
+            $log.debug("removing product", product);
+            Cart.removeFromCart(product);
+        }
     });

@@ -42,13 +42,39 @@ angular.module('app.services', ['ngResource'])
 
         cartService.addToCart = function(p) {
             var cart = getCart();
+            angular.forEach(cart.items, function(product) {
+                if (product.itemnumber == p.itemnumber) {
+                    
+                  var newQty = parseInt(p.quantity) + parseInt(product.quantity);
+                  
+                  var getIndex=cart.items.indexOf(product);
+                  cart.items.splice(getIndex,1);     
+                  
+                  p.quantity = newQty;
+                  return p;
+
+                } 
+                
+            });
+            
             $log.debug("addToCart()", cart);
             cart.items.push(p);
         };
 
-        cartService.removeFromCart = function(itemNumber) {
+        cartService.removeFromCart = function(p) {
             var cart = getCart();
-            delete cart[itemNumber];
+            angular.forEach(cart.items, function(product) {
+                if (product.itemnumber ==p.itemnumber) {
+                    
+                  
+                  var getIndex=cart.items.indexOf(product);
+                  cart.items.splice(getIndex,1);     
+                  
+
+                } 
+                
+            });
+            
         };
 
         return cartService;

@@ -24,6 +24,8 @@ angular.module('app.controllers.products')
             p.quantity = qty;
             Cart.addToCart(p);
         }
+        
+        
 
         /*=== LOAD DATA ====*/
 
