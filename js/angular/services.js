@@ -18,7 +18,10 @@ angular.module('app.services', ['ngResource'])
         return $resource(API_URL + '/products/:productId');
     })
     .factory('Categories', function ($resource, API_URL) {
-        return $resource(API_URL + '/categories/:categoryId');
+        return $resource(API_URL + '/categories.xml');
     })
+//    .factory('Categories', function ($resource, API_URL) {
+//        return $resource(API_URL + '/categories/:categoryId');
+//    })
     .constant('BASE_URL', '')
     .constant('API_URL', '/api');

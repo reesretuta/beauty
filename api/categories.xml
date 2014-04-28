@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<categories>
+    <categorydetail>
+        <id>2</id>
+        <rank>1</rank>
+        <parent>root</parent>
+        <parentid></parentid>
+        <name>JAFRA Color</name>
+        <childcategory>
+            <id>309</id>
+            <rank>1</rank>
+            <parent>JAFRA Color</parent>
+            <parentid>2</parentid>
+            <name>Lips</name>
+            <childcategory>
+                <id>310</id>
+                <rank>1</rank>
+                <parent>Lips</parent>
+                <parentid>309</parentid>
+                <name>Lipstick</name>
+            </childcategory>
+            <childcategory>
+                <id>311</id>
+                <rank>2</rank>
+                <parent>Lips</parent>
+                <parentid>309</parentid>
+                <name>Lip Gloss</name>
+            </childcategory>
+        </childcategory>
+        <childcategory>
+            <id>314</id>
+            <rank>2</rank>
+            <parent>JAFRA Color</parent>
+            <parentid>2</parentid>
+            <name>Nails</name>
+            <childcategory>
+                <id>315</id>
+                <rank>1</rank>
+                <parent>Nails</parent>
+                <parentid>314</parentid>
+                <name>Nail Lacquer</name>
+            </childcategory>
+            <childcategory>
+                <id>316</id>
+                <rank>1</rank>
+                <parent>Nails</parent>
+                <parentid>314</parentid>
+                <name>Nail Treatment</name>
+            </childcategory>
+        </childcategory>
+    </categorydetail>
+    <categorydetail>
+        <id>1</id>
+        <rank>2</rank>
+        <parent>root</parent>
+        <parentid></parentid>
+        <name>Skin Care</name>
+        <childcategory>
+            <id>113</id>
+            <rank>1</rank>
+            <parent>Skin Care</parent>
+            <parentid>1</parentid>
+            <name>Royal Jelly</name>
+        </childcategory>
+        <childcategory>
+            <id>114</id>
+            <rank>2</rank>
+            <parent>Skin Care</parent>
+            <parentid>1</parentid>
+            <name>Advanced Dynamics</name>
+            <childcategory>
+                <id>8350</id>
+                <rank>1</rank>
+                <parent>Advanced Dynamics</parent>
+                <parentid>114</parentid>
+                <name>Advanced Dynamics Hydrating</name>
+            </childcategory>
+            <childcategory>
+                <id>8351</id>
+                <rank>1</rank>
+                <parent>Advanced Dynamics</parent>
+                <parentid>114</parentid>
+                <name>Advanced Dynamics Balancing</name>
+            </childcategory>
+        </childcategory>
+    </categorydetail>
+</categories>

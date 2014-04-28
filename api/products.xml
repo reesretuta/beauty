@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<products>
+    <productdetail>
+        <id>352</id>
+        <itemnumber>13027</itemnumber>
+        <productname>Royal Jelly Body Complex</productname>
+        <sellingquantity>6.7 fl. oz.</sellingquantity>
+        <marketingdescription>
+            <![CDATA[<p>Contains microencapsulated treatment technology, gradually releasing moisture to condition and strengthen.</p>]]>
+        </marketingdescription>
+        <images>
+            <path><![CDATA[media/13027_1.jpg]]></path>
+        </images>
+        <ingredients><![CDATA[- Cellspan Complex<br><br>- Sodium PCA<br><br>- Panthenol<br><br>- Tocopheryl Acetate<br><br>- Allantoin]]></ingredients>
+        <usage><![CDATA[<font size="2">Massage liberally over entire body as often as desired. Take particular care of elbows, arms, legs and knees. Suitable for all skin types.</font>]]></usage>
+        <pricing>
+            <detailprice>
+                <pricetype>retail</pricetype>
+                <price>61.00</price>
+                <effectivestartdate>02012012</effectivestartdate>
+                <effectiveenddate>01012025</effectiveenddate>
+            </detailprice>
+            <detailprice>
+                <pricetype>sale</pricetype>
+                <price>48.80</price>
+                <effectivestartdate>01012012</effectivestartdate>
+                <effectiveenddate>03202014</effectiveenddate>
+            </detailprice>
+        </pricing>
+        <categories>
+          <id>113</id>
+        </categories>
+        <videos>
+            <videodetail>
+                <imagepath><![CDATA[/media/13027_video_1.jpg]]></imagepath>
+                <videourl><![CDATA[rtmp://cp117999.edgefcs.net/ondemand/usa/videos/en/royal_jelly_advanced_en.flv]]></videourl>
+            </videodetail>
+        </videos>
+        <upsellproducts>
+            <productdetail>
+                <itemnumber>15285</itemnumber>
+                <productname>Royal Jelly Holiday Set</productname>
+                <path><![CDATA[/media/15285_1.jpg]]></path>
+            </productdetail>
+        </upsellproducts>
+        <relatedproducts>
+            <productdetail>
+                <itemnumber>13096</itemnumber>
+                <productname>Royal Jelly Lift Concentrate</productname>
+                <path><![CDATA[/media/13096_1.jpg]]></path>
+            </productdetail>
+            <productdetail>
+                <itemnumber>15522</itemnumber>
+                <productname>Royal Jelly Milk Balm Advanced</productname>
+                <path><![CDATA[/media/15522_1.jpg]]></path>
+            </productdetail>
+            <productdetail>
+                <itemnumber>14808</itemnumber>
+                <productname>Royal Jelly Eye Concentrate Capsules</productname>
+                <path><![CDATA[/media/14808_1.jpg]]></path>
+            </productdetail>
+            <productdetail>
+                <itemnumber>18639</itemnumber>
+                <productname>Royal Jelly Vitamin Tablets</productname>
+                <path><![CDATA[/media/18639_1.jpg]]></path>
+            </productdetail>
+        </relatedproducts>
+        <sharedassets>
+            <assetdetail>
+            <id></id>
+            <systemreference></systemreference>
+            <title></title>
+            </assetdetail>
+        </sharedassets>
+        <sharedattributes>
+        <attributedetail>
+            <id></id>
+            <systemreference></systemreference>
+            <description></description>
+        </attributedetail>
+        </sharedattributes>
+    </productdetail>
+    <productdetail>
+        <id>7528</id>
+        <itemnumber>15522</itemnumber>
+        <productname>Royal Jelly Milk Balm Advanced</productname>
+        <sellingquantity>1 fl. oz.</sellingquantity>
+        <marketingdescription>
+            <![CDATA[<p>Add a boost of nutrients and vitamins to your skin. Includes Sirtuin Activators to help increase skin's vitality, so you look better, longer. Cellspan Complex to energize skin with sunflower sprouts and myrtle extract, enriched with an ayurvedic antioxidant blend.</p>]]>
+        </marketingdescription>
+        <images>
+            <path><![CDATA[media/15522_1.jpg]]></path>
+        </images>
+        <ingredients><![CDATA[<b>Royal Jelly</b> <br>A whitish, creamy substance produced by worker bees to nourish their queen bee. It consists of an emulsion of proteins, sugars and lipids in a water base. It contains vitamins A, B-Complex, C, D and E. It is particularly useful for its B-Complex contents, including thiamine (B1), riboflavin (B2), pyridoxine (B6), B12, niacine, biotin, folic acid and inositol. It also supplies minerals and trace elements (sodium, kalium, magnesium, calcium, iron, zinc and copper) and all the amino acids essential for life. Furthermore, royal jelly is rich in nucleic acids, RNA and DNA.<br><br>• <b>Oryza Sativa (Rice) Extract Sirtuin Activator</b><br><br>• <b>Yeast Extract, Water/Aqua, Glycerin, Butylene Glycol</b><br><br>• <b>Glycerin, Palmitoyl Dipeptide-5, Diaminobutyloyl Hydroxythreonine, Palmitoyl Dipeptide-6 Diaminohydroxybutyrate</b><br><br>• <b>Butyrospermum Parkii (Shea Butter) Fruit</b><br><br>• <b>Panthenol</b><br><br>• <b>Tocopheryl Acetate</b><br><br>• <b>Royal Jelly CELLSPAN Complex</b><br><br>• <b>SunJelly<br></b><br>• <b>Longevicell - Myrtle Extract</b>: <br><br>• <b>Ayurvedic Blend - Wintercherry and Lotus flowers</b><br><br>• <b>Contains a unique Peptide Complex</b><br>]]></ingredients>
+        <usage><![CDATA[Pump a small amount onto fingertips and smooth over face. Apply day and night before your moisturizer.<span></span><span><br></span>]]></usage>
+        <pricing>
+            <detailprice>
+                <pricetype>retail</pricetype>
+                <price>71.00</price>
+                <effectivestartdate>02012012</effectivestartdate>
+                <effectiveenddate>01012025</effectiveenddate>
+            </detailprice>
+            <detailprice>
+                <pricetype>sale</pricetype>
+                <price>70.00</price>
+                <effectivestartdate>01012012</effectivestartdate>
+                <effectiveenddate>04192014</effectiveenddate>
+            </detailprice>
+        </pricing>
+        <categories>
+          <id>113</id>
+        </categories>
+        <videos>
+            <videodetail>
+                <imagepath></imagepath>
+                <videourl></videourl>
+            </videodetail>
+        </videos>
+        <upsellproducts>
+            <productdetail>
+                <itemnumber></itemnumber>
+                <productname></productname>
+                <path></path>
+            </productdetail>
+        </upsellproducts>
+        <relatedproducts>
+            <productdetail>
+                <itemnumber>13096</itemnumber>
+                <productname>Royal Jelly Lift Concentrate</productname>
+                <path><![CDATA[media/13096_1.jpg]]></path>
+            </productdetail>
+            <productdetail>
+                <itemnumber>13027</itemnumber>
+                <productname>Royal Jelly Body Complex</productname>
+                <path><![CDATA[media/13027_1.jpg]]></path>
+            </productdetail>
+            <productdetail>
+                <itemnumber>14808</itemnumber>
+                <productname>Royal Jelly Eye Concentrate Capsules</productname>
+                <path><![CDATA[media/14808_1.jpg]]></path>
+            </productdetail>
+            <productdetail>
+                <itemnumber>13026</itemnumber>
+                <productname>Royal Jelly Milk Bath</productname>
+                <path><![CDATA[media/13026_1.jpg]]></path>
+            </productdetail>
+        </relatedproducts>
+        <sharedassets>
+            <assetdetail>
+            <id></id>
+            <systemreference></systemreference>
+            <title></title>
+            </assetdetail>
+        </sharedassets>
+        <sharedattributes>
+        <attributedetail>
+            <id></id>
+            <systemreference></systemreference>
+            <description></description>
+        </attributedetail>
+        </sharedattributes>
+    </productdetail>
+</products>

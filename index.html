@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title ng:bind-template="Angular Skel - {{page}}">Angular Skel</title>
+    <title ng:bind-template="MyJAFRA Store Prototype - {{page}}">MyJAFRA Store Prototype</title>
 
     <link type="image/x-icon" href="/images/favicon.ico' />" rel="shortcut icon">
 
@@ -30,12 +30,39 @@
 
   <body ng-controller="MainController">
     Categories:<br>
-    <ul>
-      <li ng-repeat="category in categories"><a ng-href="#/products?category={{category.name}}">{{category.name}}</a></li>
+    <ul ng-controller="CategoryController">
+      <li ng-repeat="category in categories">
+          <a ng-href="#/products?category={{category.id}}">{{category.name}}</a>
+          <ul ng-if="category.childcategory">
+              <li ng-repeat="category in category.childcategory">
+                <a ng-href="#/products?category={{category.id}}">{{category.name}}</a>
+                <ul ng-if="category.childcategory">
+                    <li ng-repeat="category in category.childcategory">
+                        <a ng-href="#/products?category={{category.id}}">{{category.name}}</a>
+                    </li>              
+                </ul>
+              </li>              
+          </ul>
+      </li>
     </ul>
 
 
     <div ng-view class="ngview"></div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     <!-- JavaScript -->
     <script src="/lib/jquery-resize/jquery.ba-resize.min.js"></script>
@@ -58,11 +85,13 @@
     <script src="/lib/ladda-bootstrap/dist/ladda.min.js"></script>
 
     <script src="/js/util.js"></script>
+    <script src="/js/jquery.xml2json.js"></script>
 
     <script src="/js/angular/modules/ladda.js"></script>
 
     <script src="/js/angular/controllers/controllers.js"></script>
     <script src="/js/angular/controllers/MainController.js"></script>
+    <script src="/js/angular/controllers/CategoriesController.js"></script>
     <script src="/js/angular/controllers/HomeController.js"></script>
     <script src="/js/angular/controllers/ObjectsController.js"></script>
     <script src="/js/angular/controllers/ProductsController.js"></script>
