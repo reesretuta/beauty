@@ -278,7 +278,7 @@ border-color: #865A8B transparent transparent transparent;
   margin-top: 15px;
 }
 .store-item-detail-actions {
-  padding: 15px 0;
+  padding: 0 0 15px;
 }
 .store-item-title {
   font-size: 13px;
