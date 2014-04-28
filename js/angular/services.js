@@ -61,9 +61,10 @@ angular.module('app.services', ['ngResource'])
                         var categories = product.categories.category;
                         $log.debug("processing categories", Array.isArray(categories), categories);
                         if (!(Array.isArray(categories))) {
-                            var id = categories.id;
+                            var cat = categories;
                             categories = new Array();
-                            categories.push(id);
+                            categories.push(cat);
+                            //$log.debug("converted to array", categories);
                         }
                         angular.forEach(categories, function(category) {
                             $log.debug("processing category", category);
