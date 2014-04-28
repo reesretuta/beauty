@@ -28,7 +28,12 @@
             </detailprice>
         </pricing>
         <categories>
-          <id>113</id>
+          <category>
+            <id>113</id>
+          </category>
+          <category>
+            <id>1</id>
+          </category>
         </categories>
         <videos>
             <videodetail>
@@ -108,7 +113,9 @@
             </detailprice>
         </pricing>
         <categories>
-          <id>113</id>
+          <category>
+            <id>113</id>
+          </category>
         </categories>
         <videos>
             <videodetail>

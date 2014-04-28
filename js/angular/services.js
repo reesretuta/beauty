@@ -17,23 +17,60 @@ angular.module('app.services', ['ngResource'])
     .factory('Products', function ($resource, $http, $log, API_URL) {
         var productsService = {};
 
+        productsService.get = function(query, success, failure) {
+            return $http.get('/api/products.xml').success(function(data, status, headers, config) {
+                $log.debug("searching for product");
+                //$log.debug(response.data);
+                $log.debug("query", query);
+
+                var products = $.xml2json(data, {"normalize": true});
+                products = products.products;
+                $log.debug("products", products.productdetail);
+                if (query.productId != null) {
+                    angular.forEach(products.productdetail, function(product) {
+                        $log.debug("itemnumber", product.itemnumber, "productId", query.productId);
+                        if (product.itemnumber == query.productId) {
+                            success(product, status, headers, config);
+                            return product;
+                        }
+                    });
+
+                    // if we got here, we didn't find the product, 404
+                    failure({}, 404, headers, config);
+                } else {
+                    failure({}, 404, headers, config);
+                }
+            }).error(function(data, status, headers, config) {
+                failure(data, status, headers, config);
+                $log.error(data, status, headers, config);
+            });
+        }
+
         productsService.query = function(query, success, failure) {
             return $http.get('/api/products.xml').then(function(response) {
                 //$log.debug(response.data);
                 $log.debug(query);
 
-                var products = $.xml2json(response.data);
+                var products = $.xml2json(response.data, {"normalize": true});
                 products = products.products;
                 $log.debug("products", products.productdetail);
                 if (query.categoryId != null) {
                     var categoryToProductMap = {};
                     angular.forEach(products.productdetail, function(product) {
-                        var categories = product.categories;
-                        angular.forEach(categories, function(categoryId) {
-                            if (categoryToProductMap[categoryId] == null) {
-                                categoryToProductMap[categoryId] = new Array();
+                        $log.debug("processing product", product);
+                        var categories = product.categories.category;
+                        $log.debug("processing categories", Array.isArray(categories), categories);
+                        if (!(Array.isArray(categories))) {
+                            var id = categories.id;
+                            categories = new Array();
+                            categories.push(id);
+                        }
+                        angular.forEach(categories, function(category) {
+                            $log.debug("processing category", category);
+                            if (categoryToProductMap[category.id] == null) {
+                                categoryToProductMap[category.id] = new Array();
                             }
-                            categoryToProductMap[categoryId].push(product);
+                            categoryToProductMap[category.id].push(product);
                         });
                     });
 

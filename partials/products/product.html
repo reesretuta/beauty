@@ -7,8 +7,9 @@
 
   <br>
 
-  <div ng-repeat="product in products">
-    <a ng-href="#/products/{{product.itemnumber}}">{{product.itemnumber}} - {{product.productname}}</a>
+  <div>
+    <b>Item #:</b> {{product.itemnumber}}<br>
+    <b>Name:</b> {{product.productname}}<br>
   </div>
   <div class="loader" ng-show="loading"></div>
 </div>
