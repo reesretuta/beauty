@@ -2,6 +2,13 @@ angular.module('app.controllers.categories')
     .controller('CategoriesController', function ($scope, $document, $rootScope, $routeParams, $log, Categories) {
         $log.debug("CategoriesController");
         $scope.categories = [];
+
+        // add selection index
+        $scope.selectedIndex = -1;
+        $scope.itemClicked = function ($index) {
+            $scope.selectedIndex = $index;
+        };
+        
         var loadCategories = function () {
             //var start = new Date().getTime();
 

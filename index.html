@@ -134,23 +134,37 @@
     <!-- Sidebar Navigation -->
     <div class="col-xs-8 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation" ng-hide="page == 'Order Details'">
       <aside id="shop_menu">
+         <!-- TODO: add controller for nav show/hide (responsive out-of-scope v.1) -->
         <a ng-href="#/" class="pull-left visible-xs store-nav-toggle" data-toggle="offcanvas"><i class="fa fa-bars"></i></a>
+
         <ul ng-controller="CategoriesController">
-          <li ng-repeat="category in categories">
+
+          <li ng-repeat="category in categories" ng-class="{'open': $index == selectedIndex }" ng-click="itemClicked($index)">
               <a ng-href="#/products?category={{category.id}}"><span>{{category.name}}</span></a>
+
               <ul ng-if="category.childcategory">
-                  <li ng-repeat="category in category.childcategory">
+
+                  <li ng-repeat="category in category.childcategory" ng-class="{'open': $index == selectedIndex }" ng-click="itemClicked($index)">
                     <a ng-href="#/products?category={{category.id}}"><span>{{category.name}}</span></a>
+
                     <ul ng-if="category.childcategory">
-                        <li ng-repeat="category in category.childcategory">
+
+                        <li ng-repeat="category in category.childcategory" ng-class="{'open': $index == selectedIndex }" ng-click="itemClicked($index)">
                             <a ng-href="#/products?category={{category.id}}"><span>{{category.name}}</span></a>
-                        </li>              
-                    </ul>   
-                  </li>              
+                        </li>
+
+                    </ul>
+
+                  </li>
+
               </ul>
+
           </li>
+
           <li><a ng-href="#/products"><span>All Products</span></a></li>
+
         </ul>
+
       </aside>
     </div><!--/span-->
     <!-- /Sidebar Navigation -->

@@ -12,7 +12,7 @@
               <a href="#"><i class="fa fa-caret-right fa-2x"></i></a>
             </small>
             <a href="#" class="image-zoom">
-              <img class="img-responsive" src="/img/item.jpeg">
+              <img class="img-responsive" src="/{{product.images.path}}">
               <small><i class="fa fa-search-plus"></i> View Larger</small>
             </a>
           </div>
@@ -24,21 +24,37 @@
 
           <tabset>
             <tab heading="Summary">
-              <div ng-bind-html="product.marketingdescription | unsafe">Static content</div>
+              <div ng-bind-html="product.marketingdescription | unsafe">Summary content</div>
             </tab>
             <tab heading="Ingredients">
-              <div ng-bind-html="product.ingredients | unsafe">Static content</div>
+              <div ng-bind-html="product.ingredients | unsafe">Ingredients content</div>
             </tab>
             <tab heading="Usage">
-              <div ng-bind-html="product.usage | unsafe">Static content</div>
+              <div ng-bind-html="product.usage | unsafe">Usage content</div>
             </tab>
           </tabset>
 
           <div class="store-item-detail-stats">
-            <label class="store-item-size">1.7 fl. oz.</label>
+            <label ng-if="product.productflag.type == 'product'" class="store-item-size">{{product.sellingquantity}}</label>
             <hr>
             <p class="store-item-sku">Item #{{product.itemnumber}}</p>
-            <p class="store-item-price">$42.00</p>
+            <p class="store-item-price">
+
+              <span ng-repeat="detailprice in product.pricing.detailprice">
+                <span ng-if="detailprice.pricetype=='sale'" class="item-price-sale">
+                  ${{detailprice.price}}
+                </span>
+                <span ng-if="detailprice.pricetype=='retail'" class="item-price-strike">
+                  ${{detailprice.price}}
+                </span>
+              </span>
+              <span ng-if="product.pricing.detailprice.price">
+                <span class="item-price">
+                  ${{product.pricing.detailprice.price}}
+                </span>
+              </span>
+
+            </p>
           </div>
 
           <div class="store-item-detail-actions">
@@ -48,7 +64,16 @@
                 <input type="email" class="form-control qty-input" id="qty12345" placeholder="1" value="1">
               </div>
             </form></p>
-            <p><a href="#" class="btn btn-primary btn-lg"><i class="fa fa-shopping-cart"></i> Add to Cart</a></p>
+            <p ng-if="product.productflag.type == 'product'">
+              <a class="btn btn-primary btn-lg" ng-click="addToCart(product)">
+                <i class="fa fa-shopping-cart"></i> Add to Cart
+              </a>
+            </p>
+            <p ng-if="product.productflag.type == 'kit'">
+              <a class="btn btn-primary btn-lg" ng-href="#/products/{{product.itemnumber}}">
+                <i class="fa fa-cogs"></i> Configure
+              </a>
+            </p>
           </div>
 
           <div class="store-item-social">
