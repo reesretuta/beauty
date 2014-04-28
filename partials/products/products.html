@@ -9,12 +9,14 @@
               <p class="store-item-title"><a ng-href="#/products/{{product.itemnumber}}">{{product.productname}}</a></p>
               <p class="store-item-price">
 
-                <span ng-if="product.pricing.detailprice.pricetype == 'retail'" class="item-price">
-                  ${{product.pricing.detailprice.price}}
+              <span ng-repeat="detailprice in product.pricing">
+                <span ng-if="detailprice.pricetype == 'retail'" class="item-price">
+                  ${{detailprice.price}}
                 </span>
-                <span ng-if="product.pricing.detailprice.pricetype == 'sale'" class="item-price">
-                  ${{product.pricing.detailprice.price}}
+                <span ng-if="!detailprice.pricetype == 'sale'" class="item-price">
+                  ${{detailprice.price}}
                 </span>
+              </span>
                 <!-- this doesn't work with multiple prices -->
 
                 &nbsp;&nbsp;<span class="item-measure">{{product.sellingquantity}}</span>
