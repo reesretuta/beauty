@@ -105,7 +105,7 @@
         </div>
       </div><!-- /row -->
 
-      <div class="row store-heading-nav">
+      <div class="row store-heading-nav" ng-hide="page == 'Order Details'">
         <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8">
 
         <!-- BreadCrumbs -->
@@ -132,7 +132,7 @@
     <div class="row row-offcanvas row-offcanvas-left">
 
     <!-- Sidebar Navigation -->
-    <div class="col-xs-8 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+    <div class="col-xs-8 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation" ng-hide="page == 'Order Details'">
       <aside id="shop_menu">
         <a ng-href="#/" class="pull-left visible-xs store-nav-toggle" data-toggle="offcanvas"><i class="fa fa-bars"></i></a>
         <ul ng-controller="CategoriesController">

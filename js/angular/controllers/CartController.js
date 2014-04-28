@@ -1,6 +1,10 @@
 angular.module('app.controllers.cart')
     .controller('CartController', function ($scope, $document, $rootScope, $routeParams, $log, Cart, Products, HashKeyCopier) {
         $log.debug("CartController");
+
+        //change page title
+        $rootScope.page = "Order Details";
+
         $scope.products = [];
 
         var loadCart = function() {
