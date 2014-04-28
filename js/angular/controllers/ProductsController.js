@@ -1,5 +1,5 @@
 angular.module('app.controllers.products')
-    .controller('ProductsController', function ($sce, HashKeyCopier, Products, $scope, $rootScope, $routeParams, $location, $timeout, $window, $log, $modal, $document) {
+    .controller('ProductsController', function ($sce, HashKeyCopier, Cart, Products, $scope, $rootScope, $routeParams, $location, $timeout, $window, $log, $modal, $document) {
 
         $rootScope.page = "Products";
 
@@ -10,6 +10,20 @@ angular.module('app.controllers.products')
         $log.debug("routeParams", $routeParams);
         $log.debug("routeParams.category", $routeParams.category);
         $scope.category = $routeParams.category;
+
+        $scope.quantities = {};
+
+        $scope.addToCart = function(product) {
+            $log.debug("adding product", product);
+            var qty = $scope.quantities[product.itemnumber];
+            if (qty == null) {
+                qty = 1;
+            }
+            $log.debug("adding product", product, qty);
+            var p = angular.copy(product);
+            p.quantity = qty;
+            Cart.addToCart(p);
+        }
 
         /*=== LOAD DATA ====*/
 
@@ -28,6 +42,7 @@ angular.module('app.controllers.products')
                     $scope.products = products;
                     //$log.debug("initializing objects");
                 }
+
                 $scope.loading = false;
             }, function (data) {
                 //$log.debug('refreshProducts(): groupName=' + groupName + ' failure', data);

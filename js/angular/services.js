@@ -14,6 +14,45 @@ angular.module('app.services', ['ngResource'])
     .factory('Objects', function ($resource, API_URL) {
         return $resource(API_URL + '/objects/:objectId');
     })
+    .factory('Cart', function ($rootScope, $log) {
+        var cartService = {};
+
+        function getCart() {
+            if ($rootScope.cart == null) {
+                $rootScope.cart = {};
+            }
+            var cart = $rootScope.cart;
+            if (cart.items == null) {
+                cart.items = new Array();
+            }
+            return cart;
+        }
+        getCart();
+
+        cartService.getItemCount = function() {
+            var cart = getCart();
+            $log.debug("getItemCount()");
+            return Object.keys(cart.items).length;
+        };
+
+        cartService.getItems = function() {
+            var cart = getCart();
+            return cart.items;
+        };
+
+        cartService.addToCart = function(p) {
+            var cart = getCart();
+            $log.debug("addToCart()", cart);
+            cart.items.push(p);
+        };
+
+        cartService.removeFromCart = function(itemNumber) {
+            var cart = getCart();
+            delete cart[itemNumber];
+        };
+
+        return cartService;
+    })
     .factory('Products', function ($resource, $http, $log, API_URL) {
         var productsService = {};
 
@@ -47,11 +86,11 @@ angular.module('app.services', ['ngResource'])
         }
 
         productsService.query = function(query, success, failure) {
-            return $http.get('/api/products.xml').then(function(response) {
-                //$log.debug(response.data);
-                $log.debug(query);
+            return $http.get('/api/products.xml').success(function(data, status, headers, config) {
+                //$log.debug(data);
+                $log.debug("productsService(): query", query);
 
-                var products = $.xml2json(response.data, {"normalize": true});
+                var products = $.xml2json(data, {"normalize": true});
                 products = products.products;
                 $log.debug("products", products.productdetail);
                 if (query.categoryId != null) {
@@ -76,15 +115,36 @@ angular.module('app.services', ['ngResource'])
                     });
 
                     $log.debug("categoryToProductMap", categoryToProductMap);
-                    success(categoryToProductMap[query.categoryId], response.headers);
+                    success(categoryToProductMap[query.categoryId], status, headers, config);
                     return categoryToProductMap[query.categoryId];
+                } else if (query.productIds != null) {
+                    var returnedProducts = new Array();
+                    $log.debug("productIds", query.productIds);
+                    angular.forEach(query.productIds, function(productId) {
+                        $log.debug("productId", productId);
+                        $log.debug("products", products.productdetail);
+                        var found = 0;
+                        angular.forEach(products.productdetail, function(product) {
+                            $log.debug("productId", productId, "itemNumber", product.itemnumber);
+                            if (productId == product.itemnumber) {
+                                returnedProducts.push(product);
+                                found = 1;
+                            }
+                        });
+                        if (!found) {
+                            failure({}, 404, headers, config);
+                        }
+                    });
+                    $log.debug("got products by ids", returnedProducts);
+                    success(returnedProducts, status, headers, config);
+                    return returnedProducts;
                 } else {
-                    success(products.productdetail, response.headers);
+                    success(products.productdetail, status, headers, config);
                     return products.productdetail;
                 }
-            }, function(response) {
-                failure(response);
-                $log.error(response);
+            }).error(function(data, status, headers, config) {
+                failure(data, status, headers, config);
+                $log.error(data, status, headers, config);
             });
         }
 

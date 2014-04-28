@@ -67,7 +67,7 @@
                 <div class="navbar-right">
                   <a href="#">Sign In</a>
 
-                  <a href="cart.html"><i class="fa fa-shopping-cart"></i> view cart(0)</a>
+                  <a href="#/cart"><i class="fa fa-shopping-cart"></i> view cart({{getItemsInCart()}})</a>
 
                   <img src="http://jafrausa.com/regional/images/en_US/template/icons/flag.png">
                   <select>
@@ -218,6 +218,7 @@
     <script src="/js/angular/controllers/ObjectsController.js"></script>
     <script src="/js/angular/controllers/ProductsController.js"></script>
     <script src="/js/angular/controllers/ProductDetailsController.js"></script>
+    <script src="/js/angular/controllers/CartController.js"></script>
 
     <script src="/js/angular/services.js"></script>
     <script src="/js/angular/filters.js"></script>

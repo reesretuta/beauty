@@ -1,0 +1,16 @@
+<div class="cart">
+  <div class="row">
+    <div class="col-lg-12">
+      <h1>Shopping Cart</h1>
+    </div>
+  </div><!-- /.row -->
+
+  <br>
+
+  <div ng-repeat="product in products">
+    <b>Item #:</b> {{product.itemnumber}}<br>
+    <b>Name:</b> {{product.productname}}<br>
+    <b>Qty:</b> {{product.quantity}}<br>
+  </div>
+  <div class="loader" ng-show="loading"></div>
+</div>

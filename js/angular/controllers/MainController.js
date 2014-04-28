@@ -1,5 +1,5 @@
 angular.module('app.controllers.main')
-    .controller('MainController', function ($scope, $document, $rootScope, $routeParams, $log, Categories) {
+    .controller('MainController', function ($scope, $document, $rootScope, $routeParams, $log, Categories, Cart) {
 //        $log.debug("MainController");
 //        $scope.categories = [];
 //        var loadCategories = function () {
@@ -17,4 +17,10 @@ angular.module('app.controllers.main')
 //        }
 //        // kick off the first refresh
 //        loadCategories();
+
+        $rootScope.getItemsInCart = function() {
+            var count = Cart.getItemCount();
+            $log.debug("items count", count);
+            return count;
+        }
     });
