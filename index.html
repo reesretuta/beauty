@@ -110,7 +110,7 @@
 
         <!-- BreadCrumbs -->
           <ol class="breadcrumb">
-            <li><a href="#">Home</a></li>
+            <li><a ng-href="#/">Home</a></li>
             <li><a href="#">Category</a></li>
             <li><a href="#">SubCategory</a></li>
             <li><a href="#">SubSubCategory</a></li>
@@ -149,19 +149,24 @@
                   </li>              
               </ul>
           </li>
+          <li><a ng-href="#/products"><span>All Products</span></a></li>
         </ul>
       </aside>
     </div><!--/span-->
     <!-- /Sidebar Navigation -->
 
-    <div ng-view class="ngview"></div>
+    <!-- Store Content -->
+        <section class="col-xs-12 col-sm-9 store-content">
+
+            <div ng-view class="ngview"></div>
+
+        </section><!--/span-->
+    <!-- /Store Content -->
 
     
     </div><!--/row.offcanvas-->
 
     <hr>
-
-
 
     <footer>
         <div class="pull-right footer-logos">
@@ -216,6 +221,7 @@
     <script src="/js/angular/controllers/HomeController.js"></script>
     <script src="/js/angular/controllers/ObjectsController.js"></script>
     <script src="/js/angular/controllers/ProductsController.js"></script>
+    <script src="/js/angular/controllers/ProductDetailsController.js"></script>
 
     <script src="/js/angular/services.js"></script>
     <script src="/js/angular/filters.js"></script>

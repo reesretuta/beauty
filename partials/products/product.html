@@ -1,0 +1,107 @@
+
+
+      <!-- Item Detail Section -->
+      <section class="row store-section">
+
+        <div class="col-xs-12 col-sm-5 col-md-4 col-lg-4">
+          <div class="text-center item-image-wrapper">
+            <small class="pull-left">Images</small>
+            <small class="pull-right item-image-pager">
+              <a href="#"><i class="fa fa-caret-left fa-2x"></i></a>
+              <sup>1 of 1</sup>
+              <a href="#"><i class="fa fa-caret-right fa-2x"></i></a>
+            </small>
+            <a href="#" class="image-zoom">
+              <img class="img-responsive" src="/img/item.jpeg">
+              <small><i class="fa fa-search-plus"></i> View Larger</small>
+            </a>
+          </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-7 col-md-8 col-lg-8">
+
+          <div class="store-item-detail-info">
+
+          <tabset>
+            <tab heading="Summary">
+              <div ng-bind-html="product.marketingdescription | unsafe">Static content</div>
+            </tab>
+            <tab heading="Ingredients">
+              <div ng-bind-html="product.ingredients | unsafe">Static content</div>
+            </tab>
+            <tab heading="Usage">
+              <div ng-bind-html="product.usage | unsafe">Static content</div>
+            </tab>
+          </tabset>
+
+          <div class="store-item-detail-stats">
+            <label class="store-item-size">1.7 fl. oz.</label>
+            <hr>
+            <p class="store-item-sku">Item #{{product.itemnumber}}</p>
+            <p class="store-item-price">$42.00</p>
+          </div>
+
+          <div class="store-item-detail-actions">
+            <p><form role="form" class="form-inline store-item-add">
+              <div class="form-group">
+                <label for="qty12345">qty:</label>
+                <input type="email" class="form-control qty-input" id="qty12345" placeholder="1" value="1">
+              </div>
+            </form></p>
+            <p><a href="#" class="btn btn-primary btn-lg"><i class="fa fa-shopping-cart"></i> Add to Cart</a></p>
+          </div>
+
+          <div class="store-item-social">
+            <ul class="list-inline">
+              <li><a href="#" class="text-muted">
+                <span class="fa-stack fa-lg">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                </span>
+              </a></li>
+              <li><a href="#" class="text-muted">
+                <span class="fa-stack fa-lg">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                </span>
+              </a></li>
+              <li><a href="#" class="text-muted">
+                <span class="fa-stack fa-lg">
+                  <i class="fa fa-pinterest fa-2x"></i>
+                </span>
+              </a></li>
+              <li><a href="#" class="text-muted">
+                <span class="fa-stack fa-lg">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                </span>
+              </a></li>
+            </ul>
+          </div>
+
+        </div><!--/span-->
+
+      </section><!--/row-->
+      <!-- /Item Detail Section -->
+
+      <!-- Recently Viewed Section -->
+      <section class="row store-section">
+        <div class="col-lg-12">
+          <h2>Recently Viewed</h2>
+        </div>
+        recent products...
+      </section>
+      <!-- /Recently Viewed Section -->
+
+      <!-- Related Products Section -->
+      <section class="row store-section">
+        <div class="col-lg-12">
+          <h2>You May Also Like</h2>
+        </div>
+        related products...
+      </section>
+      <!-- /Related Products Section -->
+
+<!-- Loading -->
+  <div class="loader" ng-show="loading"></div>
+<!-- /Loading -->

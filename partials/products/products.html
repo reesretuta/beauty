@@ -1,32 +1,29 @@
-    <!-- Store Content -->
-        <div class="col-xs-12 col-sm-9 store-content">
+    
+        <!-- Product -->
+        <article class="ccol-xs-12 col-sm-6 col-md-4 col-lg-4 store-item" ng-repeat="product in products">
 
-          <article class="ccol-xs-12 col-sm-6 col-md-4 col-lg-4 store-item" ng-repeat="product in products">
-
-            <div class="store-item-wrapper">
-              <a href="#"><img class="img-responsive" src="/img/item.jpeg"></a>
-              <div class="store-item-info">
-                <p class="store-item-sku">Item #{{product.id}}</p>
-                <p class="store-item-title"><a href="#">{{product.productname}}</a></p>
-                <p class="store-item-price">
-                  <span class="item-price">$42.00</span>&nbsp;&nbsp;<span class="item-measure">1.7 fl. oz.</span>
-                </p>
+          <div class="store-item-wrapper">
+            <a ng-href="#/products/{{product.itemnumber}}"><img class="img-responsive" src="/img/item.jpeg"></a>
+            <div class="store-item-info">
+              <p class="store-item-sku">Item #{{product.itemnumber}}</p>
+              <p class="store-item-title"><a ng-href="#/products/{{product.itemnumber}}">{{product.productname}}</a></p>
+              <p class="store-item-price">
+                <span class="item-price">$42.00</span>&nbsp;&nbsp;<span class="item-measure">{{product.sellingquantity}}</span>
+              </p>
+            </div>
+            <p><form role="form" class="form-inline store-item-add">
+              <div class="form-group">
+                <label for="qty3">qty:</label>
+                <input type="email" class="form-control qty-input" id="qty3" placeholder="1" value="1">
               </div>
-              <p><form role="form" class="form-inline store-item-add">
-                <div class="form-group">
-                  <label for="qty3">qty:</label>
-                  <input type="email" class="form-control qty-input" id="qty3" placeholder="1" value="1">
-                </div>
-              </form></p>
-              <p><a href="cart.html" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> Add to Cart</a></p>
-            </div><!--/store-item-wrapper-->
-          </div><!--/span-->
+            </form></p>
+            <p><a href="cart.html" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> Add to Cart</a></p>
+          </div><!--/store-item-wrapper-->
 
         </article>
-    <!-- /Store Content -->
+        <!-- /Product -->
 
-<!--   <div ng-repeat="product in products">
-    {{product.id}} - {{product.productname}}
-  </div> -->
+<!-- Loading -->
   <div class="loader" ng-show="loading"></div>
-</div>
+<!-- /Loading -->
+
