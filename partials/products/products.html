@@ -1,4 +1,4 @@
-    
+
         <!-- Product -->
         <article class="ccol-xs-12 col-sm-6 col-md-4 col-lg-4 store-item" ng-repeat="product in products">
 
@@ -9,10 +9,13 @@
               <p class="store-item-title"><a ng-href="#/products/{{product.itemnumber}}">{{product.productname}}</a></p>
               <p class="store-item-price">
 
-                <span ng-repeat="detailprice in product.pricing" class="item-price">
-                  $ {{detailprice.price}}
+                <span ng-repeat="detailprice in product.pricing" ng-if="detailprice.pricetype == 'retail'" class="item-price">
+                  ${{detailprice.price}}
                 </span>
-                <!-- this doesn't work -->
+                <span ng-repeat="detailprice in product.pricing" ng-if="!detailprice.pricetype == 'retail'" class="item-price">
+                  ${{detailprice.price}}
+                </span>
+                <!-- this doesn't work with multiple prices -->
 
                 &nbsp;&nbsp;<span class="item-measure">{{product.sellingquantity}}</span>
               </p>
