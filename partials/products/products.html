@@ -9,11 +9,11 @@
               <p class="store-item-title"><a ng-href="#/products/{{product.itemnumber}}">{{product.productname}}</a></p>
               <p class="store-item-price">
 
-                <span ng-repeat="detailprice in product.pricing" ng-if="detailprice.pricetype == 'retail'" class="item-price">
-                  ${{detailprice.price}}
+                <span ng-if="product.pricing.detailprice.pricetype == 'retail'" class="item-price">
+                  ${{product.pricing.detailprice.price}}
                 </span>
-                <span ng-repeat="detailprice in product.pricing" ng-if="!detailprice.pricetype == 'retail'" class="item-price">
-                  ${{detailprice.price}}
+                <span ng-if="product.pricing.detailprice.pricetype == 'sale'" class="item-price">
+                  ${{product.pricing.detailprice.price}}
                 </span>
                 <!-- this doesn't work with multiple prices -->
 
@@ -26,7 +26,16 @@
                 <input type="integer" class="form-control qty-input" id="qty3" placeholder="1" ng-model="quantities[product.itemnumber]">
               </div>
             </form></p>
-            <p><a class="btn btn-primary" ng-click="addToCart(product)"><i class="fa fa-shopping-cart"></i> Add to Cart</a></p>
+            <p ng-if="product.productflag.type == 'product'">
+              <a class="btn btn-primary" ng-click="addToCart(product)">
+                <i class="fa fa-shopping-cart"></i> Add to Cart
+              </a>
+            </p>
+            <p ng-if="product.productflag.type == 'kit'">
+              <a class="btn btn-primary" ng-href="#/products/{{product.itemnumber}}">
+                <i class="fa fa-cogs"></i> Configure
+              </a>
+            </p>
           </div><!--/store-item-wrapper-->
 
         </article>
