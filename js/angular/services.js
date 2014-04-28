@@ -78,8 +78,8 @@ angular.module('app.services', ['ngResource'])
                     success(categoryToProductMap[query.categoryId], response.headers);
                     return categoryToProductMap[query.categoryId];
                 } else {
-                    success(products.categorydetail, response.headers);
-                    return products.categorydetail;
+                    success(products.productdetail, response.headers);
+                    return products.productdetail;
                 }
             }, function(response) {
                 failure(response);
