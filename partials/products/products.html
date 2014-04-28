@@ -1,23 +1,28 @@
 
         <!-- Product -->
-        <article class="ccol-xs-12 col-sm-6 col-md-4 col-lg-4 store-item" ng-repeat="product in products">
+        <article class="ccol-xs-12 col-sm-6 col-md-4 col-lg-4 store-item" ng-repeat="product in products" ng-if="product.productflag.isgroupproduct !=1">
 
-          <div class="store-item-wrapper">
+          <div class="store-item-wrapper" ng-if="product.itemnumber!=''">
             <a ng-href="#/products/{{product.itemnumber}}"><img class="img-responsive" src="/{{product.images.path}}"></a>
             <div class="store-item-info">
               <p class="store-item-sku">Item #{{product.itemnumber}}</p>
               <p class="store-item-title"><a ng-href="#/products/{{product.itemnumber}}">{{product.productname}}</a></p>
               <p class="store-item-price">
 
-              <span ng-repeat="detailprice in product.pricing">
-                <span ng-if="detailprice.pricetype == 'retail'" class="item-price">
+              <span ng-repeat="detailprice in product.pricing.detailprice">
+                <span ng-if="detailprice.pricetype=='sale'" class="item-price-sale" style="color: red;">
                   ${{detailprice.price}}
                 </span>
-                <span ng-if="!detailprice.pricetype == 'sale'" class="item-price">
+                <span ng-if="detailprice.pricetype=='retail'" class="item-price-strike" style="color: gray; text-decoration:line-through">
                   ${{detailprice.price}}
                 </span>
               </span>
-                <!-- this doesn't work with multiple prices -->
+              <span ng-if="product.pricing.detailprice.price">
+                <span class="item-price">
+                  ${{product.pricing.detailprice.price}}
+                </span>
+              </span>
+               
 
                 &nbsp;&nbsp;<span class="item-measure">{{product.sellingquantity}}</span>
               </p>
@@ -35,6 +40,26 @@
             </p>
             <p ng-if="product.productflag.type == 'kit'">
               <a class="btn btn-primary" ng-href="#/products/{{product.itemnumber}}">
+                <i class="fa fa-cogs"></i> Configure
+              </a>
+            </p>
+          </div><!--/store-item-wrapper-->
+          
+          
+          
+          <div class="store-item-wrapper" ng-if="product.groupid!=''">
+            <a ng-href="#/products/{{product.groupid}}"><img class="img-responsive" src="/{{product.images.path}}"></a>
+            <div class="store-item-info">
+              <p class="store-item-title"><a ng-href="#/products/{{product.groupid}}">{{product.productname}}</a></p>
+              <p class="store-item-price">
+
+             
+
+                &nbsp;&nbsp;<span class="item-measure">{{product.sellingquantity}}</span>
+              </p>
+            </div>
+            <p>
+              <a class="btn btn-primary" ng-href="#/products/{{product.groupid}}">
                 <i class="fa fa-cogs"></i> Configure
               </a>
             </p>

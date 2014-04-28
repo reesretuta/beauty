@@ -29,12 +29,9 @@
             </detailprice>
         </pricing>
         <categories>
-          <category>
-            <id>113</id>
-          </category>
-          <category>
-            <id>1</id>
-          </category>
+            <category>
+                <id>113</id>
+            </category>
         </categories>
         <videos>
             <videodetail>
@@ -112,16 +109,16 @@
                 <effectiveenddate>01012025</effectiveenddate>
             </detailprice>
             <detailprice>
-                <pricetype>retail</pricetype>
+                <pricetype>sale</pricetype>
                 <price>70.00</price>
                 <effectivestartdate>01012012</effectivestartdate>
                 <effectiveenddate>04192014</effectiveenddate>
             </detailprice>
         </pricing>
         <categories>
-          <category>
-            <id>113</id>
-          </category>
+            <category>
+                <id>113</id>
+            </category>
         </categories>
         <videos>
             <videodetail>
@@ -140,22 +137,22 @@
             <productdetail>
                 <itemnumber>13096</itemnumber>
                 <productname>Royal Jelly Lift Concentrate</productname>
-                <path><![CDATA[img/13096_1.jpg]]></path>
+                <path><![CDATA[media/13096_1.jpg]]></path>
             </productdetail>
             <productdetail>
                 <itemnumber>13027</itemnumber>
                 <productname>Royal Jelly Body Complex</productname>
-                <path><![CDATA[img/13027_1.jpg]]></path>
+                <path><![CDATA[media/13027_1.jpg]]></path>
             </productdetail>
             <productdetail>
                 <itemnumber>14808</itemnumber>
                 <productname>Royal Jelly Eye Concentrate Capsules</productname>
-                <path><![CDATA[img/14808_1.jpg]]></path>
+                <path><![CDATA[media/14808_1.jpg]]></path>
             </productdetail>
             <productdetail>
                 <itemnumber>13026</itemnumber>
                 <productname>Royal Jelly Milk Bath</productname>
-                <path><![CDATA[img/13026_1.jpg]]></path>
+                <path><![CDATA[media/13026_1.jpg]]></path>
             </productdetail>
         </relatedproducts>
         <sharedassets>
@@ -451,9 +448,300 @@
                 <id>8350</id>
             </category>
         </categories>
+        <videos>
+            <videodetail>
+                <imagepath></imagepath>
+                <videourl></videourl>
+            </videodetail>
+        </videos>
+        <upsellproducts>
+            <productdetail>
+                <itemnumber></itemnumber>
+                <productname></productname>
+                <path></path>
+            </productdetail>
+        </upsellproducts>
+        <relatedproducts>
+            <productdetail>
+                <itemnumber>25205</itemnumber>
+                <productname>Hydrating Day Moisture Broad Spectrum SPF 15</productname>
+                <path><![CDATA[img/25205_1.jpg]]></path>
+            </productdetail>
+            <productdetail>
+                <itemnumber>25207</itemnumber>
+                <productname>Hydrating Toner</productname>
+                <path><![CDATA[img/25207_1.jpg]]></path>
+            </productdetail>
+            <productdetail>
+                <itemnumber>25204</itemnumber>
+                <productname>Hydrating Cleanser</productname>
+                <path><![CDATA[img/25204_1.jpg]]></path>
+            </productdetail>
+            <productdetail>
+                <itemnumber>25206</itemnumber>
+                <productname>Hydrating Night Moisture</productname>
+                <path><![CDATA[img/25206_1.jpg]]></path>
+            </productdetail>
+        </relatedproducts>
+        <sharedassets>
+            <assetdetail>
+            <id></id>
+            <systemreference></systemreference>
+            <title></title>
+            </assetdetail>
+        </sharedassets>
+        <sharedattributes>
+        <attributedetail>
+            <id></id>
+            <systemreference></systemreference>
+            <description></description>
+        </attributedetail>
+        </sharedattributes>
         <productflag>
             <type>kit</type>
             <isgroupproduct>0</isgroupproduct>
+        </productflag>
+    </productdetail>
+    <productdetail>
+        <id></id>
+        <itemnumber></itemnumber>
+        <groupid>46</groupid>
+        <productskus>
+            <itemnumber>16985</itemnumber>
+            <itemnumber>16984</itemnumber>
+            <itemnumber>16983</itemnumber>
+            <itemnumber>16989</itemnumber>
+            <itemnumber>16981</itemnumber>
+            <itemnumber>16986</itemnumber>
+            <itemnumber>16987</itemnumber>
+        </productskus>
+        <productname>Always Color Stay-On Lipstick</productname>
+        <sellingquantity>.06 oz.</sellingquantity>
+        <marketingdescription>
+            <![CDATA[Lasting lip colors won't fade or bleed. Moisturizes for the perfect finish, brilliant shine for up to 12 hours.<br>]]>
+        </marketingdescription>
+        <images>
+            <path><![CDATA[img/46_1.jpg]]></path>
+        </images>
+        <ingredients><![CDATA[<p>N/A</p>]]></ingredients>
+        <usage><![CDATA[<p align="left">Apply one or two coats. Use alone or add JAFRA Ultra Shine Lip Gloss for added gloss.</p>]]></usage>
+        <pricing>
+            <detailprice>
+                <pricetype></pricetype>
+                <price></price>
+            </detailprice>
+        </pricing>
+        <categories>
+            <category>
+                <id>310</id>
+            </category>
+        </categories>
+        <videos>
+            <videodetail>
+                <imagepath></imagepath>
+                <videourl></videourl>
+            </videodetail>
+        </videos>
+        <upsellproducts>
+            <productdetail>
+                <itemnumber></itemnumber>
+                <productname></productname>
+                <path></path>
+            </productdetail>
+        </upsellproducts>
+        <relatedproducts>
+            <productdetail>
+                <itemnumber>25205</itemnumber>
+                <productname>Hydrating Day Moisture Broad Spectrum SPF 15</productname>
+                <path><![CDATA[img/25205_1.jpg]]></path>
+            </productdetail>
+            <productdetail>
+                <itemnumber>25207</itemnumber>
+                <productname>Hydrating Toner</productname>
+                <path><![CDATA[img/25207_1.jpg]]></path>
+            </productdetail>
+            <productdetail>
+                <itemnumber>25204</itemnumber>
+                <productname>Hydrating Cleanser</productname>
+                <path><![CDATA[img/25204_1.jpg]]></path>
+            </productdetail>
+            <productdetail>
+                <itemnumber>25206</itemnumber>
+                <productname>Hydrating Night Moisture</productname>
+                <path><![CDATA[img/25206_1.jpg]]></path>
+            </productdetail>
+        </relatedproducts>
+        <productflag>
+            <type>group</type>
+            <isgroupproduct>0</isgroupproduct>
+        </productflag>
+    </productdetail>
+    <productdetail>
+        <id>15114</id>
+        <itemnumber>16985</itemnumber>
+        <productname>Always Color Stay-On Lipstick - French Kiss</productname>
+        <sellingquantity>.06 oz.</sellingquantity>
+        <images>
+            <path><![CDATA[img/16985_1.jpg]]></path>
+        </images>
+        <pricing>
+            <detailprice>
+                <pricetype>retail</pricetype>
+                <price>14.00</price>
+            </detailprice>
+        </pricing>
+        <categories>
+            <category>
+                <id></id>
+            </category>
+        </categories>
+        <productflag>
+            <type>product</type>
+            <isgroupproduct>1</isgroupproduct>
+        </productflag>
+    </productdetail>
+    <productdetail>
+        <id></id>
+        <itemnumber>16984</itemnumber>
+        <productname>Always Color Stay-On Lipstick - Mocha</productname>
+        <sellingquantity>.06 oz.</sellingquantity>
+        <images>
+            <path><![CDATA[img/16984_1.jpg]]></path>
+        </images>
+        <pricing>
+            <detailprice>
+                <pricetype>retail</pricetype>
+                <price>14.00</price>
+            </detailprice>
+        </pricing>
+        <categories>
+            <category>
+                <id></id>
+            </category>
+        </categories>
+        <productflag>
+            <type>product</type>
+            <isgroupproduct>1</isgroupproduct>
+        </productflag>
+    </productdetail>
+    <productdetail>
+        <id></id>
+        <itemnumber>16983</itemnumber>
+        <productname>Always Color Stay-On Lipstick - Pinkberry</productname>
+        <sellingquantity>.06 oz.</sellingquantity>
+        <images>
+            <path><![CDATA[img/16983_1.jpg]]></path>
+        </images>
+        <pricing>
+            <detailprice>
+                <pricetype>retail</pricetype>
+                <price>7.00</price>
+            </detailprice>
+        </pricing>
+        <categories>
+            <category>
+                <id></id>
+            </category>
+        </categories>
+        <productflag>
+            <type>product</type>
+            <isgroupproduct>1</isgroupproduct>
+        </productflag>
+    </productdetail>
+    <productdetail>
+        <id></id>
+        <itemnumber>16989</itemnumber>
+        <productname>Always Color Stay-On Lipstick - Kiss Me Coral</productname>
+        <sellingquantity>.06 oz.</sellingquantity>
+        <images>
+            <path><![CDATA[img/16983_1.jpg]]></path>
+        </images>
+        <pricing>
+            <detailprice>
+                <pricetype>retail</pricetype>
+                <price>14.00</price>
+            </detailprice>
+        </pricing>
+        <categories>
+            <category>
+                <id></id>
+            </category>
+        </categories>
+        <productflag>
+            <type>product</type>
+            <isgroupproduct>1</isgroupproduct>
+        </productflag>
+    </productdetail>
+    <productdetail>
+        <id></id>
+        <itemnumber>16981</itemnumber>
+        <productname>Always Color Stay-On Lipstick - Yellow Lilies</productname>
+        <sellingquantity>.06 oz.</sellingquantity>
+        <images>
+            <path><![CDATA[img/16981_1.jpg]]></path>
+        </images>
+        <pricing>
+            <detailprice>
+                <pricetype>retail</pricetype>
+                <price>7.00</price>
+            </detailprice>
+        </pricing>
+        <categories>
+            <category>
+                <id></id>
+            </category>
+        </categories>
+        <productflag>
+            <type>product</type>
+            <isgroupproduct>1</isgroupproduct>
+        </productflag>
+    </productdetail>
+    <productdetail>
+        <id></id>
+        <itemnumber>16986</itemnumber>
+        <productname>Always Color Stay-On Lipstick - Rouge</productname>
+        <sellingquantity>.06 oz.</sellingquantity>
+        <images>
+            <path><![CDATA[img/16986_1.jpg]]></path>
+        </images>
+        <pricing>
+            <detailprice>
+                <pricetype>retail</pricetype>
+                <price>14.00</price>
+            </detailprice>
+        </pricing>
+        <categories>
+            <category>
+                <id></id>
+            </category>
+        </categories>
+        <productflag>
+            <type>product</type>
+            <isgroupproduct>1</isgroupproduct>
+        </productflag>
+    </productdetail>
+    <productdetail>
+        <id></id>
+        <itemnumber>16987</itemnumber>
+        <productname>Always Color Stay-On Lipstick - Brandywine</productname>
+        <sellingquantity>.06 oz.</sellingquantity>
+        <images>
+            <path><![CDATA[img/16987_1.jpg]]></path>
+        </images>
+        <pricing>
+            <detailprice>
+                <pricetype>retail</pricetype>
+                <price>14.00</price>
+            </detailprice>
+        </pricing>
+        <categories>
+            <category>
+                <id></id>
+            </category>
+        </categories>
+        <productflag>
+            <type>product</type>
+            <isgroupproduct>1</isgroupproduct>
         </productflag>
     </productdetail>
 </products>
