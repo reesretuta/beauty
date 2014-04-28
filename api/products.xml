@@ -3,13 +3,14 @@
     <productdetail>
         <id>352</id>
         <itemnumber>13027</itemnumber>
+        <groupid></groupid>
         <productname>Royal Jelly Body Complex</productname>
         <sellingquantity>6.7 fl. oz.</sellingquantity>
         <marketingdescription>
             <![CDATA[<p>Contains microencapsulated treatment technology, gradually releasing moisture to condition and strengthen.</p>]]>
         </marketingdescription>
         <images>
-            <path><![CDATA[media/13027_1.jpg]]></path>
+            <path><![CDATA[img/13027_1.jpg]]></path>
         </images>
         <ingredients><![CDATA[- Cellspan Complex<br><br>- Sodium PCA<br><br>- Panthenol<br><br>- Tocopheryl Acetate<br><br>- Allantoin]]></ingredients>
         <usage><![CDATA[<font size="2">Massage liberally over entire body as often as desired. Take particular care of elbows, arms, legs and knees. Suitable for all skin types.</font>]]></usage>
@@ -37,7 +38,7 @@
         </categories>
         <videos>
             <videodetail>
-                <imagepath><![CDATA[/media/13027_video_1.jpg]]></imagepath>
+                <imagepath><![CDATA[img/13027_video_1.jpg]]></imagepath>
                 <videourl><![CDATA[rtmp://cp117999.edgefcs.net/ondemand/usa/videos/en/royal_jelly_advanced_en.flv]]></videourl>
             </videodetail>
         </videos>
@@ -45,29 +46,29 @@
             <productdetail>
                 <itemnumber>15285</itemnumber>
                 <productname>Royal Jelly Holiday Set</productname>
-                <path><![CDATA[/media/15285_1.jpg]]></path>
+                <path><![CDATA[img/15285_1.jpg]]></path>
             </productdetail>
         </upsellproducts>
         <relatedproducts>
             <productdetail>
                 <itemnumber>13096</itemnumber>
                 <productname>Royal Jelly Lift Concentrate</productname>
-                <path><![CDATA[/media/13096_1.jpg]]></path>
+                <path><![CDATA[img/13096_1.jpg]]></path>
             </productdetail>
             <productdetail>
                 <itemnumber>15522</itemnumber>
                 <productname>Royal Jelly Milk Balm Advanced</productname>
-                <path><![CDATA[/media/15522_1.jpg]]></path>
+                <path><![CDATA[img/15522_1.jpg]]></path>
             </productdetail>
             <productdetail>
                 <itemnumber>14808</itemnumber>
                 <productname>Royal Jelly Eye Concentrate Capsules</productname>
-                <path><![CDATA[/media/14808_1.jpg]]></path>
+                <path><![CDATA[img/14808_1.jpg]]></path>
             </productdetail>
             <productdetail>
                 <itemnumber>18639</itemnumber>
                 <productname>Royal Jelly Vitamin Tablets</productname>
-                <path><![CDATA[/media/18639_1.jpg]]></path>
+                <path><![CDATA[img/18639_1.jpg]]></path>
             </productdetail>
         </relatedproducts>
         <sharedassets>
@@ -84,17 +85,22 @@
             <description></description>
         </attributedetail>
         </sharedattributes>
+        <productflag>
+            <type>product</type>
+            <isgroupproduct>0</isgroupproduct>
+        </productflag>
     </productdetail>
     <productdetail>
         <id>7528</id>
         <itemnumber>15522</itemnumber>
+        <groupid></groupid>
         <productname>Royal Jelly Milk Balm Advanced</productname>
         <sellingquantity>1 fl. oz.</sellingquantity>
         <marketingdescription>
             <![CDATA[<p>Add a boost of nutrients and vitamins to your skin. Includes Sirtuin Activators to help increase skin's vitality, so you look better, longer. Cellspan Complex to energize skin with sunflower sprouts and myrtle extract, enriched with an ayurvedic antioxidant blend.</p>]]>
         </marketingdescription>
         <images>
-            <path><![CDATA[media/15522_1.jpg]]></path>
+            <path><![CDATA[img/15522_1.jpg]]></path>
         </images>
         <ingredients><![CDATA[<b>Royal Jelly</b> <br>A whitish, creamy substance produced by worker bees to nourish their queen bee. It consists of an emulsion of proteins, sugars and lipids in a water base. It contains vitamins A, B-Complex, C, D and E. It is particularly useful for its B-Complex contents, including thiamine (B1), riboflavin (B2), pyridoxine (B6), B12, niacine, biotin, folic acid and inositol. It also supplies minerals and trace elements (sodium, kalium, magnesium, calcium, iron, zinc and copper) and all the amino acids essential for life. Furthermore, royal jelly is rich in nucleic acids, RNA and DNA.<br><br>• <b>Oryza Sativa (Rice) Extract Sirtuin Activator</b><br><br>• <b>Yeast Extract, Water/Aqua, Glycerin, Butylene Glycol</b><br><br>• <b>Glycerin, Palmitoyl Dipeptide-5, Diaminobutyloyl Hydroxythreonine, Palmitoyl Dipeptide-6 Diaminohydroxybutyrate</b><br><br>• <b>Butyrospermum Parkii (Shea Butter) Fruit</b><br><br>• <b>Panthenol</b><br><br>• <b>Tocopheryl Acetate</b><br><br>• <b>Royal Jelly CELLSPAN Complex</b><br><br>• <b>SunJelly<br></b><br>• <b>Longevicell - Myrtle Extract</b>: <br><br>• <b>Ayurvedic Blend - Wintercherry and Lotus flowers</b><br><br>• <b>Contains a unique Peptide Complex</b><br>]]></ingredients>
         <usage><![CDATA[Pump a small amount onto fingertips and smooth over face. Apply day and night before your moisturizer.<span></span><span><br></span>]]></usage>
@@ -106,7 +112,7 @@
                 <effectiveenddate>01012025</effectiveenddate>
             </detailprice>
             <detailprice>
-                <pricetype>sale</pricetype>
+                <pricetype>retail</pricetype>
                 <price>70.00</price>
                 <effectivestartdate>01012012</effectivestartdate>
                 <effectiveenddate>04192014</effectiveenddate>
@@ -134,22 +140,22 @@
             <productdetail>
                 <itemnumber>13096</itemnumber>
                 <productname>Royal Jelly Lift Concentrate</productname>
-                <path><![CDATA[media/13096_1.jpg]]></path>
+                <path><![CDATA[img/13096_1.jpg]]></path>
             </productdetail>
             <productdetail>
                 <itemnumber>13027</itemnumber>
                 <productname>Royal Jelly Body Complex</productname>
-                <path><![CDATA[media/13027_1.jpg]]></path>
+                <path><![CDATA[img/13027_1.jpg]]></path>
             </productdetail>
             <productdetail>
                 <itemnumber>14808</itemnumber>
                 <productname>Royal Jelly Eye Concentrate Capsules</productname>
-                <path><![CDATA[media/14808_1.jpg]]></path>
+                <path><![CDATA[img/14808_1.jpg]]></path>
             </productdetail>
             <productdetail>
                 <itemnumber>13026</itemnumber>
                 <productname>Royal Jelly Milk Bath</productname>
-                <path><![CDATA[media/13026_1.jpg]]></path>
+                <path><![CDATA[img/13026_1.jpg]]></path>
             </productdetail>
         </relatedproducts>
         <sharedassets>
@@ -166,5 +172,288 @@
             <description></description>
         </attributedetail>
         </sharedattributes>
+        <productflag>
+            <type>product</type>
+            <isgroupproduct>0</isgroupproduct>
+        </productflag>
+    </productdetail>
+    <productdetail>
+        <id>17553</id>
+        <itemnumber>25204</itemnumber>
+        <groupid></groupid>
+        <productname>Hydrating Cleanser</productname>
+        <sellingquantity>4.2 fl.oz.</sellingquantity>
+        <marketingdescription>
+            <![CDATA[<p><strong>Hydrating Cleanser</strong></p><p>This enriched, hydrating Cleanser water-activates<br>into a refreshing foam to gently remove impurities<br>and cleanse your skin without stripping it. Vitamins<br>B5 and E condition skin and provide antioxidant<br>benefits. Prevents the effects of glycation, fine<br>lines, wrinkles and dull skin are minimized,<br>promoting younger and healthier skin. |4.2 fl.oz.</p>]]>
+        </marketingdescription>
+        <images>
+            <path><![CDATA[img/25204_1.jpg]]></path>
+        </images>
+        <ingredients><![CDATA[<ul><li>Advanced HydraSMART Complex – Ayurvedic Plant<br>Extracts (Licorice, Winter Cherry, Hemidesmus)</li><li>Sorbitol</li><li>Panthenol (Provitamin B5)</li></ul>]]></ingredients>
+        <usage><![CDATA[Massage a dime-sized portion over a dampened<br>face and throat in the morning and again at night.<br>Rinse well.]]></usage>
+        <pricing>
+            <detailprice>
+                <pricetype>retail</pricetype>
+                <price>18.00</price>
+                <effectivestartdate>02012012</effectivestartdate>
+                <effectiveenddate>01012025</effectiveenddate>
+            </detailprice>
+        </pricing>
+        <categories>
+            <category>
+                <id>8350</id>
+            </category>
+        </categories>
+        <videos>
+            <videodetail>
+                <imagepath></imagepath>
+                <videourl></videourl>
+            </videodetail>
+        </videos>
+        <upsellproducts>
+            <productdetail>
+                <itemnumber></itemnumber>
+                <productname></productname>
+                <path></path>
+            </productdetail>
+        </upsellproducts>
+        <relatedproducts>
+            <productdetail>
+                <itemnumber>25205</itemnumber>
+                <productname>Hydrating Day Moisture Broad Spectrum SPF 15</productname>
+                <path><![CDATA[img/25205_1.jpg]]></path>
+            </productdetail>
+            <productdetail>
+                <itemnumber>25206</itemnumber>
+                <productname>Hydrating Night Moisture</productname>
+                <path><![CDATA[img/25206_1.jpg]]></path>
+            </productdetail>
+            <productdetail>
+                <itemnumber>25207</itemnumber>
+                <productname>Hydrating Toner</productname>
+                <path><![CDATA[img/25207_1.jpg]]></path>
+            </productdetail>
+        </relatedproducts>
+        <sharedassets>
+            <assetdetail>
+            <id></id>
+            <systemreference></systemreference>
+            <title></title>
+            </assetdetail>
+        </sharedassets>
+        <sharedattributes>
+        <attributedetail>
+            <id></id>
+            <systemreference></systemreference>
+            <description></description>
+        </attributedetail>
+        </sharedattributes>
+        <productflag>
+            <type>product</type>
+            <isgroupproduct>0</isgroupproduct>
+        </productflag>
+    </productdetail>
+    <productdetail>
+        <id>17556</id>
+        <itemnumber>25207</itemnumber>
+        <groupid></groupid>
+        <productname>Hydrating Toner</productname>
+        <sellingquantity>6.7 fl. oz.</sellingquantity>
+        <marketingdescription>
+            <![CDATA[<p><strong>Hydrating Toner</strong></p><p>A gentle, alcohol-free, hydrating toner that removes<br>excess cleanser and impurities, and restores<br>pH balance to prep the skin for moisturizer. The<br>Advanced HydraSMART Complex works to help<br>replenish moisture and prevent moisture loss,<br>hydrating dry, damaged skin. The toner helps<br>restore the skin’s natural pH balance, enhancing its<br>protective properties.</p>]]>
+        </marketingdescription>
+        <images>
+            <path><![CDATA[img/25207_1.jpg]]></path>
+        </images>
+        <ingredients><![CDATA[<ul><li>Advanced HydraSMART Complex – Ayurvedic Plant<br>Extracts (Licorice, Winter Cherry, Hemidesmus)</li><li>Natural Moisturizing Factor (NMF)</li><li>Aloe Barbadensis Leaf Juice</li><li>Panthenol (Provitamin B5)</li></ul>]]></ingredients>
+        <usage><![CDATA[After cleansing in the morning and at night, sweep<br>toner over face and throat with a cotton pad. Follow<br>with treatment and/or moisturizer.]]></usage>
+        <pricing>
+            <detailprice>
+                <pricetype>retail</pricetype>
+                <price>18.00</price>
+            </detailprice>
+        </pricing>
+        <categories>
+            <category>
+                <id>8350</id>
+            </category>
+        </categories>
+        <videos>
+            <videodetail>
+                <imagepath></imagepath>
+                <videourl></videourl>
+            </videodetail>
+        </videos>
+        <upsellproducts>
+            <productdetail>
+                <itemnumber></itemnumber>
+                <productname></productname>
+                <path></path>
+            </productdetail>
+        </upsellproducts>
+        <relatedproducts>
+            <productdetail>
+                <itemnumber>25205</itemnumber>
+                <productname>Hydrating Day Moisture Broad Spectrum SPF 15</productname>
+                <path><![CDATA[img/25205_1.jpg]]></path>
+            </productdetail>
+            <productdetail>
+                <itemnumber>25206</itemnumber>
+                <productname>Hydrating Night Moisture</productname>
+                <path><![CDATA[img/25206_1.jpg]]></path>
+            </productdetail>
+            <productdetail>
+                <itemnumber>25204</itemnumber>
+                <productname>Hydrating Cleanser</productname>
+                <path><![CDATA[img/25204_1.jpg]]></path>
+            </productdetail>
+        </relatedproducts>
+        <sharedassets>
+            <assetdetail>
+            <id></id>
+            <systemreference></systemreference>
+            <title></title>
+            </assetdetail>
+        </sharedassets>
+        <sharedattributes>
+        <attributedetail>
+            <id></id>
+            <systemreference></systemreference>
+            <description></description>
+        </attributedetail>
+        </sharedattributes>
+        <productflag>
+            <type>product</type>
+            <isgroupproduct>0</isgroupproduct>
+        </productflag>
+    </productdetail>
+    <productdetail>
+        <id>17554</id>
+        <itemnumber>25205</itemnumber>
+        <groupid></groupid>
+        <productname>Hydrating Day Moisture Broad Spectrum SPF 15</productname>
+        <sellingquantity>1.7 fl.oz.</sellingquantity>
+        <marketingdescription>
+            <![CDATA[<p><strong>Hydrating Day Moisture Broad Spectrum SPF 15</strong></p><p>A vitamin-enriched, hydrating Day Cream<br>with Broad Spectrum SPF 15. The Advanced<br>HydraSMART Complex works to replenish moisture<br>and prevent moisture loss. This day cream offers<br>complete protection for hydrated, supple and<br>smooth skin. Contains Advanced Intellishield+<br>to promote youthful appearance and reduce the<br>visibility of fine lines and wrinkles.</p>]]>
+        </marketingdescription>
+        <images>
+            <path><![CDATA[img/25205_1.jpg]]></path>
+        </images>
+        <ingredients><![CDATA[<ul><li>Advanced Intellishield+®</li><li>Broad Spectrum UVA and UVB sunscreen</li><li>Advanced HydraSMART Complex – Ayurvedic Plant<br>Extracts (Licorice, Winter Cherry, Hemidesmus)</li><li>Rye Seed Extract</li><li>Shea Butter</li></ul>]]></ingredients>
+        <usage><![CDATA[Apply a dime-sized portion every morning after<br>cleansing and toning. Smooth over face and throat, it<br>will quickly absorb into the skin, leaving it supple and<br>hydrated throughout the day.]]></usage>
+        <pricing>
+            <detailprice>
+                <pricetype>retail</pricetype>
+                <price>22.00</price>
+            </detailprice>
+        </pricing>
+        <categories>
+            <category>
+                <id>8350</id>
+            </category>
+        </categories>
+        <productflag>
+            <type>product</type>
+            <isgroupproduct>0</isgroupproduct>
+        </productflag>
+    </productdetail>
+    <productdetail>
+        <id>17555</id>
+        <itemnumber>25206</itemnumber>
+        <groupid></groupid>
+        <productname>Hydrating Night Moisture</productname>
+        <sellingquantity>1.7 fl.oz.</sellingquantity>
+        <images>
+            <path><![CDATA[img/25206_1.jpg]]></path>
+        </images>
+        <pricing>
+            <detailprice>
+                <pricetype>retail</pricetype>
+                <price>24.00</price>
+            </detailprice>
+        </pricing>
+        <categories>
+            <category>
+                <id>8350</id>
+            </category>
+        </categories>
+        <videos>
+            <videodetail>
+                <imagepath></imagepath>
+                <videourl></videourl>
+            </videodetail>
+        </videos>
+        <upsellproducts>
+            <productdetail>
+                <itemnumber></itemnumber>
+                <productname></productname>
+                <path></path>
+            </productdetail>
+        </upsellproducts>
+        <relatedproducts>
+            <productdetail>
+                <itemnumber>25205</itemnumber>
+                <productname>Hydrating Day Moisture Broad Spectrum SPF 15</productname>
+                <path><![CDATA[img/25205_1.jpg]]></path>
+            </productdetail>
+            <productdetail>
+                <itemnumber>25207</itemnumber>
+                <productname>Hydrating Toner</productname>
+                <path><![CDATA[img/25207_1.jpg]]></path>
+            </productdetail>
+            <productdetail>
+                <itemnumber>25204</itemnumber>
+                <productname>Hydrating Cleanser</productname>
+                <path><![CDATA[img/25204_1.jpg]]></path>
+            </productdetail>
+        </relatedproducts>
+        <sharedassets>
+            <assetdetail>
+            <id></id>
+            <systemreference></systemreference>
+            <title></title>
+            </assetdetail>
+        </sharedassets>
+        <sharedattributes>
+        <attributedetail>
+            <id></id>
+            <systemreference></systemreference>
+            <description></description>
+        </attributedetail>
+        </sharedattributes>
+        <productflag>
+            <type>product</type>
+            <isgroupproduct>0</isgroupproduct>
+        </productflag>
+    </productdetail>
+    <productdetail>
+        <id>17555</id>
+        <itemnumber>18865</itemnumber>
+        <groupid></groupid>
+        <productname>Advanced Dynamics Hydrating Regimen Introductory Offer</productname>
+        <sellingquantity>each</sellingquantity>
+        <marketingdescription>
+            <![CDATA[<p><strong>Advanced Dynamics Hydrating Regimen </strong></p><p><strong>Introductory Offer March &amp; April Only!</strong></p><p><u>Includes:</u> <br>Cleanser | 4.2 fl. oz.<br>Toner | 6.7 fl. oz.<br>Day Moisture | 1.7 fl. oz. <br>Night Moisture | 1.7 fl. oz.</p><p></p><p><u>Your Choice of 1 <strong>FREE</strong> Mask or Scrub:</u></p><p>Malibu Miracle Mask | 1.7 fl. oz.</p><p>OR</p><p>Gentle Exfoliating Scrub | 2.5 fl. oz.</p><p></p><p><strong>FREE</strong> Advanced Dynamics Travel Bag with purchase</p>]]>
+        </marketingdescription>
+        <images>
+            <path><![CDATA[img/18865_1.jpg]]></path>
+        </images>
+        <ingredients><![CDATA[<p><strong>Botanical Benefits:</strong></p><ul><li>Winter Cherry: Soothing</li><li>Licorice: Brightening</li><li>Hemidesmus: Anti-Oxidant</li></ul>]]></ingredients>
+        <usage><![CDATA[For cleansers, a dime or quarter size should<br>be adequate. Toner should be placed on a<br>cotton ball or pad, enough to make it fairly wet.<br>Moisturizers should be placed on four sections<br>of the face. A dime-sized dab on each cheek,<br>the forehead and the chin should then be<br>brought forward to smooth over the whole face.]]></usage>
+        <pricing>
+            <detailprice>
+                <pricetype>retail</pricetype>
+                <price>69.00</price>
+            </detailprice>
+        </pricing>
+        <categories>
+            <category>
+                <id>8350</id>
+            </category>
+        </categories>
+        <productflag>
+            <type>kit</type>
+            <isgroupproduct>0</isgroupproduct>
+        </productflag>
     </productdetail>
 </products>
