@@ -3,12 +3,18 @@
         <article class="ccol-xs-12 col-sm-6 col-md-4 col-lg-4 store-item" ng-repeat="product in products">
 
           <div class="store-item-wrapper">
-            <a ng-href="#/products/{{product.itemnumber}}"><img class="img-responsive" src="/img/item.jpeg"></a>
+            <a ng-href="#/products/{{product.itemnumber}}"><img class="img-responsive" src="/{{product.images.path}}"></a>
             <div class="store-item-info">
               <p class="store-item-sku">Item #{{product.itemnumber}}</p>
               <p class="store-item-title"><a ng-href="#/products/{{product.itemnumber}}">{{product.productname}}</a></p>
               <p class="store-item-price">
-                <span class="item-price">$42.00</span>&nbsp;&nbsp;<span class="item-measure">{{product.sellingquantity}}</span>
+
+                <span ng-repeat="detailprice in product.pricing" class="item-price">
+                  $ {{detailprice.price}}
+                </span>
+                <!-- this doesn't work -->
+
+                &nbsp;&nbsp;<span class="item-measure">{{product.sellingquantity}}</span>
               </p>
             </div>
             <p><form name="product{{product.itemnumber}}" role="form" class="form-inline store-item-add">
