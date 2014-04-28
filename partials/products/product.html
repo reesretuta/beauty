@@ -1,9 +1,91 @@
-<div class="products">
-  <div class="row">
-    <div class="col-lg-12">
-      <h1>Products</h1>
-    </div>
-  </div><!-- /.row -->
+
+
+      <!-- Item Detail Section -->
+      <section class="row store-section">
+
+        <div class="col-xs-12 col-sm-5 col-md-4 col-lg-4">
+          <a href="#">
+            <img class="img-responsive" src="/img/item.jpeg">
+          </a>
+        </div>
+
+        <div class="col-xs-12 col-sm-7 col-md-8 col-lg-8">
+
+          <div class="store-item-detail-info">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#summary" data-toggle="tab">Summary</a></li>
+              <li><a href="#ingredients" data-toggle="tab">Ingredients</a></li>
+              <li><a href="#usage" data-toggle="tab">Usage</a></li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+              <div class="tab-pane fade active in" id="summary">
+                {{product.marketingdescription}}
+              </div>
+              <div class="tab-pane fade" id="ingredients">
+                {{product.ingredients}}
+              </div>
+              <div class="tab-pane fade" id="usage">
+                {{product.usage}}
+              </div>
+            </div>
+          </div>
+
+          <div class="store-item-detail-stats">
+            <label class="store-item-size">1.7 fl. oz.</label>
+            <hr>
+            <p class="store-item-sku">Item #{{product.itemnumber}}</p>
+            <p class="store-item-price">$42.00</p>
+          </div>
+
+          <div class="store-item-detail-actions">
+            <p><form role="form" class="form-inline store-item-add">
+              <div class="form-group">
+                <label for="qty12345">qty:</label>
+                <input type="email" class="form-control qty-input" id="qty12345" placeholder="1" value="1">
+              </div>
+            </form></p>
+            <p><a href="#" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> Add to Cart</a></p>
+          </div>
+
+          <div class="store-item-social">
+            <ul class="list-inline">
+              <li><a href="#" class="text-muted">
+                <span class="fa-stack fa-lg">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                </span>
+              </a></li>
+              <li><a href="#" class="text-muted">
+                <span class="fa-stack fa-lg">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                </span>
+              </a></li>
+              <li><a href="#" class="text-muted">
+                <span class="fa-stack fa-lg">
+                  <i class="fa fa-pinterest fa-2x"></i>
+                </span>
+              </a></li>
+              <li><a href="#" class="text-muted">
+                <span class="fa-stack fa-lg">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                </span>
+              </a></li>
+            </ul>
+          </div>
+
+        </div><!--/span-->
+
+      </section><!--/row-->
+
+      <!-- @include _recent -->
+
+      <!-- @include _upsell -->
+
 
   <br>
 
@@ -12,4 +94,3 @@
     <b>Name:</b> {{product.productname}}<br>
   </div>
   <div class="loader" ng-show="loading"></div>
-</div>
