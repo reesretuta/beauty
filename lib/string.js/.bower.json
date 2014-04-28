@@ -1,0 +1,12 @@
+{
+  "name": "string.js",
+  "homepage": "https://github.com/jprichardson/string.js",
+  "_release": "e900c5faeb",
+  "_resolution": {
+    "type": "commit",
+    "commit": "e900c5faeb88166e516ead8c05399b64be28fcc6"
+  },
+  "_source": "https://github.com/jprichardson/string.js.git",
+  "_target": "e900c5faeb88166e516ead8c05399b64be28fcc6",
+  "_originalSource": "https://github.com/jprichardson/string.js.git"
+}

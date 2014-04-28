@@ -1,0 +1,42 @@
+{
+  "name": "angular-skel",
+  "homepage": "http://github.com/arimus/angular-skel",
+  "authors": [
+    "Author"
+  ],
+  "license": "End User License Agreement",
+  "private": true,
+  "ignore": [
+    "**/.*"
+  ],
+  "dependencies": {
+    "angular": "1.2.16",
+    "bootstrap": "https://github.com/angular-ui/bootstrap.git#0cc532d240e090e69cb6ccfee83a88ae778ced01",
+    "jquery-resize": "*",
+    "jquery-migrate": "1.2.1",
+    "jquery": "1.11.0",
+    "less.js": "1.7.0",
+    "font-awesome": "~4.0.3",
+    "angular-animate": "1.2.16",
+    "angular-cookies": "1.2.16",
+    "angular-loader": "1.2.16",
+    "angular-resource": "1.2.16",
+    "angular-route": "1.2.16",
+    "angular-sanitize": "1.2.16",
+    "angular-touch": "1.2.16",
+    "HashKeyCopier": "https://github.com/bennadel/HashKeyCopier.git#a7c731fb2768d95eb249fb779589563dd44e5b74",
+    "angular-ui-utils": "fbcfaf187942d5e9fe6b27f9b6da1ece418aebea",
+    "angular-bindonce": "~0.2.1",
+    "momentjs": "~2.6.0",
+    "string.js": "https://github.com/jprichardson/string.js.git#e900c5faeb88166e516ead8c05399b64be28fcc6",
+    "angular-cache": "2.3.0",
+    "purl": "~2.3.1",
+    "ladda-bootstrap": "~0.1.0"
+  },
+  "devDependencies": {
+    "angular-mocks": "1.2.16"
+  },
+  "resolutions": {
+    "bootstrap": ">=3.0.0"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "angular-ui-docs",
+  "commit": "a18c9a4b236b88151d630ac78c0ecbacc260b961",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/angular-ui/angular-ui-docs.git"
+  },
+  "homepage": "https://github.com/angular-ui/ui-utils",
+  "_release": "fbcfaf1879",
+  "_resolution": {
+    "type": "commit",
+    "commit": "fbcfaf187942d5e9fe6b27f9b6da1ece418aebea"
+  },
+  "_source": "git://github.com/angular-ui/ui-utils.git",
+  "_target": "fbcfaf187942d5e9fe6b27f9b6da1ece418aebea",
+  "_originalSource": "angular-ui-utils"
+}
