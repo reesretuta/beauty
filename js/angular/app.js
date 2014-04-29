@@ -19,7 +19,7 @@ var app = angular.module('app', ['ngRoute', 'ngSanitize', 'ui.bootstrap', 'ui.ke
             controller: 'ProductsController', label: 'Products'
         }).when(BASE_URL + '/products/:productId', {
             templateUrl: BASE_URL + '/partials/products/product.html',
-            controller: 'ProductDetailsController'
+            controller: 'ProductDetailsController', label: 'Product Details'
         }).when(BASE_URL + '/objects', {
             templateUrl: BASE_URL + '/partials/objects/objects.html',
             controller: 'ObjectsController'
