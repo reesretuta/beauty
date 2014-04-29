@@ -38,12 +38,17 @@ angular.module('app.controllers.cart')
             } else if ($scope.searchProductsByName[$scope.orderByIdItem]) {
                 product = $scope.searchProductsByName[$scope.orderByIdItem];
             }
-            var p = angular.copy(product);
-            p.quantity = $scope.orderByIdQty;
-            $log.error("adding product", p);
-            Cart.addToCart(p);
-            // clear search
-            $scope.orderByIdItem = '';
+
+            if (product != null) {
+                var p = angular.copy(product);
+                p.quantity = $scope.orderByIdQty;
+                $log.error("adding product", p);
+                Cart.addToCart(p);
+                // clear search
+                $scope.orderByIdItem = '';
+            } else {
+                $log.error("product not found");
+            }
         }
 
         /* config object */
@@ -67,22 +72,22 @@ angular.module('app.controllers.cart')
                             angular.forEach(products, function(product) {
                                 if (product.itemnumber) {
                                     $scope.searchProducts[product.itemnumber] = product;
-                                    $scope.searchProductsByName[product.productname] = product;
+                                    $scope.searchProductsByName[product.itemnumber + ' - ' + product.productname] = product;
 
                                     projectHeaders.push({
                                         //label: $compile('<a class="ui-menu-add" ng-click="addToCart(searchProducts[\''+product.itemnumber+'\'])">' + product.productname + '</a>')($scope),
-                                        label: '(Item #' + product.itemnumber + ') ' + product.productname,
-                                        value: product.productname
+                                        label: product.itemnumber + ' - ' + product.productname,
+                                        value: product.itemnumber + ' - ' + product.productname
                                     });
                                 } else if (product.groupid) {
                                     angular.forEach(product.productskus.productdetail, function(p) {
                                         $scope.searchProducts[p.itemnumber] = p;
-                                        $scope.searchProductsByName[product.productname + ' - ' + p.productname] = product;
+                                        $scope.searchProductsByName[p.itemnumber + ' - ' + product.productname + ' - ' + p.productname] = product;
 
                                         projectHeaders.push({
                                             //label: $compile('<a class="ui-menu-add" ng-click="addToCart(searchProducts[\''+product.itemnumber+'\'])">' + product.productname + '</a>')($scope),
-                                            label: '(Item #' + p.itemnumber + ') ' + product.productname + ' - ' + p.productname,
-                                            value: '(Item #' + p.itemnumber + ') ' + product.productname + ' - ' + p.productname
+                                            label: p.itemnumber + ' - ' + product.productname + ' - ' + p.productname,
+                                            value: p.itemnumber + ' - ' + product.productname + ' - ' + p.productname
                                         });
                                     });
                                 }
