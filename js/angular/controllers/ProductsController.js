@@ -66,6 +66,7 @@ $scope.breadcrumbs = breadcrumbs;
                     //$log.debug("initializing objects");
                 }
 
+
                 $scope.loading = false;
             }, function (data) {
                 //$log.debug('refreshProducts(): groupName=' + groupName + ' failure', data);
