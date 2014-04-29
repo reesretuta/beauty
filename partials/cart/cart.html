@@ -34,10 +34,28 @@
             </div>
           </td>
           <td class="text-right">
-            <p class="cart-item-price">
+              
+              <span ng-repeat="detailprice in product.pricing.detailprice">
+                <span ng-if="detailprice.pricetype=='sale'" class="item-price-sale">
+                  ${{detailprice.price}}
+                </span>
+                <span ng-if="detailprice.pricetype=='retail'" class="item-price-strike">
+                  ${{detailprice.price}}
+                </span>
+              </span>
+              <span ng-if="product.pricing.detailprice.price">
+                <span class="item-price">
+                  ${{product.pricing.detailprice.price}}
+                </span>
+              </span>
+              
+              
+              
+              
+<!--            <p class="cart-item-price">
               <b>${{product.pricing.detailprice.price}}</b>
-              <!-- <em>50% off</em> TODO: Add logic for sale prices -->
-            </p>
+               <em>50% off</em> TODO: Add logic for sale prices 
+            </p>-->
           </td>
           <td align=right>
             <!-- TODO: Compute each product Qty. -->

@@ -50,6 +50,14 @@ angular.module('app.services', ['ngResource'])
 
         return searchService;
     })
+    .factory('Section', function($rootScope, $log) {
+        return {
+            setSection : function(section) {
+                $log.debug("setting section to", section);
+                $rootScope.section = section;
+            }
+        };
+    })
     .factory('Cart', function ($rootScope, $log) {
         var cartService = {};
 
@@ -157,6 +165,9 @@ angular.module('app.services', ['ngResource'])
                     angular.forEach(products.productdetail, function(product) {
                         $log.debug("itemnumber", product.itemnumber, "productId", query.productId);
                         if (product.itemnumber == query.productId) {
+                            success(product, status, headers, config);
+                            return product;
+                        } else if (product.groupid == query.productId) {
                             success(product, status, headers, config);
                             return product;
                         }

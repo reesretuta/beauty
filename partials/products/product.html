@@ -35,9 +35,14 @@
           </tabset>
 
           <div class="store-item-detail-stats">
-            <label ng-if="product.productflag.type == 'product'" class="store-item-size">{{product.sellingquantity}}</label>
+            <label ng-if="product.productflag.type != 'kit'" class="store-item-size">{{product.sellingquantity}}</label>
             <hr>
-            <p class="store-item-sku">Item #{{product.itemnumber}}</p>
+            <span ng-if="product.groupid">
+                <span ng-repeat="productdetail in product.productskus.productdetail"><a ng-click="alert(productdetail.itemnumber)"><img ng-src="{{productdetail.images.path}}" ></a></span>
+                <div id='{{productdetail.itemnumber}}' ng-repeat="productdetail in product.productskus.productdetail" class='itemsleep' ng-class="{itemactive: $first}">Item #{{productdetail.itemnumber}}</div>
+                <div ng-repeat="productdetail in product.productskus.productdetail" class='productsleep' ng-class="{priceactive: $first}">${{productdetail.pricing.detailprice.price}}</div>
+            </span>
+            <p class="store-item-sku" ng-if="product.productflag.type != 'group'">Item #{{product.itemnumber}}</p>
             <p class="store-item-price">
 
               <span ng-repeat="detailprice in product.pricing.detailprice">

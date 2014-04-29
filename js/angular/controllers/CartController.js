@@ -5,6 +5,11 @@ angular.module('app.controllers.cart')
         //change page title
         $rootScope.page = "Order Details";
 
+        //this is a back-end page, use to hide category nav & stuff
+        $rootScope.section = "admin";
+
+        $scope.hidestuff = true;
+
         $scope.products = [];
 
         var loadCart = function() {
