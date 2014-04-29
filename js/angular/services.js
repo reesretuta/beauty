@@ -58,7 +58,7 @@ angular.module('app.services', ['ngResource'])
             }
         };
     })
-    .factory('Cart', function ($rootScope, $log) {
+    .factory('Cart', function ($rootScope, $log, growlNotifications) {
         var cartService = {};
 
         function getCart() {
@@ -107,6 +107,9 @@ angular.module('app.services', ['ngResource'])
             
             $log.debug("addToCart()", cart);
             cart.items.splice(getIndex,0,p);
+
+            // growlnotification when adding to cart
+            growlNotifications.add('<i class="fa fa-check"></i> Item Added!', 'success', 2000);
         };
         
         cartService.updateCart = function(p) {

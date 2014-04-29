@@ -46,6 +46,9 @@ h2 {
 
 .alerts {
   position: absolute;
+  top:15px;
+  right: 15px;
+  z-index: 999;
 }
 #shop_header {
   min-height: 95px;
