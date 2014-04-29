@@ -2,6 +2,7 @@ angular.module('app.controllers.products')
     .controller('ProductDetailsController', function ($sce, HashKeyCopier, Products, $scope, $rootScope, $routeParams, $location, $timeout, $window, $log, $modal, $document, Cart) {
 
         $rootScope.page = "Product Details";
+        $rootScope.section = "store";
 
         $scope.errorMessage = '';
         $scope.loading = true;
