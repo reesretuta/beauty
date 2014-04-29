@@ -6,9 +6,6 @@ angular.module('app.controllers.checkout')
         $rootScope.page = "Checkout";
         $rootScope.section = "checkout";
 
-        $scope.startWizard = function() {
-            WizardHandler.wizard().goTo(1);
-        }
 
         $scope.logStep = function() {
             console.log("Step continued");
@@ -17,7 +14,6 @@ angular.module('app.controllers.checkout')
         $scope.finished = function() {
             alert("Wizard finished :)");
         }
-
 
         // $scope.products = [];
 
