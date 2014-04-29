@@ -6,21 +6,18 @@ angular.module('app.controllers.checkout')
         $rootScope.page = "Checkout";
         $rootScope.section = "checkout";
 
-//        $scope.start = function() {
-//            WizardHandler.wizard().next();
-//        };
-//        
-//        $scope.finished = function() {
-//            alert("Wizard finished :)");
-//        }
-//
-//        $scope.logStep = function() {
-//            console.log("Step continued");
-//        }
-//
-//        $scope.goBack = function() {
-//            WizardHandler.wizard().goTo(0);
-//        }
+        $scope.startWizard = function() {
+            WizardHandler.wizard().goTo(1);
+        }
+
+        $scope.logStep = function() {
+            console.log("Step continued");
+        }
+        
+        $scope.finished = function() {
+            alert("Wizard finished :)");
+        }
+
 
         // $scope.products = [];
 

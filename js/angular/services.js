@@ -256,6 +256,54 @@ angular.module('app.services', ['ngResource'])
     .factory('Categories', function ($resource, $http, $log, API_URL) {
         var categoriesService = {};
 
+        function findCategory(categories, id, recurse, parent) {
+            for (var i=0; i < categories.length; i++) {
+                var category = categories[i];
+                $log.debug("id", category.id, "categoryId", id);
+                if (parent) {
+                    category.parentcategory = parent;
+                }
+                if (category.id == id) {
+                    $log.debug("found category, returning!", category);
+                    return category;
+                } else if (recurse && Array.isArray(category.childcategory)) {
+                    var c = findCategory(category.childcategory, id, true, category);
+                    if (c != null) {
+                        return c;
+                    }
+                }
+            }
+            return null;
+        }
+
+        categoriesService.get = function(query, success, failure) {
+            return $http.get('/api/categories.xml').success(function(data, status, headers, config) {
+                $log.debug("searching for category");
+                //$log.debug(response.data);
+                $log.debug("query", query);
+
+                var categories = $.xml2json(data, {"normalize": true});
+                categories = categories.categories;
+                $log.debug("categories", categories.categorydetail);
+                if (query.categoryId != null) {
+                    var c = findCategory(categories.categorydetail, query.categoryId, query.recurse);
+
+                    if (c != null) {
+                        success(c, status, headers);
+                        return c;
+                    }
+
+                    // if we got here, we didn't find the category, 404
+                    failure({}, 404, headers, config);
+                } else {
+                    failure({}, 404, headers, config);
+                }
+            }).error(function(data, status, headers, config) {
+                failure(data, status, headers, config);
+                $log.error(data, status, headers, config);
+            });
+        }
+
         categoriesService.query = function(query, success, failure) {
             return $http.get('/api/categories.xml').then(function(response) {
                 //$log.debug(response.data);
