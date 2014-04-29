@@ -96,7 +96,7 @@
 
     <div class="container">
 
-    <div ng-if="!section = 'checkout'" class="row store-heading">
+    <div ng-hide="section =='checkout'" class="row store-heading">
         <div  ng-class="{'col-sm-offset-3': section == 'checkout'}" class="col-xs-12 col-sm-6 col-md-8 col-lg-8">
           <h1>{{page}}</h1>
         </div>
