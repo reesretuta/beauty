@@ -43,6 +43,10 @@ h2 {
   border-bottom: 1px solid #eee;
   padding-bottom: 10px;
 }
+
+.alerts {
+  position: absolute;
+}
 #shop_header {
   min-height: 95px;
   background: #AA73B1;
