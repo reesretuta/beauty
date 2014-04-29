@@ -11,6 +11,45 @@ angular.module('app.services', ['ngResource'])
             }
         };
     })
+    .factory('Search', function ($timeout, $location, $rootScope, $log) {
+        var searchService = {};
+
+        var SEARCH_DELAY = 1000;
+
+        $rootScope.search = {};
+        $rootScope.search.query = '';
+
+        $rootScope.$watch('search.queryDelayed', function(newVal, oldVal) {
+            $log.debug("new", newVal, "old", oldVal);
+            if ($rootScope.lastSearchDelayTimeout != null) {
+                $timeout.cancel($rootScope.lastSearchDelayTimeout);
+            }
+
+            // TODO: start a search spinner
+
+            // update the root scope search
+            $rootScope.lastSearchDelayTimeout = $timeout(function () {
+                $log.debug("delay passed, searching", $rootScope.search.queryDelayed);
+                $rootScope.search.query = $rootScope.search.queryDelayed;
+                // add the search to the url if we are in products
+                if ($location.path() == "/products") {
+                    $location.search("search", $rootScope.search.query);
+                }
+                // TODO: stop the search spinner
+            }, SEARCH_DELAY);
+        });
+
+        searchService.search = function(query) {
+            $rootScope.search.query = query;
+            $rootScope.search.queryDelayed = query;
+        };
+
+        searchService.getQuery = function() {
+            return $rootScope.search.query;
+        };
+
+        return searchService;
+    })
     .factory('Section', function($rootScope, $log) {
         return {
             setSection : function(section) {
@@ -18,9 +57,6 @@ angular.module('app.services', ['ngResource'])
                 $rootScope.section = section;
             }
         };
-    })
-    .factory('Objects', function ($resource, API_URL) {
-        return $resource(API_URL + '/objects/:objectId');
     })
     .factory('Cart', function ($rootScope, $log) {
         var cartService = {};

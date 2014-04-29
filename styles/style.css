@@ -157,7 +157,8 @@ h2 {
   min-height: 350px;
 }
 .store-item-wrapper img,
-.image-zoom img {
+.image-zoom img,
+.cart-item-image {
   -moz-transform: scale(.9);
   -webkit-transform: scale(.9);
   -o-transform: scale(.9);
@@ -171,7 +172,8 @@ h2 {
   transition: transform 200ms ease;
 }
 .store-item-wrapper img:hover,
-.image-zoom img:hover {
+.image-zoom img:hover,
+.cart-item-image:hover {
   -moz-transform: scale(.95);
   -webkit-transform: scale(.95);
   -o-transform: scale(.95);
@@ -551,8 +553,14 @@ a, .btn {
 
     /* -- TODO -- Integrate JS hide/show subnavs */
 }
-#shop_menu li.open ul {
+#shop_menu li.open > ul {
     max-height: 600px;
+}
+#shop_menu li.open > ul > li > ul {
+  max-height: 0;
+}
+#shop_menu li.open > ul > li.open > ul {
+  max-height: 600px;
 }
 
 #shop_menu .align-right {
@@ -591,7 +599,7 @@ a, .btn {
     text-decoration: underline;
 }
 
-#shop_menu > ul > li.open > a:nth-of-type(0) {
+#shop_menu > ul > li.open > a:nth-of-type(1) {
     border-bottom: 1px solid #AA73B1;
 }
 

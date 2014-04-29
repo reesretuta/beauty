@@ -1,9 +1,9 @@
 
         <!-- Product -->
-        <article class="ccol-xs-12 col-sm-6 col-md-4 col-lg-4 store-item" ng-repeat="product in products" ng-if="product.productflag.isgroupproduct !=1">
+        <article class="ccol-xs-12 col-sm-6 col-md-4 col-lg-4 store-item" ng-repeat="product in filteredProduct = (products | filter:searchFunction | orderBy:'productname')" ng-if="product.productflag.isgroupproduct !=1">
 
           <div class="store-item-wrapper" ng-if="product.itemnumber!=''">
-            <a ng-href="#/products/{{product.itemnumber}}"><img class="img-responsive" src="/{{product.images.path}}"></a>
+            <a ng-href="#/products/{{product.itemnumber}}"><img class="img-responsive" src="{{getImagePath(product.images.path)}}"></a>
             <div class="store-item-info">
               <p class="store-item-sku">Item #{{product.itemnumber}}</p>
               <p class="store-item-title"><a ng-href="#/products/{{product.itemnumber}}">{{product.productname}}</a></p>
@@ -48,7 +48,7 @@
           
           
           <div class="store-item-wrapper" ng-if="product.groupid">
-            <a ng-href="#/products/{{product.groupid}}"><img class="img-responsive" src="/{{product.images.path}}"></a>
+            <a ng-href="#/products/{{product.groupid}}"><img class="img-responsive" src="{{getImagePath(product.images.path)}}"></a>
             <div class="store-item-info">
               <p class="store-item-sku">&nbsp; <!-- leave empty for UI --></p>
               <p class="store-item-title"><a ng-href="#/products/{{product.groupid}}">{{product.productname}}</a></p>

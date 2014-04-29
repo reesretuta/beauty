@@ -4,12 +4,6 @@ angular.module('app.controllers.categories')
         $scope.categories = [];
 
         $rootScope.section = "store";
-
-        // add selection index
-        $scope.selectedIndex = -1;
-        $scope.itemClicked = function ($index) {
-            $scope.selectedIndex = $index;
-        };
         
         var loadCategories = function () {
             //var start = new Date().getTime();
