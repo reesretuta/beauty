@@ -1,6 +1,6 @@
 angular.module('app.controllers.products')
-    .controller('ProductsController', function ($sce, HashKeyCopier, Cart, Products, Search, $scope, $rootScope, $routeParams, $location, $timeout, $window, $log, $modal, $document, breadcrumbs) {
-$scope.breadcrumbs = breadcrumbs;
+    .controller('ProductsController', function ($sce, HashKeyCopier, Cart, Products, Search, $scope, $rootScope, $routeParams, $location, $timeout, $window, $log, $modal, $document) {
+
 
         $rootScope.page = "Products";
         $rootScope.section = "store";
