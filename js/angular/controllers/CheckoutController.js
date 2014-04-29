@@ -1,10 +1,14 @@
 angular.module('app.controllers.checkout')
-    .controller('CheckoutController', function ($scope, $document, $rootScope, $routeParams, $log, Cart, Products, HashKeyCopier) {
+    .controller('CheckoutController', function ($scope, $document, $rootScope, $routeParams, $log, Cart, Products, HashKeyCopier, WizardHandler) {
         $log.debug("CheckoutController");
 
         //change page title
         $rootScope.page = "Checkout";
         $rootScope.section = "checkout";
+
+        $scope.startWizard = function() {
+            WizardHandler.wizard().goTo(1);
+        };
 
         // $scope.products = [];
 
