@@ -93,10 +93,6 @@ angular.module('app.controllers.products')
 
                 $scope.breadcrumbs.options = {};
                 $scope.breadcrumbs.options[$scope.breadcrumbs.breadcrumbs[$scope.breadcrumbs.breadcrumbs.length-1].label] = path;
-                $scope.breadcrumbs.breadcrumbs.push({
-                    label: 'BLAH',
-                    path: '/blah'
-                });
 
                 $scope.loading = false;
             }, function (data) {

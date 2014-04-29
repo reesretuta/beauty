@@ -1,5 +1,7 @@
 angular.module('app.controllers.products')
     .controller('ProductDetailsController', function ($sce, HashKeyCopier, Products, $scope, $rootScope, $routeParams, $location, $timeout, $window, $log, $modal, $document, Cart, breadcrumbs) {
+        $scope.breadcrumbs = breadcrumbs;
+        $scope.breadcrumbs.options = { 'Product Details': $routeParams.productId  }; 
 
         $scope.productId = $routeParams.productId;
 
