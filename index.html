@@ -96,8 +96,8 @@
 
     <div class="container">
 
-    <div class="row store-heading">
-        <div  ng-class="{'col-sm-offset-3': section == 'admin'}" class="col-xs-12 col-sm-6 col-md-8 col-lg-8">
+    <div ng-if="!section = 'checkout'" class="row store-heading">
+        <div  ng-class="{'col-sm-offset-3': section == 'checkout'}" class="col-xs-12 col-sm-6 col-md-8 col-lg-8">
           <h1>{{page}}</h1>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
@@ -105,7 +105,7 @@
         </div>
       </div><!-- /row -->
 
-      <div class="row store-heading-nav" ng-hide="section == 'admin'">
+      <div class="row store-heading-nav" ng-hide="section == 'admin' || section =='checkout'">
         <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8">
 
         <!-- BreadCrumbs -->
@@ -132,7 +132,7 @@
     <div ng-class="{'': !isActive, 'active': isActive}" ng-init="isActive = false" class="row row-offcanvas row-offcanvas-left">
 
     <!-- Sidebar Navigation -->
-    <div class="col-xs-8 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation" ng-hide="section == 'admin'">
+    <div class="col-xs-8 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation" ng-hide="section == 'admin' || section =='checkout'">
       <aside id="shop_menu">
          <!-- TODO: add controller for nav show/hide (responsive out-of-scope v.1) -->
         <a class="pull-left visible-xs store-nav-toggle" ng-click="isActive = !isActive">
@@ -175,7 +175,8 @@
     <!-- /Sidebar Navigation -->
 
     <!-- Store Content -->
-        <section ng-class="{'col-sm-offset-3': section == 'admin'}" class="col-xs-12 col-sm-9 store-content">
+        <section class="store-content"
+          ng-class="{'col-sm-12': section == 'admin', 'col-xs-12 col-sm-9': section == 'store'}">
 
             <div ng-view class="ngview"></div>
 

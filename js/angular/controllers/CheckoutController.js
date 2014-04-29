@@ -1,18 +1,18 @@
-angular.module('app.controllers.cart')
+angular.module('app.controllers.checkout')
     .controller('CheckoutController', function ($scope, $document, $rootScope, $routeParams, $log, Cart, Products, HashKeyCopier) {
         $log.debug("CheckoutController");
 
         //change page title
         $rootScope.page = "Checkout";
-        $rootScope.section = "admin";
+        $rootScope.section = "checkout";
 
-        $scope.products = [];
+        // $scope.products = [];
 
-        var loadCart = function() {
-            $scope.products = Cart.getItems();
-            $log.debug("loaded cart products", $scope.products);
-        }
-        loadCart();
+        // var loadCart = function() {
+        //     $scope.products = Cart.getItems();
+        //     $log.debug("loaded cart products", $scope.products);
+        // }
+        // loadCart();
 
 //        var loadProducts = function () {
 //            //var start = new Date().getTime();
