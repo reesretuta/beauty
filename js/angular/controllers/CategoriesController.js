@@ -3,6 +3,8 @@ angular.module('app.controllers.categories')
         $log.debug("CategoriesController");
         $scope.categories = [];
 
+        $rootScope.section = "store";
+
         // add selection index
         $scope.selectedIndex = -1;
         $scope.itemClicked = function ($index) {

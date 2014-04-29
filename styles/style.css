@@ -98,6 +98,9 @@ h2 {
 .navbar-toggle .icon-bar {
   background-color: #fff;
 }
+.footer-logos {
+  white-space: nowrap;
+}
 .footer-logos a {
   display: inline-block;
   height: 53px;
@@ -334,7 +337,7 @@ border-color: #865A8B transparent transparent transparent;
   position: absolute;
   float: right;
   top: 0;
-  right: -44px;
+  right: -58px;
   width: 44px;
   text-align: center;
   font-size: 26px;
@@ -343,13 +346,11 @@ border-color: #865A8B transparent transparent transparent;
   background: #AA73B1;
   color: #fff !important;
   z-index:999;
+  cursor: pointer;
 }
-.active .store-nav-toggle {
-  box-shadow: 0 0 2px 0 #AA73B1, 0 0 5px rgba(0,0,0,.2);
-}
+
 .row-offcanvas-left.active {
-  border-left: 1px solid #AA73B1;
-  box-shadow: inset 1px 0 0 0 #AA73B1, inset 0 0 15px rgba(0,0,0,.2);
+  border-left: 2px solid #AA73B1;
 }
 
 .nav-tabs>li>a {
@@ -674,6 +675,10 @@ a, .btn {
   }
   .store-item-wrapper {
     max-width: inherit;
+    min-height: inherit;
+    padding-top: 15px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
   }
   .qty-input {
     max-width: inherit;

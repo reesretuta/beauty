@@ -2,6 +2,8 @@ angular.module('app.controllers.home')
     .controller('HomeController', function ($scope, $document, $rootScope, $routeParams, $log, Categories) {
         $rootScope.page = 'Home';
 
+        $rootScope.section = "store";
+
         $scope.objects = [];
         var loadCategories = function () {
             //var start = new Date().getTime();

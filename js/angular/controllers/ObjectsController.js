@@ -2,6 +2,7 @@ angular.module('app.controllers.objects')
     .controller('ObjectsController', function ($sce, HashKeyCopier, Objects, $scope, $rootScope, $routeParams, $location, $timeout, $window, $log, $modal, $document) {
 
         $rootScope.page = "Objects";
+        $rootScope.section = "store";
 
         $scope.errorMessage = '';
         $scope.loading = true;

@@ -4,6 +4,7 @@ angular.module('app.controllers.cart')
 
         //change page title
         $rootScope.page = "Checkout";
+        $rootScope.section = "admin";
 
         $scope.products = [];
 
