@@ -22,6 +22,22 @@ angular.module('app.controllers.products')
             Cart.addToCart(p);
         }
 
+//        $scope.chooseColor = function(product) {
+//            $log.debug("choosing color", product);
+//            var qty = $scope.quantities[product.itemnumber];
+//            if (qty == null) {
+//                qty = 1;
+//            }
+//            $log.debug("adding product", product, qty);
+//            var p = angular.copy(product);
+//            p.quantity = qty;
+//            Cart.addToCart(p);
+//        }
+
+        $scope.alert = function(something) {
+            alert(something)
+        }
+
         /*=== LOAD DATA ====*/
 
         var loadProduct = function () {

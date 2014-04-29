@@ -6,6 +6,22 @@
  */
 
 
+/* !!!!NOTE: @Dain to place these where he'd like. On product detail page for changing color swatches  */
+
+
+.itemsleep {
+    color: blue;
+}
+.pricesleep {
+    color: black;
+}
+.itemactive {
+    color: red;
+}
+.priceactive {
+    color: red;
+}
+
 
 h1, .h1, h2, h3, h4, h5, h6,
 .btn, .label, .badge, .store-checkout .control-label {

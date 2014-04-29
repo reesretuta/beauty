@@ -3,7 +3,7 @@
     <productdetail>
         <id>352</id>
         <itemnumber>13027</itemnumber>
-        <groupid></groupid>
+        
         <productname>Royal Jelly Body Complex</productname>
         <sellingquantity>6.7 fl. oz.</sellingquantity>
         <marketingdescription>
@@ -90,7 +90,7 @@
     <productdetail>
         <id>7528</id>
         <itemnumber>15522</itemnumber>
-        <groupid></groupid>
+        
         <productname>Royal Jelly Milk Balm Advanced</productname>
         <sellingquantity>1 fl. oz.</sellingquantity>
         <marketingdescription>
@@ -177,7 +177,7 @@
     <productdetail>
         <id>17553</id>
         <itemnumber>25204</itemnumber>
-        <groupid></groupid>
+        
         <productname>Hydrating Cleanser</productname>
         <sellingquantity>4.2 fl.oz.</sellingquantity>
         <marketingdescription>
@@ -253,7 +253,7 @@
     <productdetail>
         <id>17556</id>
         <itemnumber>25207</itemnumber>
-        <groupid></groupid>
+        
         <productname>Hydrating Toner</productname>
         <sellingquantity>6.7 fl. oz.</sellingquantity>
         <marketingdescription>
@@ -327,7 +327,7 @@
     <productdetail>
         <id>17554</id>
         <itemnumber>25205</itemnumber>
-        <groupid></groupid>
+        
         <productname>Hydrating Day Moisture Broad Spectrum SPF 15</productname>
         <sellingquantity>1.7 fl.oz.</sellingquantity>
         <marketingdescription>
@@ -357,7 +357,7 @@
     <productdetail>
         <id>17555</id>
         <itemnumber>25206</itemnumber>
-        <groupid></groupid>
+        
         <productname>Hydrating Night Moisture</productname>
         <sellingquantity>1.7 fl.oz.</sellingquantity>
         <images>
@@ -515,17 +515,101 @@
         </productflag>
     </productdetail>
     <productdetail>
-        <id></id>
         <itemnumber></itemnumber>
         <groupid>46</groupid>
         <productskus>
-            <itemnumber>16985</itemnumber>
-            <itemnumber>16984</itemnumber>
-            <itemnumber>16983</itemnumber>
-            <itemnumber>16989</itemnumber>
-            <itemnumber>16981</itemnumber>
-            <itemnumber>16986</itemnumber>
-            <itemnumber>16987</itemnumber>
+            <productdetail>
+                <itemnumber>16986</itemnumber>
+                <productname>Rouge</productname>
+                <images>
+                    <path><![CDATA[img/16986_1.jpg]]></path>
+                </images>
+                <pricing>
+                    <detailprice>
+                        <pricetype>retail</pricetype>
+                        <price>14.00</price>
+                    </detailprice>
+                </pricing>
+            </productdetail>
+            <productdetail>
+                <itemnumber>16985</itemnumber>
+                <productname>French Kiss</productname>
+                <images>
+                    <path><![CDATA[img/16985_1.jpg]]></path>
+                </images>
+                <pricing>
+                    <detailprice>
+                        <pricetype>retail</pricetype>
+                        <price>14.00</price>
+                    </detailprice>
+                </pricing>
+            </productdetail>
+            <productdetail>
+                <itemnumber>16984</itemnumber>
+                <productname>Mocha</productname>
+                <images>
+                    <path><![CDATA[img/16984_1.jpg]]></path>
+                </images>
+                <pricing>
+                    <detailprice>
+                        <pricetype>retail</pricetype>
+                        <price>14.00</price>
+                    </detailprice>
+                </pricing>
+            </productdetail>
+            <productdetail>
+                <itemnumber>16983</itemnumber>
+                <productname>Pinkberry</productname>
+                <sellingquantity>.06 oz.</sellingquantity>
+                <images>
+                    <path><![CDATA[img/16983_1.jpg]]></path>
+                </images>
+                <pricing>
+                    <detailprice>
+                        <pricetype>retail</pricetype>
+                        <price>7.00</price>
+                    </detailprice>
+                </pricing>
+            </productdetail>
+            <productdetail>
+                <itemnumber>16989</itemnumber>
+                <productname>Kiss Me Coral</productname>
+                <images>
+                    <path><![CDATA[img/16983_1.jpg]]></path>
+                </images>
+                <pricing>
+                    <detailprice>
+                        <pricetype>retail</pricetype>
+                        <price>14.00</price>
+                    </detailprice>
+                </pricing>
+            </productdetail>
+            <productdetail>
+                <itemnumber>16981</itemnumber>
+                <productname>Yellow Lilies</productname>
+                <images>
+                    <path><![CDATA[img/16981_1.jpg]]></path>
+                </images>
+                <pricing>
+                    <detailprice>
+                        <pricetype>retail</pricetype>
+                        <price>7.00</price>
+                    </detailprice>
+                </pricing>
+            </productdetail>
+            <productdetail>
+                <itemnumber>16987</itemnumber>
+                <productname>Brandywine</productname>
+                <images>
+                    <path><![CDATA[img/16987_1.jpg]]></path>
+                </images>
+                <pricing>
+                    <detailprice>
+                        <pricetype>retail</pricetype>
+                        <price>14.00</price>
+                    </detailprice>
+                </pricing>
+            </productdetail>
         </productskus>
         <productname>Always Color Stay-On Lipstick</productname>
         <sellingquantity>.06 oz.</sellingquantity>
@@ -587,173 +671,5 @@
             <type>group</type>
             <isgroupproduct>0</isgroupproduct>
         </productflag>
-    </productdetail>
-    <productdetail>
-        <id>15114</id>
-        <itemnumber>16985</itemnumber>
-        <productname>Always Color Stay-On Lipstick - French Kiss</productname>
-        <sellingquantity>.06 oz.</sellingquantity>
-        <images>
-            <path><![CDATA[img/16985_1.jpg]]></path>
-        </images>
-        <pricing>
-            <detailprice>
-                <pricetype>retail</pricetype>
-                <price>14.00</price>
-            </detailprice>
-        </pricing>
-        <categories>
-            <category>
-                <id></id>
-            </category>
-        </categories>
-        <productflag>
-            <type>product</type>
-            <isgroupproduct>1</isgroupproduct>
-        </productflag>
-    </productdetail>
-    <productdetail>
-        <id></id>
-        <itemnumber>16984</itemnumber>
-        <productname>Always Color Stay-On Lipstick - Mocha</productname>
-        <sellingquantity>.06 oz.</sellingquantity>
-        <images>
-            <path><![CDATA[img/16984_1.jpg]]></path>
-        </images>
-        <pricing>
-            <detailprice>
-                <pricetype>retail</pricetype>
-                <price>14.00</price>
-            </detailprice>
-        </pricing>
-        <categories>
-            <category>
-                <id></id>
-            </category>
-        </categories>
-        <productflag>
-            <type>product</type>
-            <isgroupproduct>1</isgroupproduct>
-        </productflag>
-    </productdetail>
-    <productdetail>
-        <id></id>
-        <itemnumber>16983</itemnumber>
-        <productname>Always Color Stay-On Lipstick - Pinkberry</productname>
-        <sellingquantity>.06 oz.</sellingquantity>
-        <images>
-            <path><![CDATA[img/16983_1.jpg]]></path>
-        </images>
-        <pricing>
-            <detailprice>
-                <pricetype>retail</pricetype>
-                <price>7.00</price>
-            </detailprice>
-        </pricing>
-        <categories>
-            <category>
-                <id></id>
-            </category>
-        </categories>
-        <productflag>
-            <type>product</type>
-            <isgroupproduct>1</isgroupproduct>
-        </productflag>
-    </productdetail>
-    <productdetail>
-        <id></id>
-        <itemnumber>16989</itemnumber>
-        <productname>Always Color Stay-On Lipstick - Kiss Me Coral</productname>
-        <sellingquantity>.06 oz.</sellingquantity>
-        <images>
-            <path><![CDATA[img/16983_1.jpg]]></path>
-        </images>
-        <pricing>
-            <detailprice>
-                <pricetype>retail</pricetype>
-                <price>14.00</price>
-            </detailprice>
-        </pricing>
-        <categories>
-            <category>
-                <id></id>
-            </category>
-        </categories>
-        <productflag>
-            <type>product</type>
-            <isgroupproduct>1</isgroupproduct>
-        </productflag>
-    </productdetail>
-    <productdetail>
-        <id></id>
-        <itemnumber>16981</itemnumber>
-        <productname>Always Color Stay-On Lipstick - Yellow Lilies</productname>
-        <sellingquantity>.06 oz.</sellingquantity>
-        <images>
-            <path><![CDATA[img/16981_1.jpg]]></path>
-        </images>
-        <pricing>
-            <detailprice>
-                <pricetype>retail</pricetype>
-                <price>7.00</price>
-            </detailprice>
-        </pricing>
-        <categories>
-            <category>
-                <id></id>
-            </category>
-        </categories>
-        <productflag>
-            <type>product</type>
-            <isgroupproduct>1</isgroupproduct>
-        </productflag>
-    </productdetail>
-    <productdetail>
-        <id></id>
-        <itemnumber>16986</itemnumber>
-        <productname>Always Color Stay-On Lipstick - Rouge</productname>
-        <sellingquantity>.06 oz.</sellingquantity>
-        <images>
-            <path><![CDATA[img/16986_1.jpg]]></path>
-        </images>
-        <pricing>
-            <detailprice>
-                <pricetype>retail</pricetype>
-                <price>14.00</price>
-            </detailprice>
-        </pricing>
-        <categories>
-            <category>
-                <id></id>
-            </category>
-        </categories>
-        <productflag>
-            <type>product</type>
-            <isgroupproduct>1</isgroupproduct>
-        </productflag>
-    </productdetail>
-    <productdetail>
-        <id></id>
-        <itemnumber>16987</itemnumber>
-        <productname>Always Color Stay-On Lipstick - Brandywine</productname>
-        <sellingquantity>.06 oz.</sellingquantity>
-        <images>
-            <path><![CDATA[img/16987_1.jpg]]></path>
-        </images>
-        <pricing>
-            <detailprice>
-                <pricetype>retail</pricetype>
-                <price>14.00</price>
-            </detailprice>
-        </pricing>
-        <categories>
-            <category>
-                <id></id>
-            </category>
-        </categories>
-        <productflag>
-            <type>product</type>
-            <isgroupproduct>1</isgroupproduct>
-        </productflag>
-    </productdetail>
+    </productdetail>    
 </products>
