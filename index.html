@@ -13,6 +13,7 @@
     <link rel="stylesheet" type="text/css" href="/lib/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/lib/bootstrap/dist/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/lib/animate.css/animate.css">
     <link rel="stylesheet" href="/lib/ladda-bootstrap/dist/ladda-themeless.min.css">
     <link rel="stylesheet" href="/styles/offcanvas.css">
 
@@ -34,10 +35,23 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <style>
+      .ng-enter{
+        -webkit-animation: fadeInDown 1s;
+        -moz-animation: fadeInDown 1s;
+        -ms-animation: fadeInDown 1s;
+        animation: fadeInDown 1s;
+      }
+      .ng-leave{
+        -webkit-animation: fadeOut 1s;
+        -moz-animation: fadeOut 1s;
+        -ms-animation: fadeOut 1s;
+        animation: fadeOut 1s;
+      }
+    </style>
   </head>
 
   <body ng-controller="MainController">
-    <div growl-notifications class="alerts"></div>
     <header id="shop_header" class="navbar" role="navigation">
       <div class="container">
         <div class="row">
@@ -98,7 +112,9 @@
 
     <div class="container">
 
-    <div ng-hide="section =='checkout'" class="row store-heading">
+      <div growl-notifications class="alerts"></div>
+
+      <div ng-hide="section =='checkout'" class="row store-heading">
         <div  ng-class="{'col-sm-offset-3': section == 'checkout'}" class="col-xs-12 col-sm-6 col-md-8 col-lg-8">
           <h1>{{page}}</h1>
         </div>
@@ -222,6 +238,7 @@
     <script src="/lib/angular-bindonce/bindonce.js"></script>
     <script src="/lib/momentjs/moment.js"></script>
     <script src="/lib/angular-route/angular-route.min.js"></script>
+    <script src="/lib/angular-animate/angular-animate.js"></script>
     <script src="/lib/angular-sanitize/angular-sanitize.min.js"></script>
     <script src="/lib/angular-resource/angular-resource.min.js"></script>
     <script src="/lib/angular-cookies/angular-cookies.min.js"></script>
