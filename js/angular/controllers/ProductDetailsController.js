@@ -52,7 +52,9 @@ angular.module('app.controllers.products')
                     $scope.product = product;
                     //$log.debug("initializing objects");
                 }
-                $scope.showhide(product.productskus.productdetail[0].itemnumber);
+                if (product.groupid) {
+                    $scope.showhide(product.productskus.productdetail[0].itemnumber);
+                }
                 $rootScope.page = product.productname;
 
                 $scope.loading = false;
