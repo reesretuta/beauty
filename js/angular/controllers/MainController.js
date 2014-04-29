@@ -1,7 +1,8 @@
 angular.module('app.controllers.main')
     .controller('MainController', function ($scope, $document, $timeout, $location, $rootScope, $routeParams, $log, Categories, Cart, Search, breadcrumbs) {
-$scope.breadcrumbs = breadcrumbs;
-$scope.breadcrumbs.options = { 'Product Details': $routeParams.productId + ' Details' }; $log.debug("rootscope", $rootScope)
+
+        $scope.breadcrumbs = breadcrumbs;
+
         // this page will watch for URL changes for back/forward that require it to change anything needed (like search)
         var cancelChangeListener;
         function createListener() { 
@@ -81,5 +82,27 @@ $scope.breadcrumbs.options = { 'Product Details': $routeParams.productId + ' Det
             //$log.debug("getImagePath(): getting image path from string");
             return '/' + paths;
         }
-        
+
+
+        $scope.buildPath = function(category, product, path) {
+            if (path == null && product != null) {
+                $log.debug("setting path to product name");
+                path = product;
+            }
+            var newPath = '';
+            if (category != null) {
+                newPath = category.name;
+                $log.debug("prepending category name", newPath);
+                if (path != null) {
+                    newPath += " / " + path;
+                    $log.debug("new path", newPath);
+                }
+                return $scope.buildPath(category.parentcategory, product, newPath);
+            } else {
+                $log.debug("returning current path", path);
+                newPath = path;
+            }
+            return newPath;
+        }
+
     });

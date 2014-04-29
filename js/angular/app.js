@@ -12,13 +12,16 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
         $rootScopeProvider.digestTtl(30);
         $routeProvider.when(BASE_URL + '/', {
             templateUrl: BASE_URL + '/partials/home.html',
-            controller: 'HomeController', label: 'Home'
+            controller: 'HomeController',
+            label: 'Home'
         }).when(BASE_URL + '/products', {
             templateUrl: BASE_URL + '/partials/products/products.html',
-            controller: 'ProductsController', label: 'Products'
+            controller: 'ProductsController',
+            label: 'Products'
         }).when(BASE_URL + '/products/:productId', {
             templateUrl: BASE_URL + '/partials/products/product.html',
-            controller: 'ProductDetailsController', label: 'Product Details'
+            controller: 'ProductDetailsController',
+            label: 'Product Details'
         }).when(BASE_URL + '/objects', {
             templateUrl: BASE_URL + '/partials/objects/objects.html',
             controller: 'ObjectsController'

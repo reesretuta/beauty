@@ -1,8 +1,9 @@
 angular.module('app.controllers.products')
-    .controller('ProductsController', function ($sce, HashKeyCopier, Cart, Products, Search, $scope, $rootScope, $routeParams, $location, $timeout, $window, $log, $modal, $document, breadcrumbs) {
-$scope.breadcrumbs = breadcrumbs;
+    .controller('ProductsController', function ($sce, HashKeyCopier, Cart, Categories, Products, Search, $scope, $rootScope, $routeParams, $q, $location, $timeout, $window, $log, $modal, $document, breadcrumbs) {
+        $log.debug("ProductsController");
 
-
+        $scope.breadcrumbs = breadcrumbs;
+        $scope.currentBreadcrumb = {};
 
         $rootScope.page = "Products";
         $rootScope.section = "store";
@@ -14,7 +15,8 @@ $scope.breadcrumbs = breadcrumbs;
         $log.debug("routeParams", $routeParams);
         $log.debug("routeParams.category", $routeParams.category);
         $log.debug("routeParams.search", $routeParams.search);
-        $scope.category = $routeParams.category;
+        $scope.categoryId = $routeParams.category;
+        $scope.category = {};
 
         Search.search($routeParams.search);
 
@@ -50,9 +52,29 @@ $scope.breadcrumbs = breadcrumbs;
 
         /*=== LOAD DATA ====*/
 
+        var categoriesLoadedPromise = $q.defer();
+        var loadCategory = function() {
+            Categories.get({"categoryId": $scope.categoryId, "recurse": true}, function(category, status, headers) {
+                $scope.category = category;
+
+                $log.debug("loaded category", category);
+
+                $rootScope.page = 'Products / ' + category.name;
+                categoriesLoadedPromise.resolve(category);
+            }, function(data, status, headers) {
+                $log.error("error loading category", data, status);
+                //Hide loader
+                $scope.loading = false;
+                // Set Error message
+                $scope.errorMessage = "An error occurred while retrieving category data. Please refresh the page to try again, or contact your system administrator if the error persists.";
+
+            })
+        }
+        loadCategory();
+
         var loadProducts = function () {
             //var start = new Date().getTime();
-            Products.query({"categoryId": $scope.category}, function(products, responseHeaders) {
+            Products.query({"categoryId": $scope.categoryId}, function(products, responseHeaders) {
                 $log.debug("got products", products);
                 // We do this here to eliminate the flickering.  When Products.query returns initially,
                 // it returns an empty array, which is then populated after the response is obtained from the server.
@@ -65,6 +87,16 @@ $scope.breadcrumbs = breadcrumbs;
                     $scope.products = products;
                     //$log.debug("initializing objects");
                 }
+
+                var path = $scope.buildPath($scope.category, null, null);
+                $log.debug("path", path, 'replacing current breadcrumb', $scope.breadcrumbs.breadcrumbs);
+
+                $scope.breadcrumbs.options = {};
+                $scope.breadcrumbs.options[$scope.breadcrumbs.breadcrumbs[$scope.breadcrumbs.breadcrumbs.length-1].label] = path;
+                $scope.breadcrumbs.breadcrumbs.push({
+                    label: 'BLAH',
+                    path: '/blah'
+                });
 
                 $scope.loading = false;
             }, function (data) {
@@ -80,8 +112,12 @@ $scope.breadcrumbs = breadcrumbs;
                 $scope.errorMessage = "An error occurred while retrieving object list. Please refresh the page to try again, or contact your system administrator if the error persists.";
             });
         }
-        // kick off the first refresh
-        loadProducts();
+
+        categoriesLoadedPromise.promise.then(function(category) {
+            $log.debug("loading products after category loaded");
+            // kick off the first refresh
+            loadProducts();
+        });
 
         function cleanup() {
         }

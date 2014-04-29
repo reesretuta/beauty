@@ -1,8 +1,10 @@
 angular.module('app.controllers.products')
     .controller('ProductDetailsController', function ($sce, HashKeyCopier, Products, $scope, $rootScope, $routeParams, $location, $timeout, $window, $log, $modal, $document, Cart, breadcrumbs) {
-$scope.breadcrumbs = breadcrumbs;
-$scope.breadcrumbs.options = { 'Product Details': $routeParams.productId  }; $log.debug("rootscope", $rootScope)
 
+        $scope.productId = $routeParams.productId;
+
+        $scope.breadcrumbs = breadcrumbs;
+        $scope.breadcrumbs.options = { 'Product Details': $scope.productId  };
 
         $rootScope.page = "Product Details";
         $rootScope.section = "store";
@@ -10,7 +12,6 @@ $scope.breadcrumbs.options = { 'Product Details': $routeParams.productId  }; $lo
         $scope.errorMessage = '';
         $scope.loading = true;
 
-        $scope.productId = $routeParams.productId;
         $scope.selectedProduct = {};
         
         $scope.quantities = {};
@@ -59,7 +60,8 @@ $scope.breadcrumbs.options = { 'Product Details': $routeParams.productId  }; $lo
                     $scope.showhide(product.productskus.productdetail[0].itemnumber);
                 }
                 $rootScope.page = product.productname;
-                
+                $scope.breadcrumbs.options = {};
+                $scope.breadcrumbs.options[$scope.productId] = product.productname;
 
                 $scope.loading = false;
             }, function (data) {
