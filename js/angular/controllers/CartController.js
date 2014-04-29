@@ -42,7 +42,7 @@ angular.module('app.controllers.cart')
             if (product != null) {
                 var p = angular.copy(product);
                 p.quantity = $scope.orderByIdQty;
-                $log.error("adding product", p);
+                $log.debug("adding product", p);
                 Cart.addToCart(p);
                 // clear search
                 $scope.orderByIdItem = '';
