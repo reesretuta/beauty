@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="/lib/animate.css/animate.css">
     <link rel="stylesheet" href="/lib/ladda-bootstrap/dist/ladda-themeless.min.css">
     <link rel="stylesheet" href="/styles/offcanvas.css">
+    <link rel="stylesheet" href="/styles/animate.css">
 
     <!-- Google Font News Cycle (Similar to News Gothic) -->
     <link href="http://fonts.googleapis.com/css?family=News+Cycle:400,700" rel="stylesheet">
@@ -130,11 +131,18 @@
           <ol class="breadcrumb">
             <li><a ng-href="#/">Home</a></li>
             <li><a href="#">Category</a></li>
-            <li><a href="#">SubCategory</a></li>
+            <li><a href="#">SubCategory</a></li>    
             <li><a href="#">SubSubCategory</a></li>
             <li>Product</li>
           </ol>
         <!-- /BreadCrumbs -->
+        
+         <ol class="ab-nav breadcrumb">
+    <li ng-repeat="breadcrumb in breadcrumbs.get() track by breadcrumb.path" ng-class="{ active: $last }">
+      <a ng-if="!$last" ng-href="#{{ breadcrumb.path }}" ng-bind="breadcrumb.label" class="margin-right-xs"></a>
+      <span ng-if="$last" ng-bind="breadcrumb.label"></span>
+    </li>
+  </ol>
 
         </div>
         <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
@@ -230,7 +238,7 @@
 
     </div><!-- /.container -->
 
-
+    <div growl-notifications class="alerts"></div>
 
     <!-- JavaScript -->
     <script src="/lib/jquery-resize/jquery.ba-resize.min.js"></script>
@@ -243,6 +251,7 @@
     <script src="/lib/angular-resource/angular-resource.min.js"></script>
     <script src="/lib/angular-cookies/angular-cookies.min.js"></script>
     <script src="/lib/angular-cache/dist/angular-cache.min.js"></script>
+    <script src="/lib/angular-animate/angular-animate.min.js"></script>
     <script src="/lib/angular-growl-notifications/dist/growl-notifications.js"></script>
 
     <script src="/lib/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -256,6 +265,7 @@
     <script src="/lib/ladda-bootstrap/dist/spin.min.js"></script>
     <script src="/lib/ladda-bootstrap/dist/ladda.min.js"></script>
     <script src="/lib/jquery-xml2json/src/xml2json.js"></script>
+    <script src="/lib/ng-breadcrumbs/dist/ng-breadcrumbs.min.js"></script>
 
     <script src="/js/util.js"></script>
 
