@@ -22,7 +22,7 @@ angular.module('app.controllers.categories')
                 // Set Error message
                 $scope.errorMessage = "An error occurred while retrieving category list.";
             });
-        }
+        };
         // kick off the first refresh
         loadCategories();
     });

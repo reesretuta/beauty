@@ -25,6 +25,9 @@ var app = angular.module('app', ['ngRoute', 'ngSanitize', 'ui.bootstrap', 'ui.ke
         }).when(BASE_URL + '/cart', {
             templateUrl: BASE_URL + '/partials/cart/cart.html',
             controller: 'CartController'
+        }).when(BASE_URL + '/checkout', {
+            templateUrl: BASE_URL + '/partials/checkout/checkout.html',
+            controller: 'CartController'
         }).otherwise({
             templateUrl: BASE_URL + '/partials/page-not-found.html',
             controller: 'NotFoundController'
