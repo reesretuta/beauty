@@ -97,8 +97,8 @@
 
     <div class="container">
 
-    <div class="row store-heading">
-        <div  ng-class="{'col-sm-offset-3': section == 'admin'}" class="col-xs-12 col-sm-6 col-md-8 col-lg-8">
+    <div ng-hide="section =='checkout'" class="row store-heading">
+        <div  ng-class="{'col-sm-offset-3': section == 'checkout'}" class="col-xs-12 col-sm-6 col-md-8 col-lg-8">
           <h1>{{page}}</h1>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
@@ -106,7 +106,7 @@
         </div>
       </div><!-- /row -->
 
-      <div class="row store-heading-nav" ng-hide="section == 'admin'">
+      <div class="row store-heading-nav" ng-hide="section == 'admin' || section =='checkout'">
         <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8">
 
         <!-- BreadCrumbs -->
@@ -133,30 +133,34 @@
     <div ng-class="{'': !isActive, 'active': isActive}" ng-init="isActive = false" class="row row-offcanvas row-offcanvas-left">
 
     <!-- Sidebar Navigation -->
-    <div class="col-xs-8 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation" ng-hide="section == 'admin'">
+    <div class="col-xs-8 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation" ng-hide="section == 'admin' || section =='checkout'">
       <aside id="shop_menu">
-         <!-- TODO: add controller for nav show/hide (responsive out-of-scope v.1) -->
+         
         <a class="pull-left visible-xs store-nav-toggle" ng-click="isActive = !isActive">
           <i class="fa fa-bars"></i>
         </a>
 
-        <ul ng-controller="CategoriesController">
+        <ul ng-controller="CategoriesController">  <!-- TODO: each item opens, then closes. Needs to be accordion-style -->
 
-          <li ng-repeat="category in categories" 
-              ng-class="{'open': $index == selectedIndex, 'has-sub': category.childcategory }" 
-              ng-click="itemClicked($index)">
+          <li ng-repeat="category in categories" ng-class="{'': !isOpen, 'open': isOpen}" ng-init="isOpen = false">
 
-              <a ng-href="#/products?category={{category.id}}"><span>{{category.name}}</span> <i ng-if="category.childcategory" class="fa fa-angle-down"></i></a>
+              <a ng-href="#/products?category={{category.id}}" ng-click="isOpen = !isOpen">
+                <span>{{category.name}}</span> <i ng-if="category.childcategory" class="fa fa-angle-down pull-right"></i>
+              </a>
 
               <ul ng-if="category.childcategory">
 
-                  <li ng-repeat="category in category.childcategory" ng-class="{'open': $index == selectedIndex }" ng-click="itemClicked($index)">
-                    <a ng-href="#/products?category={{category.id}}"><span>{{category.name}}</span></a>
+                  <li ng-repeat="category in category.childcategory" ng-class="{'': !isOpen2, 'open': isOpen2}" ng-init="isOpen2 = false">
+                    <a ng-href="#/products?category={{category.id}}" ng-click="isOpen2 = !isOpen2"> 
+                      <span>{{category.name}}</span> <i ng-if="category.childcategory" class="fa fa-angle-down pull-right"></i>
+                    </a>
 
                     <ul ng-if="category.childcategory">
 
-                        <li ng-repeat="category in category.childcategory" ng-class="{'open': $index == selectedIndex }" ng-click="itemClicked($index)">
-                            <a ng-href="#/products?category={{category.id}}"><span>{{category.name}}</span></a>
+                        <li ng-repeat="category in category.childcategory">
+                            <a ng-href="#/products?category={{category.id}}">
+                              <span>{{category.name}}</span>
+                            </a>
                         </li>
 
                     </ul>
@@ -176,7 +180,8 @@
     <!-- /Sidebar Navigation -->
 
     <!-- Store Content -->
-        <section ng-class="{'col-sm-offset-3': section == 'admin'}" class="col-xs-12 col-sm-9 store-content">
+        <section class="store-content"
+          ng-class="{'col-sm-12': section == 'admin', 'col-xs-12 col-sm-9': section == 'store'}">
 
             <div ng-view class="ngview"></div>
 
