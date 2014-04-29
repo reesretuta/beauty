@@ -1,5 +1,5 @@
 angular.module('app.controllers.products')
-    .controller('ProductsController', function ($sce, HashKeyCopier, Cart, Products, $scope, $rootScope, $routeParams, $location, $timeout, $window, $log, $modal, $document) {
+    .controller('ProductsController', function ($sce, HashKeyCopier, Cart, Products, Search, $scope, $rootScope, $routeParams, $location, $timeout, $window, $log, $modal, $document) {
 
         $rootScope.page = "Products";
 
@@ -9,7 +9,10 @@ angular.module('app.controllers.products')
 
         $log.debug("routeParams", $routeParams);
         $log.debug("routeParams.category", $routeParams.category);
+        $log.debug("routeParams.search", $routeParams.search);
         $scope.category = $routeParams.category;
+
+        Search.search($routeParams.search);
 
         $scope.quantities = {};
 
@@ -24,8 +27,22 @@ angular.module('app.controllers.products')
             p.quantity = qty;
             Cart.addToCart(p);
         }
-        
-        
+
+        /*==== SEARCH ====*/
+        $scope.searchFunction = function(product) {
+            // no search string, match everything
+            var query = Search.getQuery();
+            if (S(query).isEmpty()) {
+                return true;
+            }
+
+            if (S(product.productname).toLowerCase().indexOf(S(query).toLowerCase())!=-1 ||
+                S(product.productnumber).toLowerCase().indexOf(S(query).toLowerCase())!=-1)
+            {
+                return true;
+            }
+            return false;
+        }
 
         /*=== LOAD DATA ====*/
 

@@ -14,7 +14,7 @@
           <td>
             <div class="cart-item-info">
               <a ng-href="#/products/{{product.itemnumber}}" class="col-xs-5 col-sm-3 col-md-2 col-lg-2">
-                <img class="img-responsive cart-item-image" src="/{{product.images.path}}">
+                <img class="img-responsive cart-item-image" src="{{getImagePath(product.images.path)}}">
               </a>
               <div class="col-sm-9 col-md-8 col-lg-8">
                 <h3><a href="#/products/{{product.itemnumber}}">{{product.productname}}</a></h3>
