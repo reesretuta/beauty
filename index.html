@@ -112,11 +112,18 @@
           <ol class="breadcrumb">
             <li><a ng-href="#/">Home</a></li>
             <li><a href="#">Category</a></li>
-            <li><a href="#">SubCategory</a></li>
+            <li><a href="#">SubCategory</a></li>    
             <li><a href="#">SubSubCategory</a></li>
             <li>Product</li>
           </ol>
         <!-- /BreadCrumbs -->
+        
+         <ol class="ab-nav breadcrumb">
+    <li ng-repeat="breadcrumb in breadcrumbs.get() track by breadcrumb.path" ng-class="{ active: $last }">
+      <a ng-if="!$last" ng-href="#{{ breadcrumb.path }}" ng-bind="breadcrumb.label" class="margin-right-xs"></a>
+      <span ng-if="$last" ng-bind="breadcrumb.label"></span>
+    </li>
+  </ol>
 
         </div>
         <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
@@ -234,6 +241,7 @@
     <script src="/lib/ladda-bootstrap/dist/spin.min.js"></script>
     <script src="/lib/ladda-bootstrap/dist/ladda.min.js"></script>
     <script src="/lib/jquery-xml2json/src/xml2json.js"></script>
+    <script src="/lib/ng-breadcrumbs/dist/ng-breadcrumbs.min.js"></script>
 
     <script src="/js/util.js"></script>
 
