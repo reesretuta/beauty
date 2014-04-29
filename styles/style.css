@@ -554,8 +554,14 @@ a, .btn {
 
     /* -- TODO -- Integrate JS hide/show subnavs */
 }
-#shop_menu li.open ul {
+#shop_menu li.open > ul {
     max-height: 600px;
+}
+#shop_menu li.open > ul > li > ul {
+  max-height: 0;
+}
+#shop_menu li.open > ul > li.open > ul {
+  max-height: 600px;
 }
 
 #shop_menu .align-right {
@@ -594,7 +600,7 @@ a, .btn {
     text-decoration: underline;
 }
 
-#shop_menu > ul > li.open > a:nth-of-type(0) {
+#shop_menu > ul > li.open > a:nth-of-type(1) {
     border-bottom: 1px solid #AA73B1;
 }
 

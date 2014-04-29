@@ -134,12 +134,12 @@
     <!-- Sidebar Navigation -->
     <div class="col-xs-8 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation" ng-hide="section == 'admin' || section =='checkout'">
       <aside id="shop_menu">
-         <!-- TODO: add controller for nav show/hide (responsive out-of-scope v.1) -->
+         
         <a class="pull-left visible-xs store-nav-toggle" ng-click="isActive = !isActive">
           <i class="fa fa-bars"></i>
         </a>
 
-        <ul ng-controller="CategoriesController">
+        <ul ng-controller="CategoriesController">  <!-- TODO: each item opens, then closes. Needs to be accordion-style -->
 
           <li ng-repeat="category in categories" ng-class="{'': !isOpen, 'open': isOpen}" ng-init="isOpen = false">
 
