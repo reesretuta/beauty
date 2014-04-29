@@ -1,5 +1,5 @@
 angular.module('app.controllers.cart')
-    .controller('CartController', function ($scope, $document, $rootScope, $routeParams, $log, Cart, Products, HashKeyCopier) {
+    .controller('CartController', function ($scope, $document, $rootScope, $compile, $routeParams, $log, Cart, Products, HashKeyCopier) {
         $log.debug("CartController");
 
         //change page title
@@ -11,12 +11,105 @@ angular.module('app.controllers.cart')
         $scope.hidestuff = true;
 
         $scope.products = [];
+        $scope.orderByIdItem = '';
+        $scope.orderByIdQty = 1;
+        $scope.searchProducts = {};
+        $scope.searchProductsByName = {};
+
 
         var loadCart = function() {
             $scope.products = Cart.getItems();
             $log.debug("loaded cart products", $scope.products);
         }
         loadCart();
+
+        $scope.changeClass = function (options) {
+            var widget = options.methods.widget();
+            // remove default class, use bootstrap style
+            widget.removeClass('ui-menu ui-corner-all ui-widget-content').addClass('dropdown-menu');
+        };
+
+        $scope.addToCart = function() {
+            $log.debug("adding product", $scope.orderByIdItem, "quantity", $scope.orderByIdQty);
+
+            var product;
+            if ($scope.searchProducts[$scope.orderByIdItem]) {
+                product = $scope.searchProducts[$scope.orderByIdItem];
+            } else if ($scope.searchProductsByName[$scope.orderByIdItem]) {
+                product = $scope.searchProductsByName[$scope.orderByIdItem];
+            }
+            var p = angular.copy(product);
+            p.quantity = $scope.orderByIdQty;
+            $log.error("adding product", p);
+            Cart.addToCart(p);
+            // clear search
+            $scope.orderByIdItem = '';
+        }
+
+        /* config object */
+        $scope.productSearchConfig = {
+            options: {
+                html: true,
+                minLength: 1,
+                outHeight: 50,
+                focusOpen: true,
+                onlySelect: true,
+                messages: {
+                    noResults: '',
+                    results: function() {}
+                },
+                source: function (request, response) {
+                    if (S($scope.orderByIdItem).length >= 1) {
+                        $log.debug("querying products", $scope.orderByIdItem);
+                        var products = Products.query({'search': $scope.orderByIdItem}, function(products, status, headers) {
+                            $log.debug("got products for search", products);
+                            var projectHeaders = new Array();
+                            angular.forEach(products, function(product) {
+                                if (product.itemnumber) {
+                                    $scope.searchProducts[product.itemnumber] = product;
+                                    $scope.searchProductsByName[product.productname] = product;
+
+                                    projectHeaders.push({
+                                        //label: $compile('<a class="ui-menu-add" ng-click="addToCart(searchProducts[\''+product.itemnumber+'\'])">' + product.productname + '</a>')($scope),
+                                        label: '(Item #' + product.itemnumber + ') ' + product.productname,
+                                        value: product.productname
+                                    });
+                                } else if (product.groupid) {
+                                    angular.forEach(product.productskus.productdetail, function(p) {
+                                        $scope.searchProducts[p.itemnumber] = p;
+                                        $scope.searchProductsByName[product.productname + ' - ' + p.productname] = product;
+
+                                        projectHeaders.push({
+                                            //label: $compile('<a class="ui-menu-add" ng-click="addToCart(searchProducts[\''+product.itemnumber+'\'])">' + product.productname + '</a>')($scope),
+                                            label: '(Item #' + p.itemnumber + ') ' + product.productname + ' - ' + p.productname,
+                                            value: '(Item #' + p.itemnumber + ') ' + product.productname + ' - ' + p.productname
+                                        });
+                                    });
+                                }
+                            });
+
+                            if (!products.length) {
+                                projectHeaders.push({
+                                    label: 'Not found',
+                                    value: ''
+                                });
+                            }
+                            response(projectHeaders);
+                        }, function(products, status, headers) {
+                            $log.error("error searching products", status, headers);
+                            products.push({
+                                label: 'Error searching products',
+                                value: ''
+                            });
+                        });
+                    } else {
+                        response();
+                    }
+                }
+            },
+            methods: {
+            }
+        };
 
 //        var loadProducts = function () {
 //            //var start = new Date().getTime();

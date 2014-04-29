@@ -75,13 +75,12 @@ angular.module('app.services', ['ngResource'])
 
         cartService.getItemCount = function() {
             var cart = getCart();
-//            var count = new Array();
             var count = 0;
             angular.forEach(cart.items, function(product) {
                 count += parseInt(product.quantity);
             });
             
-            $log.debug("getItemCount()");
+            //$log.debug("getItemCount()");
             return count;
         };
 
@@ -95,7 +94,6 @@ angular.module('app.services', ['ngResource'])
             var getIndex;
             angular.forEach(cart.items, function(product) {
                 if (product.itemnumber == p.itemnumber) {
-                    
                   var newQty = parseInt(p.quantity) + parseInt(product.quantity);
                   
                   getIndex=cart.items.indexOf(product);
@@ -103,13 +101,11 @@ angular.module('app.services', ['ngResource'])
                   
                   p.quantity = newQty;
                   return p;
-
-                } 
+                }
                 
             });
             
             $log.debug("addToCart()", cart);
-//            cart.items.push(p);
             cart.items.splice(getIndex,0,p);
         };
         
@@ -118,12 +114,10 @@ angular.module('app.services', ['ngResource'])
             var getIndex;
             angular.forEach(cart.items, function(product) {
                 if (product.itemnumber == p.itemnumber) {
-                    
                   getIndex=cart.items.indexOf(product);
                   cart.items.splice(getIndex,1);  
                   return getIndex;
-
-                } 
+                }
                 
             });
 
@@ -135,13 +129,9 @@ angular.module('app.services', ['ngResource'])
             var cart = getCart();
             angular.forEach(cart.items, function(product) {
                 if (product.itemnumber ==p.itemnumber) {
-                    
-                  
                   var getIndex=cart.items.indexOf(product);
                   cart.items.splice(getIndex,1);     
-                  
-
-                } 
+                }
                 
             });
             
@@ -235,6 +225,17 @@ angular.module('app.services', ['ngResource'])
                         }
                     });
                     $log.debug("got products by ids", returnedProducts);
+                    success(returnedProducts, status, headers, config);
+                    return returnedProducts;
+                } else if (query.search != null) {
+                    var returnedProducts = new Array();
+                    $log.debug("search", query.search);
+                    angular.forEach(products.productdetail, function(product) {
+                        if (S(product.itemnumber).contains(query.search) || S(product.productname).contains(query.search)) {
+                            returnedProducts.push(product);
+                        }
+                    });
+                    $log.debug("got products by search", returnedProducts);
                     success(returnedProducts, status, headers, config);
                     return returnedProducts;
                 } else {
