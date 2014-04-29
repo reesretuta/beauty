@@ -158,7 +158,8 @@ h2 {
   min-height: 350px;
 }
 .store-item-wrapper img,
-.image-zoom img {
+.image-zoom img,
+.cart-item-image {
   -moz-transform: scale(.9);
   -webkit-transform: scale(.9);
   -o-transform: scale(.9);
@@ -172,7 +173,8 @@ h2 {
   transition: transform 200ms ease;
 }
 .store-item-wrapper img:hover,
-.image-zoom img:hover {
+.image-zoom img:hover,
+.cart-item-image:hover {
   -moz-transform: scale(.95);
   -webkit-transform: scale(.95);
   -o-transform: scale(.95);
