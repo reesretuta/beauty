@@ -8,18 +8,17 @@
 
 /* !!!!NOTE: @Dain to place these where he'd like. On product detail page for changing color swatches  */
 
-
 .itemsleep {
-    color: blue;
+    display: block;
 }
 .pricesleep {
-    color: black;
+    display: block;
 }
 .itemactive {
-    color: red;
+    display: block;
 }
 .priceactive {
-    color: red;
+    display: block;
 }
 
 

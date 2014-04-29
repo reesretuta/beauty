@@ -23,21 +23,25 @@ angular.module('app.controllers.products')
             Cart.addToCart(p);
         }
 
-//        $scope.chooseColor = function(product) {
-//            $log.debug("choosing color", product);
-//            var qty = $scope.quantities[product.itemnumber];
-//            if (qty == null) {
-//                qty = 1;
-//            }
-//            $log.debug("adding product", product, qty);
-//            var p = angular.copy(product);
-//            p.quantity = qty;
-//            Cart.addToCart(p);
-//        }
 
-        $scope.alert = function(something) {
-            alert(something)
-        }
+        $scope.showhide = function(itemnumber) {
+//            $('.itemsleep').hide();           
+//            $('#in_'+itemnumber).show();
+//            $('.pricesleep').hide();            
+//            $('#price_'+itemnumber).show();
+//            $('#pn_'+itemnumber).attr('id','#pn_'+itemnumber);
+//            $("#item-select option[id='"+itemnumber+"']").attr("selected", "selected");
+                $scope.selectId=itemnumber;
+                $log.debug("showhide", itemnumber);
+                angular.forEach($scope.product.productskus.productdetail, function(product) {
+                    $log.debug("showhide foreach", product);
+                    if(product.itemnumber == itemnumber) {
+                        $log.debug("selected", product.itemnumber);
+                        $scope.selectedProduct = product;
+                    }
+                })
+                  
+        };
 
         /*=== LOAD DATA ====*/
 
@@ -56,7 +60,7 @@ angular.module('app.controllers.products')
                     $scope.product = product;
                     //$log.debug("initializing objects");
                 }
-
+                $scope.showhide(product.productskus.productdetail[0].itemnumber);
                 $rootScope.page = product.productname;
 
                 $scope.loading = false;
