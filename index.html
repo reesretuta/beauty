@@ -141,21 +141,25 @@
 
         <ul ng-controller="CategoriesController">
 
-          <li ng-repeat="category in categories" 
-              ng-class="{'open': $index == selectedIndex, 'has-sub': category.childcategory }" 
-              ng-click="itemClicked($index)">
+          <li ng-repeat="category in categories" ng-class="{'': !isOpen, 'open': isOpen}" ng-init="isOpen = false">
 
-              <a ng-href="#/products?category={{category.id}}"><span>{{category.name}}</span> <i ng-if="category.childcategory" class="fa fa-angle-down"></i></a>
+              <a ng-href="#/products?category={{category.id}}" ng-click="isOpen = !isOpen">
+                <span>{{category.name}}</span> <i ng-if="category.childcategory" class="fa fa-angle-down pull-right"></i>
+              </a>
 
               <ul ng-if="category.childcategory">
 
-                  <li ng-repeat="category in category.childcategory" ng-class="{'open': $index == selectedIndex }" ng-click="itemClicked($index)">
-                    <a ng-href="#/products?category={{category.id}}"><span>{{category.name}}</span></a>
+                  <li ng-repeat="category in category.childcategory" ng-class="{'': !isOpen2, 'open': isOpen2}" ng-init="isOpen2 = false">
+                    <a ng-href="#/products?category={{category.id}}" ng-click="isOpen2 = !isOpen2"> 
+                      <span>{{category.name}}</span> <i ng-if="category.childcategory" class="fa fa-angle-down pull-right"></i>
+                    </a>
 
                     <ul ng-if="category.childcategory">
 
-                        <li ng-repeat="category in category.childcategory" ng-class="{'open': $index == selectedIndex }" ng-click="itemClicked($index)">
-                            <a ng-href="#/products?category={{category.id}}"><span>{{category.name}}</span></a>
+                        <li ng-repeat="category in category.childcategory">
+                            <a ng-href="#/products?category={{category.id}}">
+                              <span>{{category.name}}</span>
+                            </a>
                         </li>
 
                     </ul>
