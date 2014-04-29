@@ -11,6 +11,14 @@ angular.module('app.services', ['ngResource'])
             }
         };
     })
+    .factory('Section', function($rootScope, $log) {
+        return {
+            setSection : function(section) {
+                $log.debug("setting section to", section);
+                $rootScope.section = section;
+            }
+        };
+    })
     .factory('Objects', function ($resource, API_URL) {
         return $resource(API_URL + '/objects/:objectId');
     })
