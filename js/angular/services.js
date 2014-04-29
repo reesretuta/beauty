@@ -234,7 +234,7 @@ angular.module('app.services', ['ngResource'])
                     var returnedProducts = new Array();
                     $log.debug("search", query.search);
                     angular.forEach(products.productdetail, function(product) {
-                        if (S(product.itemnumber).contains(query.search) || S(product.productname).contains(query.search)) {
+                        if (S(product.itemnumber).toLowerCase().contains(S(query.search).toLowerCase()) || S(product.productname).toLowerCase().contains(S(query.search).toLowerCase())) {
                             returnedProducts.push(product);
                         }
                     });

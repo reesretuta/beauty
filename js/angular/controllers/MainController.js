@@ -1,9 +1,10 @@
 angular.module('app.controllers.main')
-    .controller('MainController', function ($scope, $document, $timeout, $location, $rootScope, $routeParams, $log, Categories, Cart, Search) {
+    .controller('MainController', function ($scope, $document, $timeout, $location, $rootScope, $routeParams, $log, Categories, Cart, Search, breadcrumbs) {
+$scope.breadcrumbs = breadcrumbs;
 
         // this page will watch for URL changes for back/forward that require it to change anything needed (like search)
         var cancelChangeListener;
-        function createListener() {
+        function createListener() { 
             $log.debug("createListener(): creating change listener");
             cancelChangeListener = $rootScope.$on('$locationChangeSuccess', function(event, absNewUrl, absOldUrl){
                 var url = $location.url(),
@@ -80,4 +81,5 @@ angular.module('app.controllers.main')
             //$log.debug("getImagePath(): getting image path from string");
             return '/' + paths;
         }
+        
     });

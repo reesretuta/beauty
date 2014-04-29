@@ -8,6 +8,7 @@ angular.module('app.controllers.products')
         $scope.loading = true;
 
         $scope.productId = $routeParams.productId;
+        $scope.selectedProduct = {};
         
         $scope.quantities = {};
 
@@ -23,24 +24,15 @@ angular.module('app.controllers.products')
             Cart.addToCart(p);
         }
 
-
         $scope.showhide = function(itemnumber) {
-//            $('.itemsleep').hide();           
-//            $('#in_'+itemnumber).show();
-//            $('.pricesleep').hide();            
-//            $('#price_'+itemnumber).show();
-//            $('#pn_'+itemnumber).attr('id','#pn_'+itemnumber);
-//            $("#item-select option[id='"+itemnumber+"']").attr("selected", "selected");
-                $scope.selectId=itemnumber;
-                $log.debug("showhide", itemnumber);
-                angular.forEach($scope.product.productskus.productdetail, function(product) {
-                    $log.debug("showhide foreach", product);
-                    if(product.itemnumber == itemnumber) {
-                        $log.debug("selected", product.itemnumber);
-                        $scope.selectedProduct = product;
-                    }
-                })
-                  
+            $log.debug("showhide", itemnumber);
+            angular.forEach($scope.product.productskus.productdetail, function(product) {
+                //$log.debug("showhide foreach", product);
+                if (product.itemnumber == itemnumber) {
+                    $log.debug("selected", product.itemnumber);
+                    $scope.selectedProduct = angular.copy(product);
+                }
+            })
         };
 
         /*=== LOAD DATA ====*/
@@ -60,7 +52,9 @@ angular.module('app.controllers.products')
                     $scope.product = product;
                     //$log.debug("initializing objects");
                 }
-                $scope.showhide(product.productskus.productdetail[0].itemnumber);
+                if (product.groupid) {
+                    $scope.showhide(product.productskus.productdetail[0].itemnumber);
+                }
                 $rootScope.page = product.productname;
 
                 $scope.loading = false;

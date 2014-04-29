@@ -44,10 +44,9 @@
                 <span class="itemsleep">Item #{{selectedProduct.itemnumber}}</span>
                 <span class='pricesleep'>${{selectedProduct.pricing.detailprice.price}}</span>
                 
-                <select ng-model="selectId" ng-change="showhide(selectId)">
+                <select ng-model="selectedProduct.itemnumber" ng-change="showhide(selectedProduct.itemnumber)">
                     <option value='{{productdetail.itemnumber}}' ng-repeat="productdetail in product.productskus.productdetail">{{productdetail.productname}}</option>
                 </select>
-                
             </span>
             <p class="store-item-sku" ng-if="product.productflag.type != 'group'">Item #{{product.itemnumber}}</p>
             <p class="store-item-price">
