@@ -426,7 +426,19 @@
     <productdetail>
         <id>17555</id>
         <itemnumber>18865</itemnumber>
-        <groupid></groupid>
+        <productskus>
+            <itemnumber>25207</itemnumber>
+            <itemnumber>25204</itemnumber>
+            <itemnumber>25206</itemnumber>
+            <itemnumber>25205</itemnumber>
+        </productskus>
+        <kitgroup>
+            <id>NUPL18862</id>
+            <produductskus>
+                <itemnumber>13027</itemnumber>
+                <itemnumber>15522</itemnumber>
+            </produductskus>
+        </kitgroup>
         <productname>Advanced Dynamics Hydrating Regimen Introductory Offer</productname>
         <sellingquantity>each</sellingquantity>
         <marketingdescription>

@@ -123,6 +123,9 @@ angular.module('app.services', ['ngResource'])
                         if (product.itemnumber == query.productId) {
                             success(product, status, headers, config);
                             return product;
+                        } else if (product.groupid == query.productId) {
+                            success(product, status, headers, config);
+                            return product;
                         }
                     });
 
