@@ -48,7 +48,7 @@
           
           
           <div class="store-item-wrapper" ng-if="product.groupid">
-            <a ng-href="#/products/{{product.groupid}}#top"><img class="img-responsive" ng-src="{{getImagePath(product.images.path)}}"></a>
+            <a ng-href="#/products/{{product.groupid}}?category={{categoryId}}#top"><img class="img-responsive" ng-src="{{getImagePath(product.images.path)}}"></a>
             <div class="store-item-info">
               <p class="store-item-sku">&nbsp; <!-- leave empty for UI --></p>
               <p class="store-item-title"><a ng-href="#/products/{{product.groupid}}#top">{{product.productname}}</a></p>

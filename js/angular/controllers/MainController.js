@@ -71,7 +71,7 @@ angular.module('app.controllers.main')
 
         $scope.searchProducts = function() {
             $log.debug("going to products for search", Search.getQuery());
-            $location.path("/products").search("search", Search.getQuery());
+            $location.url("/products?search="+Search.getQuery());
         }
 
         $rootScope.getImagePath = function(paths) {
@@ -81,28 +81,6 @@ angular.module('app.controllers.main')
             }
             //$log.debug("getImagePath(): getting image path from string");
             return '/' + paths;
-        }
-
-
-        $scope.buildPath = function(category, product, path) {
-            if (path == null && product != null) {
-                $log.debug("setting path to product name");
-                path = product;
-            }
-            var newPath = '';
-            if (category != null) {
-                newPath = category.name;
-                $log.debug("prepending category name", newPath);
-                if (path != null) {
-                    newPath += " / " + path;
-                    $log.debug("new path", newPath);
-                }
-                return $scope.buildPath(category.parentcategory, product, newPath);
-            } else {
-                $log.debug("returning current path", path);
-                newPath = path;
-            }
-            return newPath;
         }
 
     });
