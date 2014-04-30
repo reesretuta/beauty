@@ -518,7 +518,8 @@
         <groupid>46</groupid>
         <productskus>
             <productdetail>
-                <itemnumber>16986</itemnumber>
+                <itemnumber>16986</itemnumber>                
+                <groupname>Always Color Stay-On Lipstick</groupname>
                 <productname>Rouge</productname>
                 <images>
                     <path><![CDATA[img/16986_1.jpg]]></path>
@@ -535,7 +536,8 @@
                 <groupid>46</groupid>                     
             </productdetail>
             <productdetail>
-                <itemnumber>16985</itemnumber>
+                <itemnumber>16985</itemnumber>               
+                <groupname>Always Color Stay-On Lipstick</groupname>
                 <productname>French Kiss</productname>
                 <images>
                     <path><![CDATA[img/16985_1.jpg]]></path>
@@ -552,7 +554,8 @@
                 <groupid>46</groupid>     
             </productdetail>
             <productdetail>
-                <itemnumber>16984</itemnumber>
+                <itemnumber>16984</itemnumber>               
+                <groupname>Always Color Stay-On Lipstick</groupname>
                 <productname>Mocha</productname>
                 <images>
                     <path><![CDATA[img/16984_1.jpg]]></path>
@@ -569,7 +572,8 @@
                 <groupid>46</groupid>     
             </productdetail>
             <productdetail>
-                <itemnumber>16983</itemnumber>
+                <itemnumber>16983</itemnumber>               
+                <groupname>Always Color Stay-On Lipstick</groupname>
                 <productname>Pinkberry</productname>
                 <sellingquantity>.06 oz.</sellingquantity>
                 <images>
@@ -587,7 +591,8 @@
                 <groupid>46</groupid>     
             </productdetail>
             <productdetail>
-                <itemnumber>16989</itemnumber>
+                <itemnumber>16989</itemnumber>               
+                <groupname>Always Color Stay-On Lipstick</groupname>
                 <productname>Kiss Me Coral</productname>
                 <images>
                     <path><![CDATA[img/16983_1.jpg]]></path>
@@ -604,7 +609,8 @@
                 <groupid>46</groupid>     
             </productdetail>
             <productdetail>
-                <itemnumber>16981</itemnumber>
+                <itemnumber>16981</itemnumber>               
+                <groupname>Always Color Stay-On Lipstick</groupname>
                 <productname>Yellow Lilies</productname>
                 <images>
                     <path><![CDATA[img/16981_1.jpg]]></path>
@@ -621,7 +627,8 @@
                 <groupid>46</groupid>     
             </productdetail>
             <productdetail>
-                <itemnumber>16987</itemnumber>
+                <itemnumber>16987</itemnumber>               
+                <groupname>Always Color Stay-On Lipstick</groupname>
                 <productname>Brandywine</productname>
                 <images>
                     <path><![CDATA[img/16987_1.jpg]]></path>
@@ -699,120 +706,5 @@
             <isgroupproduct>0</isgroupproduct>
         </productflag>
     </productdetail>
-    
-    <productdetail>
-        <itemnumber>16986</itemnumber>
-        <productname>Rouge</productname>
-        <groupproductid>46</groupproductid>
-        <images>
-            <path><![CDATA[img/16986_1.jpg]]></path>
-        </images>
-        <pricing>
-            <detailprice>
-                <pricetype>retail</pricetype>
-                <price>14.00</price>
-            </detailprice>
-        </pricing>
-        <productflag>
-            <type>groupproduct</type>
-        </productflag>
-    </productdetail>
-    <productdetail>
-        <itemnumber>16985</itemnumber>
-        <productname>French Kiss</productname>
-        <images>
-            <path><![CDATA[img/16985_1.jpg]]></path>
-        </images>
-        <pricing>
-            <detailprice>
-                <pricetype>retail</pricetype>
-                <price>14.00</price>
-            </detailprice>
-        </pricing>
-        <productflag>
-            <type>groupproduct</type>
-        </productflag>
-    </productdetail>
-    <productdetail>
-        <itemnumber>16984</itemnumber>
-        <productname>Mocha</productname>
-        <images>
-            <path><![CDATA[img/16984_1.jpg]]></path>
-        </images>
-        <pricing>
-            <detailprice>
-                <pricetype>retail</pricetype>
-                <price>14.00</price>
-            </detailprice>
-        </pricing>
-        <productflag>
-            <type>groupproduct</type>
-        </productflag>
-    </productdetail>
-    <productdetail>
-        <itemnumber>16983</itemnumber>
-        <productname>Pinkberry</productname>
-        <sellingquantity>.06 oz.</sellingquantity>
-        <images>
-            <path><![CDATA[img/16983_1.jpg]]></path>
-        </images>
-        <pricing>
-            <detailprice>
-                <pricetype>retail</pricetype>
-                <price>7.00</price>
-            </detailprice>
-        </pricing>
-        <productflag>
-            <type>groupproduct</type>
-        </productflag>
-    </productdetail>
-    <productdetail>
-        <itemnumber>16989</itemnumber>
-        <productname>Kiss Me Coral</productname>
-        <images>
-            <path><![CDATA[img/16983_1.jpg]]></path>
-        </images>
-        <pricing>
-            <detailprice>
-                <pricetype>retail</pricetype>
-                <price>14.00</price>
-            </detailprice>
-        </pricing>
-        <productflag>
-            <type>groupproduct</type>
-        </productflag>
-    </productdetail>
-    <productdetail>
-        <itemnumber>16981</itemnumber>
-        <productname>Yellow Lilies</productname>
-        <images>
-            <path><![CDATA[img/16981_1.jpg]]></path>
-        </images>
-        <pricing>
-            <detailprice>
-                <pricetype>retail</pricetype>
-                <price>7.00</price>
-            </detailprice>
-        </pricing>
-        <productflag>
-            <type>groupproduct</type>
-        </productflag>
-    </productdetail>
-    <productdetail>
-        <itemnumber>16987</itemnumber>
-        <productname>Brandywine</productname>
-        <images>
-            <path><![CDATA[img/16987_1.jpg]]></path>
-        </images>
-        <pricing>
-            <detailprice>
-                <pricetype>retail</pricetype>
-                <price>14.00</price>
-            </detailprice>
-        </pricing>
-        <productflag>
-            <type>groupproduct</type>
-        </productflag>
-    </productdetail> 
     
 </products>

@@ -22,7 +22,9 @@
               <div class="col-sm-9 col-md-8 col-lg-8">
                 <h3>
                     <a href="#/products/{{product.itemnumber}}" ng-if="product.productflag.type != 'groupproduct'">{{product.productname}}</a>
-                    <a href="#/products/{{product.groupid}}" ng-if="product.productflag.type == 'groupproduct'">{{product.productname}}</a>
+                    <a href="#/products/{{product.groupid}}" ng-if="product.productflag.type == 'groupproduct'">
+                        {{product.groupname}} {{product.productname}}
+                    </a>
                 </h3>
                 <p><label>{{product.itemnumber}}</label> <!-- This kit includes: --></p>
                 <!-- <ul>
