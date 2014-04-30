@@ -13,16 +13,16 @@
         <tr ng-repeat="product in products">
           <td>
             <div class="cart-item-info">
-              <a ng-href="#/products/{{product.itemnumber}}" class="col-xs-5 col-sm-3 col-md-2 col-lg-2" ng-if="product.productflag.type != 'groupproduct'">
+              <a ng-href="#/products/{{product.itemnumber}}#top" class="col-xs-5 col-sm-3 col-md-2 col-lg-2" ng-if="product.productflag.type != 'groupproduct'">
                 <img class="img-responsive cart-item-image" ng-src="{{getImagePath(product.images.path)}}">
               </a>
-              <a ng-href="#/products/{{product.groupid}}" class="col-xs-5 col-sm-3 col-md-2 col-lg-2" ng-if="product.productflag.type == 'groupproduct'">
+              <a ng-href="#/products/{{product.groupid}}#top" class="col-xs-5 col-sm-3 col-md-2 col-lg-2" ng-if="product.productflag.type == 'groupproduct'">
                 <img class="img-responsive cart-item-image" ng-src="{{getImagePath(product.images.path)}}">
               </a>
               <div class="col-sm-9 col-md-8 col-lg-8">
                 <h3>
-                    <a href="#/products/{{product.itemnumber}}" ng-if="product.productflag.type != 'groupproduct'">{{product.productname}}</a>
-                    <a href="#/products/{{product.groupid}}" ng-if="product.productflag.type == 'groupproduct'">
+                    <a href="#/products/{{product.itemnumber}}#top" ng-if="product.productflag.type != 'groupproduct'">{{product.productname}}</a>
+                    <a href="#/products/{{product.groupid}}#top" ng-if="product.productflag.type == 'groupproduct'">
                         {{product.groupname}} {{product.productname}}
                     </a>
                 </h3>

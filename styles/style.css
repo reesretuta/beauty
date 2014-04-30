@@ -166,6 +166,9 @@ h2 {
   margin: 0 auto 30px;
   min-height: 350px;
 }
+.related .store-item-wrapper {
+  min-height: 230px;
+}
 .store-item-wrapper img,
 .image-zoom img,
 .cart-item-image {
@@ -712,6 +715,9 @@ a, .btn {
   }
   .store-heading-nav {
     padding-bottom: 15px;
+  }
+  .nav-tabs>li>a {
+    margin-right: -1px;
   }
 }
 @media (min-width: 768px) {

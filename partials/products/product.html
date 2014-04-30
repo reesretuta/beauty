@@ -127,30 +127,39 @@
       <!-- /Item Detail Section -->
 
       <!-- Recently Viewed Section -->
-      <section class="row store-section">
+      <section class="row store-section" ng-controller="RecentlyViewedController">
         <div class="col-lg-12">
           <h2>Recently Viewed</h2>
         </div>
-          <span ng-controller="RecentlyViewedController">
-            <span ng-repeat="viewedProduct in products.productdetail">
-                <img ng-src="{{viewedProduct.path}}" width="150">
-                <span>{{viewedProduct.productname}}</span>
-                <span>{{viewedProduct.itemnumber}}</span>
-            </span>
-          </span>
+
+
+        <div ng-repeat="viewedProduct in products.productdetail" class="col-xs-6 col-sm-4 col-md-3 col-lg-3 store-item related">
+          <div class="store-item-wrapper">
+            <a ng-href="#/products/{{viewedProduct.itemnumber}}#top"><img class="img-responsive" ng-src="{{viewedProduct.path}}"></a>
+            <div class="store-item-info">
+              <p class="store-item-title"><a ng-href="#/products/{{viewedProduct.itemnumber}}#top">{{viewedProduct.productname}}</a></p>
+            </div>
+          </div><!--/store-item-wrapper-->
+        </div><!--/span-->
+        
       </section>
       <!-- /Recently Viewed Section -->
 
       <!-- Related Products Section -->
-      <section class="row store-section">
+      <section class="row store-section" ng-if="product.relatedproducts.productdetail">
         <div class="col-lg-12">
           <h2>You May Also Like</h2>
         </div>
-          <span ng-repeat="relatedproduct in product.relatedproducts.productdetail">
-              <img ng-src="{{relatedproduct.path}}" width="150">
-              <span>{{relatedproduct.productname}}</span>
-              <span>{{relatedproduct.itemnumber}}</span>
-          </span>
+
+        <div ng-repeat="relatedproduct in product.relatedproducts.productdetail" class="col-xs-6 col-sm-4 col-md-3 col-lg-3 store-item related">
+          <div class="store-item-wrapper">
+            <a ng-href="#/products/{{relatedproduct.itemnumber}}#top"><img class="img-responsive" ng-src="{{relatedproduct.path}}"></a>
+            <div class="store-item-info">
+              <p class="store-item-title"><a href="itemdetail.html">{{relatedproduct.productname}}</a></p>
+            </div>
+          </div><!--/store-item-wrapper-->
+        </div><!--/span-->
+
       </section>
       <!-- /Related Products Section -->
 
