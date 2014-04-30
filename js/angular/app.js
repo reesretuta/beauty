@@ -30,7 +30,8 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
             controller: 'CartController'
         }).when(BASE_URL + '/checkout', {
             templateUrl: BASE_URL + '/partials/checkout/checkout.html',
-            controller: 'CheckoutController'
+            controller: 'CheckoutController',
+            reloadOnSearch: false
         }).otherwise({
             templateUrl: BASE_URL + '/partials/page-not-found.html',
             controller: 'NotFoundController'

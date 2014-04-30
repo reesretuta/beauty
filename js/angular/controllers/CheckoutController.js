@@ -1,15 +1,45 @@
 angular.module('app.controllers.checkout')
-    .controller('CheckoutController', function ($scope, $document, $rootScope, $routeParams, $log, Cart, Products, HashKeyCopier, WizardHandler) {
+    .controller('CheckoutController', function ($location, $scope, $document, $rootScope, $routeParams, $log, Cart, Products, HashKeyCopier, WizardHandler) {
+
+        $log.debug("CheckoutController()");
 
         //change page title
         $rootScope.page = "Checkout";
         $rootScope.section = "checkout";
 
-        $scope.currentStep;
-
         $scope.checkout = {
+            currentStep: '',
             customerStatus: 'existing'
         }
+
+        var cancelChangeListener = $rootScope.$on('$locationChangeSuccess', function(event, absNewUrl, absOldUrl){
+            var url = $location.url(),
+                path = $location.path(),
+                params = $location.search();
+
+            $log.debug("changeListener(): location change event in checkout page", url, params);
+
+            var urlStep = S(params.step != null ? params.step : "").toString();
+            var localStep = $scope.checkout.currentStep;
+
+            $log.debug("changeListener(): url search", urlStep, "local step", localStep);
+
+            // if we have a composition and run, and the current scope doesn't already have the same run
+            if (path == "/checkout" && (urlStep != localStep)) {
+                $log.debug("changeListener(): updating step in response to location change");
+
+                WizardHandler.wizard('checkoutWizard').goTo(urlStep);
+            } else {
+                $log.debug("changeListener(): ignoring");
+            }
+        });
+
+        $scope.$watch('checkout.currentStep', function(newVal, oldVal) {
+            if (newVal != oldVal && newVal != '' && newVal != null) {
+                $log.debug("step changed from", oldVal, "to", newVal);
+                $location.search("step", newVal);
+            }
+        });
 
         $scope.checkoutUpdated = function() {
             $log.debug("checkout updated", $scope.checkout);
@@ -72,4 +102,16 @@ angular.module('app.controllers.checkout')
         $scope.finished = function() {
             alert("Wizard finished :)");
         }
+
+        function cleanup() {
+            if (cancelChangeListener) {
+                $log.debug("cleanup(): canceling change listener");
+                cancelChangeListener();
+            }
+        }
+
+        /*==== CLEANUP ====*/
+        $scope.$on('$destroy', function() {
+            cleanup();
+        });
     });
