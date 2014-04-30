@@ -1,31 +1,30 @@
-<section class="row store-checkout" ng-controller="CheckoutController">
+<section class="row store-checkout container" ng-controller="CheckoutController">
 
-
-  <wizard on-finish="finished()"> 
+  <wizard name="checkoutWizard" hide-indicators="true" on-finish="finished()"> 
     <wz-step title="Start">
 
       <div class="col-sm-12">
 
-        <div class="col-sm-offset-3">
+        <div class="col-md-offset-3">
           <h1>Sign in to complete your order</h1>
         </div>
 
           <form class="form-horizontal" role="form">
               <div class="form-group">
-                <label for="inputEmail3" class="col-sm-3 control-label">Email Address</label>
+                <label for="inputEmail3" class="col-md-3 control-label">Email Address</label>
                 <div class="col-sm-6">
                   <input type="email" class="form-control" id="inputEmail3" placeholder="Email" tabindex="1">
                 </div>
               </div>
               <div class="form-group">
-                <label for="inputPassword3" class="col-sm-3 control-label">Password</label>
+                <label for="inputPassword3" class="col-md-3 control-label">Password</label>
                 <div class="col-sm-4">
                   <input type="password" class="form-control" id="inputPassword3" placeholder="Password" tabindex="2">
                 </div>
               </div>
               
               <div class="form-group">
-                <div class="col-sm-offset-3 col-sm-9">
+                <div class="col-md-offset-3 col-sm-9">
                   <div class="radio">
                     <label>
                       <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
@@ -55,17 +54,16 @@
               </div>
               
               <div class="form-group">
-                <div class="col-sm-offset-3 col-sm-9">
+                <div class="col-md-offset-3 col-sm-9">
                   <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                     <button type="submit" class="btn btn-primary btn-lg" tabindex="3" wz-next>Continue to Secure Checkout &nbsp;<i class="fa fa-caret-right"></i></button>
                   </div>
                 </div>
               </div>
-
               
               <div class="form-group">
-                <div class="col-sm-offset-3 col-sm-9">
+                <div class="col-md-offset-3 col-sm-9">
                   <div class="row"><div class="col-sm-6"><hr></div></div>
                   <p><a href="#">Checkout as guest</a></p>
                   <p><a href="#">I forgot my password</a></p>
@@ -73,8 +71,6 @@
                 </div>
               </div>
               
-
-
       </div><!--/span-->
 
     </wz-step>
@@ -82,9 +78,141 @@
 
       <div class="col-sm-12">
 
-        <h1>Shipping step</h1>
+          <div class="col-md-offset-3">
 
-        <input type="submit" class="btn btn-primary btn-lg" wz-next value="Next">
+            <h1>Choose a shipping address</h1>
+
+            <div class="row">
+              <div class="col-xs-6 col-lg-4 checkout-address">
+                <span class="address-name">Jenny Miller</span>
+                <span class="address-street">123 Main St.</span>
+                <span class="address-region">Los Angeles, CA 90210</span>
+                <span class="phone-number">Phone: (310) 555-1212</span>
+                <div class="address-actions">
+                  <a href="#"><i class="fa fa-pencil-square-o"></i> Edit</a>
+                  &nbsp;&nbsp;
+                  <a href="#"><i class="fa fa-times-circle"></i> Remove</a>
+                </div>
+                <a href="#" class="btn btn-primary" wz-next>Ship to this Address</a>
+              </div><!-- /address -->
+              <div class="col-xs-6 col-lg-4 checkout-address">
+                <span class="address-name">Alana Torres</span>
+                <span class="address-street">123 Main St.</span>
+                <span class="address-region">Los Angeles, CA 90210</span>
+                <span class="phone-number">Phone: (310) 555-1212</span>
+                <div class="address-actions">
+                  <a href="#"><i class="fa fa-pencil-square-o"></i> Edit</a>
+                  &nbsp;&nbsp;
+                  <a href="#"><i class="fa fa-times-circle"></i> Remove</a>
+                </div>
+                <a href="#" class="btn btn-primary" wz-next>Ship to this Address</a>
+              </div><!-- /address -->
+            </div>
+
+            <hr>
+            <h2 class=" ">Add a new address</h2>
+
+          </div><!-- /offset -->
+
+          <form class="form-horizontal" role="form">
+            <div class="row form-group">
+              <label for=" " class="col-md-3 control-label">Full Name</label>
+              <div class="col-sm-8 col-lg-6">
+                <input type="text" class="form-control" id=" " placeholder=" " tabindex=" ">
+              </div>
+            </div>
+
+            <div class="row form-group">
+              <label for=" " class="col-md-3 control-label">Address Line 1</label>
+              <div class="col-sm-8 col-lg-6">
+                <input type="text" class="form-control" id=" " placeholder="Street address, P.O. box, company name, c/o " tabindex=" ">
+              </div>
+            </div>
+
+            <div class="row form-group">
+              <label for=" " class="col-md-3 control-label">Address Line 2</label>
+              <div class="col-sm-8 col-lg-6">
+                <input type="text" class="form-control" id=" " placeholder="Apartment, suite, unit, building, floor, etc. " tabindex=" ">
+              </div>
+            </div>
+
+            <div class="row form-group">
+              <label for=" " class="col-md-3 control-label">City</label>
+              <div class="col-sm-7 col-lg-5">
+                <input type="text" class="form-control" id=" " placeholder=" " tabindex=" ">
+              </div>
+            </div>
+
+            <div class="row form-group">
+              <label for=" " class="col-md-3 control-label">State/Province/Region</label>
+              <div class="col-sm-6 col-lg-4">
+                <input type="text" class="form-control" id=" " placeholder=" " tabindex=" ">
+              </div>
+            </div>
+
+            <div class="row form-group">
+              <label for=" " class="col-md-3 control-label">Zip/Postal Code</label>
+              <div class="col-sm-5 col-lg-3">
+                <input type="text" class="form-control" id=" " placeholder=" " tabindex=" ">
+              </div>
+            </div>
+
+            <div class="row form-group">
+              <label for=" " class="col-md-3 control-label">Country</label>
+              <div class="col-sm-6 col-lg-4">
+                <select class="form-control" id=" " tabindex=" ">
+                  <option>United States</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row form-group">
+              <label for=" " class="col-md-3 control-label">Phone Number</label>
+              <div class="col-sm-6 col-lg-4">
+                <input type="text" class="form-control" id=" " placeholder=" " tabindex=" ">
+              </div>
+              <a href="#" class="form-info-link"><i class="fa fa-info-circle"></i> More Info</a>
+            </div>
+
+            
+            <div class="col-md-offset-3">
+
+              <hr>
+              <h2 class=" " style="display:inline-block">Delivery Preferences (optional)</h2>
+              <a href="#" class="form-info-link"><i class="fa fa-info-circle"></i> What's this?</a>
+
+            </div> <!-- /offset -->
+            
+
+            <div class="row form-group">
+              <label for=" " class="col-md-3 control-label">Address Type</label>
+              <div class="col-sm-6 col-lg-4">
+                <select class="form-control" id=" " tabindex=" ">
+                  <option>Select an Address Type</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row form-group">
+              <label for=" " class="col-md-3 control-label">Security Access Code</label>
+              <div class="col-sm-6 col-lg-4">
+                <input type="text" class="form-control" id=" " placeholder="For buildings or gated communities" tabindex=" ">
+              </div>
+            </div>
+
+            <div class="col-md-offset-3">
+
+              <hr>
+
+            </div> <!-- /offset -->
+            
+            <div class="row form-group">
+              <div class="col-md-offset-3 col-sm-9">
+                <button type="submit" class="btn btn-primary btn-lg" tabindex=" " wz-next>Ship to this address &nbsp;<i class="fa fa-caret-right"></i></button>
+              </div>
+            </div>
+            
+          </form>
 
       </div><!--/span-->
 
@@ -93,9 +221,134 @@
 
       <div class="col-sm-12">
 
-        <h1>Payment Step</h1>
+        <div class="col-md-offset-3">
+            <h1>Select Payment Option 
+              <span class="store-heading-description">
+                You&rsquo;ll be able to review the order before being charged.
+              </span>
+            </h1>
+          </div>
 
-        <input type="submit" class="btn btn-primary btn-lg" wz-next value="Next">
+          <div class="col-md-offset-3">
+            <div class="row">
+
+              <div class="col-xs-6 col-lg-4">
+                <div class="checkout-card active clearfix">
+                  <img src="http://placehold.it/46x30" class="pull-right">
+                  <p class="card-number">
+                    <span>&bull;&bull;&bull;&bull;</span>
+                    <span>&bull;&bull;&bull;&bull;</span>
+                    <span>&bull;&bull;&bull;&bull;</span>
+                    <span>1234</span>
+                  </p>
+                  <p class="card-expiry pull-left">
+                    <small>EXP:</small>
+                    01/14
+                  </p>
+                  <button class="btn btn-primary pull-right card-use-btn" wz-next>Use this Option <i class="fa fa-caret-right"></i></button>
+                </div> 
+                <div class="card-actions">
+                  <a href="#"><i class="fa fa-pencil-square-o"></i> Edit</a>
+                  &nbsp;&nbsp;
+                  <a href="#"><i class="fa fa-times-circle"></i> Remove</a>
+                </div>               
+              </div><!-- /span -->
+
+              <div class="col-xs-6 col-lg-4">
+                <div class="checkout-card clearfix">
+                  <img src="http://placehold.it/46x30" class="pull-right">
+                  <p class="card-number">
+                    <span>&bull;&bull;&bull;&bull;</span>
+                    <span>&bull;&bull;&bull;&bull;</span>
+                    <span>&bull;&bull;&bull;&bull;</span>
+                    <span>1234</span>
+                  </p>
+                  <p class="card-expiry pull-left">
+                    <small>EXP:</small>
+                    01/14
+                  </p>
+                  <button class="btn btn-primary pull-right card-use-btn" wz-next>Use this Option <i class="fa fa-caret-right"></i></button>
+                </div> 
+                <div class="card-actions">
+                  <a href="#"><i class="fa fa-pencil-square-o"></i> Edit</a>
+                  &nbsp;&nbsp;
+                  <a href="#"><i class="fa fa-times-circle"></i> Remove</a>
+                </div>               
+              </div><!-- /span -->  
+              
+            </div>
+          </div>
+
+        
+          <div class="row">
+            <div class="col-md-offset-3 col-lg-8">
+              <hr>
+              <h2 class=" ">Add a new payment method</h2>
+            </div>
+          </div>
+
+          <form class="form-horizontal" role="form">
+
+            <div class="form-group">
+              <label for=" " class="col-md-3 control-label">Name on Card</label>
+              <div class="col-sm-6 col-lg-4">
+                <input type="text" class="form-control" id=" " placeholder=" " tabindex=" ">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for=" " class="col-md-3 control-label">Card Number</label>
+              <div class="col-sm-6 col-lg-4">
+                <input type="text" class="form-control" id=" " placeholder=" " tabindex=" ">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for=" " class="col-md-3 control-label">Expiration</label>
+              <div class="col-sm-5">
+                <div class="row">
+                  <div class="col-xs-4 col-sm-3 col-med-2">
+                    <input type="text" class="form-control col-sm-1" id=" " placeholder="MM" tabindex=" ">
+                  </div>
+                  <div class="col-xs-1">
+                    <label class="control-label">/</label>
+                  </div>
+                  <div class="col-xs-6 col-sm-4 col-med-3">
+                    <input type="text" class="form-control col-sm-3" id=" " placeholder="YYYY" tabindex=" ">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for=" " class="col-md-3 control-label">Security Code</label>
+              <div class="col-sm-5">
+                <div class="row">
+                  <div class="col-xs-4 col-sm-3 col-med-2">
+                    <input type="password" class="form-control col-sm-1" id=" " placeholder="&bull;&bull;&bull;" tabindex=" ">
+                  </div>
+                  <div class="col-xs-6 col-sm-4 col-med-3">
+                    <a href="#" class="form-info-link"><i class="fa fa-info-circle"></i> What's this?</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-md-offset-3 col-sm-9">
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" checked> My billing &amp; shipping address are the same
+                  </label>
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <div class="col-md-offset-3 col-sm-9">
+                <button type="submit" class="btn btn-primary btn-lg" tabindex=" " wz-next>Add Card &nbsp;<i class="fa fa-caret-right"></i></button>
+              </div>
+            </div>
+            
+          </form>
 
       </div><!--/span-->
 
@@ -104,9 +357,89 @@
 
       <div class="col-sm-12">
 
-        <h1>Review Order Step</h1>
+        <div class="col-md-offset-3 col-lg-8">
+            <h1>Review &amp; Confirm Order 
+              <span class="store-heading-description">
+                Clicking &ldquo;Place Order&ldquo; will charge your payment option in the ammount below.
+              </span>
+            </h1>
+          </div>
 
-        <input type="submit" class="btn btn-primary btn-lg" wz-next value="Next">
+          <div class="col-md-offset-3 col-lg-8">
+            <h2 class="">Order Details</h2>
+            <hr>
+
+            <form class="form order-details" role="form">
+              <a href="#" class="pull-right"><i class="fa fa-pencil-square-o"></i> make changes</a>
+              <div class="form-group">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Qty</th>
+                      <th>Description</th>
+                      <th align="right">Price</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>1</td>
+                      <td>
+                        <p class="confirmation-description">
+                          Product Description
+                        </p>
+                      </td>
+                      <td align="right">$18.00</td>
+                    </tr>
+                    <tr>
+                      <td>2</td>
+                      <td>
+                        <p class="confirmation-description">
+                          Product Description
+                        </p>
+                      </td>
+                      <td align="right">$33.00</td>
+                    </tr>
+                    <tr>
+                      <td>1</td>
+                      <td>
+                        <p class="confirmation-description">
+                          Product Kit Description
+                        </p>
+                        <ul>
+                          <li>1 Item Title #1234</li>
+                          <li>1 Item Title #1234</li>
+                          <li>1 Item Title #1234</li>
+                          <li>1 Item Title #1234</li>
+                        </ul>
+                      </td>
+                      <td align="right">$69.00</td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td colspan="3">
+                        <p>Subtotal: $120.00</p>
+                        <p>Shipping: $15.00</p>
+                        <p>Tax: 8.25%</p>
+                        <p class="lead"><b>Total Charges: $144.90</b></p>
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+
+              </div>
+
+              <div class="form-group text-right">
+                <label class="checkbox-inline">
+                  <input type="checkbox" value="">
+                  I aggree to the <a href="#">Terms and Conditions</a>
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+                </label>
+                <button type="button" class="btn btn-link pull-left" tabindex=" ">Cancel Order</button>
+                <button type="submit" class="btn btn-primary btn-lg" tabindex=" " wz-next>Place Order &nbsp;<i class="fa fa-caret-right"></i></button>
+              </div>
+            </form>
+          </div>
 
       </div><!--/span-->
 
@@ -115,9 +448,83 @@
 
       <div class="col-sm-12">
 
-        <h1>Review Order Step</h1>
+        <div class="col-md-offset-3 col-lg-8">
+          <a href="#" class="pull-right"><i class="fa fa-print"></i> Print this page</a>
+          <h1>Thank you!
+                    <span class="store-heading-description">
+                      We have received your order and will be processing it shortly.
+                    </span>
+                  </h1>
+        </div>
 
-        <input type="submit" class="btn btn-primary btn-lg" wz-next value="Next">
+        <div class="col-md-offset-3 col-lg-8">
+          <h2 class="">Confirmation Number: <label style="color:black;">1234567890</label></h2>
+          <hr>
+
+          <form class="form order-details" role="form">
+            <div class="form-group">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Qty</th>
+                    <th>Description</th>
+                    <th align="right">Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>
+                      <p class="confirmation-description">
+                        Product Description
+                      </p>
+                    </td>
+                    <td align="right">$18.00</td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>
+                      <p class="confirmation-description">
+                        Product Description
+                      </p>
+                    </td>
+                    <td align="right">$33.00</td>
+                  </tr>
+                  <tr>
+                    <td>1</td>
+                    <td>
+                      <p class="confirmation-description">
+                        Product Kit Description
+                      </p>
+                      <ul>
+                        <li>1 Item Title #1234</li>
+                        <li>1 Item Title #1234</li>
+                        <li>1 Item Title #1234</li>
+                        <li>1 Item Title #1234</li>
+                      </ul>
+                    </td>
+                    <td align="right">$69.00</td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colspan="3">
+                      <p>Subtotal: $120.00</p>
+                      <p>Shipping: $15.00</p>
+                      <p>Tax: 8.25%</p>
+                      <p class="lead"><b class="text-success"><i class="fa fa-check"></i> Successfully Charged: $144.90</b></p>
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+
+          </form>
+          <h2 class="">How to track your order</h2>
+          <hr>
+          <p>Lorem Ipsum</p>
+
+        </div>
 
       </div><!--/span-->
 

@@ -32,6 +32,9 @@ h2, h3, h4, a, .btn-link {
 h1, .h1, a:hover, a:focus, .btn-link:hover, .btn-link:focus {
   color: #b51a8a;
 }
+a {
+  cursor: pointer;
+}
 
 header a, header p {
   color: #fff;
@@ -552,11 +555,11 @@ a, .btn {
 #shop_menu ul ul {
     max-height: 0;
     overflow: hidden;
-    -webkit-transition: max-height 200ms ease;
-    -moz-transition: max-height 200ms ease;
-    -ms-transition: max-height 200ms ease;
-    -o-transition: max-height 200ms ease;
-    transition: max-height 200ms ease;
+    -webkit-transition: max-height 600ms ease;
+    -moz-transition: max-height 600ms ease;
+    -ms-transition: max-height 600ms ease;
+    -o-transition: max-height 600ms ease;
+    transition: max-height 600ms ease;
 
     /* -- TODO -- Integrate JS hide/show subnavs */
 }
@@ -567,7 +570,7 @@ a, .btn {
   max-height: 0;
 }
 #shop_menu li.open > ul > li.open > ul {
-  max-height: 600px;
+  max-height: 800px;
 }
 
 #shop_menu .align-right {
@@ -664,12 +667,19 @@ a, .btn {
 #shop_menu li.has-sub > a > i {
     float: right;
     margin-right: 9px;
-}
 
+}
 #shop_menu ul ul li.has-sub > a > i {
     margin-right: 0px;
 }
+#shop_menu li > a > i {
+    -webkit-transition: -webkit-transform 200ms ease;
+    -moz-transition: -moz-transform 200ms ease;
+    -ms-transition: -ms-transform 200ms ease;
+    -o-transition: -o-transform 200ms ease;
+    transition: transform 200ms ease;
 
+}
 #shop_menu li.open > a > i {
     filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
     -webkit-transform: rotate(180deg);
@@ -707,5 +717,8 @@ a, .btn {
 @media (min-width: 768px) {
   .tab-pane {
     min-height: 100px;
+  }
+  .store-checkout .control-label {
+    text-align: right !important;
   }
 }
