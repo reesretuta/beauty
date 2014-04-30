@@ -225,7 +225,7 @@
 
       <div class="col-sm-12">
 
-        <div class="col-md-offset-3">
+        <div class="col-md-offset-3" ng-if="checkout.customerStatus=='existing'">
             <h1>Select Payment Option 
               <span class="store-heading-description">
                 You&rsquo;ll be able to review the order before being charged.
@@ -233,21 +233,21 @@
             </h1>
           </div>
 
-          <div class="col-md-offset-3">
+          <div class="col-md-offset-3" ng-if="checkout.customerStatus=='existing'">
             <div class="row">
 
-              <div class="col-xs-6 col-lg-4">
-                <div class="checkout-card active clearfix">
+              <div class="col-xs-6 col-lg-4" ng-repeat="ccData in existingCustomerData.creditCards">
+                <div class="checkout-card clearfix" ng-class="{active: $first}">
                   <img src="http://placehold.it/46x30" class="pull-right">
                   <p class="card-number">
-                    <span>&bull;&bull;&bull;&bull;</span>
-                    <span>&bull;&bull;&bull;&bull;</span>
-                    <span>&bull;&bull;&bull;&bull;</span>
-                    <span>1234</span>
+                      <span>&bull;&bull;&bull;&bull;</span>
+                      <span>&bull;&bull;&bull;&bull;</span>
+                      <span>&bull;&bull;&bull;&bull;</span>
+                    <span>{{substr(ccData.cardNumber,-4,4)}}</span>
                   </p>
                   <p class="card-expiry pull-left">
                     <small>EXP:</small>
-                    01/14
+                    {{ccData.expMonth}}/{{substr(ccData.expYear,2,2)}}
                   </p>
                   <button class="btn btn-primary pull-right card-use-btn" wz-next>Use this Option <i class="fa fa-caret-right"></i></button>
                 </div> 
@@ -257,19 +257,25 @@
                   <a href="#"><i class="fa fa-times-circle"></i> Remove</a>
                 </div>               
               </div><!-- /span -->
+              
+            </div>
+          </div>
+          
+          <div class="col-md-offset-3" ng-if="checkout.customerStatus=='new'">
+            <div class="row">
 
-              <div class="col-xs-6 col-lg-4">
-                <div class="checkout-card clearfix">
+              <div class="col-xs-6 col-lg-4" ng-repeat="ccData in newCustomerData.creditCards" ng-if="  newCustomerData.creditCards">
+                <div class="checkout-card clearfix" ng-class="{active: $first}">
                   <img src="http://placehold.it/46x30" class="pull-right">
                   <p class="card-number">
-                    <span>&bull;&bull;&bull;&bull;</span>
-                    <span>&bull;&bull;&bull;&bull;</span>
-                    <span>&bull;&bull;&bull;&bull;</span>
-                    <span>1234</span>
+                      <span>&bull;&bull;&bull;&bull;</span>
+                      <span>&bull;&bull;&bull;&bull;</span>
+                      <span>&bull;&bull;&bull;&bull;</span>
+                    <span>{{substr(ccData.cardNumber,-4,4)}}</span>
                   </p>
                   <p class="card-expiry pull-left">
                     <small>EXP:</small>
-                    01/14
+                    {{ccData.expMonth}}/{{substr(ccData.expYear,2,2)}}
                   </p>
                   <button class="btn btn-primary pull-right card-use-btn" wz-next>Use this Option <i class="fa fa-caret-right"></i></button>
                 </div> 
@@ -278,7 +284,7 @@
                   &nbsp;&nbsp;
                   <a href="#"><i class="fa fa-times-circle"></i> Remove</a>
                 </div>               
-              </div><!-- /span -->  
+              </div><!-- /span -->
               
             </div>
           </div>
@@ -304,7 +310,7 @@
             <div class="form-group" ng-class="{ 'has-error' : paymentForm.cardNumber.$invalid && !paymentForm.cardNumber.$pristine }">
               <label for=" " class="col-md-3 control-label">Card Number</label>
               <div class="col-sm-6 col-lg-4">
-                <input ng-model="checkout.cardNumber" ng-minlength="13" name="cardNumber" type="text" class="form-control" id=" " placeholder=" " tabindex=" " required>
+                <input ng-model="checkout.cardNumber" ng-minlength="13" ng-maxlength="16" maxlength="16" name="cardNumber" type="text" class="form-control" id=" " placeholder=" " tabindex=" " required>
                 <span ng-show="paymentForm.cardNumber.$error.minlength" class="help-inline">Credit card needs to be at least 13 numbers.</span>
               </div>
             </div>
@@ -350,7 +356,7 @@
             
             <div class="form-group">
               <div class="col-md-offset-3 col-sm-9">
-                <button type="submit" class="btn btn-primary btn-lg" tabindex=" " wz-next ng-disabled="!paymentForm.$valid">Add Card &nbsp;<i class="fa fa-caret-right"></i></button>
+                <button type="submit" ng-click="addCard(checkout)" class="btn btn-primary btn-lg" tabindex=" " wz-next ng-disabled="!paymentForm.$valid">Add Card &nbsp;<i class="fa fa-caret-right"></i></button>
               </div>
             </div>
             
