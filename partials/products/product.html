@@ -122,7 +122,7 @@
           </div>
 
         </div><!--/span-->
-
+        </div>
       </section><!--/row-->
       <!-- /Item Detail Section -->
 
@@ -132,8 +132,7 @@
           <h2>Recently Viewed</h2>
         </div>
 
-
-        <div ng-repeat="viewedProduct in products.productdetail" class="col-xs-6 col-sm-4 col-md-3 col-lg-3 store-item related">
+        <div ng-repeat="viewedProduct in recentlyViewedProducts" class="col-xs-6 col-sm-4 col-md-3 col-lg-3 store-item related">
           <div class="store-item-wrapper">
             <a ng-href="#/products/{{viewedProduct.itemnumber}}#top"><img class="img-responsive" ng-src="{{viewedProduct.path}}"></a>
             <div class="store-item-info">

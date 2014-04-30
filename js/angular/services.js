@@ -325,84 +325,32 @@ angular.module('app.services', ['ngResource'])
     .factory('RecentlyViewed', function ($rootScope, $log, growlNotifications) {
         var productService = {};
 
-        function getRecentlyViewed() {
-            if ($rootScope.recentlyViewed == null) {
-                $rootScope.recentlyViewed = {};
-            }
-            var recentlyViewed = $rootScope.recentlyViewed;
-            if (recentlyViewed.items == null) {
-                recentlyViewed.items = new Array();
-            }
-            return recentlyViewed;
+        if ($rootScope.recentlyViewed == null) {
+            $rootScope.recentlyViewed = {};
+            $rootScope.recentlyViewed.items = new Array();
         }
-        getRecentlyViewed();
-
-//        productService.getItemCount = function() {
-//            var relatedProducts = getRelatedProducts();
-//            var count = 0;
-//            angular.forEach(relatedProducts.items, function(product) {
-//                count += parseInt(product.quantity);
-//            });
-//            
-//            return count;
-//        };
 
         productService.getItems = function() {
-            var recentlyViewed = getRecentlyViewed();
-            return recentlyViewed.items;
+            return $rootScope.recentlyViewed.items;
         };
 
         productService.addRecentlyViewed = function(p) {
-            var recentlyViewed = getRecentlyViewed();
-            var getIndex;
-            angular.forEach(recentlyViewed.items, function(product) {
-                if (product.itemnumber != p.itemnumber) {
-                  
-//                  getIndex=cart.items.indexOf(product);
-//                  cart.items.splice(getIndex,1);                    
-//
-//                  p.quantity = newQty;
-//                  $log.debug("added product", p);
-                  recentlyViewed.items.push(p);
+            var found = 0;
+            angular.forEach($rootScope.recentlyViewed.items, function(product) {
+                $log.debug("checking recently added against list", p.itemnumber, product.itemnumber );
+                if (product.itemnumber == p.itemnumber) {
+                    $log.debug("already in recently viewed", p);
+                    found = 1;
                 }
             });
 
-//            relatedProducts.items.splice(getIndex,0,p);
-            
-        };
-        
-//        cartService.updateCart = function(p) {
-//            var cart = getCart();
-//            var getIndex;
-//            angular.forEach(cart.items, function(product) {
-//                if (product.itemnumber == p.itemnumber) {
-//                  getIndex=cart.items.indexOf(product);
-//                  cart.items.splice(getIndex,1);  
-//                  return getIndex;
-//                }
-//                
-//            });
-//
-//            $log.debug("updateCart()", cart);
-//            cart.items.splice(getIndex,0,p);
-//        };
-//
-//        cartService.removeFromCart = function(p) {
-//            var cart = getCart();
-//            angular.forEach(cart.items, function(product) {
-//                if (product.itemnumber ==p.itemnumber) {
-//                  var getIndex=cart.items.indexOf(product);
-//                  cart.items.splice(getIndex,1);     
-//                }
-//                
-//            });
-//            
-//        };
+            if (!found) {
+                $rootScope.recentlyViewed.items.push(angular.copy(p));
+            }
 
+            $log.debug("recently viewed is now", $rootScope.recentlyViewed);
+        };
         return productService;
     })
-//    .factory('Categories', function ($resource, API_URL) {
-//        return $resource(API_URL + '/categories/:categoryId');
-//    })
     .constant('BASE_URL', '')
     .constant('API_URL', '/api');
