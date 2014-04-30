@@ -319,6 +319,85 @@ angular.module('app.services', ['ngResource'])
 
         return categoriesService;
     })
+    .factory('RecentlyViewed', function ($rootScope, $log, growlNotifications) {
+        var productService = {};
+
+        function getRecentlyViewed() {
+            if ($rootScope.recentlyViewed == null) {
+                $rootScope.recentlyViewed = {};
+            }
+            var recentlyViewed = $rootScope.recentlyViewed;
+            if (recentlyViewed.items == null) {
+                recentlyViewed.items = new Array();
+            }
+            return recentlyViewed;
+        }
+        getRecentlyViewed();
+
+//        productService.getItemCount = function() {
+//            var relatedProducts = getRelatedProducts();
+//            var count = 0;
+//            angular.forEach(relatedProducts.items, function(product) {
+//                count += parseInt(product.quantity);
+//            });
+//            
+//            return count;
+//        };
+
+        productService.getItems = function() {
+            var recentlyViewed = getRecentlyViewed();
+            return recentlyViewed.items;
+        };
+
+        productService.addRecentlyViewed = function(p) {
+            var recentlyViewed = getRecentlyViewed();
+            var getIndex;
+            angular.forEach(recentlyViewed.items, function(product) {
+                if (product.itemnumber != p.itemnumber) {
+                  
+//                  getIndex=cart.items.indexOf(product);
+//                  cart.items.splice(getIndex,1);                    
+//
+//                  p.quantity = newQty;
+//                  $log.debug("added product", p);
+                  recentlyViewed.items.push(p);
+                }
+            });
+
+//            relatedProducts.items.splice(getIndex,0,p);
+            
+        };
+        
+//        cartService.updateCart = function(p) {
+//            var cart = getCart();
+//            var getIndex;
+//            angular.forEach(cart.items, function(product) {
+//                if (product.itemnumber == p.itemnumber) {
+//                  getIndex=cart.items.indexOf(product);
+//                  cart.items.splice(getIndex,1);  
+//                  return getIndex;
+//                }
+//                
+//            });
+//
+//            $log.debug("updateCart()", cart);
+//            cart.items.splice(getIndex,0,p);
+//        };
+//
+//        cartService.removeFromCart = function(p) {
+//            var cart = getCart();
+//            angular.forEach(cart.items, function(product) {
+//                if (product.itemnumber ==p.itemnumber) {
+//                  var getIndex=cart.items.indexOf(product);
+//                  cart.items.splice(getIndex,1);     
+//                }
+//                
+//            });
+//            
+//        };
+
+        return productService;
+    })
 //    .factory('Categories', function ($resource, API_URL) {
 //        return $resource(API_URL + '/categories/:categoryId');
 //    })

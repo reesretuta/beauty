@@ -1,5 +1,5 @@
 angular.module('app.controllers.products')
-    .controller('ProductDetailsController', function ($sce, HashKeyCopier, Products, $scope, $rootScope, $routeParams, $location, $timeout, $window, $log, $modal, $document, Cart, breadcrumbs) {
+    .controller('ProductDetailsController', function ($sce, HashKeyCopier, Products, $scope, $rootScope, $routeParams, $location, $timeout, $window, $log, $modal, $document, Cart, breadcrumbs, RecentlyViewed) {
         $scope.breadcrumbs = breadcrumbs;
         $scope.breadcrumbs.options = { 'Product Details': $routeParams.productId  }; 
 
@@ -51,6 +51,13 @@ angular.module('app.controllers.products')
         }
         
         
+        $scope.addToRecentlyViewed = function(product) {
+            $log.debug("adding viewed product", product);
+            
+            var p = angular.copy(product);
+            RecentlyViewed.addRecentlyViewed(p);
+        }
+        
 
         $scope.showhide = function(itemnumber) {
             $log.debug("showhide", itemnumber);
@@ -86,6 +93,9 @@ angular.module('app.controllers.products')
                 $rootScope.page = product.productname;
                 $scope.breadcrumbs.options = {};
                 $scope.breadcrumbs.options[$scope.productId] = product.productname;
+                
+                // add product to recently view products
+                $scope.addToRecentlyViewed(product);
 
                 $scope.loading = false;
             }, function (data) {

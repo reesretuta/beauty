@@ -131,7 +131,13 @@
         <div class="col-lg-12">
           <h2>Recently Viewed</h2>
         </div>
-        recent products...
+          <span ng-controller="RecentlyViewedController">
+            <span ng-repeat="viewedProduct in products.productdetail">
+                <img ng-src="{{viewedProduct.path}}" width="150">
+                <span>{{viewedProduct.productname}}</span>
+                <span>{{viewedProduct.itemnumber}}</span>
+            </span>
+          </span>
       </section>
       <!-- /Recently Viewed Section -->
 
