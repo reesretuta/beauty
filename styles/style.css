@@ -5,25 +5,8 @@
  * v0.9 - 17 April 2014
  */
 
-
-/* !!!!NOTE: @Dain to place these where he'd like. On product detail page for changing color swatches  */
-
-.itemsleep {
-    display: block;
-}
-.pricesleep {
-    display: block;
-}
-.itemactive {
-    display: block;
-}
-.priceactive {
-    display: block;
-}
-
-/*input[type=search] {
-  -webkit-appearance: searchfield;
-}*/
+.primary-color { color: #b51a8a; }
+.secondary-color { color: #AA73B1; }
 
 h1, .h1, h2, h3, h4, h5, h6,
 .btn, .label, .badge, .store-checkout .control-label {
@@ -35,10 +18,23 @@ h2, h3, h4, a, .btn-link {
 h1, .h1, a:hover, a:focus, .btn-link:hover, .btn-link:focus {
   color: #b51a8a;
 }
+.btn-primary.disabled, .btn-primary[disabled], fieldset[disabled] .btn-primary,
+.btn-primary.disabled:hover, .btn-primary[disabled]:hover, fieldset[disabled] .btn-primary:hover, 
+.btn-primary.disabled:focus, .btn-primary[disabled]:focus, fieldset[disabled] .btn-primary:focus, 
+.btn-primary.disabled:active, .btn-primary[disabled]:active, fieldset[disabled] .btn-primary:active, 
+.btn-primary.disabled.active, .btn-primary[disabled].active, fieldset[disabled] {
+  background-color: #ccabd0;
+  border-color: #ccabd0;
+}
 a {
   cursor: pointer;
 }
-
+.well h3  {
+  margin-top: 0;
+}
+/*.well form {
+  padding-top: 15px;
+}*/
 header a, header p {
   color: #fff;
   font-family: "News Cycle", sans-serif;

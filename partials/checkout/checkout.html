@@ -1,6 +1,8 @@
 <section class="row store-checkout container" ng-controller="CheckoutController">
 
-  <wizard name="checkoutWizard" hide-indicators="false" on-finish="finished()" current-step="currentStep">
+  <wizard name="checkoutWizard" hide-indicators="false" on-finish="finished()" current-step="checkout.currentStep">
+
+  current step: {{checkout.currentStep}}
 
     <!-- sign in -->
     <wz-step title="Start">

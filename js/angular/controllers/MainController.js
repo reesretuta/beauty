@@ -12,15 +12,15 @@ angular.module('app.controllers.main')
                     path = $location.path(),
                     params = $location.search();
 
-                $log.debug("changeListener(): location change event in projects page", url, params);
-
-                var urlSearch = S(params.search != null ? params.search : "").toString();
-                var localSearch = Search.getQuery();
-
-                $log.debug("changeListener(): url search", urlSearch, "local search", localSearch);
-
                 // if we have a composition and run, and the current scope doesn't already have the same run
                 if (path == "/products" && (urlSearch != localSearch)) {
+                    $log.debug("changeListener(): location change event in projects page", url, params);
+
+                    var urlSearch = S(params.search != null ? params.search : "").toString();
+                    var localSearch = Search.getQuery();
+
+                    $log.debug("changeListener(): url search", urlSearch, "local search", localSearch);
+
                     $log.debug("changeListener(): updating search params in response to location change");
 
                     Search.search(urlSearch);
@@ -83,4 +83,15 @@ angular.module('app.controllers.main')
             return '/' + paths;
         }
 
+        function cleanup() {
+            if (cancelChangeListener) {
+                $log.debug("cleanup(): canceling change listener");
+                cancelChangeListener();
+            }
+        }
+
+        /*==== CLEANUP ====*/
+        $scope.$on('$destroy', function() {
+            cleanup();
+        });
     });
