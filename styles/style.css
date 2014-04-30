@@ -91,10 +91,19 @@ h2 {
 .navbar-brand {
   height: 95px;
 }
+.navbar-nav {
+  margin: 5px 0 0 -15px;
+}
+/*.navbar-nav>li {
+  opacity: .3;
+}
+.navbar-nav>li.active {
+  opacity: 1;
+}*/
 .navbar-nav>li>a {
   color: #fff;
   border-radius: 5px;
-  padding: 10px 15px;
+  padding: 8px 15px;
 }
 .navbar-toggle,
 .navbar-nav>li>a:hover,
