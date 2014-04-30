@@ -160,28 +160,27 @@
 
         <ul ng-controller="CategoriesController">
 
-          <li ng-repeat="category in categories" ng-class="{'open': $index==selectedIndex}">
-
+          <li ng-repeat="category in categories" ng-class="{'open': $index==selectedIndex[0]}">
               <!-- don't follow link if has children, just expand -->
-              <a ng-show="category.childcategory" href ng-class="{'active': $index==selectedIndex}" ng-click="itemClicked($index);">
+              <a ng-show="category.childcategory" href ng-class="{'active': $index==selectedIndex[0]}" ng-click="itemClicked(0, $index);">
                 <span>{{category.name}}</span> <i ng-if="category.childcategory" class="fa fa-angle-down pull-right"></i>
               </a>
               <!-- follow link if no children -->
-              <a ng-show="category.childcategory == null" ng-href="#/products?category={{category.id}}" ng-click="isOpen = !isOpen">
+              <a ng-show="category.childcategory == null" ng-href="#/products?category={{category.id}}">
                 <span>{{category.name}}</span> <i ng-if="category.childcategory" class="fa fa-angle-down pull-right"></i>
               </a>  
 
               <!-- loop in children links -->
               <ul ng-if="category.childcategory">
 
-                  <li ng-repeat="category in category.childcategory" ng-class="{'open': $index==selectedIndex}">
+                  <li ng-repeat="category in category.childcategory" ng-class="{'open': $index==selectedIndex[1]}">
 
                     <!-- don't follow link if has children, just expand -->
-                    <a ng-show="category.childcategory" href ng-class="{'active': $index==selectedIndex}" ng-click="itemClicked($index);"> 
+                    <a ng-show="category.childcategory" href ng-class="{'active': $index==selectedIndex[1]}" ng-click="itemClicked(1, $index);">
                       <span>{{category.name}}</span> <i ng-if="category.childcategory" class="fa fa-angle-down  pull-right"></i>
                     </a>
                     <!-- follow link if no children -->
-                    <a ng-show="category.childcategory == null" ng-href="#/products?category={{category.id}}" ng-click="isOpen2 = !isOpen2"> 
+                    <a ng-show="category.childcategory == null" ng-href="#/products?category={{category.id}}" ng-click="isOpen2 = !isOpen2">
                       <span>{{category.name}}</span> <i ng-if="category.childcategory" class="fa fa-angle-down  pull-right"></i>
                     </a>
 

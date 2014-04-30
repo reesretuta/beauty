@@ -83,9 +83,9 @@ angular.module('app.controllers.main')
             return '/' + paths;
         }
 
-        $scope.selectedIndex = -1;
-            $scope.itemClicked = function($index) {
-            $scope.selectedIndex = $index;
+        $scope.selectedIndex = {};
+        $scope.itemClicked = function(level, index) {
+            $scope.selectedIndex[level] = index;
         }
 
         function cleanup() {
