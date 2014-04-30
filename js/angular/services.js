@@ -354,7 +354,6 @@ angular.module('app.services', ['ngResource'])
 
         productService.addRecentlyViewed = function(p) {
             var recentlyViewed = getRecentlyViewed();
-            var getIndex;
             angular.forEach(recentlyViewed.items, function(product) {
                 if (product.itemnumber != p.itemnumber) {
                   
