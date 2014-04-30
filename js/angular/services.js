@@ -278,20 +278,23 @@ angular.module('app.services', ['ngResource'])
 
         categoriesService.get = function(query, success, failure) {
             return $http.get('/api/categories.xml').success(function(data, status, headers, config) {
-                $log.debug("searching for category");
+                $log.debug("categoriesService(): searching for category");
                 //$log.debug(response.data);
-                $log.debug("query", query);
+                $log.debug("categoriesService(): query", query);
 
                 var categories = $.xml2json(data, {"normalize": true});
                 categories = categories.categories;
-                $log.debug("categories", categories.categorydetail);
+                $log.debug("categoriesService(): categories", categories.categorydetail);
                 if (query.categoryId != null) {
                     var c = findCategory(categories.categorydetail, query.categoryId, query.recurse);
 
                     if (c != null) {
+                        $log.debug("categoriesService(): found category", c);
                         success(c, status, headers);
                         return c;
                     }
+
+                    $log.debug("categoriesService(): couldn't find category", c);
 
                     // if we got here, we didn't find the category, 404
                     failure({}, 404, headers, config);

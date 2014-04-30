@@ -54,6 +54,7 @@ angular.module('app.controllers.products')
 
         var categoriesLoadedPromise = $q.defer();
         var loadCategory = function() {
+            $log.debug("loadCategory(): loading category", $scope.categoryId);
             Categories.get({"categoryId": $scope.categoryId, "recurse": true}, function(category, status, headers) {
                 $scope.category = category;
 
@@ -70,7 +71,9 @@ angular.module('app.controllers.products')
 
             })
         }
-        loadCategory();
+        if ($scope.categoryId) {
+            loadCategory();
+        }
 
         var loadProducts = function () {
             //var start = new Date().getTime();
@@ -109,11 +112,15 @@ angular.module('app.controllers.products')
             });
         }
 
-        categoriesLoadedPromise.promise.then(function(category) {
-            $log.debug("loading products after category loaded");
-            // kick off the first refresh
+        if ($scope.categoryId) {
+            categoriesLoadedPromise.promise.then(function(category) {
+                $log.debug("loading products after category loaded");
+                // kick off the first refresh
+                loadProducts();
+            });
+        } else {
             loadProducts();
-        });
+        }
 
         function cleanup() {
         }
