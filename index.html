@@ -204,9 +204,9 @@
 
         </ul>
         <hr>
-        <ul ng-controller="CategoriesController" ng-init="navStatic = '0'">
-          <li><a ng-href="#/products#top" href="#/products#top" ng-class="{'active': navStatic == '1'}" ng-click="navStatic = '1'"><span>All Products</span></a></li>
-          <li><a ng-href="#/cart#additem" href="#/cart#additem" ng-class="{'active': navStatic == '2'}" ng-click="navStatic = '2'"><span>Order By Item</span></a></li>
+        <ul>
+          <li><a ng-href="#/products#top" href="#/products#top" ng-class="{'active': navStatic == '1'}" ng-click="itemClicked(0, null); navStatic = '1'"><span>All Products</span></a></li>
+          <li><a ng-href="#/cart#additem" href="#/cart#additem" ng-class="{'active': navStatic == '2'}" ng-click="itemClicked(0, null); navStatic = '2'"><span>Order By Item</span></a></li>
         </ul>
 
       </aside>
