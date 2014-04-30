@@ -373,11 +373,45 @@
           </div>
 
           <div class="col-md-offset-3 col-lg-8">
-            <h2 class="">Order Details</h2>
+
+            <div class="row">
+
+              <div class="col-xs-6 col-lg-4">
+                <h3>Charging To:</h3>
+                <div class="checkout-card clearfix active">
+                  <img src="http://placehold.it/46x30" class="pull-right">
+                  <p class="card-number">
+                    <span>&bull;&bull;&bull;&bull;</span>
+                    <span>&bull;&bull;&bull;&bull;</span>
+                    <span>&bull;&bull;&bull;&bull;</span>
+                    <span>1234</span>
+                  </p>
+                  <p class="card-expiry pull-left">
+                    <small>EXP:</small>
+                    01/14
+                  </p>
+                  <a href="#" class="btn pull-right card-use-btn"><i class="fa fa-pencil-square-o"></i> Change Card</a>
+                </div>              
+              </div><!-- /card -->
+
+              <div class="col-xs-6 col-lg-4 checkout-address">
+                <h3>Shipping To:</h3>
+                <span class="address-name">Jenny Miller</span>
+                <span class="address-street">123 Main St.</span>
+                <span class="address-region">Los Angeles, CA 90210</span>
+                <span class="phone-number">Phone: (310) 555-1212</span>
+                <div class="address-actions">
+                  <a href="#"><i class="fa fa-pencil-square-o"></i> Change Address</a>
+                </div>
+              </div><!-- /address -->
+
+            </div><!-- /row -->
+
             <hr>
 
             <form class="form order-details" role="form">
-              <a ng-href="#/cart" class="pull-right"><i class="fa fa-pencil-square-o"></i> make changes</a>
+              <a ng-href="#/cart" class="pull-right" style="margin-top:10px"><i class="fa fa-pencil-square-o"></i> make changes</a>
+              <h2 class="">Order Details</h2>
               <div class="form-group">
                 <table class="table">
                   <thead>
