@@ -1,5 +1,5 @@
 angular.module('app.controllers.main')
-    .controller('MainController', function ($scope, $document, $timeout, $location, $rootScope, $routeParams, $log, Categories, Cart, Search, breadcrumbs, RecentlyViewed) {
+    .controller('MainController', function ($scope, $document, $timeout, $location, $rootScope, $routeParams, $log, Session, Categories, Cart, Search, breadcrumbs, RecentlyViewed) {
 
         $scope.breadcrumbs = breadcrumbs;
 
@@ -81,6 +81,32 @@ angular.module('app.controllers.main')
             }
             //$log.debug("getImagePath(): getting image path from string");
             return '/' + paths;
+        }
+
+        $scope.selectedIndex = {};
+        $scope.itemClicked = function(level, index) {
+            $scope.selectedIndex[level] = index;
+        }
+
+        $scope.logout = function() {
+            Session.logout();
+            $location.path("/");
+        }
+
+        $scope.loggedIn = function() {
+            return Session.isLoggedIn();
+        }
+
+        $scope.getUserEmail = function() {
+            var user = Session.getUser();
+            if (user != null) {
+                var email = user.email;
+                $log.debug("username", email);
+                if (email != null) {
+                    return email;
+                }
+            }
+            return "";
         }
 
         function cleanup() {

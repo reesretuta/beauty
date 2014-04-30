@@ -50,6 +50,53 @@ angular.module('app.services', ['ngResource'])
 
         return searchService;
     })
+    .factory('Session', function(Checkout, $rootScope, $log) {
+        var sessionService = {};
+
+        function getSession() {
+            if ($rootScope.session == null) {
+                $rootScope.session = {};
+            }
+            var session = $rootScope.session;
+            return session;
+        }
+        getSession();
+
+        sessionService.login = function(username, password) {
+            $log.debug("Session(): login(): attempting to login with username=", username, "password=", password);
+            if (username == 'joe@blog.com' && password == 'password') {
+                // always assume yes for now
+                var session = getSession();
+                session.authenticated = true;
+                session.user = {
+                    'email': username
+                };
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        sessionService.isLoggedIn = function() {
+            var session = getSession();
+            $log.debug("Session(): isLoggedIn(): ", session.authenticated);
+            return session.authenticated;
+        }
+
+        sessionService.getUser = function() {
+            var session = getSession();
+            $log.debug("Session(): getUser(): ", session.user);
+            return session.user;
+        }
+
+        sessionService.logout = function() {
+            var session = getSession();
+            session.authenticated = false;
+            Checkout.clear();
+        }
+
+        return sessionService;
+    })
     .factory('Section', function($rootScope, $log) {
         return {
             setSection : function(section) {
@@ -57,6 +104,32 @@ angular.module('app.services', ['ngResource'])
                 $rootScope.section = section;
             }
         };
+    })
+    .factory('Checkout', function ($rootScope, $log) {
+        var checkoutService = {};
+
+        function getCheckout() {
+            if ($rootScope.checkout == null) {
+                $rootScope.checkout = {};
+            }
+            var checkout = $rootScope.checkout;
+            return checkout;
+        }
+        getCheckout();
+
+        checkoutService.getCheckout = function() {
+            return getCheckout();
+        };
+
+        checkoutService.setCheckout = function(checkout) {
+            $rootScope.checkout = checkout;
+        };
+
+        checkoutService.clear = function() {
+            $rootScope.checkout = {};
+        }
+
+        return checkoutService;
     })
     .factory('Cart', function ($rootScope, $log, growlNotifications) {
         var cartService = {};

@@ -15,9 +15,6 @@ angular.module('app.controllers.cart')
         $scope.orderByIdQty = 1;
         $scope.searchProducts = {};
         $scope.searchProductsByName = {};
-        
-        
-
 
         var loadCart = function() {
             $scope.products = Cart.getItems();

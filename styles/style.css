@@ -658,6 +658,21 @@ a, .btn {
     display: inline-block;
     padding: 10px 0 10px 10px;
     border-left: 4px solid rgba(181,26,138,.1);
+    -webkit-transition: border 200ms ease;
+    -moz-transition: border 200ms ease;
+    -ms-transition: border 200ms ease;
+    -o-transition: border 200ms ease;
+    transition: border 200ms ease;
+}
+#shop_menu ul ul ul li a.active,
+#shop_menu ul ul ul li a:hover,
+#shop_menu ul ul ul li a:focus {
+    background: transparent;
+}
+#shop_menu ul ul ul li a.active span,
+#shop_menu ul ul ul li a:hover span,
+#shop_menu ul ul ul li a:focus span {
+    border-left: 4px solid rgba(181,26,138,.4);
 }
 
 #shop_menu li.has-sub > a > i {
