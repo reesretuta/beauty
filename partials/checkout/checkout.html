@@ -1,6 +1,7 @@
 <section class="row store-checkout container" ng-controller="CheckoutController">
 
-  <wizard name="checkoutWizard" hide-indicators="true" on-finish="finished()"> 
+  <wizard name="checkoutWizard" hide-indicators="false" on-finish="finished()">
+    <!-- sign in -->
     <wz-step title="Start">
 
       <div class="col-sm-12">
@@ -8,69 +9,66 @@
         <div class="col-md-offset-3">
           <h1>Sign in to complete your order</h1>
         </div>
+        valid={{signInForm.$valid}}
+        <form name="signInForm" class="form-horizontal" role="form">
+            <div class="form-group">
+              <label for="inputEmail3" class="col-md-3 control-label">Email Address</label>
+              <div class="col-sm-6">
+                <input ng-model="checkout.loginEmail" name="loginEmail" type="email" class="form-control" id="inputEmail3" placeholder="Email" tabindex="1" required>
+                valid={{signInForm.loginEmail.$valid}}
+              </div>
+            </div>
 
-          <form class="form-horizontal" role="form">
-              <div class="form-group">
-                <label for="inputEmail3" class="col-md-3 control-label">Email Address</label>
-                <div class="col-sm-6">
-                  <input type="email" class="form-control" id="inputEmail3" placeholder="Email" tabindex="1">
+            <div class="form-group">
+              <label for="inputPassword3" class="col-md-3 control-label">Password</label>
+              <div class="col-sm-4">
+                <input ng-model="checkout.loginPassword" name="loginPassword" type="password" class="form-control" id="inputPassword3" placeholder="Password" tabindex="2" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-md-offset-3 col-sm-9">
+                <div class="radio">
+                  <label>
+                    <input ng-model="checkout.customerStatus" type="radio" name="customerStatus" id="optionsRadios1" value="new">
+                    I am a new customer
+                  </label>
+                </div>
+                <div class="radio">
+                  <label>
+                    <input ng-model="checkout.customerStatus" type="radio" name="customerStatus" id="optionsRadios2" value="existing">
+                    I am an existing customer
+                  </label>
+                </div>
+                <div class="row"><div class="col-sm-6"><hr></div></div>
+                <div class="checkbox">
+                  <label>
+                    <input ng-model="checkout.keepMeSignedIn" name="keepMeSignedIn" type="checkbox" checked> Keep me signed in &nbsp;&nbsp;
+                    <a href="#"><i class="fa fa-info-circle"></i> More Info</a>
+                  </label>
                 </div>
               </div>
-              <div class="form-group">
-                <label for="inputPassword3" class="col-md-3 control-label">Password</label>
-                <div class="col-sm-4">
-                  <input type="password" class="form-control" id="inputPassword3" placeholder="Password" tabindex="2">
+            </div>
+
+            <div class="form-group">
+              <div class="col-md-offset-3 col-sm-9">
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                  <button type="submit" class="btn btn-primary btn-lg" tabindex="3" wz-next ng-disabled="!signInForm.$valid">Continue to Secure Checkout &nbsp;<i class="fa fa-caret-right"></i></button>
+
                 </div>
               </div>
-              
-              <div class="form-group">
-                <div class="col-md-offset-3 col-sm-9">
-                  <div class="radio">
-                    <label>
-                      <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
-                      I am a new customer
-                    </label>
-                  </div>
-                  <div class="radio">
-                    <label>
-                      <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-                      I am an existing customer
-                    </label>
-                  </div>
-                  <div class="radio">
-                    <label>
-                      <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3">
-                      Option three
-                    </label>
-                  </div>
-                  <div class="row"><div class="col-sm-6"><hr></div></div>
-                  <div class="checkbox">
-                    <label>
-                      <input type="checkbox" checked> Keep me signed in &nbsp;&nbsp; 
-                      <a href="#"><i class="fa fa-info-circle"></i> More Info</a>
-                    </label>
-                  </div>
-                </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-md-offset-3 col-sm-9">
+                <div class="row"><div class="col-sm-6"><hr></div></div>
+                <p><a href="#">Checkout as guest</a></p>
+                <p><a href="#">I forgot my password</a></p>
+                <p><a href="#">I have a new email address</a></p>
               </div>
-              
-              <div class="form-group">
-                <div class="col-md-offset-3 col-sm-9">
-                  <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                    <button type="submit" class="btn btn-primary btn-lg" tabindex="3" wz-next>Continue to Secure Checkout &nbsp;<i class="fa fa-caret-right"></i></button>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="form-group">
-                <div class="col-md-offset-3 col-sm-9">
-                  <div class="row"><div class="col-sm-6"><hr></div></div>
-                  <p><a href="#">Checkout as guest</a></p>
-                  <p><a href="#">I forgot my password</a></p>
-                  <p><a href="#">I have a new email address</a></p>
-                </div>
-              </div>
-              
+            </div>
+        </form>
       </div><!--/span-->
 
     </wz-step>

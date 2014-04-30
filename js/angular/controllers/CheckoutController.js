@@ -1,11 +1,64 @@
 angular.module('app.controllers.checkout')
     .controller('CheckoutController', function ($scope, $document, $rootScope, $routeParams, $log, Cart, Products, HashKeyCopier, WizardHandler) {
-        
 
         //change page title
         $rootScope.page = "Checkout";
         $rootScope.section = "checkout";
 
+        $scope.checkout = {
+            customerStatus: 'existing'
+        }
+
+
+        // customer data
+        $scope.customerData = {
+            info: {
+                    emailAddress: 'dain@lavisual.com',
+                    password: 'item',
+                    name: 'Dain Kennison'
+            },
+            addresses: [
+                {
+                    address1: '123 Eastman Ave',
+                    address2: '',
+                    city: 'Simi Valley',
+                    state: 'CA',
+                    zip: '93065',
+                    country: 'United States',
+                    phone: '805-558-1097',
+                    type: 'shipping',
+                    notes: ''
+                },
+                {
+                    address1: '123 Eastman Ave',
+                    address2: '',
+                    city: 'Simi Valley',
+                    state: 'CA',
+                    zip: '93065',
+                    country: 'United States',
+                    phone: '805-558-1097',
+                    type: 'billing',
+                    notes: ''
+                }
+            ],
+            creditCards: [
+                {
+                    name: 'Dain Michael Kennison',
+                    cardNumber: 'XXXX-XXXX-XXXX-1234',
+                    expMonth: '02',
+                    expYear: '2016',
+                    securityCode: '123'
+                },
+                {
+                    name: 'Dain Michael Kennison',
+                    cardNumber: 'XXXX-XXXX-XXXX-1111',
+                    expMonth: '04',
+                    expYear: '2015',
+                    securityCode: '123'
+                }
+            ]
+
+        }
 
         $scope.logStep = function() {
             console.log("Step continued");
@@ -14,45 +67,4 @@ angular.module('app.controllers.checkout')
         $scope.finished = function() {
             alert("Wizard finished :)");
         }
-
-        // $scope.products = [];
-
-        // var loadCart = function() {
-        //     $scope.products = Cart.getItems();
-        //     $log.debug("loaded cart products", $scope.products);
-        // }
-        // loadCart();
-
-//        var loadProducts = function () {
-//            //var start = new Date().getTime();
-//            Products.query({"productIds": Object.keys(Cart.getItems())}, function(products, responseHeaders) {
-//                $log.debug("got products", products);
-//                // We do this here to eliminate the flickering.  When Products.query returns initially,
-//                // it returns an empty array, which is then populated after the response is obtained from the server.
-//                // This causes the table to first be emptied, then re-updated with the new data.
-//                if ($scope.products) {
-//                    // update the objects, not just replace, else we'll yoink the whole DOM
-//                    $scope.products = HashKeyCopier.copyHashKeys($scope.products, products, ["id"])
-//                    //$log.debug("updating objects", $scope.objects);
-//                } else {
-//                    $scope.products = products;
-//                    //$log.debug("initializing objects");
-//                }
-//
-//                $scope.loading = false;
-//            }, function (data) {
-//                //$log.debug('refreshProducts(): groupName=' + groupName + ' failure', data);
-//                if (data.status == 401) {
-//                    // Looks like our session expired.
-//                    return;
-//                }
-//
-//                //Hide loader
-//                $scope.loading = false;
-//                // Set Error message
-//                $scope.errorMessage = "An error occurred while retrieving object list. Please refresh the page to try again, or contact your system administrator if the error persists.";
-//            });
-//        }
-//        // kick off the first refresh
-//        loadProducts();
     });
