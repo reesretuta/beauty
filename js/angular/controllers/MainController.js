@@ -33,7 +33,7 @@ angular.module('app.controllers.main')
 
         $scope.getItemsInCart = function() {
             var count = Cart.getItemCount();
-            $log.debug("items count", count);
+            //$log.debug("items count", count);
             return count;
         }
         
@@ -84,8 +84,10 @@ angular.module('app.controllers.main')
         }
 
         $scope.selectedIndex = {};
+        $scope.navStatic = 0;
         $scope.itemClicked = function(level, index) {
             $scope.selectedIndex[level] = index;
+            $scope.navStatic = '0';
         }
 
         $scope.logout = function() {

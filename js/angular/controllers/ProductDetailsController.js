@@ -91,6 +91,32 @@ angular.module('app.controllers.products')
             $("body").css("overflow-y", "hidden");
         }
 
+        $scope.zoomImage = function() {
+            var d = $modal.open({
+                backdrop: true,
+                keyboard: true, // we will handle ESC in the modal for cleanup
+                windowClass: "zoomImageModal",
+                templateUrl: '/partials/products/zoom-image-modal.html',
+                controller: 'ZoomImageModalController',
+                resolve: {
+                    product: function() {
+                        return $scope.product;
+                    }
+                }
+            });
+
+            var body = $document.find('body');
+
+            d.result.then(function(product) {
+                $log.debug("zoom image dialog closed");
+
+                // re-enable scrolling on body
+                body.css("overflow-y", "auto");
+            });
+
+            // prevent page content from scrolling while modal is up
+            $("body").css("overflow-y", "hidden");
+        }
 
         $scope.addToRecentlyViewed = function(product) {
             $log.debug("ProductDetailsController(): adding viewed product", product);

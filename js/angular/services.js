@@ -63,7 +63,7 @@ angular.module('app.services', ['ngResource'])
         getSession();
 
         sessionService.login = function(username, password) {
-            $log.debug("Session(): login(): attempting to login with username=", username, "password=", password);
+            //$log.debug("Session(): login(): attempting to login with username=", username, "password=", password);
             if (username == 'joe@blog.com' && password == 'password') {
                 // always assume yes for now
                 var session = getSession();
@@ -79,13 +79,13 @@ angular.module('app.services', ['ngResource'])
 
         sessionService.isLoggedIn = function() {
             var session = getSession();
-            $log.debug("Session(): isLoggedIn(): ", session.authenticated);
+            //$log.debug("Session(): isLoggedIn(): ", session.authenticated);
             return session.authenticated;
         }
 
         sessionService.getUser = function() {
             var session = getSession();
-            $log.debug("Session(): getUser(): ", session.user);
+            //$log.debug("Session(): getUser(): ", session.user);
             return session.user;
         }
 
