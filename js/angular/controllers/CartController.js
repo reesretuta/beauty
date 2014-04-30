@@ -15,6 +15,8 @@ angular.module('app.controllers.cart')
         $scope.orderByIdQty = 1;
         $scope.searchProducts = {};
         $scope.searchProductsByName = {};
+        
+        
 
 
         var loadCart = function() {
@@ -22,6 +24,27 @@ angular.module('app.controllers.cart')
             $log.debug("loaded cart products", $scope.products);
         }
         loadCart();
+        
+        $scope.total = function() {
+            var total = 0;
+            angular.forEach($scope.products, function(item) {
+                
+                var pricing = item.pricing.detailprice;                
+                if (!(Array.isArray(pricing))) {
+                    total += item.quantity * item.pricing.detailprice.price;
+                } else {
+                    angular.forEach(pricing, function(price) {
+                        if(price.pricetype=='sale') {
+                            total += item.quantity * price.price;
+                        }
+                    })
+                }
+                
+//                total += item.quantity * item.pricing.detailprice.price;
+            })
+
+            return total;
+        }
 
         $scope.changeClass = function (options) {
             var widget = options.methods.widget();
