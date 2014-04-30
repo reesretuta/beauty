@@ -139,7 +139,7 @@
 
         <div ng-repeat="viewedProduct in recentlyViewedProducts" class="col-xs-6 col-sm-4 col-md-3 col-lg-3 store-item related">
           <div class="store-item-wrapper">
-            <a ng-href="#/products/{{viewedProduct.itemnumber}}#top"><img class="img-responsive" ng-src="{{viewedProduct.path}}"></a>
+            <a ng-href="#/products/{{viewedProduct.itemnumber}}#top"><img class="img-responsive" ng-src="{{viewedProduct.images.path}}"></a>
             <div class="store-item-info">
               <p class="store-item-title"><a ng-href="#/products/{{viewedProduct.itemnumber}}#top">{{viewedProduct.productname}}</a></p>
             </div>

@@ -346,6 +346,10 @@ angular.module('app.services', ['ngResource'])
 
             if (!found) {
                 $rootScope.recentlyViewed.items.push(angular.copy(p));
+                var viewProdCount = $rootScope.recentlyViewed.items.length;
+                if(viewProdCount > 4) {
+                    $rootScope.recentlyViewed.items.splice(0,1);
+                }
             }
 
             $log.debug("recently viewed is now", $rootScope.recentlyViewed);

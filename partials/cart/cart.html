@@ -45,7 +45,7 @@
               
               <span ng-repeat="detailprice in product.pricing.detailprice">
                 <span ng-if="detailprice.pricetype=='sale'" class="item-price-sale">
-                  ${{detailprice.price}}
+                  {{detailprice.price | currency}}
                 </span>
                 <span ng-if="detailprice.pricetype=='retail'" class="item-price-strike">
                   ${{detailprice.price}}
@@ -53,7 +53,7 @@
               </span>
               <span ng-if="product.pricing.detailprice.price">
                 <span class="item-price">
-                  ${{product.pricing.detailprice.price}}
+                  {{product.pricing.detailprice.price | currency}}
                 </span>
               </span>
               
@@ -92,7 +92,7 @@
       <div class="row">
         <div class="col-lg-12">
           <p class="text-right">
-            <label>SUB-TOTAL BEFORE TAX &amp; SHIPPING: <!-- TODO: Compute total price $41.00 --></label>
+            <label>SUB-TOTAL BEFORE TAX &amp; SHIPPING: {{total() | currency}}</label>
           </p>
         </div>
       </div><!-- /row -->
