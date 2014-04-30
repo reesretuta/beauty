@@ -4,7 +4,7 @@ angular.module('app.controllers.products')
 
         $scope.breadcrumbs = breadcrumbs;
 
-        $rootScope.page = "Products";
+        $rootScope.page = "All Products";
         $rootScope.section = "store";
 
         $scope.errorMessage = '';

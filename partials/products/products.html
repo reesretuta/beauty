@@ -12,7 +12,7 @@
               <span ng-repeat="detailprice in product.pricing.detailprice">
                 <span ng-if="detailprice.pricetype=='sale'" class="item-price-sale">
                   ${{detailprice.price}}
-                  <span class="brand-font saleflag">On Sale !</span>
+                  <span class="brand-font saleflag">On Sale!</span>
                 </span>
                 <span ng-if="detailprice.pricetype=='retail'" class="item-price-strike">
                   ${{detailprice.price}}

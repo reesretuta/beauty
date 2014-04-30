@@ -83,6 +83,11 @@ angular.module('app.controllers.main')
             return '/' + paths;
         }
 
+        $scope.selectedIndex = -1;
+            $scope.itemClicked = function($index) {
+            $scope.selectedIndex = $index;
+        }
+
         function cleanup() {
             if (cancelChangeListener) {
                 $log.debug("cleanup(): canceling change listener");
