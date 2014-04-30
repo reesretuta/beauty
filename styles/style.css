@@ -8,6 +8,10 @@
 .primary-color { color: #b51a8a; }
 .secondary-color { color: #AA73B1; }
 
+html {
+  -webkit-font-smoothing: antialiased;
+}
+
 h1, .h1, h2, h3, h4, h5, h6,
 .btn, .label, .badge, .store-checkout .control-label {
   font-family: "News Cycle", sans-serif;
@@ -181,25 +185,25 @@ h2 {
 .image-zoom img,
 .cart-item-image {
   margin: 5px;
-  -moz-transform: scale(.95);
+/*  -moz-transform: scale(.95);*/
   -webkit-transform: scale(.95);
   -o-transform: scale(.95);
   -ms-transform: scale(.95);
-  transform: scale(.95);
+  /*transform: scale(.95);*/
 
   -webkit-transition: -webkit-transform 200ms ease;
-  -moz-transition: -moz-transform 200ms ease;
+  /*-moz-transition: -moz-transform 200ms ease;*/
   -ms-transition: -ms-transform 200ms ease;
   -o-transition: -o-transform 200ms ease;
-  transition: transform 200ms ease;
+  /*transition: transform 200ms ease;*/
 }
 .store-item-wrapper img:hover,
 .image-zoom img:hover,
 .cart-item-image:hover {
-  -moz-transform: scale(1);
+  /*-moz-transform: scale(1);*/
   -webkit-transform: scale(1);
   -o-transform: scale(1);
-  -ms-transform: scale(1);
+  /*-ms-transform: scale(1);*/
   transform: scale(1);
 }
 .store-item-sku {
