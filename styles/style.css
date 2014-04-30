@@ -716,6 +716,9 @@ a, .btn {
   .store-heading-nav {
     padding-bottom: 15px;
   }
+  .nav-tabs>li>a {
+    margin-right: -1px;
+  }
 }
 @media (min-width: 768px) {
   .tab-pane {
