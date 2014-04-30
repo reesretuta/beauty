@@ -20,7 +20,7 @@ angular.module('app.controllers.products')
 
         $scope.addToCart = function(product) {
             $log.debug("adding product", product);
-            var qty = $scope.quantities[product.itemnumber];
+            var qty = $scope.quantities[product.itemnumber]; 
             if (qty == null) {
                 qty = 1;
             }
@@ -29,6 +29,28 @@ angular.module('app.controllers.products')
             p.quantity = qty;
             Cart.addToCart(p);
         }
+        
+        
+        $scope.addToCartGroup = function(itemnumber) {
+            
+            angular.forEach($scope.product.productskus.productdetail, function(product) {
+                
+                if (product.itemnumber == itemnumber) {  
+                    
+                    var qty = $scope.quantities[product.itemnumber]; 
+                    if (qty == null) {
+                        qty = 1;
+                    }
+                    
+                    var p = angular.copy(product);
+                    p.quantity = qty;
+                    Cart.addToCart(p);
+                }
+            })            
+
+        }
+        
+        
 
         $scope.showhide = function(itemnumber) {
             $log.debug("showhide", itemnumber);

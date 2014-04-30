@@ -12,7 +12,7 @@
               <a href="#"><i class="fa fa-caret-right fa-2x"></i></a>
             </small>
             <a href="#" class="image-zoom">
-              <img class="img-responsive" src="/{{product.images.path}}">
+              <img class="img-responsive" ng-src="/{{product.images.path}}">
               <small><i class="fa fa-search-plus"></i> View Larger</small>
             </a>
           </div>
@@ -72,11 +72,17 @@
             <p><form role="form" class="form-inline store-item-add">
               <div class="form-group">
                 <label for="qty12345">qty:</label>
-                <input type="integer" class="form-control qty-input" id="qty12345" placeholder="1" value="1" ng-model="quantities[product.itemnumber]">
+                <input type="integer" class="form-control qty-input" id="qty12345" placeholder="1" value="1" ng-model="quantities[product.itemnumber]" ng-if="product.productflag.type != 'group'">
+                <input type="integer" class="form-control qty-input" id="qty12345-group" placeholder="1" value="1" ng-model="quantities[selectedProduct.itemnumber]" ng-if="product.productflag.type == 'group'">
               </div>
             </form></p>
-            <p>
+            <p ng-if="product.productflag.type == 'product'">
               <a class="btn btn-primary btn-lg" ng-click="addToCart(product)">
+                <i class="fa fa-shopping-cart"></i> Add to Cart
+              </a>
+            </p>
+            <p ng-if="product.productflag.type == 'group'">
+              <a class="btn btn-primary btn-lg" ng-click="addToCartGroup(selectedProduct.itemnumber)">
                 <i class="fa fa-shopping-cart"></i> Add to Cart
               </a>
             </p>
@@ -134,7 +140,11 @@
         <div class="col-lg-12">
           <h2>You May Also Like</h2>
         </div>
-        related products...
+          <span ng-repeat="relatedproduct in product.relatedproducts.productdetail">
+              <img ng-src="{{relatedproduct.path}}" width="150">
+              <span>{{relatedproduct.productname}}</span>
+              <span>{{relatedproduct.itemnumber}}</span>
+          </span>
       </section>
       <!-- /Related Products Section -->
 

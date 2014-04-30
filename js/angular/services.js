@@ -109,7 +109,7 @@ angular.module('app.services', ['ngResource'])
             cart.items.splice(getIndex,0,p);
 
             // growlnotification when adding to cart
-            growlNotifications.add('<i class="fa fa-shopping-cart"></i> '+p.productname+' <a href="/index.html#/cart"><b>added to cart</b></a>', 'warning', 4000);
+            growlNotifications.add('<i class="fa fa-shopping-cart"></i> '+p.productname+' <a href="#/cart"><b>added to cart</b></a>', 'warning', 4000);
         };
         
         cartService.updateCart = function(p) {

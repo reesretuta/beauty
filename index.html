@@ -129,15 +129,6 @@
       <div class="row store-heading-nav" ng-hide="section == 'admin' || section =='checkout'">
         <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8">
 
-        <!-- BreadCrumbs -->
-          <ol class="breadcrumb">
-            <li><a ng-href="#/">Home</a></li>
-            <li><a href="#">Category</a></li>
-            <li><a href="#">SubCategory</a></li>    
-            <li><a href="#">SubSubCategory</a></li>
-            <li>Product</li>
-          </ol>
-        <!-- /BreadCrumbs -->
         
          <ol class="ab-nav breadcrumb">
           <li ng-repeat="breadcrumb in breadcrumbs.get() track by breadcrumb.path" ng-class="{ active: $last }">
