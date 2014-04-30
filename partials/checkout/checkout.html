@@ -1,6 +1,7 @@
 <section class="row store-checkout container" ng-controller="CheckoutController">
 
-  <wizard name="checkoutWizard" hide-indicators="false" on-finish="finished()">
+  <wizard name="checkoutWizard" hide-indicators="false" on-finish="finished()" current-step="currentStep">
+
     <!-- sign in -->
     <wz-step title="Start">
 
@@ -14,7 +15,7 @@
             <div class="form-group">
               <label for="inputEmail3" class="col-md-3 control-label">Email Address</label>
               <div class="col-sm-6">
-                <input ng-model="checkout.loginEmail" name="loginEmail" type="email" class="form-control" id="inputEmail3" placeholder="Email" tabindex="1" required>
+                <input name="loginEmail" ng-model="checkout.loginEmail" ng-change="checkoutUpdated()" type="email" class="form-control" id="inputEmail3" placeholder="Email" tabindex="1" required>
                 valid={{signInForm.loginEmail.$valid}}
               </div>
             </div>
@@ -22,7 +23,7 @@
             <div class="form-group">
               <label for="inputPassword3" class="col-md-3 control-label">Password</label>
               <div class="col-sm-4">
-                <input ng-model="checkout.loginPassword" name="loginPassword" type="password" class="form-control" id="inputPassword3" placeholder="Password" tabindex="2" required>
+                <input name="loginPassword" ng-model="checkout.loginPassword" ng-change="checkoutUpdated()" type="password" class="form-control" id="inputPassword3" placeholder="Password" tabindex="2" required>
               </div>
             </div>
 
@@ -30,20 +31,21 @@
               <div class="col-md-offset-3 col-sm-9">
                 <div class="radio">
                   <label>
-                    <input ng-model="checkout.customerStatus" type="radio" name="customerStatus" id="optionsRadios1" value="new">
+                    <input name="customerStatus" ng-model="checkout.customerStatus" ng-change="checkoutUpdated()" type="radio" id="optionsRadios1" value="new">
                     I am a new customer
                   </label>
                 </div>
                 <div class="radio">
                   <label>
-                    <input ng-model="checkout.customerStatus" type="radio" name="customerStatus" id="optionsRadios2" value="existing">
+                    <input name="customerStatus" ng-model="checkout.customerStatus" ng-change="checkoutUpdated()" type="radio" id="optionsRadios2" value="existing">
                     I am an existing customer
                   </label>
                 </div>
+                customerStatus={{checkout.customerStatus}}
                 <div class="row"><div class="col-sm-6"><hr></div></div>
                 <div class="checkbox">
                   <label>
-                    <input ng-model="checkout.keepMeSignedIn" name="keepMeSignedIn" type="checkbox" checked> Keep me signed in &nbsp;&nbsp;
+                    <input name="keepMeSignedIn" ng-model="checkout.keepMeSignedIn" ng-change="checkoutUpdated()" type="checkbox" checked> Keep me signed in &nbsp;&nbsp;
                     <a href="#"><i class="fa fa-info-circle"></i> More Info</a>
                   </label>
                 </div>
@@ -78,9 +80,9 @@
 
           <div class="col-md-offset-3">
 
-            <h1>Choose a shipping address</h1>
+            <h1 ng-if="checkout.customerStatus=='existing'">Choose a shipping address</h1>
 
-            <div class="row">
+            <div class="row" ng-if="checkout.customerStatus=='existing'">
               <div class="col-xs-6 col-lg-4 checkout-address">
                 <span class="address-name">Jenny Miller</span>
                 <span class="address-street">123 Main St.</span>
@@ -108,66 +110,67 @@
             </div>
 
             <hr>
-            <h2 class=" ">Add a new address</h2>
+            <h2 class=" " ng-if="checkout.customerStatus=='existing'">Add a new address</h2>
+            <h2 class=" " ng-if="checkout.customerStatus!='existing'">Enter your address</h2>
 
           </div><!-- /offset -->
 
-          <form class="form-horizontal" role="form">
+          <form name="shippingForm" class="form-horizontal" role="form">
             <div class="row form-group">
-              <label for=" " class="col-md-3 control-label">Full Name</label>
+              <label for="shippingFullName" class="col-md-3 control-label">Full Name</label>
               <div class="col-sm-8 col-lg-6">
-                <input type="text" class="form-control" id=" " placeholder=" " tabindex=" ">
+                <input name="fullName" ng-model="checkout.shipping.fullName" ng-change="checkoutUpdated()" type="text" class="form-control" id="shippingFullName" placeholder="" tabindex="1" required>
               </div>
             </div>
 
             <div class="row form-group">
-              <label for=" " class="col-md-3 control-label">Address Line 1</label>
+              <label for="shippingAddress1" class="col-md-3 control-label">Address Line 1</label>
               <div class="col-sm-8 col-lg-6">
-                <input type="text" class="form-control" id=" " placeholder="Street address, P.O. box, company name, c/o " tabindex=" ">
+                <input name="address1" ng-model="checkout.shipping.address1" ng-change="checkoutUpdated()" type="text" class="form-control" id="shippingAddress1" placeholder="Street address, P.O. box, company name, c/o " tabindex="2" required>
               </div>
             </div>
 
             <div class="row form-group">
-              <label for=" " class="col-md-3 control-label">Address Line 2</label>
+              <label for="shippingAddress2" class="col-md-3 control-label">Address Line 2</label>
               <div class="col-sm-8 col-lg-6">
-                <input type="text" class="form-control" id=" " placeholder="Apartment, suite, unit, building, floor, etc. " tabindex=" ">
+                <input name="address2" ng-model="checkout.shipping.address2" ng-change="checkoutUpdated()" type="text" class="form-control" id="shippingAddress2" placeholder="Apartment, suite, unit, building, floor, etc. " tabindex="3">
               </div>
             </div>
 
             <div class="row form-group">
-              <label for=" " class="col-md-3 control-label">City</label>
+              <label for="shippingCity" class="col-md-3 control-label">City</label>
               <div class="col-sm-7 col-lg-5">
-                <input type="text" class="form-control" id=" " placeholder=" " tabindex=" ">
+                <input name="city" ng-model="checkout.shipping.city" type="text" ng-change="checkoutUpdated()" class="form-control" id="shippingCity" placeholder=" " tabindex="4" required>
               </div>
             </div>
 
             <div class="row form-group">
-              <label for=" " class="col-md-3 control-label">State/Province/Region</label>
+              <label for="shippingStateProvinceRegion" class="col-md-3 control-label">State/Province/Region</label>
               <div class="col-sm-6 col-lg-4">
-                <input type="text" class="form-control" id=" " placeholder=" " tabindex=" ">
+                <input name="stateProvinceRegion" ng-model="checkout.shipping.stateProvinceRegion" ng-change="checkoutUpdated()" type="text" class="form-control" id="shippingStateProvinceRegion" placeholder=" " tabindex="5" required>
               </div>
             </div>
 
             <div class="row form-group">
-              <label for=" " class="col-md-3 control-label">Zip/Postal Code</label>
+              <label for="shippingZipPostalCode" class="col-md-3 control-label">Zip/Postal Code</label>
               <div class="col-sm-5 col-lg-3">
-                <input type="text" class="form-control" id=" " placeholder=" " tabindex=" ">
+                <input name="zipPostalCode" ng-model="checkout.shipping.zipPostalCode" ng-change="checkoutUpdated()" type="text" class="form-control" id="shippingZipPostalCode" placeholder=" " tabindex="6" required>
               </div>
             </div>
 
             <div class="row form-group">
-              <label for=" " class="col-md-3 control-label">Country</label>
+              <label for="shippingCountry" class="col-md-3 control-label">Country</label>
               <div class="col-sm-6 col-lg-4">
-                <select class="form-control" id=" " tabindex=" ">
+                <select name="country" ng-model="checkout.shipping.country" ng-change="checkoutUpdated()" class="form-control" id="shippingCountry" tabindex="7" required>
                   <option>United States</option>
                 </select>
               </div>
             </div>
 
             <div class="row form-group">
-              <label for=" " class="col-md-3 control-label">Phone Number</label>
+              <label for="shippingPhoneNumber" class="col-md-3 control-label">Phone Number</label>
               <div class="col-sm-6 col-lg-4">
-                <input type="text" class="form-control" id=" " placeholder=" " tabindex=" ">
+                <input name="phoneNumber" type="text" class="form-control" id="shippingPhoneNumber" placeholder=" " tabindex="8" required>
               </div>
               <a href="#" class="form-info-link"><i class="fa fa-info-circle"></i> More Info</a>
             </div>
@@ -183,18 +186,21 @@
             
 
             <div class="row form-group">
-              <label for=" " class="col-md-3 control-label">Address Type</label>
+              <label for="shippingAddressType" class="col-md-3 control-label">Address Type</label>
               <div class="col-sm-6 col-lg-4">
-                <select class="form-control" id=" " tabindex=" ">
+                <select name="addressType" ng-model="checkout.shipping.addressType" ng-change="checkoutUpdated()" class="form-control" id="shippingAddressType" tabindex="9">
                   <option>Select an Address Type</option>
+                  <option value="apartment">Apartment</option>
+                  <option value="condo">Condominium</option>
+                  <option value="house">House</option>
                 </select>
               </div>
             </div>
 
             <div class="row form-group">
-              <label for=" " class="col-md-3 control-label">Security Access Code</label>
+              <label for="shippingSecurityAccessCode" class="col-md-3 control-label">Security Access Code</label>
               <div class="col-sm-6 col-lg-4">
-                <input type="text" class="form-control" id=" " placeholder="For buildings or gated communities" tabindex=" ">
+                <input name="securityAccessCode" ng-model="checkout.shipping.securityAccessCode" type="text" class="form-control" id="shippingSecurityAccessCode" placeholder="For buildings or gated communities" tabindex="10">
               </div>
             </div>
 
@@ -206,7 +212,7 @@
             
             <div class="row form-group">
               <div class="col-md-offset-3 col-sm-9">
-                <button type="submit" class="btn btn-primary btn-lg" tabindex=" " wz-next>Ship to this address &nbsp;<i class="fa fa-caret-right"></i></button>
+                <button type="submit" class="btn btn-primary btn-lg" tabindex=" " wz-next ng-disabled="!shippingForm.$valid">Ship to this address &nbsp;<i class="fa fa-caret-right"></i></button>
               </div>
             </div>
             

@@ -5,10 +5,15 @@ angular.module('app.controllers.checkout')
         $rootScope.page = "Checkout";
         $rootScope.section = "checkout";
 
+        $scope.currentStep;
+
         $scope.checkout = {
             customerStatus: 'existing'
         }
 
+        $scope.checkoutUpdated = function() {
+            $log.debug("checkout updated", $scope.checkout);
+        }
 
         // customer data
         $scope.customerData = {
