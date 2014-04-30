@@ -9,7 +9,7 @@ angular.module('app.controllers.checkout')
 
         $scope.checkout = {
             currentStep: '',
-            customerStatus: 'existing'
+            customerStatus: 'new'
         }
 
         var cancelChangeListener = $rootScope.$on('$locationChangeSuccess', function(event, absNewUrl, absOldUrl){
@@ -27,8 +27,12 @@ angular.module('app.controllers.checkout')
             // if we have a composition and run, and the current scope doesn't already have the same run
             if (path == "/checkout" && (urlStep != localStep)) {
                 $log.debug("changeListener(): updating step in response to location change");
-
-                WizardHandler.wizard('checkoutWizard').goTo(urlStep);
+                // NOT SURE IF WE WANT TO KEEP THIS BUT THOUGHT WE SHOULDN'T ALLOW USER TO GO TO LOGIN PAGE AGAIN ONCE THEY PASSED THIS STEP
+                if(urlStep=='Start' && signInForm.loginEmail.value!='') { 
+                    WizardHandler.wizard('checkoutWizard').goTo('Shipping');
+                } else {
+                    WizardHandler.wizard('checkoutWizard').goTo(urlStep);
+                }
             } else {
                 $log.debug("changeListener(): ignoring");
             }
@@ -49,8 +53,7 @@ angular.module('app.controllers.checkout')
         $scope.existingCustomerData = {
             info: {
                     emailAddress: 'dain@lavisual.com',
-                    password: 'item',
-                    name: 'Dain Kennison'
+                    password: 'item'
             },
             addresses: [
                 {
@@ -61,19 +64,21 @@ angular.module('app.controllers.checkout')
                     zip: '93065',
                     country: 'United States',
                     phone: '805-558-1097',
-                    type: 'shipping',
-                    notes: ''
+                    type: 'House',
+                    notes: '',
+                    name: 'Dain Kennison'
                 },
                 {
-                    address1: '123 Eastman Ave',
+                    address1: '8585 Lake Road',
                     address2: '',
                     city: 'Simi Valley',
                     state: 'CA',
-                    zip: '93065',
+                    zip: '93063',
                     country: 'United States',
                     phone: '805-558-1097',
-                    type: 'billing',
-                    notes: ''
+                    type: 'House',
+                    notes: '',
+                    name: 'Dain Kennison'
                 }
             ],
             creditCards: [
@@ -98,7 +103,7 @@ angular.module('app.controllers.checkout')
         $scope.newCustomerData = {};
         
         $scope.addCard = function(cardData) {
-            
+            $log.debug('card data', cardData);
             var creditCard = {
                     name: cardData.cardName,
                     cardNumber: cardData.cardNumber,
@@ -109,11 +114,11 @@ angular.module('app.controllers.checkout')
             if(cardData.customerStatus=='existing') {
                 $scope.existingCustomerData.creditCards.push(angular.copy(creditCard));
             } else {
-                var creditCards = {creditCards: []};
-                $scope.newCustomerData = creditCards;                
+                $scope.newCustomerData = {creditCards: []};                
                 $scope.newCustomerData.creditCards.push(angular.copy(creditCard));
             }
-                $log.debug('card data', $scope.newCustomerData); $log.debug('existing card data', $scope.existingCustomerData)
+            
+//                $log.debug('card data', $scope.newCustomerData); $log.debug('existing card data', $scope.existingCustomerData)
         }
         
         $scope.substr = function(string, start, charNo) {

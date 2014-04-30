@@ -2,7 +2,7 @@
 
   <wizard name="checkoutWizard" hide-indicators="false" on-finish="finished()" current-step="checkout.currentStep">
 
-  current step: {{checkout.currentStep}}
+  <!--current step: {{checkout.currentStep}}-->
 
     <!-- sign in -->
     <wz-step title="Start">
@@ -12,13 +12,13 @@
         <div class="col-md-offset-3">
           <h1>Sign in to complete your order</h1>
         </div>
-        valid={{signInForm.$valid}}
+        <!--valid={{signInForm.$valid}}-->
         <form name="signInForm" class="form-horizontal" role="form">
             <div class="form-group">
               <label for="inputEmail3" class="col-md-3 control-label">Email Address</label>
               <div class="col-sm-6">
                 <input name="loginEmail" ng-model="checkout.loginEmail" ng-change="checkoutUpdated()" type="email" class="form-control" id="inputEmail3" placeholder="Email" tabindex="1" required>
-                valid={{signInForm.loginEmail.$valid}}
+                <!--valid={{signInForm.loginEmail.$valid}}-->
               </div>
             </div>
 
@@ -43,12 +43,12 @@
                     I am an existing customer
                   </label>
                 </div>
-                customerStatus={{checkout.customerStatus}}
+                <!--customerStatus={{checkout.customerStatus}}-->
                 <div class="row"><div class="col-sm-6"><hr></div></div>
                 <div class="checkbox">
                   <label>
                     <input name="keepMeSignedIn" ng-model="checkout.keepMeSignedIn" ng-change="checkoutUpdated()" type="checkbox" checked> Keep me signed in &nbsp;&nbsp;
-                    <a href="#"><i class="fa fa-info-circle"></i> More Info</a>
+                    <a href=""><i class="fa fa-info-circle"></i> More Info</a>
                   </label>
                 </div>
               </div>
@@ -67,9 +67,9 @@
             <div class="form-group">
               <div class="col-md-offset-3 col-sm-9">
                 <div class="row"><div class="col-sm-6"><hr></div></div>
-                <p><a href="#">Checkout as guest</a></p>
-                <p><a href="#">I forgot my password</a></p>
-                <p><a href="#">I have a new email address</a></p>
+                <p><a href="#/checkout?step=Shipping">Checkout as guest</a></p>
+                <p><a href="">I forgot my password</a></p>
+                <p><a href="">I have a new email address</a></p>
               </div>
             </div>
         </form>
@@ -85,30 +85,19 @@
             <h1 ng-if="checkout.customerStatus=='existing'">Choose a shipping address</h1>
 
             <div class="row" ng-if="checkout.customerStatus=='existing'">
-              <div class="col-xs-6 col-lg-4 checkout-address">
-                <span class="address-name">Jenny Miller</span>
-                <span class="address-street">123 Main St.</span>
-                <span class="address-region">Los Angeles, CA 90210</span>
-                <span class="phone-number">Phone: (310) 555-1212</span>
+              <div class="col-xs-6 col-lg-4 checkout-address" ng-repeat="addressData in existingCustomerData.addresses">
+                <span class="address-name">{{addressData.name}}</span>
+                <span class="address-street">{{addressData.address1}} {{addressData.address2}}</span>
+                <span class="address-region">{{addressData.city}},   {{addressData.state}} {{addressData.zip}}</span>
+                <span class="phone-number">{{addressData.phone}}</span>
                 <div class="address-actions">
-                  <a href="#"><i class="fa fa-pencil-square-o"></i> Edit</a>
+                  <a href=""><i class="fa fa-pencil-square-o"></i> Edit</a>
                   &nbsp;&nbsp;
-                  <a href="#"><i class="fa fa-times-circle"></i> Remove</a>
+                  <a href=""><i class="fa fa-times-circle"></i> Remove</a>
                 </div>
-                <a href="#" class="btn btn-primary" wz-next>Ship to this Address</a>
+                <a href="" class="btn btn-primary" wz-next>Ship to this Address</a>
               </div><!-- /address -->
-              <div class="col-xs-6 col-lg-4 checkout-address">
-                <span class="address-name">Alana Torres</span>
-                <span class="address-street">123 Main St.</span>
-                <span class="address-region">Los Angeles, CA 90210</span>
-                <span class="phone-number">Phone: (310) 555-1212</span>
-                <div class="address-actions">
-                  <a href="#"><i class="fa fa-pencil-square-o"></i> Edit</a>
-                  &nbsp;&nbsp;
-                  <a href="#"><i class="fa fa-times-circle"></i> Remove</a>
-                </div>
-                <a href="#" class="btn btn-primary" wz-next>Ship to this Address</a>
-              </div><!-- /address -->
+              
             </div>
 
             <hr>
@@ -174,7 +163,7 @@
               <div class="col-sm-6 col-lg-4">
                 <input name="phoneNumber" type="text" class="form-control" id="shippingPhoneNumber" placeholder=" " tabindex="8" required>
               </div>
-              <a href="#" class="form-info-link"><i class="fa fa-info-circle"></i> More Info</a>
+              <a href="" class="form-info-link"><i class="fa fa-info-circle"></i> More Info</a>
             </div>
 
             
@@ -182,7 +171,7 @@
 
               <hr>
               <h2 class=" " style="display:inline-block">Delivery Preferences (optional)</h2>
-              <a href="#" class="form-info-link"><i class="fa fa-info-circle"></i> What's this?</a>
+              <a href="" class="form-info-link"><i class="fa fa-info-circle"></i> What's this?</a>
 
             </div> <!-- /offset -->
             
@@ -254,9 +243,9 @@
                   <button class="btn btn-primary pull-right card-use-btn" wz-next>Use this Option <i class="fa fa-caret-right"></i></button>
                 </div> 
                 <div class="card-actions">
-                  <a href="#"><i class="fa fa-pencil-square-o"></i> Edit</a>
+                  <a href=""><i class="fa fa-pencil-square-o"></i> Edit</a>
                   &nbsp;&nbsp;
-                  <a href="#"><i class="fa fa-times-circle"></i> Remove</a>
+                  <a href=""><i class="fa fa-times-circle"></i> Remove</a>
                 </div>               
               </div><!-- /span -->
               
@@ -282,9 +271,9 @@
                   <button class="btn btn-primary pull-right card-use-btn" wz-next>Use this Option <i class="fa fa-caret-right"></i></button>
                 </div> 
                 <div class="card-actions">
-                  <a href="#"><i class="fa fa-pencil-square-o"></i> Edit</a>
+                  <a href=""><i class="fa fa-pencil-square-o"></i> Edit</a>
                   &nbsp;&nbsp;
-                  <a href="#"><i class="fa fa-times-circle"></i> Remove</a>
+                  <a href=""><i class="fa fa-times-circle"></i> Remove</a>
                 </div>               
               </div><!-- /span -->
               
@@ -298,7 +287,7 @@
               <h2 class=" ">Add a new payment method</h2>
             </div>
           </div>
-          valid={{paymentForm.$valid}}
+          <!--valid={{paymentForm.$valid}}-->
           <form name="paymentForm" class="form-horizontal" role="form" novalidate>
 
             <div class="form-group" ng-class="{ 'has-error' : paymentForm.cardName.$invalid && !paymentForm.cardName.$pristine }">
@@ -340,7 +329,7 @@
                     <input ng-model="checkout.securityCode" ng-minlength="3" ng-maxlength="4" maxlength="4" name="securityCode" type="password" class="form-control col-sm-1" id=" " placeholder="&bull;&bull;&bull;" tabindex=" " required>
                   </div>
                   <div class="col-xs-6 col-sm-4 col-med-3">
-                    <a href="#" class="form-info-link"><i class="fa fa-info-circle"></i> What's this?</a>
+                    <a href="" class="form-info-link"><i class="fa fa-info-circle"></i> What's this?</a>
                   </div>
                 </div>
               </div>
@@ -446,7 +435,7 @@
               <div class="form-group text-right">
                 <label class="checkbox-inline">
                   <input type="checkbox" value="">
-                  I aggree to the <a href="#">Terms and Conditions</a>
+                  I aggree to the <a href="">Terms and Conditions</a>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                 </label>
                 <button type="button" class="btn btn-link pull-left" tabindex=" ">Cancel Order</button>
@@ -463,7 +452,7 @@
       <div class="col-sm-12">
 
         <div class="col-md-offset-3 col-lg-8">
-          <a href="#" class="pull-right"><i class="fa fa-print"></i> Print this page</a>
+          <a href="" class="pull-right"><i class="fa fa-print"></i> Print this page</a>
           <h1>Thank you!
                     <span class="store-heading-description">
                       We have received your order and will be processing it shortly.
