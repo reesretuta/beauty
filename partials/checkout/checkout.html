@@ -17,7 +17,7 @@
             <div class="form-group">
               <label for="inputEmail3" class="col-md-3 control-label">Email Address</label>
               <div class="col-sm-6">
-                <input name="loginEmail" ng-model="checkout.loginEmail" ng-change="checkoutUpdated()" type="email" class="form-control" id="inputEmail3" placeholder="Email" tabindex="1" required>
+                <input name="loginEmail" ng-model="loginEmail" ng-change="checkoutUpdated()" type="email" class="form-control" id="inputEmail3" placeholder="Email" tabindex="1" required>
                 <!--valid={{signInForm.loginEmail.$valid}}-->
               </div>
             </div>
@@ -25,7 +25,7 @@
             <div class="form-group">
               <label for="inputPassword3" class="col-md-3 control-label">Password</label>
               <div class="col-sm-4">
-                <input name="loginPassword" ng-model="checkout.loginPassword" ng-change="checkoutUpdated()" type="password" class="form-control" id="inputPassword3" placeholder="Password" tabindex="2" required>
+                <input name="loginPassword" ng-model="loginPassword" ng-change="checkoutUpdated()" type="password" class="form-control" id="inputPassword3" placeholder="Password" tabindex="2" required>
               </div>
             </div>
 
@@ -43,8 +43,12 @@
                     I am an existing customer
                   </label>
                 </div>
+
                 <!--customerStatus={{checkout.customerStatus}}-->
                 <div class="row"><div class="col-sm-6"><hr></div></div>
+
+                <div ng-if="loginError" class="alert-danger">Invalid username or password.</div>
+
                 <div class="checkbox">
                   <label>
                     <input name="keepMeSignedIn" ng-model="checkout.keepMeSignedIn" ng-change="checkoutUpdated()" type="checkbox" checked> Keep me signed in &nbsp;&nbsp;
@@ -58,7 +62,7 @@
               <div class="col-md-offset-3 col-sm-9">
                 <div class="input-group">
                   <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                  <button type="submit" class="btn btn-primary btn-lg" tabindex="3" wz-next ng-disabled="!signInForm.$valid">Continue to Secure Checkout &nbsp;<i class="fa fa-caret-right"></i></button>
+                  <button type="submit" class="btn btn-primary btn-lg" tabindex="3" ng-click="loginOrCreateUser(loginEmail, loginPassword)" ng-disabled="!signInForm.$valid">Continue to Secure Checkout &nbsp;<i class="fa fa-caret-right"></i></button>
 
                 </div>
               </div>

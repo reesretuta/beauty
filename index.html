@@ -84,9 +84,10 @@
               </div>
               <div class="col-xs-12 col-sm-6 login-info">
                 <div class="navbar-right">
-                  <a href="">Sign In</a>
+                  <a ng-show="!loggedIn()" href="" ng-cloak>Sign In</a>
+                  <span ng-show="loggedIn()" href="" ng-cloak>{{getUserEmail()}} (<a style="margin-right: 5px; margin-left: 5px;" href="" ng-click="logout()">Logout</a>)</span>
 
-                  <a href="#/cart"><i class="fa fa-shopping-cart"></i> view cart({{getItemsInCart()}})</a>
+                  <a ng-show="getItemsInCart()!=null" href="#/cart" ng-cloak><i class="fa fa-shopping-cart"></i> view cart({{getItemsInCart()}})</a>
 
                   <img src="http://jafrausa.com/regional/images/en_US/template/icons/flag.png">
                   <select>
