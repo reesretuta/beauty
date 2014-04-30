@@ -84,8 +84,10 @@ angular.module('app.controllers.main')
         }
 
         $scope.selectedIndex = {};
+        $scope.navStatic = 0;
         $scope.itemClicked = function(level, index) {
             $scope.selectedIndex[level] = index;
+            $scope.navStatic = '0';
         }
 
         $scope.logout = function() {

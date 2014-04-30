@@ -7,6 +7,12 @@ angular.module('app.controllers.checkout')
         $rootScope.page = "Checkout";
         $rootScope.section = "checkout";
 
+
+        $scope.checkout = {
+            currentStep: '',
+            customerStatus: 'new',
+            billDif: true
+        }
         $scope.loginEmail = '';
         $scope.loginPassword = '';
 
@@ -15,6 +21,7 @@ angular.module('app.controllers.checkout')
             // changing url to reflect beginning of checkout
             $location.search('step', null);
             $location.replace();
+
         }
 
         $scope.loginOrCreateUser = function(loginEmail, loginPassword) {
@@ -102,6 +109,15 @@ angular.module('app.controllers.checkout')
             $log.debug("checkout updated", $scope.checkout);
             Checkout.setCheckout($scope.checkout);
         }
+        
+        $scope.confirmAlert = function(message) {
+            var confirmAction = confirm(message);   
+
+           if (confirmAction) {
+             $location.path("/");
+           }
+
+        }
 
         // customer data
         $scope.existingCustomerData = {
@@ -154,9 +170,22 @@ angular.module('app.controllers.checkout')
 
         }
         
+        
+        
+        // create order object
+        $scope.orderObject = {creditCard:[], shipping:[], billing:[]};
+        
+        $scope.addToOrderObject = function(object, data) {
+            $log.debug('order object before', $scope.orderObject);
+            $scope.orderObject[object] = data;
+            $log.debug('order object after', $scope.orderObject);
+//            $scope.orderObject.object.push(angular.copy(data));
+        }
+        
         $scope.newCustomerData = {};
         
-        $scope.addCard = function(cardData) {
+        
+        $scope.addCard = function(cardData) { 
             $log.debug('card data', cardData);
             var creditCard = {
                 name: cardData.cardName,
@@ -165,12 +194,18 @@ angular.module('app.controllers.checkout')
                 expYear: cardData.expYear,
                 securityCode: cardData.securityCode
             }
+            
+            // add card to order object
+            $scope.orderObject.creditCard.push(angular.copy(creditCard));
+            $log.debug('order object', $scope.orderObject);
+            
             if(cardData.customerStatus=='existing') {
                 $scope.existingCustomerData.creditCards.push(angular.copy(creditCard));
             } else {
                 $scope.newCustomerData = {creditCards: []};                
                 $scope.newCustomerData.creditCards.push(angular.copy(creditCard));
             }
+            
             
 //                $log.debug('card data', $scope.newCustomerData); $log.debug('existing card data', $scope.existingCustomerData)
         }
