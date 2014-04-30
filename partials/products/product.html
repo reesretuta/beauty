@@ -37,17 +37,22 @@
           <div class="store-item-detail-stats">
             <label ng-if="product.productflag.type != 'kit'" class="store-item-size">{{product.sellingquantity}}</label>
             <hr>
-            <span ng-if="product.groupid">
-                <span ng-repeat="productdetail in product.productskus.productdetail">
-                    <a ng-click="showhide(productdetail.itemnumber)"><img ng-src="{{productdetail.images.path}}" ></a>
-                </span>
-                <span class="itemsleep">Item #{{selectedProduct.itemnumber}}</span>
-                <span class='pricesleep'>${{selectedProduct.pricing.detailprice.price}}</span>
-                
+            <div class="store-group-colors" ng-if="product.groupid">
+                <p><span ng-repeat="productdetail in product.productskus.productdetail"
+                      ng-init="isActive = false">
+                    <a
+                      ng-class="{'': !isActive, 'active': isActive}"
+                      ng-click="isActive = !isActive; showhide(productdetail.itemnumber)">
+                      <img ng-src="{{productdetail.images.path}}" >
+                    </a>
+                </span></p>
+                <p class="itemsleep">Item #{{selectedProduct.itemnumber}}</p>
+                <p class="pricesleep">${{selectedProduct.pricing.detailprice.price}}</p>
+
                 <select ng-model="selectedProduct.itemnumber" ng-change="showhide(selectedProduct.itemnumber)">
                     <option value='{{productdetail.itemnumber}}' ng-repeat="productdetail in product.productskus.productdetail">{{productdetail.productname}}</option>
                 </select>
-            </span>
+            </div>
             <p class="store-item-sku" ng-if="product.productflag.type != 'group'">Item #{{product.itemnumber}}</p>
             <p class="store-item-price">
 
