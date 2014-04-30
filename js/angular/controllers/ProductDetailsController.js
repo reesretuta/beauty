@@ -89,6 +89,11 @@ angular.module('app.controllers.products')
                 }
                 if (product.groupid) {
                     $scope.showhide(product.productskus.productdetail[0].itemnumber);
+
+                    $scope.selectedIndex = 0;
+                        $scope.itemClicked = function($index) {
+                        $scope.selectedIndex = $index;
+                    }
                 }
                 $rootScope.page = product.productname;
                 $scope.breadcrumbs.options = {};
@@ -96,6 +101,7 @@ angular.module('app.controllers.products')
                 
                 // add product to recently view products
                 $scope.addToRecentlyViewed(product);
+
 
                 $scope.loading = false;
             }, function (data) {

@@ -38,11 +38,10 @@
             <label ng-if="product.productflag.type != 'kit'" class="store-item-size">{{product.sellingquantity}}</label>
             <hr>
             <div class="store-group-colors" ng-if="product.groupid">
-                <p><span ng-repeat="productdetail in product.productskus.productdetail"
-                      ng-init="isActive = false">
+                <p><span ng-repeat="productdetail in product.productskus.productdetail">
                     <a
-                      ng-class="{'': !isActive, 'active': isActive}"
-                      ng-click="isActive = !isActive; showhide(productdetail.itemnumber)">
+                      ng-class="{'active': $index==selectedIndex}"
+                      ng-click="itemClicked($index); showhide(productdetail.itemnumber)">
                       <img ng-src="{{productdetail.images.path}}" >
                     </a>
                 </span></p>
