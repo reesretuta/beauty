@@ -5,25 +5,8 @@
  * v0.9 - 17 April 2014
  */
 
-
-/* !!!!NOTE: @Dain to place these where he'd like. On product detail page for changing color swatches  */
-
-.itemsleep {
-    display: block;
-}
-.pricesleep {
-    display: block;
-}
-.itemactive {
-    display: block;
-}
-.priceactive {
-    display: block;
-}
-
-/*input[type=search] {
-  -webkit-appearance: searchfield;
-}*/
+.primary-color { color: #b51a8a; }
+.secondary-color { color: #AA73B1; }
 
 h1, .h1, h2, h3, h4, h5, h6,
 .btn, .label, .badge, .store-checkout .control-label {
@@ -38,7 +21,12 @@ h1, .h1, a:hover, a:focus, .btn-link:hover, .btn-link:focus {
 a {
   cursor: pointer;
 }
-
+.well h3  {
+  margin-top: 0;
+}
+/*.well form {
+  padding-top: 15px;
+}*/
 header a, header p {
   color: #fff;
   font-family: "News Cycle", sans-serif;

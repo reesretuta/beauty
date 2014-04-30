@@ -53,6 +53,35 @@
 
           <div class="store-item-detail-info">
 
+          <aside ng-if="product.upsellproducts.productdetail.itemnumber" class="well store-upsell-item">
+
+            <div class="row">
+              <div class="col-md-3">
+                <img class="img-responsive img-thumbnail" src="/{{product.upsellproducts.productdetail.path}}">
+              </div><!-- /span -->
+              <div class="col-md-9">
+                <h3>Limited Time Offer!</h3>
+                <p>
+                  <label class="primary-color">{{product.upsellproducts.productdetail.price | currency}}</label>
+                  &nbsp;&nbsp;
+                  <label>Item #{{product.upsellproducts.productdetail.itemnumber}}</label>
+                  &nbsp;&nbsp; {{product.upsellproducts.productdetail.productname}}</p>
+
+                <form role="form" class="form-inline store-item-add">
+                  <div class="form-group">
+                    <label for="qty1234">qty:</label>
+                    <input type="number" class="form-control qty-input" id="qty1234" placeholder="1" value="1">
+                    <a class="btn btn-primary">
+                      <i class="fa fa-shopping-cart"></i> Add to Cart
+                    </a>
+                  </div>
+                </form>
+
+              </div>
+            </div>
+
+          </aside>
+
           <tabset>
             <tab heading="Summary">
               <div ng-bind-html="product.marketingdescription | unsafe">Summary content</div>
