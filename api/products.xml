@@ -137,22 +137,22 @@
             <productdetail>
                 <itemnumber>13096</itemnumber>
                 <productname>Royal Jelly Lift Concentrate</productname>
-                <path><![CDATA[media/13096_1.jpg]]></path>
+                <path><![CDATA[img/13096_1.jpg]]></path>
             </productdetail>
             <productdetail>
                 <itemnumber>13027</itemnumber>
                 <productname>Royal Jelly Body Complex</productname>
-                <path><![CDATA[media/13027_1.jpg]]></path>
+                <path><![CDATA[img/13027_1.jpg]]></path>
             </productdetail>
             <productdetail>
                 <itemnumber>14808</itemnumber>
                 <productname>Royal Jelly Eye Concentrate Capsules</productname>
-                <path><![CDATA[media/14808_1.jpg]]></path>
+                <path><![CDATA[img/14808_1.jpg]]></path>
             </productdetail>
             <productdetail>
                 <itemnumber>13026</itemnumber>
                 <productname>Royal Jelly Milk Bath</productname>
-                <path><![CDATA[media/13026_1.jpg]]></path>
+                <path><![CDATA[img/13026_1.jpg]]></path>
             </productdetail>
         </relatedproducts>
         <sharedassets>
@@ -356,8 +356,7 @@
     </productdetail>
     <productdetail>
         <id>17555</id>
-        <itemnumber>25206</itemnumber>
-        
+        <itemnumber>25206</itemnumber>        
         <productname>Hydrating Night Moisture</productname>
         <sellingquantity>1.7 fl.oz.</sellingquantity>
         <images>
@@ -519,7 +518,8 @@
         <groupid>46</groupid>
         <productskus>
             <productdetail>
-                <itemnumber>16986</itemnumber>
+                <itemnumber>16986</itemnumber>                
+                <groupname>Always Color Stay-On Lipstick</groupname>
                 <productname>Rouge</productname>
                 <images>
                     <path><![CDATA[img/16986_1.jpg]]></path>
@@ -530,9 +530,14 @@
                         <price>14.00</price>
                     </detailprice>
                 </pricing>
+                <productflag>
+                    <type>groupproduct</type>
+                </productflag>
+                <groupid>46</groupid>                     
             </productdetail>
             <productdetail>
-                <itemnumber>16985</itemnumber>
+                <itemnumber>16985</itemnumber>               
+                <groupname>Always Color Stay-On Lipstick</groupname>
                 <productname>French Kiss</productname>
                 <images>
                     <path><![CDATA[img/16985_1.jpg]]></path>
@@ -543,9 +548,14 @@
                         <price>14.00</price>
                     </detailprice>
                 </pricing>
+                <productflag>
+                    <type>groupproduct</type>
+                </productflag>
+                <groupid>46</groupid>     
             </productdetail>
             <productdetail>
-                <itemnumber>16984</itemnumber>
+                <itemnumber>16984</itemnumber>               
+                <groupname>Always Color Stay-On Lipstick</groupname>
                 <productname>Mocha</productname>
                 <images>
                     <path><![CDATA[img/16984_1.jpg]]></path>
@@ -556,9 +566,14 @@
                         <price>14.00</price>
                     </detailprice>
                 </pricing>
+                <productflag>
+                    <type>groupproduct</type>
+                </productflag>
+                <groupid>46</groupid>     
             </productdetail>
             <productdetail>
-                <itemnumber>16983</itemnumber>
+                <itemnumber>16983</itemnumber>               
+                <groupname>Always Color Stay-On Lipstick</groupname>
                 <productname>Pinkberry</productname>
                 <sellingquantity>.06 oz.</sellingquantity>
                 <images>
@@ -570,9 +585,14 @@
                         <price>7.00</price>
                     </detailprice>
                 </pricing>
+                <productflag>
+                    <type>groupproduct</type>
+                </productflag>
+                <groupid>46</groupid>     
             </productdetail>
             <productdetail>
-                <itemnumber>16989</itemnumber>
+                <itemnumber>16989</itemnumber>               
+                <groupname>Always Color Stay-On Lipstick</groupname>
                 <productname>Kiss Me Coral</productname>
                 <images>
                     <path><![CDATA[img/16983_1.jpg]]></path>
@@ -583,9 +603,14 @@
                         <price>14.00</price>
                     </detailprice>
                 </pricing>
+                <productflag>
+                    <type>groupproduct</type>
+                </productflag>
+                <groupid>46</groupid>     
             </productdetail>
             <productdetail>
-                <itemnumber>16981</itemnumber>
+                <itemnumber>16981</itemnumber>               
+                <groupname>Always Color Stay-On Lipstick</groupname>
                 <productname>Yellow Lilies</productname>
                 <images>
                     <path><![CDATA[img/16981_1.jpg]]></path>
@@ -596,9 +621,14 @@
                         <price>7.00</price>
                     </detailprice>
                 </pricing>
+                <productflag>
+                    <type>groupproduct</type>
+                </productflag>
+                <groupid>46</groupid>     
             </productdetail>
             <productdetail>
-                <itemnumber>16987</itemnumber>
+                <itemnumber>16987</itemnumber>               
+                <groupname>Always Color Stay-On Lipstick</groupname>
                 <productname>Brandywine</productname>
                 <images>
                     <path><![CDATA[img/16987_1.jpg]]></path>
@@ -609,6 +639,10 @@
                         <price>14.00</price>
                     </detailprice>
                 </pricing>
+                <productflag>
+                    <type>groupproduct</type>
+                </productflag>
+                <groupid>46</groupid>     
             </productdetail>
         </productskus>
         <productname>Always Color Stay-On Lipstick</productname>
@@ -671,5 +705,6 @@
             <type>group</type>
             <isgroupproduct>0</isgroupproduct>
         </productflag>
-    </productdetail>    
+    </productdetail>
+    
 </products>
