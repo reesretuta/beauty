@@ -17,8 +17,8 @@
       <form name="kitSelectionForm" role="form">
         <div class="radio" ng-repeat="product in products">
           <label>
-            <input name="customerStatus" ng-model="selectedProduct" type="radio" id="optionsRadios2" value="{{product.itemnumber}}" ng-required>
-            <div>{{product.productname}}</div>
+            <input name="selectedProduct" ng-model=productSelect ng-change="selectProduct(product.itemnumber)" type="radio" id="optionsRadios2" value="{{product.itemnumber}}" ng-required>
+            <div>{{product.itemnumber}} {{product.productname}}</div>
             <img class="img-responsive" style="width: 100px;" ng-src="/{{product.images.path}}">
           </label>
         </div>
