@@ -100,7 +100,7 @@
               
             </div>
 
-            <hr>
+            <hr ng-if="checkout.customerStatus=='existing'">
             <h2 class=" " ng-if="checkout.customerStatus=='existing'">Add a new address</h2>
             <h2 class=" " ng-if="checkout.customerStatus!='existing'">Enter your address</h2>
 
@@ -240,7 +240,7 @@
                     <small>EXP:</small>
                     {{ccData.expMonth}}/{{substr(ccData.expYear,2,2)}}
                   </p>
-                  <button class="btn btn-primary pull-right card-use-btn" wz-next>Use this Option <i class="fa fa-caret-right"></i></button>
+                  <button class="btn btn-primary pull-right card-use-btn" wz-next ng-click="addToOrderObject('creditCard',ccData)">Use this Option <i class="fa fa-caret-right"></i></button>
                 </div> 
                 <div class="card-actions">
                   <a href=""><i class="fa fa-pencil-square-o"></i> Edit</a>
@@ -255,7 +255,7 @@
           <div class="col-md-offset-3" ng-if="checkout.customerStatus=='new'">
             <div class="row">
 
-              <div class="col-xs-6 col-lg-4" ng-repeat="ccData in newCustomerData.creditCards" ng-if="  newCustomerData.creditCards">
+              <div class="col-xs-6 col-lg-4" ng-repeat="ccData in newCustomerData.creditCards" ng-if="newCustomerData.creditCards">
                 <div class="checkout-card clearfix" ng-class="{active: $first}">
                   <img src="http://placehold.it/46x30" class="pull-right">
                   <p class="card-number">
@@ -283,7 +283,7 @@
         
           <div class="row">
             <div class="col-md-offset-3 col-lg-8">
-              <hr>
+              <hr ng-if="checkout.customerStatus=='existing'">
               <h2 class=" ">Add a new payment method</h2>
             </div>
           </div>
@@ -339,11 +339,129 @@
               <div class="col-md-offset-3 col-sm-9">
                 <div class="checkbox">
                   <label>
-                    <input type="checkbox" checked> My billing &amp; shipping address are the same
+                    <input ng-model="checkout.billDif" type="checkbox" checked> My billing &amp; shipping address are the same
                   </label>
                 </div>
               </div>
             </div>
+              
+              
+              
+            <div class="cardAddressWrapper" ng-if="checkout.billDif==false">  
+              
+              
+                <div class="row form-group">
+                  <label for="billingFullName" class="col-md-3 control-label">Full Name</label>
+                  <div class="col-sm-8 col-lg-6">
+                    <input name="fullName" ng-model="checkout.billing.fullName" ng-change="checkoutUpdated()" type="text" class="form-control" id="billingFullName" placeholder="" tabindex="1" required>
+                  </div>
+                </div>
+
+                <div class="row form-group">
+                  <label for="billingAddress1" class="col-md-3 control-label">Address Line 1</label>
+                  <div class="col-sm-8 col-lg-6">
+                    <input name="address1" ng-model="checkout.billing.address1" ng-change="checkoutUpdated()" type="text" class="form-control" id="billingAddress1" placeholder="Street address, P.O. box, company name, c/o " tabindex="2" required>
+                  </div>
+                </div>
+
+                <div class="row form-group">
+                  <label for="billingAddress2" class="col-md-3 control-label">Address Line 2</label>
+                  <div class="col-sm-8 col-lg-6">
+                    <input name="address2" ng-model="checkout.billing.address2" ng-change="checkoutUpdated()" type="text" class="form-control" id="billingAddress2" placeholder="Apartment, suite, unit, building, floor, etc. " tabindex="3">
+                  </div>
+                </div>
+
+                <div class="row form-group">
+                  <label for="billingCity" class="col-md-3 control-label">City</label>
+                  <div class="col-sm-7 col-lg-5">
+                    <input name="city" ng-model="checkout.billing.city" type="text" ng-change="checkoutUpdated()" class="form-control" id="billingCity" placeholder=" " tabindex="4" required>
+                  </div>
+                </div>
+
+                <div class="row form-group">
+                  <label for="billingStateProvinceRegion" class="col-md-3 control-label">State/Province/Region</label>
+                  <div class="col-sm-6 col-lg-4">
+                    <input name="billingProvinceRegion" ng-model="checkout.billing.stateProvinceRegion" ng-change="checkoutUpdated()" type="text" class="form-control" id="billingStateProvinceRegion" placeholder=" " tabindex="5" required>
+                  </div>
+                </div>
+
+                <div class="row form-group">
+                  <label for="billingZipPostalCode" class="col-md-3 control-label">Zip/Postal Code</label>
+                  <div class="col-sm-5 col-lg-3">
+                    <input name="billingzipPostalCode" ng-model="checkout.billing.zipPostalCode" ng-change="checkoutUpdated()" type="text" class="form-control" id="billingZipPostalCode" placeholder=" " tabindex="6" required>
+                  </div>
+                </div>
+
+                <div class="row form-group">
+                  <label for="billingCountry" class="col-md-3 control-label">Country</label>
+                  <div class="col-sm-6 col-lg-4">
+                    <select name="billingCountry" ng-model="checkout.billing.country" ng-change="checkoutUpdated()" class="form-control" id="billingCountry" tabindex="7" required>
+                      <option>United States</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="row form-group">
+                  <label for="billingPhoneNumber" class="col-md-3 control-label">Phone Number</label>
+                  <div class="col-sm-6 col-lg-4">
+                    <input name="billingPhoneNumber" ng-model="checking.billing.phoneNumber" type="text" class="form-control" id="billingPhoneNumber" placeholder=" " tabindex="8" required>
+                  </div>
+                  <a href="" class="form-info-link"><i class="fa fa-info-circle"></i> More Info</a>
+                </div>
+
+
+                <div class="col-md-offset-3">
+
+                  <hr>
+                  <h2 class=" " style="display:inline-block">Delivery Preferences (optional)</h2>
+                  <a href="" class="form-info-link"><i class="fa fa-info-circle"></i> What's this?</a>
+
+                </div> <!-- /offset -->
+
+
+                <div class="row form-group">
+                  <label for="billingAddressType" class="col-md-3 control-label">Address Type</label>
+                  <div class="col-sm-6 col-lg-4">
+                    <select name="billingAddressType" ng-model="checkout.billing.addressType" ng-change="checkoutUpdated()" class="form-control" id="billingAddressType" tabindex="9">
+                      <option>Select an Address Type</option>
+                      <option value="apartment">Apartment</option>
+                      <option value="condo">Condominium</option>
+                      <option value="house">House</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="row form-group">
+                  <label for="billingSecurityAccessCode" class="col-md-3 control-label">Security Access Code</label>
+                  <div class="col-sm-6 col-lg-4">
+                    <input name="billingSecurityAccessCode" ng-model="checkout.billing.securityAccessCode" type="text" class="form-control" id="billingSecurityAccessCode" placeholder="For buildings or gated communities" tabindex="10">
+                  </div>
+                </div>
+
+                <div class="col-md-offset-3">
+
+                  <hr>
+
+                </div> <!-- /offset -->
+
+<!--                <div class="row form-group">
+                  <div class="col-md-offset-3 col-sm-9">
+                    <button type="submit" class="btn btn-primary btn-lg" tabindex=" " wz-next ng-disabled="!billingForm.$valid">Ship to this address &nbsp;<i class="fa fa-caret-right"></i></button>
+                  </div>
+                </div>-->
+            </div>
+        
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
             
             <div class="form-group">
               <div class="col-md-offset-3 col-sm-9">
@@ -368,11 +486,11 @@
             </h1>
           </div>
 
-          <div class="col-md-offset-3 col-lg-8">
+          <div class="col-md-offset-3 col-lg-8" ng-controller="CartController">
             <h2 class="">Order Details</h2>
             <hr>
 
-            <form class="form order-details" role="form">
+            <form class="form order-details" role="form" name="confirmForm">
               <a ng-href="#/cart" class="pull-right"><i class="fa fa-pencil-square-o"></i> make changes</a>
               <div class="form-group">
                 <table class="table">
@@ -384,47 +502,37 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>1</td>
+                    <tr ng-repeat="product in products">
+                      <td>{{product.quantity}}</td>
                       <td>
                         <p class="confirmation-description">
-                          Product Description
+                          {{product.productname}}
                         </p>
                       </td>
-                      <td align="right">$18.00</td>
-                    </tr>
-                    <tr>
-                      <td>2</td>
-                      <td>
-                        <p class="confirmation-description">
-                          Product Description
-                        </p>
+                      <td align="right">
+                            <span ng-repeat="detailprice in product.pricing.detailprice">
+                                <span ng-if="detailprice.pricetype=='sale'" class="item-price-sale">
+                                  {{detailprice.price | currency}}
+                                </span>
+                                <span ng-if="detailprice.pricetype=='retail'" class="item-price-strike">
+                                  ${{detailprice.price}}
+                                </span>
+                            </span>
+                            <span ng-if="product.pricing.detailprice.price">
+                                <span class="item-price">
+                                  {{product.pricing.detailprice.price | currency}}
+                                </span>
+                            </span>
                       </td>
-                      <td align="right">$33.00</td>
-                    </tr>
-                    <tr>
-                      <td>1</td>
-                      <td>
-                        <p class="confirmation-description">
-                          Product Kit Description
-                        </p>
-                        <ul>
-                          <li>1 Item Title #1234</li>
-                          <li>1 Item Title #1234</li>
-                          <li>1 Item Title #1234</li>
-                          <li>1 Item Title #1234</li>
-                        </ul>
-                      </td>
-                      <td align="right">$69.00</td>
                     </tr>
                   </tbody>
                   <tfoot>
                     <tr>
                       <td colspan="3">
-                        <p>Subtotal: $120.00</p>
+                        <p>Subtotal: {{total() | currency}}</p>
                         <p>Shipping: $15.00</p>
                         <p>Tax: 8.25%</p>
-                        <p class="lead"><b>Total Charges: $144.90</b></p>
+                        <p class="lead"><b>Total Charges: {{(total()* 1.0825) + 15 | currency}}</b></p>
                       </td>
                     </tr>
                   </tfoot>
@@ -434,12 +542,14 @@
 
               <div class="form-group text-right">
                 <label class="checkbox-inline">
-                  <input type="checkbox" value="">
-                  I aggree to the <a href="">Terms and Conditions</a>
+                    
+                        <input type="checkbox" value="" ng-model="checkout.agree" required>
+                    
+                  I agree to the <a href="">Terms and Conditions</a>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                 </label>
-                <button type="button" class="btn btn-link pull-left" tabindex=" ">Cancel Order</button>
-                <button type="submit" class="btn btn-primary btn-lg" tabindex=" " wz-next>Place Order &nbsp;<i class="fa fa-caret-right"></i></button>
+                <button type="button" class="btn btn-link pull-left" tabindex=" " ng-click="confirmAlert('Are you sure you\'d like to cancel your order?')">Cancel Order</button>
+                <button type="submit" class="btn btn-primary btn-lg" tabindex=" " wz-next ng-disabled="!confirmForm.$valid">Place Order &nbsp;<i class="fa fa-caret-right"></i></button>
               </div>
             </form>
           </div>
@@ -449,7 +559,7 @@
     </wz-step>
     <wz-step title="Finish">
 
-      <div class="col-sm-12">
+      <div class="col-sm-12" ng-controller="CartController">
 
         <div class="col-md-offset-3 col-lg-8">
           <a href="" class="pull-right"><i class="fa fa-print"></i> Print this page</a>
@@ -475,47 +585,37 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>
-                      <p class="confirmation-description">
-                        Product Description
-                      </p>
-                    </td>
-                    <td align="right">$18.00</td>
-                  </tr>
-                  <tr>
-                    <td>2</td>
-                    <td>
-                      <p class="confirmation-description">
-                        Product Description
-                      </p>
-                    </td>
-                    <td align="right">$33.00</td>
-                  </tr>
-                  <tr>
-                    <td>1</td>
-                    <td>
-                      <p class="confirmation-description">
-                        Product Kit Description
-                      </p>
-                      <ul>
-                        <li>1 Item Title #1234</li>
-                        <li>1 Item Title #1234</li>
-                        <li>1 Item Title #1234</li>
-                        <li>1 Item Title #1234</li>
-                      </ul>
-                    </td>
-                    <td align="right">$69.00</td>
-                  </tr>
+                  <tr ng-repeat="product in products">
+                      <td>{{product.quantity}}</td>
+                      <td>
+                        <p class="confirmation-description">
+                          {{product.productname}}
+                        </p>
+                      </td>
+                      <td align="right">
+                            <span ng-repeat="detailprice in product.pricing.detailprice">
+                                <span ng-if="detailprice.pricetype=='sale'" class="item-price-sale">
+                                  {{detailprice.price | currency}}
+                                </span>
+                                <span ng-if="detailprice.pricetype=='retail'" class="item-price-strike">
+                                  ${{detailprice.price}}
+                                </span>
+                            </span>
+                            <span ng-if="product.pricing.detailprice.price">
+                                <span class="item-price">
+                                  {{product.pricing.detailprice.price | currency}}
+                                </span>
+                            </span>
+                      </td>
+                    </tr>
                 </tbody>
                 <tfoot>
                   <tr>
                     <td colspan="3">
-                      <p>Subtotal: $120.00</p>
-                      <p>Shipping: $15.00</p>
-                      <p>Tax: 8.25%</p>
-                      <p class="lead"><b class="text-success"><i class="fa fa-check"></i> Successfully Charged: $144.90</b></p>
+                      <p>Subtotal: {{total() | currency}}</p>
+                        <p>Shipping: $15.00</p>
+                        <p>Tax: 8.25%</p>
+                        <p class="lead"><b class="text-success"><i class="fa fa-check"></i> Successfully Charged: {{(total()* 1.0825) + 15 | currency}}</b></p>
                     </td>
                   </tr>
                 </tfoot>

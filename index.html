@@ -117,8 +117,8 @@
 
       <div growl-notifications class="alerts"></div>
 
-      <div ng-hide="section =='checkout'" class="row store-heading">
-        <div  ng-class="{'col-sm-offset-3': section == 'checkout'}" class="col-xs-12 col-sm-6 col-md-8 col-lg-8">
+      <div ng-hide="section == 'admin' || section =='checkout'" class="row store-heading">
+        <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8">
           <h1>{{page}}</h1>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
