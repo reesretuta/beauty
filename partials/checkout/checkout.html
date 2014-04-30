@@ -99,7 +99,7 @@
                   &nbsp;&nbsp;
                   <a href=""><i class="fa fa-times-circle"></i> Remove</a>
                 </div>
-                <a href="" class="btn btn-primary" wz-next>Ship to this Address</a>
+                <a href="" class="btn btn-primary" wz-next ng-click="addToOrderObject('shipping',addressData)">Ship to this Address</a>
               </div><!-- /address -->
               
             </div>
@@ -482,7 +482,7 @@
 
       <div class="col-sm-12">
 
-        <div class="col-md-offset-3 col-lg-8" ng-controller="CartController">
+        <div class="col-md-offset-3 col-lg-8">
             <h1>Review &amp; Confirm Order 
               <span class="store-heading-description">
                 Clicking &ldquo;Place Order&ldquo; will charge your payment option in the ammount below.
@@ -494,8 +494,11 @@
 
 
             <div class="row">
+                
+                
+               
 
-              <div class="col-xs-6 col-lg-4">
+              <div class="col-xs-6 col-lg-4" ng-if="orderObject.creditCard">
                 <h3>Charging To:</h3>
                 <div class="checkout-card clearfix active">
                   <img src="http://placehold.it/46x30" class="pull-right">
@@ -503,24 +506,47 @@
                     <span>&bull;&bull;&bull;&bull;</span>
                     <span>&bull;&bull;&bull;&bull;</span>
                     <span>&bull;&bull;&bull;&bull;</span>
-                    <span>1234</span>
+                    <span>{{substr(orderObject.creditCard.cardNumber,-4,4)}}</span>
                   </p>
                   <p class="card-expiry pull-left">
                     <small>EXP:</small>
-                    01/14
+                    {{orderObject.creditCard.expMonth}}/{{substr(orderObject.creditCard.expYear,2,2)}}
                   </p>
-                  <a href="#" class="btn pull-right card-use-btn"><i class="fa fa-pencil-square-o"></i> Change Card</a>
+                  <a ng-href="#/checkout?step=Payment" class="btn pull-right card-use-btn"><i class="fa fa-pencil-square-o"></i> Change Card</a>
                 </div>              
               </div><!-- /card -->
 
-              <div class="col-xs-6 col-lg-4 checkout-address">
+              <div class="col-xs-6 col-lg-4 checkout-address" ng-if="orderObject.shipping">
                 <h3>Shipping To:</h3>
-                <span class="address-name">Jenny Miller</span>
-                <span class="address-street">123 Main St.</span>
-                <span class="address-region">Los Angeles, CA 90210</span>
-                <span class="phone-number">Phone: (310) 555-1212</span>
+                <span class="address-name">{{orderObject.shipping.name}}</span>
+                <span class="address-street">{{orderObject.shipping.address1}} {{orderObject.shipping.address2}}</span>
+                <span class="address-region">{{orderObject.shipping.city}}, {{orderObject.shipping.state}} {{orderObject.shipping.zip}}</span>
+                <span class="phone-number">{{orderObject.shipping.phone}}</span>
                 <div class="address-actions">
-                  <a href="#"><i class="fa fa-pencil-square-o"></i> Change Address</a>
+                  <a ng-href="#/checkout?step=Shipping"><i class="fa fa-pencil-square-o"></i> Change Address</a>
+                </div>
+              </div><!-- /address -->
+
+              <div class="col-xs-6 col-lg-4 checkout-address" ng-if="orderObject.billing.name">
+                <h3>Billing To:</h3>
+                <span class="address-name">{{orderObject.billing.name}}</span>
+                <span class="address-street">{{orderObject.billing.address1}} {{orderObject.billing.address2}}</span>
+                <span class="address-region">{{orderObject.billing.city}}, {{orderObject.billing.state}} {{orderObject.billing.zip}}</span>
+                <span class="phone-number">{{orderObject.billing.phone}}</span>
+                <div class="address-actions">
+                  <a ng-href="#/checkout?step=Shipping"><i class="fa fa-pencil-square-o"></i> Change Address</a>
+                </div>
+              </div><!-- /address -->           
+              
+
+              <div class="col-xs-6 col-lg-4 checkout-address" ng-if="!orderObject.billing.name">
+                <h3>Billing To:</h3>
+                <span class="address-name">{{orderObject.shipping.name}}</span>
+                <span class="address-street">{{orderObject.shipping.address1}} {{orderObject.shipping.address2}}</span>
+                <span class="address-region">{{orderObject.shipping.city}}, {{orderObject.shipping.state}} {{orderObject.shipping.zip}}</span>
+                <span class="phone-number">{{orderObject.shipping.phone}}</span>
+                <div class="address-actions">
+                  <a ng-href="#/checkout?step=Shipping"><i class="fa fa-pencil-square-o"></i> Change Address</a>
                 </div>
               </div><!-- /address -->
 
@@ -536,7 +562,7 @@
             <form class="form order-details" role="form" name="confirmForm">
               <a ng-href="#/cart" class="pull-right" style="margin-top:10px"><i class="fa fa-pencil-square-o"></i> make changes</a>
               <h2 class="">Order Details</h2>
-              <div class="form-group">
+              <div class="form-group" ng-controller="CartController">
                 <table class="table">
                   <thead>
                     <tr>
