@@ -1,6 +1,6 @@
 angular.module('app.controllers.home')
     .controller('HomeController', function ($scope, $document, $rootScope, $routeParams, $log, Categories) {
-        $rootScope.page = 'Home';
+        $rootScope.page = 'Our Products';
 
         $rootScope.section = "store";
 

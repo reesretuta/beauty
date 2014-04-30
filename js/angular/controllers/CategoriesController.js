@@ -2,8 +2,6 @@ angular.module('app.controllers.categories')
     .controller('CategoriesController', function ($scope, $document, $rootScope, $routeParams, $log, Categories) {
         $log.debug("CategoriesController");
         $scope.categories = [];
-
-        $rootScope.section = "store";
         
         var loadCategories = function () {
             //var start = new Date().getTime();
