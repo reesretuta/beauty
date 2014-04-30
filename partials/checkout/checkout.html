@@ -290,44 +290,46 @@
               <h2 class=" ">Add a new payment method</h2>
             </div>
           </div>
+          valid={{paymentForm.$valid}}
+          <form name="paymentForm" class="form-horizontal" role="form" novalidate>
 
-          <form class="form-horizontal" role="form">
-
-            <div class="form-group">
+            <div class="form-group" ng-class="{ 'has-error' : paymentForm.cardName.$invalid && !paymentForm.cardName.$pristine }">
               <label for=" " class="col-md-3 control-label">Name on Card</label>
               <div class="col-sm-6 col-lg-4">
-                <input type="text" class="form-control" id=" " placeholder=" " tabindex=" ">
+                <input ng-model="checkout.cardName" ng-minlength="3" name="cardName" type="text" class="form-control" id=" " placeholder=" " tabindex=" " required>
+                <span ng-show="paymentForm.cardName.$error.minlength" class="help-inline">Name on card is too short.</span>
               </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" ng-class="{ 'has-error' : paymentForm.cardNumber.$invalid && !paymentForm.cardNumber.$pristine }">
               <label for=" " class="col-md-3 control-label">Card Number</label>
               <div class="col-sm-6 col-lg-4">
-                <input type="text" class="form-control" id=" " placeholder=" " tabindex=" ">
+                <input ng-model="checkout.cardNumber" ng-minlength="13" name="cardNumber" type="text" class="form-control" id=" " placeholder=" " tabindex=" " required>
+                <span ng-show="paymentForm.cardNumber.$error.minlength" class="help-inline">Credit card needs to be at least 13 numbers.</span>
               </div>
             </div>
             <div class="form-group">
               <label for=" " class="col-md-3 control-label">Expiration</label>
               <div class="col-sm-5">
                 <div class="row">
-                  <div class="col-xs-4 col-sm-3 col-med-2">
-                    <input type="text" class="form-control col-sm-1" id=" " placeholder="MM" tabindex=" ">
+                  <div class="col-xs-4 col-sm-3 col-med-2" ng-class="{ 'has-error' : paymentForm.expMonth.$invalid && !paymentForm.expMonth.$pristine }">
+                      <input ng-model="checkout.expMonth" ng-minlength="2" ng-maxlength="2" maxlength="2" name="expMonth" type="text" class="form-control col-sm-1" id=" " placeholder="MM" tabindex=" " required>
                   </div>
                   <div class="col-xs-1">
                     <label class="control-label">/</label>
                   </div>
-                  <div class="col-xs-6 col-sm-4 col-med-3">
-                    <input type="text" class="form-control col-sm-3" id=" " placeholder="YYYY" tabindex=" ">
+                  <div class="col-xs-6 col-sm-4 col-med-3" ng-class="{ 'has-error' : paymentForm.expYear.$invalid && !paymentForm.expYear.$pristine }">
+                    <input ng-model="checkout.expYear" ng-minlength="4" ng-maxlength="4" maxlength="4" name="expYear" type="text" class="form-control col-sm-3" id=" " placeholder="YYYY" tabindex=" " required>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="form-group">
+            <div class="form-group" ng-class="{ 'has-error' : paymentForm.securityCode.$invalid && !paymentForm.securityCode.$pristine }">
               <label for=" " class="col-md-3 control-label">Security Code</label>
               <div class="col-sm-5">
                 <div class="row">
                   <div class="col-xs-4 col-sm-3 col-med-2">
-                    <input type="password" class="form-control col-sm-1" id=" " placeholder="&bull;&bull;&bull;" tabindex=" ">
+                    <input ng-model="checkout.securityCode" ng-minlength="3" ng-maxlength="4" maxlength="4" name="securityCode" type="password" class="form-control col-sm-1" id=" " placeholder="&bull;&bull;&bull;" tabindex=" " required>
                   </div>
                   <div class="col-xs-6 col-sm-4 col-med-3">
                     <a href="#" class="form-info-link"><i class="fa fa-info-circle"></i> What's this?</a>
@@ -348,7 +350,7 @@
             
             <div class="form-group">
               <div class="col-md-offset-3 col-sm-9">
-                <button type="submit" class="btn btn-primary btn-lg" tabindex=" " wz-next>Add Card &nbsp;<i class="fa fa-caret-right"></i></button>
+                <button type="submit" class="btn btn-primary btn-lg" tabindex=" " wz-next ng-disabled="!paymentForm.$valid">Add Card &nbsp;<i class="fa fa-caret-right"></i></button>
               </div>
             </div>
             
@@ -374,7 +376,7 @@
             <hr>
 
             <form class="form order-details" role="form">
-              <a href="#" class="pull-right"><i class="fa fa-pencil-square-o"></i> make changes</a>
+              <a ng-href="#/cart" class="pull-right"><i class="fa fa-pencil-square-o"></i> make changes</a>
               <div class="form-group">
                 <table class="table">
                   <thead>
