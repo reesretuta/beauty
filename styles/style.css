@@ -18,6 +18,14 @@ h2, h3, h4, a, .btn-link {
 h1, .h1, a:hover, a:focus, .btn-link:hover, .btn-link:focus {
   color: #b51a8a;
 }
+.btn-primary.disabled, .btn-primary[disabled], fieldset[disabled] .btn-primary,
+.btn-primary.disabled:hover, .btn-primary[disabled]:hover, fieldset[disabled] .btn-primary:hover, 
+.btn-primary.disabled:focus, .btn-primary[disabled]:focus, fieldset[disabled] .btn-primary:focus, 
+.btn-primary.disabled:active, .btn-primary[disabled]:active, fieldset[disabled] .btn-primary:active, 
+.btn-primary.disabled.active, .btn-primary[disabled].active, fieldset[disabled] {
+  background-color: #ccabd0;
+  border-color: #ccabd0;
+}
 a {
   cursor: pointer;
 }
