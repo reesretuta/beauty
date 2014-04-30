@@ -111,7 +111,9 @@
                 <p class="itemsleep">Item #{{selectedProduct.itemnumber}}</p>
                 <p class="pricesleep">${{selectedProduct.pricing.detailprice.price}}</p>
             </div>
-            <p class="store-item-sku" ng-if="product.productflag.type != 'group'">Item #{{product.itemnumber}}</p>
+            <p class="store-item-sku" ng-if="product.productflag.type != 'group'">
+              Item #{{product.itemnumber}} - {{product.productname}}
+            </p>
             <p class="store-item-price">
 
               <span ng-repeat="detailprice in product.pricing.detailprice">
