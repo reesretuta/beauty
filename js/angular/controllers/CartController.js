@@ -6,7 +6,7 @@ angular.module('app.controllers.cart')
         $rootScope.page = "Order Details";
 
         //this is a back-end page, use to hide category nav & stuff
-        $rootScope.section = "admin";
+        $rootScope.section = "cart";
 
         $scope.hidestuff = true;
 

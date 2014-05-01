@@ -1,34 +1,25 @@
 <div class="modal-header">
-  <h3>Configure Kit</h3>
+  <button type="button" class="close" ng-click="close()">&times;</button>
+  <h4 class="modal-title">Configure Offer</h4>
 </div>
-<div class="modal-body configure-kit-modal-body">
-  <div class="row">
-    <div class="col-md-6">
 
-      <!--
-      <kitgroup>
-        <id>NUPL18862</id>
-        <produductskus>
-          <itemnumber>13027</itemnumber>
-          <itemnumber>15522</itemnumber>
-        </produductskus>
-      </kitgroup>
-      -->
-      <form name="kitSelectionForm" role="form">
-        <div class="radio" ng-repeat="product in products">
-          <label>
-            <input name="selectedProduct" ng-model=productSelect ng-change="selectProduct(product.itemnumber)" type="radio" id="optionsRadios2" value="{{product.itemnumber}}" ng-required>
-            <div>{{product.itemnumber}} {{product.productname}}</div>
-            <img class="img-responsive" style="width: 100px;" ng-src="/{{product.images.path}}">
-          </label>
-        </div>
+<div class="modal-body queue-modal-body">
+
+      <form name="kitSelectionForm" role="form" class="form-inline clearfix">
+
+        <div class="col-xs-6 col-sm-4 modal-addon-item" ng-repeat="product in products">
+           <label for="kitOptions{{product.itemnumber}}">
+             <input name="customerStatus" ng-model="selectedProduct" ng-change="selectProduct(product.itemnumber)" type="radio" id="kitOptions{{product.itemnumber}}" value="{{product.itemnumber}}" ng-required>
+             <img class="img-responsive" ng-src="/{{product.images.path}}">
+             <p class="modal-addon-item-title">{{product.productname}}</p>
+           </label>
+
       </form>
 
-    </div>
-  </div>
 </div>
 <div class="modal-footer">
-  <button ng-click="close()" class="btn btn-primary">Close</button>
-  <button ng-click="save()" class="btn btn-primary" ng-show="kitSelectionForm.$valid">Save</button>
-  <button ng-click="save()" class="btn btn-primary" ng-show="!kitSelectionForm.$valid" disabled>Save</button>
+  <span class="text-muted pull-left">Choose an option and save.</span>
+  <button ng-click="close()" class="btn btn-link">Cancel</button>
+  <button ng-click="save()" class="btn btn-primary" ng-show="kitSelectionForm.$valid"><i class="fa fa-shopping-cart"></i> Save to Cart</button>
+  <button ng-click="save()" class="btn btn-primary" ng-show="!kitSelectionForm.$valid" disabled="disabled"><i class="fa fa-shopping-cart"></i> Save to Cart</button>
 </div>

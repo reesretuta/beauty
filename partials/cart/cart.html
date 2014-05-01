@@ -71,7 +71,7 @@
             
             <p><form name="product{{product.itemnumber}}" role="form" class="form-inline store-item-add">
               <div class="form-group">
-                <input type="number" class="form-control qty-input" ng-model="quantities[product.itemnumber]" ng-blur="updateCart(product)" ng-keyup="updateCart(product)" value="{{product.quantity}}">
+                <input type="number" class="form-control qty-input" ng-model="quantities[product.itemnumber]" ng-change="updateCart(product)" value="{{product.quantity}}">
               </div>
             </form></p>
             
