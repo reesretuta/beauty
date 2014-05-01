@@ -2,17 +2,17 @@
   <button type="button" class="close" ng-click="close()">&times;</button>
   <h4 class="modal-title">Configure Offer</h4>
 </div>
+
 <div class="modal-body queue-modal-body">
 
       <form name="kitSelectionForm" role="form" class="form-inline clearfix">
 
         <div class="col-xs-6 col-sm-4 modal-addon-item" ng-repeat="product in products">
            <label for="kitOptions{{product.itemnumber}}">
-             <input name="customerStatus" ng-model="selectedProduct" type="radio" id="kitOptions{{product.itemnumber}}" value="{{product.itemnumber}}" ng-required>
+             <input name="customerStatus" ng-model="selectedProduct" ng-change="selectProduct(product.itemnumber)" type="radio" id="kitOptions{{product.itemnumber}}" value="{{product.itemnumber}}" ng-required>
              <img class="img-responsive" ng-src="/{{product.images.path}}">
              <p class="modal-addon-item-title">{{product.productname}}</p>
            </label>
-        </div>
 
       </form>
 

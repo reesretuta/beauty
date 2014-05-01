@@ -33,7 +33,7 @@ angular.module('app.controllers.main')
 
         $scope.getItemsInCart = function() {
             var count = Cart.getItemCount();
-            $log.debug("items count", count);
+            //$log.debug("items count", count);
             return count;
         }
         

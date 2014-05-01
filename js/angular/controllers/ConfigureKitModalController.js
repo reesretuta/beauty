@@ -4,10 +4,17 @@ angular.module('app.controllers.products')
 
         $scope.product = angular.copy(product);
         $scope.product.quantity = quantity;
+        $scope.products = [];
 
         $log.debug("configuring product", product);
 
         $scope.selectedProduct = null;
+        $scope.productIdToProduct = {};
+
+        $scope.selectProduct = function(productId) {
+            $log.debug("selected product", productId);
+            $scope.selectedProduct = productId;
+        }
 
         var productsToConfigure = product.kitgroup.productskus.itemnumber;
 
@@ -15,6 +22,7 @@ angular.module('app.controllers.products')
 
         var loadProducts = function (productIds) {
             //var start = new Date().getTime();
+            $log.debug("loading products", productIds);
             Products.query({"productIds": productIds}, function(products, responseHeaders) {
                 $log.debug("ConfigureKitModalController: got products", products);
                 // We do this here to eliminate the flickering.  When Products.query returns initially,
@@ -29,8 +37,9 @@ angular.module('app.controllers.products')
                     //$log.debug("ProductsController: initializing objects");
                 }
 
-                //$scope.breadcrumbs.options = {};
-                //$scope.breadcrumbs.options[$scope.breadcrumbs.breadcrumbs[$scope.breadcrumbs.breadcrumbs.length-1].label] = path;
+                angular.forEach(products, function(product) {
+                    $scope.productIdToProduct[product.itemnumber] = product;
+                });
 
                 $scope.loading = false;
             }, function (data) {
@@ -56,9 +65,10 @@ angular.module('app.controllers.products')
         };
 
         $scope.save = function () {
-            $log.debug("saving kit");
-            $scope.product.configuration = {};
-            $scope.product.configuration[product.kitgroup] = $scope.selectedProduct;
+            $log.debug("saving configured product kit");
+            $scope.product.kitSelections = {};
+            $log.debug("kit id", $scope.product.kitgroup.id, $scope.productIdToProduct, $scope.selectedProduct);
+            $scope.product.kitSelections[$scope.product.kitgroup.id] = angular.copy($scope.productIdToProduct[$scope.selectedProduct]);
             Cart.addToCart($scope.product);
             $modalInstance.close();
         };

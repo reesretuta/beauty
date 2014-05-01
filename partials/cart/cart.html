@@ -26,13 +26,13 @@
                         {{product.groupname}} {{product.productname}}
                     </a>
                 </h3>
-                <p><label>{{product.itemnumber}}</label> <!-- This kit includes: --></p>
-                <!-- <ul>
-                  <li>1 Item Title #1234</li>
-                  <li>1 Item Title #1234</li>
-                  <li>1 Item Title #1234</li>  TODO: Load these for kits
-                  <li>1 Item Title #1234</li>
-                </ul> -->
+                <p><label>{{product.itemnumber}}</label></p>
+                <p>This kit includes:</p>
+                <ul>
+                  <li ng-repeat="(kitId, kitProduct) in product.kitSelections">
+                    {{kitProduct.productname}} #{{kitProduct.itemnumber}}
+                  </li>
+                </ul>
                 <p class="cart-item-actions">
                   <a ng-click="removeFromCart(product)"><i class="fa fa-times"></i> remove</a>
                   &nbsp;&nbsp;&nbsp;&nbsp;
@@ -71,7 +71,7 @@
             
             <p><form name="product{{product.itemnumber}}" role="form" class="form-inline store-item-add">
               <div class="form-group">
-                <input type="number" class="form-control qty-input" ng-model="quantities[product.itemnumber]" ng-blur="updateCart(product)" ng-keyup="updateCart(product)" value="{{product.quantity}}">
+                <input type="number" class="form-control qty-input" ng-model="quantities[product.itemnumber]" ng-change="updateCart(product)" value="{{product.quantity}}">
               </div>
             </form></p>
             
