@@ -1,5 +1,5 @@
 angular.module('app.controllers.main')
-    .controller('MainController', function ($scope, $document, $timeout, $location, $rootScope, $routeParams, $log, Session, Categories, Cart, Search, breadcrumbs, RecentlyViewed) {
+    .controller('MainController', function ($scope, $document, $timeout, $location, $rootScope, $routeParams, $log, $translate, Session, Categories, Cart, Search, breadcrumbs, RecentlyViewed) {
 
         $scope.breadcrumbs = breadcrumbs;
 
@@ -30,6 +30,13 @@ angular.module('app.controllers.main')
             });
         }
         createListener();
+
+        $scope.session = Session.getSession();
+        $log.debug("loaded session", $scope.session);
+
+        $scope.$watch('session.language', function(newVal, oldVal) {
+            $translate.use($scope.session.language);
+        });
 
         $scope.getItemsInCart = function() {
             var count = Cart.getItemCount();

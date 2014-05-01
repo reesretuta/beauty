@@ -55,12 +55,18 @@ angular.module('app.services', ['ngResource'])
 
         function getSession() {
             if ($rootScope.session == null) {
-                $rootScope.session = {};
+                $rootScope.session = {
+                    'language': 'en_US'
+                };
             }
             var session = $rootScope.session;
             return session;
         }
         getSession();
+
+        sessionService.getSession = function() {
+            return getSession();
+        }
 
         sessionService.login = function(username, password) {
             //$log.debug("Session(): login(): attempting to login with username=", username, "password=", password);
@@ -75,6 +81,19 @@ angular.module('app.services', ['ngResource'])
             } else {
                 return false;
             }
+        }
+
+        sessionService.getLanguage = function() {
+            var session = getSession();
+            if (session.language == null) {
+                session.language = 'en_US';
+            }
+            return session.language;
+        }
+
+        sessionService.setLanguage = function(language) {
+            var session = getSession();
+            session.language = language;
         }
 
         sessionService.isLoggedIn = function() {
