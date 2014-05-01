@@ -26,7 +26,7 @@
                   <span>1 of 1</span>
                 </small>
               </div>
-              <a href="" class="image-zoom">
+              <a href="javascript:alert('Current videos require flash media server and flash video player (flash development not in scope). Flash video no longer supported on many devices. Require videos encoded as h.264 (eg. YouTube).')" class="image-zoom">
                 <img class="img-responsive" ng-src="/{{product.videos.videodetail.imagepath}}">
                 <small><i class="fa fa-play"></i> Watch Video</small>
               </a>
@@ -119,7 +119,7 @@
                       <img ng-src="{{productdetail.images.path}}" >
                     </a>
                 </span></p>
-                <p><select ng-model="selectedProduct.itemnumber" ng-change="showhide(selectedProduct.itemnumber)">
+                <p><select ng-model="selectedProduct.itemnumber" ng-change="showhide(selectedProduct.itemnumber); itemClicked(-1)">
                     <option value='{{productdetail.itemnumber}}' ng-repeat="productdetail in product.productskus.productdetail">{{productdetail.productname}}</option>
                 </select></p>
                 <p class="itemsleep">Item #{{selectedProduct.itemnumber}}</p>
