@@ -3,6 +3,36 @@ angular.module('app.controllers.checkout')
 
         $log.debug("CheckoutController()");
 
+
+
+var loadCart = function() {
+            $scope.products = Cart.getItems();
+            $log.debug("loaded cart products", $scope.products);
+        }
+        loadCart();
+        
+        $scope.total = function() {
+            var total = 0;
+            angular.forEach($scope.products, function(item) {
+                
+                var pricing = item.pricing.detailprice;                
+                if (!(Array.isArray(pricing))) {
+                    total += item.quantity * item.pricing.detailprice.price;
+                } else {
+                    angular.forEach(pricing, function(price) {
+                        if(price.pricetype=='sale') {
+                            total += item.quantity * price.price;
+                        }
+                    })
+                }
+                
+//                total += item.quantity * item.pricing.detailprice.price;
+            })
+
+            return total;
+        }
+
+
         //change page title
         $rootScope.page = "Checkout";
         $rootScope.section = "checkout";
@@ -28,9 +58,15 @@ angular.module('app.controllers.checkout')
             $scope.loginError = false;
 
             $log.debug("trying to login with username=", loginEmail, "password=", loginPassword);
-
+            var success = false;
+            if(checkout.customerStatus=='new') {
+                success = Session.createUser(loginEmail);
+            } else {
+                success = Session.login(loginEmail, loginPassword);
+            }
+            
             // do the auth check and store the session id in the root scope
-            var success = Session.login(loginEmail, loginPassword);
+            
             if (success) {
                 $log.debug("CheckoutController(): authenticated, moving to next step");
                 // jump to Shipping
@@ -263,6 +299,11 @@ angular.module('app.controllers.checkout')
                 cancelChangeListener();
             }
         }
+        
+        
+        
+        
+        
 
         /*==== CLEANUP ====*/
         $scope.$on('$destroy', function() {

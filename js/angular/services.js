@@ -76,6 +76,15 @@ angular.module('app.services', ['ngResource'])
                 return false;
             }
         }
+        
+        sessionService.createUser = function(username) {
+            var session = getSession();
+            session.authenticated = true;
+            session.user = {
+                'email': username
+            };
+            return true;
+        }
 
         sessionService.isLoggedIn = function() {
             var session = getSession();
