@@ -1,6 +1,165 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <products>
     <productdetail>
+        <id>353</id>
+        <itemnumber>13026</itemnumber>
+        <productname>Royal Jelly Milk Bath</productname>
+        <sellingquantity>6.7 fl. oz.</sellingquantity>
+        <marketingdescription>
+            <![CDATA[<p>Leaves skin feeling clean, moisturized, refreshed, silky smooth all over.</p>]]>
+        </marketingdescription>
+        <images>
+            <path><![CDATA[img/13026_1.jpg]]></path>
+        </images>
+        <ingredients><![CDATA[- Cellspan Complex<br><br>- Royal Jelly, Helianthus Annuus (Sunflower) Sprout Extract, Lecithin, Water/Aqua, Glycerin<br><br>- SunJelly <br><br>- Longevicell<br><br>- Ayurvedic Blend - Wintercherry and Lotus flowers<br><br>- Glycerin<br><br>- Tocopheryl<br><br>- Allantoin<br><br>- Panthenol<br><br>- Milk Amino Acids<br><br><span></span> ]]></ingredients>
+        <usage><![CDATA[Pour a handful into bathtub under warm running water or apply all over body while showering.<span></span><span><br></span><span></span>]]></usage>
+        <pricing>
+            <detailprice>
+                <pricetype>retail</pricetype>
+                <price>46.00</price>
+                <effectivestartdate>02012012</effectivestartdate>
+                <effectiveenddate>01012025</effectiveenddate>
+            </detailprice>
+        </pricing>
+        <categories>
+            <category>
+                <id>113</id>
+            </category>
+        </categories>
+        <relatedproducts>
+            <productdetail>
+                <itemnumber>15522</itemnumber>
+                <productname>Royal Jelly Milk Balm Advanced</productname>
+                <path><![CDATA[img/15522_1.jpg]]></path>
+            </productdetail>
+            <productdetail>
+                <itemnumber>13027</itemnumber>
+                <productname>Royal Jelly Body Complex</productname>
+                <path><![CDATA[img/13027_1.jpg]]></path>
+            </productdetail>
+            <productdetail>
+                <itemnumber>14808</itemnumber>
+                <productname>Royal Jelly Eye Concentrate Capsules</productname>
+                <path><![CDATA[img/14808_1.jpg]]></path>
+            </productdetail>
+            <productdetail>
+                <itemnumber>13096</itemnumber>
+                <productname>Royal Jelly Lift Concentrate</productname>
+                <path><![CDATA[img/13096_1.jpg]]></path>
+            </productdetail>
+        </relatedproducts>
+        <productflag>
+            <type>product</type>
+            <isgroupproduct>0</isgroupproduct>
+        </productflag>
+    </productdetail>
+    <productdetail>
+        <id>353</id>
+        <itemnumber>13096</itemnumber>
+        <productname>Royal Jelly Lift Concentrate</productname>
+        <sellingquantity>7 vials, each .23 fl. oz.</sellingquantity>
+        <marketingdescription>
+            <![CDATA[<p>A 28-day firming regimen for immediate lift and radiance. Refines the appearance of pores and helps prevent fine lines and wrinkles.</p>]]>
+        </marketingdescription>
+        <images>
+            <path><![CDATA[img/13096_1.jpg]]></path>
+        </images>
+        <ingredients><![CDATA[- Cellspan Complex<br><br>- Royal Jelly, Helianthus Annuus (Sunflower) Sprout Extract, Lecithin, Water/Aqua, Glycerin<br><br>- SunJelly<br><br>- Longevicell - Myrtle Extract<br><br>- Ayurvedic Blend- Wintercherry and Lotus flowers<br><br>- Larrea Divaricata Extract<br><br>- Glycine Soya Seed Extract<br><br>- Biosaccharide Gum-1<br><br>- Water/Aqua, Butylene Glycol, Avena Sativa (Oat) Kernel Extract<br><br>- Lecithin, Dipropylene Glycol, Royal Jelly<br><br>- Hydrolyzed Corallina Officinalis<br><br>- Panthenol<br><br>- Pentylene Glycol<br><br>- Sodium Carboxymethyl Betaglucan<br><br>- Ocimum Tenuiflorum Extract<br><br>]]></ingredients>
+        <usage><![CDATA[Apply before moisturizer for best results. Use morning and evening for 28 days. Each vial contains eight applications to use over four days in the morning]]></usage>
+        <pricing>
+            <detailprice>
+                <pricetype>retail</pricetype>
+                <price>45.00</price>
+                <effectivestartdate>02012012</effectivestartdate>
+                <effectiveenddate>01012025</effectiveenddate>
+            </detailprice>
+        </pricing>
+        <categories>
+            <category>
+                <id>113</id>
+            </category>
+        </categories>
+        <relatedproducts>
+            <productdetail>
+                <itemnumber>15522</itemnumber>
+                <productname>Royal Jelly Milk Balm Advanced</productname>
+                <path><![CDATA[img/15522_1.jpg]]></path>
+            </productdetail>
+            <productdetail>
+                <itemnumber>13027</itemnumber>
+                <productname>Royal Jelly Body Complex</productname>
+                <path><![CDATA[img/13027_1.jpg]]></path>
+            </productdetail>
+            <productdetail>
+                <itemnumber>14808</itemnumber>
+                <productname>Royal Jelly Eye Concentrate Capsules</productname>
+                <path><![CDATA[img/14808_1.jpg]]></path>
+            </productdetail>
+            <productdetail>
+                <itemnumber>13026</itemnumber>
+                <productname>Royal Jelly Milk Bath</productname>
+                <path><![CDATA[img/13026_1.jpg]]></path>
+            </productdetail>
+        </relatedproducts>
+        <productflag>
+            <type>product</type>
+            <isgroupproduct>0</isgroupproduct>
+        </productflag>
+    </productdetail>
+    <productdetail>
+        <id>423</id>
+        <itemnumber>14808</itemnumber>        
+        <productname>Royal Jelly Eye Concentrate Capsules</productname>
+        <sellingquantity>60 capsules</sellingquantity>
+        <marketingdescription>
+            <![CDATA[<p>Prolongs skin's vitality, immediately filling in lines, dminishing the appearance of crow's feet, helping stimulate skin's defense mechanism.</p>]]>
+        </marketingdescription>
+        <images>
+            <path><![CDATA[img/14808_1.jpg]]></path>
+        </images>
+        <ingredients><![CDATA[- Methyl Methacrylate / Glycol Dimethacrylate Crosspolymer<p>- Sodium Hyaluronate</p><p>- Myristoyl Pentapeptide-8 and Myristoyl Tetrapeptide-8</p><p>- Royal Jelly</p><p>- Oryza Sativa (Rice) Extract</p>]]></ingredients>
+        <usage><![CDATA[Turn tab around twice and twist off capsule. Smooth onto fingertip and gently pat under and around both eyes in the morning and/or evening.]]></usage>
+        <pricing>
+            <detailprice>
+                <pricetype>retail</pricetype>
+                <price>46.00</price>
+                <effectivestartdate>02012012</effectivestartdate>
+                <effectiveenddate>01012025</effectiveenddate>
+            </detailprice>
+        </pricing>
+        <categories>
+            <category>
+                <id>113</id>
+            </category>
+        </categories>
+        <relatedproducts>
+            <productdetail>
+                <itemnumber>15522</itemnumber>
+                <productname>Royal Jelly Milk Balm Advanced</productname>
+                <path><![CDATA[img/15522_1.jpg]]></path>
+            </productdetail>
+            <productdetail>
+                <itemnumber>13027</itemnumber>
+                <productname>Royal Jelly Body Complex</productname>
+                <path><![CDATA[img/13027_1.jpg]]></path>
+            </productdetail>
+            <productdetail>
+                <itemnumber>13096</itemnumber>
+                <productname>Royal Jelly Lift Concentrate</productname>
+                <path><![CDATA[img/13096_1.jpg]]></path>
+            </productdetail>
+            <productdetail>
+                <itemnumber>13026</itemnumber>
+                <productname>Royal Jelly Milk Bath</productname>
+                <path><![CDATA[img/13026_1.jpg]]></path>
+            </productdetail>
+        </relatedproducts>
+        <productflag>
+            <type>product</type>
+            <isgroupproduct>0</isgroupproduct>
+        </productflag>
+    </productdetail>
+    <productdetail>
         <id>352</id>
         <itemnumber>13027</itemnumber>
         
