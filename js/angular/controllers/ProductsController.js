@@ -81,13 +81,17 @@ angular.module('app.controllers.products')
                 // We do this here to eliminate the flickering.  When Products.query returns initially,
                 // it returns an empty array, which is then populated after the response is obtained from the server.
                 // This causes the table to first be emptied, then re-updated with the new data.
-                if ($scope.products) {
-                    // update the objects, not just replace, else we'll yoink the whole DOM
-                    $scope.products = HashKeyCopier.copyHashKeys($scope.products, products, ["id"])
-                    //$log.debug("ProductsController: updating objects", $scope.objects);
+                if(products.length>0) {
+                    if ($scope.products) {
+                        // update the objects, not just replace, else we'll yoink the whole DOM
+                        $scope.products = HashKeyCopier.copyHashKeys($scope.products, products, ["id"])
+                        //$log.debug("ProductsController: updating objects", $scope.objects);
+                    } else {
+                        $scope.products = products;
+                        //$log.debug("ProductsController: initializing objects");
+                    }
                 } else {
-                    $scope.products = products;
-                    //$log.debug("ProductsController: initializing objects");
+                    $scope.products = '';
                 }
 
                 var path = BreadcrumbsHelper.buildPath($scope.category, null, null);
