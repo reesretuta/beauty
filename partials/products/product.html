@@ -119,7 +119,7 @@
                       <img ng-src="{{productdetail.images.path}}" >
                     </a>
                 </span></p>
-                <p><select ng-model="selectedProduct.itemnumber" ng-change="showhide(selectedProduct.itemnumber)">
+                <p><select ng-model="selectedProduct.itemnumber" ng-change="showhide(selectedProduct.itemnumber); itemClicked(-1)">
                     <option value='{{productdetail.itemnumber}}' ng-repeat="productdetail in product.productskus.productdetail">{{productdetail.productname}}</option>
                 </select></p>
                 <p class="itemsleep">Item #{{selectedProduct.itemnumber}}</p>
