@@ -419,6 +419,7 @@ a, .btn {
   display: block;
 }
 .store-checkout {
+  position: relative;
   padding-bottom: 80px;
 }
 .store-checkout h1 {
