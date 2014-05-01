@@ -1,12 +1,7 @@
-<div class="modal-body zoom-image-modal-body">
-  <div class="row">
-    <div class="col-md-6">
-
-        <img class="img-responsive" ng-src="/{{product.images.path}}">
-
-    </div>
-  </div>
+<div class="modal-header">
+  <button type="button" class="close" aria-hidden="true" ng-click="close()">&times;</button>
+  <h4 class="modal-title">{{product.productname}}</h4>
 </div>
-<div class="modal-footer">
-  <button ng-click="close()" class="btn btn-primary">Close</button>
+<div class="modal-body zoom-image-modal-body">
+  <img class="img-responsive" ng-src="/{{product.images.path}}">
 </div>

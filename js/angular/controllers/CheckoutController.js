@@ -3,6 +3,36 @@ angular.module('app.controllers.checkout')
 
         $log.debug("CheckoutController()");
 
+
+
+var loadCart = function() {
+            $scope.products = Cart.getItems();
+            $log.debug("loaded cart products", $scope.products);
+        }
+        loadCart();
+        
+        $scope.total = function() {
+            var total = 0;
+            angular.forEach($scope.products, function(item) {
+                
+                var pricing = item.pricing.detailprice;                
+                if (!(Array.isArray(pricing))) {
+                    total += item.quantity * item.pricing.detailprice.price;
+                } else {
+                    angular.forEach(pricing, function(price) {
+                        if(price.pricetype=='sale') {
+                            total += item.quantity * price.price;
+                        }
+                    })
+                }
+                
+//                total += item.quantity * item.pricing.detailprice.price;
+            })
+
+            return total;
+        }
+
+
         //change page title
         $rootScope.page = "Checkout";
         $rootScope.section = "checkout";
@@ -28,9 +58,15 @@ angular.module('app.controllers.checkout')
             $scope.loginError = false;
 
             $log.debug("trying to login with username=", loginEmail, "password=", loginPassword);
-
+            var success = false;
+            if(checkout.customerStatus=='new') {
+                success = Session.createUser(loginEmail);
+            } else {
+                success = Session.login(loginEmail, loginPassword);
+            }
+            
             // do the auth check and store the session id in the root scope
-            var success = Session.login(loginEmail, loginPassword);
+            
             if (success) {
                 $log.debug("CheckoutController(): authenticated, moving to next step");
                 // jump to Shipping
@@ -59,6 +95,9 @@ angular.module('app.controllers.checkout')
         }
         if (checkout.currentStep == null) {
             checkout.currentStep = '';
+        }
+        if (checkout.billDif == null) {
+            checkout.billDif = true;
         }
 
         $scope.checkout = checkout;
@@ -196,7 +235,7 @@ angular.module('app.controllers.checkout')
             }
             
             // add card to order object
-            $scope.orderObject.creditCard.push(angular.copy(creditCard));
+            $scope.orderObject.creditCard = creditCard;
             $log.debug('order object', $scope.orderObject);
             
             if(cardData.customerStatus=='existing') {
@@ -209,6 +248,37 @@ angular.module('app.controllers.checkout')
             
 //                $log.debug('card data', $scope.newCustomerData); $log.debug('existing card data', $scope.existingCustomerData)
         }
+        
+        $scope.addAddress = function(data, addressType) { 
+            $log.debug('address data', data);
+            var address = {
+                address1: data.address1,
+                address2: data.address2,
+                city: data.city,
+                state: data.stateProvinceRegion,
+                zip: data.zipPostalCode,
+                country: data.country,
+                phone: data.phone,
+                type: data.addressType,
+                notes: data.securityAccessCode,
+                name: data.fullName
+            }
+            
+            // add address to order object
+            $scope.orderObject[addressType] = address;
+//            $log.debug('order object', $scope.orderObject);
+            
+            if(data.customerStatus=='existing') {
+                $scope.existingCustomerData.addresses.push(angular.copy(address));
+            } else {
+                $scope.newCustomerData = {addresses: []};                
+                $scope.newCustomerData.addresses.push(angular.copy(address));
+            }
+            
+            
+//                $log.debug('card data', $scope.newCustomerData); $log.debug('existing card data', $scope.existingCustomerData)
+        }
+        
         
         $scope.substr = function(string, start, charNo) {
             $scope.string = string.substr(start, charNo)
@@ -229,6 +299,11 @@ angular.module('app.controllers.checkout')
                 cancelChangeListener();
             }
         }
+        
+        
+        
+        
+        
 
         /*==== CLEANUP ====*/
         $scope.$on('$destroy', function() {

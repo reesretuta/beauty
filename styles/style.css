@@ -5,6 +5,23 @@
  * v0.9 - 17 April 2014
  */
 
+
+/*      .ng-enter {
+        -webkit-animation: fadeIn .3s;
+        -moz-animation: fadeIn .3s;
+        -ms-animation: fadeIn .3s;
+        animation: fadeIn .3s;
+      }
+      .ng-leave {
+        -webkit-animation: fadeOut .01s;
+        -moz-animation: fadeOut .01s;
+        -ms-animation: fadeOut .01s;
+        animation: fadeOut .01s;
+      }*/
+[ng\:cloak], [ng-cloak], .ng-cloak {
+  display: none !important;
+}
+
 .primary-color { color: #b51a8a; }
 .secondary-color { color: #AA73B1; }
 
@@ -13,7 +30,7 @@ html {
 }
 
 h1, .h1, h2, h3, h4, h5, h6,
-.btn, .label, .badge, .store-checkout .control-label {
+.btn, .label, .badge, .store-checkout .control-label, .steps-indicator {
   font-family: "News Cycle", sans-serif;
 }
 h2, h3, h4, a, .btn-link {
@@ -65,6 +82,10 @@ h2 {
 
 .navbar-nav, .login-info, .store-checkout-progress {
   text-transform: uppercase;
+  color: #fff;
+}
+.login-info select {
+  color: #222;
 }
 .consultant-info, .login-info {
   font-size: 13px;
@@ -203,8 +224,8 @@ h2 {
   /*-moz-transform: scale(1);*/
   -webkit-transform: scale(1);
   -o-transform: scale(1);
-  /*-ms-transform: scale(1);*/
-  transform: scale(1);
+  -ms-transform: scale(1);
+  /*transform: scale(1);*/
 }
 .store-item-sku {
   font-size: 13px;
@@ -417,6 +438,10 @@ a, .btn {
 .cart-item-price em {
   display: block;
 }
+.store-checkout {
+  position: relative;
+  padding-bottom: 80px;
+}
 .store-checkout h1 {
   margin-bottom: 30px;
 }
@@ -584,6 +609,9 @@ a, .btn {
     font-size: 16px;
     text-transform: uppercase;
 }
+a:focus {
+  outline: none;
+}
 
 #shop_menu a.active, #shop_menu > ul > li > a:hover, #shop_menu > ul > li.active > a, #shop_menu > ul > li.open > a {
     color: #b51a8a;
@@ -595,14 +623,6 @@ a, .btn {
 
 #shop_menu > ul > li > a:hover {
     box-shadow: inset 0 -1px 0 rgba(181,26,138,.1);
-}
-
-#shop_menu > ul > li.open > a span:hover {
-    text-decoration: underline;
-}
-
-#shop_menu ul ul li.open > a[href*="category"] span:hover {
-    text-decoration: underline;
 }
 
 #shop_menu > ul > li.open > a:nth-of-type(1) {
