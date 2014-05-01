@@ -54,7 +54,7 @@
     </style>
   </head>
 
-  <body ng-controller="MainController">
+  <body ng-controller="MainController" ng-cloak>
     <header id="shop_header" class="navbar" role="navigation">
       <div class="container">
         <div class="row">
@@ -118,7 +118,7 @@
 
       <div growl-notifications class="alerts"></div>
 
-      <div ng-show="section != 'checkout'" class="row store-heading">
+      <div ng-show="section != 'checkout'" class="row store-heading" ng-cloak>
         <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8">
           <h1>{{page}}</h1>
         </div>

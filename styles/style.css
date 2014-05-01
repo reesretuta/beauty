@@ -5,6 +5,23 @@
  * v0.9 - 17 April 2014
  */
 
+
+/*      .ng-enter {
+        -webkit-animation: fadeIn .3s;
+        -moz-animation: fadeIn .3s;
+        -ms-animation: fadeIn .3s;
+        animation: fadeIn .3s;
+      }
+      .ng-leave {
+        -webkit-animation: fadeOut .01s;
+        -moz-animation: fadeOut .01s;
+        -ms-animation: fadeOut .01s;
+        animation: fadeOut .01s;
+      }*/
+[ng\:cloak], [ng-cloak], .ng-cloak {
+  display: none !important;
+}
+
 .primary-color { color: #b51a8a; }
 .secondary-color { color: #AA73B1; }
 
@@ -66,6 +83,9 @@ h2 {
 .navbar-nav, .login-info, .store-checkout-progress {
   text-transform: uppercase;
   color: #fff;
+}
+.login-info select {
+  color: #222;
 }
 .consultant-info, .login-info {
   font-size: 13px;
@@ -588,6 +608,9 @@ a, .btn {
     color: #797c7d;
     font-size: 16px;
     text-transform: uppercase;
+}
+a:focus {
+  outline: none;
 }
 
 #shop_menu a.active, #shop_menu > ul > li > a:hover, #shop_menu > ul > li.active > a, #shop_menu > ul > li.open > a {
