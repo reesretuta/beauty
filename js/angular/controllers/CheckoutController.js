@@ -60,6 +60,9 @@ angular.module('app.controllers.checkout')
         if (checkout.currentStep == null) {
             checkout.currentStep = '';
         }
+        if (checkout.billDif == null) {
+            checkout.billDif = true;
+        }
 
         $scope.checkout = checkout;
 
@@ -196,7 +199,7 @@ angular.module('app.controllers.checkout')
             }
             
             // add card to order object
-            $scope.orderObject.creditCard.push(angular.copy(creditCard));
+            $scope.orderObject.creditCard = creditCard;
             $log.debug('order object', $scope.orderObject);
             
             if(cardData.customerStatus=='existing') {
@@ -209,6 +212,37 @@ angular.module('app.controllers.checkout')
             
 //                $log.debug('card data', $scope.newCustomerData); $log.debug('existing card data', $scope.existingCustomerData)
         }
+        
+        $scope.addAddress = function(data, addressType) { 
+            $log.debug('address data', data);
+            var address = {
+                address1: data.address1,
+                address2: data.address2,
+                city: data.city,
+                state: data.stateProvinceRegion,
+                zip: data.zipPostalCode,
+                country: data.country,
+                phone: data.phone,
+                type: data.addressType,
+                notes: data.securityAccessCode,
+                name: data.fullName
+            }
+            
+            // add address to order object
+            $scope.orderObject[addressType] = address;
+//            $log.debug('order object', $scope.orderObject);
+            
+            if(data.customerStatus=='existing') {
+                $scope.existingCustomerData.addresses.push(angular.copy(address));
+            } else {
+                $scope.newCustomerData = {addresses: []};                
+                $scope.newCustomerData.addresses.push(angular.copy(address));
+            }
+            
+            
+//                $log.debug('card data', $scope.newCustomerData); $log.debug('existing card data', $scope.existingCustomerData)
+        }
+        
         
         $scope.substr = function(string, start, charNo) {
             $scope.string = string.substr(start, charNo)

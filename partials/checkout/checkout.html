@@ -103,6 +103,22 @@
               </div><!-- /address -->
               
             </div>
+            
+            <div class="row" ng-if="checkout.customerStatus=='new'">
+              <div class="col-xs-6 col-lg-4 checkout-address" ng-repeat="addressData in newCustomerData.addresses">
+                <span class="address-name">{{addressData.name}}</span>
+                <span class="address-street">{{addressData.address1}} {{addressData.address2}}</span>
+                <span class="address-region">{{addressData.city}},   {{addressData.state}} {{addressData.zip}}</span>
+                <span class="phone-number">{{addressData.phone}}</span>
+                <div class="address-actions">
+                  <a href=""><i class="fa fa-pencil-square-o"></i> Edit</a>
+                  &nbsp;&nbsp;
+                  <a href=""><i class="fa fa-times-circle"></i> Remove</a>
+                </div>
+                <a href="" class="btn btn-primary" wz-next ng-click="addToOrderObject('shipping',addressData)">Ship to this Address</a>
+              </div><!-- /address -->
+              
+            </div>
 
             <hr ng-if="checkout.customerStatus=='existing'">
             <h2 class=" " ng-if="checkout.customerStatus=='existing'">Add a new address</h2>
@@ -165,7 +181,7 @@
             <div class="row form-group">
               <label for="shippingPhoneNumber" class="col-md-3 control-label">Phone Number</label>
               <div class="col-sm-6 col-lg-4">
-                <input name="phoneNumber" type="text" class="form-control" id="shippingPhoneNumber" placeholder=" " tabindex="8" required>
+                <input name="phoneNumber" ng-model="checkout.shipping.phone" type="text" class="form-control" id="shippingPhoneNumber" placeholder=" " tabindex="8" required>
               </div>
               <a href="" class="form-info-link"><i class="fa fa-info-circle"></i> More Info</a>
             </div>
@@ -207,7 +223,7 @@
             
             <div class="row form-group">
               <div class="col-md-offset-3 col-sm-9">
-                <button type="submit" class="btn btn-primary btn-lg" tabindex=" " wz-next ng-disabled="!shippingForm.$valid">Ship to this address &nbsp;<i class="fa fa-caret-right"></i></button>
+                <button type="submit" class="btn btn-primary btn-lg" tabindex=" " wz-next ng-disabled="!shippingForm.$valid" ng-click="addAddress(checkout.shipping, 'shipping')">Ship to this address &nbsp;<i class="fa fa-caret-right"></i></button>
               </div>
             </div>
             
@@ -534,7 +550,7 @@
                 <span class="address-region">{{orderObject.billing.city}}, {{orderObject.billing.state}} {{orderObject.billing.zip}}</span>
                 <span class="phone-number">{{orderObject.billing.phone}}</span>
                 <div class="address-actions">
-                  <a ng-href="#/checkout?step=Shipping"><i class="fa fa-pencil-square-o"></i> Change Address</a>
+                  <a ng-href="#/checkout?step=Payment"><i class="fa fa-pencil-square-o"></i> Change Address</a>
                 </div>
               </div><!-- /address -->           
               
@@ -546,7 +562,7 @@
                 <span class="address-region">{{orderObject.shipping.city}}, {{orderObject.shipping.state}} {{orderObject.shipping.zip}}</span>
                 <span class="phone-number">{{orderObject.shipping.phone}}</span>
                 <div class="address-actions">
-                  <a ng-href="#/checkout?step=Shipping"><i class="fa fa-pencil-square-o"></i> Change Address</a>
+                  <a ng-href="#/checkout?step=Payment"><i class="fa fa-pencil-square-o"></i> Change Address</a>
                 </div>
               </div><!-- /address -->
 
