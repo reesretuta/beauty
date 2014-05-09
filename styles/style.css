@@ -546,6 +546,15 @@ a, .btn {
 .order-details table>tfoot>tr>td:last-child {
   text-align: right;
 }
+
+.steps-indicator {
+    bottom: initial;
+    top: 10px;
+}
+
+.checkouth1 {
+    margin-top: 60px;
+}
 /*
  * Menu Styles
  * --------------------------------------------------
