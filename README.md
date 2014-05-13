@@ -1,19 +1,19 @@
 Running Locally
 ---------------
 
-Using Node:
+Install node modules:
 
-# installs node modules
 <code>
 npm install
 </code>
 
-# basic http server
+Start basic http server:
+
 <code>
 ./http-server/bin/http-server ./
 </code>
 
-# advanced http server
+Starting advanced http server:
 
 http server with some ability to configure static/dynamic routes
 outside of angular.
