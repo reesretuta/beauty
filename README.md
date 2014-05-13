@@ -26,6 +26,7 @@ node server.js
 Project Structure
 -----------------
 
+<pre>
 Gruntfile.js  - used for additional build scripts (not currently used)
 README.md     - this file
 api           - mock XML data used for RESTful calls to an API server
@@ -44,4 +45,4 @@ partials      - HTML partials which contain content for all views and dialogs
 server.js     - test configuration used for running node http server above
 sprites       - used for grunt-spritesmith to generate sprite maps (not currently used)
 styles        - CSS files
-
+</pre>
