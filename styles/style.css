@@ -84,6 +84,11 @@ h2 {
   text-transform: uppercase;
   color: #fff;
 }
+
+.print-link {
+    margin-top: 50px;
+}
+
 .login-info select {
   color: #222;
 }
@@ -552,7 +557,7 @@ a, .btn {
     top: 10px;
 }
 
-.checkouth1 {
+.store-checkout h1, .store-checkout h2 {
     margin-top: 60px;
 }
 /*
