@@ -1,4 +1,11 @@
 {
     "NAV_HOME": "Home",
-    "NAV_ABOUT": "About"
+    "NAV_ABOUT": "About",
+    "NAV_OPPORTUNITY": "Opportunity",
+    "NAV_STORE": "Shop Now",
+    "NAV_PARTY": "Party With Us",
+    "NAV_MEDIA": "Media",
+    "NAV_MYPAGE": "My Page",
+    "HEADER_CONSULTANTMSG": "Your JAFRA Beauty Consultant",
+    "VIEW_CART": "View Cart"
 }

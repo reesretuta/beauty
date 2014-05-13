@@ -79,15 +79,15 @@
                   <img src="http://placehold.it/40x40" alt="profile photo" class="img-circle pull-left consultant-photo">
                 </a>
                 <a href=""><span class="consultant-name">Denise Paxton</span></a>
-                <p>Your JAFRA Beauty Consultant</p>
+                <p>{{ 'HEADER_CONSULTANTMSG' | translate }}</p>
 
               </div>
               <div class="col-xs-12 col-sm-6 login-info">
                 <div class="navbar-right">
-                  <a ng-show="!loggedIn()" href="" ng-cloak>Sign In</a>
+                  <!-- <a ng-show="!loggedIn()" href="" ng-cloak>Sign In</a> -->
                   <span ng-show="loggedIn()" href="" ng-cloak>{{getUserEmail()}} (<a style="margin-right: 5px; margin-left: 5px;" href="" ng-click="logout()">Logout</a>)</span>
 
-                  <a ng-show="getItemsInCart()!=null" href="#/cart" ng-cloak><i class="fa fa-shopping-cart"></i> view cart({{getItemsInCart()}})</a>
+                  <a ng-show="getItemsInCart()!=null" href="#/cart" ng-cloak><i class="fa fa-shopping-cart"></i> {{ 'VIEW_CART' | translate }} ({{getItemsInCart()}})</a>
 
                   <img src="http://jafrausa.com/regional/images/en_US/template/icons/flag.png">
                   <select ng-model="session.language">
@@ -103,11 +103,11 @@
             <ul class="nav navbar-nav">
               <li><a href="">{{ 'NAV_HOME' | translate }}</a></li>
               <li><a href="">{{ 'NAV_ABOUT' | translate }}</a></li>
-              <li><a href="">Opportunity</a></li>
-              <li class="active"><a ng-href="#/">Shop Now</a></li>
-              <li><a href="">Party With Us</a></li>
-              <li><a href="">Media</a></li>
-              <li><a href="">My Page</a></li>
+              <li><a href="">{{ 'NAV_OPPORTUNITY' | translate }}</a></li>
+              <li class="active"><a ng-href="#/">{{ 'NAV_STORE' | translate }}</a></li>
+              <li><a href="">{{ 'NAV_PARTY' | translate }}</a></li>
+              <li><a href="">{{ 'NAV_MEDIA' | translate }}</a></li>
+              <li><a href="">{{ 'NAV_MYPAGE' | translate }}</a></li>
             </ul>
           </div><!-- /.nav-collapse -->
         </div>

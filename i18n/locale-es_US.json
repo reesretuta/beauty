@@ -1,4 +1,11 @@
 {
-    "NAV_HOME": "Case",
-    "NAV_ABOUT": "Acerca de"
+    "NAV_HOME": "INICIO",
+    "NAV_ABOUT": "COMPAÑÍA",
+    "NAV_OPPORTUNITY": "OPORTUNIDAD",
+    "NAV_STORE": "COMPRA AHORA",
+    "NAV_PARTY": "DIVIÉRTETE Y GANA",
+    "NAV_MEDIA": "PRENSA",
+    "NAV_MYPAGE": "MI PÁGINA",
+    "HEADER_CONSULTANTMSG": "Consultora de Belleza JAFRA **TRANSLATED FROM FILE (/i18n/locale-es_US.json)**",
+    "VIEW_CART": "Ver el Pedido"
 }
