@@ -39,7 +39,7 @@ index.html    - main HTML page for this single-page application
 js            - project javascript files
 lib           - destination for javascript libraries managed by bower
 nbproject     - netbean project data
-node\_modules  - node libraries installed by running "npm install"
+node_modules  - node libraries installed by running "npm install"
 package.json  - node package information and dependencies
 partials      - HTML partials which contain content for all views and dialogs
 server.js     - test configuration used for running node http server above
