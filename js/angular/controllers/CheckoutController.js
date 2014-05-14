@@ -10,6 +10,9 @@ var loadCart = function() {
             $log.debug("loaded cart products", $scope.products);
         }
         loadCart();
+        if ($scope.products.length == 0) {
+            $location.path("/products");
+        }
         
         $scope.total = function() {
             var total = 0;
