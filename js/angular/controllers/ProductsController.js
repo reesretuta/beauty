@@ -31,23 +31,48 @@ angular.module('app.controllers.products')
             var p = angular.copy(product);
             p.quantity = qty;
             Cart.addToCart(p);
-        }
+        };
 
         /*==== SEARCH ====*/
         $scope.searchFunction = function(product) {
+            //$log.debug("searching product", product);
+
             // no search string, match everything
             var query = Search.getQuery();
             if (S(query).isEmpty()) {
                 return true;
             }
 
-            if (S(product.productname).toLowerCase().indexOf(S(query).toLowerCase())!=-1 ||
-                S(product.productnumber).toLowerCase().indexOf(S(query).toLowerCase())!=-1)
+            if (!S(product.itemnumber).isEmpty() &&
+                (S(product.productname).toLowerCase().indexOf(S(query).toLowerCase())!=-1 ||
+                 S(product.itemnumber).toLowerCase().indexOf(S(query).toLowerCase())!=-1))
             {
+                //$log.debug("found product");
                 return true;
+            } else if (!S(product.groupid).isEmpty()) {
+                //$log.debug("searching product group");
+
+                var products = product.productskus.productdetail;
+                if (products == null) {
+                    //$log.debug("no sub-products for group");
+                    return false;
+                }
+
+                //$log.debug("have sub-products", products.length);
+
+                for (var i=0; i < products.length; i++) {
+                    product = products[i];
+                    //$log.debug("searching sub-product", product);
+                    if (!S(product.itemnumber).isEmpty() &&
+                        (S(product.productname).toLowerCase().indexOf(S(query).toLowerCase())!=-1 ||
+                         S(product.itemnumber).toLowerCase().indexOf(S(query).toLowerCase())!=-1))
+                    {
+                        return true;
+                    }
+                }
             }
             return false;
-        }
+        };
 
         /*=== LOAD DATA ====*/
 
@@ -68,8 +93,8 @@ angular.module('app.controllers.products')
                 // Set Error message
                 $scope.errorMessage = "An error occurred while retrieving category data. Please refresh the page to try again, or contact your system administrator if the error persists.";
 
-            })
-        }
+            });
+        };
         if ($scope.categoryId) {
             loadCategory();
         }
@@ -84,7 +109,7 @@ angular.module('app.controllers.products')
                 if(products.length>0) {
                     if ($scope.products) {
                         // update the objects, not just replace, else we'll yoink the whole DOM
-                        $scope.products = HashKeyCopier.copyHashKeys($scope.products, products, ["id"])
+                        $scope.products = HashKeyCopier.copyHashKeys($scope.products, products, ["id"]);
                         //$log.debug("ProductsController: updating objects", $scope.objects);
                     } else {
                         $scope.products = products;
@@ -114,7 +139,7 @@ angular.module('app.controllers.products')
                 // Set Error message
                 $scope.errorMessage = "An error occurred while retrieving object list. Please refresh the page to try again, or contact your system administrator if the error persists.";
             });
-        }
+        };
 
         if ($scope.categoryId) {
             categoriesLoadedPromise.promise.then(function(category) {
