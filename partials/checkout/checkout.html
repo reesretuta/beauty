@@ -313,7 +313,7 @@
             <div class="form-group" ng-class="{ 'has-error' : paymentForm.cardName.$invalid && !paymentForm.cardName.$pristine }">
               <label for=" " class="col-md-3 control-label">Name on Card</label>
               <div class="col-sm-6 col-lg-4">
-                <input ng-model="checkout.cardName" ng-minlength="3" name="cardName" type="text" class="form-control" id=" " placeholder=" " tabindex=" " required>
+                <input ng-model="checkout.cardName" ng-minlength="3" name="cardName" type="text" class="form-control" placeholder=" " tabindex=" " required>
                 <span ng-show="paymentForm.cardName.$error.minlength" class="help-inline">Name on card is too short.</span>
               </div>
             </div>
@@ -330,13 +330,13 @@
               <div class="col-sm-5">
                 <div class="row">
                   <div class="col-xs-4 col-sm-3 col-med-2" ng-class="{ 'has-error' : paymentForm.expMonth.$invalid && !paymentForm.expMonth.$pristine }">
-                      <input ng-model="checkout.expMonth" ng-minlength="2" ng-maxlength="2" maxlength="2" name="expMonth" type="text" class="form-control col-sm-1" id=" " placeholder="MM" tabindex=" " required>
+                      <input ng-model="checkout.expMonth" ng-minlength="2" ng-maxlength="2" maxlength="2" name="expMonth" type="text" class="form-control col-sm-1" placeholder="MM" tabindex=" " required>
                   </div>
                   <div class="col-xs-1">
                     <label class="control-label">/</label>
                   </div>
                   <div class="col-xs-6 col-sm-4 col-med-3" ng-class="{ 'has-error' : paymentForm.expYear.$invalid && !paymentForm.expYear.$pristine }">
-                    <input ng-model="checkout.expYear" ng-minlength="4" ng-maxlength="4" maxlength="4" name="expYear" type="text" class="form-control col-sm-3" id=" " placeholder="YYYY" tabindex=" " required>
+                    <input ng-model="checkout.expYear" ng-minlength="4" ng-maxlength="4" maxlength="4" name="expYear" type="text" class="form-control col-sm-3" placeholder="YYYY" tabindex=" " required>
                   </div>
                 </div>
               </div>
@@ -346,7 +346,7 @@
               <div class="col-sm-5">
                 <div class="row">
                   <div class="col-xs-4 col-sm-3 col-med-2">
-                    <input ng-model="checkout.securityCode" ng-minlength="3" ng-maxlength="4" maxlength="4" name="securityCode" type="password" class="form-control col-sm-1" id=" " placeholder="&bull;&bull;&bull;" tabindex=" " required>
+                    <input ng-model="checkout.securityCode" ng-minlength="3" ng-maxlength="4" maxlength="4" name="securityCode" type="password" class="form-control col-sm-1" placeholder="&bull;&bull;&bull;" tabindex=" " required>
                   </div>
                   <div class="col-xs-6 col-sm-4 col-med-3">
                     <a href="" class="form-info-link"><i class="fa fa-info-circle"></i> What's this?</a>
