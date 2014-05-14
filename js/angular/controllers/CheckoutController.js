@@ -5,7 +5,7 @@ angular.module('app.controllers.checkout')
 
 
 
-var loadCart = function() {
+        var loadCart = function() {
             $scope.products = Cart.getItems();
             $log.debug("loaded cart products", $scope.products);
         }
@@ -143,6 +143,10 @@ var loadCart = function() {
                 $log.debug("CheckoutController(): step changed from", oldVal, "to", newVal);
                 if (newVal != 'Start') {
                     $location.search("step", newVal);
+                }
+                if (newVal == 'Finish') {
+                    $log.debug("triggering finished");
+                    $scope.finished();
                 }
             }
         });
@@ -289,11 +293,14 @@ var loadCart = function() {
         }
 
         $scope.logStep = function() {
-            console.log("CheckoutController(): Step continued");
+            $log.debug("CheckoutController(): Step continued");
         }
         
         $scope.finished = function() {
-            alert("Wizard finished :)");
+            $log.debug("Checkout finished :)");
+            $scope.checkout.currentStep = '';
+            Checkout.clear();
+            Cart.clear();
         }
 
         function cleanup() {

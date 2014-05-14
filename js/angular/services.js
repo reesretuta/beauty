@@ -264,6 +264,11 @@ angular.module('app.services', ['ngResource'])
             
         };
 
+        cartService.clear = function() {
+            var cart = getCart();
+            cart.items = new Array();
+        };
+
         return cartService;
     })
     .factory('Products', function ($resource, $http, $log, Categories, API_URL) {
