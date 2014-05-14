@@ -69,7 +69,7 @@ angular.module('app.controllers.products')
             $scope.product.kitSelections = {};
             $log.debug("kit id", $scope.product.kitgroup.id, $scope.productIdToProduct, $scope.selectedProduct);
             $scope.product.kitSelections[$scope.product.kitgroup.id] = angular.copy($scope.productIdToProduct[$scope.selectedProduct]);
-            Cart.addToCart($scope.product);
+            Cart.addToCart(angular.copy($scope.product));
             $modalInstance.close();
         };
 

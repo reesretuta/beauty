@@ -192,22 +192,45 @@ angular.module('app.services', ['ngResource'])
 
         cartService.addToCart = function(p) {
             var cart = getCart();
-            var getIndex;
-            angular.forEach(cart.items, function(product) {
-                if (product.itemnumber == p.itemnumber) {
-                  var newQty = parseInt(p.quantity) + parseInt(product.quantity);
-                  
-                  getIndex=cart.items.indexOf(product);
-                  cart.items.splice(getIndex,1);                    
+            $log.debug("addToCart()", cart, p);
 
-                  p.quantity = newQty;
-                  $log.debug("added product", p);
-                  return p;
+            // check the cart for matching items, so we can update instead of add
+            var updated = false;
+            $.each(cart.items, function(index, product) {
+                //$log.debug("addToCart(): comparing products", p, product);
+                if (product.itemnumber == p.itemnumber && p.kitSelections == null && product.kitSelections == null) {
+                    //$log.debug("addToCart(): non-kit products are identical");
+                    var newQty = parseInt(p.quantity) + parseInt(product.quantity);
+                    product.quantity = newQty;
+                    $log.debug("addToCart(): added one more", p);
+                    updated = true;
+                    return true;
+                } else if (p.kitSelections != null && product.kitSelections != null) {
+                    //$log.debug("addToCart(): determining if kit selections are identical");
+                    // compare kit selections
+                    //$log.debug("addToCart(): looping through this products kit selections", p.kitSelections);
+                    $.each(p.kitSelections, function(kitGroupId, kitProduct) {
+                        //$log.debug("addToCart(): looping through car products kit selections", product.kitSelections);
+                        $.each(product.kitSelections, function(otherkitGroupId, otherKitProduct) {
+                            //$log.debug("comparing kit", kitGroupId, product, "to", otherkitGroupId, otherKitProduct);
+                            if (kitGroupId == otherkitGroupId && kitProduct.itemnumber == otherKitProduct.itemnumber) {
+                                //$log.debug("matched");
+                                var newQty = parseInt(p.quantity) + parseInt(product.quantity);
+                                product.quantity = newQty;
+                                $log.debug("addToCart(): added one more kit", p);
+                                updated = true;
+                                return true;
+                            }
+                        });
+                    });
                 }
             });
 
-            $log.debug("addToCart()", cart);
-            cart.items.splice(getIndex,0,p);
+            if (!updated) {
+                // we haven't updated the cart, so this is a new item to add
+                $log.debug("addToCart(): adding new item", p);
+                cart.items.push(p);
+            }
 
             // growlnotification when adding to cart
             growlNotifications.add('<i class="fa fa-shopping-cart"></i> '+p.productname+' <a href="#/cart"><b>added to cart</b></a>', 'warning', 4000);

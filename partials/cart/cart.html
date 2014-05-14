@@ -1,47 +1,59 @@
-  <div class="row store-cart">
-    <div class="col-xs-12">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>&nbsp;</th>
-            <th class="text-right">Price</th>
-            <th class="text-right">Quantity</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- cart items -->
-        <tr ng-repeat="product in products">
-          <td>
-            <div class="cart-item-info">
-              <a ng-href="#/products/{{product.itemnumber}}#top" class="col-xs-5 col-sm-3 col-md-2 col-lg-2" ng-if="product.productflag.type != 'groupproduct'">
-                <img class="img-responsive cart-item-image" ng-src="{{getImagePath(product.images.path)}}">
-              </a>
-              <a ng-href="#/products/{{product.groupid}}#top" class="col-xs-5 col-sm-3 col-md-2 col-lg-2" ng-if="product.productflag.type == 'groupproduct'">
-                <img class="img-responsive cart-item-image" ng-src="{{getImagePath(product.images.path)}}">
-              </a>
-              <div class="col-sm-9 col-md-8 col-lg-8">
-                <h3>
-                    <a href="#/products/{{product.itemnumber}}#top" ng-if="product.productflag.type != 'groupproduct'">{{product.productname}}</a>
-                    <a href="#/products/{{product.groupid}}#top" ng-if="product.productflag.type == 'groupproduct'">
-                        {{product.groupname}} {{product.productname}}
-                    </a>
-                </h3>
-                <p><label>{{product.itemnumber}}</label></p>
-                <p>This kit includes:</p>
-                <ul>
-                  <li ng-repeat="(kitId, kitProduct) in product.kitSelections">
-                    {{kitProduct.productname}} #{{kitProduct.itemnumber}}
-                  </li>
-                </ul>
-                <p class="cart-item-actions">
-                  <a ng-click="removeFromCart(product)"><i class="fa fa-times"></i> remove</a>
-                  &nbsp;&nbsp;&nbsp;&nbsp;
-                  <!-- <a href="#"><i class="fa fa-pencil-square-o"></i> make changes</a> TODO: Load this for kits & groups -->
-                </p>
-              </div>
+<div class="row store-cart">
+  <div class="col-xs-12">
+    <table class="table">
+      <thead>
+      <tr>
+        <th>&nbsp;</th>
+        <th class="text-right">Price</th>
+        <th class="text-right">Quantity</th>
+      </tr>
+      </thead>
+      <tbody>
+      <!-- cart items -->
+      <tr>
+        <td>
+          <div class="cart-item-info" ng-if="products.length == 0">
+            There are currently no items in your cart.
+          </div>
+        </td>
+      </tr>
+      <tr ng-repeat="product in products" ng-if="products.length > 0">
+        <td>
+          <div class="cart-item-info">
+            <a ng-href="#/products/{{product.itemnumber}}#top" class="col-xs-5 col-sm-3 col-md-2 col-lg-2"
+               ng-if="product.productflag.type != 'groupproduct'">
+              <img class="img-responsive cart-item-image" ng-src="{{getImagePath(product.images.path)}}">
+            </a>
+            <a ng-href="#/products/{{product.groupid}}#top" class="col-xs-5 col-sm-3 col-md-2 col-lg-2"
+               ng-if="product.productflag.type == 'groupproduct'">
+              <img class="img-responsive cart-item-image" ng-src="{{getImagePath(product.images.path)}}">
+            </a>
+
+            <div class="col-sm-9 col-md-8 col-lg-8">
+              <h3>
+                <a href="#/products/{{product.itemnumber}}#top" ng-if="product.productflag.type != 'groupproduct'">{{product.productname}}</a>
+                <a href="#/products/{{product.groupid}}#top" ng-if="product.productflag.type == 'groupproduct'">
+                  {{product.groupname}} {{product.productname}}
+                </a>
+              </h3>
+
+              <p><label>{{product.itemnumber}}</label></p>
+
+              <p ng-if="product.kitSelections != null">This kit includes:</p>
+              <ul ng-if="product.kitSelections != null">
+                <li ng-repeat="(kitId, kitProduct) in product.kitSelections">
+                  {{kitProduct.productname}} #{{kitProduct.itemnumber}}
+                </li>
+              </ul>
+              <p class="cart-item-actions">
+                <a ng-click="removeFromCart(product)"><i class="fa fa-times"></i> remove</a>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <!-- <a href="#"><i class="fa fa-pencil-square-o"></i> make changes</a> TODO: Load this for kits & groups -->
+              </p>
             </div>
-          </td>
-          <td class="text-right">
+          </div>
+        </td>
+        <td class="text-right">
               
               <span ng-repeat="detailprice in product.pricing.detailprice">
                 <span ng-if="detailprice.pricetype=='sale'" class="item-price-sale">
@@ -56,80 +68,81 @@
                   {{product.pricing.detailprice.price | currency}}
                 </span>
               </span>
-              
-              
-              
-              
-<!--            <p class="cart-item-price">
-              <b>${{product.pricing.detailprice.price}}</b>
-               <em>50% off</em> TODO: Add logic for sale prices 
-            </p>-->
-          </td>
-          <td align=right>
-            <!-- TODO: Compute each product Qty. -->
-            
-            
-            <p><form name="product{{product.itemnumber}}" role="form" class="form-inline store-item-add">
+
+
+          <!--            <p class="cart-item-price">
+                        <b>${{product.pricing.detailprice.price}}</b>
+                         <em>50% off</em> TODO: Add logic for sale prices
+                      </p>-->
+        </td>
+        <td align=right>
+          <!-- TODO: Compute each product Qty. -->
+          <p>
+            <form name="product{{product.itemnumber}}" role="form" class="form-inline store-item-add">
               <div class="form-group">
-                <input type="number" class="form-control qty-input" ng-model="quantities[product.itemnumber]" ng-change="updateCart(product)" value="{{product.quantity}}">
+                <input type="number" class="form-control qty-input" ng-model="quantities[product.itemnumber]"
+                       ng-change="updateCart(product)" value="{{product.quantity}}">
               </div>
-            </form></p>
-            
-            
-            
-            
-            <!--<input ng-model="quantities[product.itemnumber]" ng-keyup="addToCart(product)" type="integer" class="form-control qty-input" id="qty12345" value="{{product.quantity}}">-->
-          </td>
-        </tr><!--/table row-->
-
-        </tbody>
-      </table>
-    </div>
-  </div><!-- /row -->
-
-        <hr>
-
-      <div class="row">
-        <div class="col-lg-12">
-          <p class="text-right">
-            <label>SUB-TOTAL BEFORE TAX &amp; SHIPPING: {{total() | currency}}</label>
+            </form>
           </p>
-        </div>
-      </div><!-- /row -->
 
-      <div class="row">
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-          <a href="javascript:history.go(-1)" class="btn btn-link"><i class="fa fa-angle-left"></i> Continue Shopping</a>
-        </div>
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-          <a href="#checkout" class="btn btn-primary btn-lg pull-right">Checkout Now <i class="fa fa-angle-right"></i></a>
-        </div>
-      </div><!-- /row -->
+          <!--<input ng-model="quantities[product.itemnumber]" ng-keyup="addToCart(product)" type="integer" class="form-control qty-input" id="qty12345" value="{{product.quantity}}">-->
+        </td>
+      </tr>
+      <!--/table row-->
+
+      </tbody>
+    </table>
+  </div>
+</div><!-- /row -->
+
+<hr>
+
+<div class="row">
+  <div class="col-lg-12">
+    <p class="text-right">
+      <label>SUB-TOTAL BEFORE TAX &amp; SHIPPING: {{total() | currency}}</label>
+    </p>
+  </div>
+</div><!-- /row -->
+
+<div class="row">
+  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+    <a href="javascript:history.go(-1)" class="btn btn-link"><i class="fa fa-angle-left"></i> Continue Shopping</a>
+  </div>
+  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+    <a href="#checkout" class="btn btn-primary btn-lg pull-right">Checkout Now <i class="fa fa-angle-right"></i></a>
+  </div>
+</div><!-- /row -->
 
 
-      <div class="row store-cart-orderbyid" id="additem">
-        <div class="col-xs-12">
-          <h2>Order by item # or description</h2>
-          <form class="form-inline" role="form">
-            <div class="form-group">
-              <label class="" for="orderByIdQty">Qty:</label>
-              <input type="number" class="form-control qty-input" id="orderByIdQty" ng-model="orderByIdQty" placeholder="1" value="1">
-            </div>
-            <div class="form-group">
-              &nbsp;&nbsp;&nbsp;&nbsp;
-              <label class="" for="orderByIdItem">Item:</label>
-              <input type="text" class="form-control" id="orderByIdItem" placeholder="Enter Item # or Name" ng-model="orderByIdItem" ui-autocomplete="productSearchConfig" ui-event="{autocompletecreate:'changeClass(productSearchConfig)'}">
-            </div>
-            <button type="submit" class="btn btn-default" ng-click="addToCart()">Add to Cart</button>
-          </form>
-        </div>
-      </div><!-- /row -->
+<div class="row store-cart-orderbyid" id="additem">
+  <div class="col-xs-12">
+    <h2>Order by item # or description</h2>
 
-  <br>
+    <form class="form-inline" role="form">
+      <div class="form-group">
+        <label class="" for="orderByIdQty">Qty:</label>
+        <input type="number" class="form-control qty-input" id="orderByIdQty" ng-model="orderByIdQty" placeholder="1"
+               value="1">
+      </div>
+      <div class="form-group">
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <label class="" for="orderByIdItem">Item:</label>
+        <input type="text" class="form-control" id="orderByIdItem" placeholder="Enter Item # or Name"
+               ng-model="orderByIdItem" ui-autocomplete="productSearchConfig"
+               ui-event="{autocompletecreate:'changeClass(productSearchConfig)'}">
+      </div>
+      <button type="submit" class="btn btn-default" ng-click="addToCart()">Add to Cart</button>
+    </form>
+  </div>
+</div><!-- /row -->
+
+<br>
 
 <!--   <div ng-repeat="product in products">
     <b>Item #:</b> {{product.itemnumber}}<br>
     <b>Name:</b> {{product.productname}}<br>
     <b>Qty:</b> {{product.quantity}}<br>
   </div> -->
-  <div class="loader" ng-show="loading"></div>
+<div class="loader" ng-show="loading"></div>
