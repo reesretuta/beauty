@@ -88,13 +88,13 @@ angular.module('app.controllers.cart')
                         $log.debug("querying products", $scope.orderByIdItem);
                         var products = Products.query({'search': $scope.orderByIdItem}, function(products, status, headers) {
                             $log.debug("got products for search", products);
-                            var projectHeaders = new Array();
+                            var productHeaders = new Array();
                             angular.forEach(products, function(product) {
                                 if (product.itemnumber) {
                                     $scope.searchProducts[product.itemnumber] = product;
                                     $scope.searchProductsByName[product.itemnumber + ' - ' + product.productname] = product;
 
-                                    projectHeaders.push({
+                                    productHeaders.push({
                                         //label: $compile('<a class="ui-menu-add" ng-click="addToCart(searchProducts[\''+product.itemnumber+'\'])">' + product.productname + '</a>')($scope),
                                         label: product.itemnumber + ' - ' + product.productname,
                                         value: product.itemnumber + ' - ' + product.productname
@@ -102,9 +102,9 @@ angular.module('app.controllers.cart')
                                 } else if (product.groupid) {
                                     angular.forEach(product.productskus.productdetail, function(p) {
                                         $scope.searchProducts[p.itemnumber] = p;
-                                        $scope.searchProductsByName[p.itemnumber + ' - ' + product.productname + ' - ' + p.productname] = product;
+                                        $scope.searchProductsByName[p.itemnumber + ' - ' + product.productname + ' - ' + p.productname] = p;
 
-                                        projectHeaders.push({
+                                        productHeaders.push({
                                             //label: $compile('<a class="ui-menu-add" ng-click="addToCart(searchProducts[\''+product.itemnumber+'\'])">' + product.productname + '</a>')($scope),
                                             label: p.itemnumber + ' - ' + product.productname + ' - ' + p.productname,
                                             value: p.itemnumber + ' - ' + product.productname + ' - ' + p.productname
@@ -114,12 +114,12 @@ angular.module('app.controllers.cart')
                             });
 
                             if (!products.length) {
-                                projectHeaders.push({
+                                productHeaders.push({
                                     label: 'Not found',
                                     value: ''
                                 });
                             }
-                            response(projectHeaders);
+                            response(productHeaders);
                         }, function(products, status, headers) {
                             $log.error("error searching products", status, headers);
                             products.push({
