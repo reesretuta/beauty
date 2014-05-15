@@ -1,15 +1,9 @@
 angular.module('app.controllers.products')
-    .controller('ProductDetailsController', function ($sce, HashKeyCopier, Categories, Products, $q, $scope, $rootScope, $routeParams, $location, $timeout, $window, $log, $modal, $document, Cart, BreadcrumbsHelper, breadcrumbs, RecentlyViewed) {
+    .controller('ProductDetailsController', function ($sce, HashKeyCopier, Categories, Products, $q, $scope, $rootScope, $routeParams, $location, $timeout, $window, $log, $modal, $document, Cart, BreadcrumbsHelper, RecentlyViewed) {
         $log.debug("ProductDetailsController");
-
-        $scope.breadcrumbs = breadcrumbs;
-        $scope.breadcrumbs.options = { 'Product Details': $routeParams.productId  };
 
         $scope.productId = $routeParams.productId;
         $scope.categoryId = $routeParams.category;
-
-        $scope.breadcrumbs = breadcrumbs;
-        $scope.breadcrumbs.options = { 'Product Details': $scope.productId  };
 
         $rootScope.page = "Product Details";
         $rootScope.section = "store";
@@ -139,6 +133,8 @@ angular.module('app.controllers.products')
 
         /*=== LOAD DATA ====*/
 
+        var categoryLoaded = $q.defer();
+
         var loadCategory = function() {
             $log.debug("ProductDetailsController(): loadCategory(): loading category", $scope.categoryId);
             Categories.get({"categoryId": $scope.categoryId, "recurse": true}, function(category, status, headers) {
@@ -146,9 +142,10 @@ angular.module('app.controllers.products')
 
                 $log.debug("ProductDetailsController(): loaded category", category);
 
-                var path = BreadcrumbsHelper.buildPath($scope.category, $scope.product, null);
-                $scope.breadcrumbs.options = BreadcrumbsHelper.setPath($scope.breadcrumbs, path);
-                $log.debug("ProductDetailsController(): after category path", path, 'replacing current breadcrumb', $scope.breadcrumbs.breadcrumbs);
+                var path = BreadcrumbsHelper.setPath($scope.category, $scope.product);
+                $log.debug("ProductDetailsController(): after category loaded path", path);
+
+                categoryLoaded.resolve(category);
             }, function(data, status, headers) {
                 $log.error("error loading category", data, status);
                 //Hide loader
@@ -204,9 +201,10 @@ angular.module('app.controllers.products')
                     loadCategory();
                 }
 
-                var path = BreadcrumbsHelper.buildPath($scope.category, $scope.product, null);
-                $scope.breadcrumbs.options = BreadcrumbsHelper.setPath($scope.breadcrumbs, path);
-                $log.debug("ProductDetailsController(): path", path, 'replacing current breadcrumb', $scope.breadcrumbs.breadcrumbs);
+                categoryLoaded.promise.then(function() {
+                    var path = BreadcrumbsHelper.setPath($scope.category, $scope.product);
+                    $log.debug("ProductDetailsController(): after category & project loaded, path", path);
+                });
 
                 // add product to recently view products
                 $scope.addToRecentlyViewed(product);

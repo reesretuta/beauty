@@ -483,41 +483,22 @@ angular.module('app.services', ['ngResource'])
 
         return categoriesService;
     })
-    .factory('BreadcrumbsHelper', function($log) {
+    .factory('BreadcrumbsHelper', function($rootScope, $log) {
         var breadcrumbService = {};
 
-        breadcrumbService.setPath = function(breadcrumbs, list) {
-            $log.debug("breadcrumbService.buildPath(): setting breadcrumbs", breadcrumbs, list);
-
-            var newCrumbs = new Array();
-            // always push home first
-            newCrumbs.push({
-                label: 'Home',
-                path: '/'
-            });
-            angular.forEach(list, function(crumb) {
-                var newCrumb = {};
-                newCrumb.label = crumb.name;
-                if (crumb.type == 'category') {
-                    newCrumb.path = '/products?category=' + crumb.id;
-                } else if (crumb.type == 'product') {
-                    newCrumb.path = '/products/' + crumb.id;
-                }
-                newCrumbs.push(newCrumb);
-            });
-
-            $log.debug("breadcrumbService.buildPath(): setting new breadcrumbs", newCrumbs);
-            breadcrumbs.breadcrumbs = newCrumbs;
+        if ($rootScope.breadcrumbs == null) {
+            $rootScope.breadcrumbs = [];
         }
 
-        breadcrumbService.buildPath = function(category, product, list) {
+        var buildPath = function(category, product, list) {
             if (list == null && product != null) {
                 list = new Array();
-                $log.debug("breadcrumbService.buildPath(): setting path to product name");
+                $log.debug("breadcrumbService.buildPath(): setting path to product name", product.productname);
                 list.unshift({
                     type: 'product',
                     name: product.productname,
                     id: product.id,
+                    url: '/products/' + product.id,
                     item: product
                 });
             } else if (list == null) {
@@ -529,13 +510,53 @@ angular.module('app.services', ['ngResource'])
                     type: 'category',
                     name: category.name,
                     id: category.id,
+                    url: '/products?category=' + category.id,
                     item: category
                 });
-                return breadcrumbService.buildPath(category.parentcategory, product, list);
+                return buildPath(category.parentcategory, product, list);
             } else {
                 $log.debug("breadcrumbService.buildPath(): returning current path", list);
             }
             return list;
+        }
+
+        breadcrumbService.setPath = function(category, product) {
+            $log.debug("breadcrumbService.setPath()", category, product);
+            if (category == null) {
+                $log.debug("breadcrumbService.setPath(): removing breadcrumbs");
+                $rootScope.breadcrumbs = new Array();
+                return $rootScope.breadcrumbs;
+            }
+
+            var list = buildPath(category, product, null);
+
+            $log.debug("breadcrumbService.setPath(): setting breadcrumbs", list);
+
+            var newCrumbs = new Array();
+            // always push home first
+            newCrumbs.push({
+                label: 'Our Products',
+                type: 'none',
+                path: '/'
+            });
+
+            angular.forEach(list, function(crumb) {
+                var newCrumb = {
+                    id: crumb.id,
+                    type: crumb.type
+                };
+                newCrumb.label = crumb.name;
+                if (crumb.type == 'category') {
+                    newCrumb.path = '/products?category=' + crumb.id;
+                } else if (crumb.type == 'product') {
+                    newCrumb.path = '/products/' + crumb.id;
+                }
+                newCrumbs.push(newCrumb);
+            });
+
+            $log.debug("breadcrumbService.setPath(): setting new breadcrumbs", newCrumbs);
+            $rootScope.breadcrumbs = newCrumbs;
+            return newCrumbs;
         }
 
         return breadcrumbService;

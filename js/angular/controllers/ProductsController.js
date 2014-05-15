@@ -1,8 +1,6 @@
 angular.module('app.controllers.products')
-    .controller('ProductsController', function ($sce, HashKeyCopier, Cart, Categories, Products, Search, $scope, $rootScope, $routeParams, $q, $location, $timeout, $window, $log, $modal, $document, BreadcrumbsHelper, breadcrumbs) {
+    .controller('ProductsController', function ($sce, HashKeyCopier, Cart, Categories, Products, Search, $scope, $rootScope, $routeParams, $q, $location, $timeout, $window, $log, $modal, $document, BreadcrumbsHelper) {
         $log.debug("ProductsController");
-
-        $scope.breadcrumbs = breadcrumbs;
 
         $rootScope.page = "All Products";
         $rootScope.section = "store";
@@ -10,24 +8,28 @@ angular.module('app.controllers.products')
         $scope.errorMessage = '';
         $scope.loading = true;
 
+        // set the navigation to all products
+        $log.debug("ProductsController(): clearing breadcrumbs & setting All Project nav item");
+        BreadcrumbsHelper.setPath(null, null);
+        $rootScope.navStatic = '1';
 
-        $log.debug("ProductsController: routeParams", $routeParams);
-        $log.debug("ProductsController: routeParams.category", $routeParams.category);
-        $log.debug("ProductsController: routeParams.search", $routeParams.search);
+        $log.debug("ProductsController(): routeParams", $routeParams);
+        $log.debug("ProductsController(): routeParams.category", $routeParams.category);
+        $log.debug("ProductsController(): routeParams.search", $routeParams.search);
         $scope.categoryId = $routeParams.category;
-        $scope.category = {};
+        $scope.category = null;
 
         Search.search($routeParams.search);
 
         $scope.quantities = {};
 
         $scope.addToCart = function(product) {
-            $log.debug("ProductsController: adding product", product);
+            $log.debug("ProductsController(): adding product", product);
             var qty = $scope.quantities[product.itemnumber];
             if (qty == null) {
                 qty = 1;
             }
-            $log.debug("ProductsController: adding product", product, qty);
+            $log.debug("ProductsController(): adding product", product, qty);
             var p = angular.copy(product);
             p.quantity = qty;
             Cart.addToCart(p);
@@ -78,11 +80,11 @@ angular.module('app.controllers.products')
 
         var categoriesLoadedPromise = $q.defer();
         var loadCategory = function() {
-            $log.debug("ProductsController: loadCategory(): loading category", $scope.categoryId);
+            $log.debug("ProductsController(): loadCategory(): loading category", $scope.categoryId);
             Categories.get({"categoryId": $scope.categoryId, "recurse": true}, function(category, status, headers) {
                 $scope.category = category;
 
-                $log.debug("ProductsController: loaded category", category);
+                $log.debug("ProductsController(): loaded category", category);
 
                 $rootScope.page = category.name;
                 categoriesLoadedPromise.resolve(category);
@@ -102,7 +104,7 @@ angular.module('app.controllers.products')
         var loadProducts = function () {
             //var start = new Date().getTime();
             Products.query({"categoryId": $scope.categoryId}, function(products, responseHeaders) {
-                $log.debug("ProductsController: got products", products);
+                $log.debug("ProductsController(): got products", products);
                 // We do this here to eliminate the flickering.  When Products.query returns initially,
                 // it returns an empty array, which is then populated after the response is obtained from the server.
                 // This causes the table to first be emptied, then re-updated with the new data.
@@ -110,21 +112,17 @@ angular.module('app.controllers.products')
                     if ($scope.products) {
                         // update the objects, not just replace, else we'll yoink the whole DOM
                         $scope.products = HashKeyCopier.copyHashKeys($scope.products, products, ["id"]);
-                        //$log.debug("ProductsController: updating objects", $scope.objects);
+                        //$log.debug("ProductsController(): updating objects", $scope.objects);
                     } else {
                         $scope.products = products;
-                        //$log.debug("ProductsController: initializing objects");
+                        //$log.debug("ProductsController(): initializing objects");
                     }
                 } else {
                     $scope.products = '';
                 }
 
-                var path = BreadcrumbsHelper.buildPath($scope.category, null, null);
-                $scope.breadcrumbs.options = BreadcrumbsHelper.setPath($scope.breadcrumbs, path);
-                $log.debug("ProductsController: path", path, 'replacing current breadcrumb', $scope.breadcrumbs.breadcrumbs);
-
-                //$scope.breadcrumbs.options = {};
-                //$scope.breadcrumbs.options[$scope.breadcrumbs.breadcrumbs[$scope.breadcrumbs.breadcrumbs.length-1].label] = path;
+                var path = BreadcrumbsHelper.setPath($scope.category, null, null);
+                $log.debug("ProductsController(): path", path);
 
                 $scope.loading = false;
             }, function (data) {
@@ -143,12 +141,12 @@ angular.module('app.controllers.products')
 
         if ($scope.categoryId) {
             categoriesLoadedPromise.promise.then(function(category) {
-                $log.debug("ProductsController: loading products after category loaded");
+                $log.debug("ProductsController(): loading products after category loaded");
                 // kick off the first refresh
                 loadProducts();
             });
         } else {
-            $log.debug("ProductsController: loading products");
+            $log.debug("ProductsController(): loading products");
             loadProducts();
         }
 

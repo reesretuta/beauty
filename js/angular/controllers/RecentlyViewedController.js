@@ -1,5 +1,5 @@
 angular.module('app.controllers.recentlyViewed')
-    .controller('RecentlyViewedController', function ($sce, HashKeyCopier, Products, $scope, $rootScope, $routeParams, $location, $timeout, $window, $log, $modal, $document, Cart, breadcrumbs, RecentlyViewed) {
+    .controller('RecentlyViewedController', function ($sce, HashKeyCopier, Products, $scope, $rootScope, $routeParams, $location, $timeout, $window, $log, $modal, $document, Cart, RecentlyViewed) {
         
         var loadRecentlyViewed = function() {
             $scope.recentlyViewedProducts = RecentlyViewed.getItems();

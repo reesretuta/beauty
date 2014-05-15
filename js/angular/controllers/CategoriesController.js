@@ -7,7 +7,7 @@ angular.module('app.controllers.categories')
             //var start = new Date().getTime();
 
             Categories.query({}, function(categories, responseHeaders) {
-                $log.debug("got categories on success", categories);
+                $log.debug("CategoriesController(): got categories on success", categories);
                 $scope.categories = categories;
                 $scope.loading = true;
             }, function (data) {

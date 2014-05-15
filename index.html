@@ -130,9 +130,8 @@
       <div class="row store-heading-nav" ng-hide="section == 'admin' || section =='checkout' || section=='cart'">
         <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8">
 
-        
          <ol class="ab-nav breadcrumb">
-          <li ng-repeat="breadcrumb in breadcrumbs.get() track by breadcrumb.path" ng-class="{ active: $last }">
+          <li ng-repeat="breadcrumb in breadcrumbs track by breadcrumb.path" ng-class="{ active: $last }">
             <a ng-if="!$last" ng-href="#{{ breadcrumb.path }}" ng-bind="breadcrumb.label" class="margin-right-xs"></a>
             <span ng-if="$last" ng-bind="breadcrumb.label"></span>
           </li>
@@ -161,27 +160,27 @@
 
         <ul ng-controller="CategoriesController">
 
-          <li ng-repeat="category in categories" ng-class="{'open': $index==selectedIndex[0]}">
+          <li ng-repeat="category in categories" ng-class="{'open': $index==selectedIndex[0] || categoryInPath(category)}">
               <!-- don't follow link if has children, just expand -->
-              <a ng-show="category.childcategory" href ng-class="{'active': $index==selectedIndex[0]}" ng-click="itemClicked(0, $index); itemClicked(1, null);">
+              <a ng-show="category.childcategory" href ng-class="{'active': $index==selectedIndex[0] || categoryInPath(category)}" ng-click="itemClicked(0, $index); itemClicked(1, null);">
                 <span>{{category.name}}</span> <i ng-if="category.childcategory" class="fa fa-angle-down pull-right"></i>
               </a>
               <!-- follow link if no children -->
-              <a ng-show="category.childcategory == null" ng-href="#/products?category={{category.id}}" ng-class="{'active': $index==selectedIndex[0]}" ng-click="itemClicked(0, $index); itemClicked(1, null);">
+              <a ng-show="category.childcategory == null" ng-href="#/products?category={{category.id}}" ng-class="{'active': $index==selectedIndex[0] || categoryInPath(category)}" ng-click="itemClicked(0, $index); itemClicked(1, null);">
                 <span>{{category.name}}</span> <i ng-if="category.childcategory" class="fa fa-angle-down pull-right"></i>
               </a>  
 
               <!-- loop in children links -->
               <ul ng-if="category.childcategory">
 
-                  <li ng-repeat="category in category.childcategory" ng-class="{'open': $index==selectedIndex[1]}">
+                  <li ng-repeat="category in category.childcategory" ng-class="{'open': $index==selectedIndex[1] || categoryInPath(category)}">
 
                     <!-- don't follow link if has children, just expand -->
-                    <a ng-show="category.childcategory" href ng-class="{'active': $index==selectedIndex[1]}" ng-click="itemClicked(1, $index); itemClicked(2, null);">
+                    <a ng-show="category.childcategory" href ng-class="{'active': $index==selectedIndex[1] || categoryInPath(category)}" ng-click="itemClicked(1, $index); itemClicked(2, null);">
                       <span>{{category.name}}</span> <i ng-if="category.childcategory" class="fa fa-angle-down  pull-right"></i>
                     </a>
                     <!-- follow link if no children -->
-                    <a ng-show="category.childcategory == null" ng-href="#/products?category={{category.id}}" ng-class="{'active': $index==selectedIndex[1]}" ng-click="itemClicked(1, $index); itemClicked(2, null);">
+                    <a ng-show="category.childcategory == null" ng-href="#/products?category={{category.id}}" ng-class="{'active': $index==selectedIndex[1] || categoryInPath(category)}" ng-click="itemClicked(1, $index); itemClicked(2, null);">
                       <span>{{category.name}}</span> <i ng-if="category.childcategory" class="fa fa-angle-down  pull-right"></i>
                     </a>
 
@@ -189,7 +188,7 @@
                     <ul ng-if="category.childcategory">
 
                         <li ng-repeat="category in category.childcategory">
-                            <a href="" ng-href="#/products?category={{category.id}}" ng-class="{'active': $index==selectedIndex[2]}" ng-click="itemClicked(2, $index);">
+                            <a href="" ng-href="#/products?category={{category.id}}" ng-class="{'active': $index==selectedIndex[2] || categoryInPath(category)}" ng-click="itemClicked(2, $index);">
                               <span>{{category.name}}</span>
                             </a>
                         </li>
@@ -205,8 +204,8 @@
         </ul>
         <hr>
         <ul>
-          <li><a ng-href="#/products#top" href="#/products#top" ng-class="{'active': navStatic == '1'}" ng-click="itemClicked(0, null); navStatic = '1'"><span>All Products</span></a></li>
-          <li><a ng-href="#/cart#additem" href="#/cart#additem" ng-class="{'active': navStatic == '2'}" ng-click="itemClicked(0, null); navStatic = '2'"><span>Order By Item</span></a></li>
+          <li><a ng-href="#/products#top" href="#/products#top" ng-class="{'active': navStatic == '1'}" ng-click="itemClicked(0, null); setNavStatic('1')"><span>All Products</span></a></li>
+          <li><a ng-href="#/cart#additem" href="#/cart#additem" ng-class="{'active': navStatic == '2'}" ng-click="itemClicked(0, null); setNavStatic('2')"><span>Order By Item</span></a></li>
         </ul>
 
       </aside>
@@ -280,7 +279,6 @@
     <script src="/lib/ladda-bootstrap/dist/spin.min.js"></script>
     <script src="/lib/ladda-bootstrap/dist/ladda.min.js"></script>
     <script src="/lib/jquery-xml2json/src/xml2json.js"></script>
-    <script src="/lib/ng-breadcrumbs/dist/ng-breadcrumbs.min.js"></script>
 
     <script src="/js/util.js"></script>
 
