@@ -44,7 +44,13 @@ angular.module('app.controllers.checkout')
         $scope.checkout = {
             currentStep: '',
             customerStatus: 'new',
-            billDif: true
+            billSame: true,
+            shipping: {
+                addressType: ''
+            },
+            billing: {
+                addressType: ''
+            }
         }
         $scope.loginEmail = '';
         $scope.loginPassword = '';
@@ -99,8 +105,8 @@ angular.module('app.controllers.checkout')
         if (checkout.currentStep == null) {
             checkout.currentStep = '';
         }
-        if (checkout.billDif == null) {
-            checkout.billDif = true;
+        if (checkout.billSame == null) {
+            checkout.billSame = true;
         }
 
         $scope.checkout = checkout;
@@ -219,7 +225,7 @@ angular.module('app.controllers.checkout')
         
         
         // create order object
-        $scope.orderObject = {creditCard:[], shipping:[], billing:[]};
+        $scope.orderObject = {creditCard:{}, shipping:{}, billing:{}};
         
         $scope.addToOrderObject = function(object, data) {
             $log.debug('order object before', $scope.orderObject);
@@ -288,6 +294,9 @@ angular.module('app.controllers.checkout')
         
         
         $scope.substr = function(string, start, charNo) {
+            if (string == null) {
+                return null;
+            }
             $scope.string = string.substr(start, charNo)
             return $scope.result = $scope.string;
         }

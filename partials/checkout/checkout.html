@@ -200,7 +200,7 @@
               <label for="shippingAddressType" class="col-md-3 control-label">Address Type</label>
               <div class="col-sm-6 col-lg-4">
                 <select name="addressType" ng-model="checkout.shipping.addressType" ng-change="checkoutUpdated()" class="form-control" id="shippingAddressType" tabindex="9">
-                  <option>Select an Address Type</option>
+                  <option value="">Select an Address Type</option>
                   <option value="apartment">Apartment</option>
                   <option value="condo">Condominium</option>
                   <option value="house">House</option>
@@ -359,7 +359,7 @@
               <div class="col-md-offset-3 col-sm-9">
                 <div class="checkbox">
                   <label>
-                    <input ng-model="checkout.billDif" type="checkbox" checked> My billing &amp; shipping address are the same
+                    <input ng-model="checkout.billSame" type="checkbox" checked> My billing &amp; shipping address are the same
                   </label>
                 </div>
               </div>
@@ -367,7 +367,7 @@
               
               
               
-            <div class="cardAddressWrapper" ng-if="checkout.billDif==false">  
+            <div class="cardAddressWrapper" ng-if="checkout.billSame==false">
               
               
                 <div class="row form-group">
@@ -424,7 +424,7 @@
                 <div class="row form-group">
                   <label for="billingPhoneNumber" class="col-md-3 control-label">Phone Number</label>
                   <div class="col-sm-6 col-lg-4">
-                    <input name="billingPhoneNumber" ng-model="checking.billing.phoneNumber" type="text" class="form-control" id="billingPhoneNumber" placeholder=" " tabindex="8" required>
+                    <input name="billingPhoneNumber" ng-model="checkout.billing.phone" type="text" class="form-control" id="billingPhoneNumber" placeholder=" " tabindex="8" required>
                   </div>
                   <a href="" class="form-info-link"><i class="fa fa-info-circle"></i> More Info</a>
                 </div>
@@ -443,7 +443,7 @@
                   <label for="billingAddressType" class="col-md-3 control-label">Address Type</label>
                   <div class="col-sm-6 col-lg-4">
                     <select name="billingAddressType" ng-model="checkout.billing.addressType" ng-change="checkoutUpdated()" class="form-control" id="billingAddressType" tabindex="9">
-                      <option>Select an Address Type</option>
+                      <option value="">Select an Address Type</option>
                       <option value="apartment">Apartment</option>
                       <option value="condo">Condominium</option>
                       <option value="house">House</option>
@@ -471,21 +471,9 @@
                 </div>-->
             </div>
         
-              
-              
-              
-              
-              
-              
-              
-              
-              
-              
-              
-            
             <div class="form-group">
               <div class="col-md-offset-3 col-sm-9">
-                <button type="submit" ng-click="addCard(checkout)" class="btn btn-primary btn-lg" tabindex=" " wz-next ng-disabled="!paymentForm.$valid">Add Card &nbsp;<i class="fa fa-caret-right"></i></button>
+                <button type="submit" ng-click="addCard(checkout); addAddress(checkout.billing, 'billing')" class="btn btn-primary btn-lg" tabindex=" " wz-next ng-disabled="!paymentForm.$valid">Add Card &nbsp;<i class="fa fa-caret-right"></i></button>
               </div>
             </div>
             
