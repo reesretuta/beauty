@@ -66,7 +66,7 @@ angular.module('app.controllers.products')
                     product = products[i];
                     //$log.debug("searching sub-product", product);
                     if (!S(product.itemnumber).isEmpty() &&
-                        (S(product.productname).toLowerCase().indexOf(S(query).toLowerCase())!=-1 ||
+                        (S(product.groupname).toLowerCase().indexOf(S(query).toLowerCase())!=-1 ||
                          S(product.itemnumber).toLowerCase().indexOf(S(query).toLowerCase())!=-1))
                     {
                         return true;
