@@ -79,7 +79,7 @@ angular.module('app.controllers.main')
 
             }
             $log.debug("MainController(): going to products for search", Search.getQuery());
-            $location.url("/products?search="+(Search.getQuery() != null ? Search.getQuery() : ''));
+            $location.url("/products?search="+(Search.getQuery() != null ? Search.getQuery() : ''), 'false');
         }
 
         $rootScope.getImagePath = function(paths) {

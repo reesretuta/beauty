@@ -205,25 +205,27 @@ angular.module('app.services', ['ngResource'])
                     $log.debug("addToCart(): added one more", p);
                     updated = true;
                     return true;
-                } else if (p.kitSelections != null && product.kitSelections != null) {
-                    //$log.debug("addToCart(): determining if kit selections are identical");
-                    // compare kit selections
-                    //$log.debug("addToCart(): looping through this products kit selections", p.kitSelections);
-                    $.each(p.kitSelections, function(kitGroupId, kitProduct) {
-                        //$log.debug("addToCart(): looping through car products kit selections", product.kitSelections);
-                        $.each(product.kitSelections, function(otherkitGroupId, otherKitProduct) {
-                            //$log.debug("comparing kit", kitGroupId, product, "to", otherkitGroupId, otherKitProduct);
-                            if (kitGroupId == otherkitGroupId && kitProduct.itemnumber == otherKitProduct.itemnumber) {
-                                //$log.debug("matched");
-                                var newQty = parseInt(p.quantity) + parseInt(product.quantity);
-                                product.quantity = newQty;
-                                $log.debug("addToCart(): added one more kit", p);
-                                updated = true;
-                                return true;
-                            }
-                        });
-                    });
                 }
+// commenting out for now, this is the code that will group kits with identically configured kits
+//                else if (p.kitSelections != null && product.kitSelections != null) {
+//                    //$log.debug("addToCart(): determining if kit selections are identical");
+//                    // compare kit selections
+//                    //$log.debug("addToCart(): looping through this products kit selections", p.kitSelections);
+//                    $.each(p.kitSelections, function(kitGroupId, kitProduct) {
+//                        //$log.debug("addToCart(): looping through car products kit selections", product.kitSelections);
+//                        $.each(product.kitSelections, function(otherkitGroupId, otherKitProduct) {
+//                            //$log.debug("comparing kit", kitGroupId, product, "to", otherkitGroupId, otherKitProduct);
+//                            if (kitGroupId == otherkitGroupId && kitProduct.itemnumber == otherKitProduct.itemnumber) {
+//                                //$log.debug("matched");
+//                                var newQty = parseInt(p.quantity) + parseInt(product.quantity);
+//                                product.quantity = newQty;
+//                                $log.debug("addToCart(): added one more kit", p);
+//                                updated = true;
+//                                return true;
+//                            }
+//                        });
+//                    });
+//                }
             });
 
             if (!updated) {

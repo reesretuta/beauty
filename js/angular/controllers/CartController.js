@@ -1,5 +1,5 @@
 angular.module('app.controllers.cart')
-    .controller('CartController', function ($scope, $document, $rootScope, $compile, $routeParams, $log, Cart, Products, HashKeyCopier) {
+    .controller('CartController', function ($scope, $document, $rootScope, $compile, $routeParams, $modal, $log, Cart, Products, HashKeyCopier) {
         $log.debug("CartController");
 
         //change page title
@@ -69,6 +69,43 @@ angular.module('app.controllers.cart')
             } else {
                 $log.error("product not found");
             }
+        }
+
+        $scope.configureKit = function(product) {
+            var d = $modal.open({
+                backdrop: true,
+                keyboard: true, // we will handle ESC in the modal for cleanup
+                windowClass: "configureKitModal",
+                templateUrl: '/partials/products/configure-kit-modal.html',
+                controller: 'ConfigureKitModalController',
+                resolve: {
+                    product: function() {
+                        return product;
+                    },
+                    quantity: function() {
+                        return 1;
+                    },
+                    inCart: function() {
+                        return true;
+                    }
+                }
+            });
+
+            var body = $document.find('body');
+
+            d.result.then(function(product) {
+                $log.debug("configure kit dialog closed");
+
+                // re-enable scrolling on body
+                body.css("overflow-y", "auto");
+
+                if (product != null) {
+                    $log.debug("add kit to cart");
+                }
+            });
+
+            // prevent page content from scrolling while modal is up
+            $("body").css("overflow-y", "hidden");
         }
 
         /* config object */

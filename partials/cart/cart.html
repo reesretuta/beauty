@@ -46,6 +46,10 @@
                 </li>
               </ul>
               <p class="cart-item-actions">
+                <a ng-if="product.productflag.type == 'kit'" class="btn btn-primary btn-lg" ng-click="configureKit(product)">
+                  <i class="fa fa-cogs"></i> Configure
+                </a>
+                &nbsp;&nbsp;
                 <a ng-click="removeFromCart(product)"><i class="fa fa-times"></i> remove</a>
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 <!-- <a href="#"><i class="fa fa-pencil-square-o"></i> make changes</a> TODO: Load this for kits & groups -->

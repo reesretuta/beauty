@@ -1,8 +1,11 @@
 angular.module('app.controllers.products')
-    .controller('ConfigureKitModalController', function ($sce, HashKeyCopier, Cart, Categories, Products, $modalInstance, $q, $scope, $rootScope, $routeParams, $location, $timeout, $window, $log, quantity, product) {
+    .controller('ConfigureKitModalController', function ($sce, HashKeyCopier, Cart, Categories, Products, $modalInstance, $q, $scope, $rootScope, $routeParams, $location, $timeout, $window, $log, quantity, product, inCart) {
         $log.debug("ConfigureKitModalController");
 
-        $scope.product = angular.copy(product);
+        $scope.product = product;
+        if (!inCart) {
+            angular.copy(product);
+        }
         $scope.product.quantity = quantity;
         $scope.products = [];
 
@@ -14,6 +17,10 @@ angular.module('app.controllers.products')
         $scope.selectProduct = function(productId) {
             $log.debug("selected product", productId);
             $scope.selectedProduct = productId;
+        }
+
+        if (inCart) {
+            $scope.selectedProduct = $scope.product.kitSelections[$scope.product.kitgroup.id].itemnumber;
         }
 
         var productsToConfigure = product.kitgroup.productskus.itemnumber;
@@ -69,7 +76,15 @@ angular.module('app.controllers.products')
             $scope.product.kitSelections = {};
             $log.debug("kit id", $scope.product.kitgroup.id, $scope.productIdToProduct, $scope.selectedProduct);
             $scope.product.kitSelections[$scope.product.kitgroup.id] = angular.copy($scope.productIdToProduct[$scope.selectedProduct]);
-            Cart.addToCart(angular.copy($scope.product));
+
+            if (!inCart) {
+                var qty = $scope.product.quantity;
+                for (var i=0; i < qty; i++) {
+                    var product = angular.copy($scope.product);
+                    product.quantity = 1;
+                    Cart.addToCart(product);
+                }
+            }
             $modalInstance.close();
         };
 

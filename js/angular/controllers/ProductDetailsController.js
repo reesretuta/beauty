@@ -64,6 +64,9 @@ angular.module('app.controllers.products')
                             qty = 1;
                         }
                         return qty;
+                    },
+                    inCart: function() {
+                        return false;
                     }
                 }
             });
