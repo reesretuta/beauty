@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="/lib/angular-wizard/dist/angular-wizard.css">
     <link rel="stylesheet" href="/styles/offcanvas.css">
     <link rel="stylesheet" href="/styles/animate.css">
+    <link rel="stylesheet" href="/lib/allmighty-autocomplete/style/autocomplete.css">
 
 
     <!-- Google Font News Cycle (Similar to News Gothic) -->
@@ -160,27 +161,27 @@
 
         <ul ng-controller="CategoriesController">
 
-          <li ng-repeat="category in categories" ng-class="{'open': $index==selectedIndex[0] || categoryInPath(category)}">
+          <li ng-repeat="category in categories" ng-class="{'open': categoryInPath(category)}">
               <!-- don't follow link if has children, just expand -->
-              <a ng-show="category.childcategory" href ng-class="{'active': $index==selectedIndex[0] || categoryInPath(category)}" ng-click="itemClicked(0, $index); itemClicked(1, null);">
+              <a ng-show="category.childcategory" href ng-class="{'active': categoryInPath(category)}" ng-click="categoryClicked(category);">
                 <span>{{category.name}}</span> <i ng-if="category.childcategory" class="fa fa-angle-down pull-right"></i>
               </a>
               <!-- follow link if no children -->
-              <a ng-show="category.childcategory == null" ng-href="#/products?category={{category.id}}" ng-class="{'active': $index==selectedIndex[0] || categoryInPath(category)}" ng-click="itemClicked(0, $index); itemClicked(1, null);">
+              <a ng-show="category.childcategory == null" ng-href="#/products?category={{category.id}}" ng-class="{'active': categoryInPath(category)}" ng-click="categoryClicked(category);">
                 <span>{{category.name}}</span> <i ng-if="category.childcategory" class="fa fa-angle-down pull-right"></i>
               </a>  
 
               <!-- loop in children links -->
               <ul ng-if="category.childcategory">
 
-                  <li ng-repeat="category in category.childcategory" ng-class="{'open': $index==selectedIndex[1] || categoryInPath(category)}">
+                  <li ng-repeat="category in category.childcategory" ng-class="{'open': categoryInPath(category)}">
 
                     <!-- don't follow link if has children, just expand -->
-                    <a ng-show="category.childcategory" href ng-class="{'active': $index==selectedIndex[1] || categoryInPath(category)}" ng-click="itemClicked(1, $index); itemClicked(2, null);">
+                    <a ng-show="category.childcategory" href ng-class="{'active': categoryInPath(category)}" ng-click="categoryClicked(category);">
                       <span>{{category.name}}</span> <i ng-if="category.childcategory" class="fa fa-angle-down  pull-right"></i>
                     </a>
                     <!-- follow link if no children -->
-                    <a ng-show="category.childcategory == null" ng-href="#/products?category={{category.id}}" ng-class="{'active': $index==selectedIndex[1] || categoryInPath(category)}" ng-click="itemClicked(1, $index); itemClicked(2, null);">
+                    <a ng-show="category.childcategory == null" ng-href="#/products?category={{category.id}}" ng-class="{'active': categoryInPath(category)}" ng-click="categoryClicked(category);">
                       <span>{{category.name}}</span> <i ng-if="category.childcategory" class="fa fa-angle-down  pull-right"></i>
                     </a>
 
@@ -188,7 +189,7 @@
                     <ul ng-if="category.childcategory">
 
                         <li ng-repeat="category in category.childcategory">
-                            <a href="" ng-href="#/products?category={{category.id}}" ng-class="{'active': $index==selectedIndex[2] || categoryInPath(category)}" ng-click="itemClicked(2, $index);">
+                            <a href="" ng-href="#/products?category={{category.id}}" ng-class="{'active': categoryInPath(category)}" ng-click="categoryClicked(category);">
                               <span>{{category.name}}</span>
                             </a>
                         </li>
@@ -204,8 +205,8 @@
         </ul>
         <hr>
         <ul>
-          <li><a ng-href="#/products#top" href="#/products#top" ng-class="{'active': navStatic == '1'}" ng-click="itemClicked(0, null); setNavStatic('1')"><span>All Products</span></a></li>
-          <li><a ng-href="#/cart#additem" href="#/cart#additem" ng-class="{'active': navStatic == '2'}" ng-click="itemClicked(0, null); setNavStatic('2')"><span>Order By Item</span></a></li>
+          <li><a ng-href="#/products#top" href="#/products#top" ng-class="{'active': navStatic == '1'}" ng-click="categoryClicked(null); setNavStatic('1')"><span>All Products</span></a></li>
+          <li><a ng-href="#/cart#additem" href="#/cart#additem" ng-class="{'active': navStatic == '2'}" ng-click="categoryClicked(null); setNavStatic('2')"><span>Order By Item</span></a></li>
         </ul>
 
       </aside>
@@ -270,8 +271,7 @@
 
     <script src="/lib/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="/lib/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
-    <script src="/lib/ui-autocomplete/autocomplete.js"></script>
-    <script src="/lib/ui-autocomplete/demo/event.js"></script>
+    <script src="/lib/allmighty-autocomplete/script/autocomplete.js"></script>
 
     <script src="/lib/angular-ui-utils/build/ui-utils.min.js"></script>
     <script src="/lib/HashKeyCopier/lib/hash-key-copier.js"></script>

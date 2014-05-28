@@ -115,11 +115,11 @@
                 <p><span ng-repeat="productdetail in product.productskus.productdetail">
                     <a
                       ng-class="{'active': $index==selectedIndex}"
-                      ng-click="itemClicked($index); showhide(productdetail.itemnumber)">
+                      ng-click="categoryClicked($index); showhide(productdetail.itemnumber)">
                       <img ng-src="{{productdetail.images.path}}" >
                     </a>
                 </span></p>
-                <p><select ng-model="selectedProduct.itemnumber" ng-change="showhide(selectedProduct.itemnumber); itemClicked(-1)">
+                <p><select ng-model="selectedProduct.itemnumber" ng-change="showhide(selectedProduct.itemnumber); categoryClicked(-1)">
                     <option value='{{productdetail.itemnumber}}' ng-repeat="productdetail in product.productskus.productdetail">{{productdetail.productname}}</option>
                 </select></p>
                 <p class="itemsleep">Item #{{selectedProduct.itemnumber}}</p>
@@ -201,11 +201,17 @@
           <h2>Recently Viewed</h2>
         </div>
 
-        <div ng-repeat="viewedProduct in recentlyViewedProducts" class="col-xs-6 col-sm-4 col-md-3 col-lg-3 store-item related" ng-show="viewedProduct.itemnumber != product.itemnumber">
-          <div class="store-item-wrapper">
+        <div ng-repeat="viewedProduct in recentlyViewedProducts" class="col-xs-6 col-sm-4 col-md-3 col-lg-3 store-item related" ng-show="viewedProduct.itemnumber != product.itemnumber && viewedProduct.groupid != product.groupid">
+          <div class="store-item-wrapper" ng-if="viewedProduct.itemnumber">
             <a ng-href="#/products/{{viewedProduct.itemnumber}}#top"><img class="img-responsive" ng-src="{{viewedProduct.images.path}}"></a>
             <div class="store-item-info">
               <p class="store-item-title"><a ng-href="#/products/{{viewedProduct.itemnumber}}#top">{{viewedProduct.productname}}</a></p>
+            </div>
+          </div><!--/store-item-wrapper-->
+          <div class="store-item-wrapper" ng-if="viewedProduct.groupid">
+            <a ng-href="#/products/{{viewedProduct.groupid}}#top"><img class="img-responsive" ng-src="{{viewedProduct.images.path}}"></a>
+            <div class="store-item-info">
+              <p class="store-item-title"><a ng-href="#/products/{{viewedProduct.groupid}}#top">{{viewedProduct.productname}}</a></p>
             </div>
           </div><!--/store-item-wrapper-->
         </div><!--/span-->

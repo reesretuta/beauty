@@ -399,6 +399,13 @@ angular.module('app.services', ['ngResource'])
                     angular.forEach(products.productdetail, function(product) {
                         if (S(product.itemnumber).toLowerCase().contains(S(query.search).toLowerCase()) || S(product.productname).toLowerCase().contains(S(query.search).toLowerCase())) {
                             returnedProducts.push(product);
+                        } else if (product.groupid) {
+                            angular.forEach(product.productskus.productdetail, function(p) {
+                                if (S(p.itemnumber).toLowerCase().contains(S(query.search).toLowerCase()) || S(p.productname).toLowerCase().contains(S(query.search).toLowerCase())) {
+                                    p.parent = product;
+                                    returnedProducts.push(p);
+                                }
+                            });
                         }
                     });
                     $log.debug("productsService(): query(): got products by search", returnedProducts);
@@ -439,6 +446,47 @@ angular.module('app.services', ['ngResource'])
             return null;
         }
 
+
+        function generateCategoryMap(categories) {
+            //$log.debug("categoriesService(): generateCategoryMap()", categories);
+            var idToCategoryMap = {};
+
+            // create a map of all categories
+            for (var i=0; i < categories.length; i++) {
+                var category = categories[i];
+                idToCategoryMap[category.id] = category;
+
+                // traverse children
+                if (category.childcategory) {
+                    var childMap = generateCategoryMap(category.childcategory);
+                    $.each(childMap, function(key, value) {
+                        idToCategoryMap[key] = value;
+                    });
+                }
+            }
+
+            //$log.debug("categoriesService(): generateCategoryMap(): generated", idToCategoryMap);
+            return idToCategoryMap;
+        }
+
+        function populateParentCategories(categories, idToCategoryMap) {
+            //$log.debug("categoriesService(): populateParentCategories()", categories, idToCategoryMap);
+            // create a map of all categories
+            for (var i=0; i < categories.length; i++) {
+                var category = categories[i];
+
+                // if we have a parent id, but not object, populate it
+                if (category.parentid && category.parentcategory == null) {
+                    category.parentcategory = idToCategoryMap[category.parentid];
+                }
+
+                // traverse children
+                if (category.childcategory) {
+                    populateParentCategories(category.childcategory, idToCategoryMap);
+                }
+            }
+        }
+
         categoriesService.get = function(query, success, failure) {
             return $http.get('/api/categories.xml').success(function(data, status, headers, config) {
                 $log.debug("categoriesService(): searching for category");
@@ -447,6 +495,11 @@ angular.module('app.services', ['ngResource'])
 
                 var categories = $.xml2json(data, {"normalize": true});
                 categories = categories.categories;
+
+                // populate parent categories
+                var idToCategoryMap = generateCategoryMap(categories.categorydetail);
+                populateParentCategories(categories.categorydetail, idToCategoryMap);
+
                 $log.debug("categoriesService(): categories", categories.categorydetail);
                 if (query.categoryId != null) {
                     var c = findCategory(categories.categorydetail, query.categoryId, query.recurse);
@@ -474,9 +527,15 @@ angular.module('app.services', ['ngResource'])
             return $http.get('/api/categories.xml').then(function(response) {
                 //$log.debug(response.data);
                 var categories = $.xml2json(response.data);
-                $log.debug("categories", categories.categories.categorydetail);
-                success(categories.categories.categorydetail, response.headers);
-                return categories.categories.categorydetail;
+                categories = categories.categories;
+
+                // populate parent categories
+                var idToCategoryMap = generateCategoryMap(categories.categorydetail);
+                populateParentCategories(categories.categorydetail, idToCategoryMap);
+
+                $log.debug("categories", categories.categorydetail);
+                success(categories.categorydetail, response.headers);
+                return categories.categorydetail;
             }, function(response) {
                 failure(response);
                 $log.error(response);
@@ -486,7 +545,7 @@ angular.module('app.services', ['ngResource'])
         return categoriesService;
     })
     .factory('BreadcrumbsHelper', function($rootScope, $log) {
-        var breadcrumbService = {};
+        var breadcrumbService       = {};
 
         if ($rootScope.breadcrumbs == null) {
             $rootScope.breadcrumbs = [];

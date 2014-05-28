@@ -15,6 +15,9 @@ angular.module('app.controllers.products')
         
         $scope.quantities = {};
 
+        // reset the navigation
+        BreadcrumbsHelper.setPath(null, null);
+
         $scope.addToCart = function(product) {
             $log.debug("ProductDetailsController(): adding product", product);
             var qty = $scope.quantities[product.itemnumber];
@@ -180,9 +183,8 @@ angular.module('app.controllers.products')
                 if (product.groupid) {
                     $scope.showhide(product.productskus.productdetail[0].itemnumber);
 
-                    $scope.selectedIndex = 0;
-                        $scope.itemClicked = function($index) {
-                        $scope.selectedIndex = $index;
+                    $scope.categoryClicked = function($index) {
+                        // FIXME
                     }
                 }
                 $rootScope.page = product.productname;

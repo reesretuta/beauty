@@ -37,12 +37,14 @@
     "angular-translate": "~2.1.0",
     "angular-translate-loader-url": "~2.1.0",
     "angular-translate-loader-static-files": "~2.1.0",
-    "ng-breadcrumbs": "~0.1.0"
+    "ng-breadcrumbs": "~0.1.0",
+    "allmighty-autocomplete": "2eb28fea0ad30bf3768e566919083cad9b4d562a"
   },
   "devDependencies": {
     "angular-mocks": "1.2.16"
   },
   "resolutions": {
-    "bootstrap": ">=3.0.0"
+    "bootstrap": ">=3.0.0",
+    "allmighty-autocomplete": "2eb28fea0ad30bf3768e566919083cad9b4d562a"
   }
 }

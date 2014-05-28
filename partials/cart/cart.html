@@ -133,9 +133,7 @@
       <div class="form-group">
         &nbsp;&nbsp;&nbsp;&nbsp;
         <label class="" for="orderByIdItem">Item:</label>
-        <input type="text" class="form-control" id="orderByIdItem" placeholder="Enter Item # or Name"
-               ng-model="orderByIdItem" ui-autocomplete="productSearchConfig"
-               ui-event="{autocompletecreate:'changeClass(productSearchConfig)'}">
+        <autocomplete ng-model="orderByIdItem" data="searchProductsList" on-type="searchProducts" attr-id="orderByIdItemDiv" attr-input-id="orderByIdItem" attr-input-class="form-control" attr-placeholder="product name"></autocomplete>
       </div>
       <button type="submit" class="btn btn-default" ng-click="addToCart()">Add to Cart</button>
     </form>

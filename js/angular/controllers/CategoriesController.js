@@ -6,7 +6,7 @@ angular.module('app.controllers.categories')
         var loadCategories = function () {
             //var start = new Date().getTime();
 
-            Categories.query({}, function(categories, responseHeaders) {
+            Categories.query({"recurse": true}, function(categories, responseHeaders) {
                 $log.debug("CategoriesController(): got categories on success", categories);
                 $scope.categories = categories;
                 $scope.loading = true;

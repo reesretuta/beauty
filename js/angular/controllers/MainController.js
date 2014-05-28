@@ -92,11 +92,11 @@ angular.module('app.controllers.main')
         }
 
         // begin navigation
-        $scope.selectedIndex = {};
         $rootScope.navStatic = '1';
-        $scope.itemClicked = function(level, index) {
-            $scope.selectedIndex[level] = index;
-            $log.debug("item clicked, setting navStatic=0");
+        $scope.categoryClicked = function(category) {
+            $log.debug("category clicked", category);
+            // set breadcrumbs
+            BreadcrumbsHelper.setPath(category, null);
             $rootScope.navStatic = 0;
         }
 
@@ -107,6 +107,8 @@ angular.module('app.controllers.main')
         }
 
         $scope.categoryInPath = function(category) {
+            //$log.debug("CategoriesController(): categoryInPath(): checking if category", category, "is in breadcrumb path", $rootScope.breadcrumbs);
+
             // loop through current breadcrumbs
             for (var i=0; i < $rootScope.breadcrumbs.length; i++) {
                 var breadcrumb = $rootScope.breadcrumbs[i];
@@ -115,6 +117,7 @@ angular.module('app.controllers.main')
                     $log.debug("clearing static nav");
                     $rootScope.navStatic = 0;
                     return true;
+                } else if (breadcrumb.type == 'category' && breadcrumb.id == category.id) {
                 }
             }
 
