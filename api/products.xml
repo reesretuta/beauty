@@ -583,22 +583,31 @@
         </productflag>
     </productdetail>
     <productdetail>
-        <id>17555</id>
-        <itemnumber>18865</itemnumber>
+      <id>17555</id>
+      <itemnumber>18865</itemnumber>
+      <productskus>
+          <itemnumber>25207</itemnumber>
+          <itemnumber>25204</itemnumber>
+          <itemnumber>25206</itemnumber>
+          <itemnumber>25205</itemnumber>
+      </productskus>
+      <kitgroup>
+        <id>NUPL18862</id>
+        <name>Advanced Dynamics</name>
         <productskus>
-            <itemnumber>25207</itemnumber>
-            <itemnumber>25204</itemnumber>
-            <itemnumber>25206</itemnumber>
-            <itemnumber>25205</itemnumber>
+          <itemnumber>25204</itemnumber>
+          <itemnumber>25205</itemnumber>
         </productskus>
-        <kitgroup>
-            <id>NUPL18862</id>
-            <productskus>
-                <itemnumber>13027</itemnumber>
-                <itemnumber>15522</itemnumber>
-            </productskus>
-        </kitgroup>
-        <productname>Advanced Dynamics Hydrating Regimen Introductory Offer</productname>
+      </kitgroup>
+      <kitgroup>
+        <id>NUPL18863</id>
+        <name>Royal Jelly</name>
+        <productskus>
+          <itemnumber>13027</itemnumber>
+          <itemnumber>14808</itemnumber>
+        </productskus>
+      </kitgroup>
+      <productname>Advanced Dynamics Hydrating Regimen Introductory Offer</productname>
         <sellingquantity>each</sellingquantity>
         <marketingdescription>
             <![CDATA[<p><strong>Advanced Dynamics Hydrating Regimen </strong></p><p><strong>Introductory Offer March &amp; April Only!</strong></p><p><u>Includes:</u> <br>Cleanser | 4.2 fl. oz.<br>Toner | 6.7 fl. oz.<br>Day Moisture | 1.7 fl. oz. <br>Night Moisture | 1.7 fl. oz.</p><p></p><p><u>Your Choice of 1 <strong>FREE</strong> Mask or Scrub:</u></p><p>Malibu Miracle Mask | 1.7 fl. oz.</p><p>OR</p><p>Gentle Exfoliating Scrub | 2.5 fl. oz.</p><p></p><p><strong>FREE</strong> Advanced Dynamics Travel Bag with purchase</p>]]>

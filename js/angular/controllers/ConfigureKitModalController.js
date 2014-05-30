@@ -1,29 +1,83 @@
 angular.module('app.controllers.products')
-    .controller('ConfigureKitModalController', function ($sce, HashKeyCopier, Cart, Categories, Products, $modalInstance, $q, $scope, $rootScope, $routeParams, $location, $timeout, $window, $log, quantity, product, inCart) {
+    .controller('ConfigureKitModalController', function ($sce, $timeout, $document, HashKeyCopier, Cart, Categories, Products, $modalInstance, $q, $scope, $rootScope, $routeParams, $location, $timeout, $window, $log, quantity, product, inCart) {
         $log.debug("ConfigureKitModalController");
 
         $scope.product = product;
         if (!inCart) {
-            angular.copy(product);
+            $scope.product = angular.copy(product);
         }
         $scope.product.quantity = quantity;
         $scope.products = [];
 
-        $log.debug("configuring product", product);
+        $log.debug("configuring product", $scope.product);
 
-        $scope.selectedProduct = null;
         $scope.productIdToProduct = {};
+        if ($scope.product.kitSelections == null) {
+            $scope.product.kitSelections = {};
+        }
 
-        $scope.selectProduct = function(productId) {
+        $scope.selectProduct = function(kitGroupId, productId) {
             $log.debug("selected product", productId);
-            $scope.selectedProduct = productId;
+            $scope.product.kitSelections[kitGroupId] = $scope.productIdToProduct[productId];
+            $scope.kitGroupSelected = kitGroupId;
+
+            $timeout(function() {
+                // scroll the header into view
+                var el = $document[0].querySelector("#kitGroupNav"+kitGroupId);
+                if (el) {
+                    el.scrollIntoView(true);
+                }
+            }, 0);
         }
 
-        if (inCart) {
-            $scope.selectedProduct = $scope.product.kitSelections[$scope.product.kitgroup.id].itemnumber;
+        $scope.kitGroupSelected = null;
+        $scope.isKitGroupSelected = function(kitGroup) {
+            if (kitGroup.id == $scope.kitGroupSelected) {
+                return true;
+            }
+            return false;
         }
 
-        var productsToConfigure = product.kitgroup.productskus.itemnumber;
+        $scope.kitGroupClicked = function(kitGroup) {
+            $scope.kitGroupSelected = kitGroup.id;
+
+            $log.debug("selected kit group", kitGroup);
+
+            // scroll the header into view
+            var el = $document[0].querySelector("#kitGroup"+kitGroup.id);
+            if (el) {
+                el.scrollIntoView(true);
+            }
+        }
+
+        var kitgroups = new Array();
+        if (Array.isArray(product.kitgroup)) {
+            kitgroups = product.kitgroup;
+        } else {
+            kitgroups.push(product.kitgroup);
+        }
+
+        $log.debug('ConfigureKitModalController(): kitgroups', kitgroups);
+
+        $scope.isKitSelectionComplete = function() {
+            var complete = true;
+            $.each(kitgroups, function(index, kitgroup) {
+                if ($scope.product.kitSelections[kitgroup.id] == null) {
+                    complete = false;
+                    return;
+                }
+            });
+            return complete;
+        }
+
+        var productIds = new Array();
+        $.each(kitgroups, function(index, kitgroup) {
+            $.each(kitgroup.productskus.itemnumber, function(index, itemnumber) {
+                productIds.push(itemnumber);
+            });
+        });
+
+        kitGroupSelected = kitgroups[0];
 
         // load products
 
@@ -62,7 +116,7 @@ angular.module('app.controllers.products')
                 $scope.errorMessage = "An error occurred while retrieving object list. Please refresh the page to try again, or contact your system administrator if the error persists.";
             });
         }
-        loadProducts(productsToConfigure);
+        loadProducts(productIds);
 
         /*==== DIALOG CONTROLS ====*/
 
@@ -73,9 +127,12 @@ angular.module('app.controllers.products')
 
         $scope.save = function () {
             $log.debug("saving configured product kit");
-            $scope.product.kitSelections = {};
-            $log.debug("kit id", $scope.product.kitgroup.id, $scope.productIdToProduct, $scope.selectedProduct);
-            $scope.product.kitSelections[$scope.product.kitgroup.id] = angular.copy($scope.productIdToProduct[$scope.selectedProduct]);
+
+            //$.each(kitgroups, function(index, kitgroup) {
+            //    var productId = $scope.product.kitSelections[kitgroup.id];
+            //    $scope.product.kitSelections[kitgroup.id] = angular.copy($scope.productIdToProduct[productId]);
+            //    $log.debug("kit group", kitgroup.id, "selected product", $scope.productIdToProduct[productId]);
+            //});
 
             if (!inCart) {
                 var qty = $scope.product.quantity;
@@ -89,6 +146,9 @@ angular.module('app.controllers.products')
         };
 
         function cleanup() {
+            $log.debug("cleaning up");
+            var body = $document.find('html, body');
+            body.css("overflow-y", "auto");
         }
 
         /*==== CLEANUP ====*/

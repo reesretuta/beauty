@@ -1,24 +1,62 @@
 <div class="modal-header">
   <button type="button" class="close" ng-click="close()">&times;</button>
-  <h4 class="modal-title">Configure Offer</h4>
+  <h4 class="modal-title">Configure Offer <span class="text-muted italic">- Please select a product from each group</span></h4>
 </div>
 
 <div class="modal-body queue-modal-body">
 
+  <div class="row">
+    <div class="col-lg-3 col-md-3 col-sm-3 kitSelections">
+      <aside id="shop_menu">
+        <ul>
+          <li id="kitGroupNav{{kitGroup.id}}" ng-repeat="kitGroup in product.kitgroup" ng-click="kitGroupClicked(kitGroup)">
+            <a href="" ng-class="{'active': isKitGroupSelected(kitGroup)}">
+              <span class="ng-binding kitGroupNavName">{{kitGroup.name}}</span>
+              <i ng-if="isKitGroupSelected(kitGroup)" class="fa fa-angle-up pull-right ng-scope"></i>
+              <i ng-if="!isKitGroupSelected(kitGroup)" class="fa fa-angle-down pull-right ng-scope"></i>
+            </a>
+            <span class="modal-addon-item product-image" ng-if="product.kitSelections[kitGroup.id] != null && productIdToProduct != null">
+              <p class="product-name">{{product.kitSelections[kitGroup.id].productname}}</p>
+              <img class="img-responsive" ng-src="/{{product.kitSelections[kitGroup.id].images.path}}">
+            </span>
+          </li>
+        </ul>
+      </aside>
+      <!--<img class="img-responsive" ng-src="/{{product.images.path}}">-->
+      <!--<p class="modal-addon-item-title">{{product.productname}}</p>-->
+    </div>
+    <div class="col-lg-9 col-md-9 col-sm-9 kitSelectionList">
       <form name="kitSelectionForm" role="form" class="form-inline clearfix">
-
-        <div class="col-xs-6 col-sm-4 modal-addon-item" ng-repeat="product in products">
-           <label for="kitOptions{{product.itemnumber}}">
-             <input name="selectedProductGroup" ng-model="selectedProduct" ng-change="selectProduct(product.itemnumber)" type="radio" id="kitOptions{{product.itemnumber}}" value="{{product.itemnumber}}" required="required">
-             <img class="img-responsive" ng-src="/{{product.images.path}}">
-             <p class="modal-addon-item-title">{{product.productname}}</p>
-           </label>
+        <div ng-repeat="kitGroup in product.kitgroup">
+          <div id="kitGroup{{kitGroup.id}}" class="ng-binding kitGroupNameWrapper">
+            <span class="kitGroupName">{{kitGroup.name}}</span>
+            <span ng-if="$index > 0" class="pull-right"><a href="" ng-click="kitGroupClicked(product.kitgroup[$index-1])">Back to {{product.kitgroup[$index-1].name}}</a></span>
+          </div>
+          <!-- products in kitgroup -->
+          <div class="row" ng-repeat="itemnumber in kitGroup.productskus.itemnumber">
+            <div class="col-lg-3 col-md-3 col-xs-6 col-sm-4 modal-addon-item product-image" ng-class="{'selected': product.kitSelections[kitGroup.id].itemnumber == itemnumber}">
+              <img class="img-responsive" ng-src="/{{productIdToProduct[itemnumber].images.path}}" ng-click="selectProduct(kitGroup.id, itemnumber)">
+              <span ng-if="product.kitSelections[kitGroup.id].itemnumber != itemnumber" class="kit-selection-plus">+</span>
+              <i ng-if="product.kitSelections[kitGroup.id].itemnumber == itemnumber" class="kit-selection-check fa fa-check"></i>
+            </div>
+            <div class="col-lg-9 col-md-9 col-xs-6 col-sm-8 modal-addon-item">
+              <p class="modal-addon-item-title">{{productIdToProduct[itemnumber].productname}}</p>
+              <p class="modal-addon-item-description" ng-bind-html="productIdToProduct[itemnumber].marketingdescription | unsafe">Product description</p>
+              <p class="modal-addon-item-quantity">{{productIdToProduct[itemnumber].sellingquantity}}</p>
+            </div>
+          </div>
         </div>
       </form>
+    </div>
+  </div>
 </div>
 <div class="modal-footer">
-  <span class="text-muted pull-left">Choose an option and save.</span>
-  <button ng-click="close()" class="btn btn-link">Cancel</button>
-  <button ng-click="save()" class="btn btn-primary" ng-show="kitSelectionForm.$valid"><i class="fa fa-shopping-cart"></i> Save to Cart</button>
-  <button ng-click="save()" class="btn btn-primary" ng-show="!kitSelectionForm.$valid" disabled="disabled"><i class="fa fa-shopping-cart"></i> Save to Cart</button>
+  <div class="col-lg-6 col-md-6 col-sm-6">
+    <span class="text-muted pull-left">Choose an option and save</span>
+  </div>
+  <div class="col-lg-6 col-md-6 col-sm-6">
+    <button ng-click="close()" class="btn btn-link">Cancel</button>
+    <button ng-click="save()" class="btn btn-primary" ng-show="isKitSelectionComplete()"><i class="fa fa-shopping-cart"></i> Save to Cart</button>
+    <button ng-click="save()" class="btn btn-primary" ng-show="!isKitSelectionComplete()" disabled="disabled"><i class="fa fa-shopping-cart"></i> Save to Cart</button>
+  </div>
 </div>

@@ -95,7 +95,7 @@ angular.module('app.controllers.cart')
                 }
             });
 
-            var body = $document.find('body');
+            var body = $document.find('html, body');
 
             d.result.then(function(product) {
                 $log.debug("configure kit dialog closed");
@@ -109,7 +109,7 @@ angular.module('app.controllers.cart')
             });
 
             // prevent page content from scrolling while modal is up
-            $("body").css("overflow-y", "hidden");
+            $("html, body").css("overflow-y", "hidden");
         }
 
         $scope.searchProductsList = new Array();

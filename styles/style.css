@@ -36,6 +36,9 @@ h1, .h1, h2, h3, h4, h5, h6,
 h2, h3, h4, a, .btn-link {
   color: #AA73B1;
 }
+h4 span.text-muted {
+    font-size: 16px;
+}
 h1, .h1, a:hover, a:focus, .btn-link:hover, .btn-link:focus {
   color: #b51a8a;
 }
@@ -67,6 +70,9 @@ h2 {
   padding-bottom: 10px;
 }
 
+.italic {
+    font-style: italic;
+}
 .alerts {
   position: fixed;
   top:15px;
@@ -755,6 +761,137 @@ a:focus {
     transform: rotate(180deg);
 }
 
+.configureKitModal.modal {
+    min-width: 640px;
+    min-height: 400px;
+    max-width: 90%;
+    max-height: 90%;
+
+    overflow: auto;
+    margin: auto;
+    left: 0;
+    right: 0;
+}
+
+.configureKitModal.modal .modal-dialog {
+    height: 100%;
+    width: 100%;
+
+    overflow: auto;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+.configureKitModal .modal-content {
+    height: 100%;
+    width: 100%;
+}
+
+.configureKitModal .modal-header {
+    height: 55px;
+}
+.configureKitModal .modal-body {
+    height: calc(100% - 110px);
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.configureKitModal .modal-body .row {
+    height: 100%;
+    overflow: hidden;
+}
+.configureKitModal .modal-footer {
+    margin-top: 0px;
+    height: 55px;
+    padding: 5px;
+}
+.configureKitModal .modal-body .kitSelections {
+    height: 100%;
+    border-right: 1px solid #dddddd;
+    overflow-y: auto;
+}
+.configureKitModal .modal-body .kitSelections .product-name {
+    margin-left: 10px;
+}
+.configureKitModal .modal-body .kitSelections .product-image img {
+    margin-left: 10px;
+    width: 50%;
+}
+.configureKitModal .modal-body .kitSelections .kitGroupNavName {
+    font-family: "News Cycle", sans-serif !important;
+    text-transform: none;
+}
+.configureKitModal .modal-body .kitSelectionList {
+    height: 100%;
+    overflow-y: scroll;
+}
+.configureKitModal .modal-body .kitSelectionList .row {
+    padding-bottom: 5px;
+    padding-left: 15px;
+}
+.configureKitModal .modal-body .kitSelectionList div.product-image {
+    margin-top: 1px;
+    padding: 8px;
+}
+.configureKitModal .modal-body .kitSelectionList div.product-image.selected {
+    margin-top: 2px;
+    padding: 5px;
+    border: 3px solid #b51a8a;
+}
+.configureKitModal .modal-body .kitSelectionList .kit-selection-plus {
+    top: 1px;
+    right: 12px;
+    color: #b51a8a;
+    font-size: 18px;
+    font-weight: bold;
+    position: absolute;
+}
+.configureKitModal .modal-body .kitSelectionList .div.product-image.selected .kit-selection-plus {
+    top: 0px;
+    right: 9px;
+}
+.configureKitModal .modal-body .kitSelectionList .kit-selection-check {
+    top: 3px;
+    right: 8px;
+    color: #b51a8a;
+    font-size: 16px;
+    position: absolute;
+}
+.configureKitModal .modal-body .kitSelectionList .div.product-image.selected .kit-selection-check {
+    top: 0px;
+    right: 5px;
+}
+.configureKitModal .kitGroupName {
+    color: #797c7d;
+}
+.configureKitModal .kitGroupNameWrapper {
+    font-family: "News Cycle", sans-serif !important;
+    font-size: 16px;
+    width: 100%;
+    border-bottom: 1px solid #dddddd;
+    margin-bottom: 10px;
+}
+.configureKitModal .modal-addon-item {
+    text-align: left;
+}
+.configureKitModal .modal-addon-item-title {
+    font-family: "News Cycle", sans-serif !important;
+    font-size: 18px;
+    font-weight: bold;
+    color: #b51a8a;
+}
+.configureKitModal .modal-addon-item-description {
+    font-size: 16px;
+    font-family: "News Cycle", sans-serif !important;
+}
+.configureKitModal .modal-addon-item-quantity {
+    font-size: 14px;
+    font-family: "News Cycle", sans-serif !important;
+}
+
 /*
  * Responsive Styles
  * --------------------------------------------------
@@ -789,5 +926,13 @@ a:focus {
   }
   .store-checkout .control-label {
     text-align: right !important;
+  }
+  .configureKitModal.modal {
+    max-width: 80%;
+  }
+}
+@media (min-width: 1024px) {
+  .configureKitModal.modal {
+    max-width: 70%;
   }
 }

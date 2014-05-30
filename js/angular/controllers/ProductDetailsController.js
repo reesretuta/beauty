@@ -53,7 +53,7 @@ angular.module('app.controllers.products')
         $scope.configureKit = function() {
             var d = $modal.open({
                 backdrop: true,
-                keyboard: true, // we will handle ESC in the modal for cleanup
+                keyboard: false, // we will handle ESC in the modal for cleanup
                 windowClass: "configureKitModal",
                 templateUrl: '/partials/products/configure-kit-modal.html',
                 controller: 'ConfigureKitModalController',
@@ -74,7 +74,7 @@ angular.module('app.controllers.products')
                 }
             });
 
-            var body = $document.find('body');
+            var body = $document.find('html, body');
 
             d.result.then(function(product) {
                 $log.debug("configure kit dialog closed");
@@ -88,7 +88,7 @@ angular.module('app.controllers.products')
             });
 
             // prevent page content from scrolling while modal is up
-            $("body").css("overflow-y", "hidden");
+            $("html, body").css("overflow-y", "hidden");
         }
 
         $scope.zoomImage = function() {
