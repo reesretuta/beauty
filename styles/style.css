@@ -900,6 +900,25 @@ a:focus {
     font-family: "News Cycle", sans-serif !important;
 }
 
+/* checkout steps color and typography */
+.steps-indicator li a {
+  font-size: 12px;
+  margin-left: -10px;
+}
+.steps-indicator li.current a {
+  color: #b51a8a;
+}
+.steps-indicator li.current a:before, 
+.steps-indicator li.editing a:before {
+  background-color: #b51a8a;
+}
+.steps-indicator li.done a {
+  color: #AA73B1;
+}
+.steps-indicator li.done a:before {
+  background-color: #AA73B1;
+}
+
 /*
  * Responsive Styles
  * --------------------------------------------------
