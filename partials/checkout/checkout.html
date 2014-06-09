@@ -126,7 +126,7 @@
 
           </div><!-- /offset -->
 
-          <form name="shippingForm" class="form-horizontal" role="form">
+          <form name="shippingForm" class="form-horizontal" role="form" novalidate>
             <div class="row form-group">
               <label for="shippingFullName" class="col-md-3 control-label">Full Name</label>
               <div class="col-sm-8 col-lg-6">
@@ -173,15 +173,16 @@
               <label for="shippingCountry" class="col-md-3 control-label">Country</label>
               <div class="col-sm-6 col-lg-4">
                 <select name="country" ng-model="checkout.shipping.country" ng-change="checkoutUpdated()" class="form-control" id="shippingCountry" tabindex="7" required>
-                  <option>United States</option>
+                  <option ng-selected="1">United States</option>
                 </select>
               </div>
             </div>
 
-            <div class="row form-group">
+            <div class="row form-group" ng-class="{ 'has-error' : shippingForm.phoneNumber.$invalid && !shippingForm.phoneNumber.$pristine }">
               <label for="shippingPhoneNumber" class="col-md-3 control-label">Phone Number</label>
               <div class="col-sm-6 col-lg-4">
-                <input name="phoneNumber" ng-model="checkout.shipping.phone" type="text" class="form-control" id="shippingPhoneNumber" placeholder=" " tabindex="8" required>
+                <input name="phoneNumber" ng-model="checkout.shipping.phone" ng-minlength="10" ng-maxlength="12" maxlength="12" type="text" class="form-control" id="shippingPhoneNumber" placeholder=" " tabindex="8" required>
+                <span ng-show="shippingForm.phoneNumber.$error.minlength" class="help-block" ng-class="{ 'text-danger' : shippingForm.phoneNumber.$invalid && !shippingForm.phoneNumber.$pristine }">Phone Number needs to be at least 10 numbers.</span>
               </div>
               <a href="" class="form-info-link"><i class="fa fa-info-circle"></i> More Info</a>
             </div>
@@ -314,7 +315,7 @@
               <label for=" " class="col-md-3 control-label">Name on Card</label>
               <div class="col-sm-6 col-lg-4">
                 <input ng-model="checkout.cardName" ng-minlength="3" name="cardName" type="text" class="form-control" placeholder=" " tabindex=" " required>
-                <span ng-show="paymentForm.cardName.$error.minlength" class="help-inline">Name on card is too short.</span>
+                <span ng-show="paymentForm.cardName.$error.minlength" class="help-block" ng-class="{ 'text-danger' : paymentForm.cardName.$invalid && !paymentForm.cardName.$pristine }">Name on card is too short.</span>
               </div>
             </div>
 
@@ -322,7 +323,7 @@
               <label for=" " class="col-md-3 control-label">Card Number</label>
               <div class="col-sm-6 col-lg-4">
                 <input ng-model="checkout.cardNumber" ng-minlength="13" ng-maxlength="16" maxlength="16" name="cardNumber" type="text" class="form-control" id=" " placeholder=" " tabindex=" " required>
-                <span ng-show="paymentForm.cardNumber.$error.minlength" class="help-inline">Credit card needs to be at least 13 numbers.</span>
+                <span ng-show="paymentForm.cardNumber.$error.minlength" class="help-block" ng-class="{ 'text-danger' : paymentForm.cardNumber.$invalid && !paymentForm.cardNumber.$pristine }">Credit card needs to be at least 13 numbers.</span>
               </div>
             </div>
             <div class="form-group">
@@ -416,15 +417,16 @@
                   <label for="billingCountry" class="col-md-3 control-label">Country</label>
                   <div class="col-sm-6 col-lg-4">
                     <select name="billingCountry" ng-model="checkout.billing.country" ng-change="checkoutUpdated()" class="form-control" id="billingCountry" tabindex="7" required>
-                      <option>United States</option>
+                      <option ng-selected="1">United States</option>
                     </select>
                   </div>
                 </div>
 
-                <div class="row form-group">
+                <div class="row form-group" ng-class="{ 'has-error' : paymentForm.billingPhoneNumber.$invalid && !paymentForm.billingPhoneNumber.$pristine }">
                   <label for="billingPhoneNumber" class="col-md-3 control-label">Phone Number</label>
                   <div class="col-sm-6 col-lg-4">
-                    <input name="billingPhoneNumber" ng-model="checkout.billing.phone" type="text" class="form-control" id="billingPhoneNumber" placeholder=" " tabindex="8" required>
+                    <input name="billingPhoneNumber" ng-model="checkout.billing.phone" ng-minlength="10" ng-maxlength="12" maxlength="12" type="text" class="form-control" id="billingPhoneNumber" placeholder=" " tabindex="8" required>
+                    <span ng-show="paymentForm.billingPhoneNumber.$error.minlength" class="help-block" ng-class="{ 'text-danger' : paymentForm.billingPhoneNumber.$invalid && !paymentForm.billingPhoneNumber.$pristine }">Phone Number needs to be at least 10 numbers.</span>
                   </div>
                   <a href="" class="form-info-link"><i class="fa fa-info-circle"></i> More Info</a>
                 </div>
