@@ -263,7 +263,7 @@ h2 {
   font-size: 10px;
   font-weight: normal !important;
   color: #fff;
-  background: #AA73B1;
+  background: #DE6D30;
   padding: 5px 8px;
   box-shadow: -1px 2px 1px rgba(0,0,0,.25);
 }
@@ -277,7 +277,7 @@ h2 {
   height: 0px;
   border-style: solid;
   border-width: 8px 8px 0 0;
-  border-color: #865A8B transparent transparent transparent;
+  border-color: #B15823 transparent transparent transparent;
 }
 
 .qty-input {
