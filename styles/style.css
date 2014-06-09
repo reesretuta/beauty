@@ -284,6 +284,11 @@ h2 {
   max-width: 4em;
   text-align: center;
 }
+.store-cart .qty-input {
+  font-weight: bold;
+  color: #222;
+  border-color: #b51a8a;
+}
 .btn {
   border: none;
   border-radius: 0;
