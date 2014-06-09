@@ -449,6 +449,14 @@ a, .btn {
 .cart-item-price em {
   display: block;
 }
+.cart-subtotal {
+  font-size: 1.3em;
+}
+.cart-subtotal span {
+  font-size: .8em;
+  font-weight: normal;
+  color: #AA73B1;
+}
 
 #orderByIdItem {
     font-size: 14px;
