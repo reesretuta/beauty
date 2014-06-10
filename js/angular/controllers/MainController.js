@@ -62,12 +62,9 @@ angular.module('app.controllers.main')
             Cart.addToCart(p);
         }
 
-        $scope.searchProducts = function() {
-            if (Search.getQuery() != null) {
-
-            }
-            $log.debug("MainController(): going to products for search", Search.getQuery());
-            $location.url("/products?search="+(Search.getQuery() != null ? Search.getQuery() : ''), 'false');
+        $scope.searchProducts = function(query) {
+            $log.debug("MainController(): going to products for search", query);
+            $location.url("/products?search="+(query != null ? query : ''), 'false');
         }
 
         $rootScope.getImagePath = function(paths) {

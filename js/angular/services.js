@@ -19,34 +19,48 @@ angular.module('app.services', ['ngResource'])
         $rootScope.search = {};
         $rootScope.search.query = '';
 
-        $rootScope.$watch('search.queryDelayed', function(newVal, oldVal) {
-            $log.debug("new", newVal, "old", oldVal);
-            if ($rootScope.lastSearchDelayTimeout != null) {
-                $timeout.cancel($rootScope.lastSearchDelayTimeout);
-            }
+//        $rootScope.$watch('search.queryDelayed', function(newVal, oldVal) {
+//            $log.debug("new", newVal, "old", oldVal);
+//            if ($rootScope.lastSearchDelayTimeout != null) {
+//                $timeout.cancel($rootScope.lastSearchDelayTimeout);
+//            }
+//
+//            // TODO: start a search spinner
+//
+//            // update the root scope search
+//            $rootScope.lastSearchDelayTimeout = $timeout(function () {
+//                $log.debug("delay passed, searching", $rootScope.search.queryDelayed);
+//                $rootScope.search.query = $rootScope.search.queryDelayed;
+//                // add the search to the url if we are in products
+//                if ($location.path() == "/products") {
+//                    $location.search("search", $rootScope.search.query);
+//                } else {
+//                    $location.url("/products");
+//                    if ($rootScope.search.query != null && $rootScope.search.query !== undefined) {
+//                        $location.search("search", $rootScope.search.query);
+//                    }
+//                }
+//                // TODO: stop the search spinner
+//            }, SEARCH_DELAY);
+//        });
+//
+        searchService.search = function(query) {
+            $log.debug("searching");
+            $rootScope.search.query = query;
 
-            // TODO: start a search spinner
-
-            // update the root scope search
-            $rootScope.lastSearchDelayTimeout = $timeout(function () {
-                $log.debug("delay passed, searching", $rootScope.search.queryDelayed);
-                $rootScope.search.query = $rootScope.search.queryDelayed;
-                // add the search to the url if we are in products
-                if ($location.path() == "/products") {
+            if ($location.path() == "/products") {
+                $location.search("search", $rootScope.search.query);
+            } else {
+                $location.url("/products");
+                if ($rootScope.search.query != null && $rootScope.search.query !== undefined) {
                     $location.search("search", $rootScope.search.query);
                 }
-                // TODO: stop the search spinner
-            }, SEARCH_DELAY);
-        });
-
-        searchService.search = function(query) {
-            $rootScope.search.query = query;
-            $rootScope.search.queryDelayed = query;
+            }
         };
-
-        searchService.getQuery = function() {
-            return $rootScope.search.query;
-        };
+//
+//        searchService.getQuery = function() {
+//            return $rootScope.search.query;
+//        };
 
         return searchService;
     })
