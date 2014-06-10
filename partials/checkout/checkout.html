@@ -52,7 +52,7 @@
                 <div class="checkbox">
                   <label>
                     <input name="keepMeSignedIn" ng-model="checkout.keepMeSignedIn" ng-change="checkoutUpdated()" type="checkbox" checked> Keep me signed in &nbsp;&nbsp;
-                    <a href=""><i class="fa fa-info-circle"></i> More Info</a>
+                    <a popover="Placeholder text" popover-title="Keep me signed in" href=""><i class="fa fa-info-circle"></i> More Info</a>
                   </label>
                 </div>
               </div>
@@ -181,10 +181,10 @@
             <div class="row form-group" ng-class="{ 'has-error' : shippingForm.phoneNumber.$invalid && !shippingForm.phoneNumber.$pristine }">
               <label for="shippingPhoneNumber" class="col-md-3 control-label">Phone Number</label>
               <div class="col-sm-6 col-lg-4">
-                <input name="phoneNumber" ng-model="checkout.shipping.phone" ng-minlength="10" ng-maxlength="12" maxlength="12" type="text" class="form-control" id="shippingPhoneNumber" placeholder=" " tabindex="8" required>
-                <span ng-show="shippingForm.phoneNumber.$error.minlength" class="help-block" ng-class="{ 'text-danger' : shippingForm.phoneNumber.$invalid && !shippingForm.phoneNumber.$pristine }">Phone Number needs to be at least 10 numbers.</span>
+                <input name="phoneNumber" ng-model="checkout.shipping.phone" ng-minlength="10" ng-maxlength="13" maxlength="13" type="text" ng-pattern="/^\(?(\d{3})\)?[ .-]?(\d{3})[ .-]?(\d{4})$/" class="form-control" id="shippingPhoneNumber" placeholder=" " tabindex="8" required>
+                <span ng-show="shippingForm.phoneNumber.$error.pattern" class="help-block" ng-class="{ 'text-danger' : shippingForm.phoneNumber.$invalid && !shippingForm.phoneNumber.$pristine }">Phone Number needs to be at least 10 numbers.</span>
               </div>
-              <a href="" class="form-info-link"><i class="fa fa-info-circle"></i> More Info</a>
+              <a popover="May be printed on shipping label to assist delivery." popover-title="Phone Number" href="" class="form-info-link"><i class="fa fa-info-circle"></i> More Info</a>
             </div>
 
             
@@ -192,7 +192,7 @@
 
               <hr>
               <h2 class=" " style="display:inline-block">Delivery Preferences (optional)</h2>
-              <a href="" class="form-info-link"><i class="fa fa-info-circle"></i> What's this?</a>
+              <a popover="Address Type (Optional) - This helps us select the best delivery method for your shipping address." popover-title="Phone Number" href="" class="form-info-link"><i class="fa fa-info-circle"></i> What's this?</a>
 
             </div> <!-- /offset -->
             
