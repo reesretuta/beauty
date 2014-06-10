@@ -237,22 +237,6 @@ angular.module('app.services', ['ngResource'])
             // growlnotification when adding to cart
             growlNotifications.add('<i class="fa fa-shopping-cart"></i> '+p.productname+' <a href="#/cart"><b>added to cart</b></a>', 'warning', 4000);
         };
-        
-        cartService.updateCart = function(p) {
-            var cart = getCart();
-            var getIndex;
-            angular.forEach(cart.items, function(product) {
-                if (product.itemnumber == p.itemnumber) {
-                  getIndex=cart.items.indexOf(product);
-                  cart.items.splice(getIndex,1);  
-                  return getIndex;
-                }
-                
-            });
-
-            $log.debug("updateCart()", cart);
-            cart.items.splice(getIndex,0,p);
-        };
 
         cartService.removeFromCart = function(p) {
             var cart = getCart();

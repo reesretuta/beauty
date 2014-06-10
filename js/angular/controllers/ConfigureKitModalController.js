@@ -140,6 +140,7 @@ angular.module('app.controllers.products')
                     var product = angular.copy($scope.product);
                     product.quantity = 1;
                     Cart.addToCart(product);
+                    $log.debug("added product to cart", product);
                 }
             }
             $modalInstance.close();

@@ -62,18 +62,6 @@ angular.module('app.controllers.main')
             Cart.addToCart(p);
         }
 
-        $scope.updateCart = function(product) {
-            $log.debug("MainController(): updating product", product);
-            var qty = $scope.quantities[product.itemnumber];
-            if (qty == null) {
-                qty = 1;
-            }
-            $log.debug("MainController(): updating product", product, qty);
-            var p = angular.copy(product);
-            p.quantity = qty;
-            Cart.updateCart(p);
-        }
-
         $scope.searchProducts = function() {
             if (Search.getQuery() != null) {
 
