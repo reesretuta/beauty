@@ -60,22 +60,27 @@ angular.module('app.controllers.cart')
             }
 
             if (product != null) {
-                var parent = product.parent;
-                product.parent = null;
-                var p = angular.copy(product);
-                product.parent = parent;
+                if (product.kitgroup != null) {
+                    // configure kit
+                    $scope.configureKit(product, false);
+                } else {
+                    var parent = product.parent;
+                    product.parent = null;
+                    var p = angular.copy(product);
+                    product.parent = parent;
 
-                p.quantity = $scope.orderByIdQty;
-                $log.debug("adding product", p);
-                Cart.addToCart(p);
-                // clear search
-                $scope.orderByIdItem = '';
+                    p.quantity = $scope.orderByIdQty;
+                    $log.debug("adding product", p);
+                    Cart.addToCart(p);
+                    // clear search
+                    $scope.orderByIdItem = '';
+                }
             } else {
                 $log.error("product not found");
             }
         }
 
-        $scope.configureKit = function(product) {
+        $scope.configureKit = function(product, inCart) {
             var d = $modal.open({
                 backdrop: true,
                 keyboard: true, // we will handle ESC in the modal for cleanup
@@ -90,7 +95,8 @@ angular.module('app.controllers.cart')
                         return 1;
                     },
                     inCart: function() {
-                        return true;
+                        console.log("inCart", inCart);
+                        return inCart == null ? true : inCart;
                     }
                 }
             });
