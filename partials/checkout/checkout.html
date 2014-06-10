@@ -7,7 +7,7 @@
     <!-- sign in -->
     <wz-step title="Start">
 
-      <div class="col-sm-12">
+      <div id="signin" class="col-sm-12">
 
         <div class="col-md-offset-3">
           <h1 class="checkouth1">Sign in to complete your order</h1>
@@ -72,8 +72,102 @@
               <div class="col-md-offset-3 col-sm-9">
                 <div class="row"><div class="col-sm-6"><hr></div></div>
                 <p><a href="#/checkout?step=Shipping">Checkout as guest</a></p>
-                <p><a href="">I forgot my password</a></p>
+                <p><a href="" onclick="$('#forgot').css('display','block'); $('#signin').css('display','none');">I forgot my password</a></p>
                 <p><a href="">I have a new email address</a></p>
+              </div>
+            </div>
+        </form>
+      </div><!--/span-->
+      
+      <div id="forgot" class="col-sm-12" style="display: none;">
+
+        <div class="col-md-offset-3">
+          <h1 class="checkouth1">Forgot Your Password</h1>
+        </div>
+        <!--valid={{signInForm.$valid}}-->
+        <form name="forgotPassword" class="form-horizontal" role="form">
+            <div class="form-group">
+              <label for="inputEmail3" class="col-md-3 control-label">Email Address</label>
+              <div class="col-sm-6">
+                <input name="loginEmail2" ng-model="loginEmail2" ng-change="checkoutUpdated()" type="email" class="form-control" id="inputEmail3" placeholder="Email" tabindex="1" required>
+                <!--valid={{signInForm.loginEmail.$valid}}-->
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-md-offset-3 col-sm-9">
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                  <button type="submit" class="btn btn-primary btn-lg" tabindex="3" onclick="$('#forgot').css('display','none'); $('#thanks').css('display','block')" ng-disabled="!forgotPassword.$valid">Reset Password &nbsp;<i class="fa fa-caret-right"></i></button>
+
+                </div>
+              </div>
+            </div>
+        </form>
+      </div><!--/span-->
+      
+      
+      <div id="thanks" class="col-sm-12" style="display: none;">
+
+        <div class="col-md-offset-3">
+          <h1 class="checkouth1">Thank You!</h1>
+        </div>
+        <!--valid={{signInForm.$valid}}-->
+        <form name="" class="form-horizontal" role="form">
+            
+
+<!--            <div class="form-group">
+              <label for="inputPassword3" class="col-md-3 control-label">Password</label>
+              <div class="col-sm-4">
+                <input name="loginPassword" ng-model="loginPassword" ng-change="checkoutUpdated()" type="password" class="form-control" id="inputPassword3" placeholder="Password" tabindex="2" required>
+              </div>
+            </div>-->
+
+            <div class="form-group">
+              <div class="col-md-offset-3 col-sm-9">
+                  <p>Please check your email and click on the link.</p>
+                <div class="row"><div class="col-sm-6"><hr></div></div>
+                <p><a href="">Resend Email</a></p>
+                <p><a href="" onclick="$('#resetpass').css('display','block'); $('#thanks').css('display','none');">Reset password form (prototype only)</a></p>
+                <p><a href="#/cart">Back to cart</a></p>
+              </div>
+            </div>
+        </form>
+      </div><!--/span--> 
+      
+      
+      <div id="resetpass" class="col-sm-12" style="display: none;">
+
+        <div class="col-md-offset-3">
+          <h1 class="checkouth1">Reset Password</h1>
+        </div>
+        <!--valid={{signInForm.$valid}}-->
+        <form name="resetPassword" class="form-horizontal" role="form">
+            
+
+            <div class="form-group">
+              <label for="inputPassword3" class="col-md-3 control-label">New Password</label>
+              <div class="col-sm-4">
+                <input name="newPassword" ng-model="newPassword" pw-check="newpassword2" ng-change="checkoutUpdated()" type="password" class="form-control" id="inputPassword3" placeholder="Password" tabindex="2" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="inputPassword3" class="col-md-3 control-label">Confirm New Password</label>
+              <div class="col-sm-4">
+                <input name="newPassword2" ng-model="newPassword2" ng-change="checkoutUpdated();" type="password" class="form-control" id="inputPassword3" placeholder="Confirm Password" tabindex="2" required>
+              </div>
+              <span class="error" ng-show="resetPassword.password.$error.pwmatch"> Passwords don't match. </span>
+            </div>
+
+
+            <div class="form-group">
+              <div class="col-md-offset-3 col-sm-9">
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                  <button type="submit" class="btn btn-primary btn-lg" tabindex="3" onclick="$('#resetpass').css('display','none');$('#signin').css('display','block')" ng-disabled="!resetPassword.$valid">Reset Password &nbsp;<i class="fa fa-caret-right"></i></button>
+
+                </div>
               </div>
             </div>
         </form>
@@ -99,7 +193,7 @@
                   &nbsp;&nbsp;
                   <a href=""><i class="fa fa-times-circle"></i> Remove</a>
                 </div>
-                <a href="" class="btn btn-primary" wz-next ng-click="addToOrderObject('shipping',addressData)">Ship to this Address</a>
+                <a href="" class="btn btn-primary" wz-next ng-click="addToOrderObject('shipping',addressData);shippingSpeed()">Ship to this Address</a>
               </div><!-- /address -->
               
             </div>
@@ -115,7 +209,7 @@
                   &nbsp;&nbsp;
                   <a href=""><i class="fa fa-times-circle"></i> Remove</a>
                 </div>
-                <a href="" class="btn btn-primary" wz-next ng-click="addToOrderObject('shipping',addressData)">Ship to this Address</a>
+                <a href="" class="btn btn-primary" wz-next ng-click="addToOrderObject('shipping',addressData); shippingSpeed()">Ship to this Address</a>
               </div><!-- /address -->
               
             </div>
@@ -172,7 +266,7 @@
             <div class="row form-group">
               <label for="shippingCountry" class="col-md-3 control-label">Country</label>
               <div class="col-sm-6 col-lg-4">
-                <select name="country" ng-model="checkout.shipping.country" ng-change="checkoutUpdated()" class="form-control" id="shippingCountry" tabindex="7" required>
+                <select ng-init="option[0]" name="country" ng-model="checkout.shipping.country" ng-change="checkoutUpdated()" class="form-control" id="shippingCountry" tabindex="7">
                   <option ng-selected="1">United States</option>
                 </select>
               </div>
@@ -224,7 +318,7 @@
             
             <div class="row form-group">
               <div class="col-md-offset-3 col-sm-9">
-                <button type="submit" class="btn btn-primary btn-lg" tabindex=" " wz-next ng-disabled="!shippingForm.$valid" ng-click="addAddress(checkout.shipping, 'shipping')">Ship to this address &nbsp;<i class="fa fa-caret-right"></i></button>
+                <button type="submit" class="btn btn-primary btn-lg" tabindex=" " ng-disabled="!shippingForm.$valid" ng-click="addAddress(checkout.shipping, 'shipping');shippingSpeed()">Ship to this address &nbsp;<i class="fa fa-caret-right"></i></button>
               </div>
             </div>
             
@@ -528,6 +622,7 @@
                 <span class="address-street">{{orderObject.shipping.address1}} {{orderObject.shipping.address2}}</span>
                 <span class="address-region">{{orderObject.shipping.city}}, {{orderObject.shipping.state}} {{orderObject.shipping.zip}}</span>
                 <span class="phone-number">{{orderObject.shipping.phone}}</span>
+                <span>Speed: {{shippingSpeed}}</span>
                 <div class="address-actions">
                   <a ng-href="#/checkout?step=Shipping"><i class="fa fa-pencil-square-o"></i> Change Address</a>
                 </div>

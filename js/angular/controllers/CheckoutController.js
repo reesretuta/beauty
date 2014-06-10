@@ -1,5 +1,5 @@
 angular.module('app.controllers.checkout')
-    .controller('CheckoutController', function ($location, $scope, $document, $timeout, $rootScope, $routeParams, $log, Session, Checkout, Cart, Products, HashKeyCopier, WizardHandler) {
+    .controller('CheckoutController', function ($location, $scope, $document, $timeout, $rootScope, $routeParams, $modal, $log, Session, Checkout, Cart, Products, HashKeyCopier, WizardHandler) {
 
         $log.debug("CheckoutController()");
 
@@ -34,6 +34,55 @@ angular.module('app.controllers.checkout')
 
             return total;
         }
+        
+//        angular.directive('validPasswordC', function () {
+//            return {
+//                require: 'ngModel',
+//                link: function (scope, elm, attrs, ctrl) {
+//                    ctrl.$parsers.unshift(function (viewValue, $scope) {
+//                        var noMatch = viewValue != scope.myForm.password.$viewValue
+//                        ctrl.$setValidity('noMatch', !noMatch)
+//                    })
+//                }
+//            }
+//        })
+        
+        $scope.shippingSpeed = function() {
+            var d = $modal.open({
+                backdrop: true,
+                keyboard: true, // we will handle ESC in the modal for cleanup
+                windowClass: "shippingSpeedModal",
+                templateUrl: '/partials/checkout/shipping-speed-modal.html',
+                controller: 'ShippingSpeedModalController',
+                resolve: {
+                    checkout: function() {
+                        return $scope.checkout;
+                    },
+                    wizardFunc: function() {
+                        return function() {
+                            $log.debug("shipping speed wizard");
+                            $scope.shippingSpeed = shippingSpeed.optionsRadios.value;
+                            WizardHandler.wizard('checkoutWizard').goTo('Payment');                           
+                        }
+
+                    }
+                }
+            });
+
+            var body = $document.find('body');
+
+            d.result.then(function(product) {
+                $log.debug("shipping speed");
+
+                // re-enable scrolling on body
+                body.css("overflow-y", "auto");
+            });
+
+            // prevent page content from scrolling while modal is up
+            $("body").css("overflow-y", "hidden");
+        }
+        
+        
 
 
         //change page title
