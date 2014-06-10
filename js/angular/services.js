@@ -19,34 +19,48 @@ angular.module('app.services', ['ngResource'])
         $rootScope.search = {};
         $rootScope.search.query = '';
 
-        $rootScope.$watch('search.queryDelayed', function(newVal, oldVal) {
-            $log.debug("new", newVal, "old", oldVal);
-            if ($rootScope.lastSearchDelayTimeout != null) {
-                $timeout.cancel($rootScope.lastSearchDelayTimeout);
-            }
+//        $rootScope.$watch('search.queryDelayed', function(newVal, oldVal) {
+//            $log.debug("new", newVal, "old", oldVal);
+//            if ($rootScope.lastSearchDelayTimeout != null) {
+//                $timeout.cancel($rootScope.lastSearchDelayTimeout);
+//            }
+//
+//            // TODO: start a search spinner
+//
+//            // update the root scope search
+//            $rootScope.lastSearchDelayTimeout = $timeout(function () {
+//                $log.debug("delay passed, searching", $rootScope.search.queryDelayed);
+//                $rootScope.search.query = $rootScope.search.queryDelayed;
+//                // add the search to the url if we are in products
+//                if ($location.path() == "/products") {
+//                    $location.search("search", $rootScope.search.query);
+//                } else {
+//                    $location.url("/products");
+//                    if ($rootScope.search.query != null && $rootScope.search.query !== undefined) {
+//                        $location.search("search", $rootScope.search.query);
+//                    }
+//                }
+//                // TODO: stop the search spinner
+//            }, SEARCH_DELAY);
+//        });
+//
+        searchService.search = function(query) {
+            $log.debug("searching");
+            $rootScope.search.query = query;
 
-            // TODO: start a search spinner
-
-            // update the root scope search
-            $rootScope.lastSearchDelayTimeout = $timeout(function () {
-                $log.debug("delay passed, searching", $rootScope.search.queryDelayed);
-                $rootScope.search.query = $rootScope.search.queryDelayed;
-                // add the search to the url if we are in products
-                if ($location.path() == "/products") {
+            if ($location.path() == "/products") {
+                $location.search("search", $rootScope.search.query);
+            } else {
+                $location.url("/products");
+                if ($rootScope.search.query != null && $rootScope.search.query !== undefined) {
                     $location.search("search", $rootScope.search.query);
                 }
-                // TODO: stop the search spinner
-            }, SEARCH_DELAY);
-        });
-
-        searchService.search = function(query) {
-            $rootScope.search.query = query;
-            $rootScope.search.queryDelayed = query;
+            }
         };
-
-        searchService.getQuery = function() {
-            return $rootScope.search.query;
-        };
+//
+//        searchService.getQuery = function() {
+//            return $rootScope.search.query;
+//        };
 
         return searchService;
     })
@@ -159,7 +173,7 @@ angular.module('app.services', ['ngResource'])
 
         return checkoutService;
     })
-    .factory('Cart', function ($rootScope, $log, growlNotifications) {
+    .factory('Cart', function ($rootScope, $log, $timeout, growlNotifications) {
         var cartService = {};
 
         function getCart() {
@@ -191,6 +205,8 @@ angular.module('app.services', ['ngResource'])
         };
 
         cartService.addToCart = function(p) {
+            $rootScope.adding = true;
+
             var cart = getCart();
             $log.debug("addToCart()", cart, p);
 
@@ -236,22 +252,14 @@ angular.module('app.services', ['ngResource'])
 
             // growlnotification when adding to cart
             growlNotifications.add('<i class="fa fa-shopping-cart"></i> '+p.productname+' <a href="#/cart"><b>added to cart</b></a>', 'warning', 4000);
-        };
-        
-        cartService.updateCart = function(p) {
-            var cart = getCart();
-            var getIndex;
-            angular.forEach(cart.items, function(product) {
-                if (product.itemnumber == p.itemnumber) {
-                  getIndex=cart.items.indexOf(product);
-                  cart.items.splice(getIndex,1);  
-                  return getIndex;
-                }
-                
-            });
 
-            $log.debug("updateCart()", cart);
-            cart.items.splice(getIndex,0,p);
+            $timeout(function() {
+                $rootScope.adding = false;
+                // set class
+                $timeout(function() {
+                    // remove check
+                }, 2000);
+            }, 2000);
         };
 
         cartService.removeFromCart = function(p) {

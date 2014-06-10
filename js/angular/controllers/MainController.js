@@ -1,6 +1,8 @@
 angular.module('app.controllers.main')
     .controller('MainController', function ($scope, $document, $timeout, $location, $rootScope, $routeParams, $log, $translate, Session, Categories, Cart, Search, BreadcrumbsHelper, RecentlyViewed) {
 
+        $rootScope.adding = false;
+
         // this page will watch for URL changes for back/forward that require it to change anything needed (like search)
         var cancelChangeListener;
         function createListener() { 
@@ -62,24 +64,9 @@ angular.module('app.controllers.main')
             Cart.addToCart(p);
         }
 
-        $scope.updateCart = function(product) {
-            $log.debug("MainController(): updating product", product);
-            var qty = $scope.quantities[product.itemnumber];
-            if (qty == null) {
-                qty = 1;
-            }
-            $log.debug("MainController(): updating product", product, qty);
-            var p = angular.copy(product);
-            p.quantity = qty;
-            Cart.updateCart(p);
-        }
-
-        $scope.searchProducts = function() {
-            if (Search.getQuery() != null) {
-
-            }
-            $log.debug("MainController(): going to products for search", Search.getQuery());
-            $location.url("/products?search="+(Search.getQuery() != null ? Search.getQuery() : ''), 'false');
+        $scope.searchProducts = function(query) {
+            $log.debug("MainController(): going to products for search", query);
+            $location.url("/products?search="+(query != null ? query : ''), 'false');
         }
 
         $rootScope.getImagePath = function(paths) {

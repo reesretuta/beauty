@@ -19,7 +19,10 @@ angular.module('app.controllers.products')
         $scope.categoryId = $routeParams.category;
         $scope.category = null;
 
-        Search.search($routeParams.search);
+        $scope.query = $routeParams.search;
+        if ($scope.query) {
+            Search.search($scope.query);
+        }
 
         $scope.quantities = {};
 
@@ -40,14 +43,14 @@ angular.module('app.controllers.products')
             //$log.debug("searching product", product);
 
             // no search string, match everything
-            var query = Search.getQuery();
-            if (S(query).isEmpty()) {
+            //var $scope.query = Search.getQuery();
+            if (S($scope.query).isEmpty()) {
                 return true;
             }
 
             if (!S(product.itemnumber).isEmpty() &&
-                (S(product.productname).toLowerCase().indexOf(S(query).toLowerCase())!=-1 ||
-                 S(product.itemnumber).toLowerCase().indexOf(S(query).toLowerCase())!=-1))
+                (S(product.productname).toLowerCase().indexOf(S($scope.query).toLowerCase())!=-1 ||
+                 S(product.itemnumber).toLowerCase().indexOf(S($scope.query).toLowerCase())!=-1))
             {
                 //$log.debug("found product");
                 return true;
@@ -66,9 +69,9 @@ angular.module('app.controllers.products')
                     product = products[i];
                     //$log.debug("searching sub-product", product);
                     if (!S(product.itemnumber).isEmpty() &&
-                        (S(product.groupname).toLowerCase().indexOf(S(query).toLowerCase())!=-1 ||
-                         S(product.productname).toLowerCase().indexOf(S(query).toLowerCase())!=-1 ||
-                         S(product.itemnumber).toLowerCase().indexOf(S(query).toLowerCase())!=-1))
+                        (S(product.groupname).toLowerCase().indexOf(S($scope.query).toLowerCase())!=-1 ||
+                         S(product.productname).toLowerCase().indexOf(S($scope.query).toLowerCase())!=-1 ||
+                         S(product.itemnumber).toLowerCase().indexOf(S($scope.query).toLowerCase())!=-1))
                     {
                         return true;
                     }

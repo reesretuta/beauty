@@ -166,17 +166,17 @@
               </div>
             </form></p>
             <p ng-if="product.productflag.type == 'product'">
-              <a class="btn btn-primary btn-lg" ng-click="addToCart(product)">
+              <a class="btn btn-primary btn-lg ladda-button" ui-ladda="adding" data-style="expand-right" ng-click="addToCart(product)">
                 <i class="fa fa-shopping-cart"></i> Add to Cart
               </a>
             </p>
             <p ng-if="product.productflag.type == 'group'">
-              <a class="btn btn-primary btn-lg" ng-click="addToCartGroup(selectedProduct.itemnumber)">
+              <a class="btn btn-primary btn-lg ladda-button" ui-ladda="adding" data-style="expand-right" ng-click="addToCartGroup(selectedProduct.itemnumber)">
                 <i class="fa fa-shopping-cart"></i> Add to Cart
               </a>
             </p>
             <p ng-if="product.productflag.type == 'kit'">
-              <a class="btn btn-primary btn-lg" ng-click="configureKit()">
+              <a class="btn btn-primary btn-lg ladda-button" ui-ladda="adding" data-style="expand-right" ng-click="configureKit()">
                 <i class="fa fa-cogs"></i> Configure
               </a>
             </p>
