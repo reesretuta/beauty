@@ -293,6 +293,7 @@ h2 {
   border: none;
   border-radius: 0;
   padding: 8px 12px 10px;
+  background: #fff;
 }
 .btn-default {
   background: #AA73B1;
@@ -347,7 +348,7 @@ h2 {
   color: #777;
   text-decoration: none;
 }
-.store-group-colors a {
+.store-group-colors .store-group-colors-swatch {
   display: inline-block;
   border: 1px solid #eee;
   margin-right: 5px;
@@ -358,17 +359,42 @@ h2 {
   -o-transition: all 200ms ease;
   transition: all 200ms ease;
 }
-.store-group-colors a:hover,
-.store-group-colors a:focus,
-.store-group-colors a.active {
+.store-group-colors .store-group-colors-swatch:hover,
+.store-group-colors .store-group-colors-swatch:focus,
+.store-group-colors .store-group-colors-swatch.active {
   border-color: #b51a8a;
 }
-.store-group-colors a.active {
+.store-group-colors .store-group-colors-swatch.active {
   box-shadow: 0 0 3px #b51a8a
 }
-.store-group-colors img {
+.store-group-colors .store-group-colors-swatch img {
   max-width: 56px;
   height: auto;
+}
+.store-dropdown {
+  margin-bottom: 14px;
+}
+.store-dropdown .btn {
+  border: 1px solid #ccc;
+}
+.store-dropdown .btn img { 
+  margin-top: -4px;
+  margin-left: -7px;
+  margin-bottom: -4px;
+  margin-right: 10px;
+}
+.store-dropdown li img { 
+  margin-left: -14px;
+  margin-right: 10px;
+}
+.store-dropdown .dropdown-menu>li>a:hover,
+.store-dropdown .dropdown-menu>li>a:focus,
+.store-dropdown .dropdown-menu>li>a.active {
+  color: #b51a8a;
+  background: rgba(170,115,177,.1);
+}
+.store-dropdown .dropdown-menu>li>a.active {
+  font-weight: bold;
 }
 #shop_menu.affix {
   position: fixed;
