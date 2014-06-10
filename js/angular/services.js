@@ -173,7 +173,7 @@ angular.module('app.services', ['ngResource'])
 
         return checkoutService;
     })
-    .factory('Cart', function ($rootScope, $log, growlNotifications) {
+    .factory('Cart', function ($rootScope, $log, $timeout, growlNotifications) {
         var cartService = {};
 
         function getCart() {
@@ -205,6 +205,8 @@ angular.module('app.services', ['ngResource'])
         };
 
         cartService.addToCart = function(p) {
+            $rootScope.adding = true;
+
             var cart = getCart();
             $log.debug("addToCart()", cart, p);
 
@@ -250,6 +252,14 @@ angular.module('app.services', ['ngResource'])
 
             // growlnotification when adding to cart
             growlNotifications.add('<i class="fa fa-shopping-cart"></i> '+p.productname+' <a href="#/cart"><b>added to cart</b></a>', 'warning', 4000);
+
+            $timeout(function() {
+                $rootScope.adding = false;
+                // set class
+                $timeout(function() {
+                    // remove check
+                }, 2000);
+            }, 2000);
         };
 
         cartService.removeFromCart = function(p) {

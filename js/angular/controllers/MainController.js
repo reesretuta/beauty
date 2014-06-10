@@ -1,6 +1,8 @@
 angular.module('app.controllers.main')
     .controller('MainController', function ($scope, $document, $timeout, $location, $rootScope, $routeParams, $log, $translate, Session, Categories, Cart, Search, BreadcrumbsHelper, RecentlyViewed) {
 
+        $rootScope.adding = false;
+
         // this page will watch for URL changes for back/forward that require it to change anything needed (like search)
         var cancelChangeListener;
         function createListener() { 
