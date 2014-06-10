@@ -113,15 +113,25 @@
             <hr>
             <div class="store-group-colors" ng-if="product.groupid">
                 <p><span ng-repeat="productdetail in product.productskus.productdetail">
-                    <a
-                      ng-class="{'active': $index==selectedIndex}"
+                    <a class="store-group-colors-swatch"
+                      ng-class="{'active': selectedProduct.itemnumber==productdetail.itemnumber}"
                       ng-click="categoryClicked($index); showhide(productdetail.itemnumber)">
                       <img ng-src="{{productdetail.images.path}}" >
                     </a>
                 </span></p>
-                <p><select ng-model="selectedProduct.itemnumber" ng-change="showhide(selectedProduct.itemnumber); categoryClicked(-1)">
+                <p class="hidden"><select ng-model="selectedProduct.itemnumber" ng-change="showhide(selectedProduct.itemnumber); categoryClicked(-1)">
                     <option value='{{productdetail.itemnumber}}' ng-repeat="productdetail in product.productskus.productdetail">{{productdetail.productname}}</option>
                 </select></p>
+
+                <div class="store-dropdown btn-group" ng-model="selectedProduct.itemnumber" dropdown is-open="status.isopen">
+                  <button type="button" class="btn dropdown-toggle"><img ng-src="{{selectedProduct.images.path}}" width="24"> {{selectedProduct.productname}} &nbsp;&nbsp;<span class="caret"></span></button>
+                  <ul class="dropdown-menu" role="menu">
+                    <li id="{{productdetail.itemnumber}}" ng-repeat="productdetail in product.productskus.productdetail">
+                      <a href="" ng-click="showhide(productdetail.itemnumber); categoryClicked(-1)" ng-class="{'active': selectedProduct.itemnumber==productdetail.itemnumber}"><img ng-src="{{productdetail.images.path}}" width="24"> {{productdetail.productname}}</a>
+                    </li>
+                  </ul>
+                </div><!-- /color dropdown -->
+
                 <p class="itemsleep">Item #{{selectedProduct.itemnumber}}</p>
                 <p class="pricesleep">${{selectedProduct.pricing.detailprice.price}}</p>
             </div>
