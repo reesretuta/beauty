@@ -35,7 +35,7 @@
               </div>
             </form></p> -->
             <p ng-if="product.productflag.type == 'product'">
-              <a class="btn btn-primary primary-cta" ng-click="addToCart(product)">
+              <a class="btn btn-primary primary-cta ladda-button" ui-ladda="loading" data-style="expand-right" ng-click="loading = true; addToCart(product)">
                 <i class="fa fa-shopping-cart"></i> Add to Cart
               </a>
             </p>
