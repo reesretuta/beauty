@@ -17,7 +17,7 @@ Jafra
 * In another term, unpack the jafra prototype app
 * Change directory into jafraproto
 * Import all mongodb data from ./mongo\_dump (http://docs.mongodb.org/manual/tutorial/backup-with-mongodump/)
-  - <path_to_mongo>/mongorestore ./mongo\_dump
+  - Example: <path_to_mongo>/mongorestore ./mongo\_dump
 
 
 Running
@@ -25,7 +25,7 @@ Running
 
 Prerequisites
 -------------
-Ensure mongodb is running
+MongoDB is up and running
 
 Recommended
 -----------
@@ -33,12 +33,17 @@ Postman (api tool for testing)
 
 Prototype & API
 ---------------
+Run this to get the prototype API & web application running
+
 <code>
 node server.js
 </code>
 
 Scraper
 -------
+
+** WARNING - running this will take a very long time.  It's scraping N products/kits/groups * ~8 product detail pages **
+
 <code>
 node scraper.js
 </code>
