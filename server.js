@@ -129,7 +129,7 @@ router.route('/products')
         if (searchString != null && !S(searchString).isEmpty()) {
             console.log("searching for product by string", searchString);
             //var re = new RegExp(searchString);
-            models.Product.find({ $text : { $search : searchString } })
+            models.Product.find({ $text : { $search : ""+searchString } })
                 //.or([{ 'name': { $regex: re }}, { 'description': { $regex: re }}, { 'usage': { $regex: re }}, { 'ingredients': { $regex: re }}])
                 .and([{masterStatus : "A"}])
                 .sort('name')

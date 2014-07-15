@@ -27,16 +27,18 @@ Prerequisites
 -------------
 Ensure mongodb is running
 
+Recommended
+-----------
+Postman (api tool for testing)
+
 Prototype & API
 ---------------
-
 <code>
 node server.js
 </code>
 
 Scraper
 -------
-
 <code>
 node scraper.js
 </code>

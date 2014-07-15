@@ -68,7 +68,7 @@ angular.module('app.controllers.cart')
             }
 
             if (product != null) {
-                if (product.kitGroups != null) {
+                if (product.type == 'kit') {
                     // configure kit
                     $scope.configureKit(product, false);
                 } else {
@@ -141,22 +141,9 @@ angular.module('app.controllers.cart')
                     $log.debug("got products for search", products);
                     $scope.searchProductsList = new Array();
                     angular.forEach(products, function(product) {
-                        if (product.parent != null && product.parent.sku) {
-                            // this is a group product returned back
-                            $scope.searchProducts[product.sku] = product;
-                            $scope.searchProductsByName[product.sku + ' - ' + product.parent.name + ' - ' + product.name] = product;
-                            $scope.searchProductsList.push(product.sku + ' - ' + product.parent.name + ' - ' + product.name);
-                        } else if (product.sku) {
-                            $scope.searchProducts[product.sku] = product;
-                            $scope.searchProductsByName[product.sku + ' - ' + product.name] = product;
-                            $scope.searchProductsList.push(product.sku + ' - ' + product.name);
-                        } else if (product.type == 'group') {
-                            angular.forEach(product.contains, function(p) {
-                                $scope.searchProducts[p.sku] = p;
-                                $scope.searchProductsByName[p.sku + ' - ' + product.name + ' - ' + p.name] = p;
-                                $scope.searchProductsList.push(p.sku + ' - ' + product.name + ' - ' + p.name);
-                            });
-                        }
+                        $scope.searchProducts[product.sku] = product;
+                        $scope.searchProductsByName[product.sku + ' - ' + product.name] = product;
+                        $scope.searchProductsList.push(product.sku + ' - ' + product.name);
                     });
 
                     if (!products.length) {
