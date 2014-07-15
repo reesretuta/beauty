@@ -14,8 +14,8 @@ MongoDB
 
 Jafra
 -----
-* Unpack the jafra prototype app
-* In another term, change directory into jafraproto
+* In another term, unpack the jafra prototype app
+* Change directory into jafraproto
 * Import all mongodb data from ./mongo\_dump (http://docs.mongodb.org/manual/tutorial/backup-with-mongodump/)
   - <path_to_mongo>/mongorestore ./mongo\_dump
 
