@@ -1,0 +1,33 @@
+<div class="modal-header">
+  <button type="button" class="close" aria-hidden="true" ng-click="close()">&times;</button>
+  <h4 class="modal-title">Choose Shipping Speed</h4>
+</div>
+<div class="modal-body shipping-speed-modal-body clearfix">
+    <p>
+       Choose your shipping speed:<br />
+       {{checkout.shipping.fullName}}, {{checkout.shipping.address1}} {{checkout.shipping.address2}}, {{checkout.shipping.city}}, 
+       {{checkout.shipping.stateProvinceRegion}}, {{checkout.shipping.zipPostalCode}}, United States
+    </p>
+    <form role="form" name="shippingSpeed">
+    <div class="radio">
+        <label>
+          <input type="radio" name="optionsRadios" id="optionsRadios1" value="Standard" checked>
+          Standard (3-5 Business Days)
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input type="radio" name="optionsRadios" id="optionsRadios2" value="Two Day">
+          Two-Day (2 Business Days)
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input type="radio" name="optionsRadios" id="optionsRadios3" value="Expedited">
+          Expedited (1-3 Business Days)
+        </label>
+      </div>
+    <div class="pull-left"><a href="" ng-click="close()">Back</a></div>    
+    <div class="pull-right"><button class="btn btn-primary btn-lg" ng-click="wizardFunc(); close();">Continue &nbsp;<i class="fa fa-caret-right"></i></button></div>
+    </form>
+</div>
