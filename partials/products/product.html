@@ -14,7 +14,9 @@
               </small>
             </div>
             <a href="" ng-click="zoomImage()" class="image-zoom">
-              <img class="img-responsive" ng-src="/{{product.images.path}}">
+              <span class="responsive-container img-responsive">
+                <img class="responsive-element img-responsive" ng-src="{{getImagePath(product.images[0].imagePath)}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';">
+              </span>
               <small><i class="fa fa-search-plus"></i> View Larger</small>
             </a>
 
@@ -27,7 +29,9 @@
                 </small>
               </div>
               <a href="javascript:alert('Current videos require flash media server and flash video player (flash development not in scope). Flash video no longer supported on many devices. Require videos encoded as h.264 (eg. YouTube).')" class="image-zoom">
-                <img class="img-responsive" ng-src="/{{product.videos.videodetail.imagepath}}">
+                <span class="responsive-container img-responsive">
+                  <img class="responsive-element img-responsive" ng-src="/{{product.videos.videodetail.imagepath}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';">
+                </span>
                 <small><i class="fa fa-play"></i> Watch Video</small>
               </a>
             </div>
@@ -67,19 +71,19 @@
 
           <div class="store-item-detail-info">
 
-          <aside ng-if="product.upsellproducts.productdetail.itemnumber" class="well store-upsell-item">
+          <aside ng-if="product.upsellItems.length > 0" class="well store-upsell-item">
 
-            <div class="row">
+            <div class="row" ng-repeat="upsellItem in product.upsellItems">
               <div class="col-md-3">
-                <img class="img-responsive img-thumbnail" ng-src="/{{product.upsellproducts.productdetail.path}}">
+                <img ng-show="upsellItem.product.images.length > 0" class="img-responsive img-thumbnail" ng-src="{{getImagePath(upsellItem.product.images[0].imagePath)}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';">
               </div><!-- /span -->
               <div class="col-md-9">
                 <h3>Limited Time Offer!</h3>
                 <p>
-                  <label class="primary-color">{{product.upsellproducts.productdetail.price | currency}}</label>
+                  <label class="primary-color">{{upsellItem.product.price[0].price | currency}}</label>
                   &nbsp;&nbsp;
-                  <label>Item #{{product.upsellproducts.productdetail.itemnumber}}</label>
-                  &nbsp;&nbsp; {{product.upsellproducts.productdetail.productname}}</p>
+                  <label>Item #{{upsellItem.product.sku}}</label>
+                  &nbsp;&nbsp; {{upsellItem.product.name}}</p>
 
                 <form role="form" class="form-inline store-item-add">
                   <div class="form-group">
@@ -98,7 +102,7 @@
 
           <tabset>
             <tab heading="Summary">
-              <div ng-bind-html="product.marketingdescription | unsafe">Summary content</div>
+              <div ng-bind-html="product.description | unsafe">Summary content</div>
             </tab>
             <tab heading="Ingredients">
               <div ng-bind-html="product.ingredients | unsafe">Ingredients content</div>
@@ -109,48 +113,48 @@
           </tabset>
 
           <div class="store-item-detail-stats">
-            <label ng-if="product.productflag.type != 'kit'" class="store-item-size">{{product.sellingquantity}}</label>
+            <label ng-if="product.type == 'product'" class="store-item-size">{{product.quantity}}</label>
             <hr>
-            <div class="store-group-colors" ng-if="product.groupid">
-                <p><span ng-repeat="productdetail in product.productskus.productdetail">
+            <div class="store-group-colors" ng-if="product.type == 'group'">
+                <p><span ng-repeat="productdetail in product.contains">
                     <a class="store-group-colors-swatch"
-                      ng-class="{'active': selectedProduct.itemnumber==productdetail.itemnumber}"
-                      ng-click="categoryClicked($index); showhide(productdetail.itemnumber)">
-                      <img ng-src="{{productdetail.images.path}}" >
+                      ng-class="{'active': selectedProduct.sku==productdetail.product.sku}"
+                      ng-click="categoryClicked($index); showhide(productdetail.product.sku)">
+                      <img ng-src="{{getImagePath(productdetail.product.images[0].imagePath)}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';">
                     </a>
                 </span></p>
-                <p class="hidden"><select ng-model="selectedProduct.itemnumber" ng-change="showhide(selectedProduct.itemnumber); categoryClicked(-1)">
-                    <option value='{{productdetail.itemnumber}}' ng-repeat="productdetail in product.productskus.productdetail">{{productdetail.productname}}</option>
+                <p class="hidden"><select ng-model="selectedProduct.sku" ng-change="showhide(selectedProduct.sku); categoryClicked(-1)">
+                    <option value='{{productdetail.product.sku}}' ng-repeat="productdetail in product.contains">{{productdetail.product.name}}</option>
                 </select></p>
 
-                <div class="store-dropdown btn-group" ng-model="selectedProduct.itemnumber" dropdown is-open="status.isopen">
-                  <button type="button" class="btn dropdown-toggle"><img ng-src="{{selectedProduct.images.path}}" width="24"> {{selectedProduct.productname}} &nbsp;&nbsp;<span class="caret"></span></button>
+                <div class="store-dropdown btn-group" ng-model="selectedProduct.sku" dropdown is-open="status.isopen">
+                  <button type="button" class="btn dropdown-toggle"><img ng-src="{{getImagePath(selectedProduct.images[0].imagePath)}}" width="24" onError="this.onerror=null;this.src='/img/product_placeholder.gif';"> {{selectedProduct.name}} &nbsp;&nbsp;<span class="caret"></span></button>
                   <ul class="dropdown-menu" role="menu">
-                    <li id="{{productdetail.itemnumber}}" ng-repeat="productdetail in product.productskus.productdetail">
-                      <a href="" ng-click="showhide(productdetail.itemnumber); categoryClicked(-1)" ng-class="{'active': selectedProduct.itemnumber==productdetail.itemnumber}"><img ng-src="{{productdetail.images.path}}" width="24"> {{productdetail.productname}}</a>
+                    <li id="{{productdetail.product.sku}}" ng-repeat="productdetail in product.contains">
+                      <a href="" ng-click="showhide(productdetail.product.sku); categoryClicked(-1)" ng-class="{'active': selectedProduct.sku==productdetail.product.sku}"><img ng-src="{{getImagePath(productdetail.product.images[0].imagePath)}}" width="24" onError="this.onerror=null;this.src='/img/product_placeholder.gif';"> {{productdetail.product.name}}</a>
                     </li>
                   </ul>
                 </div><!-- /color dropdown -->
 
-                <p class="itemsleep">Item #{{selectedProduct.itemnumber}}</p>
-                <p class="pricesleep">${{selectedProduct.pricing.detailprice.price}}</p>
+                <p class="itemsleep">Item #{{selectedProduct.sku}}</p>
+                <p class="pricesleep">${{selectedProduct.prices[0].price}}</p>
             </div>
-            <p class="store-item-sku" ng-if="product.productflag.type != 'group'">
-              Item #{{product.itemnumber}} - {{product.productname}}
+            <p class="store-item-sku" ng-if="product.type != 'group'">
+              Item #{{product.sku}} - {{product.name}}
             </p>
             <p class="store-item-price">
 
-              <span ng-repeat="detailprice in product.pricing.detailprice">
-                <span ng-if="detailprice.pricetype=='sale'" class="item-price-sale">
+              <span ng-repeat="detailprice in product.prices[0]">
+                <span ng-if="detailprice.type==2" class="item-price-sale">
                   ${{detailprice.price}}
                 </span>
-                <span ng-if="detailprice.pricetype=='retail'" class="item-price-strike">
+                <span ng-if="detailprice.type==1" class="item-price-strike">
                   ${{detailprice.price}}
                 </span>
               </span>
-              <span ng-if="product.pricing.detailprice.price">
+              <span ng-if="product.prices[0].price">
                 <span class="item-price">
-                  ${{product.pricing.detailprice.price}}
+                  ${{product.prices[0].price}}
                 </span>
               </span>
 
@@ -161,21 +165,21 @@
             <p><form role="form" class="form-inline store-item-add">
               <div class="form-group">
                 <label for="qty12345">qty:</label>
-                <input type="number" class="form-control qty-input" id="qty12345" placeholder="1" value="1" ng-model="quantities[product.itemnumber]" ng-if="product.productflag.type != 'group'">
-                <input type="number" class="form-control qty-input" id="qty12345-group" placeholder="1" value="1" ng-model="quantities[selectedProduct.itemnumber]" ng-if="product.productflag.type == 'group'">
+                <input type="number" class="form-control qty-input" id="qty12345" placeholder="1" value="1" ng-model="quantities[product.sku]" ng-if="product.type != 'group'">
+                <input type="number" class="form-control qty-input" id="qty12345-group" placeholder="1" value="1" ng-model="quantities[selectedProduct.sku]" ng-if="product.type == 'group'">
               </div>
             </form></p>
-            <p ng-if="product.productflag.type == 'product'">
+            <p ng-if="product.type == 'product'">
               <a class="btn btn-primary btn-lg ladda-button" ui-ladda="adding" data-style="expand-right" ng-click="addToCart(product)">
                 <i class="fa fa-shopping-cart"></i> Add to Cart
               </a>
             </p>
-            <p ng-if="product.productflag.type == 'group'">
-              <a class="btn btn-primary btn-lg ladda-button" ui-ladda="adding" data-style="expand-right" ng-click="addToCartGroup(selectedProduct.itemnumber)">
+            <p ng-if="product.type == 'group'">
+              <a class="btn btn-primary btn-lg ladda-button" ui-ladda="adding" data-style="expand-right" ng-click="addToCartGroup(selectedProduct.sku)">
                 <i class="fa fa-shopping-cart"></i> Add to Cart
               </a>
             </p>
-            <p ng-if="product.productflag.type == 'kit'">
+            <p ng-if="product.type == 'kit'">
               <a class="btn btn-primary btn-lg ladda-button" ui-ladda="adding" data-style="expand-right" ng-click="configureKit()">
                 <i class="fa fa-cogs"></i> Configure
               </a>
@@ -188,16 +192,20 @@
       <!-- /Item Detail Section -->
 
       <!-- Related Products Section -->
-      <section class="row store-section" ng-if="product.relatedproducts.productdetail">
+      <section class="row store-section" ng-if="product.youMayAlsoLike.length > 0">
         <div class="col-lg-12">
           <h2>You May Also Like</h2>
         </div>
 
-        <div ng-repeat="relatedproduct in product.relatedproducts.productdetail" class="col-xs-6 col-sm-4 col-md-3 col-lg-3 store-item related">
+        <div ng-repeat="relatedproduct in product.youMayAlsoLike" class="col-xs-6 col-sm-4 col-md-3 col-lg-3 store-item related">
           <div class="store-item-wrapper">
-            <a ng-href="#/products/{{relatedproduct.itemnumber}}#top"><img class="img-responsive" ng-src="{{relatedproduct.path}}"></a>
+            <a ng-href="#/products/{{relatedproduct.product.sku}}#top">
+              <span class="responsive-container img-responsive">
+                <img class="responsive-container img-responsive" ng-src="{{getImagePath(relatedproduct.product.images[0].imagePath)}}">
+              </span>
+            </a>
             <div class="store-item-info">
-              <p class="store-item-title"><a href="itemdetail.html">{{relatedproduct.productname}}</a></p>
+              <p class="store-item-title"><a href="itemdetail.html">{{relatedproduct.product.name}}</a></p>
             </div>
           </div><!--/store-item-wrapper-->
         </div><!--/span-->
@@ -207,25 +215,30 @@
 
       <!-- Recently Viewed Section -->
       <section class="row store-section" ng-controller="RecentlyViewedController">
-        <div class="col-lg-12">
-          <h2>Recently Viewed</h2>
-        </div>
+        <div ng-if="recentlyViewedProducts.length > 0 && !(recentlyViewedProducts.length == 1 && recentlyViewedProducts[0].sku == product.sku)">
+          <div class="col-lg-12">
+            <h2>Recently Viewed</h2>
+          </div>
 
-        <div ng-repeat="viewedProduct in recentlyViewedProducts" class="col-xs-6 col-sm-4 col-md-3 col-lg-3 store-item related" ng-show="viewedProduct.itemnumber != product.itemnumber && viewedProduct.groupid != product.groupid">
-          <div class="store-item-wrapper" ng-if="viewedProduct.itemnumber">
-            <a ng-href="#/products/{{viewedProduct.itemnumber}}#top"><img class="img-responsive" ng-src="{{viewedProduct.images.path}}"></a>
-            <div class="store-item-info">
-              <p class="store-item-title"><a ng-href="#/products/{{viewedProduct.itemnumber}}#top">{{viewedProduct.productname}}</a></p>
-            </div>
-          </div><!--/store-item-wrapper-->
-          <div class="store-item-wrapper" ng-if="viewedProduct.groupid">
-            <a ng-href="#/products/{{viewedProduct.groupid}}#top"><img class="img-responsive" ng-src="{{viewedProduct.images.path}}"></a>
-            <div class="store-item-info">
-              <p class="store-item-title"><a ng-href="#/products/{{viewedProduct.groupid}}#top">{{viewedProduct.productname}}</a></p>
-            </div>
-          </div><!--/store-item-wrapper-->
-        </div><!--/span-->
-        
+          <div ng-repeat="viewedProduct in recentlyViewedProducts" class="col-xs-6 col-sm-4 col-md-3 col-lg-3 store-item related" ng-show="viewedProduct.sku != product.sku && viewedProduct.sku != product.sku">
+            <div class="store-item-wrapper" ng-if="viewedProduct.type!='group'">
+              <a ng-href="#/products/{{viewedProduct.sku}}#top">
+                <span class="responsive-container img-responsive">
+                  <img class="responsive-container img-responsive" ng-src="{{getImagePath(viewedProduct.images[0].imagePath)}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';">
+                </span>
+              </a>
+              <div class="store-item-info">
+                <p class="store-item-title"><a ng-href="#/products/{{viewedProduct.sku}}#top">{{viewedProduct.name}}</a></p>
+              </div>
+            </div><!--/store-item-wrapper-->
+            <div class="store-item-wrapper" ng-if="viewedProduct.type=='group'">
+              <a ng-href="#/products/{{viewedProduct.sku}}#top"><img class="img-responsive" ng-src="{{getImagePath(viewedProduct.images[0].imagePath)}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';"></a>
+              <div class="store-item-info">
+                <p class="store-item-title"><a ng-href="#/products/{{viewedProduct.sku}}#top">{{viewedProduct.name}}</a></p>
+              </div>
+            </div><!--/store-item-wrapper-->
+          </div><!--/span-->
+        </div>
       </section>
       <!-- /Recently Viewed Section -->
 

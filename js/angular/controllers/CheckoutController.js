@@ -13,22 +13,30 @@ angular.module('app.controllers.checkout')
         if ($scope.products.length == 0) {
             $location.path("/products");
         }
-        
+
         $scope.total = function() {
             var total = 0;
             angular.forEach($scope.products, function(item) {
-                
-                var pricing = item.pricing.detailprice;                
-                if (!(Array.isArray(pricing))) {
-                    total += item.quantity * item.pricing.detailprice.price;
+                $log.debug("calculating price for item", item);
+                if (!(Array.isArray(item.prices)) || item.prices.length == 1) {
+                    total += item.quantity * item.prices[0].price;
+                } else if (item.prices.length == 0) {
+                    // there is a problem, we don't have prices
+                    $log.error("there are no prices listed for this item", item);
                 } else {
-                    angular.forEach(pricing, function(price) {
-                        if(price.pricetype=='sale') {
+                    var priceFound = 0;
+                    angular.forEach(item.prices, function(price) {
+                        if (price.type==2) {
+                            priceFound = 1;
                             total += item.quantity * price.price;
                         }
                     })
+                    if (!priceFound) {
+                        // use the first price in the list (FIXME - need to check dates))
+                        total += item.quantity * item.prices[0].price;
+                    }
                 }
-                
+
 //                total += item.quantity * item.pricing.detailprice.price;
             })
 

@@ -53,7 +53,7 @@ angular.module('app.controllers.main')
 
         $scope.addToCart = function(product) {
             $log.debug("MainController(): adding product", product);
-            var qty = $scope.quantities[product.itemnumber];
+            var qty = $scope.quantities[product.sku];
             if (qty == null) {
                 qty = 1;
             }
@@ -72,10 +72,10 @@ angular.module('app.controllers.main')
         $rootScope.getImagePath = function(paths) {
             if (Array.isArray(paths)) {
                 //$log.debug("MainController(): getImagePath(): getting image path from array");
-                return '/' + paths[0];
+                return 'https://stageadmin.jafra.com' + paths[0];
             }
             //$log.debug("MainController(): getImagePath(): getting image path from string");
-            return '/' + paths;
+            return 'https://stageadmin.jafra.com' + paths;
         }
 
         // begin navigation
@@ -104,7 +104,6 @@ angular.module('app.controllers.main')
                     $log.debug("clearing static nav");
                     $rootScope.navStatic = 0;
                     return true;
-                } else if (breadcrumb.type == 'category' && breadcrumb.id == category.id) {
                 }
             }
 

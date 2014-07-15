@@ -1,5 +1,5 @@
 angular.module('app.controllers.products')
-    .controller('ProductDetailsController', function ($sce, HashKeyCopier, Categories, Products, $q, $scope, $rootScope, $routeParams, $location, $timeout, $window, $log, $modal, $document, Cart, BreadcrumbsHelper, RecentlyViewed) {
+    .controller('ProductDetailsController', function ($sce, WizardHandler, HashKeyCopier, Categories, Products, $q, $scope, $rootScope, $routeParams, $location, $timeout, $window, $log, $modal, $document, Cart, BreadcrumbsHelper, RecentlyViewed) {
         $log.debug("ProductDetailsController");
 
         $scope.productId = $routeParams.productId;
@@ -20,7 +20,7 @@ angular.module('app.controllers.products')
 
         $scope.addToCart = function(product) {
             $log.debug("ProductDetailsController(): adding product", product);
-            var qty = $scope.quantities[product.itemnumber];
+            var qty = $scope.quantities[product.sku];
             if (qty == null) {
                 qty = 1;
             }
@@ -31,18 +31,18 @@ angular.module('app.controllers.products')
         }
 
 
-        $scope.addToCartGroup = function(itemnumber) {
+        $scope.addToCartGroup = function(sku) {
 
-            angular.forEach($scope.product.productskus.productdetail, function(product) {
+            angular.forEach($scope.product.contains, function(item) {
 
-                if (product.itemnumber == itemnumber) {
+                if (item.product.sku == sku) {
 
-                    var qty = $scope.quantities[product.itemnumber];
+                    var qty = $scope.quantities[item.product.sku];
                     if (qty == null) {
                         qty = 1;
                     }
 
-                    var p = angular.copy(product);
+                    var p = angular.copy(item.product);
                     p.quantity = qty;
                     Cart.addToCart(p);
                 }
@@ -62,7 +62,7 @@ angular.module('app.controllers.products')
                         return $scope.product;
                     },
                     quantity: function() {
-                        var qty = $scope.quantities[$scope.product.itemnumber];
+                        var qty = $scope.quantities[$scope.product.sku];
                         if (qty == null) {
                             qty = 1;
                         }
@@ -70,6 +70,11 @@ angular.module('app.controllers.products')
                     },
                     inCart: function() {
                         return false;
+                    },
+                    whizFunc: function() {
+                        return function() {
+                            //WizardHandler.wizard('checkoutWizard').goTo('Shipping');
+                        }
                     }
                 }
             });
@@ -126,13 +131,13 @@ angular.module('app.controllers.products')
         }
 
 
-        $scope.showhide = function(itemnumber) {
-            $log.debug("ProductDetailsController(): showhide", itemnumber);
-            angular.forEach($scope.product.productskus.productdetail, function(product) {
+        $scope.showhide = function(sku) {
+            $log.debug("ProductDetailsController(): showhide", sku);
+            angular.forEach($scope.product.contains, function(item) {
                 //$log.debug("ProductDetailsController(): showhide foreach", product);
-                if (product.itemnumber == itemnumber) {
-                    $log.debug("ProductDetailsController(): selected", product.itemnumber);
-                    $scope.selectedProduct = angular.copy(product);
+                if (item.product.sku == sku) {
+                    $log.debug("ProductDetailsController(): selected", item.product.sku);
+                    $scope.selectedProduct = angular.copy(item.product);
                 }
             })
         };
@@ -180,14 +185,15 @@ angular.module('app.controllers.products')
                     $scope.product = product;
                     //$log.debug("ProductDetailsController(): initializing objects");
                 }
-                if (product.groupid) {
-                    $scope.showhide(product.productskus.productdetail[0].itemnumber);
+                if (product.type == 'group') {
+                    $log.debug("selecting first item in group", product);
+                    $scope.showhide(product.contains[0].product.sku);
 
                     $scope.categoryClicked = function($index) {
                         // FIXME
                     }
                 }
-                $rootScope.page = product.productname;
+                $rootScope.page = product.name;
 
                 if ($scope.categoryId == null) {
                     // load the first category from this product, we probably landed here from search

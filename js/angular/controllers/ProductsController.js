@@ -28,7 +28,7 @@ angular.module('app.controllers.products')
 
         $scope.addToCart = function(product) {
             $log.debug("ProductsController(): adding product", product);
-            var qty = $scope.quantities[product.itemnumber];
+            var qty = $scope.quantities[product.sku];
             if (qty == null) {
                 qty = 1;
             }
@@ -41,43 +41,43 @@ angular.module('app.controllers.products')
         /*==== SEARCH ====*/
         $scope.searchFunction = function(product) {
             //$log.debug("searching product", product);
+            return true;
 
-            // no search string, match everything
-            //var $scope.query = Search.getQuery();
-            if (S($scope.query).isEmpty()) {
-                return true;
-            }
-
-            if (!S(product.itemnumber).isEmpty() &&
-                (S(product.productname).toLowerCase().indexOf(S($scope.query).toLowerCase())!=-1 ||
-                 S(product.itemnumber).toLowerCase().indexOf(S($scope.query).toLowerCase())!=-1))
-            {
-                //$log.debug("found product");
-                return true;
-            } else if (!S(product.groupid).isEmpty()) {
-                //$log.debug("searching product group");
-
-                var products = product.productskus.productdetail;
-                if (products == null) {
-                    //$log.debug("no sub-products for group");
-                    return false;
-                }
-
-                //$log.debug("have sub-products", products.length);
-
-                for (var i=0; i < products.length; i++) {
-                    product = products[i];
-                    //$log.debug("searching sub-product", product);
-                    if (!S(product.itemnumber).isEmpty() &&
-                        (S(product.groupname).toLowerCase().indexOf(S($scope.query).toLowerCase())!=-1 ||
-                         S(product.productname).toLowerCase().indexOf(S($scope.query).toLowerCase())!=-1 ||
-                         S(product.itemnumber).toLowerCase().indexOf(S($scope.query).toLowerCase())!=-1))
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
+//            // no search string, match everything
+//            //var $scope.query = Search.getQuery();
+//            if (S($scope.query).isEmpty()) {
+//                return true;
+//            }
+//
+//            if (!S(product.sku).isEmpty() &&
+//                (S(product.name).toLowerCase().indexOf(S($scope.query).toLowerCase())!=-1 ||
+//                 S(product.sku).toLowerCase().indexOf(S($scope.query).toLowerCase())!=-1))
+//            {
+//                //$log.debug("found product");
+//                return true;
+//            } else if (!S(product.sku).isEmpty()) {
+//                //$log.debug("searching product group");
+//
+//                var products = product.productskus.productdetail;
+//                if (products == null) {
+//                    //$log.debug("no sub-products for group");
+//                    return false;
+//                }
+//
+//                //$log.debug("have sub-products", products.length);
+//
+//                for (var i=0; i < products.length; i++) {
+//                    product = products[i];
+//                    //$log.debug("searching sub-product", product);
+//                    if (!S(product.sku).isEmpty() &&
+//                        (S(product.name).toLowerCase().indexOf(S($scope.query).toLowerCase())!=-1 ||
+//                         S(product.sku).toLowerCase().indexOf(S($scope.query).toLowerCase())!=-1))
+//                    {
+//                        return true;
+//                    }
+//                }
+//            }
+//            return false;
         };
 
         /*=== LOAD DATA ====*/
@@ -107,7 +107,7 @@ angular.module('app.controllers.products')
 
         var loadProducts = function () {
             //var start = new Date().getTime();
-            Products.query({"categoryId": $scope.categoryId}, function(products, responseHeaders) {
+            Products.query({"categoryId": $scope.categoryId, "search": $scope.query}, function(products, responseHeaders) {
                 $log.debug("ProductsController(): got products", products);
                 // We do this here to eliminate the flickering.  When Products.query returns initially,
                 // it returns an empty array, which is then populated after the response is obtained from the server.

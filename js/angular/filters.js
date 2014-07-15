@@ -14,5 +14,11 @@ angular.module('app.filters', [])// Navigation Item Filter
                 input = input.toLowerCase();
             return input.substring(0,1).toUpperCase()+input.substring(1);
         }
+    })
+    .filter('json', function() {
+        return function(input, scope) {
+            if (input!=null)
+                return JSON.stringify(input);
+        }
     });
-	
+

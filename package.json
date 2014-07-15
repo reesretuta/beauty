@@ -4,7 +4,10 @@
   "private": true,
   "devDependencies": {
     "http-server": "~0.6.2",
-    "express": "~3.4.4",
+    "express": "~4.0.0",
+    "morgan": "~1.0.0",
+    "body-parser": "~1.4.3",
+    "method-override": "~1.0.0",
     "grunt": "~0.4.2",
     "grunt-spritesmith": "~0.5.2",
     "grunt-contrib-less": "~0.5.0",

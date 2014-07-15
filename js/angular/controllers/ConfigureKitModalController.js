@@ -1,6 +1,9 @@
 angular.module('app.controllers.products')
-    .controller('ConfigureKitModalController', function ($sce, $timeout, $document, HashKeyCopier, Cart, Categories, Products, $modalInstance, $q, $scope, $rootScope, $routeParams, $location, $timeout, $window, $log, quantity, product, inCart) {
+    .controller('ConfigureKitModalController', function ($sce, $timeout, $document, HashKeyCopier, Cart, Categories, Products, $modalInstance, $q, $scope, $rootScope, $routeParams, $location, $timeout, $window, $log, quantity, product, inCart, whizFunc) {
         $log.debug("ConfigureKitModalController");
+
+        $log.debug("the funk", whizFunc);
+        whizFunc();
 
         $scope.product = product;
         if (!inCart) {
@@ -16,14 +19,14 @@ angular.module('app.controllers.products')
             $scope.product.kitSelections = {};
         }
 
-        $scope.selectProduct = function(kitGroupId, productId) {
-            $log.debug("selected product", productId);
-            $scope.product.kitSelections[kitGroupId] = $scope.productIdToProduct[productId];
-            $scope.kitGroupSelected = kitGroupId;
+        $scope.selectProduct = function(kitId, productId) {
+            $log.debug("selected product", productId, "for kit", kitId);
+            $scope.product.kitSelections[kitId] = $scope.productIdToProduct[productId];
+            $scope.kitGroupSelected = kitId;
 
             $timeout(function() {
                 // scroll the header into view
-                var el = $document[0].querySelector("#kitGroupNav"+kitGroupId);
+                var el = $document[0].querySelector("#kitGroupNav"+kitId);
                 if (el) {
                     el.scrollIntoView(true);
                 }
@@ -51,10 +54,10 @@ angular.module('app.controllers.products')
         }
 
         var kitgroups = new Array();
-        if (Array.isArray(product.kitgroup)) {
-            kitgroups = product.kitgroup;
+        if (Array.isArray(product.kitGroups)) {
+            kitgroups = product.kitGroups;
         } else {
-            kitgroups.push(product.kitgroup);
+            kitgroups.push(product.kitGroups);
         }
 
         $log.debug('ConfigureKitModalController(): kitgroups', kitgroups);
@@ -62,7 +65,7 @@ angular.module('app.controllers.products')
         $scope.isKitSelectionComplete = function() {
             var complete = true;
             $.each(kitgroups, function(index, kitgroup) {
-                if ($scope.product.kitSelections[kitgroup.id] == null) {
+                if ($scope.product.kitSelections[kitgroup.kitGroup.id] == null) {
                     complete = false;
                     return;
                 }
@@ -72,8 +75,8 @@ angular.module('app.controllers.products')
 
         var productIds = new Array();
         $.each(kitgroups, function(index, kitgroup) {
-            $.each(kitgroup.productskus.itemnumber, function(index, itemnumber) {
-                productIds.push(itemnumber);
+            $.each(kitgroup.kitGroup.components, function(index, component) {
+                productIds.push(component.product);
             });
         });
 
@@ -99,7 +102,7 @@ angular.module('app.controllers.products')
                 }
 
                 angular.forEach(products, function(product) {
-                    $scope.productIdToProduct[product.itemnumber] = product;
+                    $scope.productIdToProduct[product.sku] = product;
                 });
 
                 $scope.loading = false;
@@ -125,6 +128,7 @@ angular.module('app.controllers.products')
             $modalInstance.close();
         };
 
+
         $scope.save = function () {
             $log.debug("saving configured product kit");
 
@@ -140,7 +144,7 @@ angular.module('app.controllers.products')
                     var product = angular.copy($scope.product);
                     product.quantity = 1;
                     Cart.addToCart(product);
-                    $log.debug("added product to cart", product);
+                    $log.debug("added product to cat");
                 }
             }
             $modalInstance.close();

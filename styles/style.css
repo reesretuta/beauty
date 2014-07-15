@@ -950,6 +950,16 @@ a:focus {
   background-color: #AA73B1;
 }
 
+.responsive-container {
+    min-height: 200px;
+    min-width: 200px;
+    text-align: center;  /* align the inline(-block) elements horizontally */
+    margin: 0 auto;
+}
+.responsive-element {
+    margin: 0 auto !important;
+}
+
 /*
  * Responsive Styles
  * --------------------------------------------------

@@ -20,33 +20,30 @@
       <tr ng-repeat="product in products" ng-if="products.length > 0">
         <td>
           <div class="cart-item-info">
-            <a ng-href="#/products/{{product.itemnumber}}#top" class="col-xs-5 col-sm-3 col-md-2 col-lg-2"
-               ng-if="product.productflag.type != 'groupproduct'">
-              <img class="img-responsive cart-item-image" ng-src="{{getImagePath(product.images.path)}}">
+            <a ng-href="#/products/{{product.sku}}#top" class="col-xs-5 col-sm-3 col-md-2 col-lg-2"
+               ng-if="product.type != 'group'">
+              <img class="img-responsive cart-item-image" ng-src="{{getImagePath(product.images[0].imagePath)}}">
             </a>
-            <a ng-href="#/products/{{product.groupid}}#top" class="col-xs-5 col-sm-3 col-md-2 col-lg-2"
-               ng-if="product.productflag.type == 'groupproduct'">
-              <img class="img-responsive cart-item-image" ng-src="{{getImagePath(product.images.path)}}">
+            <a ng-href="#/products/{{product.sku}}#top" class="col-xs-5 col-sm-3 col-md-2 col-lg-2"
+               ng-if="product.type == 'group'">
+              <img class="img-responsive cart-item-image" ng-src="{{getImagePath(product.images[0].imagePath)}}">
             </a>
 
             <div class="col-sm-9 col-md-8 col-lg-8">
               <h3>
-                <a href="#/products/{{product.itemnumber}}#top" ng-if="product.productflag.type != 'groupproduct'">{{product.productname}}</a>
-                <a href="#/products/{{product.groupid}}#top" ng-if="product.productflag.type == 'groupproduct'">
-                  {{product.groupname}} {{product.productname}}
-                </a>
+                <a href="#/products/{{product.sku}}#top">{{product.name}}</a>
               </h3>
 
-              <p><label>{{product.itemnumber}}</label></p>
+              <p><label>{{product.sku}}</label></p>
 
               <p ng-if="product.kitSelections != null">This kit includes:</p>
               <ul ng-if="product.kitSelections != null">
                 <li ng-repeat="(kitId, kitProduct) in product.kitSelections">
-                  {{kitProduct.productname}} #{{kitProduct.itemnumber}}
+                  {{kitProduct.name}} #{{kitProduct.sku}}
                 </li>
               </ul>
               <p class="cart-item-actions">
-                <a ng-if="product.productflag.type == 'kit'" class="btn btn-primary btn-lg" ng-click="configureKit(product)">
+                <a ng-if="product.type == 'kit'" class="btn btn-primary btn-lg" ng-click="configureKit(product)">
                   <i class="fa fa-cogs"></i> Configure
                 </a>
                 &nbsp;&nbsp;
@@ -58,20 +55,19 @@
           </div>
         </td>
         <td class="text-right">
-              
-              <span ng-repeat="detailprice in product.pricing.detailprice">
-                <span ng-if="detailprice.pricetype=='sale'" class="item-price-sale">
-                  {{detailprice.price | currency}}
-                </span>
-                <span ng-if="detailprice.pricetype=='retail'" class="item-price-strike">
-                  ${{detailprice.price}}
-                </span>
-              </span>
-              <span ng-if="product.pricing.detailprice.price">
-                <span class="item-price">
-                  {{product.pricing.detailprice.price | currency}}
-                </span>
-              </span>
+          <span ng-repeat="detailprice in product.prices[0]">
+            <span ng-if="detailprice.type==2" class="item-price-sale">
+              {{detailprice.price | currency}}
+            </span>
+            <span ng-if="detailprice.type==1" class="item-price-strike">
+              {{detailprice.price | currency}}
+            </span>
+          </span>
+          <span ng-if="product.prices[0].price">
+            <span class="item-price">
+              {{product.prices[0].price | currency}}
+            </span>
+          </span>
 
 
           <!--            <p class="cart-item-price">
@@ -82,14 +78,14 @@
         <td align=right>
           <!-- TODO: Compute each product Qty. -->
           <p>
-            <form name="product{{product.itemnumber}}" role="form" class="form-inline store-item-add">
+            <form name="product{{product.sku}}" role="form" class="form-inline store-item-add">
               <div class="form-group">
                 <input type="number" class="form-control qty-input" ng-model="product.quantity" value="{{product.quantity}}">
               </div>
             </form>
           </p>
 
-          <!--<input ng-model="quantities[product.itemnumber]" ng-keyup="addToCart(product)" type="integer" class="form-control qty-input" id="qty12345" value="{{product.quantity}}">-->
+          <!--<input ng-model="quantities[product.sku]" ng-keyup="addToCart(product)" type="integer" class="form-control qty-input" id="qty12345" value="{{product.quantity}}">-->
         </td>
       </tr>
       <!--/table row-->
@@ -142,8 +138,8 @@
 <br>
 
 <!--   <div ng-repeat="product in products">
-    <b>Item #:</b> {{product.itemnumber}}<br>
-    <b>Name:</b> {{product.productname}}<br>
+    <b>Item #:</b> {{product.sku}}<br>
+    <b>Name:</b> {{product.name}}<br>
     <b>Qty:</b> {{product.quantity}}<br>
   </div> -->
 <div class="loader" ng-show="loading"></div>

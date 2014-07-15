@@ -1,66 +1,67 @@
         <div class="ccol-xs-12 col-sm-12 col-md-12 col-lg-12" ng-cloak ng-if="(products | filter:searchFunction).length == 0">No products matched search:&nbsp;&nbsp;<b><i>{{query}}</i></b></div>
           
         <!-- Product -->
-        <article class="ccol-xs-12 col-sm-6 col-md-4 col-lg-4 store-item" ng-repeat="product in filteredProduct = (products | filter:searchFunction | orderBy:'productname')" ng-if="product.productflag.isgroupproduct !=1">
+        <article class="ccol-xs-12 col-sm-6 col-md-4 col-lg-4 store-item" ng-repeat="product in filteredProduct = (products | filter:searchFunction | orderBy:'name')" ng-if="product.productflag.isgroup !=1">
             
-          <div class="store-item-wrapper" ng-if="product.itemnumber!=''">
-            <a ng-href="#/products/{{product.itemnumber}}#top"><img class="img-responsive" ng-src="{{getImagePath(product.images.path)}}"></a>
+          <div class="store-item-wrapper" ng-if="product.sku!=''">
+            <a ng-href="#/products/{{product.sku}}#top">
+              <span class="responsive-container img-responsive">
+                <img class="responsive-element img-responsive" ng-src="{{getImagePath(product.images[0].imagePath)}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';">
+              </span>
+            </a>
             <div class="store-item-info">
-              <p class="store-item-sku">Item #{{product.itemnumber}}</p>
-              <p class="store-item-title"><a ng-href="#/products/{{product.itemnumber}}#top">{{product.productname}}</a></p>
+              <p class="store-item-sku">Item #{{product.sku}}</p>
+              <p class="store-item-title"><a ng-href="#/products/{{product.sku}}#top">{{product.name}}</a></p>
               <p class="store-item-price">
 
-              <span ng-repeat="detailprice in product.pricing.detailprice">
-                <span ng-if="detailprice.pricetype=='sale'" class="item-price-sale">
+              <span ng-repeat="detailprice in product.prices[0]">
+                <span ng-if="detailprice.type==2" class="item-price-sale">
                   ${{detailprice.price}}
                   <span class="brand-font saleflag">On Sale!</span>
                 </span>
-                <span ng-if="detailprice.pricetype=='retail'" class="item-price-strike">
+                <span ng-if="detailprice.type==1" class="item-price-strike">
                   ${{detailprice.price}}
                 </span>
               </span>
-              <span ng-if="product.pricing.detailprice.price">
+              <span ng-if="product.prices[0].price">
                 <span class="item-price">
-                  ${{product.pricing.detailprice.price}}
+                  ${{product.prices[0].price}}
                 </span>
               </span>
 
-                &nbsp;&nbsp;<span class="item-measure">{{product.sellingquantity}}</span>
+                &nbsp;&nbsp;<span class="item-measure">{{product.quantity}}</span>
               </p>
             </div>
-            <!-- <p><form name="product{{product.itemnumber}}" role="form" class="form-inline store-item-add">
+            <!-- <p><form name="product{{product.sku}}" role="form" class="form-inline store-item-add">
               <div class="form-group">
                 <label for="qty3">qty:</label>
-                <input type="integer" class="form-control qty-input" id="qty3" placeholder="1" ng-model="quantities[product.itemnumber]">
+                <input type="integer" class="form-control qty-input" id="qty3" placeholder="1" ng-model="quantities[product.sku]">
               </div>
             </form></p> -->
-            <p ng-if="product.productflag.type == 'product'">
+            <p ng-if="product.type == 'product'">
               <a class="btn btn-primary primary-cta ladda-button" ui-ladda="adding" data-style="expand-right" ng-click="addToCart(product)">
                 <i class="fa fa-shopping-cart"></i> Add to Cart
               </a>
             </p>
-            <p ng-if="product.productflag.type == 'kit'">
-              <a class="btn btn-primary primary-cta" ng-href="#/products/{{product.itemnumber}}#top">
+            <p ng-if="product.type == 'kit'">
+              <a class="btn btn-primary primary-cta" ng-href="#/products/{{product.sku}}#top">
                 <i class="fa fa-cogs"></i> Configure Offer
               </a>
             </p>
           </div><!--/store-item-wrapper-->
+
           
-          
-          
-          
-          
-          <div class="store-item-wrapper" ng-if="product.groupid">
-            <a ng-href="#/products/{{product.groupid}}#top"><img class="img-responsive" ng-src="{{getImagePath(product.images.path)}}"></a>
+          <div class="store-item-wrapper" ng-if="product.type=='group'">
+            <a ng-href="#/products/{{product.sku}}#top"><img class="img-responsive" style="margin: 0 auto;" ng-src="{{getImagePath(product.images[0].imagePath)}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';"></a>
             <div class="store-item-info">
               <p class="store-item-sku">&nbsp; <!-- leave empty for UI --></p>
-              <p class="store-item-title"><a ng-href="#/products/{{product.groupid}}#top">{{product.productname}}</a></p>
+              <p class="store-item-title"><a ng-href="#/products/{{product.sku}}#top">{{product.name}}</a></p>
               <p class="store-item-price">
-                &nbsp;&nbsp;<span class="item-measure">{{product.sellingquantity}}</span>
+                &nbsp;&nbsp;<span class="item-measure">{{product.quantity}}</span>
               </p>
             </div>
             <p>
-              <a class="btn btn-primary primary-cta" ng-href="#/products/{{product.groupid}}#top">
+              <a class="btn btn-primary primary-cta" ng-href="#/products/{{product.sku}}#top">
                 <i class="fa fa-th"></i> Browse Colors
               </a>
             </p>

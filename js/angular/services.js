@@ -57,10 +57,10 @@ angular.module('app.services', ['ngResource'])
                 }
             }
         };
-//
-//        searchService.getQuery = function() {
-//            return $rootScope.search.query;
-//        };
+
+        searchService.getQuery = function() {
+            return $rootScope.search.query;
+        };
 
         return searchService;
     })
@@ -214,7 +214,7 @@ angular.module('app.services', ['ngResource'])
             var updated = false;
             $.each(cart.items, function(index, product) {
                 //$log.debug("addToCart(): comparing products", p, product);
-                if (product.itemnumber == p.itemnumber && p.kitSelections == null && product.kitSelections == null) {
+                if (product.sku == p.sku && p.kitSelections == null && product.kitSelections == null) {
                     //$log.debug("addToCart(): non-kit products are identical");
                     var newQty = parseInt(p.quantity) + parseInt(product.quantity);
                     product.quantity = newQty;
@@ -227,11 +227,11 @@ angular.module('app.services', ['ngResource'])
 //                    //$log.debug("addToCart(): determining if kit selections are identical");
 //                    // compare kit selections
 //                    //$log.debug("addToCart(): looping through this products kit selections", p.kitSelections);
-//                    $.each(p.kitSelections, function(kitGroupId, kitProduct) {
+//                    $.each(p.kitSelections, function(kitsku, kitProduct) {
 //                        //$log.debug("addToCart(): looping through car products kit selections", product.kitSelections);
-//                        $.each(product.kitSelections, function(otherkitGroupId, otherKitProduct) {
-//                            //$log.debug("comparing kit", kitGroupId, product, "to", otherkitGroupId, otherKitProduct);
-//                            if (kitGroupId == otherkitGroupId && kitProduct.itemnumber == otherKitProduct.itemnumber) {
+//                        $.each(product.kitSelections, function(otherkitsku, otherKitProduct) {
+//                            //$log.debug("comparing kit", kitsku, product, "to", otherkitsku, otherKitProduct);
+//                            if (kitsku == otherkitsku && kitProduct.sku == otherKitProduct.sku) {
 //                                //$log.debug("matched");
 //                                var newQty = parseInt(p.quantity) + parseInt(product.quantity);
 //                                product.quantity = newQty;
@@ -251,7 +251,7 @@ angular.module('app.services', ['ngResource'])
             }
 
             // growlnotification when adding to cart
-            growlNotifications.add('<i class="fa fa-shopping-cart"></i> '+p.productname+' <a href="#/cart"><b>added to cart</b></a>', 'warning', 4000);
+            growlNotifications.add('<i class="fa fa-shopping-cart"></i> '+p.name+' <a href="#/cart"><b>added to cart</b></a>', 'warning', 4000);
 
             $timeout(function() {
                 $rootScope.adding = false;
@@ -265,7 +265,7 @@ angular.module('app.services', ['ngResource'])
         cartService.removeFromCart = function(p) {
             var cart = getCart();
             angular.forEach(cart.items, function(product) {
-                if (product.itemnumber ==p.itemnumber) {
+                if (product.sku ==p.sku) {
                   var getIndex=cart.items.indexOf(product);
                   cart.items.splice(getIndex,1);     
                 }
@@ -282,178 +282,178 @@ angular.module('app.services', ['ngResource'])
         return cartService;
     })
     .factory('Products', function ($resource, $http, $log, Categories, API_URL) {
-        var productsService = {};
+        return $resource(API_URL + '/products/:productId', {productId: '@_id'});
 
-        productsService.get = function(query, success, failure) {
-            return $http.get('/api/products.xml').success(function(data, status, headers, config) {
-                $log.debug("searching for product");
-                //$log.debug(response.data);
-                $log.debug("query", query);
 
-                var products = $.xml2json(data, {"normalize": true});
-                products = products.products;
-                $log.debug("products", products.productdetail);
-                if (query.productId != null) {
-                    angular.forEach(products.productdetail, function(product) {
-                        $log.debug("itemnumber", product.itemnumber, "productId", query.productId);
-                        if (product.itemnumber == query.productId) {
-                            success(product, status, headers, config);
-                            return product;
-                        } else if (product.groupid == query.productId) {
-                            success(product, status, headers, config);
-                            return product;
-                        }
-                    });
+//        productsService.get = function(query, success, failure) {
+//            return $http.get('/api/products.xml').success(function(data, status, headers, config) {
+//                $log.debug("searching for product");
+//                //$log.debug(response.data);
+//                $log.debug("query", query);
+//
+//                var products = $.xml2json(data, {"normalize": true});
+//                products = products.products;
+//                $log.debug("products", products.productdetail);
+//                if (query.productId != null) {
+//                    angular.forEach(products.productdetail, function(product) {
+//                        $log.debug("sku", product.sku, "productId", query.productId);
+//                        if (product.sku == query.productId) {
+//                            success(product, status, headers, config);
+//                            return product;
+//                        } else if (product.sku == query.productId) {
+//                            success(product, status, headers, config);
+//                            return product;
+//                        }
+//                    });
+//
+//                    // if we got here, we didn't find the product, 404
+//                    failure({}, 404, headers, config);
+//                } else {
+//                    failure({}, 404, headers, config);
+//                }
+//            }).error(function(data, status, headers, config) {
+//                failure(data, status, headers, config);
+//                $log.error(data, status, headers, config);
+//            });
+//        }
 
-                    // if we got here, we didn't find the product, 404
-                    failure({}, 404, headers, config);
-                } else {
-                    failure({}, 404, headers, config);
-                }
-            }).error(function(data, status, headers, config) {
-                failure(data, status, headers, config);
-                $log.error(data, status, headers, config);
-            });
-        }
+//        function getAllProductInCategory(cat, categoryToProductMap) {
+//            var allProducts = new Array();
+//
+//            if (categoryToProductMap[cat.id]) {
+//                allProducts = allProducts.concat(categoryToProductMap[cat.id]);
+//            }
+//
+//            angular.forEach(cat.childcategory, function(childCat) {
+//                allProducts = allProducts.concat(getAllProductInCategory(childCat, categoryToProductMap));
+//            });
+//
+//            return allProducts;
+//        }
 
-        function getAllProductInCategory(cat, categoryToProductMap) {
-            var allProducts = new Array();
+//        productsService.query = function(query, success, failure) {
+//            return $http.get('/api/products.xml').success(function(data, status, headers, config) {
+//                //$log.debug(data);
+//                $log.debug("productsService(): query()", query);
+//
+//                var products = $.xml2json(data, {"normalize": true});
+//                products = products.products;
+//                $log.debug("productsService(): query(): products", products.productdetail);
+//                if (query.categoryId != null) {
+//                    $log.debug("productsService(): query(): fetching category in query", query.categoryId);
+//
+//                    Categories.get({'categoryId': query.categoryId, 'recurse': true}, function(queryCategory, status, headers, config) {
+//                        // got category
+//                        $log.debug("productsService(): query(): loaded category for product query", queryCategory);
+//
+//                        var categoryToProductMap = {};
+//                        angular.forEach(products.productdetail, function(product) {
+//                            $log.debug("productsService(): query(): processing product", product);
+//                            var categories = product.categories.category;
+//                            $log.debug("productsService(): query(): processing categories", Array.isArray(categories), categories);
+//                            // convert single category item into an array with that item
+//                            if (!(Array.isArray(categories))) {
+//                                var cat = categories;
+//                                categories = new Array();
+//                                categories.push(cat);
+//                                //$log.debug("productsService(): query(): converted to array", categories);
+//                            }
+//                            // run through each product and add it to the categories it belongs to
+//                            angular.forEach(categories, function(category) {
+//                                $log.debug("productsService(): query(): processing category", category);
+//                                if (categoryToProductMap[category.id] == null) {
+//                                    categoryToProductMap[category.id] = new Array();
+//                                }
+//                                categoryToProductMap[category.id].push(product);
+//                            });
+//                        });
+//
+//                        // run through the category tree to get the lineage for the specified category
+//                        // return the merged results for all products for all children categories as well
+//                        var allProducts = getAllProductInCategory(queryCategory, categoryToProductMap);
+//
+//                        $log.debug("productsService(): query(): categoryToProductMap", categoryToProductMap);
+//                        success(allProducts, status, headers, config);
+//                        return allProducts;
+//                    }, function(data, status, headers, config) {
+//                        // failure
+//                        $log.error("error looking up category");
+//                        failure(data, status, headers, config);
+//                    });
+//
+//                } else if (query.productIds != null) {
+//                    var returnedProducts = new Array();
+//                    $log.debug("productsService(): query(): productIds", query.productIds);
+//                    angular.forEach(query.productIds, function(productId) {
+//                        $log.debug("productsService(): query(): productId", productId);
+//                        $log.debug("productsService(): query(): products", products.productdetail);
+//                        var found = 0;
+//                        angular.forEach(products.productdetail, function(product) {
+//                            $log.debug("productsService(): query(): productId", productId, "sku", product.sku);
+//                            if (productId == product.sku) {
+//                                returnedProducts.push(product);
+//                                found = 1;
+//                            }
+//                        });
+//                        if (!found) {
+//                            failure({}, 404, headers, config);
+//                        }
+//                    });
+//                    $log.debug("productsService(): query(): got products by ids", returnedProducts);
+//                    success(returnedProducts, status, headers, config);
+//                    return returnedProducts;
+//                } else if (query.search != null) {
+//                    var returnedProducts = new Array();
+//                    $log.debug("productsService(): query(): search", query.search);
+//                    angular.forEach(products.productdetail, function(product) {
+//                        if (S(product.sku).toLowerCase().contains(S(query.search).toLowerCase()) || S(product.name).toLowerCase().contains(S(query.search).toLowerCase())) {
+//                            returnedProducts.push(product);
+//                        } else if (product.sku) {
+//                            angular.forEach(product.productskus.productdetail, function(p) {
+//                                if (S(p.sku).toLowerCase().contains(S(query.search).toLowerCase()) || S(p.name).toLowerCase().contains(S(query.search).toLowerCase())) {
+//                                    p.parent = product;
+//                                    returnedProducts.push(p);
+//                                }
+//                            });
+//                        }
+//                    });
+//                    $log.debug("productsService(): query(): got products by search", returnedProducts);
+//                    success(returnedProducts, status, headers, config);
+//                    return returnedProducts;
+//                } else {
+//                    success(products.productdetail, status, headers, config);
+//                    return products.productdetail;
+//                }
+//            }).error(function(data, status, headers, config) {
+//                failure(data, status, headers, config);
+//                $log.error(data, status, headers, config);
+//            });
+//        }
 
-            if (categoryToProductMap[cat.id]) {
-                allProducts = allProducts.concat(categoryToProductMap[cat.id]);
-            }
-
-            angular.forEach(cat.childcategory, function(childCat) {
-                allProducts = allProducts.concat(getAllProductInCategory(childCat, categoryToProductMap));
-            });
-
-            return allProducts;
-        }
-
-        productsService.query = function(query, success, failure) {
-            return $http.get('/api/products.xml').success(function(data, status, headers, config) {
-                //$log.debug(data);
-                $log.debug("productsService(): query()", query);
-
-                var products = $.xml2json(data, {"normalize": true});
-                products = products.products;
-                $log.debug("productsService(): query(): products", products.productdetail);
-                if (query.categoryId != null) {
-                    $log.debug("productsService(): query(): fetching category in query", query.categoryId);
-
-                    Categories.get({'categoryId': query.categoryId, 'recurse': true}, function(queryCategory, status, headers, config) {
-                        // got category
-                        $log.debug("productsService(): query(): loaded category for product query", queryCategory);
-
-                        var categoryToProductMap = {};
-                        angular.forEach(products.productdetail, function(product) {
-                            $log.debug("productsService(): query(): processing product", product);
-                            var categories = product.categories.category;
-                            $log.debug("productsService(): query(): processing categories", Array.isArray(categories), categories);
-                            // convert single category item into an array with that item
-                            if (!(Array.isArray(categories))) {
-                                var cat = categories;
-                                categories = new Array();
-                                categories.push(cat);
-                                //$log.debug("productsService(): query(): converted to array", categories);
-                            }
-                            // run through each product and add it to the categories it belongs to
-                            angular.forEach(categories, function(category) {
-                                $log.debug("productsService(): query(): processing category", category);
-                                if (categoryToProductMap[category.id] == null) {
-                                    categoryToProductMap[category.id] = new Array();
-                                }
-                                categoryToProductMap[category.id].push(product);
-                            });
-                        });
-
-                        // run through the category tree to get the lineage for the specified category
-                        // return the merged results for all products for all children categories as well
-                        var allProducts = getAllProductInCategory(queryCategory, categoryToProductMap);
-
-                        $log.debug("productsService(): query(): categoryToProductMap", categoryToProductMap);
-                        success(allProducts, status, headers, config);
-                        return allProducts;
-                    }, function(data, status, headers, config) {
-                        // failure
-                        $log.error("error looking up category");
-                        failure(data, status, headers, config);
-                    });
-
-                } else if (query.productIds != null) {
-                    var returnedProducts = new Array();
-                    $log.debug("productsService(): query(): productIds", query.productIds);
-                    angular.forEach(query.productIds, function(productId) {
-                        $log.debug("productsService(): query(): productId", productId);
-                        $log.debug("productsService(): query(): products", products.productdetail);
-                        var found = 0;
-                        angular.forEach(products.productdetail, function(product) {
-                            $log.debug("productsService(): query(): productId", productId, "itemNumber", product.itemnumber);
-                            if (productId == product.itemnumber) {
-                                returnedProducts.push(product);
-                                found = 1;
-                            }
-                        });
-                        if (!found) {
-                            failure({}, 404, headers, config);
-                        }
-                    });
-                    $log.debug("productsService(): query(): got products by ids", returnedProducts);
-                    success(returnedProducts, status, headers, config);
-                    return returnedProducts;
-                } else if (query.search != null) {
-                    var returnedProducts = new Array();
-                    $log.debug("productsService(): query(): search", query.search);
-                    angular.forEach(products.productdetail, function(product) {
-                        if (S(product.itemnumber).toLowerCase().contains(S(query.search).toLowerCase()) || S(product.productname).toLowerCase().contains(S(query.search).toLowerCase())) {
-                            returnedProducts.push(product);
-                        } else if (product.groupid) {
-                            angular.forEach(product.productskus.productdetail, function(p) {
-                                if (S(p.itemnumber).toLowerCase().contains(S(query.search).toLowerCase()) || S(p.productname).toLowerCase().contains(S(query.search).toLowerCase())) {
-                                    p.parent = product;
-                                    returnedProducts.push(p);
-                                }
-                            });
-                        }
-                    });
-                    $log.debug("productsService(): query(): got products by search", returnedProducts);
-                    success(returnedProducts, status, headers, config);
-                    return returnedProducts;
-                } else {
-                    success(products.productdetail, status, headers, config);
-                    return products.productdetail;
-                }
-            }).error(function(data, status, headers, config) {
-                failure(data, status, headers, config);
-                $log.error(data, status, headers, config);
-            });
-        }
-
-        return productsService;
+//        return productsService;
     })
     .factory('Categories', function ($resource, $http, $log, API_URL) {
         var categoriesService = {};
 
-        function findCategory(categories, id, recurse, parent) {
-            for (var i=0; i < categories.length; i++) {
-                var category = categories[i];
-                $log.debug("categoriesService(): id", category.id, "categoryId", id);
-                if (parent) {
-                    category.parentcategory = parent;
-                }
-                if (category.id == id) {
-                    $log.debug("categoriesService(): found category, returning!", category);
-                    return category;
-                } else if (recurse && Array.isArray(category.childcategory)) {
-                    var c = findCategory(category.childcategory, id, true, category);
-                    if (c != null) {
-                        return c;
-                    }
-                }
-            }
-            return null;
-        }
-
+//        function findCategory(categories, id, recurse, parent) {
+//            for (var i=0; i < categories.length; i++) {
+//                var category = categories[i];
+//                $log.debug("categoriesService(): id", category.id, "categoryId", id);
+//                if (parent) {
+//                    category.parentcategory = parent;
+//                }
+//                if (category.id == id) {
+//                    $log.debug("categoriesService(): found category, returning!", category);
+//                    return category;
+//                } else if (recurse && Array.isArray(category.children)) {
+//                    var c = findCategory(category.children, id, true, category);
+//                    if (c != null) {
+//                        return c;
+//                    }
+//                }
+//            }
+//            return null;
+//        }
 
         function generateCategoryMap(categories) {
             //$log.debug("categoriesService(): generateCategoryMap()", categories);
@@ -465,8 +465,8 @@ angular.module('app.services', ['ngResource'])
                 idToCategoryMap[category.id] = category;
 
                 // traverse children
-                if (category.childcategory) {
-                    var childMap = generateCategoryMap(category.childcategory);
+                if (category.children) {
+                    var childMap = generateCategoryMap(category.children);
                     $.each(childMap, function(key, value) {
                         idToCategoryMap[key] = value;
                     });
@@ -483,48 +483,47 @@ angular.module('app.services', ['ngResource'])
             for (var i=0; i < categories.length; i++) {
                 var category = categories[i];
 
+                //$log.debug("categoriesService(): populateParentCategories(): processing category", category);
+
                 // if we have a parent id, but not object, populate it
-                if (category.parentid && category.parentcategory == null) {
-                    category.parentcategory = idToCategoryMap[category.parentid];
+                if (category.parent && category.parentcategory == null) {
+                    //$log.debug("categoriesService(): populateParentCategories(): setting parent!");
+                    category.parentcategory = idToCategoryMap[category.parent];
                 }
 
                 // traverse children
-                if (category.childcategory) {
-                    populateParentCategories(category.childcategory, idToCategoryMap);
+                if (category.children) {
+                    populateParentCategories(category.children, idToCategoryMap);
                 }
             }
         }
 
         categoriesService.get = function(query, success, failure) {
-            return $http.get('/api/categories.xml').success(function(data, status, headers, config) {
+            return $http.get(API_URL + '/categories/' + query.categoryId).success(function(data, status, headers, config) {
                 $log.debug("categoriesService(): searching for category");
                 //$log.debug(response.data);
                 $log.debug("categoriesService(): query", query);
 
-                var categories = $.xml2json(data, {"normalize": true});
-                categories = categories.categories;
+                var category = data;
+                //console.log("categoriesService(): data returned", category);
 
-                // populate parent categories
-                var idToCategoryMap = generateCategoryMap(categories.categorydetail);
-                populateParentCategories(categories.categorydetail, idToCategoryMap);
+                var categories = categoriesService.query({}, function(categories, headers) {
+                    //$log.debug("categoriesService(): loaded categories to populate parents");
 
-                $log.debug("categoriesService(): categories", categories.categorydetail);
-                if (query.categoryId != null) {
-                    var c = findCategory(categories.categorydetail, query.categoryId, query.recurse);
+                    // populate parent categories
+                    var idToCategoryMap = generateCategoryMap(categories);
+                    populateParentCategories(categories, idToCategoryMap);
+                    //$log.debug("categoriesService(): generated idToCategoryMap", idToCategoryMap);
+                    populateParentCategories([category], idToCategoryMap);
 
-                    if (c != null) {
-                        $log.debug("categoriesService(): found category", c);
-                        success(c, status, headers);
-                        return c;
-                    }
+                    $log.debug("categoriesService(): category", category);
 
-                    $log.debug("categoriesService(): couldn't find category", c);
-
-                    // if we got here, we didn't find the category, 404
-                    failure({}, 404, headers, config);
-                } else {
-                    failure({}, 404, headers, config);
-                }
+                    success(category, status, headers);
+                    return category;
+                }, function() {
+                    failure(data, status, headers, config);
+                    $log.error(data, status, headers, config);
+                })
             }).error(function(data, status, headers, config) {
                 failure(data, status, headers, config);
                 $log.error(data, status, headers, config);
@@ -532,18 +531,19 @@ angular.module('app.services', ['ngResource'])
         }
 
         categoriesService.query = function(query, success, failure) {
-            return $http.get('/api/categories.xml').then(function(response) {
+            return $http.get(API_URL + '/categories').then(function(response) {
                 //$log.debug(response.data);
-                var categories = $.xml2json(response.data);
-                categories = categories.categories;
+                //var categories = $.xml2json(response.data);
+                //categories = categories.categories;
+                var categories = response.data;
 
                 // populate parent categories
-                var idToCategoryMap = generateCategoryMap(categories.categorydetail);
-                populateParentCategories(categories.categorydetail, idToCategoryMap);
+                var idToCategoryMap = generateCategoryMap(categories);
+                populateParentCategories(categories, idToCategoryMap);
 
-                $log.debug("categories", categories.categorydetail);
-                success(categories.categorydetail, response.headers);
-                return categories.categorydetail;
+                $log.debug("categories", categories);
+                success(categories, response.headers);
+                return categories;
             }, function(response) {
                 failure(response);
                 $log.error(response);
@@ -562,10 +562,10 @@ angular.module('app.services', ['ngResource'])
         var buildPath = function(category, product, list) {
             if (list == null && product != null) {
                 list = new Array();
-                $log.debug("breadcrumbService.buildPath(): setting path to product name", product.productname);
+                $log.debug("breadcrumbService.buildPath(): setting path to product name", product.name);
                 list.unshift({
                     type: 'product',
-                    name: product.productname,
+                    name: product.name,
                     id: product.id,
                     url: '/products/' + product.id,
                     item: product
@@ -645,8 +645,8 @@ angular.module('app.services', ['ngResource'])
         productService.addRecentlyViewed = function(p) {
             var found = 0;
             angular.forEach($rootScope.recentlyViewed.items, function(product) {
-                $log.debug("checking recently added against list", p.itemnumber, product.itemnumber );
-                if (product.itemnumber == p.itemnumber) {
+                $log.debug("checking recently added against list", p.sku, product.sku );
+                if (product.sku == p.sku) {
                     $log.debug("already in recently viewed", p);
                     found = 1;
                 }

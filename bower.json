@@ -27,7 +27,7 @@
     "HashKeyCopier": "https://github.com/bennadel/HashKeyCopier.git#a7c731fb2768d95eb249fb779589563dd44e5b74",
     "angular-ui-utils": "fbcfaf187942d5e9fe6b27f9b6da1ece418aebea",
     "angular-bindonce": "~0.2.1",
-    "momentjs": "~2.6.0",
+    "momentjs": "~2.7.0",
     "string.js": "https://github.com/jprichardson/string.js.git#e900c5faeb88166e516ead8c05399b64be28fcc6",
     "angular-cache": "2.3.0",
     "purl": "~2.3.1",
@@ -44,7 +44,6 @@
     "angular-mocks": "1.2.16"
   },
   "resolutions": {
-    "bootstrap": ">=3.0.0",
-    "allmighty-autocomplete": "2eb28fea0ad30bf3768e566919083cad9b4d562a"
+    "bootstrap": ">=3.0.0"
   }
 }

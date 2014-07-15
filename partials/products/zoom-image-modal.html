@@ -1,7 +1,7 @@
 <div class="modal-header">
   <button type="button" class="close" aria-hidden="true" ng-click="close()">&times;</button>
-  <h4 class="modal-title">{{product.productname}}</h4>
+  <h4 class="modal-title">{{product.name}}</h4>
 </div>
 <div class="modal-body zoom-image-modal-body">
-  <img class="img-responsive" ng-src="/{{product.images.path}}">
+  <img class="img-responsive" ng-src="{{getImagePath(product.images[0].imagePath)}}">
 </div>
