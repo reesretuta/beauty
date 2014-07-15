@@ -26,6 +26,7 @@ Running
 Prerequisites
 -------------
 MongoDB is up and running
+Node installed
 
 Recommended
 -----------
