@@ -18,6 +18,7 @@ Jafra
 * Change directory into jafraproto
 * Import all mongodb data from ./mongo_dump (http://docs.mongodb.org/manual/tutorial/backup-with-mongodump/)
   - Example: <path_to_mongo>/mongorestore ./mongo_dump
+* Verify data imported by connecting to MondoDB (mongo jafra) and doing a find (db.products.find().count())
 * If not running on CentOS 6, run 'npm install' to rebuild any platform specific modules
 
 
@@ -40,6 +41,8 @@ Run this to get the prototype API & web application running
 <code>
 node server.js
 </code>
+
+Then visit the site on port 8090 (e.g. http://<server>:8090)
 
 Scraper
 -------

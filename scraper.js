@@ -1926,6 +1926,8 @@ models.onReady(function() {
         console.log("Updated", updatedProducts, "products");
         console.log("Updated", updatedProductKits, "product kits");
         console.log("Updated", updatedKitGroups, "kit groups");
+
+        process.exit(0);
     });
 
     spooky.on('error', function (e, stack) {
