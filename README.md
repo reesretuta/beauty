@@ -4,6 +4,12 @@ Installation Steps
 MongoDB
 -------
 * Download mongodb (http://www.mongodb.org/downloads)
+* Install phantomjs
+  * Retrieve an appropriate package or download the binary (http://phantomjs.org/download.html) and place on the path
+  * Run the phantomjs command to ensure there are no errors
+* Install npm
+* Install casperjs (sudo npm install -g casperjs)
+* Install deps (from project dir: npm install)
 * Install mongodb (http://docs.mongodb.org/master/installation/)
   - OSX
     - untar tar.gz
