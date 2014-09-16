@@ -4,12 +4,12 @@ angular.module('app.controllers.top')
         console.log('top controller', $location.search().site);
 
         // this controller handles toggling between Online Sponsor and Client Direct
-        if ($location.host() == 'join.jafra.com' || $location.search().site == 'join') {
-            //console.log('online sponsor');
+        if (S($location.path()).startsWith("/online_sponsor")) {
+            console.log('online sponsor');
             $scope.site = 'OnlineSponsor';
             $scope.title = 'Online Sponsor';
         } else {
-            //console.log('client direct');
+            console.log('client direct');
             $scope.site = 'ClientDirect';
             $scope.title = 'MyJAFRA Store';
         }

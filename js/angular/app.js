@@ -12,54 +12,38 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
         $locationProvider.html5Mode(true).hashPrefix('!');
         $rootScopeProvider.digestTtl(30);
 
-        var isOnlineSponsor = window.location.host.indexOf("join") == 0;
-        if (window.location.search) {
-          var matches = window.location.search.match(/site=([a-zA-Z]+)/);
-          if (matches && matches.length > 1 && matches[1] == 'join') {
-            isOnlineSponsor = true;
-          }
-        }
-        console.log('isOnlineSponsor', isOnlineSponsor, window.location.pathname);
-
-        if (isOnlineSponsor) {
-          $routeProvider.when(BASE_URL + '/', {
-            templateUrl: BASE_URL + '/partials/online_sponsor/home.html',
-            controller: 'OnlineSponsorJoinController',
-            label: 'Home'
-          }).otherwise({
-            templateUrl: BASE_URL + '/partials/page-not-found.html',
-            controller: 'NotFoundController'
-          });
-        } else {
-          $routeProvider.when(BASE_URL + '/', {
-            templateUrl: BASE_URL + '/partials/home.html',
-            controller: 'HomeController',
-            label: 'Home'
-          }).when(BASE_URL + '/products', {
-              templateUrl: BASE_URL + '/partials/products/products.html',
-              controller: 'ProductsController'
-          }).when(BASE_URL + '/products/:productId', {
-            templateUrl: BASE_URL + '/partials/products/product.html',
-            controller: 'ProductDetailsController'
-          }).when(BASE_URL + '/objects', {
-            templateUrl: BASE_URL + '/partials/objects/objects.html',
-            controller: 'ObjectsController'
-          }).when(BASE_URL + '/cart', {
-            templateUrl: BASE_URL + '/partials/cart/cart.html',
-            controller: 'CartController'
-          }).when(BASE_URL + '/checkout', {
-            templateUrl: BASE_URL + '/partials/checkout/checkout.html',
-            controller: 'CheckoutController',
-            reloadOnSearch: false
-          }).when(BASE_URL + '/', {
-            templateUrl: BASE_URL + '/partials/checkout/checkout.html',
-            controller: 'CheckoutController',
-            reloadOnSearch: false
-          }).otherwise({
-            templateUrl: BASE_URL + '/partials/page-not-found.html',
-            controller: 'NotFoundController'
-          });
-        }
+        $routeProvider.when(BASE_URL + '/', {
+          templateUrl: BASE_URL + '/partials/home.html',
+          controller: 'HomeController',
+          label: 'Home'
+        }).when(BASE_URL + '/products', {
+            templateUrl: BASE_URL + '/partials/products/products.html',
+            controller: 'ProductsController'
+        }).when(BASE_URL + '/products/:productId', {
+          templateUrl: BASE_URL + '/partials/products/product.html',
+          controller: 'ProductDetailsController'
+        }).when(BASE_URL + '/objects', {
+          templateUrl: BASE_URL + '/partials/objects/objects.html',
+          controller: 'ObjectsController'
+        }).when(BASE_URL + '/cart', {
+          templateUrl: BASE_URL + '/partials/cart/cart.html',
+          controller: 'CartController'
+        }).when(BASE_URL + '/checkout', {
+          templateUrl: BASE_URL + '/partials/checkout/checkout.html',
+          controller: 'CheckoutController',
+          reloadOnSearch: false
+        }).when(BASE_URL + '/', {
+          templateUrl: BASE_URL + '/partials/checkout/checkout.html',
+          controller: 'CheckoutController',
+          reloadOnSearch: false
+        }).when(BASE_URL + '/online_sponsor', {
+          templateUrl: BASE_URL + '/partials/online_sponsor/home.html',
+          controller: 'OnlineSponsorJoinController',
+          label: 'Home'
+        }).otherwise({
+          templateUrl: BASE_URL + '/partials/page-not-found.html',
+          controller: 'NotFoundController'
+        });
 
         $translateProvider.useStaticFilesLoader({
           prefix: '/i18n/locale-',
