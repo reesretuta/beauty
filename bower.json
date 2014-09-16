@@ -10,20 +10,20 @@
     "**/.*"
   ],
   "dependencies": {
-    "angular": "1.2.16",
+    "angular": "1.2.24",
     "bootstrap": "https://github.com/angular-ui/bootstrap.git#0cc532d240e090e69cb6ccfee83a88ae778ced01",
     "jquery-resize": "*",
     "jquery-migrate": "1.2.1",
     "jquery": "1.11.0",
     "less.js": "1.7.0",
     "font-awesome": "~4.0.3",
-    "angular-animate": "1.2.16",
-    "angular-cookies": "1.2.16",
-    "angular-loader": "1.2.16",
-    "angular-resource": "1.2.16",
-    "angular-route": "1.2.16",
-    "angular-sanitize": "1.2.16",
-    "angular-touch": "1.2.16",
+    "angular-animate": "1.2.24",
+    "angular-cookies": "1.2.24",
+    "angular-loader": "1.2.24",
+    "angular-resource": "1.2.24",
+    "angular-route": "1.2.24",
+    "angular-sanitize": "1.2.24",
+    "angular-touch": "1.2.24",
     "HashKeyCopier": "https://github.com/bennadel/HashKeyCopier.git#a7c731fb2768d95eb249fb779589563dd44e5b74",
     "angular-ui-utils": "fbcfaf187942d5e9fe6b27f9b6da1ece418aebea",
     "angular-bindonce": "~0.2.1",
@@ -41,7 +41,7 @@
     "allmighty-autocomplete": "2eb28fea0ad30bf3768e566919083cad9b4d562a"
   },
   "devDependencies": {
-    "angular-mocks": "1.2.16"
+    "angular-mocks": "1.2.24"
   },
   "resolutions": {
     "bootstrap": ">=3.0.0"
