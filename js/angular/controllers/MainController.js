@@ -71,10 +71,16 @@ angular.module('app.controllers.main')
 
         $rootScope.getImagePath = function(paths) {
             if (Array.isArray(paths)) {
+                if (paths[0] == undefined) {
+                    return "/img/product_placeholder.gif";
+                }
                 //$log.debug("MainController(): getImagePath(): getting image path from array");
                 return 'https://stageadmin.jafra.com' + paths[0];
             }
             //$log.debug("MainController(): getImagePath(): getting image path from string");
+            if (paths == undefined) {
+              return "/img/product_placeholder.gif";
+            }
             return 'https://stageadmin.jafra.com' + paths;
         }
 

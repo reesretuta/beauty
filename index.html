@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="app">
+<html lang="en" ng-app="app" ng-controller="TopController">
   <head>
+    <base href="/">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title ng:bind-template="{{page}} - MyJAFRA Store Prototype">MyJAFRA Store Prototype</title>
+    <title ng-bind-template="{{page}} - {{title}}">MyJAFRA</title>
 
     <link type="image/x-icon" href="/images/favicon.ico" rel="shortcut icon">
 
@@ -56,198 +57,207 @@
   </head>
 
   <body ng-controller="MainController" ng-cloak id="top">
-    <header id="shop_header" class="navbar" role="navigation">
-      <div class="container">
-        <div class="row">
-          <div class="col-sm-3 navbar-left">
-            <a class="navbar-brand" href=""><img class="img-responsive" src="/img/logo.png" alt="JAFRA | The Power to Transform Lives."></a>
-          </div><!--/span-->
-          
-          <div class="col-sm-3 navbar-right">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-          </div>
 
-          <div class="col-xs-12 col-sm-9 clearfix">
-            <div class="row">
-              <div class="col-xs-12 col-sm-6 consultant-info">
-
-                <a href="">
-                  <img src="http://placehold.it/40x40" alt="profile photo" class="img-circle pull-left consultant-photo">
-                </a>
-                <a href=""><span class="consultant-name">Denise Paxton</span></a>
-                <p>{{ 'HEADER_CONSULTANTMSG' | translate }}</p>
-
-              </div>
-              <div class="col-xs-12 col-sm-6 login-info">
-                <div class="navbar-right">
-                  <!-- <a ng-show="!loggedIn()" href="" ng-cloak>Sign In</a> -->
-                  <span ng-show="loggedIn()" href="" ng-cloak>{{getUserEmail()}} (<a style="margin-right: 5px; margin-left: 5px;" href="" ng-click="logout()">Logout</a>)</span>
-
-                  <a ng-show="getItemsInCart()!=null" href="#/cart" ng-cloak><i class="fa fa-shopping-cart"></i> {{ 'VIEW_CART' | translate }} ({{getItemsInCart()}})</a>
-
-                  <img src="http://jafrausa.com/regional/images/en_US/template/icons/flag.png">
-                  <select ng-model="session.language">
-                    <option value="en_US">English</option>
-                    <option value="es_US">Espa&ntilde;ol</option>
-                  </select>
-                </div>
-              </div>
+    <!-- Client Direct -->
+    <div ng-if="site=='ClientDirect'">
+      <header id="shop_header" class="navbar" role="navigation">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-3 navbar-left">
+              <a class="navbar-brand" href=""><img class="img-responsive" src="/img/logo.png" alt="JAFRA | The Power to Transform Lives."></a>
             </div><!--/span-->
+
+            <div class="col-sm-3 navbar-right">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+            </div>
+
+            <div class="col-xs-12 col-sm-9 clearfix">
+              <div class="row">
+                <div class="col-xs-12 col-sm-6 consultant-info">
+
+                  <a href="">
+                    <img src="http://placehold.it/40x40" alt="profile photo" class="img-circle pull-left consultant-photo">
+                  </a>
+                  <a href=""><span class="consultant-name">Denise Paxton</span></a>
+                  <p>{{ 'HEADER_CONSULTANTMSG' | translate }}</p>
+
+                </div>
+                <div class="col-xs-12 col-sm-6 login-info">
+                  <div class="navbar-right">
+                    <!-- <a ng-show="!loggedIn()" href="" ng-cloak>Sign In</a> -->
+                    <span ng-show="loggedIn()" href="" ng-cloak>{{getUserEmail()}} (<a style="margin-right: 5px; margin-left: 5px;" href="" ng-click="logout()">Logout</a>)</span>
+
+                    <a ng-show="getItemsInCart()!=null" href="/cart" ng-cloak><i class="fa fa-shopping-cart"></i> {{ 'VIEW_CART' | translate }} ({{getItemsInCart()}})</a>
+
+                    <img src="http://jafrausa.com/regional/images/en_US/template/icons/flag.png">
+                    <select ng-model="session.language">
+                      <option value="en_US">English</option>
+                      <option value="es_US">Espa&ntilde;ol</option>
+                    </select>
+                  </div>
+                </div>
+              </div><!--/span-->
+            </div>
+
+            <div class="col-xs-12 col-sm-9 collapse navbar-collapse">
+              <ul class="nav navbar-nav">
+                <li><a href="">{{ 'NAV_HOME' | translate }}</a></li>
+                <li><a href="">{{ 'NAV_ABOUT' | translate }}</a></li>
+                <li><a href="">{{ 'NAV_OPPORTUNITY' | translate }}</a></li>
+                <li class="active"><a ng-href="/">{{ 'NAV_STORE' | translate }}</a></li>
+                <li><a href="">{{ 'NAV_PARTY' | translate }}</a></li>
+                <li><a href="">{{ 'NAV_MEDIA' | translate }}</a></li>
+                <li><a href="">{{ 'NAV_MYPAGE' | translate }}</a></li>
+              </ul>
+            </div><!-- /.nav-collapse -->
           </div>
+        </div><!-- /.container -->
+      </header><!-- /header.navbar -->
 
-          <div class="col-xs-12 col-sm-9 collapse navbar-collapse">
-            <ul class="nav navbar-nav">
-              <li><a href="">{{ 'NAV_HOME' | translate }}</a></li>
-              <li><a href="">{{ 'NAV_ABOUT' | translate }}</a></li>
-              <li><a href="">{{ 'NAV_OPPORTUNITY' | translate }}</a></li>
-              <li class="active"><a ng-href="#/">{{ 'NAV_STORE' | translate }}</a></li>
-              <li><a href="">{{ 'NAV_PARTY' | translate }}</a></li>
-              <li><a href="">{{ 'NAV_MEDIA' | translate }}</a></li>
-              <li><a href="">{{ 'NAV_MYPAGE' | translate }}</a></li>
-            </ul>
-          </div><!-- /.nav-collapse -->
-        </div>
-      </div><!-- /.container -->
-    </header><!-- /header.navbar -->
+      <div class="container">
 
-    <div class="container">
+        <div growl-notifications class="alerts"></div>
 
-      <div growl-notifications class="alerts"></div>
-
-      <div ng-show="section != 'checkout'" class="row store-heading" ng-cloak>
-        <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8">
-          <h1 ng-bind-html="page | unsafe"></h1>
-        </div>
-        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-          <p>&nbsp;</p>
-        </div>
-      </div><!-- /row -->
-
-      <div class="row store-heading-nav" ng-hide="section == 'admin' || section =='checkout' || section=='cart'">
-        <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8">
-
-         <ol class="ab-nav breadcrumb">
-          <li ng-repeat="breadcrumb in breadcrumbs track by breadcrumb.path" ng-class="{ active: $last }">
-            <a ng-if="!$last" ng-href="#{{ breadcrumb.path }}" ng-bind="breadcrumb.label" class="margin-right-xs"></a>
-            <span ng-if="$last" ng-bind-html="breadcrumb.label | unsafe"></span>
-          </li>
-        </ol>
-
-        </div>
-        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-          <div class="input-group">
-            <input class="form-control" type="search" placeholder="Search Products" ng-model="search.queryString" ui-keypress="{13:'searchProducts(search.queryString)'}">
-            <span class="input-group-btn">
-              <button class="btn btn-primary" type="button" ng-click="searchProducts(search.queryString)"><i class="fa fa-search fa-fw"></i></button>
-            </span>
+        <div ng-show="section != 'checkout'" class="row store-heading" ng-cloak>
+          <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8">
+            <h1 ng-bind-html="page | unsafe"></h1>
           </div>
-        </div>
-    </div><!-- /row -->
+          <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+            <p>&nbsp;</p>
+          </div>
+        </div><!-- /row -->
 
-    <div ng-class="{'': !isActive, 'active': isActive}" ng-init="isActive = false" class="row row-offcanvas row-offcanvas-left">
+        <div class="row store-heading-nav" ng-hide="section == 'admin' || section =='checkout' || section=='cart'">
+          <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8">
 
-    <!-- Sidebar Navigation -->
-    <div class="col-xs-8 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation" ng-hide="section == 'admin' || section =='checkout' || section=='cart'">
-      <aside id="shop_menu">
-         
-        <a class="pull-left visible-xs store-nav-toggle" ng-click="isActive = !isActive">
-          <i class="fa fa-bars"></i>
-        </a>
+            <ol class="ab-nav breadcrumb">
+              <li ng-repeat="breadcrumb in breadcrumbs track by breadcrumb.path" ng-class="{ active: $last }">
+                <a ng-if="!$last" ng-href="#{{ breadcrumb.path }}" ng-bind="breadcrumb.label" class="margin-right-xs"></a>
+                <span ng-if="$last" ng-bind-html="breadcrumb.label | unsafe"></span>
+              </li>
+            </ol>
 
-        <ul ng-controller="CategoriesController">
+          </div>
+          <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+            <div class="input-group">
+              <input class="form-control" type="search" placeholder="Search Products" ng-model="search.queryString" ui-keypress="{13:'searchProducts(search.queryString)'}">
+                <span class="input-group-btn">
+                  <button class="btn btn-primary" type="button" ng-click="searchProducts(search.queryString)"><i class="fa fa-search fa-fw"></i></button>
+                </span>
+            </div>
+          </div>
+        </div><!-- /row -->
 
-          <li ng-repeat="category in categories" ng-class="{'open': categoryInPath(category)}">
-              <!-- don't follow link if has children, just expand -->
-              <a ng-show="category.children" href ng-class="{'active': categoryInPath(category)}" ng-click="categoryClicked(category);">
-                <span ng-bind-html="category.name | unsafe"></span> <i ng-if="category.children" class="fa fa-angle-down pull-right"></i>
+        <div ng-class="{'': !isActive, 'active': isActive}" ng-init="isActive = false" class="row row-offcanvas row-offcanvas-left">
+
+          <!-- Sidebar Navigation -->
+          <div class="col-xs-8 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation" ng-hide="section == 'admin' || section =='checkout' || section=='cart'">
+            <aside id="shop_menu">
+
+              <a class="pull-left visible-xs store-nav-toggle" ng-click="isActive = !isActive">
+                <i class="fa fa-bars"></i>
               </a>
-              <!-- follow link if no children -->
-              <a ng-show="category.children == null" ng-href="#/products?category={{category.id}}" ng-class="{'active': categoryInPath(category)}" ng-click="categoryClicked(category);">
-                <span ng-bind-html="category.name | unsafe"></span> <i ng-if="category.children" class="fa fa-angle-down pull-right"></i>
-              </a>  
 
-              <!-- loop in children links -->
-              <ul ng-if="category.children">
+              <ul ng-controller="CategoriesController">
 
-                  <li ng-repeat="category in category.children" ng-class="{'open': categoryInPath(category)}">
+                <li ng-repeat="category in categories" ng-class="{'open': categoryInPath(category)}">
+                  <!-- don't follow link if has children, just expand -->
+                  <a ng-show="category.children" href ng-class="{'active': categoryInPath(category)}" ng-click="categoryClicked(category);">
+                    <span ng-bind-html="category.name | unsafe"></span> <i ng-if="category.children" class="fa fa-angle-down pull-right"></i>
+                  </a>
+                  <!-- follow link if no children -->
+                  <a ng-show="category.children == null" ng-href="/products?category={{category.id}}" ng-class="{'active': categoryInPath(category)}" ng-click="categoryClicked(category);">
+                    <span ng-bind-html="category.name | unsafe"></span> <i ng-if="category.children" class="fa fa-angle-down pull-right"></i>
+                  </a>
 
-                    <!-- don't follow link if has children, just expand -->
-                    <a ng-show="category.children != null && category.children.length > 0" href ng-class="{'active': categoryInPath(category)}" ng-click="categoryClicked(category);">
-                      <span ng-bind-html="category.name | unsafe"></span> <i ng-if="category.children" class="fa fa-angle-down  pull-right"></i>
-                    </a>
-                    <!-- follow link if no children -->
-                    <a ng-show="category.children == null || category.children.length == 0" ng-href="#/products?category={{category.id}}" ng-class="{'active': categoryInPath(category)}" ng-click="categoryClicked(category);">
-                      <span ng-bind-html="category.name | unsafe"></span> <i ng-if="category.children" class="fa fa-angle-down  pull-right"></i>
-                    </a>
+                  <!-- loop in children links -->
+                  <ul ng-if="category.children">
 
-                    <!-- loop in children links -->
-                    <ul ng-if="category.children">
+                    <li ng-repeat="category in category.children" ng-class="{'open': categoryInPath(category)}">
+
+                      <!-- don't follow link if has children, just expand -->
+                      <a ng-show="category.children != null && category.children.length > 0" href ng-class="{'active': categoryInPath(category)}" ng-click="categoryClicked(category);">
+                        <span ng-bind-html="category.name | unsafe"></span> <i ng-if="category.children" class="fa fa-angle-down  pull-right"></i>
+                      </a>
+                      <!-- follow link if no children -->
+                      <a ng-show="category.children == null || category.children.length == 0" ng-href="/products?category={{category.id}}" ng-class="{'active': categoryInPath(category)}" ng-click="categoryClicked(category);">
+                        <span ng-bind-html="category.name | unsafe"></span> <i ng-if="category.children" class="fa fa-angle-down  pull-right"></i>
+                      </a>
+
+                      <!-- loop in children links -->
+                      <ul ng-if="category.children">
 
                         <li ng-repeat="category in category.children">
-                            <a href="" ng-href="#/products?category={{category.id}}" ng-class="{'active': categoryInPath(category)}" ng-click="categoryClicked(category);">
-                              <span ng-bind-html="category.name | unsafe"></span>
-                            </a>
+                          <a href="" ng-href="/products?category={{category.id}}" ng-class="{'active': categoryInPath(category)}" ng-click="categoryClicked(category);">
+                            <span ng-bind-html="category.name | unsafe"></span>
+                          </a>
                         </li>
 
-                    </ul>
+                      </ul>
 
-                  </li>
+                    </li>
+
+                  </ul>
+
+                </li>
 
               </ul>
+              <hr>
+              <ul>
+                <li><a ng-href="/products#top" href="/products#top" ng-class="{'active': navStatic == '1'}" ng-click="categoryClicked(null); setNavStatic('1')"><span>All Products</span></a></li>
+                <li><a ng-href="/cart#additem" href="/cart#additem" ng-class="{'active': navStatic == '2'}" ng-click="categoryClicked(null); setNavStatic('2')"><span>Order By Item</span></a></li>
+              </ul>
 
-          </li>
+            </aside>
+          </div><!--/span-->
+          <!-- /Sidebar Navigation -->
 
-        </ul>
-        <hr>
-        <ul>
-          <li><a ng-href="#/products#top" href="#/products#top" ng-class="{'active': navStatic == '1'}" ng-click="categoryClicked(null); setNavStatic('1')"><span>All Products</span></a></li>
-          <li><a ng-href="#/cart#additem" href="#/cart#additem" ng-class="{'active': navStatic == '2'}" ng-click="categoryClicked(null); setNavStatic('2')"><span>Order By Item</span></a></li>
-        </ul>
-
-      </aside>
-    </div><!--/span-->
-    <!-- /Sidebar Navigation -->
-
-    <!-- Store Content -->
-        <section class="store-content"
-          ng-class="{'col-sm-12': section == 'admin', 'col-xs-12 col-sm-9': section == 'store'}">
+          <!-- Store Content -->
+          <section class="store-content"
+                   ng-class="{'col-sm-12': section == 'admin', 'col-xs-12 col-sm-9': section == 'store'}">
 
             <div ng-view class="ngview"></div>
 
-        </section><!--/span-->
-    <!-- /Store Content -->
+          </section><!--/span-->
+          <!-- /Store Content -->
 
-    
-    </div><!--/row.offcanvas-->
 
-    <hr>
+        </div><!--/row.offcanvas-->
 
-    <footer>
-        <div class="pull-right footer-logos">
+        <hr>
+
+        <footer>
+          <div class="pull-right footer-logos">
             <a href="" class="jafra-logo"><span class="sr-only">Jafra Usa</span></a>
             <a href="" class="vorwerk-logo"><span class="sr-only">Vorwerk</span></a>
             <a href="" class="dsa-logo"><span class="sr-only">DSA</span></a>
-        </div>
+          </div>
 
-        <div class="legalcopy">
-          <p>
-            <a href="" class="btn btn-link">Terms</a>
-             | 
-            <a href="" class="btn btn-link">Privacy</a>
-          </p>
-          <p>&copy; 2014 - JAFRA Cosmetics International - All Rights Reserved</p>
-        </div>
-    </footer>
+          <div class="legalcopy">
+            <p>
+              <a href="" class="btn btn-link">Terms</a>
+              |
+              <a href="" class="btn btn-link">Privacy</a>
+            </p>
+            <p>&copy; 2014 - JAFRA Cosmetics International - All Rights Reserved</p>
+          </div>
+        </footer>
 
+      </div><!-- /.container -->
 
-    </div><!-- /.container -->
+      <div growl-notifications class="alerts"></div>
+    </div>
 
-    <div growl-notifications class="alerts"></div>
+    <!-- Online Sponsoring> -->
+    <div ng-if="site=='OnlineSponsor'">
+      Online Sponsoring
+      <div ng-view class="ngview"></div>
+    </div>
 
     <!-- JavaScript -->
     <script src="/lib/jquery-resize/jquery.ba-resize.min.js"></script>
@@ -285,6 +295,7 @@
     <script src="/js/angular/modules/ladda.js"></script>
 
     <script src="/js/angular/controllers/controllers.js"></script>
+    <script src="/js/angular/controllers/TopController.js"></script>
     <script src="/js/angular/controllers/MainController.js"></script>
     <script src="/js/angular/controllers/CategoriesController.js"></script>
     <script src="/js/angular/controllers/HomeController.js"></script>
@@ -298,10 +309,14 @@
     <script src="/js/angular/controllers/ZoomImageModalController.js"></script>
     <script src="/js/angular/controllers/ShippingSpeedModalController.js"></script>
 
+    <!-- online sponsoring home controller -->
+    <script src="/js/angular/controllers/online_sponsor/OnlineSponsorJoinController.js"></script>
+
     <script src="/js/angular/services.js"></script>
     <script src="/js/angular/filters.js"></script>
     <script src="/js/angular/directives.js"></script>
     <script src="/js/angular/app.js"></script>
+
   </body>
 
 </html>

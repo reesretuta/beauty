@@ -251,7 +251,7 @@ angular.module('app.services', ['ngResource'])
             }
 
             // growlnotification when adding to cart
-            growlNotifications.add('<i class="fa fa-shopping-cart"></i> '+p.name+' <a href="#/cart"><b>added to cart</b></a>', 'warning', 4000);
+            growlNotifications.add('<i class="fa fa-shopping-cart"></i> '+p.name+' <a href="/cart"><b>added to cart</b></a>', 'warning', 4000);
 
             $timeout(function() {
                 $rootScope.adding = false;

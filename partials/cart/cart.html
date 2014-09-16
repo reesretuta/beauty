@@ -20,18 +20,18 @@
       <tr ng-repeat="product in products" ng-if="products.length > 0">
         <td>
           <div class="cart-item-info">
-            <a ng-href="#/products/{{product.sku}}#top" class="col-xs-5 col-sm-3 col-md-2 col-lg-2"
+            <a ng-href="/products/{{product.sku}}#top" class="col-xs-5 col-sm-3 col-md-2 col-lg-2"
                ng-if="product.type != 'group'">
               <img class="img-responsive cart-item-image" ng-src="{{getImagePath(product.images[0].imagePath)}}">
             </a>
-            <a ng-href="#/products/{{product.sku}}#top" class="col-xs-5 col-sm-3 col-md-2 col-lg-2"
+            <a ng-href="/products/{{product.sku}}#top" class="col-xs-5 col-sm-3 col-md-2 col-lg-2"
                ng-if="product.type == 'group'">
               <img class="img-responsive cart-item-image" ng-src="{{getImagePath(product.images[0].imagePath)}}">
             </a>
 
             <div class="col-sm-9 col-md-8 col-lg-8">
               <h3>
-                <a href="#/products/{{product.sku}}#top">{{product.name}}</a>
+                <a href="/products/{{product.sku}}#top">{{product.name}}</a>
               </h3>
 
               <p><label>{{product.sku}}</label></p>

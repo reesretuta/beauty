@@ -4,6 +4,8 @@ angular.module('app.controllers.home')
 
         $rootScope.section = "store";
 
+        console.log('HomeController');
+
         $scope.objects = [];
         var loadCategories = function () {
             //var start = new Date().getTime();

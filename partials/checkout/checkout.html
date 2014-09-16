@@ -71,7 +71,7 @@
             <div class="form-group">
               <div class="col-md-offset-3 col-sm-9">
                 <div class="row"><div class="col-sm-6"><hr></div></div>
-                <p><a href="#/checkout?step=Shipping">Checkout as guest</a></p>
+                <p><a href="/checkout?step=Shipping">Checkout as guest</a></p>
                 <p><a href="" onclick="$('#forgot').css('display','block'); $('#signin').css('display','none');">I forgot my password</a></p>
                 <p><a href="">I have a new email address</a></p>
               </div>
@@ -129,7 +129,7 @@
                 <div class="row"><div class="col-sm-6"><hr></div></div>
                 <p><a href="">Resend Email</a></p>
                 <p><a href="" onclick="$('#resetpass').css('display','block'); $('#thanks').css('display','none');">Reset password form (prototype only)</a></p>
-                <p><a href="#/cart">Back to cart</a></p>
+                <p><a href="/cart">Back to cart</a></p>
               </div>
             </div>
         </form>
@@ -612,7 +612,7 @@
                     <small>EXP:</small>
                     {{orderObject.creditCard.expMonth}}/{{substr(orderObject.creditCard.expYear,2,2)}}
                   </p>
-                  <a ng-href="#/checkout?step=Payment" class="btn pull-right card-use-btn"><i class="fa fa-pencil-square-o"></i> Change Card</a>
+                  <a ng-href="/checkout?step=Payment" class="btn pull-right card-use-btn"><i class="fa fa-pencil-square-o"></i> Change Card</a>
                 </div>              
               </div><!-- /card -->
 
@@ -624,7 +624,7 @@
                 <span class="phone-number">{{orderObject.shipping.phone}}</span>
                 <span>Speed: {{shippingSpeed}}</span>
                 <div class="address-actions">
-                  <a ng-href="#/checkout?step=Shipping"><i class="fa fa-pencil-square-o"></i> Change Address</a>
+                  <a ng-href="/checkout?step=Shipping"><i class="fa fa-pencil-square-o"></i> Change Address</a>
                 </div>
               </div><!-- /address -->
 
@@ -635,7 +635,7 @@
                 <span class="address-region">{{orderObject.billing.city}}, {{orderObject.billing.state}} {{orderObject.billing.zip}}</span>
                 <span class="phone-number">{{orderObject.billing.phone}}</span>
                 <div class="address-actions">
-                  <a ng-href="#/checkout?step=Payment"><i class="fa fa-pencil-square-o"></i> Change Address</a>
+                  <a ng-href="/checkout?step=Payment"><i class="fa fa-pencil-square-o"></i> Change Address</a>
                 </div>
               </div><!-- /address -->           
               
@@ -647,7 +647,7 @@
                 <span class="address-region">{{orderObject.shipping.city}}, {{orderObject.shipping.state}} {{orderObject.shipping.zip}}</span>
                 <span class="phone-number">{{orderObject.shipping.phone}}</span>
                 <div class="address-actions">
-                  <a ng-href="#/checkout?step=Payment"><i class="fa fa-pencil-square-o"></i> Change Address</a>
+                  <a ng-href="/checkout?step=Payment"><i class="fa fa-pencil-square-o"></i> Change Address</a>
                 </div>
               </div><!-- /address -->
 
@@ -661,7 +661,7 @@
 
 
             <form class="form order-details" role="form" name="confirmForm">
-              <a ng-href="#/cart" class="pull-right" style="margin-top:10px"><i class="fa fa-pencil-square-o"></i> make changes</a>
+              <a ng-href="/cart" class="pull-right" style="margin-top:10px"><i class="fa fa-pencil-square-o"></i> make changes</a>
               <h2 class="">Order Details</h2>
               <div class="form-group">
                 <table class="table">

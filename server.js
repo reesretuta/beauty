@@ -304,7 +304,8 @@ app.use('/i18n', express.static(basepath + '/i18n'));
 //app.use('/api', express.static(__dirname + '/api')); // old used for serving static XML files
 app.use('/api', router);
 
-app.get('*', function(req, res) {
+//any URL without a dot or / should serve index.html, save for /api methods captured above
+app.get('/([^\.]+)?$', function(req, res){
     res.sendfile(basepath + '/index.html'); // load the single view file (angular will handle the page changes on the front-end)
 });
 
