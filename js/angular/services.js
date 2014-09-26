@@ -64,77 +64,240 @@ angular.module('app.services', ['ngResource'])
 
         return searchService;
     })
-    .factory('Session', function(Checkout, $rootScope, $log) {
+    .factory('Session', function($rootScope, $resource, $log, $http, API_URL, $q) {
         var sessionService = {};
 
-        function getSession() {
+        // load the session
+        var initialized = $q.defer();
+
+        function setLocalSession(session) {
+            $rootScope.session = session;
+        }
+
+        function getLocalSession() {
             if ($rootScope.session == null) {
                 $rootScope.session = {
-                    'language': 'en_US'
+                    language: 'en_US',
+                    cart: [],
+                    checkout: {}
                 };
             }
-            var session = $rootScope.session;
-            return session;
-        }
-        getSession();
 
-        sessionService.getSession = function() {
-            return getSession();
+            return $rootScope.session;
+        }
+
+        function deleteLocalSession() {
+            if ($rootScope.session != null) {
+                delete $rootScope.session;
+            }
+        }
+
+        sessionService.getLocalSession = getLocalSession;
+
+        // used for initialization
+        function getInternal() {
+            $log.debug("sessionService(): getInternal()");
+
+            var d = $q.defer();
+
+            $http.get(API_URL + '/session', {}).success(function(session, status, headers, config) {
+                $log.debug("sessionService(): getInternal(): loaded session", session);
+                setLocalSession(session);
+                d.resolve(session);
+            }).error(function(data, status, headers, config) {
+                $log.error(data, status, headers, config);
+                d.reject(data);
+            });
+
+            return d.promise;
+        }
+
+        // waits for initialization before resolving promises
+        sessionService.get = function() {
+            $log.debug("sessionService(): get()");
+            var d = $q.defer();
+            initialized.promise.then(function() {
+                getInternal().then(function(session) {
+                    $log.debug("sessionService(): get(): returning session", session);
+                    d.resolve(session);
+                }, function(err) {
+                    // initialize anyways, else we are stuck
+                    $log.error("sessionService(): get(): error, failed to get session", err);
+                    d.reject({});
+                });
+            });
+            return d.promise;
+        }
+
+        // INITIALIZATION
+        function initialize() {
+            $log.debug("sessionService(): initialize()");
+
+            getInternal().then(function(session) {
+                $log.debug("sessionService(): initialize(): initialized session");
+                initialized.resolve(session);
+            }, function(err) {
+                // initialize anyways, else we are stuck
+                $log.error("sessionService(): initialize(): error initializing session", err);
+                initialized.resolve({});
+            });
+        }
+        initialize();
+
+        sessionService.waitForInitialization = function() {
+            var d = $q.defer();
+
+            // once we're initialized
+            initialized.promise.then(function(session) {
+                d.resolve(session);
+            }, function(err) {
+                $log.error("sessionService(): save(): initialization failed");
+                d.reject(err);
+            });
+
+            return d.promise;
+        }
+
+        sessionService.save = function() {
+            var session = getLocalSession();
+            $log.debug("sessionService(): save(): request save", session);
+            var d = $q.defer();
+
+            // once we're initialized
+            initialized.promise.then(function() {
+                var session = getLocalSession();
+                $log.debug("sessionService(): save(): saving session", session);
+
+                $http.put(API_URL + '/session', session, {}).success(function(data, status, headers, config) {
+                    $log.debug("sessionService(): save(): saved", session);
+                    //success(session, status, headers);
+                    d.resolve(session);
+                }).error(function(data, status, headers, config) {
+                    //failure(data, status, headers, config);
+                    $log.error("sessionService(): save(): failed", data, status);
+                    d.reject(data);
+                });
+            }, function(err) {
+                $log.error("sessionService(): save(): initialization failed", err);
+            });
+
+            return d.promise;
+        }
+
+        sessionService.createClient = function(email, password, phone, dob) {
+            var d = $q.defer();
+
+            initialized.promise.then(function(session) {
+                $log.debug("Session(): createClient(): attempting to create user username=", email, "password=", password);
+
+                //$log.debug("Session(): login(): attempting to login with username=", username, "password=", password);
+                var session = $http.post(API_URL + '/clients', {username: email, password: password}, {}).success(function(data, status, headers, config) {
+                    $log.debug("sessionService(): createClient()", data.clientId);
+
+                    sessionService.get().then(function(session) {
+                        $log.debug("sessionService(): createClient(): loaded session");
+                        d.resolve(session);
+                    }, function(err) {
+                        $log.error("sessionService(): createClient(): error loading session", err);
+                        d.reject(err);
+                    });
+                }).error(function(data, status, headers, config) {
+                    //failure(data, status, headers, config);
+                    $log.error("sessionService(): createClient(): error creating client", err);
+                    $log.error(data, status, headers, config);
+                    d.reject(data);
+                });
+            });
+
+            return d.promise;
         }
 
         sessionService.login = function(username, password) {
-            //$log.debug("Session(): login(): attempting to login with username=", username, "password=", password);
-            if (username == 'joe@blog.com' && password == 'password') {
-                // always assume yes for now
-                var session = getSession();
-                session.authenticated = true;
-                session.user = {
-                    'email': username
-                };
-                return true;
-            } else {
-                return false;
-            }
-        }
-        
-        sessionService.createUser = function(username) {
-            var session = getSession();
-            session.authenticated = true;
-            session.user = {
-                'email': username
-            };
-            return true;
+            $rootScope.loginError = '';
+            var d = $q.defer();
+
+            initialized.promise.then(function(session) {
+                //$log.debug("Session(): login(): attempting to login with username=", username, "password=", password);
+                var session = $http.post(API_URL + '/authenticate', {username: username, password: password}, {}).success(function(session, status, headers, config) {
+                    $log.debug("sessionService(): login()", session, status);
+                    // update the session
+                    setLocalSession(session);
+                    //success(session, status, headers);
+                    d.resolve(session);
+                }).error(function(data, status, headers, config) {
+                    //failure(data, status, headers, config);
+                    $log.error("sessionService(): login(): error", data, status);
+                    d.reject(data);
+                    $rootScope.loginError = data.message;
+                });
+            });
+
+            return d.promise;
         }
 
+        // pull from locally cached session
         sessionService.getLanguage = function() {
-            var session = getSession();
-            if (session.language == null) {
-                session.language = 'en_US';
-            }
+            var session = getLocalSession();
             return session.language;
         }
 
         sessionService.setLanguage = function(language) {
-            var session = getSession();
+            var session = getLocalSession();
             session.language = language;
+
+            initialized.promise.then(function() {
+                sessionService.save().then(function() {
+                    $log.debug("sessionService(): save(): saved session");
+                }, function() {
+                    $log.error("sessionService(): save(): failed to save session");
+                });
+            });
         }
 
         sessionService.isLoggedIn = function() {
-            var session = getSession();
+            var session = getLocalSession();
+            if (session.client && session.client.id) {
+                return true;
+            }
             //$log.debug("Session(): isLoggedIn(): ", session.authenticated);
-            return session.authenticated;
+            return false;
         }
 
-        sessionService.getUser = function() {
-            var session = getSession();
+        sessionService.getClient = function() {
+            var session = getLocalSession();
             //$log.debug("Session(): getUser(): ", session.user);
-            return session.user;
+            return session.client;
         }
+
+        sessionService.getUser = sessionService.getClient;
 
         sessionService.logout = function() {
-            var session = getSession();
-            session.authenticated = false;
-            Checkout.clear();
+            var d = $q.defer();
+
+            initialized.promise.then(function() {
+                $log.debug("sessionService(): logout(): attempting to logout");
+                $http.post(API_URL + '/logout', {}, {}).success(function(data, status, headers, config) {
+                    $log.debug("sessionService(): logout()");
+
+                    var sess = getLocalSession();
+                    deleteLocalSession();
+
+                    // copy over cart
+                    var newSess = getLocalSession();
+                    newSess.cart = sess.cart;
+
+                    sessionService.save().then(function(session) {
+                        d.resolve(session);
+                    });
+                    //success({}, status, headers);
+                }).error(function(data, status, headers, config) {
+                    //failure(data, status, headers, config);
+                    $log.error(data, status, headers, config);
+                    d.reject(data);
+                });
+            });
+
+            return d.promise;
         }
 
         return sessionService;
@@ -147,290 +310,354 @@ angular.module('app.services', ['ngResource'])
             }
         };
     })
-    .factory('Checkout', function ($rootScope, $log) {
+    .factory('Checkout', function ($rootScope, $log, $q, Session) {
         var checkoutService = {};
 
-        function getCheckout() {
-            if ($rootScope.checkout == null) {
-                $rootScope.checkout = {};
-            }
-            var checkout = $rootScope.checkout;
-            return checkout;
-        }
-        getCheckout();
-
-        checkoutService.getCheckout = function() {
-            return getCheckout();
+        checkoutService.getLocalCheckout = function() {
+            var session = Session.getLocalSession();
+            return session.checkout;
         };
 
+        checkoutService.getCheckout = function() {
+            var d = $q.defer();
+
+            Session.get().then(function(session) {
+                d.resolve(session.checkout);
+            }, function(error) {
+                d.reject(error);
+            });
+
+            return d.promise;
+        }
+
         checkoutService.setCheckout = function(checkout) {
-            $rootScope.checkout = checkout;
+            var d = $q.defer();
+
+            var session = Session.getLocalSession();
+            session.checkout = checkout;
+
+            Session.save().then(function() {
+                $log.debug("checkoutService(): setCheckout(): saved checkout to session");
+                d.resolve(checkout);
+            }, function(error) {
+                $log.error("checkoutService(): setCheckout(): failed to save checkout to session");
+                d.resolve(error);
+            });
+
+            return d.promise;
         };
 
         checkoutService.clear = function() {
-            $rootScope.checkout = {};
+            var d = $q.defer();
+
+            Session.get().then(function(session) {
+                $log.debug("checkoutService(): clear(): got session", session);
+                session.checkout = {};
+
+                Session.save().then(function(session) {
+                    $log.debug("checkoutService(): clear(): cleared checkout from session", session.checkout);
+                    d.resolve(session.checkout);
+                }, function(error) {
+                    $log.error("checkoutService(): clear(): failed to clear checkout from session");
+                    d.reject(error);
+                });
+            }, function(error) {
+                $log.error("checkoutService(): clear(): failed to get session for cart clearing");
+            });
+
+            return d.promise;
         }
 
         return checkoutService;
     })
-    .factory('Cart', function ($rootScope, $log, $timeout, growlNotifications) {
+    .factory('Cart', function ($rootScope, $log, $timeout, $q, Session, Products, growlNotifications) {
         var cartService = {};
 
-        function getCart() {
-            if ($rootScope.cart == null) {
-                $rootScope.cart = {};
-            }
-            var cart = $rootScope.cart;
-            if (cart.items == null) {
-                cart.items = new Array();
-            }
-            return cart;
+        function getLocalSessionCart() {
+            var session = Session.getLocalSession();
+            //$log.debug('cartService(): local session cart', session.cart);
+            return session.cart;
         }
-        getCart();
+
+        function clearLocalSessionCart() {
+            var session = Session.getLocalSession();
+            session.cart = [];
+        }
 
         cartService.getItemCount = function() {
-            var cart = getCart();
+            var cart = getLocalSessionCart();
             var count = 0;
-            angular.forEach(cart.items, function(product) {
-                count += parseInt(product.quantity);
+            angular.forEach(cart, function(cartItem) {
+                count += parseInt(cartItem.quantity);
             });
-            
+
             //$log.debug("getItemCount()");
             return count;
         };
 
         cartService.getItems = function() {
-            var cart = getCart();
-            return cart.items;
+            var d = $q.defer();
+
+            Session.get().then(function(session) {
+                $log.debug("cartService().getItems(): loaded session with cart", session.cart);
+                // load the project for the cart items
+                cartService.loadProducts(session.cart).then(function(items) {
+                    $log.debug("cartService().getItems(): loaded items from cart & populated products", items);
+                    d.resolve(items);
+                }, function(error) {
+                    $log.error("cartService().getItems(): failed to populated products", error);
+                    d.reject(error);
+                })
+            }, function(error) {
+                $log.error("cartService().getItems(): failed to get session to get cart items", error);
+                d.reject(error);
+            });
+
+            return d.promise;
         };
 
-        cartService.addToCart = function(p) {
+        cartService.addToCart = function(item) {
+            var d = $q.defer();
+
             $rootScope.adding = true;
 
-            var cart = getCart();
-            $log.debug("addToCart()", cart, p);
+            var cart = getLocalSessionCart();
+            $log.debug("cartService(): addToCart()", cart, item);
 
             // check the cart for matching items, so we can update instead of add
             var updated = false;
-            $.each(cart.items, function(index, product) {
-                //$log.debug("addToCart(): comparing products", p, product);
-                if (product.sku == p.sku && p.kitSelections == null && product.kitSelections == null) {
-                    //$log.debug("addToCart(): non-kit products are identical");
-                    var newQty = parseInt(p.quantity) + parseInt(product.quantity);
-                    product.quantity = newQty;
-                    $log.debug("addToCart(): added one more", p);
+            $.each(cart, function(index, cartItem) {
+                //$log.debug("cartService(): addToCart(): comparing products", p, product);
+                if (cartItem.sku == item.sku && item.kitSelections == null && cartItem.kitSelections == null) {
+                    //$log.debug("cartService(): addToCart(): non-kit products are identical");
+                    var newQty = parseInt(item.quantity) + parseInt(cartItem.quantity);
+                    cartItem.quantity = newQty;
+                    $log.debug("cartService(): addToCart(): added one more", item);
                     updated = true;
                     return true;
                 }
-// commenting out for now, this is the code that will group kits with identically configured kits
-//                else if (p.kitSelections != null && product.kitSelections != null) {
-//                    //$log.debug("addToCart(): determining if kit selections are identical");
-//                    // compare kit selections
-//                    //$log.debug("addToCart(): looping through this products kit selections", p.kitSelections);
-//                    $.each(p.kitSelections, function(kitsku, kitProduct) {
-//                        //$log.debug("addToCart(): looping through car products kit selections", product.kitSelections);
-//                        $.each(product.kitSelections, function(otherkitsku, otherKitProduct) {
-//                            //$log.debug("comparing kit", kitsku, product, "to", otherkitsku, otherKitProduct);
-//                            if (kitsku == otherkitsku && kitProduct.sku == otherKitProduct.sku) {
-//                                //$log.debug("matched");
-//                                var newQty = parseInt(p.quantity) + parseInt(product.quantity);
-//                                product.quantity = newQty;
-//                                $log.debug("addToCart(): added one more kit", p);
-//                                updated = true;
-//                                return true;
-//                            }
-//                        });
-//                    });
-//                }
             });
 
             if (!updated) {
                 // we haven't updated the cart, so this is a new item to add
-                $log.debug("addToCart(): adding new item", p);
-                cart.items.push(p);
+                $log.debug("cartService(): addToCart(): adding new item", item);
+                cart.push({
+                    name: item.name,
+                    sku: item.sku,
+                    kitSelections: item.kitSelections,
+                    quantity: item.quantity
+                });
             }
 
             // growlnotification when adding to cart
-            growlNotifications.add('<i class="fa fa-shopping-cart"></i> '+p.name+' <a href="/cart"><b>added to cart</b></a>', 'warning', 4000);
+            growlNotifications.add('<i class="fa fa-shopping-cart"></i> '+item.name+' <a href="/cart"><b>added to cart</b></a>', 'warning', 4000);
 
-            $timeout(function() {
-                $rootScope.adding = false;
-                // set class
-                $timeout(function() {
-                    // remove check
-                }, 2000);
-            }, 2000);
+            $log.debug("cartService(): addToCart(): saving cart to session", cart);
+
+            var startTime = new Date().getTime();
+
+            Session.save().then(function(session) {
+                $log.debug("cartService(): addToCart(): saved cart to session", session);
+                d.resolve(cart);
+
+                if (new Date().getTime() - startTime < 1500) {
+                    // wait until we've had 1500ms pass
+                    $timeout(function() {
+                        $rootScope.adding = false;
+                        // set class
+                        //$timeout(function() {
+                        //    // remove check
+                        //}, 2000);
+                    }, 1500 - (new Date().getTime() - startTime));
+                } else {
+                    // > 1500 ms has passed, clear
+                    $rootScope.adding = false;
+                }
+            }, function(error) {
+                $log.error("cartService(): addToCart(): failed to save cart to session");
+                d.reject(error);
+            });
+
+            return d.promise;
         };
 
-        cartService.removeFromCart = function(p) {
-            var cart = getCart();
-            angular.forEach(cart.items, function(product) {
-                if (product.sku ==p.sku) {
-                  var getIndex=cart.items.indexOf(product);
-                  cart.items.splice(getIndex,1);     
+        cartService.removeFromCart = function(item) {
+            var d = $q.defer();
+
+            var cart = getLocalSessionCart();
+            angular.forEach(cart, function(cartItem) {
+                if (cartItem.sku == item.sku) {
+                  var getIndex = cart.indexOf(cartItem);
+                  cart.splice(getIndex, 1);
                 }
-                
             });
-            
+
+            $log.debug("cartService(): removeFromCart(): cart now", cart);
+            $log.debug("cartService(): removeFromCart(): session now", Session.getLocalSession());
+
+            $log.debug("cartService(): removeFromCart(): saving cart to session");
+
+            Session.save().then(function() {
+                $log.debug("cartService(): removeFromCart(): saved cart to session");
+                d.resolve(cart);
+            }, function(error) {
+                $log.error("cartService(): removeFromCart(): failed to save cart to session");
+                d.reject(error);
+            });
+
+            return d.promise;
         };
 
         cartService.clear = function() {
-            var cart = getCart();
-            cart.items = new Array();
+            var d = $q.defer();
+
+            clearLocalSessionCart();
+            $log.debug("cartService(): clear(): session now", Session.getLocalSession());
+
+            Session.save().then(function(session) {
+                $log.debug("cartService(): clear(): saved cart to session", session.cart);
+                d.resolve(session.cart);
+            }, function(error) {
+                $log.error("cartService(): clear(): failed to save cart to session");
+                d.reject(error);
+            });
+
+            return d.promise;
+        };
+
+        cartService.loadProducts = function(items) {
+            var d = $q.defer();
+
+            if (items == null || items.length == 0) {
+                d.resolve([]);
+                return d.promise;
+            }
+            var productIds = [];
+            var itemMap = {};
+            $.each(items, function(index, item) {
+                productIds.push(item.sku);
+                itemMap[item.sku] = item;
+            });
+            $log.debug("cartService(): loadProducts(): loading products", productIds);
+
+            var p = Products.query({productIds: productIds}).$promise;
+            $log.debug("cartService(): loadProducts(): got promise", p);
+
+            p.then(function(products) {
+                $log.debug("cartService(): loadProducts(): loaded products", products);
+                // merge back in quantities / kitGroupSelections
+                $.each(products, function(index, product) {
+                    if (itemMap[product.sku]) {
+                        var item = itemMap[product.sku];
+                        item.product = product;
+                    }
+                });
+                d.resolve(items);
+            }, function(error) {
+                $log.debug("cartService(): loadProducts(): error loading products", error);
+                d.reject(error);
+            });
+
+            return d.promise;
         };
 
         return cartService;
     })
-    .factory('Products', function ($resource, $http, $log, Categories, API_URL) {
-        return $resource(API_URL + '/products/:productId', {productId: '@_id'});
+    .factory('Products', function ($resource, $http, $log, $q, Categories, API_URL) {
+        var productService = $resource(API_URL + '/products/:productId', {productId: '@_id'});
+        var origQuery = productService.query;
+        productService.query = function(params) {
+            $log.debug('productService(): query()', params);
+            var ret = origQuery(params);
+            $log.debug('productService(): query()', params, ret);
+            ret.$promise.then(function(val) {
+                $log.debug("DEBUG", val);
+            });
+            return ret;
+        }
+        return productService;
+    })
+    .factory('Clients', function ($resource, $http, $log, API_URL) {
+        return $resource(API_URL + '/clients/:clientId', {clientId: '@_id'});
+    })
+    .factory('Consultants', function ($resource, $http, $log, API_URL) {
+        return $resource(API_URL + '/consultants/:consultantId', {consultantId: '@_id'});
+    })
+    .factory('Clients', function ($resource, $http, $log, API_URL) {
+        return $resource(API_URL + '/clients/:clientId', {clientId: '@_id'});
+    })
+    .factory('Addresses', function ($resource, $http, $log, $q, Session, API_URL) {
+        var addressService = $resource(API_URL + '/clients/:clientId/addresses/:addressId', {addressId: '@_id'});
 
+        addressService.addAddress = function(address) {
+            $log.debug("Address(): addAddress(): saving", address);
+            var d = $q.defer();
 
-//        productsService.get = function(query, success, failure) {
-//            return $http.get('/api/products.xml').success(function(data, status, headers, config) {
-//                $log.debug("searching for product");
-//                //$log.debug(response.data);
-//                $log.debug("query", query);
-//
-//                var products = $.xml2json(data, {"normalize": true});
-//                products = products.products;
-//                $log.debug("products", products.productdetail);
-//                if (query.productId != null) {
-//                    angular.forEach(products.productdetail, function(product) {
-//                        $log.debug("sku", product.sku, "productId", query.productId);
-//                        if (product.sku == query.productId) {
-//                            success(product, status, headers, config);
-//                            return product;
-//                        } else if (product.sku == query.productId) {
-//                            success(product, status, headers, config);
-//                            return product;
-//                        }
-//                    });
-//
-//                    // if we got here, we didn't find the product, 404
-//                    failure({}, 404, headers, config);
-//                } else {
-//                    failure({}, 404, headers, config);
-//                }
-//            }).error(function(data, status, headers, config) {
-//                failure(data, status, headers, config);
-//                $log.error(data, status, headers, config);
-//            });
-//        }
+            var session = Session.getLocalSession();
+            var clientId = session.client.id;
 
-//        function getAllProductInCategory(cat, categoryToProductMap) {
-//            var allProducts = new Array();
-//
-//            if (categoryToProductMap[cat.id]) {
-//                allProducts = allProducts.concat(categoryToProductMap[cat.id]);
-//            }
-//
-//            angular.forEach(cat.childcategory, function(childCat) {
-//                allProducts = allProducts.concat(getAllProductInCategory(childCat, categoryToProductMap));
-//            });
-//
-//            return allProducts;
-//        }
+            addressService.save({clientId: clientId}, address).$promise.then(function(response) {
+                var addressId = response.addressId;
+                address.id = addressId;
 
-//        productsService.query = function(query, success, failure) {
-//            return $http.get('/api/products.xml').success(function(data, status, headers, config) {
-//                //$log.debug(data);
-//                $log.debug("productsService(): query()", query);
-//
-//                var products = $.xml2json(data, {"normalize": true});
-//                products = products.products;
-//                $log.debug("productsService(): query(): products", products.productdetail);
-//                if (query.categoryId != null) {
-//                    $log.debug("productsService(): query(): fetching category in query", query.categoryId);
-//
-//                    Categories.get({'categoryId': query.categoryId, 'recurse': true}, function(queryCategory, status, headers, config) {
-//                        // got category
-//                        $log.debug("productsService(): query(): loaded category for product query", queryCategory);
-//
-//                        var categoryToProductMap = {};
-//                        angular.forEach(products.productdetail, function(product) {
-//                            $log.debug("productsService(): query(): processing product", product);
-//                            var categories = product.categories.category;
-//                            $log.debug("productsService(): query(): processing categories", Array.isArray(categories), categories);
-//                            // convert single category item into an array with that item
-//                            if (!(Array.isArray(categories))) {
-//                                var cat = categories;
-//                                categories = new Array();
-//                                categories.push(cat);
-//                                //$log.debug("productsService(): query(): converted to array", categories);
-//                            }
-//                            // run through each product and add it to the categories it belongs to
-//                            angular.forEach(categories, function(category) {
-//                                $log.debug("productsService(): query(): processing category", category);
-//                                if (categoryToProductMap[category.id] == null) {
-//                                    categoryToProductMap[category.id] = new Array();
-//                                }
-//                                categoryToProductMap[category.id].push(product);
-//                            });
-//                        });
-//
-//                        // run through the category tree to get the lineage for the specified category
-//                        // return the merged results for all products for all children categories as well
-//                        var allProducts = getAllProductInCategory(queryCategory, categoryToProductMap);
-//
-//                        $log.debug("productsService(): query(): categoryToProductMap", categoryToProductMap);
-//                        success(allProducts, status, headers, config);
-//                        return allProducts;
-//                    }, function(data, status, headers, config) {
-//                        // failure
-//                        $log.error("error looking up category");
-//                        failure(data, status, headers, config);
-//                    });
-//
-//                } else if (query.productIds != null) {
-//                    var returnedProducts = new Array();
-//                    $log.debug("productsService(): query(): productIds", query.productIds);
-//                    angular.forEach(query.productIds, function(productId) {
-//                        $log.debug("productsService(): query(): productId", productId);
-//                        $log.debug("productsService(): query(): products", products.productdetail);
-//                        var found = 0;
-//                        angular.forEach(products.productdetail, function(product) {
-//                            $log.debug("productsService(): query(): productId", productId, "sku", product.sku);
-//                            if (productId == product.sku) {
-//                                returnedProducts.push(product);
-//                                found = 1;
-//                            }
-//                        });
-//                        if (!found) {
-//                            failure({}, 404, headers, config);
-//                        }
-//                    });
-//                    $log.debug("productsService(): query(): got products by ids", returnedProducts);
-//                    success(returnedProducts, status, headers, config);
-//                    return returnedProducts;
-//                } else if (query.search != null) {
-//                    var returnedProducts = new Array();
-//                    $log.debug("productsService(): query(): search", query.search);
-//                    angular.forEach(products.productdetail, function(product) {
-//                        if (S(product.sku).toLowerCase().contains(S(query.search).toLowerCase()) || S(product.name).toLowerCase().contains(S(query.search).toLowerCase())) {
-//                            returnedProducts.push(product);
-//                        } else if (product.sku) {
-//                            angular.forEach(product.productskus.productdetail, function(p) {
-//                                if (S(p.sku).toLowerCase().contains(S(query.search).toLowerCase()) || S(p.name).toLowerCase().contains(S(query.search).toLowerCase())) {
-//                                    p.parent = product;
-//                                    returnedProducts.push(p);
-//                                }
-//                            });
-//                        }
-//                    });
-//                    $log.debug("productsService(): query(): got products by search", returnedProducts);
-//                    success(returnedProducts, status, headers, config);
-//                    return returnedProducts;
-//                } else {
-//                    success(products.productdetail, status, headers, config);
-//                    return products.productdetail;
-//                }
-//            }).error(function(data, status, headers, config) {
-//                failure(data, status, headers, config);
-//                $log.error(data, status, headers, config);
-//            });
-//        }
+                if (session.client.addresses == null) {
+                    session.client.addresses = [];
+                }
 
-//        return productsService;
+                session.client.addresses.push(address);
+                $log.debug("addressService(): addAddress(): adding address to client addresses", session.client.addresses);
+
+                // update the session with the address information
+                Session.save().then(function(session) {
+                    $log.debug("addressService(): addAddress(): saved address to session", session);
+                    d.resolve(address);
+                }, function() {
+                    $log.error("addressService(): addAddress(): failed to save address to session");
+                    d.reject('Failed to update address in session');
+                });
+            }, function(error) {
+                d.reject('Failed to save address');
+            });
+
+            return d.promise;
+        }
+        return addressService;
+    })
+    .factory('CreditCards', function ($resource, $http, $log, $q, Session, API_URL) {
+        var creditCardService = $resource(API_URL + '/clients/:clientId/creditCards/:creditCardId', {creditCardId: '@_id'});
+
+        creditCardService.addCreditCard = function(creditCard) {
+            $log.debug("addressService(): addCreditCard()");
+            var d = $q.defer();
+
+            var session = Session.getLocalSession();
+            var clientId = session.client.id;
+
+            creditCardService.save({clientId: clientId}, creditCard).$promise.then(function(data) {
+                if (session.checkout.creditCards == null) {
+                    session.checkout.creditCards = [];
+                }
+
+                creditCard.id = data.creditCardId;
+                session.client.creditCards.push(creditCard);
+                $log.debug("addressService(): addCreditCard(): adding address to client credit cards", session.client.creditCards);
+
+                // update the session with the creditCard information
+                Session.save().then(function(session) {
+                    $log.debug("creditCardService(): addCreditCard(): saved creditCard to session", session);
+                    d.resolve(creditCard);
+                }, function() {
+                    $log.error("creditCardService(): addCreditCard(): failed to save creditCard to session");
+                    d.reject('Failed to update creditCard in session');
+                });
+            }, function(error) {
+                d.reject('Failed to save creditCard');
+            });
+
+            return d.promise;
+        }
+
+        return creditCardService;
     })
     .factory('Categories', function ($resource, $http, $log, API_URL) {
         var categoriesService = {};
@@ -663,6 +890,39 @@ angular.module('app.services', ['ngResource'])
             $log.debug("recently viewed is now", $rootScope.recentlyViewed);
         };
         return productService;
+    })
+    .factory('OrderHelper', function ($rootScope, $log, growlNotifications) {
+      var orderHelper = {};
+
+      // get the total for a list of products
+      orderHelper.getTotal = function(items) {
+        var total = 0;
+        angular.forEach(items, function(item) {
+          //$log.debug("calculating price for item", item);
+          if (!(Array.isArray(item.product.prices)) || item.product.prices.length == 1) {
+            total += item.quantity * item.product.prices[0].price;
+          } else if (item.product.prices.length == 0) {
+            // there is a problem, we don't have prices
+            $log.error("there are no prices listed for this item", item);
+          } else {
+            var priceFound = 0;
+            angular.forEach(item.product.prices, function(price) {
+              if (price.type==2) {
+                priceFound = 1;
+                total += item.quantity * price.price;
+              }
+            })
+            if (!priceFound) {
+              // use the first price in the list (FIXME - need to check dates))
+              total += item.quantity * item.product.prices[0].price;
+            }
+          }
+        })
+
+        return total;
+      }
+
+      return orderHelper;
     })
     .constant('BASE_URL', '')
     .constant('API_URL', '/api');

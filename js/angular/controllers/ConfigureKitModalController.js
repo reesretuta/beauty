@@ -1,35 +1,35 @@
 angular.module('app.controllers.products')
-    .controller('ConfigureKitModalController', function ($sce, $timeout, $document, HashKeyCopier, Cart, Categories, Products, $modalInstance, $q, $scope, $rootScope, $routeParams, $location, $timeout, $window, $log, quantity, product, inCart, whizFunc) {
+    .controller('ConfigureKitModalController', function ($sce, $timeout, $document, HashKeyCopier, Cart, Categories, Products, $modalInstance, $q, $scope, $rootScope, $routeParams, $location, $timeout, $window, $log, item, inCart, whizFunc) {
         $log.debug("ConfigureKitModalController");
 
-        $log.debug("the funk", whizFunc);
+        $log.debug("ConfigureKitModalController(): the funk", whizFunc);
         whizFunc();
 
-        $scope.product = product;
-        if (!inCart) {
-            $scope.product = angular.copy(product);
-        }
-        $scope.product.quantity = quantity;
+        $scope.item = angular.copy(item);
+
         $scope.products = [];
 
-        $log.debug("configuring product", $scope.product);
+        $log.debug("ConfigureKitModalController(): configuring product", $scope.product);
 
         $scope.productIdToProduct = {};
-        if ($scope.product.kitSelections == null) {
-            $scope.product.kitSelections = {};
+        if ($scope.item.kitSelections == null) {
+            $scope.item.kitSelections = {};
         }
 
         $scope.selectProduct = function(kitId, productId) {
-            $log.debug("selected product", productId, "for kit", kitId);
-            $scope.product.kitSelections[kitId] = $scope.productIdToProduct[productId];
-            $scope.kitGroupSelected = kitId;
+            $log.debug("ConfigureKitModalController(): selected product", productId, "for kit", kitId);
+            $scope.item.kitSelections[kitId] = {
+                sku: productId,
+                name: $scope.productIdToProduct[productId].name
+            };
+            $scope.item.kitGroupSelected = kitId;
 
             $timeout(function() {
                 // scroll the header into view
-                var el = $document[0].querySelector("#kitGroupNav"+kitId);
-                if (el) {
-                    el.scrollIntoView(true);
-                }
+                //var el = $document[0].querySelector("#kitGroupNav"+kitId);
+                //if (el) {
+                //    el.scrollIntoView(true);
+                //}
             }, 0);
         }
 
@@ -44,7 +44,7 @@ angular.module('app.controllers.products')
         $scope.kitGroupClicked = function(kitGroup) {
             $scope.kitGroupSelected = kitGroup.id;
 
-            $log.debug("selected kit group", kitGroup);
+            $log.debug("ConfigureKitModalController(): selected kit group", kitGroup);
 
             // scroll the header into view
             var el = $document[0].querySelector("#kitGroup"+kitGroup.id);
@@ -54,18 +54,21 @@ angular.module('app.controllers.products')
         }
 
         var kitgroups = new Array();
-        if (Array.isArray(product.kitGroups)) {
-            kitgroups = product.kitGroups;
+        if (Array.isArray(item.product.kitGroups)) {
+            kitgroups = item.product.kitGroups;
         } else {
-            kitgroups.push(product.kitGroups);
+            kitgroups.push(item.product.kitGroups);
         }
 
         $log.debug('ConfigureKitModalController(): kitgroups', kitgroups);
 
         $scope.isKitSelectionComplete = function() {
             var complete = true;
+            if ($scope.item.kitSelections == null) {
+                return false;
+            }
             $.each(kitgroups, function(index, kitgroup) {
-                if ($scope.product.kitSelections[kitgroup.kitGroup.id] == null) {
+                if ($scope.item.kitSelections[kitgroup.kitGroup.id] == null) {
                     complete = false;
                     return;
                 }
@@ -80,13 +83,13 @@ angular.module('app.controllers.products')
             });
         });
 
-        kitGroupSelected = kitgroups[0];
+        $scope.kitGroupSelected = kitgroups[0];
 
         // load products
 
         var loadProducts = function (productIds) {
             //var start = new Date().getTime();
-            $log.debug("loading products", productIds);
+            $log.debug("ConfigureKitModalController(): loading products", productIds);
             Products.query({"productIds": productIds}, function(products, responseHeaders) {
                 $log.debug("ConfigureKitModalController: got products", products);
                 // We do this here to eliminate the flickering.  When Products.query returns initially,
@@ -95,10 +98,10 @@ angular.module('app.controllers.products')
                 if ($scope.products) {
                     // update the objects, not just replace, else we'll yoink the whole DOM
                     $scope.products = HashKeyCopier.copyHashKeys($scope.products, products, ["id"])
-                    //$log.debug("ProductsController: updating objects", $scope.objects);
+                    //$log.debug("ConfigureKitModalController(): ProductsController: updating objects", $scope.objects);
                 } else {
                     $scope.products = products;
-                    //$log.debug("ProductsController: initializing objects");
+                    //$log.debug("ConfigureKitModalController(): ProductsController: initializing objects");
                 }
 
                 angular.forEach(products, function(product) {
@@ -124,34 +127,33 @@ angular.module('app.controllers.products')
         /*==== DIALOG CONTROLS ====*/
 
         $scope.close = function () {
-            $log.debug("canceling saving kit");
+            $log.debug("ConfigureKitModalController(): canceling saving kit");
             $modalInstance.close();
         };
 
 
         $scope.save = function () {
-            $log.debug("saving configured product kit");
+            $log.debug("ConfigureKitModalController(): saving configured product kit");
 
             //$.each(kitgroups, function(index, kitgroup) {
-            //    var productId = $scope.product.kitSelections[kitgroup.id];
-            //    $scope.product.kitSelections[kitgroup.id] = angular.copy($scope.productIdToProduct[productId]);
-            //    $log.debug("kit group", kitgroup.id, "selected product", $scope.productIdToProduct[productId]);
+            //    var productId = $scope.kitSelections[kitgroup.id];
+            //    $scope.kitSelections[kitgroup.id] = angular.copy($scope.productIdToProduct[productId]);
+            //    $log.debug("ConfigureKitModalController(): kit group", kitgroup.id, "selected product", $scope.productIdToProduct[productId]);
             //});
 
             if (!inCart) {
-                var qty = $scope.product.quantity;
-                for (var i=0; i < qty; i++) {
-                    var product = angular.copy($scope.product);
-                    product.quantity = 1;
-                    Cart.addToCart(product);
-                    $log.debug("added product to cat");
-                }
+                $modalInstance.close($scope.item);
+                $log.debug("ConfigureKitModalController(): save new cart item", $scope.item);
+            } else {
+                // just replace the kit selections
+                item.kitSelections = $scope.item.kitSelections;
+                $log.debug("ConfigureKitModalController(): replacing existing kit selections", item);
+                $modalInstance.close();
             }
-            $modalInstance.close();
         };
 
         function cleanup() {
-            $log.debug("cleaning up");
+            $log.debug("ConfigureKitModalController(): cleaning up");
             var body = $document.find('html, body');
             body.css("overflow-y", "auto");
         }

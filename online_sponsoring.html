@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>Join JAFRA</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" type="text/css" href="/lib/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/lib/bootstrap/dist/css/bootstrap-theme.min.css">
+
+    <link rel="stylesheet" href="/lib/angular-wizard/dist/angular-wizard.css">
+
+    <!-- Google Font News Cycle (Similar to News Gothic) -->
+    <link href="http://fonts.googleapis.com/css?family=News+Cycle:400,700" rel="stylesheet">
+
+    <!-- Font Awesome Icon Font -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Ionicons - Ionic Framework Icon Font -->
+    <link href="//code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css" rel="stylesheet">
+
+    <!-- Country Flags from flag-sprites.com -->
+    <link rel="stylesheet" type="text/css"  href="/styles/online_sponsoring/flags.css" rel="stylesheet">
+
+    <!-- 3d Corner Ribbons -->
+    <link rel="stylesheet" type="text/css"  href="/styles/online_sponsoring/3d-corner-ribbons.css" rel="stylesheet">
+
+    <!-- Client Direct ecomm styles -->
+    <link rel="stylesheet" type="text/css"  href="/styles/online_sponsoring/main-store-styles.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" type="text/css"  href="/styles/online_sponsoring/style.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Prevent flickering by including angular here and ensure jquery is loaded beforehand to prevent memory leaks-->
+    <script src="/lib/jquery/dist/jquery.min.js"></script>
+    <script src="/lib/jquery-migrate/jquery-migrate.min.js"></script>
+    <script src="/lib/jquery-ui/ui/jquery-ui.js"></script>
+    <script src="/lib/angular/angular.js"></script>
+    <script src="/lib/purl/purl.js"></script>
+  </head>
+
+  <body data-spy="scroll" data-target=".navbar-sections">
+    <div id="pagenav" class="navbar navbar-default navbar-static-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" id="logo" href="index.html"><img src="/img/logo.png" alt="logo" /></a>
+        </div>
+        <div class="navbar-collapse collapse navbar-sections">
+
+          <ul class="nav navbar-nav navbar-right navbar-language" style="margin-left: 40px;">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="http://static.flag-sprites.com/i/blank.gif" class="flag flag-us" alt="US English" /> US English <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#">US English</a></li>
+                <li><a href="#">US Spanish</a></li>
+              </ul>
+            </li>
+          </ul>
+
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#why_jafra">Why JAFRA?</a></li>
+            <li><a href="#starter_packages">Starter Packages</a></li>
+            <li><a href="#FAQs">FAQs</a></li>
+            <li><a href="" data-toggle="modal" data-target=".bs-example-modal-lg"><span class="label label-success">Join Now!</span></a></li>
+          </ul>
+
+        </div><!--/.navbar-collapse -->
+      </div>
+    </div>
+
+    <div id="content">
+
+      <div ng-view class="ngview" autoscroll="true"></div>
+
+      <hr>
+
+      <div class="container">
+        <footer>
+          <div class="pull-right footer-logos">
+            <a href="" class="jafra-logo"><span class="sr-only">Jafra Usa</span></a>
+            <a href="" class="vorwerk-logo"><span class="sr-only">Vorwerk</span></a>
+            <a href="" class="dsa-logo"><span class="sr-only">DSA</span></a>
+          </div>
+
+          <div class="legalcopy">
+            <p>
+              <a href="" class="btn btn-link">Terms</a>
+              |
+              <a href="" class="btn btn-link">Privacy</a>
+            </p>
+            <p>© 2014 - JAFRA Cosmetics International - All Rights Reserved</p>
+          </div>
+        </footer>
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="/lib/jquery-resize/jquery.ba-resize.min.js"></script>
+
+    <script src="/lib/angular-bindonce/bindonce.js"></script>
+    <script src="/lib/momentjs/moment.js"></script>
+    <script src="/lib/angular-route/angular-route.min.js"></script>
+    <script src="/lib/angular-animate/angular-animate.js"></script>
+    <script src="/lib/angular-sanitize/angular-sanitize.min.js"></script>
+    <script src="/lib/angular-resource/angular-resource.min.js"></script>
+    <script src="/lib/angular-cookies/angular-cookies.min.js"></script>
+    <script src="/lib/angular-cache/dist/angular-cache.min.js"></script>
+    <script src="/lib/angular-animate/angular-animate.min.js"></script>
+    <script src="/lib/angular-growl-notifications/dist/growl-notifications.js"></script>
+    <script src="/lib/angular-translate/angular-translate.js"></script>
+    <script src="/lib/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
+
+    <!-- angular wizard -->
+    <script src="/js/angular/modules/lodash.js"></script>
+    <script src="/lib/angular-wizard/dist/angular-wizard.js"></script>
+
+    <script src="/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/lib/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <script src="/lib/allmighty-autocomplete/script/autocomplete.js"></script>
+
+    <script src="/lib/angular-ui-utils/modules/mask/mask.js"></script>
+    <script src="/lib/angular-ui-utils/modules/keypress/keypress.js"></script>
+    <script src="/lib/angular-ui-utils/modules/jq/jq.js"></script>
+    <script src="/lib/angular-ui-utils/modules/event/event.js"></script>
+    <script src="/lib/HashKeyCopier/lib/hash-key-copier.js"></script>
+    <script src="/lib/string.js/lib/string.min.js"></script>
+    <script src="/lib/ladda-bootstrap/dist/spin.min.js"></script>
+    <script src="/lib/ladda-bootstrap/dist/ladda.min.js"></script>
+    <script src="/lib/jquery-xml2json/src/xml2json.js"></script>
+
+    <script src="/js/util.js"></script>
+
+    <script src="/js/angular/modules/ladda.js"></script>
+
+    <script src="/js/angular/controllers/controllers.js"></script>
+    <script src="/js/angular/controllers/TopController.js"></script>
+    <script src="/js/angular/controllers/MainController.js"></script>
+    <script src="/js/angular/controllers/CategoriesController.js"></script>
+    <script src="/js/angular/controllers/HomeController.js"></script>
+    <script src="/js/angular/controllers/ObjectsController.js"></script>
+    <script src="/js/angular/controllers/ProductsController.js"></script>
+    <script src="/js/angular/controllers/ProductDetailsController.js"></script>
+    <script src="/js/angular/controllers/CartController.js"></script>
+    <script src="/js/angular/controllers/CheckoutController.js"></script>
+    <script src="/js/angular/controllers/RecentlyViewedController.js"></script>
+    <script src="/js/angular/controllers/ConfigureKitModalController.js"></script>
+    <script src="/js/angular/controllers/ZoomImageModalController.js"></script>
+    <script src="/js/angular/controllers/ShippingSpeedModalController.js"></script>
+
+    <!-- online sponsoring home controller -->
+    <script src="/js/angular/controllers/online_sponsoring/OnlineSponsorLandingController.js"></script>
+
+    <script src="/js/angular/services.js"></script>
+    <script src="/js/angular/filters.js"></script>
+    <script src="/js/angular/directives.js"></script>
+    <script src="/js/angular/app.js"></script>
+
+    <script>
+      $(function(){ 
+          $('#pagenav').affix({
+              offset: {
+                top: $('.jumbo-videobg').outerHeight()
+              , bottom: function () {
+                  return (this.bottom = $('footer').outerHeight(true))
+                }
+              }
+            });
+      });
+    </script>
+  </body>
+</html>

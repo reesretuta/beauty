@@ -25,9 +25,12 @@ angular.module('app.controllers.products')
                 qty = 1;
             }
             $log.debug("ProductDetailsController(): adding product", product, qty);
-            var p = angular.copy(product);
-            p.quantity = qty;
-            Cart.addToCart(p);
+            Cart.addToCart({
+                name: product.name,
+                sku: product.sku,
+                quantity: qty,
+                kitSelections: {}
+            });
         }
 
 
@@ -42,9 +45,12 @@ angular.module('app.controllers.products')
                         qty = 1;
                     }
 
-                    var p = angular.copy(item.product);
-                    p.quantity = qty;
-                    Cart.addToCart(p);
+                    Cart.addToCart({
+                        name: item.product.name,
+                        sku: item.product.sku,
+                        quantity: qty,
+                        kitSelections: {}
+                    });
                 }
             })
 
@@ -58,8 +64,19 @@ angular.module('app.controllers.products')
                 templateUrl: '/partials/products/configure-kit-modal.html',
                 controller: 'ConfigureKitModalController',
                 resolve: {
-                    product: function() {
-                        return $scope.product;
+                    item: function() {
+                        var qty = $scope.quantities[$scope.product.sku];
+                        if (qty == null) {
+                            qty = 1;
+                        }
+
+                        return {
+                            name: $scope.product.name,
+                            sku: $scope.product.sku,
+                            quantity: qty,
+                            kitSelections: {},
+                            product: $scope.product
+                        };
                     },
                     quantity: function() {
                         var qty = $scope.quantities[$scope.product.sku];
@@ -81,14 +98,20 @@ angular.module('app.controllers.products')
 
             var body = $document.find('html, body');
 
-            d.result.then(function(product) {
+            d.result.then(function(cartItem) {
                 $log.debug("configure kit dialog closed");
 
                 // re-enable scrolling on body
                 body.css("overflow-y", "auto");
 
-                if (product != null) {
-                    $log.debug("add kit to cart");
+                if (cartItem != null) {
+                    $log.debug("add kit to cart", cartItem);
+
+                    var n = cartItem.quantity;
+                    cartItem.quantity = 1;
+                    for (var i=0; i < n; i++) {
+                        Cart.addToCart(cartItem);
+                    }
                 }
             });
 

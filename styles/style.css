@@ -28,7 +28,6 @@
 html {
   -webkit-font-smoothing: antialiased;
 }
-
 h1, .h1, h2, h3, h4, h5, h6,
 .btn, .label, .badge, .store-checkout .control-label, .steps-indicator {
   font-family: "News Cycle", sans-serif;
@@ -120,8 +119,31 @@ h2 {
   text-transform: uppercase;
   font-weight: bold;
 }
-.login-info a {
+.navbar-right {
   margin-right: 20px;
+}
+.login-dropdown .dropdown-menu {
+    min-width: 200px;
+}
+.login-dropdown ul {
+  padding: 10px;
+    text-align: right;
+}
+.login-dropdown ul li {
+  padding-bottom: 5px;
+}
+.login-dropdown button {
+  padding: 3px 10px 4px 10px;
+}
+.login-dropdown input {
+    width: 100%;
+    color: #000;
+}
+.login-dropdown .login-error {
+    font-family: sans-serif;
+    font-size: 12px;
+    text-transform: none;
+    color: #f00000;
 }
 .navbar-brand {
   height: 95px;
@@ -574,6 +596,9 @@ a, .btn {
 }
 .checkout-address .address-actions {
   padding: 15px 0;
+}
+.shippingSpeedModal.modal {
+    overflow: hidden;
 }
 .store-heading-description {
   display: block;

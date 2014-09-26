@@ -1,0 +1,175 @@
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">[Logo]</a>
+    </div>
+    <div class="navbar-collapse collapse navbar-sections">
+
+      <ul class="nav navbar-nav navbar-right navbar-language" style="margin-left: 40px;">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="http://static.flag-sprites.com/i/blank.gif" class="flag flag-us" alt="US English" /> US English <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">US English</a></li>
+            <li><a href="#">US Spanish</a></li>
+          </ul>
+        </li>
+      </ul>
+
+      <!-- <ul class="nav navbar-nav navbar-right">
+        <li><a href="#why_jafra">Why JAFRA?</a></li>
+        <li><a href="#starter_packages">Starter Packages</a></li>
+        <li><a href="#FAQs">FAQs</a></li>
+        <li><button type="button" class="btn btn-inverse navbar-btn" href="#starter_packages">Join Now</button></li>
+      </ul> -->
+
+    </div><!--/.navbar-collapse -->
+  </div>
+</div>
+
+
+<div class="container">
+
+  <!-- Features & Highlights -->
+  <section id="wizard">
+
+    <div class="row" style="position:relative; height: 50px;">
+      <ul class="steps-indicator steps-6" ng-if="!hideIndicators">
+        <!-- ngRepeat: step in steps --><li ng-class="{default: !step.completed &amp;&amp; !step.selected, current: step.selected &amp;&amp; !step.completed, done: step.completed &amp;&amp; !step.selected, editing: step.selected &amp;&amp; step.completed}" ng-repeat="step in steps" class="ng-scope current">
+          <a ng-click="goTo(step)" class="ng-binding">Sign In</a>
+        </li><!-- end ngRepeat: step in steps --><li ng-class="{default: !step.completed &amp;&amp; !step.selected, current: step.selected &amp;&amp; !step.completed, done: step.completed &amp;&amp; !step.selected, editing: step.selected &amp;&amp; step.completed}" ng-repeat="step in steps" class="ng-scope default">
+          <a ng-click="goTo(step)" class="ng-binding">Consultant Profile</a>
+        </li><!-- end ngRepeat: step in steps --><li ng-class="{default: !step.completed &amp;&amp; !step.selected, current: step.selected &amp;&amp; !step.completed, done: step.completed &amp;&amp; !step.selected, editing: step.selected &amp;&amp; step.completed}" ng-repeat="step in steps" class="ng-scope default">
+          <a ng-click="goTo(step)" class="ng-binding">Shipping</a>
+        </li><!-- end ngRepeat: step in steps --><li ng-class="{default: !step.completed &amp;&amp; !step.selected, current: step.selected &amp;&amp; !step.completed, done: step.completed &amp;&amp; !step.selected, editing: step.selected &amp;&amp; step.completed}" ng-repeat="step in steps" class="ng-scope default">
+          <a ng-click="goTo(step)" class="ng-binding">Payment Method</a>
+        </li><!-- end ngRepeat: step in steps --><li ng-class="{default: !step.completed &amp;&amp; !step.selected, current: step.selected &amp;&amp; !step.completed, done: step.completed &amp;&amp; !step.selected, editing: step.selected &amp;&amp; step.completed}" ng-repeat="step in steps" class="ng-scope default">
+          <a ng-click="goTo(step)" class="ng-binding">Review</a>
+        </li><!-- end ngRepeat: step in steps --><li ng-class="{default: !step.completed &amp;&amp; !step.selected, current: step.selected &amp;&amp; !step.completed, done: step.completed &amp;&amp; !step.selected, editing: step.selected &amp;&amp; step.completed}" ng-repeat="step in steps" class="ng-scope default">
+          <a ng-click="goTo(step)" class="ng-binding">Finish</a>
+        </li><!-- end ngRepeat: step in steps -->
+      </ul>
+    </div>
+
+    <div class="row">
+
+      <div id="signin" class="col-sm-12 ng-scope">
+        <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+        <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+        <div class="col-md-offset-3">
+          <h1 class="checkouth1">Sign In or Create an Account</h1>
+        </div>
+        <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+        <!--valid={{signInForm.$valid}}-->
+        <form name="signInForm" class="form-horizontal ng-pristine ng-invalid ng-invalid-required" role="form">
+
+            <div class="form-group">
+              <label for=" " class="col-md-3 control-label">Sign In</label>
+              <div class="col-sm-6">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal"><i class="fa fa-facebook"></i> &nbsp; &nbsp;Sign in with Facebook</button>
+                <div class="row sign-in-or-account"><div class="col-sm-12 text-center"><button class="btn btn-default btn-sm" disabled>OR</button><hr></div></div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="inputEmail3" class="col-md-3 control-label">Email Address</label>
+              <div class="col-sm-6">
+                <input name="loginEmail" ng-model="loginEmail" ng-change="checkoutUpdated()" type="email" class="form-control ng-pristine ng-invalid ng-invalid-required ng-valid-email" id="inputEmail3" placeholder="Email" tabindex="1" required="" autocomplete="off">
+                <!--valid={{signInForm.loginEmail.$valid}}-->
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="inputPassword3" class="col-md-3 control-label">Password</label>
+              <div class="col-sm-4">
+                <input name="loginPassword" ng-model="loginPassword" ng-change="checkoutUpdated()" type="password" class="form-control ng-pristine ng-invalid ng-invalid-required" id="inputPassword3" placeholder="Password" tabindex="2" required="" autocomplete="off">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-md-offset-3 col-sm-9">
+                <!-- <div class="radio">
+                  <label>
+                    <input name="customerStatus" ng-model="checkout.customerStatus" ng-change="checkoutUpdated()" type="radio" id="optionsRadios1" value="new" class="ng-pristine ng-valid" checked>
+                    I am a new customer
+                  </label>
+                </div>
+                <div class="radio">
+                  <label>
+                    <input name="customerStatus" ng-model="checkout.customerStatus" ng-change="checkoutUpdated()" type="radio" id="optionsRadios2" value="existing" class="ng-pristine ng-valid">
+                    I am an existing customer
+                  </label>
+                </div> -->
+
+                <!--customerStatus={{checkout.customerStatus}}-->
+
+
+                <!-- ngIf: loginError -->
+
+
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-md-offset-3 col-sm-9">
+                  <button type="submit" class="btn btn-default" tabindex="3" ng-click="loginOrCreateUser(loginEmail, loginPassword)" ng-disabled="!signInForm.$valid">Create Account &nbsp;<i class="fa fa-caret-right"></i></button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-md-offset-3 col-sm-9">
+                <div class="row"><div class="col-sm-8"><hr></div></div>
+                <div class="checkbox">
+                  <label>
+                    <input name="keepMeSignedIn" ng-model="checkout.keepMeSignedIn" ng-change="checkoutUpdated()" type="checkbox" checked="" class="ng-pristine ng-valid"> Keep me signed in &nbsp;&nbsp;
+                    <a popover="Placeholder text" popover-title="Keep me signed in" href="" class="ng-scope"><i class="fa fa-info-circle"></i> More Info</a>
+                  </label>
+                </div>
+                <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+                <!-- <p><a href="#/checkout?step=Shipping">Checkout as guest</a></p> -->
+                <p><a href="" onclick="$('#forgot').css('display','block'); $('#signin').css('display','none');">I forgot my password</a></p>
+                <p><a href="">I have a new email address</a></p>
+              </div>
+            </div>
+        </form>
+      </div>
+    </div>
+
+  </section>
+
+  <hr>
+
+  <footer>
+    <div class="pull-right footer-logos">
+        <a href="" class="jafra-logo"><span class="sr-only">Jafra Usa</span></a>
+        <a href="" class="vorwerk-logo"><span class="sr-only">Vorwerk</span></a>
+        <a href="" class="dsa-logo"><span class="sr-only">DSA</span></a>
+    </div>
+
+    <div class="legalcopy">
+      <p>
+        <a href="" class="btn btn-link">Terms</a>
+         |
+        <a href="" class="btn btn-link">Privacy</a>
+      </p>
+      <p>© 2014 - JAFRA Cosmetics International - All Rights Reserved</p>
+    </div>
+</footer>
+</div> <!-- /container -->
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <a href="profile.html"><img class="img-responsive" src="/img/fb_login_comp.png"></a>
+      </div>
+    </div>
+  </div>
+</div>

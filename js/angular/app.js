@@ -1,7 +1,7 @@
 'use strict';
 
 // Declare app level module which depends on filters, and services
-var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 'ngAnimate', 'ui.bootstrap', 'ui.keypress', 'ui.jq', 'app.filters', 'app.services', 'app.controllers', 'app.directives', 'pasvaz.bindonce', 'jmdobry.angular-cache', 'ui.ladda', 'autocomplete', 'ui.event', 'mgo-angular-wizard', 'pascalprecht.translate'])
+var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 'ngAnimate', 'ui.bootstrap', 'ui.mask', 'ui.keypress', 'ui.jq', 'app.filters', 'app.services', 'app.controllers', 'app.directives', 'pasvaz.bindonce', 'jmdobry.angular-cache', 'ui.ladda', 'autocomplete', 'ui.event', 'mgo-angular-wizard', 'pascalprecht.translate'])
     .config([ '$locationProvider', '$routeProvider', '$rootScopeProvider', '$angularCacheFactoryProvider', '$translateProvider', '$provide', 'BASE_URL', function ($locationProvider, $routeProvider, $rootScopeProvider, $angularCacheFactoryProvider, $translateProvider, $provide, BASE_URL) {
         //$locationProvider.html5Mode(true);
         $angularCacheFactoryProvider.setCacheDefaults({
@@ -17,8 +17,8 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
           controller: 'HomeController',
           label: 'Home'
         }).when(BASE_URL + '/products', {
-            templateUrl: BASE_URL + '/partials/products/products.html',
-            controller: 'ProductsController'
+          templateUrl: BASE_URL + '/partials/products/products.html',
+          controller: 'ProductsController'
         }).when(BASE_URL + '/products/:productId', {
           templateUrl: BASE_URL + '/partials/products/product.html',
           controller: 'ProductDetailsController'
@@ -32,14 +32,14 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
           templateUrl: BASE_URL + '/partials/checkout/checkout.html',
           controller: 'CheckoutController',
           reloadOnSearch: false
-        }).when(BASE_URL + '/', {
+        }).when(BASE_URL + '/online_sponsoring', {
+          templateUrl: BASE_URL + '/partials/online_sponsoring/landing.html',
+          controller: 'OnlineSponsorLandingController',
+          reloadOnSearch: false
+        }).when(BASE_URL + '/online_sponsoring/join', {
           templateUrl: BASE_URL + '/partials/checkout/checkout.html',
           controller: 'CheckoutController',
           reloadOnSearch: false
-        }).when(BASE_URL + '/online_sponsor', {
-          templateUrl: BASE_URL + '/partials/online_sponsor/home.html',
-          controller: 'OnlineSponsorJoinController',
-          label: 'Home'
         }).otherwise({
           templateUrl: BASE_URL + '/partials/page-not-found.html',
           controller: 'NotFoundController'

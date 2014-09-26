@@ -1,0 +1,371 @@
+<!-- Main jumbotron for a primary marketing message or call to action -->
+<div class="jumbotron">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <h1>Call to Action</h1>
+        <p>Title and short introduction designed to provide the minimum required context to excite the target user and incentivise them to click the primary call to action.</p>
+        <p><a class="btn btn-primary btn-lg" role="button" href="#" data-toggle="modal" data-target=".bs-example-modal-lg">Join Now</a></p>
+      </div>
+      <div class="col-md-6">
+        <video class="img-responsive" controls poster="/video/polina.jpg" id="ctavid">
+          <source src="/video/polina.webm" type="video/webm">
+          <source src="/video/polina.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="row text-center">
+        <div class="col-md-12">
+          <h2>Choose your Starter Package</h2>
+          <hr>
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-sm-6 col-md-5">
+          <div class="well">
+            <img class="img-responsive" src="/img/starter_package.png">
+            <h3><b>Starter</b></h3>
+            <p>Donec id elit non mi porta gravida at eget metus.</p>
+
+            <a data-toggle="collapse" href="#collapseOne" onclick="$(this).hide();">
+              What&rsquo;s Inside?
+            </a>
+            <div id="collapseOne" class="panel-collapse collapse">
+              <div class="panel-body text-left">
+                <ul class="list-group">
+                  <li>Cras justo odio</li>
+                  <li>Dapibus ac facilisis in</li>
+                  <li>Morbi leo risus</li>
+                  <li>Porta ac consectetur ac</li>
+                  <li>Vestibulum at eros</li>
+                </ul>
+              </div>
+            </div>
+            <p class="h4"><strong>$100 Value</strong></p>
+            <h3 class="h1">$49</h3>
+
+            <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+
+            <div class="product-action">
+              <!-- Split button -->
+              <div class="btn-group">
+                <button type="button" class="btn btn-primary btn-lg" ng-click="join('10019', 'en_US')">Buy English</button>
+                <button type="button" class="btn btn-primary btn-lg dropdown-toggle" ng-click="join('10019')" data-toggle="dropdown">
+                  <span class="caret"></span>
+                  <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="" ng-click="join('10019', 'en_US')">Buy English</a></li>
+                  <li><a href="" ng-click="join('10019', 'es_US')">Buy Spanish</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-5">
+          <div class="well product-highlighter">
+            <div class="ribbon ribbon-red">
+              <div class="banner">
+                <div class="text">BEST VALUE</div>
+              </div>
+            </div>
+            <img class="img-responsive" src="/img/entrepreneur_package.png">
+            <h3><b>Entrepreneur</b></h3>
+            <p>Donec id elit non mi porta gravida at eget metus.</p>
+
+            <a data-toggle="collapse" href="#collapseTwo" onclick="$(this).hide();">
+              What&rsquo;s Inside?
+            </a>
+            <div id="collapseTwo" class="panel-collapse collapse">
+              <div class="panel-body text-left">
+                <ul class="list-group">
+                  <li>Cras justo odio</li>
+                  <li>Dapibus ac facilisis in</li>
+                  <li>Morbi leo risus</li>
+                  <li>Porta ac consectetur ac</li>
+                  <li>Vestibulum at eros</li>
+                </ul>
+              </div>
+            </div>
+            <p class="h4"><strong>$200 Value</strong></p>
+            <h3 class="h1"><strong>$99</strong></h3>
+
+            <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+
+            <div class="product-action">
+              <!-- Split button -->
+              <div class="btn-group">
+                <button type="button" class="btn btn-primary btn-lg" data-dismiss="modal" ng-click="join('10019', 'en_US')">Buy English</button>
+                <button type="button" class="btn btn-primary btn-lg dropdown-toggle" ng-click="join('10019')" data-toggle="dropdown">
+                  <span class="caret"></span>
+                  <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="" data-dismiss="modal" ng-click="join('10019', 'en_US')">Buy English</a></li>
+                  <li><a href="" data-dismiss="modal" ng-click="join('10019', 'es_US')">Buy Spanish</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-1"></div>
+      </div>
+      <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <!-- Features & Highlights -->
+  <section id="why_jafra">
+    <div class="row text-center">
+      <div class="col-md-12">
+        <h2 class="h1">Why Jafra?</h2>
+        <hr>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-5">
+        <img class="img-responsive" src="/img/4by3.jpg">
+        <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+      </div>
+      <div class="col-md-4">
+        <h3>World Class Products</h3>
+        <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4 col-md-offset-3 text-right">
+        <h3>Earn Extra Cash</h3>
+        <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.</p>
+      </div>
+      <div class="col-md-5">
+        <img class="img-responsive" src="/img/4by3.jpg">
+        <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-5">
+        <img class="img-responsive" src="/img/4by3.jpg">
+        <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+      </div>
+      <div class="col-md-4">
+        <h3>Be Your Own Boss</h3>
+        <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+      </div>
+    </div>
+
+    <div class="row text-center">
+      <div class="col-md-12">
+        <h3>JAFRA Consultants Love Their Jobs</h3>
+        <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+        <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4">
+        <div class="testimonial text-center">
+          <img class="img-circle" src="/img/1by1.jpg" style="max-width: 64px;" alt="...">
+          <i class="fa fa-twitter" style="margin:0 0 0 -13px"></i>
+          <h4 class="media-heading">Julie Smith</h4>
+          <p><small>@juliesmith</small></p>
+          <p>&ldquo;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.&rdquo;</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="testimonial text-center">
+          <img class="img-circle" src="/img/1by1.jpg" style="max-width: 64px;" alt="...">
+          <i class="fa fa-twitter" style="margin:0 0 0 -13px"></i>
+          <h4 class="media-heading">Hannah Williams</h4>
+          <p><small>@hannahbanana</small></p>
+          <p>&ldquo;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.&rdquo;</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="testimonial text-center">
+          <img class="img-circle" src="/img/1by1.jpg" style="max-width: 64px;" alt="...">
+          <i class="fa fa-twitter" style="margin:0 0 0 -13px"></i>
+          <h4 class="media-heading">Rosa Mendez</h4>
+          <p><small>@rosylovesjafra</small></p>
+          <p>&ldquo;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.&rdquo;</p>
+        </div>
+        </div-->
+      </div>
+
+      <div class="row text-center">
+        <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+        <a class="btn btn-primary btn-lg" role="button" href="#" data-toggle="modal" data-target=".bs-example-modal-lg">Start A Career Today</a>
+        <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+        <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Starter Packages -->
+  <section id="starter_packages">
+    <div class="row text-center">
+      <div class="col-md-12">
+        <h2 class="h1">Starter Packages</h2>
+        <hr>
+      </div>
+      <div class="col-md-2"></div>
+      <div class="col-sm-6 col-md-4">
+        <div class="well">
+          <img class="img-responsive" src="/img/starter_package.png">
+          <h3><b>Starter</b></h3>
+          <p>Donec id elit non mi porta gravida at eget metus.</p>
+
+          <a data-toggle="collapse" href="#collapseOneOne" onclick="$(this).hide();">
+            What&rsquo;s Inside?
+          </a>
+          <div id="collapseOneOne" class="panel-collapse collapse">
+            <div class="panel-body text-left">
+              <ul class="list-group">
+                <li>Cras justo odio</li>
+                <li>Dapibus ac facilisis in</li>
+                <li>Morbi leo risus</li>
+                <li>Porta ac consectetur ac</li>
+                <li>Vestibulum at eros</li>
+              </ul>
+            </div>
+          </div>
+          <p class="h4"><strong>$100 Value</strong></p>
+          <h3 class="h1">$49</h3>
+
+          <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+
+          <div class="product-action">
+            <!-- Split button -->
+            <div class="btn-group">
+              <button type="button" class="btn btn-primary btn-lg" ng-click="join('10019', 'en_US')">Buy English</button>
+              <button type="button" class="btn btn-primary btn-lg dropdown-toggle" ng-click="join('10019')" data-toggle="dropdown">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="" ng-click="join('10019', 'en_US')">Buy English</a></li>
+                <li><a href="" ng-click="join('10019', 'es_US')">Buy Spanish</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-4">
+        <div class="well product-highlighter">
+          <div class="ribbon ribbon-red">
+            <div class="banner">
+              <div class="text">BEST VALUE</div>
+            </div>
+          </div>
+          <img class="img-responsive" src="/img/entrepreneur_package.png">
+          <h3><b>Entrepreneur</b></h3>
+          <p>Donec id elit non mi porta gravida at eget metus.</p>
+
+          <a data-toggle="collapse" href="#collapseTwoTwo" onclick="$(this).hide();">
+            What&rsquo;s Inside?
+          </a>
+          <div id="collapseTwoTwo" class="panel-collapse collapse">
+            <div class="panel-body text-left">
+              <ul class="list-group">
+                <li>Cras justo odio</li>
+                <li>Dapibus ac facilisis in</li>
+                <li>Morbi leo risus</li>
+                <li>Porta ac consectetur ac</li>
+                <li>Vestibulum at eros</li>
+              </ul>
+            </div>
+          </div>
+          <p class="h4"><strong>$200 Value</strong></p>
+          <h3 class="h1"><strong>$99</strong></h3>
+
+          <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+
+          <div class="product-action">
+            <!-- Split button -->
+            <div class="btn-group">
+              <button type="button" class="btn btn-primary btn-lg" ng-click="join('10019', 'en_US')">Buy English</button>
+              <button type="button" class="btn btn-primary btn-lg dropdown-toggle" ng-click="join('10019')" data-toggle="dropdown">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="" ng-click="join('10019', 'en_US')">Buy English</a></li>
+                <li><a href="" ng-click="join('10019', 'es_US')">Buy Spanish</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2"></div>
+    </div>
+    <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+    <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+  </section>
+
+  <!-- FAQs -->
+  <section id="FAQs">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <h2 class="h1">FAQs</h2>
+        <hr>
+      </div>
+      <div class="col-md-6">
+        <h3><b>Q.</b> How does it work?</h3>
+        <p><b>A.</b> Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+      </div>
+      <div class="col-md-6">
+        <h3><b>Q.</b> How much does it cost?</h3>
+        <p><b>A.</b> Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+      </div>
+      <div class="col-md-6">
+        <h3><b>Q.</b> How much can I make?</h3>
+        <p><b>A.</b> Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+      </div>
+      <div class="col-md-6">
+        <h3><b>Q.</b> Are there any puppies on this site?</h3>
+        <p><b>A.</b> Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+      </div>
+      <div class="col-md-6">
+        <h3><b>Q.</b> What about kittens?</h3>
+        <p><b>A.</b> Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+      </div>
+      <div class="col-md-6">
+        <h3><b>Q.</b> How much does a woodchuck chuck wood?</h3>
+        <p><b>A.</b> Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+      </div>
+      <div class="col-md-6">
+        <h3><b>Q.</b> What is there left to do?</h3>
+        <p><b>A.</b> Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+      </div>
+      <div class="col-md-6">
+        <h3><b>Q.</b> Where is the restroom?</h3>
+        <p><b>A.</b> Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+      </div>
+      <div class="col-md-6">
+        <h3><b>Q.</b> How compatible is this container?</h3>
+        <p><b>A.</b> Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+      </div>
+      <div class="col-md-6">
+        <h3><b>Q.</b> Why does it work?</h3>
+        <p><b>A.</b> Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+      </div>
+    </div>
+
+    <div class="row text-center">
+      <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+      <a class="btn btn-primary btn-lg" role="button" href="#" data-toggle="modal" data-target=".bs-example-modal-lg">I&rsquo;m Ready To Join!</a>
+      <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+      <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+    </div>
+
+  </section>
+</div>

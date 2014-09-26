@@ -3,6 +3,7 @@ Schema = mongoose.Schema;
 mongoose.connect('mongodb://localhost/jafra');
 
 var db = mongoose.connection;
+exports.db = db;
 
 // IMAGES
 var imageSchema = Schema({
@@ -204,6 +205,33 @@ productSchema.set('toJSON', {
 
 var Product = mongoose.model('Product', productSchema);
 exports.Product = Product;
+
+//
+//// SESSIONS
+//var sessionSchema = Schema({
+//    "_id" : { type: String, unique: true },
+//    "created": { type: Date, default: Date.now },
+//    "updated": { type: Date, default: Date.now },
+//    "cart": Schema.Types.Mixed,
+//    // parts of this are loaded from JCS and cached in session
+//    "client": Schema.Types.Mixed,
+//    "creditCards": Schema.Types.Mixed,
+//    "shippingAddresses": Schema.Types.Mixed,
+//    "billingAddresses": Schema.Types.Mixed
+//}, { id: false });
+//
+//// Duplicate the ID field.
+//sessionSchema.virtual('id').get(function(){
+//    return this._id;
+//});
+//
+//// Ensure virtual fields are serialised.
+//sessionSchema.set('toJSON', {
+//    virtuals: true
+//});
+//
+//var Session = mongoose.model('Session', sessionSchema);
+//exports.Session = Session;
 
 
 // DB HANDLERS

@@ -1,0 +1,236 @@
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">[Logo]</a>
+    </div>
+    <div class="navbar-collapse collapse navbar-sections">
+
+      <ul class="nav navbar-nav navbar-right navbar-language" style="margin-left: 40px;">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="http://static.flag-sprites.com/i/blank.gif" class="flag flag-us" alt="US English" /> US English <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">US English</a></li>
+            <li><a href="#">US Spanish</a></li>
+          </ul>
+        </li>
+      </ul>
+
+      <!-- <ul class="nav navbar-nav navbar-right">
+        <li><a href="#why_jafra">Why JAFRA?</a></li>
+        <li><a href="#starter_packages">Starter Packages</a></li>
+        <li><a href="#FAQs">FAQs</a></li>
+        <li><button type="button" class="btn btn-inverse navbar-btn" href="#starter_packages">Join Now</button></li>
+      </ul> -->
+
+    </div><!--/.navbar-collapse -->
+  </div>
+</div>
+
+
+<div class="container">
+
+  <!-- Features & Highlights -->
+  <section id="wizard">
+
+    <div class="row" style="position:relative; height: 50px;">
+      <ul class="steps-indicator steps-6" ng-if="!hideIndicators">
+        <!-- ngRepeat: step in steps --><li ng-class="{default: !step.completed &amp;&amp; !step.selected, current: step.selected &amp;&amp; !step.completed, done: step.completed &amp;&amp; !step.selected, editing: step.selected &amp;&amp; step.completed}" ng-repeat="step in steps" class="ng-scope default">
+          <a ng-click="goTo(step)" class="ng-binding">Sign In</a>
+        </li><!-- end ngRepeat: step in steps --><li ng-class="{default: !step.completed &amp;&amp; !step.selected, current: step.selected &amp;&amp; !step.completed, done: step.completed &amp;&amp; !step.selected, editing: step.selected &amp;&amp; step.completed}" ng-repeat="step in steps" class="ng-scope default">
+          <a ng-click="goTo(step)" class="ng-binding">Consultant Profile</a>
+        </li><!-- end ngRepeat: step in steps --><li ng-class="{default: !step.completed &amp;&amp; !step.selected, current: step.selected &amp;&amp; !step.completed, done: step.completed &amp;&amp; !step.selected, editing: step.selected &amp;&amp; step.completed}" ng-repeat="step in steps" class="ng-scope default">
+          <a ng-click="goTo(step)" class="ng-binding">Shipping</a>
+        </li><!-- end ngRepeat: step in steps --><li ng-class="{default: !step.completed &amp;&amp; !step.selected, current: step.selected &amp;&amp; !step.completed, done: step.completed &amp;&amp; !step.selected, editing: step.selected &amp;&amp; step.completed}" ng-repeat="step in steps" class="ng-scope default">
+          <a ng-click="goTo(step)" class="ng-binding">Payment Method</a>
+        </li><!-- end ngRepeat: step in steps --><li ng-class="{default: !step.completed &amp;&amp; !step.selected, current: step.selected &amp;&amp; !step.completed, done: step.completed &amp;&amp; !step.selected, editing: step.selected &amp;&amp; step.completed}" ng-repeat="step in steps" class="ng-scope current">
+          <a ng-click="goTo(step)" class="ng-binding">Review</a>
+        </li><!-- end ngRepeat: step in steps --><li ng-class="{default: !step.completed &amp;&amp; !step.selected, current: step.selected &amp;&amp; !step.completed, done: step.completed &amp;&amp; !step.selected, editing: step.selected &amp;&amp; step.completed}" ng-repeat="step in steps" class="ng-scope default">
+          <a ng-click="goTo(step)" class="ng-binding">Finish</a>
+        </li><!-- end ngRepeat: step in steps -->
+      </ul>
+    </div>
+
+    <div class="row">
+
+      <div class="col-sm-12 ng-scope">
+
+    <div class="col-md-offset-3 col-lg-8">
+    <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+        <h1>Review &amp; Confirm Order
+          <span class="store-heading-description">
+            Clicking “Place Order“ will charge your payment option in the ammount below.
+          </span>
+        </h1>
+        <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+      </div>
+
+      <div class="col-md-offset-3 col-lg-8">
+
+
+        <div class="row">
+
+
+
+
+          <!-- ngIf: orderObject.creditCard --><div class="col-xs-6 col-lg-4 ng-scope" ng-if="orderObject.creditCard">
+            <h3>Charging To:</h3>
+            <div class="checkout-card clearfix active">
+              <img src="http://placehold.it/46x30" class="pull-right">
+              <p class="card-number">
+                <span>••••</span>
+                <span>••••</span>
+                <span>••••</span>
+                <span class="ng-binding">1234</span>
+              </p>
+              <p class="card-expiry pull-left ng-binding">
+                <small>EXP:</small>
+                02/16
+              </p>
+              <a ng-href="#/checkout?step=Payment" class="btn pull-right card-use-btn" href="#/checkout?step=Payment"><i class="fa fa-pencil-square-o"></i> Change Card</a>
+            </div>
+          </div><!-- end ngIf: orderObject.creditCard --><!-- /card -->
+
+          <!-- ngIf: orderObject.shipping --><div class="col-xs-6 col-lg-4 checkout-address ng-scope" ng-if="orderObject.shipping">
+            <h3>Shipping To:</h3>
+            <span class="address-name ng-binding">Dain Kennison</span>
+            <span class="address-street ng-binding">123 Eastman Ave </span>
+            <span class="address-region ng-binding">Simi Valley, CA 93065</span>
+            <span class="phone-number ng-binding">805-558-1097</span>
+            <span class="ng-binding">Speed: Standard</span>
+            <div class="address-actions">
+              <a ng-href="#/checkout?step=Shipping" href="#/checkout?step=Shipping"><i class="fa fa-pencil-square-o"></i> Change Address</a>
+            </div>
+          </div><!-- end ngIf: orderObject.shipping --><!-- /address -->
+
+          <!-- ngIf: orderObject.billing.name --><!-- /address -->
+
+
+          <!-- ngIf: !orderObject.billing.name --><div class="col-xs-6 col-lg-4 checkout-address ng-scope" ng-if="!orderObject.billing.name">
+            <h3>Billing To:</h3>
+            <span class="address-name ng-binding">Dain Kennison</span>
+            <span class="address-street ng-binding">123 Eastman Ave </span>
+            <span class="address-region ng-binding">Simi Valley, CA 93065</span>
+            <span class="phone-number ng-binding">805-558-1097</span>
+            <div class="address-actions">
+              <a ng-href="#/checkout?step=Payment" href="#/checkout?step=Payment"><i class="fa fa-pencil-square-o"></i> Change Address</a>
+            </div>
+          </div><!-- end ngIf: !orderObject.billing.name --><!-- /address -->
+
+        </div><!-- /row -->
+
+        <hr>
+
+
+
+
+
+
+        <form class="form order-details ng-dirty ng-valid ng-valid-required" role="form" name="confirmForm">
+          <a ng-href="#/cart" class="pull-right" style="margin-top:10px" href="#/cart"><i class="fa fa-pencil-square-o"></i> make changes</a>
+          <h2 class="">Order Details</h2>
+          <div class="form-group">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Qty</th>
+                  <th>Description</th>
+                  <th align="right">Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- ngRepeat: product in products --><tr ng-repeat="product in products" class="ng-scope">
+                  <td class="ng-binding">1</td>
+                  <td>
+                    <p class="confirmation-description ng-binding">
+                      Advanced Dynamics Hydrating Regimen Introductory Offer
+                    </p>
+                  </td>
+                  <td align="right">
+                        <!-- ngRepeat: detailprice in product.pricing.detailprice --><span ng-repeat="detailprice in product.pricing.detailprice" class="ng-scope">
+                            <!-- ngIf: detailprice.pricetype=='sale' -->
+                            <!-- ngIf: detailprice.pricetype=='retail' -->
+                        </span><!-- end ngRepeat: detailprice in product.pricing.detailprice --><span ng-repeat="detailprice in product.pricing.detailprice" class="ng-scope">
+                            <!-- ngIf: detailprice.pricetype=='sale' -->
+                            <!-- ngIf: detailprice.pricetype=='retail' -->
+                        </span><!-- end ngRepeat: detailprice in product.pricing.detailprice --><span ng-repeat="detailprice in product.pricing.detailprice" class="ng-scope">
+                            <!-- ngIf: detailprice.pricetype=='sale' -->
+                            <!-- ngIf: detailprice.pricetype=='retail' -->
+                        </span><!-- end ngRepeat: detailprice in product.pricing.detailprice -->
+                        <!-- ngIf: product.pricing.detailprice.price --><span ng-if="product.pricing.detailprice.price" class="ng-scope">
+                            <span class="item-price ng-binding">
+                              $69.00
+                            </span>
+                        </span><!-- end ngIf: product.pricing.detailprice.price -->
+                  </td>
+                </tr><!-- end ngRepeat: product in products -->
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="3">
+                    <p class="ng-binding">Subtotal: $69.00</p>
+                    <p>Shipping: $15.00</p>
+                    <p>Tax: 8.25%</p>
+                    <p class="lead"><b class="ng-binding">Total Charges: $89.69</b></p>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+
+          </div>
+
+          <div class="form-group text-right">
+            <label class="checkbox-inline">
+
+                    <input type="checkbox" value="" ng-model="checkout.agree" required="" class="ng-dirty ng-valid ng-valid-required">
+
+              I agree to the <a href="">Terms and Conditions</a>
+              &nbsp;&nbsp;&nbsp;&nbsp;
+            </label>
+            <button type="button" class="btn btn-link pull-left" tabindex=" " ng-click="confirmAlert('Are you sure you\'d like to cancel your order?')">Cancel Order</button>
+            <a href="thanks.html" type="submit" class="btn btn-primary btn-lg" tabindex=" " wz-next="" ng-disabled="!confirmForm.$valid">Place Order &nbsp;<i class="fa fa-caret-right"></i></a>
+          </div>
+        </form>
+      </div>
+
+  </div>
+
+    </div>
+
+  </section>
+
+  <hr>
+
+  <footer>
+    <div class="pull-right footer-logos">
+        <a href="" class="jafra-logo"><span class="sr-only">Jafra Usa</span></a>
+        <a href="" class="vorwerk-logo"><span class="sr-only">Vorwerk</span></a>
+        <a href="" class="dsa-logo"><span class="sr-only">DSA</span></a>
+    </div>
+
+    <div class="legalcopy">
+      <p>
+        <a href="" class="btn btn-link">Terms</a>
+         |
+        <a href="" class="btn btn-link">Privacy</a>
+      </p>
+      <p>© 2014 - JAFRA Cosmetics International - All Rights Reserved</p>
+    </div>
+</footer>
+</div> <!-- /container -->
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <a href="profile.html"><img class="img-responsive" src="/img/fb_login_comp.png"></a>
+      </div>
+    </div>
+  </div>
+</div>

@@ -2,10 +2,17 @@ angular.module('app.controllers.onlineSponsor')
 .controller('OnlineSponsorJoinController', function ($scope, $document, $rootScope, $routeParams, $log, WizardHandler) {
     $rootScope.page = 'Join';
 
+    var sku = $routeParams.sku || '';
+    $log.debug("OnlineSponsorJoinController(): sku", sku);
+
     $scope.join = {
       currentStep: 'Sign-In',
-      customerStatus: 'new'
+      sku: sku
     };
+
+    if (!$scope.join.billSame) {
+        $scope.join.billSame = true;
+    }
 
     $scope.loginOrCreateUser = function(loginEmail, loginPassword) {
       $scope.loginError = false;
@@ -14,11 +21,11 @@ angular.module('app.controllers.onlineSponsor')
       var success = true;
 
       if (success) {
-        $log.debug("CheckoutController(): authenticated, moving to next step");
+        $log.debug("OnlineSponsorJoinController(): authenticated, moving to next step");
         // jump to Shipping
         WizardHandler.wizard('joinWizard').goTo('Consultant Profile');
       } else {
-        $log.debug("CheckoutController(): failed to authenticate");
+        $log.debug("OnlineSponsorJoinController(): failed to authenticate");
         $scope.loginError = true;
       }
     }

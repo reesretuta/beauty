@@ -1,0 +1,233 @@
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">[Logo]</a>
+    </div>
+    <div class="navbar-collapse collapse navbar-sections">
+
+      <ul class="nav navbar-nav navbar-right navbar-language" style="margin-left: 40px;">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="http://static.flag-sprites.com/i/blank.gif" class="flag flag-us" alt="US English" /> US English <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">US English</a></li>
+            <li><a href="#">US Spanish</a></li>
+          </ul>
+        </li>
+      </ul>
+
+      <!-- <ul class="nav navbar-nav navbar-right">
+        <li><a href="#why_jafra">Why JAFRA?</a></li>
+        <li><a href="#starter_packages">Starter Packages</a></li>
+        <li><a href="#FAQs">FAQs</a></li>
+        <li><button type="button" class="btn btn-inverse navbar-btn" href="#starter_packages">Join Now</button></li>
+      </ul> -->
+
+    </div><!--/.navbar-collapse -->
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Features & Highlights -->
+  <section id="wizard">
+
+    <div class="row" style="position:relative; height: 50px;">
+      <ul class="steps-indicator steps-6" ng-if="!hideIndicators">
+        <!-- ngRepeat: step in steps --><li ng-class="{default: !step.completed &amp;&amp; !step.selected, current: step.selected &amp;&amp; !step.completed, done: step.completed &amp;&amp; !step.selected, editing: step.selected &amp;&amp; step.completed}" ng-repeat="step in steps" class="ng-scope default">
+          <a ng-click="goTo(step)" class="ng-binding">Sign In</a>
+        </li><!-- end ngRepeat: step in steps --><li ng-class="{default: !step.completed &amp;&amp; !step.selected, current: step.selected &amp;&amp; !step.completed, done: step.completed &amp;&amp; !step.selected, editing: step.selected &amp;&amp; step.completed}" ng-repeat="step in steps" class="ng-scope defailt">
+          <a ng-click="goTo(step)" class="ng-binding">Consultant Profile</a>
+        </li><!-- end ngRepeat: step in steps --><li ng-class="{default: !step.completed &amp;&amp; !step.selected, current: step.selected &amp;&amp; !step.completed, done: step.completed &amp;&amp; !step.selected, editing: step.selected &amp;&amp; step.completed}" ng-repeat="step in steps" class="ng-scope default">
+          <a ng-click="goTo(step)" class="ng-binding">Shipping</a>
+        </li><!-- end ngRepeat: step in steps --><li ng-class="{default: !step.completed &amp;&amp; !step.selected, current: step.selected &amp;&amp; !step.completed, done: step.completed &amp;&amp; !step.selected, editing: step.selected &amp;&amp; step.completed}" ng-repeat="step in steps" class="ng-scope current">
+          <a ng-click="goTo(step)" class="ng-binding">Payment Method</a>
+        </li><!-- end ngRepeat: step in steps --><li ng-class="{default: !step.completed &amp;&amp; !step.selected, current: step.selected &amp;&amp; !step.completed, done: step.completed &amp;&amp; !step.selected, editing: step.selected &amp;&amp; step.completed}" ng-repeat="step in steps" class="ng-scope default">
+          <a ng-click="goTo(step)" class="ng-binding">Review</a>
+        </li><!-- end ngRepeat: step in steps --><li ng-class="{default: !step.completed &amp;&amp; !step.selected, current: step.selected &amp;&amp; !step.completed, done: step.completed &amp;&amp; !step.selected, editing: step.selected &amp;&amp; step.completed}" ng-repeat="step in steps" class="ng-scope default">
+          <a ng-click="goTo(step)" class="ng-binding">Finish</a>
+        </li><!-- end ngRepeat: step in steps -->
+      </ul>
+    </div>
+
+    <div class="row">
+
+      <div class="col-sm-12 ng-scope">
+        <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+    <!-- ngIf: checkout.customerStatus=='existing' --><div class="col-md-offset-3 ng-scope" ng-if="checkout.customerStatus=='existing'">
+        <h1>Select Payment Option
+          <span class="store-heading-description">
+            You’ll be able to review the order before being charged.
+          </span>
+        </h1>
+      </div><!-- end ngIf: checkout.customerStatus=='existing' -->
+      <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+
+      <!-- ngIf: checkout.customerStatus=='existing' --><div class="col-md-offset-3 ng-scope" ng-if="checkout.customerStatus=='existing'">
+        <div class="row">
+
+          <!-- ngRepeat: ccData in existingCustomerData.creditCards --><div class="col-xs-6 col-lg-4 ng-scope" ng-repeat="ccData in existingCustomerData.creditCards">
+            <div class="checkout-card clearfix active" ng-class="{active: $first}">
+              <img src="http://placehold.it/46x30" class="pull-right">
+              <p class="card-number">
+                  <span>••••</span>
+                  <span>••••</span>
+                  <span>••••</span>
+                <span class="ng-binding">1234</span>
+              </p>
+              <p class="card-expiry pull-left ng-binding">
+                <small>EXP:</small>
+                02/16
+              </p>
+              <a href="review.html" class="btn btn-primary pull-right card-use-btn" wz-next="" ng-click="addToOrderObject('creditCard',ccData)">Use this Option <i class="fa fa-caret-right"></i></a>
+            </div>
+            <div class="card-actions">
+              <a href=""><i class="fa fa-pencil-square-o"></i> Edit</a>
+              &nbsp;&nbsp;
+              <a href=""><i class="fa fa-times-circle"></i> Remove</a>
+            </div>
+          </div><!-- end ngRepeat: ccData in existingCustomerData.creditCards --><div class="col-xs-6 col-lg-4 ng-scope" ng-repeat="ccData in existingCustomerData.creditCards">
+            <div class="checkout-card clearfix" ng-class="{active: $first}">
+              <img src="http://placehold.it/46x30" class="pull-right">
+              <p class="card-number">
+                  <span>••••</span>
+                  <span>••••</span>
+                  <span>••••</span>
+                <span class="ng-binding">1111</span>
+              </p>
+              <p class="card-expiry pull-left ng-binding">
+                <small>EXP:</small>
+                04/15
+              </p>
+              <a href="review.html" class="btn btn-primary pull-right card-use-btn" wz-next="" ng-click="addToOrderObject('creditCard',ccData)">Use this Option <i class="fa fa-caret-right"></i></a>
+            </div>
+            <div class="card-actions">
+              <a href=""><i class="fa fa-pencil-square-o"></i> Edit</a>
+              &nbsp;&nbsp;
+              <a href=""><i class="fa fa-times-circle"></i> Remove</a>
+            </div>
+          </div><!-- end ngRepeat: ccData in existingCustomerData.creditCards --><!-- /span -->
+
+        </div>
+      </div><!-- end ngIf: checkout.customerStatus=='existing' -->
+
+      <!-- ngIf: checkout.customerStatus=='new' -->
+
+
+      <div class="row">
+        <div class="col-md-offset-3 col-lg-8">
+          <!-- ngIf: checkout.customerStatus=='existing' --><hr ng-if="checkout.customerStatus=='existing'" class="ng-scope"><!-- end ngIf: checkout.customerStatus=='existing' -->
+          <h2 class=" ">Add a new payment method</h2>
+        </div>
+      </div>
+      <!--valid={{paymentForm.$valid}}-->
+      <form name="paymentForm" class="form-horizontal ng-pristine ng-invalid ng-invalid-required" role="form" novalidate="">
+
+        <div class="form-group" ng-class="{ 'has-error' : paymentForm.cardName.$invalid &amp;&amp; !paymentForm.cardName.$pristine }">
+          <label for=" " class="col-md-3 control-label">Name on Card</label>
+          <div class="col-sm-6 col-lg-4">
+            <input ng-model="checkout.cardName" ng-minlength="3" name="cardName" type="text" class="form-control ng-pristine ng-invalid ng-invalid-required ng-valid-minlength" placeholder=" " tabindex=" " required="" autocomplete="off" style="background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QsPDhss3LcOZQAAAU5JREFUOMvdkzFLA0EQhd/bO7iIYmklaCUopLAQA6KNaawt9BeIgnUwLHPJRchfEBR7CyGWgiDY2SlIQBT/gDaCoGDudiy8SLwkBiwz1c7y+GZ25i0wnFEqlSZFZKGdi8iiiOR7aU32QkR2c7ncPcljAARAkgckb8IwrGf1fg/oJ8lRAHkR2VDVmOQ8AKjqY1bMHgCGYXhFchnAg6omJGcBXEZRtNoXYK2dMsaMt1qtD9/3p40x5yS9tHICYF1Vn0mOxXH8Uq/Xb389wff9PQDbQRB0t/QNOiPZ1h4B2MoO0fxnYz8dOOcOVbWhqq8kJzzPa3RAXZIkawCenHMjJN/+GiIqlcoFgKKq3pEMAMwAuCa5VK1W3SAfbAIopum+cy5KzwXn3M5AI6XVYlVt1mq1U8/zTlS1CeC9j2+6o1wuz1lrVzpWXLDWTg3pz/0CQnd2Jos49xUAAAAASUVORK5CYII=); background-attachment: scroll; background-position: 100% 50%; background-repeat: no-repeat;">
+            <span ng-show="paymentForm.cardName.$error.minlength" class="help-block ng-hide" ng-class="{ 'text-danger' : paymentForm.cardName.$invalid &amp;&amp; !paymentForm.cardName.$pristine }">Name on card is too short.</span>
+          </div>
+        </div>
+
+        <div class="form-group" ng-class="{ 'has-error' : paymentForm.cardNumber.$invalid &amp;&amp; !paymentForm.cardNumber.$pristine }">
+          <label for=" " class="col-md-3 control-label">Card Number</label>
+          <div class="col-sm-6 col-lg-4">
+            <input ng-model="checkout.cardNumber" ng-minlength="13" ng-maxlength="16" maxlength="16" name="cardNumber" type="text" class="form-control ng-pristine ng-invalid ng-invalid-required ng-valid-maxlength ng-valid-minlength" id=" " placeholder=" " tabindex=" " required="">
+            <span ng-show="paymentForm.cardNumber.$error.minlength" class="help-block ng-hide" ng-class="{ 'text-danger' : paymentForm.cardNumber.$invalid &amp;&amp; !paymentForm.cardNumber.$pristine }">Credit card needs to be at least 13 numbers.</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for=" " class="col-md-3 control-label">Expiration</label>
+          <div class="col-sm-5">
+            <div class="row">
+              <div class="col-xs-4 col-sm-3 col-med-2" ng-class="{ 'has-error' : paymentForm.expMonth.$invalid &amp;&amp; !paymentForm.expMonth.$pristine }">
+                  <input ng-model="checkout.expMonth" ng-minlength="2" ng-maxlength="2" maxlength="2" name="expMonth" type="text" class="form-control col-sm-1 ng-pristine ng-invalid ng-invalid-required ng-valid-maxlength ng-valid-minlength" placeholder="MM" tabindex=" " required="">
+              </div>
+              <div class="col-xs-1">
+                <label class="control-label">/</label>
+              </div>
+              <div class="col-xs-6 col-sm-4 col-med-3" ng-class="{ 'has-error' : paymentForm.expYear.$invalid &amp;&amp; !paymentForm.expYear.$pristine }">
+                <input ng-model="checkout.expYear" ng-minlength="4" ng-maxlength="4" maxlength="4" name="expYear" type="text" class="form-control col-sm-3 ng-pristine ng-invalid ng-invalid-required ng-valid-maxlength ng-valid-minlength" placeholder="YYYY" tabindex=" " required="">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" ng-class="{ 'has-error' : paymentForm.securityCode.$invalid &amp;&amp; !paymentForm.securityCode.$pristine }">
+          <label for=" " class="col-md-3 control-label">Security Code</label>
+          <div class="col-sm-5">
+            <div class="row">
+              <div class="col-xs-4 col-sm-3 col-med-2">
+                <input ng-model="checkout.securityCode" ng-minlength="3" ng-maxlength="4" maxlength="4" name="securityCode" type="password" class="form-control col-sm-1 ng-pristine ng-invalid ng-invalid-required ng-valid-maxlength ng-valid-minlength" placeholder="•••" tabindex=" " required="" autocomplete="off" style="background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QsPDhss3LcOZQAAAU5JREFUOMvdkzFLA0EQhd/bO7iIYmklaCUopLAQA6KNaawt9BeIgnUwLHPJRchfEBR7CyGWgiDY2SlIQBT/gDaCoGDudiy8SLwkBiwz1c7y+GZ25i0wnFEqlSZFZKGdi8iiiOR7aU32QkR2c7ncPcljAARAkgckb8IwrGf1fg/oJ8lRAHkR2VDVmOQ8AKjqY1bMHgCGYXhFchnAg6omJGcBXEZRtNoXYK2dMsaMt1qtD9/3p40x5yS9tHICYF1Vn0mOxXH8Uq/Xb389wff9PQDbQRB0t/QNOiPZ1h4B2MoO0fxnYz8dOOcOVbWhqq8kJzzPa3RAXZIkawCenHMjJN/+GiIqlcoFgKKq3pEMAMwAuCa5VK1W3SAfbAIopum+cy5KzwXn3M5AI6XVYlVt1mq1U8/zTlS1CeC9j2+6o1wuz1lrVzpWXLDWTg3pz/0CQnd2Jos49xUAAAAASUVORK5CYII=); background-attachment: scroll; background-position: 100% 50%; background-repeat: no-repeat;">
+              </div>
+              <div class="col-xs-6 col-sm-4 col-med-3">
+                <a href="" class="form-info-link"><i class="fa fa-info-circle"></i> What's this?</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-md-offset-3 col-sm-9">
+            <div class="checkbox">
+              <label>
+                <input ng-model="checkout.billSame" type="checkbox" checked="" class="ng-pristine ng-valid"> My billing &amp; shipping address are the same
+              </label>
+            </div>
+          </div>
+        </div>
+
+
+
+        <!-- ngIf: checkout.billSame==false -->
+
+        <div class="form-group">
+          <div class="col-md-offset-3 col-sm-9">
+            <button type="submit" ng-click="addCard(checkout); addAddress(checkout.billing, 'billing')" class="btn btn-primary btn-lg" tabindex=" " wz-next="" ng-disabled="!paymentForm.$valid" disabled="disabled">Add Card &nbsp;<i class="fa fa-caret-right"></i></button>
+          </div>
+        </div>
+
+      </form>
+
+  </div>
+
+    </div>
+
+  </section>
+
+  <hr>
+
+  <footer>
+    <div class="pull-right footer-logos">
+        <a href="" class="jafra-logo"><span class="sr-only">Jafra Usa</span></a>
+        <a href="" class="vorwerk-logo"><span class="sr-only">Vorwerk</span></a>
+        <a href="" class="dsa-logo"><span class="sr-only">DSA</span></a>
+    </div>
+
+    <div class="legalcopy">
+      <p>
+        <a href="" class="btn btn-link">Terms</a>
+         |
+        <a href="" class="btn btn-link">Privacy</a>
+      </p>
+      <p>© 2014 - JAFRA Cosmetics International - All Rights Reserved</p>
+    </div>
+</footer>
+</div> <!-- /container -->
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <a href="profile.html"><img class="img-responsive" src="/img/fb_login_comp.png"></a>
+      </div>
+    </div>
+  </div>
+</div>

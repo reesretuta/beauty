@@ -20,5 +20,20 @@ angular.module('app.filters', [])// Navigation Item Filter
             if (input!=null)
                 return JSON.stringify(input);
         }
-    });
+    }).filter('phone', function () {
+        return function (tel) {
+            if (!tel) { return ''; }
+
+            if (tel.length < 10) {
+                return tel;
+            }
+
+            var value = tel.toString().trim().replace(/[^0-9]/, '');
+            var prefix = value.slice(0, 3);
+            var part1 = value.slice(0, 3);
+            var part2 = value.slice(0, 4);
+
+            return "(" + prefix + ") " + part1 + "-" + part2;
+        };
+    });;
 

@@ -3,6 +3,26 @@ angular.module('app.controllers.main')
 
         $rootScope.adding = false;
 
+        $scope.username = "";
+        $scope.password = "";
+
+        angular.element('.login-dropdown .dropdown-menu input, .login-dropdown .dropdown-menu button').on('click', function(e) {
+            e.stopPropagation()
+        });
+
+        $scope.login = function() {
+            Session.login($scope.username, $scope.password).then(function(session) {
+                $log.debug("logged in", session);
+            }, function(error) {
+                $log.debug("failed to login", error);
+            });
+        }
+
+        $scope.logout = function() {
+            $log.debug("logging out");
+            Session.logout();
+        }
+
         // this page will watch for URL changes for back/forward that require it to change anything needed (like search)
         var cancelChangeListener;
         function createListener() { 
@@ -31,11 +51,15 @@ angular.module('app.controllers.main')
         }
         createListener();
 
-        $scope.session = Session.getSession();
-        $log.debug("MainController(): loaded session", $scope.session);
+        Session.get().then(function(session) {
+            $log.debug("MainController(): loaded session", session);
+            // session should now be in the root scope
+        }, function(error) {
+            $log.debug("MainController(): error loading session", error);
+        });
 
         $scope.$watch('session.language', function(newVal, oldVal) {
-            $translate.use($scope.session.language);
+            $translate.use(Session.getLocalSession().language);
         });
 
         $scope.getItemsInCart = function() {
@@ -59,9 +83,12 @@ angular.module('app.controllers.main')
             }
             
             $log.debug("MainController(): adding product", product, qty);
-            var p = angular.copy(product);
-            p.quantity = qty;
-            Cart.addToCart(p);
+            Cart.addToCart({
+                name: product.name,
+                sku: product.sku,
+                kitSelections: product.kitSelections,
+                quantity: qty
+            });
         }
 
         $scope.searchProducts = function(query) {
@@ -85,7 +112,7 @@ angular.module('app.controllers.main')
         }
 
         // begin navigation
-        $rootScope.navStatic = '1';
+        $rootScope.navStatic = '0';
         $scope.categoryClicked = function(category) {
             $log.debug("category clicked", category);
             // set breadcrumbs

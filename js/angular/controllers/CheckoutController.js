@@ -1,61 +1,288 @@
 angular.module('app.controllers.checkout')
-    .controller('CheckoutController', function ($location, $scope, $document, $timeout, $rootScope, $routeParams, $modal, $log, Session, Checkout, Cart, Products, HashKeyCopier, WizardHandler) {
+    .controller('CheckoutController', function ($location, $scope, $document, $timeout, $rootScope, $anchorScroll, $routeParams, $modal, $log, $q, Session, OrderHelper, Checkout, Cart, Products, Addresses, CreditCards, HashKeyCopier, WizardHandler) {
 
         $log.debug("CheckoutController()");
 
+        $scope.cartLoaded = false;
 
+        var params = $location.search();
+        var urlStep = S(params.step != null ? params.step : "Start").toString();
 
-        var loadCart = function() {
-            $scope.products = Cart.getItems();
-            $log.debug("loaded cart products", $scope.products);
+        //change page title
+        $rootScope.page = "Checkout";
+        $rootScope.section = "checkout";
+
+        $scope.client = {};
+
+        // persisted to session
+        $scope.checkout = {
+            billSame: true,
+            shipping: null,
+            billing: null,
+            card: {} // NOTE!!! only encrypted card data should go here
         }
-        loadCart();
-        if ($scope.products.length == 0) {
-            $location.path("/products");
-        }
 
-        $scope.total = function() {
-            var total = 0;
-            angular.forEach($scope.products, function(item) {
-                $log.debug("calculating price for item", item);
-                if (!(Array.isArray(item.prices)) || item.prices.length == 1) {
-                    total += item.quantity * item.prices[0].price;
-                } else if (item.prices.length == 0) {
-                    // there is a problem, we don't have prices
-                    $log.error("there are no prices listed for this item", item);
+        // in memory on client only
+        $scope.profile = {
+            customerStatus: 'existing',
+            firstName: '',
+            lastName: '',
+            loginEmail: '',
+            loginPassword: '',
+            phoneNumber: '',
+            newShippingAddress: {},
+            newBillingAddress: {},
+            newCard: {}
+        };
+
+        // set current step
+        $scope.currentStep = 'Start';
+
+        $log.debug("CheckoutController(): urlStep", urlStep);
+        var onlineSponsorChecksCompleteDefer = $q.defer();
+
+        // watch current step for changes
+        $scope.$watch('currentStep', function(newVal, oldVal) {
+            if (newVal != oldVal && newVal != '' && newVal != null) {
+                $log.debug("CheckoutController(): step changed from", oldVal, "to", newVal, 'profile.customerStatus', $scope.profile.customerStatus);
+                if (newVal != 'Start') {
+                    $location.search("step", newVal);
+                } else if (newVal == 'Finish') {
+                    $log.debug("CheckoutController(): triggering finished");
+                    $scope.finished();
                 } else {
-                    var priceFound = 0;
-                    angular.forEach(item.prices, function(price) {
-                        if (price.type==2) {
-                            priceFound = 1;
-                            total += item.quantity * price.price;
-                        }
-                    })
-                    if (!priceFound) {
-                        // use the first price in the list (FIXME - need to check dates))
-                        total += item.quantity * item.prices[0].price;
-                    }
+                    $log.debug("CheckoutController(): current step is", urlStep, "newVal", newVal);
                 }
 
-//                total += item.quantity * item.pricing.detailprice.price;
-            })
+                // scroll back to top for each new step
+                $location.hash("top");
+                $anchorScroll();
+            }
+        });
 
-            return total;
+        // FIXME - ensure that if loading a step, all previous steps were completed
+
+        var path = $location.path();
+        $log.debug("CheckoutController(): path", path);
+
+        $scope.isOnlineSponsoring = false;
+        if (path && path.match(/online_sponsoring/)) {
+            $scope.isOnlineSponsoring = true;
+            $log.debug("CheckoutController(): online sponsoring");
+
+            // lock profile to new, since we're in online sponsoring
+            $scope.profile.customerStatus = 'new';
+
+            // get the sku, add the product to cart
+            var sku = S($routeParams.sku != null ? $routeParams.sku : "").toString();
+            var name = S($routeParams.name != null ? $routeParams.name : "").toString();
+            $log.debug("CheckoutController(): online sponsoring: sku=", sku, "name=", name);
+
+            if (urlStep == 'Finish') {
+                $log.debug("CheckoutController(): finished wizard, redirecting to landing page?");
+                $location.path('/online_sponsoring').search('');
+                return;
+            } else if (sku == null) {
+                $log.error("CheckoutController(): failed to load sku for online sponsoring");
+                $location.path('/online_sponsoring').search('');
+                return;
+            } else {
+                if (WizardHandler.wizard('checkoutWizard') != null) {
+                    $log.debug("CheckoutController(): loading Start step");
+                    WizardHandler.wizard('checkoutWizard').goTo('Start');
+                    $location.search("step", 'Start');
+                } else {
+                    $timeout(function() {
+                        $log.debug("CheckoutController(): loading Start step after delay");
+                        WizardHandler.wizard('checkoutWizard').goTo('Start');
+                        $location.search("step", 'Start');
+                    }, 0);
+                }
+            }
+
+            // FIXME - verify all previous steps data is available, else restart process
+
+            $log.debug("CheckoutController(): clearing cart and restarting checkout");
+
+            Session.waitForInitialization().then(function(session) {
+                $log.debug("CheckoutController(): session initialized", session);
+
+                Cart.clear().then(function(cart) {
+                    $log.debug("CheckoutController(): previous cart cleared");
+
+                    Cart.addToCart({
+                        name: name,
+                        sku: sku,
+                        kitSelections: {},
+                        quantity: 1
+                    }).then(function(cart) {
+                        $log.debug("CheckoutController(): online sponsoring SKU loaded & added to cart");
+                        onlineSponsorChecksCompleteDefer.resolve();
+                    }, function(error) {
+                        $log.error("CheckoutController(): failed to update cart");
+                    });
+                }, function(error) {
+                    $log.error("CheckoutController(): failed to update cart");
+                });
+            });
+        } else {
+            // nothing to load, done
+            $log.debug("CheckoutController(): checks complete");
+            onlineSponsorChecksCompleteDefer.resolve();
+        }
+
+        // ensure everything is valid to where we are, else load the proper step
+        function checkSteps() {
+            // CLIENT DIRECT
+            if (!$scope.isOnlineSponsoring) {
+                // on a reload, ensure we've loaded session & moved to the correct step
+                if (urlStep != null && urlStep != 'Start' && !Session.isLoggedIn()) {
+                    if (urlStep == 'Finish') {
+                        $log.debug("CheckoutController(): finished wizard, redirecting to products");
+                        $location.path('/products').search('');
+                        $location.replace();
+                        return;
+                    } else {
+                        $log.debug("CheckoutController(): sending user to beginning of wizard.  not logged in");
+                        // changing url to reflect beginning of checkout
+                        //$location.search('step', null);
+                        WizardHandler.wizard('checkoutWizard').goTo('Start');
+                    }
+                } else if (urlStep == 'Finish') {
+                    $log.debug("CheckoutController(): finished wizard, redirecting to products");
+                    $location.path('/products').search('');
+                    $location.replace();
+                    return;
+                } else if (Session.isLoggedIn()) {
+                    $log.debug("CheckoutController(): user is logged in, determining checkout step", urlStep);
+
+                    Session.get().then(function(session) {
+                        $log.debug("CheckoutController(): user is logged in. step", urlStep, session.client);
+                        $scope.client = session.client;
+
+                        if (WizardHandler.wizard('checkoutWizard') != null && urlStep == 'Start') {
+                            $log.debug("CheckoutController(): skipping to shipping step");
+                            //$location.search('step', 'Shipping');
+                            WizardHandler.wizard('checkoutWizard').goTo('Shipping');
+                        } else if (urlStep == 'Start') {
+                            $timeout(function() {
+                                $log.debug("CheckoutController(): skipping to shipping step after delay");
+                                //$location.search('step', 'Shipping');
+                                WizardHandler.wizard('checkoutWizard').goTo('Shipping');
+                            }, 0);
+                        }
+                    }, function(error) {
+                        $log.error("CheckoutController(): error loading session", error);
+                    });
+                }
+            }
+        }
+
+        // load the checkout data from the session
+        function loadCheckout() {
+            $log.debug("CheckoutController(): loadCheckout()");
+
+            // load checkout data
+            $log.debug("CheckoutController(): loadCheckout(): checkout data");
+
+            Checkout.getCheckout().then(function(checkout) {
+                $log.debug("CheckoutController(): loadCheckout(): success", checkout);
+                $scope.checkout = checkout;
+            }, function(error) {
+                $log.error("CheckoutController(): loadCheckout(): checkout error", error);
+            });
+
+            // load cart data
+            Cart.getItems().then(function(items) {
+                $scope.items = items;
+
+                $scope.cartLoaded = true;
+                $log.debug("CheckoutController(): loadCheckout(): loaded cart products into items", items);
+
+                if (items.length == 0) {
+                    $log.debug("CheckoutController(): loadCheckout(): no items in cart, redirecting to products / landing");
+                    $location.path($scope.isOnlineSponsoring ? "/online_sponsoring" : "/products");
+                } else if (Session.isLoggedIn()) {
+                    // send the user past login page
+                    if (urlStep != 'Start') {
+                        $log.debug("CheckoutController(): loadCheckout(): sending logged in user to", urlStep);
+                        WizardHandler.wizard('checkoutWizard').goTo(urlStep);
+                    } else {
+                        $log.debug("CheckoutController(): loadCheckout(): sending logged in user to Shipping, skipping login/create");
+                        WizardHandler.wizard('checkoutWizard').goTo('Shipping');
+                    }
+                } else if (!$scope.isOnlineSponsoring) {
+                    $log.debug("CheckoutController(): loadCheckout(): sending non-logged in user to Start");
+                    WizardHandler.wizard('checkoutWizard').goTo('Start');
+                }
+
+                // no that we're loaded, create out change listener to track changes
+                //createChangeListener();
+            }, function(error) {
+                $log.error("CheckoutController(): loadCheckout(): cart error", error);
+                $location.path("/products");
+            });
+        }
+
+        // wait until the online sponsoring checks are complete including adding SKU to cart, then
+        // handle step validation, checkout process loading
+        onlineSponsorChecksCompleteDefer.promise.then(function() {
+            $log.debug("CheckoutController(): loadCheckout(): sponsor checks complete");
+            checkSteps();
+            loadCheckout();
+        }, function (error) {
+            $log.error("CheckoutController(): loadCheckout(): sponsor checks failed", error);
+        });
+
+//        var cancelChangeListener;
+//        function createChangeListener() {
+//            // change the wizard steps when folks hit the back/forward browser buttons
+//            cancelChangeListener = $rootScope.$on('$locationChangeSuccess', function(event, absNewUrl, absOldUrl) {
+//                var url = $location.url(),
+//                    path = $location.path(),
+//                    params = $location.search();
+//
+//                //$log.debug("CheckoutController(): changeListener(): location change event in checkout page", url, params);
+//
+//                var urlStep = S(params.step != null ? params.step : "").toString();
+//                var localStep = $scope.currentStep;
+//
+//                $scope.checkoutUpdated();
+//
+//                //$log.debug("CheckoutController(): changeListener(): url search", urlStep, "local step", localStep);
+//
+//                // if we have a composition and run, and the current scope doesn't already have the same run
+//                if (path == "/checkout" && (urlStep != localStep)) {
+//                    $log.debug("changeListener(): changeListener():  updating step in response to location change");
+//                    // NOT SURE IF WE WANT TO KEEP THIS BUT THOUGHT WE SHOULDN'T ALLOW USER TO GO TO LOGIN PAGE AGAIN ONCE THEY PASSED THIS STEP
+//                    if(urlStep=='') {
+//                        if (Session.isLoggedIn()) {
+//                            $log.debug("CheckoutController(): changeListener(): user is logged in, skipping to shipping");
+//                            WizardHandler.wizard('checkoutWizard').goTo('Shipping');
+//                            return;
+//                        } else {
+//                            WizardHandler.wizard('checkoutWizard').goTo('Start');
+//                        }
+//                    } else {
+//                        WizardHandler.wizard('checkoutWizard').goTo(urlStep);
+//                    }
+//                } else {
+//                    $log.debug("CheckoutController(): changeListener(): ignoring");
+//                }
+//            });
+//        }
+
+        $scope.total = function() {
+            if ($scope.cartLoaded) {
+              return OrderHelper.getTotal($scope.items);
+            }
+
+            return 0;
         }
         
-//        angular.directive('validPasswordC', function () {
-//            return {
-//                require: 'ngModel',
-//                link: function (scope, elm, attrs, ctrl) {
-//                    ctrl.$parsers.unshift(function (viewValue, $scope) {
-//                        var noMatch = viewValue != scope.myForm.password.$viewValue
-//                        ctrl.$setValidity('noMatch', !noMatch)
-//                    })
-//                }
-//            }
-//        })
-        
         $scope.shippingSpeed = function() {
+            $log.debug('CheckoutController(): shippingSpeed');
+
             var d = $modal.open({
                 backdrop: true,
                 keyboard: true, // we will handle ESC in the modal for cleanup
@@ -65,157 +292,71 @@ angular.module('app.controllers.checkout')
                 resolve: {
                     checkout: function() {
                         return $scope.checkout;
-                    },
-                    wizardFunc: function() {
-                        return function() {
-                            $log.debug("shipping speed wizard");
-                            $scope.shippingSpeed = shippingSpeed.optionsRadios.value;
-                            WizardHandler.wizard('checkoutWizard').goTo('Payment');                           
-                        }
-
                     }
                 }
             });
 
-            var body = $document.find('body');
+            var body = $document.find('html, body');
 
-            d.result.then(function(product) {
-                $log.debug("shipping speed");
+            d.result.then(function(shippingSpeed) {
+                if (shippingSpeed) {
+                    $log.debug("shipping speed selected");
+                    $scope.shippingSpeed = shippingSpeed;
+                    WizardHandler.wizard('checkoutWizard').goTo('Payment');
+                } else {
+                    $log.error("shipping speed not selected!!!");
+                }
 
                 // re-enable scrolling on body
                 body.css("overflow-y", "auto");
             });
 
             // prevent page content from scrolling while modal is up
-            $("body").css("overflow-y", "hidden");
-        }
-        
-        
-
-
-        //change page title
-        $rootScope.page = "Checkout";
-        $rootScope.section = "checkout";
-
-
-        $scope.checkout = {
-            currentStep: '',
-            customerStatus: 'new',
-            billSame: true,
-            shipping: {
-                addressType: ''
-            },
-            billing: {
-                addressType: ''
-            }
-        }
-        $scope.loginEmail = '';
-        $scope.loginPassword = '';
-
-        var step = $routeParams.step;
-        if (step != null && !Session.isLoggedIn()) {
-            // changing url to reflect beginning of checkout
-            $location.search('step', null);
-            $location.replace();
-
+            $("html, body").css("overflow-y", "hidden");
         }
 
         $scope.loginOrCreateUser = function(loginEmail, loginPassword) {
+            $log.debug("CheckoutController(): loginOrCreateUser()");
+
             $scope.loginError = false;
 
-            $log.debug("trying to login with username=", loginEmail, "password=", loginPassword);
-            var success = false;
-            if(checkout.customerStatus=='new') {
-                success = Session.createUser(loginEmail);
+            if ($scope.profile.customerStatus == 'new') {
+                $log.debug("CheckoutController(): loginOrCreateUser(): trying to create client with username=", loginEmail, "password=", loginPassword, $scope.profile.customerStatus);
+
+                Session.createClient(loginEmail, loginPassword).then(function(session) {
+                    $log.debug("CheckoutController(): loginOrCreateUser(): created client, moving to next step", session.client);
+                    $scope.client = session.client;
+                    // jump to Shipping
+                    WizardHandler.wizard('checkoutWizard').goTo($scope.isOnlineSponsoring ? 'Profile' : 'Shipping');
+                }, function(error) {
+                    $log.error("CheckoutController(): loginOrCreateUser(): failed to create client");
+                    $scope.loginError = true;
+                    // FIXME - show error here!!!!!
+                });
             } else {
-                success = Session.login(loginEmail, loginPassword);
-            }
-            
-            // do the auth check and store the session id in the root scope
-            
-            if (success) {
-                $log.debug("CheckoutController(): authenticated, moving to next step");
-                // jump to Shipping
-                WizardHandler.wizard('checkoutWizard').goTo('Shipping');
-            } else {
-                $log.debug("CheckoutController(): failed to authenticate");
-                $scope.loginError = true;
-            }
-        }
+                $log.debug("CheckoutController(): loginOrCreateUser(): trying to login with username=", loginEmail, "password=", loginPassword, $scope.profile.customerStatus);
 
-        var checkout = Checkout.getCheckout();
-
-        if (Session.isLoggedIn()) {
-            $log.debug("CheckoutController(): user is logged in, skipping to shipping");
-            if (WizardHandler.wizard('checkoutWizard') != null) {
-                WizardHandler.wizard('checkoutWizard').goTo('Shipping');
-            } else {
-                $timeout(function() {
-                    WizardHandler.wizard('checkoutWizard').goTo('Shipping');
-                }, 0);
+                // do the auth check and store the session id in the root scope
+                Session.login(loginEmail, loginPassword).then(function(session) {
+                    $log.debug("CheckoutController(): loginOrCreateUser(): authenticated, moving to next step", session.client);
+                    $scope.client = session.client;
+                    // jump to Shipping
+                    WizardHandler.wizard('checkoutWizard').goTo($scope.isOnlineSponsoring ? 'Profile' : 'Shipping');
+                }, function(error) {
+                    $log.error("CheckoutController(): loginOrCreateUser(): failed to authenticate");
+                    $scope.loginError = true;
+                });
             }
         }
 
-        if (checkout.customerStatus == null) {
-            checkout.customerStatus = 'new';
-        }
-        if (checkout.currentStep == null) {
-            checkout.currentStep = '';
-        }
-        if (checkout.billSame == null) {
-            checkout.billSame = true;
+        $scope.completeProfile = function() {
+            $log.debug("CheckoutController(): completeProfile(): profile complete", $scope.checkout);
+            Checkout.setCheckout($scope.checkout);
         }
 
-        $scope.checkout = checkout;
-
-        // change the wizard steps when folks hit the back/forward browser buttons
-        var cancelChangeListener = $rootScope.$on('$locationChangeSuccess', function(event, absNewUrl, absOldUrl){
-            var url = $location.url(),
-                path = $location.path(),
-                params = $location.search();
-
-            //$log.debug("CheckoutController(): changeListener(): location change event in checkout page", url, params);
-
-            var urlStep = S(params.step != null ? params.step : "").toString();
-            var localStep = $scope.checkout.currentStep;
-
-            //$log.debug("CheckoutController(): changeListener(): url search", urlStep, "local step", localStep);
-
-            // if we have a composition and run, and the current scope doesn't already have the same run
-            if (path == "/checkout" && (urlStep != localStep)) {
-                $log.debug("changeListener(): updating step in response to location change");
-                // NOT SURE IF WE WANT TO KEEP THIS BUT THOUGHT WE SHOULDN'T ALLOW USER TO GO TO LOGIN PAGE AGAIN ONCE THEY PASSED THIS STEP
-                if(urlStep=='') {
-                    if (Session.isLoggedIn()) {
-                        $log.debug("CheckoutController(): user is logged in, skipping to shipping");
-                        WizardHandler.wizard('checkoutWizard').goTo('Shipping');
-                        return;
-                    } else {
-                        WizardHandler.wizard('checkoutWizard').goTo('Start');
-                    }
-                } else {
-                    WizardHandler.wizard('checkoutWizard').goTo(urlStep);
-                }
-            } else {
-                $log.debug("CheckoutController(): changeListener(): ignoring");
-            }
-        });
-
-        $scope.$watch('checkout.currentStep', function(newVal, oldVal) {
-            if (newVal != oldVal && newVal != '' && newVal != null) {
-                $log.debug("CheckoutController(): step changed from", oldVal, "to", newVal);
-                if (newVal != 'Start') {
-                    $location.search("step", newVal);
-                }
-                if (newVal == 'Finish') {
-                    $log.debug("triggering finished");
-                    $scope.finished();
-                }
-            }
-        });
 
         $scope.checkoutUpdated = function() {
-            $log.debug("checkout updated", $scope.checkout);
+            $log.debug("CheckoutController(): checkoutUpdated(): checkout updated", $scope.checkout);
             Checkout.setCheckout($scope.checkout);
         }
         
@@ -228,128 +369,113 @@ angular.module('app.controllers.checkout')
 
         }
 
-        // customer data
-        $scope.existingCustomerData = {
-            info: {
-                    emailAddress: 'dain@lavisual.com',
-                    password: 'item'
-            },
-            addresses: [
-                {
-                    address1: '123 Eastman Ave',
-                    address2: '',
-                    city: 'Simi Valley',
-                    state: 'CA',
-                    zip: '93065',
-                    country: 'United States',
-                    phone: '805-558-1097',
-                    type: 'House',
-                    notes: '',
-                    name: 'Dain Kennison'
-                },
-                {
-                    address1: '8585 Lake Road',
-                    address2: '',
-                    city: 'Simi Valley',
-                    state: 'CA',
-                    zip: '93063',
-                    country: 'United States',
-                    phone: '805-558-1097',
-                    type: 'House',
-                    notes: '',
-                    name: 'Dain Kennison'
+        $scope.addPaymentMethod = function() {
+            if (!$scope.isOnlineSponsoring) {
+                $log.debug("CheckoutController(): addPaymentMethod(): adding card to account", $scope.profile.newCard);
+                // we need to create a card and add to the account for client direct
+                $scope.addCard($scope.profile.newCard, function() {
+                    $log.debug("CheckoutController(): addPaymentMethod(): continuing to review");
+                    WizardHandler.wizard('checkoutWizard').goTo('Review');
+                }, function() {
+                    $log.error("CheckoutController(): addPaymentMethod(): error");
+                    // FIXME - show an error here, stay on the step
+                });
+            } else {
+                // we just add to checkout for online sponsoring
+                // FIXME - need to encrypt this first!!!
+                $log.debug("CheckoutController(): addPaymentMethod(): saving the card to the checkout and continuing on", $scope.profile.newCard);
+                $scope.checkout.card = $scope.profile.newCard;
+                WizardHandler.wizard('checkoutWizard').goTo('Review');
+            }
+
+            if (!$scope.checkout.billSame) {
+                $log.debug("CheckoutController(): addPaymentMethod(): setting billing address", $scope.profile.newBillingAddress);
+
+                if (!$scope.isOnlineSponsoring) {
+                    // we need to create an address to add to the account for client direct
+                    $scope.setBillingAddress($scope.profile.newBillingAddress, true);
+                } else {
+                    // we just add to checkout for online sponsoring
+                    $scope.checkout.billing = $scope.profile.newBillingAddress;
                 }
-            ],
-            creditCards: [
-                {
-                    name: 'Dain Michael Kennison',
-                    cardNumber: '4321123443211234',
-                    expMonth: '02',
-                    expYear: '2016',
-                    securityCode: '123'
-                },
-                {
-                    name: 'Dain Michael Kennison',
-                    cardNumber: '4111111111111111',
-                    expMonth: '04',
-                    expYear: '2015',
-                    securityCode: '123'
-                }
-            ]
+            }
+        }
+
+        $scope.addCard = function(card, success, failure) {
+            $log.debug('CheckoutController(): addCard(): card data', card);
+
+            CreditCards.addCreditCard(card).then(function(card) {
+                $log.debug("CheckoutController(): addCard(): card added", card);
+                // FIXME - this should be encrypted first!!!
+                $scope.checkout.card = card;
+                success();
+            }, function(err) {
+                $log.error("CheckoutController(): addCard(): failed to add card", err);
+                failure();
+            });
 
         }
-        
-        
-        
-        // create order object
-        $scope.orderObject = {creditCard:{}, shipping:{}, billing:{}};
-        
-        $scope.addToOrderObject = function(object, data) {
-            $log.debug('order object before', $scope.orderObject);
-            $scope.orderObject[object] = data;
-            $log.debug('order object after', $scope.orderObject);
-//            $scope.orderObject.object.push(angular.copy(data));
+
+        $scope.selectAddressAndContinue = function(address) {
+            $log.debug("CheckoutController(): selectAddressAndContinue(): shipping and billing set to", address);
+            $scope.checkout.shipping = address;
+            $scope.checkout.billing = address;
+            $scope.shippingSpeed();
         }
-        
-        $scope.newCustomerData = {};
-        
-        
-        $scope.addCard = function(cardData) { 
-            $log.debug('card data', cardData);
-            var creditCard = {
-                name: cardData.cardName,
-                cardNumber: cardData.cardNumber,
-                expMonth: cardData.expMonth,
-                expYear: cardData.expYear,
-                securityCode: cardData.securityCode
-            }
-            
-            // add card to order object
-            $scope.orderObject.creditCard = creditCard;
-            $log.debug('order object', $scope.orderObject);
-            
-            if(cardData.customerStatus=='existing') {
-                $scope.existingCustomerData.creditCards.push(angular.copy(creditCard));
+
+        $scope.addAddressAndContinue = function(address) {
+            $log.debug("CheckoutController(): addAddressAndContinue()");
+
+            if ($scope.isOnlineSponsoring) {
+                $log.debug("CheckoutController(): addAddressAndContinue(): setting consultant shipping/billing address", address);
+                $scope.checkout.shipping = address;
+                $scope.checkout.billing = address;
+                WizardHandler.wizard('checkoutWizard').goTo('Payment');
             } else {
-                $scope.newCustomerData = {creditCards: []};                
-                $scope.newCustomerData.creditCards.push(angular.copy(creditCard));
+                $log.error("CheckoutController(): addAddressAndContinue(): adding address");
+                $scope.addAddress(address).then(function() {
+                    $log.debug("CheckoutController(): addAddressAndContinue(): added address, showing shipping speed");
+                    $scope.shippingSpeed();
+                }, function(error) {
+                    $log.error("CheckoutController(): addAddressAndContinue(): error adding address", error);
+                });
             }
-            
-            
-//                $log.debug('card data', $scope.newCustomerData); $log.debug('existing card data', $scope.existingCustomerData)
         }
-        
-        $scope.addAddress = function(data, addressType) { 
-            $log.debug('address data', data);
-            var address = {
-                address1: data.address1,
-                address2: data.address2,
-                city: data.city,
-                state: data.stateProvinceRegion,
-                zip: data.zipPostalCode,
-                country: data.country,
-                phone: data.phone,
-                type: data.addressType,
-                notes: data.securityAccessCode,
-                name: data.fullName
-            }
-            
-            // add address to order object
-            $scope.orderObject[addressType] = address;
-//            $log.debug('order object', $scope.orderObject);
-            
-            if(data.customerStatus=='existing') {
-                $scope.existingCustomerData.addresses.push(angular.copy(address));
+
+        $scope.addAddress = function(address) {
+            var d = $q.defer();
+
+            $log.debug('CheckoutController(): addAddress(): address data', address);
+
+            Addresses.addAddress(address).then(function(address) {
+                $log.debug("CheckoutController(): addAddress(): address added", address);
+                $scope.checkout.shipping = address;
+                $scope.checkout.billing = address;
+                d.resolve(address);
+            }, function(err) {
+                $log.error("CheckoutController(): addAddress(): failed to add address", err);
+                d.reject(err);
+            });
+
+            return d.promise;
+        }
+
+        $scope.setBillingAddress = function(address, isNew) {
+            $log.debug('CheckoutController(): setBillingAddress(): billing address data', address);
+
+            if (isNew) {
+                Addresses.addAddress(address).then(function(a) {
+                    $log.debug("CheckoutController(): addAddress(): address added", a);
+                    $scope.checkout.billing = a;
+                }, function(err) {
+                    $log.error("CheckoutController(): addAddress(): failed to add address", err);
+                });
             } else {
-                $scope.newCustomerData = {addresses: []};                
-                $scope.newCustomerData.addresses.push(angular.copy(address));
+                $log.debug("CheckoutController(): addAddress(): setting address to existing address", address);
+                $scope.checkout.billing = address;
             }
-            
-            
-//                $log.debug('card data', $scope.newCustomerData); $log.debug('existing card data', $scope.existingCustomerData)
         }
-        
-        
+
         $scope.substr = function(string, start, charNo) {
             if (string == null) {
                 return null;
@@ -363,10 +489,16 @@ angular.module('app.controllers.checkout')
         }
         
         $scope.finished = function() {
-            $log.debug("Checkout finished :)");
-            $scope.checkout.currentStep = '';
-            Checkout.clear();
-            Cart.clear();
+            $log.debug("CheckoutController(): finished(): Checkout finished :)");
+            $scope.currentStep = '';
+            Checkout.clear().then(function() {
+                $log.debug("CheckoutController(): finished(): Checkout cleared", $scope.checkout);
+            });
+            Cart.clear().then(function() {
+                $log.debug("CheckoutController(): finished(): Cart cleared", $scope.cart);
+            });
+            $location.path('/products');
+            $location.replace();
         }
 
         function cleanup() {
@@ -375,11 +507,6 @@ angular.module('app.controllers.checkout')
                 cancelChangeListener();
             }
         }
-        
-        
-        
-        
-        
 
         /*==== CLEANUP ====*/
         $scope.$on('$destroy', function() {

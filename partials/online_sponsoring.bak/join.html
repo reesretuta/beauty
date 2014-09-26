@@ -1,0 +1,376 @@
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">[Logo]</a>
+    </div>
+    <div class="navbar-collapse collapse navbar-sections">
+
+      <ul class="nav navbar-nav navbar-right navbar-language" style="margin-left: 40px;">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="http://static.flag-sprites.com/i/blank.gif" class="flag flag-us" alt="US English" /> US English <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">US English</a></li>
+            <li><a href="#">US Spanish</a></li>
+          </ul>
+        </li>
+      </ul>
+
+      <!-- <ul class="nav navbar-nav navbar-right">
+        <li><a href="#why_jafra">Why JAFRA?</a></li>
+        <li><a href="#starter_packages">Starter Packages</a></li>
+        <li><a href="#FAQs">FAQs</a></li>
+        <li><button type="button" class="btn btn-inverse navbar-btn" href="#starter_packages">Join Now</button></li>
+      </ul> -->
+
+    </div><!--/.navbar-collapse -->
+  </div>
+</div>
+
+
+<div class="container">
+
+  <wizard name="joinWizard" hide-indicators="false" on-finish="finished()" current-step="join.currentStep">
+
+    <!--current step: {{join.currentStep}}-->
+
+    <!-- Sign In -->
+    <wz-step title="Sign In">
+      <div id="signin" class="col-sm-12 ng-scope">
+        <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+        <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+        <div class="col-md-offset-3">
+          <h1 class="checkouth1">Sign In or Create an Account</h1>
+        </div>
+        <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+        <!--valid={{signInForm.$valid}}-->
+        <form name="signInForm" class="form-horizontal ng-pristine ng-invalid ng-invalid-required" role="form">
+
+          <div class="form-group">
+            <label class="col-md-3 control-label">Sign In</label>
+            <div class="col-sm-6">
+              <!-- Button trigger modal -->
+              <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal"><i class="fa fa-facebook"></i> &nbsp; &nbsp;Sign in with Facebook</button>
+              <div class="row sign-in-or-account"><div class="col-sm-12 text-center"><button class="btn btn-default btn-sm" disabled>OR</button><hr></div></div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="inputEmail3" class="col-md-3 control-label">Email Address</label>
+            <div class="col-sm-6">
+              <input name="loginEmail" ng-model="loginEmail" ng-change="checkoutUpdated()" type="email" class="form-control ng-pristine ng-invalid ng-invalid-required ng-valid-email" id="inputEmail3" placeholder="Email" tabindex="1" required="" autocomplete="off">
+              <!--valid={{signInForm.loginEmail.$valid}}-->
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="inputPassword3" class="col-md-3 control-label">Password</label>
+            <div class="col-sm-4">
+              <input name="loginPassword" ng-model="loginPassword" ng-change="checkoutUpdated()" type="password" class="form-control ng-pristine ng-invalid ng-invalid-required" id="inputPassword3" placeholder="Password" tabindex="2" required="" autocomplete="off">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-md-offset-3 col-sm-9">
+              <!-- <div class="radio">
+                <label>
+                  <input name="customerStatus" ng-model="join.customerStatus" ng-change="checkoutUpdated()" type="radio" id="optionsRadios1" value="new" class="ng-pristine ng-valid" checked>
+                  I am a new customer
+                </label>
+              </div>
+              <div class="radio">
+                <label>
+                  <input name="customerStatus" ng-model="join.customerStatus" ng-change="checkoutUpdated()" type="radio" id="optionsRadios2" value="existing" class="ng-pristine ng-valid">
+                  I am an existing customer
+                </label>
+              </div> -->
+
+              <!--customerStatus={{join.customerStatus}}-->
+
+
+              <!-- ngIf: loginError -->
+
+
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-md-offset-3 col-sm-9">
+              <button type="submit" class="btn btn-default" tabindex="3" ng-click="loginOrCreateUser(loginEmail, loginPassword)" ng-disabled="true==false">Create Account &nbsp;<i class="fa fa-caret-right"></i></button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-md-offset-3 col-sm-9">
+              <div class="row"><div class="col-sm-8"><hr></div></div>
+              <div class="checkbox">
+                <label>
+                  <input name="keepMeSignedIn" ng-model="join.keepMeSignedIn" ng-change="checkoutUpdated()" type="checkbox" checked="" class="ng-pristine ng-valid"> Keep me signed in &nbsp;&nbsp;
+                  <a popover="Placeholder text" popover-title="Keep me signed in" href="" class="ng-scope"><i class="fa fa-info-circle"></i> More Info</a>
+                </label>
+              </div>
+              <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+              <!-- <p><a href="#/checkout?step=Shipping">Checkout as guest</a></p> -->
+              <p><a href="" onclick="$('#forgot').css('display','block'); $('#signin').css('display','none');">I forgot my password</a></p>
+              <p><a href="">I have a new email address</a></p>
+            </div>
+          </div>
+        </form>
+      </div>
+    </wz-step>
+
+    <!-- Consultant Profile -->
+    <wz-step title="Consultant Profile">
+      <div id="profile" class="col-sm-12 ng-scope">
+        <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+        <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+        <div class="col-md-offset-3">
+          <h1 class="checkouth1">Complete Your JAFRA Consultant Profile</h1>
+        </div>
+        <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+        <!--valid={{signInForm.$valid}}-->
+        <form name="signInForm" class="form-horizontal ng-pristine ng-invalid ng-invalid-required" role="form">
+
+          <div class="form-group">
+            <label class="col-md-3 control-label">Profile Photo</label>
+            <div class="col-md-2"><img class="img-responsive" src="/img/1by1.jpg"><small>(imported from facebook)</small> <button class="btn btn-default">upload a new photo</button></div>
+            <div class="col-md-offset-3 col-sm-9"><hr></div>
+          </div>
+
+
+          <div class="form-group">
+            <label for="firstName" class="col-md-3 control-label">First Name</label>
+            <div class="col-sm-3">
+              <input name="firstName" ng-model="firstName" ng-change="checkoutUpdated()" type="text" class="form-control ng-pristine ng-invalid ng-invalid-required" id="firstName" placeholder="First" tabindex="2" required="" autocomplete="off">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="lastName" class="col-md-3 control-label">Last Name</label>
+            <div class="col-sm-3">
+              <input name="lastName" ng-model="lastName" ng-change="checkoutUpdated()" type="text" class="form-control ng-pristine ng-invalid ng-invalid-required" id="lastName" placeholder="LAST" tabindex="2" required="" autocomplete="off">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="dateOfBirth" class="col-md-3 control-label">Date of Birth</label>
+            <div class="col-sm-3">
+              <input name="dateOfBirth" ng-model="dateOfBirth" ng-change="checkoutUpdated()" type="text" class="form-control ng-pristine ng-invalid ng-invalid-required" id="dateOfBirth" placeholder="    /     /    " tabindex="2" required="" autocomplete="off">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="ssn" class="col-md-3 control-label">SSN</label>
+            <div class="col-sm-3">
+              <input name="ssn" ng-model="ssn" ng-change="checkoutUpdated()" type="text" class="form-control ng-pristine ng-invalid ng-invalid-required" id="ssn" placeholder="     -    -     " tabindex="2" required="" autocomplete="off">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-md-offset-3 col-sm-9">
+              <a href="#" class="btn btn-primary" tabindex="3" ng-click="saveProfile()" ng-disabled="!signInForm.$valid">Continue &nbsp;<i class="fa fa-caret-right"></i></a>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </wz-step>
+
+    <!-- Shipping -->
+    <wz-step title="Shipping">
+      <div class="col-md-offset-3">
+        <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+        <!-- ngIf: join.customerStatus=='existing' --><h1 ng-if="join.customerStatus=='existing'" class="ng-scope">Choose a shipping address</h1><!-- end ngIf: join.customerStatus=='existing' -->
+        <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+
+        <!-- ngIf: join.customerStatus=='existing' --><div class="row ng-scope" ng-if="join.customerStatus=='existing'">
+        <!-- ngRepeat: addressData in existingCustomerData.addresses --><div class="col-xs-6 col-lg-4 checkout-address ng-scope" ng-repeat="addressData in existingCustomerData.addresses">
+        <span class="address-name ng-binding">Dain Kennison</span>
+        <span class="address-street ng-binding">123 Eastman Ave </span>
+        <span class="address-region ng-binding">Simi Valley,   CA 93065</span>
+        <span class="phone-number ng-binding">805-558-1097</span>
+        <div class="address-actions">
+          <a href=""><i class="fa fa-pencil-square-o"></i> Edit</a>
+          &nbsp;&nbsp;
+          <a href=""><i class="fa fa-times-circle"></i> Remove</a>
+        </div>
+        <a href="billing.html" class="btn btn-primary" wz-next="" ng-click="addToOrderObject('shipping',addressData);shippingSpeed()">Ship to this Address</a>
+      </div><!-- end ngRepeat: addressData in existingCustomerData.addresses --><div class="col-xs-6 col-lg-4 checkout-address ng-scope" ng-repeat="addressData in existingCustomerData.addresses">
+        <span class="address-name ng-binding">Dain Kennison</span>
+        <span class="address-street ng-binding">8585 Lake Road </span>
+        <span class="address-region ng-binding">Simi Valley,   CA 93063</span>
+        <span class="phone-number ng-binding">805-558-1097</span>
+        <div class="address-actions">
+          <a href=""><i class="fa fa-pencil-square-o"></i> Edit</a>
+          &nbsp;&nbsp;
+          <a href=""><i class="fa fa-times-circle"></i> Remove</a>
+        </div>
+        <a href="billing.html" class="btn btn-primary" wz-next="" ng-click="addToOrderObject('shipping',addressData);shippingSpeed()">Ship to this Address</a>
+      </div><!-- end ngRepeat: addressData in existingCustomerData.addresses --><!-- /address -->
+
+      </div><!-- end ngIf: join.customerStatus=='existing' -->
+
+        <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+
+        <!-- ngIf: join.customerStatus=='new' -->
+
+        <!-- ngIf: join.customerStatus=='existing' --><hr ng-if="join.customerStatus=='existing'" class="ng-scope"><!-- end ngIf: join.customerStatus=='existing' -->
+        <!-- ngIf: join.customerStatus=='existing' --><h2 class="ng-scope" ng-if="join.customerStatus=='existing'">Add a new address</h2><!-- end ngIf: join.customerStatus=='existing' -->
+        <!-- ngIf: join.customerStatus!='existing' -->
+
+      </div>
+      <form name="shippingForm" class="form-horizontal ng-pristine ng-invalid ng-invalid-required" role="form" novalidate="">
+        <div class="row form-group">
+          <label for="shippingFullName" class="col-md-3 control-label">Full Name</label>
+          <div class="col-sm-8 col-lg-6">
+            <input name="fullName" ng-model="join.shipping.fullName" ng-change="checkoutUpdated()" type="text" class="form-control ng-pristine ng-invalid ng-invalid-required" id="shippingFullName" placeholder="" tabindex="1" required="" autocomplete="off" style="background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QsPDhss3LcOZQAAAU5JREFUOMvdkzFLA0EQhd/bO7iIYmklaCUopLAQA6KNaawt9BeIgnUwLHPJRchfEBR7CyGWgiDY2SlIQBT/gDaCoGDudiy8SLwkBiwz1c7y+GZ25i0wnFEqlSZFZKGdi8iiiOR7aU32QkR2c7ncPcljAARAkgckb8IwrGf1fg/oJ8lRAHkR2VDVmOQ8AKjqY1bMHgCGYXhFchnAg6omJGcBXEZRtNoXYK2dMsaMt1qtD9/3p40x5yS9tHICYF1Vn0mOxXH8Uq/Xb389wff9PQDbQRB0t/QNOiPZ1h4B2MoO0fxnYz8dOOcOVbWhqq8kJzzPa3RAXZIkawCenHMjJN/+GiIqlcoFgKKq3pEMAMwAuCa5VK1W3SAfbAIopum+cy5KzwXn3M5AI6XVYlVt1mq1U8/zTlS1CeC9j2+6o1wuz1lrVzpWXLDWTg3pz/0CQnd2Jos49xUAAAAASUVORK5CYII=); background-attachment: scroll; background-position: 100% 50%; background-repeat: no-repeat;">
+          </div>
+        </div>
+
+        <div class="row form-group">
+          <label for="shippingAddress1" class="col-md-3 control-label">Address Line 1</label>
+          <div class="col-sm-8 col-lg-6">
+            <input name="address1" ng-model="join.shipping.address1" ng-change="checkoutUpdated()" type="text" class="form-control ng-pristine ng-invalid ng-invalid-required" id="shippingAddress1" placeholder="Street address, P.O. box, company name, c/o " tabindex="2" required="">
+          </div>
+        </div>
+
+        <div class="row form-group">
+          <label for="shippingAddress2" class="col-md-3 control-label">Address Line 2</label>
+          <div class="col-sm-8 col-lg-6">
+            <input name="address2" ng-model="join.shipping.address2" ng-change="checkoutUpdated()" type="text" class="form-control ng-pristine ng-valid" id="shippingAddress2" placeholder="Apartment, suite, unit, building, floor, etc. " tabindex="3">
+          </div>
+        </div>
+
+        <div class="row form-group">
+          <label for="shippingCity" class="col-md-3 control-label">City</label>
+          <div class="col-sm-7 col-lg-5">
+            <input name="city" ng-model="join.shipping.city" type="text" ng-change="checkoutUpdated()" class="form-control ng-pristine ng-invalid ng-invalid-required" id="shippingCity" placeholder=" " tabindex="4" required="">
+          </div>
+        </div>
+
+        <div class="row form-group">
+          <label for="shippingStateProvinceRegion" class="col-md-3 control-label">State/Province/Region</label>
+          <div class="col-sm-6 col-lg-4">
+            <input name="stateProvinceRegion" ng-model="join.shipping.stateProvinceRegion" ng-change="checkoutUpdated()" type="text" class="form-control ng-pristine ng-invalid ng-invalid-required" id="shippingStateProvinceRegion" placeholder=" " tabindex="5" required="">
+          </div>
+        </div>
+
+        <div class="row form-group">
+          <label for="shippingZipPostalCode" class="col-md-3 control-label">Zip/Postal Code</label>
+          <div class="col-sm-5 col-lg-3">
+            <input name="zipPostalCode" ng-model="join.shipping.zipPostalCode" ng-change="checkoutUpdated()" type="text" class="form-control ng-pristine ng-invalid ng-invalid-required" id="shippingZipPostalCode" placeholder=" " tabindex="6" required="">
+          </div>
+        </div>
+
+        <div class="row form-group">
+          <label for="shippingCountry" class="col-md-3 control-label">Country</label>
+          <div class="col-sm-6 col-lg-4">
+            <select ng-init="option[0]" name="country" ng-model="join.shipping.country" ng-change="checkoutUpdated()" class="form-control ng-pristine ng-valid" id="shippingCountry" tabindex="7"><option value="? undefined:undefined ?"></option>
+              <option ng-selected="1" value="United States" selected="selected">United States</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row form-group" ng-class="{ 'has-error' : shippingForm.phoneNumber.$invalid &amp;&amp; !shippingForm.phoneNumber.$pristine }">
+          <label for="shippingPhoneNumber" class="col-md-3 control-label">Phone Number</label>
+          <div class="col-sm-6 col-lg-4">
+            <input name="phoneNumber" ng-model="join.shipping.phone" ng-minlength="10" ng-maxlength="13" maxlength="13" type="text" ng-pattern="/^\(?(\d{3})\)?[ .-]?(\d{3})[ .-]?(\d{4})$/" class="form-control ng-pristine ng-invalid ng-invalid-required ng-valid-maxlength ng-valid-minlength ng-valid-pattern" id="shippingPhoneNumber" placeholder=" " tabindex="8" required="">
+            <span ng-show="shippingForm.phoneNumber.$error.pattern" class="help-block ng-hide" ng-class="{ 'text-danger' : shippingForm.phoneNumber.$invalid &amp;&amp; !shippingForm.phoneNumber.$pristine }">Phone Number needs to be at least 10 numbers.</span>
+          </div>
+          <a popover="May be printed on shipping label to assist delivery." popover-title="Phone Number" href="" class="form-info-link ng-scope"><i class="fa fa-info-circle"></i> More Info</a>
+        </div>
+
+
+        <div class="col-md-offset-3">
+
+          <hr>
+          <h2 class=" " style="display:inline-block">Delivery Preferences (optional)</h2>
+          <a popover="Address Type (Optional) - This helps us select the best delivery method for your shipping address." popover-title="Phone Number" href="" class="form-info-link ng-scope"><i class="fa fa-info-circle"></i> What's this?</a>
+
+        </div> <!-- /offset -->
+
+
+        <div class="row form-group">
+          <label for="shippingAddressType" class="col-md-3 control-label">Address Type</label>
+          <div class="col-sm-6 col-lg-4">
+            <select name="addressType" ng-model="join.shipping.addressType" ng-change="checkoutUpdated()" class="form-control ng-pristine ng-valid" id="shippingAddressType" tabindex="9">
+              <option value="">Select an Address Type</option>
+              <option value="apartment">Apartment</option>
+              <option value="condo">Condominium</option>
+              <option value="house">House</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row form-group">
+          <label for="shippingSecurityAccessCode" class="col-md-3 control-label">Security Access Code</label>
+          <div class="col-sm-6 col-lg-4">
+            <input name="securityAccessCode" ng-model="join.shipping.securityAccessCode" type="text" class="form-control ng-pristine ng-valid" id="shippingSecurityAccessCode" placeholder="For buildings or gated communities" tabindex="10">
+          </div>
+        </div>
+
+        <div class="col-md-offset-3">
+
+          <hr>
+
+        </div> <!-- /offset -->
+
+        <div class="row form-group">
+          <div class="col-md-offset-3 col-sm-9">
+            <button type="submit" class="btn btn-primary btn-lg" tabindex=" " ng-disabled="!shippingForm.$valid" ng-click="addAddress(join.shipping, 'shipping');shippingSpeed()" disabled="disabled">Ship to this address &nbsp;<i class="fa fa-caret-right"></i></button>
+          </div>
+        </div>
+
+      </form>
+    </wz-step>
+
+    <!-- Payment Method -->
+    <wz-step title="Payment Method">
+    </wz-step>
+
+    <!-- Review -->
+    <wz-step title="Review">
+    </wz-step>
+
+    <!-- Finish -->
+    <wz-step title="Finish">
+    </wz-step>
+
+
+  </wizard>
+</div>
+
+<hr>
+
+<footer>
+  <div class="pull-right footer-logos">
+      <a href="" class="jafra-logo"><span class="sr-only">Jafra Usa</span></a>
+      <a href="" class="vorwerk-logo"><span class="sr-only">Vorwerk</span></a>
+      <a href="" class="dsa-logo"><span class="sr-only">DSA</span></a>
+  </div>
+
+  <div class="legalcopy">
+    <p>
+      <a href="" class="btn btn-link">Terms</a>
+       |
+      <a href="" class="btn btn-link">Privacy</a>
+    </p>
+    <p>© 2014 - JAFRA Cosmetics International - All Rights Reserved</p>
+  </div>
+</footer>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <a href="profile.html"><img class="img-responsive" src="/img/fb_login_comp.png"></a>
+      </div>
+    </div>
+  </div>
+</div>

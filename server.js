@@ -2,20 +2,47 @@
 // =============================================================================
 
 // call the packages we need
-var express        = require('express');
+var express = require('express');
 var methodOverride = require('method-override');
-var bodyParser     = require('body-parser');
-var morgan         = require('morgan');
-var app            = express();
+var bodyParser = require('body-parser');
+var morgan = require('morgan');
+var app = express();
+var session    = require('express-session');
+var MongoStore = require('connect-mongo')(session);
 
 // configure app
 //app.use(bodyParser());
 
-var port     = process.env.PORT || 8090; // set our port
+var port = process.env.PORT || 8090; // set our port
 
 //var morgan = require('morgan')
 var S = require('string');
 var models = require('./common/models.js');
+
+// SESSION CONFIG
+var hour = 3600000;
+var sess = {
+    secret: 'jkfh873y8hwhd871wh9udhju1w9sdhyy1gef87g87dfgw',
+    cookie: {
+        maxAge: hour,
+        secure: false,
+        path: "/"
+    },
+    resave: true,
+    saveUninitialized: true,
+    store: new MongoStore({
+        mongoose_connection : models.db,
+        db: 'jafra',
+        stringify: false
+    })
+};
+
+if (app.get('env') === 'production') {
+    app.set('trust proxy', 1) // trust first proxy
+    sess.cookie.secure = true // serve secure cookies
+}
+
+app.use(session(sess));
 
 // ROUTES FOR OUR API
 // =============================================================================
@@ -23,7 +50,7 @@ var models = require('./common/models.js');
 // create our router
 var router = express.Router();
 
-console.log("have router",router);
+//console.log("have router",router);
 
 //// middleware to use for all requests
 //router.use(function(req, res, next) {
@@ -35,28 +62,19 @@ console.log("have router",router);
 //    next();
 //});
 
-// test route to make sure everything is working (accessed at GET http://localhost:8080/api)
-router.get('/', function(req, res) {
-    res.json({ message: 'Jafra API' });
-});
-
 
 // CATEGORIES
 // ----------------------------------------------------
-router.route('/categories')
-    // get all the categories
-    .get(function(req, res) {
+router.route('/categories')// get all the categories
+    .get(function (req, res) {
         console.log("getting category list");
-        models.Category.find({parent: { $exists: false }, onHold: false, showInMenu: true })
-            .sort('rank')
-            .limit(100)
-            .populate({
-                path: 'children',
-                match: { onHold: false, showInMenu: true }
-            })
-            .exec(function(err, categories) {
-                if (err)
+        models.Category.find({parent: { $exists: false }, onHold: false, showInMenu: true }).sort('rank').limit(100).populate({
+            path: 'children',
+            match: { onHold: false, showInMenu: true }
+        }).exec(function (err, categories) {
+                if (err) {
                     res.send(err);
+                }
 
                 var opts = {
                     path: 'children.children',
@@ -78,17 +96,15 @@ router.route('/categories')
             });
     })
 
-router.route('/categories/:category_id')
-    // get the category with that id
-    .get(function(req, res) {
-        models.Category.findOne({_id: req.params.category_id, onHold: false, showInMenu: true })
-            .populate({
-                path: 'children',
-                match: { onHold: false, showInMenu: true }
-            })
-            .exec(function(err, category) {
-                if (err)
+router.route('/categories/:category_id')// get the category with that id
+    .get(function (req, res) {
+        models.Category.findOne({_id: req.params.category_id, onHold: false, showInMenu: true }).populate({
+            path: 'children',
+            match: { onHold: false, showInMenu: true }
+        }).exec(function (err, category) {
+                if (err) {
                     res.send(err);
+                }
 
                 if (!category) {
                     res.send('404', {status: 404, message: 'Category not found'});
@@ -120,7 +136,7 @@ router.route('/categories/:category_id')
 router.route('/products')
 
     // get all the products (accessed at GET http://localhost:8080/api/products)
-    .get(function(req, res) {
+    .get(function (req, res) {
         // handle search
         var searchString = req.query.search;
         var categoryId = req.query.categoryId;
@@ -129,18 +145,23 @@ router.route('/products')
         if (searchString != null && !S(searchString).isEmpty()) {
             console.log("searching for product by string", searchString);
             //var re = new RegExp(searchString);
-            models.Product.find({ $text : { $search : ""+searchString } })
-                //.or([{ 'name': { $regex: re }}, { 'description': { $regex: re }}, { 'usage': { $regex: re }}, { 'ingredients': { $regex: re }}])
-                .and([{masterStatus : "A"}])
-                .sort('name')
-                .limit(20)
-                .populate({
+            models.Product.find({ $text: { $search: "" + searchString } })//.or([{ 'name': { $regex: re }}, { 'description': { $regex: re }}, { 'usage': { $regex: re }}, { 'ingredients': { $regex: re }}])
+                .and([
+                    {masterStatus: "A"}
+                ]).sort('name').limit(20).populate({
                     path: 'upsellItems.product youMayAlsoLike.product contains.product',
                     model: 'Product'
-                })
-                .exec(function(err, products) {
-                    if (err)
+                }).populate({
+                    path: 'kitGroups.kitGroup',
+                    model: 'KitGroup'
+                }).populate({
+                    path: 'kitGroups.kitGroup.components.product',
+                    model: 'Product'
+                }).exec(function (err, products) {
+                    if (err) {
                         res.send(err);
+                        return;
+                    }
 
                     console.log("returning", products.length, "products");
                     res.json(products);
@@ -148,84 +169,77 @@ router.route('/products')
         } else if (categoryId != null && !S(categoryId).isEmpty()) {
             console.log("searching for product by category", categoryId);
             var id = parseInt(categoryId);
-            models.Product.find({ categories : id, masterStatus : "A" })
-                .sort('name')
-                .limit(20)
-                .populate({
-                    path: 'upsellItems.product youMayAlsoLike.product contains.product',
-                    model: 'Product'
-                })
-                .exec(function(err, products) {
-                    if (err)
-                        res.send(err);
+            models.Product.find({ categories: id, masterStatus: "A" }).sort('name').limit(20).populate({
+                path: 'upsellItems.product youMayAlsoLike.product contains.product',
+                model: 'Product'
+            }).populate({
+                path: 'kitGroups.kitGroup',
+                model: 'KitGroup'
+            }).populate({
+                path: 'kitGroups.kitGroup.components.product',
+                model: 'Product'
+            }).exec(function (err, products) {
+                if (err) {
+                    res.send(err);
+                }
 
-                    console.log("returning", products.length, "products");
-                    res.json(products);
-                });
+                console.log("returning", products.length, "products");
+                res.json(products);
+            });
         } else if (productIds != null) {
             if (!Array.isArray(productIds)) {
                 productIds = [productIds];
             }
             console.log("searching for product by IDs", productIds);
 
-            models.Product.find({ _id : { $in: productIds }, masterStatus : "A" })
-                .sort('name')
-                .limit(20)
-                .populate({
-                    path: 'upsellItems.product youMayAlsoLike.product contains.product',
-                    model: 'Product'
-                })
-                .exec(function(err, products) {
-                    if (err)
-                        res.send(err);
+            models.Product.find({ _id: { $in: productIds }, masterStatus: "A" }).sort('name').limit(20).populate({
+                path: 'upsellItems.product youMayAlsoLike.product contains.product',
+                model: 'Product'
+            }).populate({
+                path: 'kitGroups.kitGroup',
+                model: 'KitGroup'
+            }).populate({
+                path: 'kitGroups.kitGroup.components.product',
+                model: 'Product'
+            }).exec(function (err, products) {
+                if (err) {
+                    res.send(err);
+                }
 
-                    console.log("returning", products.length, "products");
-                    res.json(products);
-                });
+                console.log("returning", products.length, "products");
+                res.json(products);
+            });
         } else {
             console.log("getting product list");
-            models.Product.find({masterStatus : "A"})
-                .sort('name')
-                .limit(20)
-                .populate({
-                    path: 'upsellItems.product youMayAlsoLike.product contains.product',
-                    model: 'Product'
-                })
-                .exec(function(err, products) {
-                    if (err)
-                        res.send(err);
+            models.Product.find({masterStatus: "A"}).sort('name').limit(20).populate({
+                path: 'upsellItems.product youMayAlsoLike.product contains.product',
+                model: 'Product'
+            }).populate({
+                path: 'kitGroups.kitGroup',
+                model: 'KitGroup'
+            }).populate({
+                path: 'kitGroups.kitGroup.components.product',
+                model: 'Product'
+            }).exec(function (err, products) {
+                if (err) {
+                    res.send(err);
+                }
 
-                    console.log("returning", products.length, "products");
-                    res.json(products);
-                });
+                console.log("returning", products.length, "products");
+                res.json(products);
+            });
         }
-    })
-
-    // create a product (accessed at POST http://localhost:8080/products)
-    .post(function(req, res) {
-
-        var product = new models.Product(); // create a new instance of the Product model
-        product.name = req.body.name;       // set the products name (comes from the request)
-
-        product.save(function(err) {
-            if (err)
-                res.send(err);
-
-            res.json({ message: 'Product created!' });
-        });
-
-
     });
 
 // on routes that end in /products/:product_id
-// ----------------------------------------------------
 router.route('/products/:product_id')
 
     // get the product with that id
-    .get(function(req, res) {
-        models.Product.findById(req.params.product_id, function(err, product) {
-            if (err)
+    .get(function (req, res) {
+        models.Product.findById(req.params.product_id, function (err, product) {
+            if (err) {
                 res.send(err);
+            }
 
             var opts = {
                 path: 'upsellItems.product youMayAlsoLike.product contains.product',
@@ -247,37 +261,358 @@ router.route('/products/:product_id')
         });
     });
 
-//    // update the product with this id
-//    .put(function(req, res) {
-//        models.Product.findById(req.params.product_id, function(err, product) {
-//
-//            if (err)
-//                res.send(err);
-//
-//            console.log("updating product with", JSON.stringify(req.body));
-////                product.name = req.body.name;
-////                product.save(function(err) {
-////                    if (err)
-////                        res.send(err);
-////
-////                    res.json({ message: 'Product updated!' });
-////                });
-//
-//        });
-//    })
-//
-//    // delete the product with this id
-//    .delete(function(req, res) {
-//        models.Product.remove({
-//            _id: req.params.product_id
-//        }, function(err, product) {
-//            if (err)
-//                res.send(err);
-//
-//            res.json({ message: 'Successfully deleted' });
-//        });
-//    });
+// AUTHENTICATION
+// ----------------------------------------------------
+router.route('/authenticate')// authenticate a user (accessed at POST http://localhost:8080/authenticate)
+    .post(function (req, res) {
+        var username = req.body.username;
+        var password = req.body.password;
 
+        console.log("logging in with", username, password);
+
+        // TODO - auth & get client ID
+
+        // associate the client with the session
+        if (req.session.cart == null) {
+            console.log('setting default cart');
+            req.session.cart = [];
+        }
+        if (req.session.checkout == null) {
+            console.log('setting default checkout');
+            req.session.checkout = {};
+        }
+        if (req.session.language == null) {
+            console.log('setting default language');
+            req.session.language = 'en_US';
+        }
+
+        if (username == 'jack@test.com') {
+            req.session.client = {
+                "id": 1,
+                "email": username,
+                "firstName": "Jack",
+                "lastName": "Smith",
+                "consultantIds": [100, 101],
+                "language": "en_US",
+                "phone": "555-555-4432",
+                "dateOfBirth": "12/01/1978",
+                "addresses": [],
+                "creditCards": []
+            };
+            res.json(req.session);
+        } else if (username == 'jill@test.com') {
+            req.session.client = {
+                "id": 2,
+                "email": username,
+                "firstName": "Jill",
+                "lastName": "Smith",
+                "consultantIds": [102],
+                "language": "es_US",
+                "phone": "555-555-4433",
+                "dateOfBirth": "01/01/1978",
+                "addresses": [{
+                    "id": 111,
+                    "name": "Jill Smith",
+                    "address1": "1111 Test Ln",
+                    "address2": "",
+                    "city": "Corona",
+                    "state": "CA",
+                    "zip": "92880",
+                    "country": "United States",
+                    "phone": "555-333-2222"
+                }],
+                "creditCards": [{
+                    "id": 123,
+                    "name": "Jill Smith",
+                    "lastFour": "1111",
+                    "cardType": "visa",
+                    "expMonth": "12",
+                    "expYear": "2015"
+                }]
+            };
+            res.json(req.session);
+        } else {
+            console.log('invalid user');
+            res.status(401);
+            res.json({
+                "statusCode": 401,
+                "errorCode": "invalidCredentials",
+                "message": "Invalid Credentials"
+            });
+        }
+    });
+
+router.route('/logout')
+    .post(function (req, res) {
+        console.log("logout", req.session);
+        res.status(200);
+        req.session.destroy(function() {
+            console.log('Session deleted');
+            res.end();
+        });
+    });
+
+// SESSIONS
+// ----------------------------------------------------
+router.route('/session')
+    .get(function (req, res) {
+        var updated = false;
+        if (req.session.cart == null) {
+            req.session.cart = [];
+            updated = true;
+        }
+        if (req.session.language == null) {
+            req.session.language = 'en_US';
+            updated = true;
+        }
+        if (req.session.checkout == null) {
+            req.session.checkout = {};
+            updated = true;
+        }
+
+        if (updated) {
+            req.session.save(function(err) {
+                console.log('session saved', req.session);
+                res.json(req.session);
+            });
+        }
+        res.json(req.session);
+    })
+
+    // update the session with some data
+    .put(function (req, res) {
+        var session = req.body;
+
+        console.log("update session request", session);
+
+        // copy over changes to cart, checkout, language
+        req.session.language = session.language;
+        if (Array.isArray(session.cart)) {
+            req.session.cart = [];
+            // save only the parts of the session we want
+            for (var i=0; i < session.cart.length; i++) {
+                var cartItem = session.cart[i];
+                var it = {
+                    name: cartItem.name,
+                    sku: cartItem.sku,
+                    kitSelections: cartItem.kitSelections,
+                    quantity: cartItem.quantity
+                };
+                req.session.cart.push(it);
+            }
+        }
+        req.session.checkout = session.checkout;
+
+        req.session.save(function(err) {
+            if (err) {
+                console.error('error saving session', err);
+                res.status(500);
+                res.end();
+                return;
+            }
+
+            // session saved
+            console.log('session updated');
+            res.status(204);
+            res.end();
+        });
+    })
+
+// LEADS
+// ----------------------------------------------------
+router.route('/leads')// create a lead
+    .post(function (req, res) {
+        res.status(204);
+    });
+
+// CLIENTS
+// ----------------------------------------------------
+router.route('/clients') // get current client
+    // create a client
+    .post(function (req, res) {
+        // TODO - create the client
+
+        var username = req.body.username;
+        var password = req.body.password;
+
+        // update the session
+        req.session.client = {
+            "id": 1,
+            "email": username,
+            "firstName": "John",
+            "lastName": "Smith",
+            "consultantIds": [100, 101],
+            "language": "en_US",
+            "phone": "555-555-4432",
+            "dateOfBirth": "12/01/1978",
+            "addresses": [],
+            "creditCards": []
+        };
+
+        // return response
+        res.json({ clientId: 1 });
+    });
+
+router.route('/clients/:client_id')// get a consultant
+    .get(function (req, res) {
+        var clientId = req.params.client_id;
+
+        return {
+            "id": clientId,
+            "email": "jsmith@gmail.com",
+            "firstName": "John",
+            "lastName": "Smith",
+            "phone": "555-555-4432",
+            "dateOfBirth": "12/01/1978",
+            "consultantIds": [101, 102],
+            "language": "en_US"
+        };
+    })
+
+    // create a client
+    .post(function (req, res) {
+        res.json({ consultantId: 1000 });
+    });
+
+// CONSULTANTS
+// ----------------------------------------------------
+router.route('/consultants') // get current consultant
+    // create a client
+    .post(function (req, res) {
+        res.json({ consultantId: 1000 });
+    });
+
+router.route('/consultants/:consultant_id')// get a consultant
+//    .get(function (req, res) {
+//        var consultant_id = req.params.consultant_id;
+//
+//        return {
+//            "id": 1000,
+//            "email": "jsmith@gmail.com",
+//            "firstName": "John",
+//            "lastName": "Smith",
+//            "phone": "555-555-4432",
+//            "dateOfBirth": "12/01/1978",
+//            "sponsorId": 4657323,
+//            "language": "en_US"
+//        };
+//    })
+
+    // create a consultant
+    .post(function (req, res) {
+        res.json({ consultantId: 1000 });
+    });
+
+// ADDRESSES
+// ----------------------------------------------------
+router.route('/clients/:client_id/addresses')// get a client's addresses
+    .get(function (req, res) {
+        var clientId = req.params.client_id;
+
+        return [
+            {
+                "id": 111,
+                "name": "Joe Smith",
+                "address1": "1111 Test Ln",
+                "address2": "",
+                "city": "Corona",
+                "state": "CA",
+                "zip": "92880",
+                "country": "United States",
+                "phone": "555-333-2222"
+            }
+        ];
+    })
+
+    // create a client
+    .post(function (req, res) {
+        res.json({ addressId: 111 });
+    });
+
+router.route('/clients/:client_id/addresses/:address_id')// get a client address
+    .get(function (req, res) {
+        var clientId = req.params.client_id;
+        var addressId = req.params.address_id;
+
+        return {
+            "id": addressId,
+            "name": "Joe Smith",
+            "address1": "1111 Test Ln",
+            "address2": "",
+            "city": "Corona",
+            "state": "CA",
+            "zip": "92880",
+            "country": "United States",
+            "phone": "555-333-2222"
+        };
+    })
+
+    // update a client address
+    .put(function (req, res) {
+        res.status(204);
+    })
+
+    // delete a client address
+    .delete(function (req, res) {
+        res.status(204);
+    });
+
+// CREDIT CARDS
+// ----------------------------------------------------
+router.route('/clients/:client_id/creditCards')// get a client's creditCards
+    .get(function (req, res) {
+        var clientId = req.params.client_id;
+
+        return [
+            {
+                "id": 111,
+                "name": "Joe Smith",
+                "lastFour": "1111",
+                "cardType": "visa",
+                "expMonth": "12",
+                "expYear": "1978"
+            }
+        ];
+    })
+
+    // create a credit card
+    .post(function (req, res) {
+        res.json({ creditCardId: 111 });
+    });
+
+router.route('/clients/:client_id/creditCards/:creditCard_id')// get a client creditCard
+    .get(function (req, res) {
+        var clientId = req.params.client_id;
+        var creditCardId = req.params.creditCard_id;
+
+        return {
+            "id": 111,
+            "name": "Joe Smith",
+            "lastFour": "1111",
+            "cardType": "visa",
+            "expMonth": "12",
+            "expYear": "2015"
+        };
+    })
+
+    // update a client creditCard
+    .put(function (req, res) {
+        res.status(204);
+    })
+
+    // delete a client creditCard
+    .delete(function (req, res) {
+        res.status(204);
+    });
+
+// ORDERS
+// ----------------------------------------------------
+router.route('/orders')// create an order
+    .post(function (req, res) {
+        res.json({
+            orderId: 1234
+        });
+    });
 
 // Configure Express
 
@@ -293,6 +628,7 @@ app.use(bodyParser.urlencoded({
 
 // Web application
 app.use('/img', express.static(basepath + '/img'));
+app.use('/video', express.static(basepath + '/video'));
 app.use('/lib', express.static(basepath + '/lib'));
 app.use('/js', express.static(basepath + '/js'));
 app.use('/partials', express.static(basepath + '/partials'));
@@ -304,12 +640,19 @@ app.use('/i18n', express.static(basepath + '/i18n'));
 //app.use('/api', express.static(__dirname + '/api')); // old used for serving static XML files
 app.use('/api', router);
 
-//any URL without a dot or / should serve index.html, save for /api methods captured above
-app.get('/([^\.]+)?$', function(req, res){
+// any URL beginning with /online_sponsoring without a dot or / should serve index.html, save for /api methods captured above
+app.get('/online_sponsoring(/([^\.]+)?)?$', function (req, res) {
+    console.log('online sponsoring path');
+    res.sendfile(basepath + '/online_sponsoring.html'); // load the single view file (angular will handle the page changes on the front-end)
+});
+
+// any URL without a dot or / should serve index.html, save for /api methods captured above
+app.get('/([^\.]+)?$', function (req, res) {
+    console.log('client direct path');
     res.sendfile(basepath + '/index.html'); // load the single view file (angular will handle the page changes on the front-end)
 });
 
-models.onReady(function() {
+models.onReady(function () {
     console.log('Connected to database');
 
     // START THE SERVER

@@ -1,0 +1,147 @@
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">[Logo]</a>
+    </div>
+    <div class="navbar-collapse collapse navbar-sections">
+
+      <ul class="nav navbar-nav navbar-right navbar-language" style="margin-left: 40px;">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="http://static.flag-sprites.com/i/blank.gif" class="flag flag-us" alt="US English" /> US English <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">US English</a></li>
+            <li><a href="#">US Spanish</a></li>
+          </ul>
+        </li>
+      </ul>
+
+      <!-- <ul class="nav navbar-nav navbar-right">
+        <li><a href="#why_jafra">Why JAFRA?</a></li>
+        <li><a href="#starter_packages">Starter Packages</a></li>
+        <li><a href="#FAQs">FAQs</a></li>
+        <li><button type="button" class="btn btn-inverse navbar-btn" href="#starter_packages">Join Now</button></li>
+      </ul> -->
+
+    </div><!--/.navbar-collapse -->
+  </div>
+</div>
+
+
+<div class="container">
+
+  <!-- Features & Highlights -->
+  <section id="wizard">
+
+    <div class="row" style="position:relative; height: 50px;">
+      <ul class="steps-indicator steps-6" ng-if="!hideIndicators">
+        <!-- ngRepeat: step in steps --><li ng-class="{default: !step.completed &amp;&amp; !step.selected, current: step.selected &amp;&amp; !step.completed, done: step.completed &amp;&amp; !step.selected, editing: step.selected &amp;&amp; step.completed}" ng-repeat="step in steps" class="ng-scope default">
+          <a ng-click="goTo(step)" class="ng-binding">Sign In</a>
+        </li><!-- end ngRepeat: step in steps --><li ng-class="{default: !step.completed &amp;&amp; !step.selected, current: step.selected &amp;&amp; !step.completed, done: step.completed &amp;&amp; !step.selected, editing: step.selected &amp;&amp; step.completed}" ng-repeat="step in steps" class="ng-scope current">
+          <a ng-click="goTo(step)" class="ng-binding">Consultant Profile</a>
+        </li><!-- end ngRepeat: step in steps --><li ng-class="{default: !step.completed &amp;&amp; !step.selected, current: step.selected &amp;&amp; !step.completed, done: step.completed &amp;&amp; !step.selected, editing: step.selected &amp;&amp; step.completed}" ng-repeat="step in steps" class="ng-scope default">
+          <a ng-click="goTo(step)" class="ng-binding">Shipping</a>
+        </li><!-- end ngRepeat: step in steps --><li ng-class="{default: !step.completed &amp;&amp; !step.selected, current: step.selected &amp;&amp; !step.completed, done: step.completed &amp;&amp; !step.selected, editing: step.selected &amp;&amp; step.completed}" ng-repeat="step in steps" class="ng-scope default">
+          <a ng-click="goTo(step)" class="ng-binding">Payment Method</a>
+        </li><!-- end ngRepeat: step in steps --><li ng-class="{default: !step.completed &amp;&amp; !step.selected, current: step.selected &amp;&amp; !step.completed, done: step.completed &amp;&amp; !step.selected, editing: step.selected &amp;&amp; step.completed}" ng-repeat="step in steps" class="ng-scope default">
+          <a ng-click="goTo(step)" class="ng-binding">Review</a>
+        </li><!-- end ngRepeat: step in steps --><li ng-class="{default: !step.completed &amp;&amp; !step.selected, current: step.selected &amp;&amp; !step.completed, done: step.completed &amp;&amp; !step.selected, editing: step.selected &amp;&amp; step.completed}" ng-repeat="step in steps" class="ng-scope default">
+          <a ng-click="goTo(step)" class="ng-binding">Finish</a>
+        </li><!-- end ngRepeat: step in steps -->
+      </ul>
+    </div>
+
+    <div class="row">
+
+      <div id="signin" class="col-sm-12 ng-scope">
+        <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+        <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+        <div class="col-md-offset-3">
+          <h1 class="checkouth1">Complete Your JAFRA Consultant Profile</h1>
+        </div>
+        <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+        <!--valid={{signInForm.$valid}}-->
+        <form name="signInForm" class="form-horizontal ng-pristine ng-invalid ng-invalid-required" role="form">
+
+            <div class="form-group">
+              <label class="col-md-3 control-label">Profile Photo</label>
+              <div class="col-md-2"><img class="img-responsive" src="/img/1by1.jpg"><small>(imported from facebook)</small> <button class="btn btn-default">upload a new photo</button></div>
+              <div class="col-md-offset-3 col-sm-9"><hr></div>
+            </div>
+
+
+            <div class="form-group">
+              <label for="firstName" class="col-md-3 control-label">First Name</label>
+              <div class="col-sm-3">
+                <input name="firstName" ng-model="firstName" ng-change="checkoutUpdated()" type="text" class="form-control ng-pristine ng-invalid ng-invalid-required" id="firstName" placeholder="First" tabindex="2" required="" autocomplete="off">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="lastName" class="col-md-3 control-label">Last Name</label>
+              <div class="col-sm-3">
+                <input name="lastName" ng-model="lastName" ng-change="checkoutUpdated()" type="text" class="form-control ng-pristine ng-invalid ng-invalid-required" id="lastName" placeholder="LAST" tabindex="2" required="" autocomplete="off">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="dateOfBirth" class="col-md-3 control-label">Date of Birth</label>
+              <div class="col-sm-3">
+                <input name="dateOfBirth" ng-model="dateOfBirth" ng-change="checkoutUpdated()" type="text" class="form-control ng-pristine ng-invalid ng-invalid-required" id="dateOfBirth" placeholder="    /     /    " tabindex="2" required="" autocomplete="off">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="ssn" class="col-md-3 control-label">SSN</label>
+              <div class="col-sm-3">
+                <input name="ssn" ng-model="ssn" ng-change="checkoutUpdated()" type="text" class="form-control ng-pristine ng-invalid ng-invalid-required" id="ssn" placeholder="     -    -     " tabindex="2" required="" autocomplete="off">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-md-offset-3 col-sm-9">
+                  <a href="shipping.html" class="btn btn-primary" tabindex="3" ng-click="loginOrCreateUser(loginEmail, loginPassword)" ng-disabled="!signInForm.$valid">Continue &nbsp;<i class="fa fa-caret-right"></i></a>
+              </div>
+            </div>
+
+        </form>
+      </div>
+    </div>
+
+  </section>
+
+  <hr>
+
+  <footer>
+    <div class="pull-right footer-logos">
+        <a href="" class="jafra-logo"><span class="sr-only">Jafra Usa</span></a>
+        <a href="" class="vorwerk-logo"><span class="sr-only">Vorwerk</span></a>
+        <a href="" class="dsa-logo"><span class="sr-only">DSA</span></a>
+    </div>
+
+    <div class="legalcopy">
+      <p>
+        <a href="" class="btn btn-link">Terms</a>
+         |
+        <a href="" class="btn btn-link">Privacy</a>
+      </p>
+      <p>© 2014 - JAFRA Cosmetics International - All Rights Reserved</p>
+    </div>
+</footer>
+</div> <!-- /container -->
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <a href="profile.html"><img class="img-responsive" src="/img/fb_login_comp.png"></a>
+      </div>
+    </div>
+  </div>
+</div>

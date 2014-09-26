@@ -33,9 +33,12 @@ angular.module('app.controllers.products')
                 qty = 1;
             }
             $log.debug("ProductsController(): adding product", product, qty);
-            var p = angular.copy(product);
-            p.quantity = qty;
-            Cart.addToCart(p);
+            Cart.addToCart({
+                name: product.name,
+                sku: product.sku,
+                quantity: qty,
+                kitSelections: {}
+            });
         };
 
         /*==== SEARCH ====*/

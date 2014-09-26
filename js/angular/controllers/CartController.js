@@ -1,5 +1,5 @@
 angular.module('app.controllers.cart')
-    .controller('CartController', function ($scope, $document, $rootScope, $compile, $routeParams, $modal, $log, Cart, Products, HashKeyCopier) {
+    .controller('CartController', function ($scope, $document, $rootScope, $compile, $routeParams, $modal, $log, $q, Cart, Products, HashKeyCopier) {
         $log.debug("CartController");
 
         //change page title
@@ -10,43 +10,64 @@ angular.module('app.controllers.cart')
 
         $scope.hidestuff = true;
 
+        $scope.cart = [];
         $scope.products = [];
+        $scope.productMap = {};
         $scope.orderByIdItem = '';
         $scope.orderByIdQty = 1;
         $scope.searchProducts = {};
         $scope.searchProductsByName = {};
 
+        $scope.cartLoaded = false;
+
         var loadCart = function() {
-            $scope.products = Cart.getItems();
-            $log.debug("loaded cart products", $scope.products);
+            $log.debug("CartController(): loadCart()");
+
+            // load cart data
+            Cart.getItems().then(function(items) {
+                $scope.items = items;
+
+                $scope.cartLoaded = true;
+                $log.debug("CartController(): loadCart(): loaded cart products into items", items);
+            }, function(error) {
+                $log.error("CartController(): loadCart(): cart error", error);
+                $location.path("/products");
+            });
         }
         loadCart();
         
         $scope.total = function() {
             var total = 0;
-            angular.forEach($scope.products, function(item) {
-                $log.debug("calculating price for item", item);
-                if (!(Array.isArray(item.prices)) || item.prices.length == 1) {
-                    total += item.quantity * item.prices[0].price;
-                } else if (item.prices.length == 0) {
-                    // there is a problem, we don't have prices
-                    $log.error("there are no prices listed for this item", item);
-                } else {
-                    var priceFound = 0;
-                    angular.forEach(item.prices, function(price) {
-                        if (price.type==2) {
-                            priceFound = 1;
-                            total += item.quantity * price.price;
+
+            if ($scope.cartLoaded) {
+                $log.debug("CartController(): total(): cart loaded, calculating total");
+                angular.forEach($scope.items, function(item) {
+                    $log.debug("CartController(): total(): calculating price for item", item);
+                    var product = item.product;
+
+                    $log.debug("CartController(): total(): using product", product);
+                    if (!(Array.isArray(product.prices)) || product.prices.length == 1) {
+                        total += item.quantity * product.prices[0].price;
+                    } else if (product.prices.length == 0) {
+                        // there is a problem, we don't have prices
+                        $log.error("CartController(): total(): there are no prices listed for this item", item);
+                    } else {
+                        var priceFound = 0;
+                        angular.forEach(product.prices, function(price) {
+                            if (price.type==2) {
+                                priceFound = 1;
+                                total += item.quantity * price.price;
+                            }
+                        })
+                        if (!priceFound) {
+                            // use the first price in the list (FIXME - need to check dates))
+                            total += item.quantity * product.prices[0].price;
                         }
-                    })
-                    if (!priceFound) {
-                        // use the first price in the list (FIXME - need to check dates))
-                        total += item.quantity * item.prices[0].price;
                     }
-                }
-                
-//                total += item.quantity * item.pricing.detailprice.price;
-            })
+
+    //                total += item.quantity * item.pricing.detailprice.price;
+                })
+            }
 
             return total;
         }
@@ -58,7 +79,7 @@ angular.module('app.controllers.cart')
         };
 
         $scope.addToCart = function() {
-            $log.debug("adding product", $scope.orderByIdItem, "quantity", $scope.orderByIdQty);
+            $log.debug("CartController(): addToCart(): adding product", $scope.orderByIdItem, "quantity", $scope.orderByIdQty);
 
             var product;
             if ($scope.searchProducts[$scope.orderByIdItem]) {
@@ -70,25 +91,45 @@ angular.module('app.controllers.cart')
             if (product != null) {
                 if (product.type == 'kit') {
                     // configure kit
-                    $scope.configureKit(product, false);
+                    $scope.configureKit({
+                        name: product.name,
+                        sku: product.sku,
+                        product: product,
+                        kitSelections: product.kitSelections,
+                        quantity: $scope.orderByIdQty
+                    }, false);
                 } else {
-                    var parent = product.parent;
-                    product.parent = null;
-                    var p = angular.copy(product);
-                    product.parent = parent;
-
-                    p.quantity = $scope.orderByIdQty;
-                    $log.debug("adding product", p);
-                    Cart.addToCart(p);
+                    $log.debug("CartController(): addToCart(): adding product", product);
+                    Cart.addToCart({
+                        name: product.name,
+                        sku: product.sku,
+                        kitSelections: product.kitSelections,
+                        quantity: $scope.orderByIdQty
+                    });
                     // clear search
                     $scope.orderByIdItem = '';
+
+                    $scope.cartLoaded = false;
+                    loadCart();
                 }
             } else {
-                $log.error("product not found");
+                $log.error("CartController(): addToCart(): product not found");
             }
         }
 
-        $scope.configureKit = function(product, inCart) {
+        $scope.removeFromCart = function(product) {
+            $log.debug("CartController(): removeFromCart(): removing product", product);
+            Cart.removeFromCart(product).then(function(cart) {
+                $log.debug("CartController(): removeFromCart(): removed", cart);
+                // reload the cart
+                $scope.cartLoaded = false;
+                loadCart();
+            }, function(error) {
+                $log.error("CartController(): removeFromCart(): failed to remove from cart", product, cart);
+            });
+        }
+
+        $scope.configureKit = function(item, inCart) {
             var d = $modal.open({
                 backdrop: true,
                 keyboard: true, // we will handle ESC in the modal for cleanup
@@ -96,11 +137,8 @@ angular.module('app.controllers.cart')
                 templateUrl: '/partials/products/configure-kit-modal.html',
                 controller: 'ConfigureKitModalController',
                 resolve: {
-                    product: function() {
-                        return product;
-                    },
-                    quantity: function() {
-                        return 1;
+                    item: function() {
+                        return item;
                     },
                     inCart: function() {
                         console.log("inCart", inCart);
@@ -116,14 +154,26 @@ angular.module('app.controllers.cart')
 
             var body = $document.find('html, body');
 
-            d.result.then(function(product) {
-                $log.debug("configure kit dialog closed");
+            d.result.then(function(cartItem) {
+                $log.debug("CartController(): configureKit(): configure kit dialog closed");
 
                 // re-enable scrolling on body
                 body.css("overflow-y", "auto");
 
-                if (product != null) {
-                    $log.debug("add kit to cart");
+                if (cartItem != null) {
+                    $log.debug("CartController(): configureKit(): add", $scope.orderByIdQty, "kits to cart", cartItem);
+
+                    for (var i=0; i < $scope.orderByIdQty; i++) {
+                        Cart.addToCart({
+                            name: cartItem.name,
+                            sku: cartItem.sku,
+                            kitSelections: cartItem.kitSelections,
+                            quantity: 1
+                        });
+                    }
+
+                    $scope.cartLoaded = false;
+                    loadCart();
                 }
             });
 
@@ -136,9 +186,9 @@ angular.module('app.controllers.cart')
         $scope.searchProducts = function(search) {
             // do something as user is searching, like constrain data set
             if (S($scope.orderByIdItem).length >= 1) {
-                $log.debug("querying products", $scope.orderByIdItem);
-                var products = Products.query({'search': $scope.orderByIdItem}, function(products, status, headers) {
-                    $log.debug("got products for search", products);
+                $log.debug("CartController(): searchProducts(): querying products", $scope.orderByIdItem);
+                var products = Products.query({'search': "." + $scope.orderByIdItem + "."}, function(products, status, headers) {
+                    $log.debug("CartController(): searchProducts(): got products for search", products);
                     $scope.searchProductsList = new Array();
                     angular.forEach(products, function(product) {
                         $scope.searchProducts[product.sku] = product;
@@ -150,44 +200,11 @@ angular.module('app.controllers.cart')
                         $scope.searchProductsList.push('Not found');
                     }
                 }, function(products, status, headers) {
-                    $log.error("error searching products", status, headers);
+                    $log.error("CartController(): searchProducts(): error searching products", status, headers);
                     $scope.searchProductsList.push('Error searching products');
                 });
             } else {
                 $scope.searchProductsList = new Array();
             }
         }
-
-//        var loadProducts = function () {
-//            //var start = new Date().getTime();
-//            Products.query({"productIds": Object.keys(Cart.getItems())}, function(products, responseHeaders) {
-//                $log.debug("got products", products);
-//                // We do this here to eliminate the flickering.  When Products.query returns initially,
-//                // it returns an empty array, which is then populated after the response is obtained from the server.
-//                // This causes the table to first be emptied, then re-updated with the new data.
-//                if ($scope.products) {
-//                    // update the objects, not just replace, else we'll yoink the whole DOM
-//                    $scope.products = HashKeyCopier.copyHashKeys($scope.products, products, ["id"])
-//                    //$log.debug("updating objects", $scope.objects);
-//                } else {
-//                    $scope.products = products;
-//                    //$log.debug("initializing objects");
-//                }
-//
-//                $scope.loading = false;
-//            }, function (data) {
-//                //$log.debug('refreshProducts(): groupName=' + groupName + ' failure', data);
-//                if (data.status == 401) {
-//                    // Looks like our session expired.
-//                    return;
-//                }
-//
-//                //Hide loader
-//                $scope.loading = false;
-//                // Set Error message
-//                $scope.errorMessage = "An error occurred while retrieving object list. Please refresh the page to try again, or contact your system administrator if the error persists.";
-//            });
-//        }
-//        // kick off the first refresh
-//        loadProducts();
     });

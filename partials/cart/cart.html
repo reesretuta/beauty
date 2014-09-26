@@ -10,44 +10,51 @@
       </thead>
       <tbody>
       <!-- cart items -->
-      <tr>
-        <td>
-          <div class="cart-item-info" ng-if="products.length == 0">
+      <tr ng-hide="cartLoaded">
+        <td colspan="3">
+          <div class="cart-item-info">
+            Loading cart...
+          </div>
+        </td>
+      </tr>
+      <tr ng-show="cartLoaded">
+        <td colspan="3">
+          <div class="cart-item-info" ng-if="items.length == 0">
             There are currently no items in your cart.
           </div>
         </td>
       </tr>
-      <tr ng-repeat="product in products" ng-if="products.length > 0">
+      <tr ng-show="cartLoaded" ng-repeat="item in items" ng-if="items.length > 0">
         <td>
           <div class="cart-item-info">
-            <a ng-href="/products/{{product.sku}}#top" class="col-xs-5 col-sm-3 col-md-2 col-lg-2"
-               ng-if="product.type != 'group'">
-              <img class="img-responsive cart-item-image" ng-src="{{getImagePath(product.images[0].imagePath)}}">
+            <a ng-href="/item.products/{{item.product.sku}}#top" class="col-xs-5 col-sm-3 col-md-2 col-lg-2"
+               ng-if="item.product.type != 'group'">
+              <img class="img-responsive cart-item-image" ng-src="{{getImagePath(item.product.images[0].imagePath)}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';">
             </a>
-            <a ng-href="/products/{{product.sku}}#top" class="col-xs-5 col-sm-3 col-md-2 col-lg-2"
-               ng-if="product.type == 'group'">
-              <img class="img-responsive cart-item-image" ng-src="{{getImagePath(product.images[0].imagePath)}}">
+            <a ng-href="/item.products/{{item.product.sku}}#top" class="col-xs-5 col-sm-3 col-md-2 col-lg-2"
+               ng-if="item.product.type == 'group'">
+              <img class="img-responsive cart-item-image" ng-src="{{getImagePath(item.product.images[0].imagePath)}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';">
             </a>
 
             <div class="col-sm-9 col-md-8 col-lg-8">
               <h3>
-                <a href="/products/{{product.sku}}#top">{{product.name}}</a>
+                <a href="/item.products/{{item.product.sku}}#top">{{item.product.name}}</a>
               </h3>
 
-              <p><label>{{product.sku}}</label></p>
+              <p><label>{{item.product.sku}}</label></p>
 
-              <p ng-if="product.kitSelections != null">This kit includes:</p>
-              <ul ng-if="product.kitSelections != null">
-                <li ng-repeat="(kitId, kitProduct) in product.kitSelections">
+              <p ng-if="item.kitSelections != null">This kit includes:</p>
+              <ul ng-if="item.kitSelections != null">
+                <li ng-repeat="(kitId, kitProduct) in item.kitSelections">
                   {{kitProduct.name}} #{{kitProduct.sku}}
                 </li>
               </ul>
               <p class="cart-item-actions">
-                <a ng-if="product.type == 'kit'" class="btn btn-primary btn-lg" ng-click="configureKit(product)">
+                <a ng-if="item.product.type == 'kit'" class="btn btn-primary btn-lg" ng-click="configureKit(item)">
                   <i class="fa fa-cogs"></i> Configure
                 </a>
                 &nbsp;&nbsp;
-                <a ng-click="removeFromCart(product)"><i class="fa fa-times"></i> remove</a>
+                <a ng-click="removeFromCart(item.product)"><i class="fa fa-times"></i> remove</a>
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 <!-- <a href="#"><i class="fa fa-pencil-square-o"></i> make changes</a> TODO: Load this for kits & groups -->
               </p>
@@ -55,7 +62,7 @@
           </div>
         </td>
         <td class="text-right">
-          <span ng-repeat="detailprice in product.prices[0]">
+          <span ng-repeat="detailprice in item.product.prices[0]">
             <span ng-if="detailprice.type==2" class="item-price-sale">
               {{detailprice.price | currency}}
             </span>
@@ -63,29 +70,29 @@
               {{detailprice.price | currency}}
             </span>
           </span>
-          <span ng-if="product.prices[0].price">
+          <span ng-if="item.product.prices[0].price">
             <span class="item-price">
-              {{product.prices[0].price | currency}}
+              {{item.product.prices[0].price | currency}}
             </span>
           </span>
 
 
           <!--            <p class="cart-item-price">
-                        <b>${{product.pricing.detailprice.price}}</b>
+                        <b>${{item.product.pricing.detailprice.price}}</b>
                          <em>50% off</em> TODO: Add logic for sale prices
                       </p>-->
         </td>
         <td align=right>
-          <!-- TODO: Compute each product Qty. -->
+          <!-- TODO: Compute each item.product Qty. -->
           <p>
-            <form name="product{{product.sku}}" role="form" class="form-inline store-item-add">
+            <form name="item.product{{item.product.sku}}" role="form" class="form-inline store-item-add">
               <div class="form-group">
-                <input type="number" class="form-control qty-input" ng-model="product.quantity" value="{{product.quantity}}">
+                <input type="number" class="form-control qty-input" ng-model="item.quantity" value="{{item.quantity}}">
               </div>
             </form>
           </p>
 
-          <!--<input ng-model="quantities[product.sku]" ng-keyup="addToCart(product)" type="integer" class="form-control qty-input" id="qty12345" value="{{product.quantity}}">-->
+          <!--<input ng-model="quantities[item.product.sku]" ng-keyup="addToCart(item.product)" type="integer" class="form-control qty-input" id="qty12345" value="{{item.product.quantity}}">-->
         </td>
       </tr>
       <!--/table row-->
@@ -109,8 +116,8 @@
   <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
     <a href="javascript:history.go(-1)" class="btn btn-link"><i class="fa fa-angle-left"></i> Continue Shopping</a>
   </div>
-  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" ng-if="products.length > 0">
-    <a href="#checkout#top" class="btn btn-primary btn-lg pull-right">Checkout Now <i class="fa fa-angle-right"></i></a>
+  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" ng-if="items.length > 0">
+    <a href="/checkout#top" class="btn btn-primary btn-lg pull-right">Checkout Now <i class="fa fa-angle-right"></i></a>
   </div>
 </div><!-- /row -->
 

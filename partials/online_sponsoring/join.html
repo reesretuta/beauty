@@ -1,0 +1,197 @@
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">[Logo]</a>
+    </div>
+    <div class="navbar-collapse collapse navbar-sections">
+
+      <ul class="nav navbar-nav navbar-right navbar-language" style="margin-left: 40px;">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="http://static.flag-sprites.com/i/blank.gif" class="flag flag-us" alt="US English" /> US English <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">US English</a></li>
+            <li><a href="#">US Spanish</a></li>
+          </ul>
+        </li>
+      </ul>
+
+      <!-- <ul class="nav navbar-nav navbar-right">
+        <li><a href="#why_jafra">Why JAFRA?</a></li>
+        <li><a href="#starter_packages">Starter Packages</a></li>
+        <li><a href="#FAQs">FAQs</a></li>
+        <li><button type="button" class="btn btn-inverse navbar-btn" href="#starter_packages">Join Now</button></li>
+      </ul> -->
+
+    </div><!--/.navbar-collapse -->
+  </div>
+</div>
+
+
+<div class="container">
+
+  <wizard name="joinWizard" hide-indicators="false" on-finish="finished()" current-step="join.currentStep">
+
+    <!--current step: {{join.currentStep}}-->
+
+    <!-- Sign In -->
+    <wz-step title="Sign In">
+      <div id="signin" class="col-sm-12 ng-scope">
+              <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+              <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+              <div class="col-md-offset-3">
+                <h1 class="checkouth1">Create an Account</h1>
+              </div>
+              <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+              <!--valid={{signInForm.$valid}}-->
+              <form name="signInForm" class="form-horizontal ng-pristine ng-invalid ng-invalid-required" role="form">
+
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-md-3 control-label">Name</label>
+                  <div class="col-sm-3">
+                    <input name="loginEmail" ng-model="firstName" ng-change="checkoutUpdated()" type="email" class="form-control ng-pristine ng-invalid ng-invalid-required ng-valid-email" id="inputEmail3" placeholder="First" tabindex="1" required="" autocomplete="off">
+                    <!--valid={{signInForm.firstName.$valid}}-->
+                  </div>
+                  <div class="col-sm-3">
+                    <input name="loginEmail" ng-model="lastName" ng-change="checkoutUpdated()" type="email" class="form-control ng-pristine ng-invalid ng-invalid-required ng-valid-email" id="inputEmail3" placeholder="Last" tabindex="1" required="" autocomplete="off">
+                    <!--valid={{signInForm.lastName.$valid}}-->
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-md-3 control-label">Email Address</label>
+                  <div class="col-sm-6">
+                    <input name="loginEmail" ng-model="loginEmail" ng-change="checkoutUpdated()" type="email" class="form-control ng-pristine ng-invalid ng-invalid-required ng-valid-email" id="inputEmail3" placeholder="example@gmail.com" tabindex="1" required="" autocomplete="off">
+                    <!--valid={{signInForm.loginEmail.$valid}}-->
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-md-3 control-label">Phone Number</label>
+                  <div class="col-sm-6">
+                    <input name="loginEmail" ng-model="loginEmail" ng-change="checkoutUpdated()" type="email" class="form-control ng-pristine ng-invalid ng-invalid-required ng-valid-email" id="inputEmail3" placeholder="(123) 456-7890" tabindex="1" required="" autocomplete="off">
+                    <!--valid={{signInForm.loginEmail.$valid}}-->
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="inputPassword3" class="col-md-3 control-label">Password</label>
+                  <div class="col-sm-4">
+                    <input name="loginPassword" ng-model="loginPassword" ng-change="checkoutUpdated()" type="password" class="form-control ng-pristine ng-invalid ng-invalid-required" id="inputPassword3" placeholder="5 or more characters" tabindex="2" required="" autocomplete="off">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="col-md-offset-3 col-sm-9">
+                    <!-- <div class="radio">
+                      <label>
+                        <input name="customerStatus" ng-model="checkout.customerStatus" ng-change="checkoutUpdated()" type="radio" id="optionsRadios1" value="new" class="ng-pristine ng-valid" checked>
+                        I am a new customer
+                      </label>
+                    </div>
+                    <div class="radio">
+                      <label>
+                        <input name="customerStatus" ng-model="checkout.customerStatus" ng-change="checkoutUpdated()" type="radio" id="optionsRadios2" value="existing" class="ng-pristine ng-valid">
+                        I am an existing customer
+                      </label>
+                    </div> -->
+
+                    <!--customerStatus={{checkout.customerStatus}}-->
+
+
+                    <!-- ngIf: loginError -->
+
+                    <div class="form-group">
+                      <div class="col-sm-9">
+                        <div class="checkbox">
+                          <label>
+                            <input name="agreeToStuff" ng-model="checkout.keepMeSignedIn" ng-change="checkoutUpdated()" type="checkbox" class="ng-pristine ng-valid"> I agree to the <a href="#">Terms</a> &amp; <a href="#">Privacy Policy</a>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="col-md-offset-3 col-sm-9">
+                    <a href="profile.html" class="btn btn-primary btn-lg" tabindex="3" ng-click="loginOrCreateUser(loginEmail, loginPassword)" ng-disabled="!signInForm.$valid">Create Account &nbsp;<i class="fa fa-caret-right"></i></a>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="col-md-offset-3 col-sm-9">
+                    <div class="row"><div class="col-sm-8"><hr></div></div>
+                    <div class="checkbox">
+                      <label>
+                        <input name="keepMeSignedIn" ng-model="checkout.keepMeSignedIn" ng-change="checkoutUpdated()" type="checkbox" checked="" class="ng-pristine ng-valid"> Keep me signed in &nbsp;&nbsp;
+                        <a popover="Placeholder text" popover-title="Keep me signed in" href="" class="ng-scope"><i class="fa fa-info-circle"></i> More Info</a>
+                      </label>
+                    </div>
+                    <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+                  </div>
+                </div>
+              </form>
+            </div>
+    </wz-step>
+
+    <!-- Consultant Profile -->
+    <wz-step title="Consultant Profile">
+    </wz-step>
+
+    <!-- Shipping -->
+    <wz-step title="Shipping">
+    </wz-step>
+
+    <!-- Payment Method -->
+    <wz-step title="Payment Method">
+    </wz-step>
+
+    <!-- Review -->
+    <wz-step title="Review">
+    </wz-step>
+
+    <!-- Finish -->
+    <wz-step title="Finish">
+    </wz-step>
+
+
+  </wizard>
+</div>
+
+<hr>
+
+<footer>
+  <div class="pull-right footer-logos">
+      <a href="" class="jafra-logo"><span class="sr-only">Jafra Usa</span></a>
+      <a href="" class="vorwerk-logo"><span class="sr-only">Vorwerk</span></a>
+      <a href="" class="dsa-logo"><span class="sr-only">DSA</span></a>
+  </div>
+
+  <div class="legalcopy">
+    <p>
+      <a href="" class="btn btn-link">Terms</a>
+       |
+      <a href="" class="btn btn-link">Privacy</a>
+    </p>
+    <p>© 2014 - JAFRA Cosmetics International - All Rights Reserved</p>
+  </div>
+</footer>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <a href="profile.html"><img class="img-responsive" src="/img/fb_login_comp.png"></a>
+      </div>
+    </div>
+  </div>
+</div>
