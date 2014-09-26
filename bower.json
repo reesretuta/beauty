@@ -25,7 +25,7 @@
     "angular-sanitize": "1.2.24",
     "angular-touch": "1.2.24",
     "HashKeyCopier": "https://github.com/bennadel/HashKeyCopier.git#a7c731fb2768d95eb249fb779589563dd44e5b74",
-    "angular-ui-utils": "fbcfaf187942d5e9fe6b27f9b6da1ece418aebea",
+    "angular-ui-utils": "0ce930d5228f3671a3dfe2c7b7146627111ab33e",
     "angular-bindonce": "~0.2.1",
     "momentjs": "~2.7.0",
     "string.js": "https://github.com/jprichardson/string.js.git#e900c5faeb88166e516ead8c05399b64be28fcc6",
@@ -44,6 +44,7 @@
     "angular-mocks": "1.2.24"
   },
   "resolutions": {
-    "bootstrap": ">=3.0.0"
+    "bootstrap": ">=3.0.0",
+    "angular-ui-utils": "0ce930d5228f3671a3dfe2c7b7146627111ab33e"
   }
 }
