@@ -198,6 +198,7 @@ h2 {
 .breadcrumb {
   background: none;
   padding: 8px 0;
+  margin-bottom: 0px;
 }
 .store-section {
   margin-bottom: 20px;
@@ -331,6 +332,7 @@ h2 {
 .store-heading-nav {
   border-bottom: 1px solid #eee;
   margin-bottom: 20px;
+  padding-bottom:20px;
 }
 .store-item-social {
   font-size: .8em;
