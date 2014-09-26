@@ -24,7 +24,7 @@ angular.module('app.controllers.checkout')
 
         // in memory on client only
         $scope.profile = {
-            customerStatus: 'existing',
+            customerStatus: 'new',
             firstName: '',
             lastName: '',
             loginEmail: '',
@@ -326,6 +326,7 @@ angular.module('app.controllers.checkout')
                 Session.createClient(loginEmail, loginPassword).then(function(session) {
                     $log.debug("CheckoutController(): loginOrCreateUser(): created client, moving to next step", session.client);
                     $scope.client = session.client;
+                    $scope.profile.customerStatus = 'existing';
                     // jump to Shipping
                     WizardHandler.wizard('checkoutWizard').goTo($scope.isOnlineSponsoring ? 'Profile' : 'Shipping');
                 }, function(error) {
@@ -340,6 +341,7 @@ angular.module('app.controllers.checkout')
                 Session.login(loginEmail, loginPassword).then(function(session) {
                     $log.debug("CheckoutController(): loginOrCreateUser(): authenticated, moving to next step", session.client);
                     $scope.client = session.client;
+                    $scope.profile.customerStatus = 'existing';
                     // jump to Shipping
                     WizardHandler.wizard('checkoutWizard').goTo($scope.isOnlineSponsoring ? 'Profile' : 'Shipping');
                 }, function(error) {
