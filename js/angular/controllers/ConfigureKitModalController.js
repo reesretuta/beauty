@@ -90,7 +90,7 @@ angular.module('app.controllers.products')
         var loadProducts = function (productIds) {
             //var start = new Date().getTime();
             $log.debug("ConfigureKitModalController(): loading products", productIds);
-            Products.query({"productIds": productIds}, function(products, responseHeaders) {
+            Products.query({"productIds": productIds}).then(function(products, responseHeaders) {
                 $log.debug("ConfigureKitModalController: got products", products);
                 // We do this here to eliminate the flickering.  When Products.query returns initially,
                 // it returns an empty array, which is then populated after the response is obtained from the server.

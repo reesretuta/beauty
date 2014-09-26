@@ -187,7 +187,7 @@ angular.module('app.controllers.cart')
             // do something as user is searching, like constrain data set
             if (S($scope.orderByIdItem).length >= 1) {
                 $log.debug("CartController(): searchProducts(): querying products", $scope.orderByIdItem);
-                var products = Products.query({'search': "." + $scope.orderByIdItem + "."}, function(products, status, headers) {
+                var products = Products.query({'search': "." + $scope.orderByIdItem + "."}).then(function(products, status, headers) {
                     $log.debug("CartController(): searchProducts(): got products for search", products);
                     $scope.searchProductsList = new Array();
                     angular.forEach(products, function(product) {

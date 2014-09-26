@@ -540,7 +540,7 @@ angular.module('app.services', ['ngResource'])
             });
             $log.debug("cartService(): loadProducts(): loading products", productIds);
 
-            var p = Products.query({productIds: productIds}).$promise;
+            var p = Products.query({productIds: productIds});
             $log.debug("cartService(): loadProducts(): got promise", p);
 
             p.then(function(products) {
@@ -571,9 +571,9 @@ angular.module('app.services', ['ngResource'])
             var ret = origQuery(params);
             $log.debug('productService(): query()', params, ret);
             ret.$promise.then(function(val) {
-                $log.debug("DEBUG", val);
+                $log.debug("productService(): query(): result", val);
             });
-            return ret;
+            return ret.$promise;
         }
         return productService;
     })

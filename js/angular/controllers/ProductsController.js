@@ -110,7 +110,7 @@ angular.module('app.controllers.products')
 
         var loadProducts = function () {
             //var start = new Date().getTime();
-            Products.query({"categoryId": $scope.categoryId, "search": $scope.query}, function(products, responseHeaders) {
+            Products.query({"categoryId": $scope.categoryId, "search": $scope.query}).then(function(products, responseHeaders) {
                 $log.debug("ProductsController(): got products", products);
                 // We do this here to eliminate the flickering.  When Products.query returns initially,
                 // it returns an empty array, which is then populated after the response is obtained from the server.
