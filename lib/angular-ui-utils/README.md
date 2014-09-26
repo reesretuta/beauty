@@ -1,103 +1,87 @@
-# Angular UI Docs
-Doc generator of Angular-ui modules. 
+# UI.Utils [![Build Status](https://travis-ci.org/angular-ui/ui-utils.png?branch=master)](https://travis-ci.org/angular-ui/ui-utils)
 
-This generator use Grunt, AngularJS, RequireJS and jQuery.
+The companion suite for AngularJS
 
-## How to add it !
+## Requirements
 
-Add it as a bower component.
+- AngularJS
+
+## Usage
+
+
+You can get it from [Bower](http://bower.io/)
 
 ```sh
-bower install git://github.com/angular-ui/angular-ui-docs.git
-```
-or add to your `bower.json`
-```Javascript
-  "devDependencies": {
-    "angular-ui-docs": "angular-ui/angular-ui-docs"
-  }
-```
+# All the modules
+bower install angular-ui-utils#bower
 
-**It's working with ssh deploy key !**
-You can find a quick tuto [here](https://gist.github.com/douglasduteil/5525750#file-travis-secure-key-sh).
+# A specific module
+# bower install angular-ui-utils#bower-<moduleName>
+bower install angular-ui-utils#bower-event
+bower install angular-ui-utils#bower-keypress
+...
 
-After you added your deploy key to GitHub and Travis (in  `.travis.yml`).  Add a global value with your repo name, like : 
+# A specific version
+bower install angular-ui-utils#v0.0.4
+# A specific module version
+bower install angular-ui-utils#event-0.0.4
+bower install angular-ui-utils#keypress-0.0.4
+...
 
-```
-env:
-  global:
-  - REPO="git@github.com:<org>/<repo>.git"
-  - secure: ! 'MR37oFN+bprRlI1/YS3...etc...
-```
-
-Then add the scripts and limit the build-able branches.
-
-```yaml
-before_script: out/.travis/before_script.sh
-after_success: out/.travis/after_success.sh
-branches:
-  only:
-  - <branch>
+# If you want the sources with it
+bower install angular-ui-utils
+# or for a specific source version
+bower install angular-ui-utils#src0.0.4
 ```
 
-__Don't forget to create and push an orphan `gh-pages` branch.__
+This will copy the UI.Utils files into a `bower_components` folder, along with its dependencies. Load the script files in your application:
 
+```html
+<script type="text/javascript" src="bower_components/angular/angular.js"></script>
+<!-- for all the modules -->
+<script type="text/javascript" src="bower_components/angular-ui-utils/ui-utils.js"></script>
 
-## Make your demo !
-
-Travis will automatically run `grunt build-doc` ! 
-First you need to generate the `index.html` using [grunt-contrib-copy](https://github.com/gruntjs/grunt-contrib-copy)
-
-```Javascript
-  grunt.initConfig({
-    pkg: grunt.file.readJSON('package.json'),
-    meta: {
-      view : {
-        humaName : "UI <repo>",
-        repoName : "<the github repo name>",
-        demoHTML : grunt.file.read("demo/demo.html"),
-        demoJS   : grunt.file.read("demo/demo.js"),
-        css : [
-          '<any required css files>'
-        ],
-        js : [
-          '<any required script files>'
-        ]
-      }
-    },
-    copy: {
-      template : {
-        options : {processContent : (function(content){
-          return grunt.template.process(content);
-        })},
-        files: [
-          {src: ['out/.tmpl/index.tmpl'], dest: 'out/index.html'}
-        ]
-      }
-    }
+<!-- or just specific one-->
+<script type="text/javascript" src="bower_components/angular-ui-event/event.js"></script>
+<script type="text/javascript" src="bower_components/angular-ui-keypress/keypress.js"></script>
+<!-- ... -->
 ```
 
-This will generate `index.html` using :
- - the description in the `package.json`,
- - the `meta.view.humaName` as title of the demo site,
- - the `meta.view.repoName` in the github links,
+Add the specific modules to your dependencies, or add the entire lib by depending on `ui.utils`
 
+```javascript
+angular.module('myApp', ['ui.keypress', 'ui.event', ...])
+// or if ALL modules are loaded along with modules/utils.js
+var myAppModule = angular.module('MyApp', ['ui.utils']);
+```
 
-## See it working locally !
-Actually the demo must be built !
-We are using _bower_ and  _grunt_ for this.
+Each directive and filter is now it's own module and will have a relevant README.md in their respective folders
 
-First in you UI project run
+## Development
+
+We use Karma and jshint to ensure the quality of the code.  The easiest way to run these checks is to use grunt:
+
 ```sh
+npm install -g grunt-cli
 npm install && bower install
-grunt build-doc
+grunt
 ```
 
-Then run a localhost on `bower_components/angular-ui-docs`
+The karma task will try to open Firefox and Chrome as browser in which to run the tests.  Make sure this is available or change the configuration in `test\karma.conf.js`
+
+
+### Grunt Serve
+
+We have one task to serve them all !
+
 ```sh
-cd bower_components/angular-ui-docs
-python -m SimpleHTTPServer
-or
-php -S localhost:8000
+grunt serve
 ```
 
-and you'll have the generated website on http://localhost:8000/
+It's equal to run separately:
+
+* `grunt connect:server` : giving you a development server at [http://127.0.0.1:8000/](http://127.0.0.1:8000/).
+
+* `grunt karma:server` : giving you a Karma server to run tests (at [http://localhost:9876/](http://localhost:9876/) by default). You can force a test on this server with `grunt karma:unit:run`.
+
+* `grunt watch` : will automatically test your code and build your demo.  You can demo generation with `grunt build:gh-pages`.
