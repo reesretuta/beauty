@@ -426,7 +426,7 @@
               <h2 class=" ">Add a new payment method</h2>
             </div>
           </div>
-          valid={{paymentForm.$valid}}
+          <!--valid={{paymentForm.$valid}}-->
           <form name="paymentForm" class="form-horizontal" role="form" novalidate>
 
             <!-- CARD INFO -->
@@ -435,7 +435,7 @@
               <div class="col-sm-6 col-lg-4">
                 <input ng-model="profile.newCard.name" ng-minlength="3" name="cardName" type="text" class="form-control" placeholder=" " tabindex=" " required>
                 <span ng-show="paymentForm.cardName.$error.minlength" class="help-block" ng-class="{ 'text-danger' : paymentForm.cardName.$invalid && !paymentForm.cardName.$pristine }">Name on card is too short.</span>
-                 valid={{paymentForm.cardName.$valid}}
+                 <!--valid={{paymentForm.cardName.$valid}}-->
               </div>
             </div>
 
@@ -444,7 +444,7 @@
               <div class="col-sm-6 col-lg-4">
                 <input ng-model="profile.newCard.number" ng-minlength="13" ng-maxlength="16" maxlength="16" name="number" type="number" class="form-control" id=" " placeholder=" " tabindex=" " required>
                 <span ng-show="paymentForm.number.$error.minlength" class="help-block" ng-class="{ 'text-danger' : paymentForm.number.$invalid && !paymentForm.number.$pristine }">Credit card needs to be at least 13 numbers.</span>
-                valid={{paymentForm.number.$valid}}
+                <!--valid={{paymentForm.number.$valid}}-->
               </div>
             </div>
             <div class="form-group">
@@ -453,14 +453,14 @@
                 <div class="row">
                   <div class="col-xs-4 col-sm-3 col-med-2" ng-class="{ 'has-error' : paymentForm.expMonth.$invalid && !paymentForm.expMonth.$pristine }">
                       <input ng-model="profile.newCard.expMonth" name="expMonth" type="text" class="form-control col-sm-1" ui-mask="99" placeholder="MM" tabindex=" " required>
-                    valid={{paymentForm.expMonth.$valid}}
+                    <!--valid={{paymentForm.expMonth.$valid}}-->
                   </div>
                   <div class="col-xs-1">
                     <label class="control-label">/</label>
                   </div>
                   <div class="col-xs-6 col-sm-4 col-med-3" ng-class="{ 'has-error' : paymentForm.expYear.$invalid && !paymentForm.expYear.$pristine }">
                     <input ng-model="profile.newCard.expYear" name="expYear" type="text" class="form-control col-sm-3" ui-mask="9999" placeholder="YYYY" tabindex=" " required>
-                    valid={{paymentForm.expYear.$valid}}
+                    <!--valid={{paymentForm.expYear.$valid}}-->
                   </div>
                 </div>
               </div>
@@ -471,7 +471,7 @@
                 <div class="row">
                   <div class="col-xs-4 col-sm-3 col-med-2">
                     <input ng-model="profile.newCard.securityCode" ng-minlength="3" ng-maxlength="4" maxlength="4" name="securityCode" type="password" class="form-control col-sm-1" placeholder="&bull;&bull;&bull;" tabindex=" " required>
-                    valid={{paymentForm.securityCode.$valid}}
+                    <!--valid={{paymentForm.securityCode.$valid}}-->
                   </div>
                   <div class="col-xs-6 col-sm-4 col-med-3">
                     <a href="" class="form-info-link"><i class="fa fa-info-circle"></i> What's this?</a>
@@ -486,13 +486,14 @@
                 <div class="checkbox">
                   <label>
                     <input name="billSame" ng-model="checkout.billSame" type="checkbox" checked> My billing &amp; shipping address are the same
-                    valid={{paymentForm.billSame.$valid}}
+                    <!--valid={{paymentForm.billSame.$valid}}-->
                   </label>
                 </div>
               </div>
             </div>
 
             <!-- BILLING -->
+            billSame={{checkout.billSame}}
             <div class="cardAddressWrapper" ng-if="checkout.billSame==false">
               
                 <div class="row form-group" ng-if="!isOnlineSponsoring" >

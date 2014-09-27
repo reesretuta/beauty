@@ -146,7 +146,15 @@ angular.module('app.controllers.checkout')
                         $log.debug("CheckoutController(): sending user to beginning of wizard.  not logged in");
                         // changing url to reflect beginning of checkout
                         //$location.search('step', null);
-                        WizardHandler.wizard('checkoutWizard').goTo('Start');
+                        if (WizardHandler.wizard('checkoutWizard') != null) {
+                            WizardHandler.wizard('checkoutWizard').goTo('Start');
+                        } else {
+                            $timeout(function() {
+                                $log.debug("CheckoutController(): skipping to Start step after delay");
+                                //$location.search('step', 'Shipping');
+                                WizardHandler.wizard('checkoutWizard').goTo('Start');
+                            }, 0);
+                        }
                     }
                 } else if (urlStep == 'Finish') {
                     $log.debug("CheckoutController(): finished wizard, redirecting to products");
@@ -234,7 +242,7 @@ angular.module('app.controllers.checkout')
             $log.error("CheckoutController(): loadCheckout(): sponsor checks failed", error);
         });
 
-//        var cancelChangeListener;
+        var cancelChangeListener;
 //        function createChangeListener() {
 //            // change the wizard steps when folks hit the back/forward browser buttons
 //            cancelChangeListener = $rootScope.$on('$locationChangeSuccess', function(event, absNewUrl, absOldUrl) {
