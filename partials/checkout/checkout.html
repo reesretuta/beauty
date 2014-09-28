@@ -717,12 +717,13 @@
                     
                         <input type="checkbox" value="" ng-model="checkout.agree" required>
                     
-                  I agree to the <a href="">Terms and Conditions</a>
+                  I agree to the <a href="" data-toggle="modal" data-target=".bs-example-modal-lg-terms">Terms and Conditions</a>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                 </label>
                 <button type="button" class="btn btn-link pull-left" tabindex=" " ng-click="confirmAlert('Are you sure you\'d like to cancel your order?')">Cancel Order</button>
                 <button type="button" class="btn btn-primary btn-lg" tabindex=" " wz-next ng-disabled="!confirmForm.$valid">Place Order &nbsp;<i class="fa fa-caret-right"></i></button>
               </div>
+
             </form>
           </div>
 
