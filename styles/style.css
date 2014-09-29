@@ -992,6 +992,9 @@ a:focus {
  * --------------------------------------------------
  */
 @media screen and (max-width: 767px) {
+  .img-responsive {
+    margin: auto;
+  }
   #shop_menu {
     padding-left:15px;
   }
