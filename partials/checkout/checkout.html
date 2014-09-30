@@ -94,7 +94,7 @@
             <div class="col-md-offset-3 col-sm-9">
               <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                <button ng-if="!isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" tabindex="3" ng-click="loginOrCreateUser(loginEmail, loginPassword)" ng-disabled="!signInForm.$valid">Continue to Secure Checkout &nbsp;<i class="fa fa-caret-right"></i></button>
+                <button ng-if="!isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" tabindex="3" ng-click="loginOrCreateUser(profile.loginEmail, profile.loginPassword)" ng-disabled="!signInForm.$valid">Continue to Secure Checkout &nbsp;<i class="fa fa-caret-right"></i></button>
                 <button ng-if="isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" tabindex="3" wz-next ng-disabled="!signInForm.$valid">Continue to Secure Checkout &nbsp;<i class="fa fa-caret-right"></i></button>
               </div>
             </div>
