@@ -652,6 +652,10 @@ app.get('/([^\.]+)?$', function (req, res) {
     res.sendfile(basepath + '/index.html'); // load the single view file (angular will handle the page changes on the front-end)
 });
 
+app.get('/encrypt_test.html$', function (req, res) {
+    res.sendfile(basepath + '/encrypt_test.html'); // load the single view file (angular will handle the page changes on the front-end)
+});
+
 models.onReady(function () {
     console.log('Connected to database');
 

@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "connect-mongo": "^0.4.1",
-    "express-session": "^1.8.2"
+    "express-session": "^1.8.2",
+    "openpgp": "^0.7.2"
   }
 }
