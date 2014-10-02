@@ -12,14 +12,14 @@ angular.module('app.controllers.main')
 
         $scope.login = function() {
             Session.login($scope.username, $scope.password).then(function(session) {
-                $log.debug("logged in", session);
+                $log.debug("MainController(): logged in", session);
             }, function(error) {
-                $log.debug("failed to login", error);
+                $log.debug("MainController(): failed to login", error);
             });
         }
 
         $scope.logout = function() {
-            $log.debug("logging out");
+            $log.debug("MainController(): logging out");
             Session.logout();
         }
 
@@ -114,14 +114,14 @@ angular.module('app.controllers.main')
         // begin navigation
         $rootScope.navStatic = '0';
         $scope.categoryClicked = function(category) {
-            $log.debug("category clicked", category);
+            $log.debug("MainController(): category clicked", category);
             // set breadcrumbs
             BreadcrumbsHelper.setPath(category, null);
             $rootScope.navStatic = 0;
         }
 
         $scope.setNavStatic = function(val) {
-            $log.debug("setting navStatic=1");
+            $log.debug("MainController(): setting navStatic=1");
             BreadcrumbsHelper.setPath(null, null);
             $rootScope.navStatic = val;
         }
@@ -134,7 +134,7 @@ angular.module('app.controllers.main')
                 var breadcrumb = $rootScope.breadcrumbs[i];
                 //$log.debug("CategoriesController(): checking if category is in path", category, breadcrumb);
                 if (breadcrumb.type == 'category' && breadcrumb.id == category.id) {
-                    $log.debug("clearing static nav");
+                    $log.debug("MainController(): clearing static nav");
                     $rootScope.navStatic = 0;
                     return true;
                 }
