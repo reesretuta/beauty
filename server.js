@@ -7,8 +7,9 @@ var methodOverride = require('method-override');
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var app = express();
-var session    = require('express-session');
+var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
+var jafraClient = require('./js/jafra');
 
 // configure app
 //app.use(bodyParser());
@@ -286,60 +287,19 @@ router.route('/authenticate')// authenticate a user (accessed at POST http://loc
             req.session.language = 'en_US';
         }
 
-        if (username == 'jack@test.com') {
-            req.session.client = {
-                "id": 1,
-                "email": username,
-                "firstName": "Jack",
-                "lastName": "Smith",
-                "consultantIds": [100, 101],
-                "language": "en_US",
-                "phone": "555-555-4432",
-                "dateOfBirth": "12/01/1978",
-                "addresses": [],
-                "creditCards": []
-            };
+        jafraClient.authenticate(username, password).then(function(r) {
+            console.log("authentication successful");
+
+            // set the client in the session
+            req.session.client = r.result;
+
+            res.status(r.status);
             res.json(req.session);
-        } else if (username == 'jill@test.com') {
-            req.session.client = {
-                "id": 2,
-                "email": username,
-                "firstName": "Jill",
-                "lastName": "Smith",
-                "consultantIds": [102],
-                "language": "es_US",
-                "phone": "555-555-4433",
-                "dateOfBirth": "01/01/1978",
-                "addresses": [{
-                    "id": 111,
-                    "name": "Jill Smith",
-                    "address1": "1111 Test Ln",
-                    "address2": "",
-                    "city": "Corona",
-                    "state": "CA",
-                    "zip": "92880",
-                    "country": "United States",
-                    "phone": "555-333-2222"
-                }],
-                "creditCards": [{
-                    "id": 123,
-                    "name": "Jill Smith",
-                    "lastFour": "1111",
-                    "cardType": "visa",
-                    "expMonth": "12",
-                    "expYear": "2015"
-                }]
-            };
-            res.json(req.session);
-        } else {
-            console.log('invalid user');
-            res.status(401);
-            res.json({
-                "statusCode": 401,
-                "errorCode": "invalidCredentials",
-                "message": "Invalid Credentials"
-            });
-        }
+        }, function(r) {
+            console.log("authentication failed");
+            res.status(r.status);
+            res.json(r.result);
+        });
     });
 
 router.route('/logout')
@@ -435,42 +395,43 @@ router.route('/clients') // get current client
         var username = req.body.username;
         var password = req.body.password;
 
-        // update the session
-        req.session.client = {
-            "id": 1,
-            "email": username,
-            "firstName": "John",
-            "lastName": "Smith",
-            "consultantIds": [100, 101],
-            "language": "en_US",
-            "phone": "555-555-4432",
-            "dateOfBirth": "12/01/1978",
-            "addresses": [],
-            "creditCards": []
-        };
+        jafraClient.createClient({
+            "email": req.body.email,
+            "password": req.body.password,
+            "firstName": req.body.firstName,
+            lastName: req.body.lastName,
+            phone: req.body.phone,
+            dateOfBirth: req.body.dateOfBirth, // optional
+            language: req.body.language        // optional
+        }).then(function(r) {
+            console.log("response", r.response.statusCode, "body", r.result);
 
-        // return response
-        res.json({ clientId: 1 });
+            // return response
+            res.status(r.status);
+            res.json(r.result);
+
+        }, function(r) {
+            console.error("response", r.response.statusCode, "body", r.body);
+        });
     });
 
 router.route('/clients/:client_id')// get a consultant
     .get(function (req, res) {
         var clientId = req.params.client_id;
 
-        return {
-            "id": clientId,
-            "email": "jsmith@gmail.com",
-            "firstName": "John",
-            "lastName": "Smith",
-            "phone": "555-555-4432",
-            "dateOfBirth": "12/01/1978",
-            "consultantIds": [101, 102],
-            "language": "en_US"
-        };
+        // fetch the client information & return
+        jafraClient.getClient(clientId).then(function(r) {
+            res.status(r.status);
+            res.json(r.result);
+        }, function (r) {
+            console.error("server: getClient(): failed to load client", r.result);
+            res.status(500);
+            res.json(r.result);
+        });
     })
 
-    // create a client
-    .post(function (req, res) {
+    // update a client
+    .put(function (req, res) {
         res.json({ consultantId: 1000 });
     });
 
