@@ -16,6 +16,9 @@ var jafraClient = require('./js/jafra');
 // configure app
 //app.use(bodyParser());
 
+console.log("config", config);
+console.log("process env", process.env);
+
 var port = process.env.PORT || 8090; // set our port
 
 //var morgan = require('morgan')
