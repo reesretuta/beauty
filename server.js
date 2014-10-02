@@ -341,6 +341,7 @@ router.route('/session')
                 console.log('session saved', req.session);
                 res.json(req.session);
             });
+            return;
         }
         res.json(req.session);
     })
