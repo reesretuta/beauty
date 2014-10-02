@@ -2,7 +2,7 @@
 
 var request = require('request');
 var SHA1 = require("crypto-js/sha1");
-var Q = require('Q');
+var Q = require('q');
 
 var BASE_URL = "http://189.206.20.52:8091/cgidev2";
 var AUTHENTICATE_URL = BASE_URL + "/JCD05001P.pgm";
