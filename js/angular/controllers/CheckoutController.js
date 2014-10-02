@@ -225,7 +225,7 @@ angular.module('app.controllers.checkout')
                 }
 
                 // no that we're loaded, create out change listener to track changes
-                //createChangeListener();
+                createChangeListener();
             }, function(error) {
                 $log.error("CheckoutController(): loadCheckout(): cart error", error);
                 $location.path("/products");
@@ -243,42 +243,47 @@ angular.module('app.controllers.checkout')
         });
 
         var cancelChangeListener;
-//        function createChangeListener() {
-//            // change the wizard steps when folks hit the back/forward browser buttons
-//            cancelChangeListener = $rootScope.$on('$locationChangeSuccess', function(event, absNewUrl, absOldUrl) {
-//                var url = $location.url(),
-//                    path = $location.path(),
-//                    params = $location.search();
-//
-//                //$log.debug("CheckoutController(): changeListener(): location change event in checkout page", url, params);
-//
-//                var urlStep = S(params.step != null ? params.step : "").toString();
-//                var localStep = $scope.currentStep;
-//
-//                $scope.checkoutUpdated();
-//
-//                //$log.debug("CheckoutController(): changeListener(): url search", urlStep, "local step", localStep);
-//
-//                // if we have a composition and run, and the current scope doesn't already have the same run
-//                if (path == "/checkout" && (urlStep != localStep)) {
-//                    $log.debug("changeListener(): changeListener():  updating step in response to location change");
-//                    // NOT SURE IF WE WANT TO KEEP THIS BUT THOUGHT WE SHOULDN'T ALLOW USER TO GO TO LOGIN PAGE AGAIN ONCE THEY PASSED THIS STEP
-//                    if(urlStep=='') {
-//                        if (Session.isLoggedIn()) {
-//                            $log.debug("CheckoutController(): changeListener(): user is logged in, skipping to shipping");
-//                            WizardHandler.wizard('checkoutWizard').goTo('Shipping');
-//                            return;
-//                        } else {
-//                            WizardHandler.wizard('checkoutWizard').goTo('Start');
-//                        }
-//                    } else {
-//                        WizardHandler.wizard('checkoutWizard').goTo(urlStep);
-//                    }
-//                } else {
-//                    $log.debug("CheckoutController(): changeListener(): ignoring");
-//                }
-//            });
-//        }
+        function createChangeListener() {
+            // change the wizard steps when folks hit the back/forward browser buttons
+            cancelChangeListener = $rootScope.$on('$locationChangeSuccess', function(event, absNewUrl, absOldUrl) {
+                var url = $location.url(),
+                    path = $location.path(),
+                    params = $location.search();
+
+                //$log.debug("CheckoutController(): changeListener(): location change event in checkout page", url, params);
+
+                var urlStep = S(params.step != null ? params.step : "").toString();
+                var localStep = $scope.currentStep;
+
+                $scope.checkoutUpdated();
+
+                //$log.debug("CheckoutController(): changeListener(): url search", urlStep, "local step", localStep);
+
+                // if we have a composition and run, and the current scope doesn't already have the same run
+                if (path == "/checkout" || path == "/online_sponsoring/checkout" && (urlStep != localStep)) {
+                    $log.debug("CheckoutController(): changeListener():  updating step in response to location change");
+                    // NOT SURE IF WE WANT TO KEEP THIS BUT THOUGHT WE SHOULDN'T ALLOW USER TO GO TO LOGIN PAGE AGAIN ONCE THEY PASSED THIS STEP
+                    if (urlStep=='') {
+                        if (Session.isLoggedIn()) {
+                            $log.debug("CheckoutController(): changeListener(): user is logged in, skipping to shipping");
+                            WizardHandler.wizard('checkoutWizard').goTo('Shipping');
+
+                            // if the URL step is empty, then change it to shipping
+                            $location.search("step", 'Shipping');
+
+                            return;
+                        } else {
+                            WizardHandler.wizard('checkoutWizard').goTo('Start');
+                            $location.search("step", 'Start');
+                        }
+                    } else {
+                        WizardHandler.wizard('checkoutWizard').goTo(urlStep);
+                    }
+                } else {
+                    $log.debug("CheckoutController(): changeListener(): ignoring");
+                }
+            });
+        }
 
         $scope.total = function() {
             if ($scope.cartLoaded) {
