@@ -222,6 +222,7 @@ angular.module('app.services', ['ngResource'])
                     $log.debug("sessionService(): login()", session, status);
                     // update the session
                     setLocalSession(session);
+                    $log.debug("sessionService(): login(): isLoggedIn()", sessionService.isLoggedIn());
                     //success(session, status, headers);
                     d.resolve(session);
                 }).error(function(data, status, headers, config) {
