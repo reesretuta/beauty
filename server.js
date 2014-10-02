@@ -2,6 +2,8 @@
 // =============================================================================
 
 // call the packages we need
+var init = require('./config/init')();
+config = require('./config/config');
 var express = require('express');
 var methodOverride = require('method-override');
 var bodyParser = require('body-parser');
@@ -33,7 +35,7 @@ var sess = {
     saveUninitialized: true,
     store: new MongoStore({
         mongoose_connection : models.db,
-        db: 'jafra',
+        db: config.db,
         stringify: false
     })
 };

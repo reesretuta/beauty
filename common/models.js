@@ -1,6 +1,8 @@
 var mongoose = require("mongoose");
+var config = require('../config/config');
+
 Schema = mongoose.Schema;
-mongoose.connect('mongodb://localhost/jafra');
+mongoose.connect(config.db);
 
 var db = mongoose.connection;
 exports.db = db;
