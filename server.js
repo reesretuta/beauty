@@ -399,9 +399,6 @@ router.route('/clients') // get current client
     .post(function (req, res) {
         // TODO - create the client
 
-        var username = req.body.username;
-        var password = req.body.password;
-
         jafraClient.createClient({
             "email": req.body.email,
             "password": req.body.password,
@@ -412,6 +409,9 @@ router.route('/clients') // get current client
             language: req.body.language        // optional
         }).then(function(r) {
             console.log("response", r.response.statusCode, "body", r.result);
+
+            // add the new client to the session
+            req.session.client = r.result;
 
             // return response
             res.status(r.status);
