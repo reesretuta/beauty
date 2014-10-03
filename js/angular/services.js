@@ -283,13 +283,12 @@ angular.module('app.services', ['ngResource'])
                     var sess = getLocalSession();
                     deleteLocalSession();
 
-                    // copy over cart
-                    var newSess = getLocalSession();
-                    newSess.cart = sess.cart;
-
-                    sessionService.save().then(function(session) {
-                        d.resolve(session);
-                    });
+                    //// copy over cart
+                    //var newSess = getLocalSession();
+                    //newSess.cart = sess.cart;
+                    //sessionService.save().then(function(session) {
+                    //    d.resolve(session);
+                    //});
                     //success({}, status, headers);
                 }).error(function(data, status, headers, config) {
                     //failure(data, status, headers, config);
