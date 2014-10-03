@@ -1,8 +1,6 @@
 var mongoose = require("mongoose");
 var config = require('../config/config');
 
-console.log("using db", config.db);
-
 Schema = mongoose.Schema;
 mongoose.connect(config.db);
 
