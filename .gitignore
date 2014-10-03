@@ -3,3 +3,5 @@ http-server
 .idea
 *.iml
 nbproject
+bak
+dump
