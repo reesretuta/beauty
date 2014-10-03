@@ -16,7 +16,6 @@ module.exports = function() {
 	glob('./config/env/' + process.env.NODE_ENV + '.js', {
 		sync: true
 	}, function(err, environmentFiles) {
-		console.log();
 		if (!environmentFiles.length) {
 			if (process.env.NODE_ENV) {
 				console.log('\x1b[31m', 'No configuration file found for "' + process.env.NODE_ENV + '" environment using development instead');

@@ -5,9 +5,6 @@
 var init = require('./config/init')();
 config = require('./config/config');
 
-console.log("config", config);
-console.log("process env", process.env);
-
 var express = require('express');
 var methodOverride = require('method-override');
 var bodyParser = require('body-parser');
