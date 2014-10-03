@@ -107,3 +107,4 @@ server.js                - test configuration used for running node http server 
 sprites                  - used for grunt-spritesmith to generate sprite maps (not currently used)
 styles                   - CSS files
 </pre>
+
