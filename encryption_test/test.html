@@ -1,0 +1,756 @@
+<div id="readme" class="blob instapaper_body">
+    <article class="markdown-body entry-content" itemprop="mainContentOfPage"><h1>
+<a name="user-content-authenticate" class="anchor" href="#authenticate" aria-hidden="true"><span class="octicon octicon-link"></span></a>Authenticate</h1>
+
+<p><strong>Method</strong>: POST
+<strong>URL</strong>: /clients/authenticate
+<strong>Request</strong>:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+  <span class="nt">"email"</span><span class="p">:</span> <span class="s2">"jsmith@gmail.com"</span><span class="p">,</span> <span class="err">//</span> <span class="err">required</span>
+  <span class="nt">"password"</span><span class="p">:</span> <span class="s2">"some password"</span>  <span class="err">//</span> <span class="err">required</span>
+<span class="p">}</span>
+
+</pre></div>
+
+<h2>
+<a name="user-content-success" class="anchor" href="#success" aria-hidden="true"><span class="octicon octicon-link"></span></a>Success</h2>
+
+<p><strong>Status Code</strong>: 200
+<strong>Response</strong>:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+  <span class="nt">"clientId"</span><span class="p">:</span> <span class="err">&lt;clientId&gt;</span>
+<span class="p">}</span>
+</pre></div>
+
+<h2>
+<a name="user-content-errors" class="anchor" href="#errors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Errors</h2>
+
+<p><strong>Status Code</strong>: 401
+<strong>Responses</strong>:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+    <span class="nt">"statusCode"</span><span class="p">:</span> <span class="mi">401</span><span class="p">,</span>
+    <span class="nt">"errorCode"</span><span class="p">:</span> <span class="s2">"invalidCredentials"</span><span class="p">,</span>
+    <span class="nt">"message"</span><span class="p">:</span> <span class="s2">"Invalid Credentials"</span>
+<span class="p">}</span>
+</pre></div>
+
+<h1>
+<a name="user-content-create-client" class="anchor" href="#create-client" aria-hidden="true"><span class="octicon octicon-link"></span></a>Create Client</h1>
+
+<p><strong>Method</strong>: POST
+<strong>URL</strong>: /clients
+<strong>Info</strong>: Create a new client record, which can be used to authenticate into Client Direct &amp; future systems
+<strong>Request</strong>:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+  <span class="nt">"email"</span><span class="p">:</span> <span class="s2">"jsmith@gmail.com"</span><span class="p">,</span> <span class="err">//</span> <span class="err">required</span>
+  <span class="nt">"password"</span><span class="p">:</span> <span class="s2">"some password"</span><span class="p">,</span> <span class="err">//</span> <span class="err">required</span>
+  <span class="nt">"firstName"</span><span class="p">:</span> <span class="s2">"John"</span><span class="p">,</span>         <span class="err">//</span> <span class="err">optional</span>
+  <span class="nt">"lastName"</span><span class="p">:</span> <span class="s2">"Smith"</span><span class="p">,</span>         <span class="err">//</span> <span class="err">optional</span>
+  <span class="nt">"consultantId"</span><span class="p">:</span> <span class="mi">4657323</span><span class="p">,</span>     <span class="err">//</span> <span class="err">optional</span>
+  <span class="nt">"language"</span><span class="p">:</span> <span class="s2">"en"</span>             <span class="err">//</span> <span class="err">optional</span>
+<span class="p">}</span>
+
+</pre></div>
+
+<h2>
+<a name="user-content-success-1" class="anchor" href="#success-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Success</h2>
+
+<p><strong>Status Code</strong>: 201
+<strong>Response</strong>:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+  <span class="nt">"clientId"</span><span class="p">:</span> <span class="err">&lt;clientId&gt;</span>
+<span class="p">}</span>
+
+</pre></div>
+
+<h2>
+<a name="user-content-errors-1" class="anchor" href="#errors-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Errors</h2>
+
+<p><strong>Status Code</strong>: 400
+<strong>Info</strong>: Specified data was invalid and should be rejected by the server
+<strong>Responses</strong>:</p>
+
+<p>Only respond with this when the optional consultant ID is provided and it isn't valid.  Ignore instead if empty</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+    <span class="nt">"statusCode"</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span>
+    <span class="nt">"errorCode"</span><span class="p">:</span> <span class="s2">"invalidConsultantId"</span><span class="p">,</span>
+    <span class="nt">"message"</span><span class="p">:</span> <span class="s2">"Invalid consultant Id"</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>Invalid email format, bad characters, etc.</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+    <span class="nt">"statusCode"</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span>
+    <span class="nt">"errorCode"</span><span class="p">:</span> <span class="s2">"invalidEmailAddress"</span><span class="p">,</span>
+    <span class="nt">"message"</span><span class="p">:</span> <span class="s2">"Invalid email address"</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>Password that doesn't meet password requirements (length, variation, etc.)</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+    <span class="nt">"statusCode"</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span>
+    <span class="nt">"errorCode"</span><span class="p">:</span> <span class="s2">"invalidPassword"</span><span class="p">,</span>
+    <span class="nt">"message"</span><span class="p">:</span> <span class="s2">"Invalid password"</span>
+<span class="p">}</span>
+</pre></div>
+
+<p><strong>Status Code</strong>: 409
+<strong>Responses</strong>:</p>
+
+<p>There was a conflict creating an account with the specified email, because it is already in the system.</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+    <span class="nt">"statusCode"</span><span class="p">:</span> <span class="mi">409</span><span class="p">,</span>
+    <span class="nt">"errorCode"</span><span class="p">:</span> <span class="s2">"emailAlreadyInUse"</span><span class="p">,</span>
+    <span class="nt">"message"</span><span class="p">:</span> <span class="s2">"Email address already in use"</span>
+<span class="p">}</span>
+</pre></div>
+
+<h1>
+<a name="user-content-create-consultant" class="anchor" href="#create-consultant" aria-hidden="true"><span class="octicon octicon-link"></span></a>Create Consultant</h1>
+
+<p><strong>Method</strong>: POST
+<strong>URL</strong>: /consultants
+<strong>Info</strong>: This is similar to creating a Client, however a few more fields are required.  Create a consultant record, which can be used to authenticate into Jafra Biz &amp; eventually Client Direct.
+<strong>Request</strong>:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+  <span class="nt">"consultant"</span> <span class="kc">true</span><span class="p">,</span>           <span class="err">//</span> <span class="err">required</span>
+  <span class="nt">"ssn"</span><span class="p">:</span> <span class="s2">"555-234-1122"</span><span class="p">,</span>       <span class="err">//</span> <span class="err">required</span>
+  <span class="nt">"email"</span><span class="p">:</span> <span class="s2">"jsmith@gmail.com"</span><span class="p">,</span> <span class="err">//</span> <span class="err">required</span>
+  <span class="nt">"password"</span><span class="p">:</span> <span class="s2">"some password"</span><span class="p">,</span> <span class="err">//</span> <span class="err">required</span>
+  <span class="nt">"firstName"</span><span class="p">:</span> <span class="s2">"John"</span><span class="p">,</span>         <span class="err">//</span> <span class="err">required</span>
+  <span class="nt">"lastName"</span><span class="p">:</span> <span class="s2">"Smith"</span><span class="p">,</span>         <span class="err">//</span> <span class="err">required</span>
+  <span class="nt">"phone"</span><span class="p">:</span> <span class="s2">"555-234-1122"</span><span class="p">,</span>     <span class="err">//</span> <span class="err">required</span>
+  <span class="nt">"dateOfBirth"</span><span class="p">:</span> <span class="s2">"12/1/1978"</span><span class="p">,</span>  <span class="err">//</span> <span class="err">required</span>
+  <span class="nt">"sponsorId"</span><span class="p">:</span> <span class="mi">4268286</span><span class="p">,</span>        <span class="err">//</span> <span class="err">optional</span>
+  <span class="nt">"language"</span><span class="p">:</span> <span class="s2">"en"</span>             <span class="err">//</span> <span class="err">optional</span>
+<span class="p">}</span>
+</pre></div>
+
+<p><strong><em>consultant</em></strong> - this must be set to true for consultant records.  Setting this to true will require the consultant-specific fields to be filled out (SSN, dateOfBirth, sponsorId)
+<strong><em>sponsorId</em></strong> - initially create as a house account when not specified, send information to CRT for contact and manual sponsor assignment.</p>
+
+<h2>
+<a name="user-content-success-2" class="anchor" href="#success-2" aria-hidden="true"><span class="octicon octicon-link"></span></a>Success</h2>
+
+<p><strong>Status Code</strong>: 201
+<strong>Response</strong>:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+    <span class="nt">"consultantId"</span><span class="p">:</span> <span class="err">&lt;consultantId&gt;</span>
+<span class="p">}</span>
+</pre></div>
+
+<h2>
+<a name="user-content-errors-2" class="anchor" href="#errors-2" aria-hidden="true"><span class="octicon octicon-link"></span></a>Errors</h2>
+
+<p><strong>Status Code</strong>: 400
+<strong>Info</strong>: Specified data was invalid and should be rejected by the server
+<strong>Responses</strong>:</p>
+
+<p>The SSN was not properly formatted or was otherwise invalid.</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+    <span class="nt">"statusCode"</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span>
+    <span class="nt">"errorCode"</span><span class="p">:</span> <span class="s2">"invalidSSN"</span><span class="p">,</span>
+    <span class="nt">"message"</span><span class="p">:</span> <span class="s2">"Invalid SSN"</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>Only respond with this when the optional sponsor ID is provided and it isn't valid.  Ignore instead if empty</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+    <span class="nt">"statusCode"</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span>
+    <span class="nt">"errorCode"</span><span class="p">:</span> <span class="s2">"invalidSponsorId"</span><span class="p">,</span>
+    <span class="nt">"message"</span><span class="p">:</span> <span class="s2">"Invalid sponsor Id"</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>Invalid email format, bad characters, etc.</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+    <span class="nt">"statusCode"</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span>
+    <span class="nt">"errorCode"</span><span class="p">:</span> <span class="s2">"invalidEmailAddress"</span><span class="p">,</span>
+    <span class="nt">"message"</span><span class="p">:</span> <span class="s2">"Invalid email address"</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>Password that doesn't meet password requirements (length, variation, etc.)</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+    <span class="nt">"statusCode"</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span>
+    <span class="nt">"errorCode"</span><span class="p">:</span> <span class="s2">"invalidPassword"</span><span class="p">,</span>
+    <span class="nt">"message"</span><span class="p">:</span> <span class="s2">"Invalid password"</span>
+<span class="p">}</span>
+</pre></div>
+
+<p><strong>Status Code</strong>: 409
+<strong>Responses</strong>:</p>
+
+<p>There was a conflict creating an account with the specified email, because it is already in the system.</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+    <span class="nt">"statusCode"</span><span class="p">:</span> <span class="mi">409</span><span class="p">,</span>
+    <span class="nt">"errorCode"</span><span class="p">:</span> <span class="s2">"emailAlreadyInUse"</span><span class="p">,</span>
+    <span class="nt">"message"</span><span class="p">:</span> <span class="s2">"Email address already in use"</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>There was a conflict creating an account with the specified SSN, because it is already in the system.</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+    <span class="nt">"statusCode"</span><span class="p">:</span> <span class="mi">409</span><span class="p">,</span>
+    <span class="nt">"errorCode"</span><span class="p">:</span> <span class="s2">"ssnAlreadyInUse"</span><span class="p">,</span>
+    <span class="nt">"message"</span><span class="p">:</span> <span class="s2">"SSN already in use"</span>
+<span class="p">}</span>
+</pre></div>
+
+<h1>
+<a name="user-content-create-lead" class="anchor" href="#create-lead" aria-hidden="true"><span class="octicon octicon-link"></span></a>Create Lead</h1>
+
+<p><strong>Method</strong>: POST
+<strong>URL</strong>: /leads
+<strong>Info</strong>: Created from basic info provided as new consultant is signing up
+<strong>Request</strong>:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+  <span class="nt">"firstName"</span><span class="p">:</span> <span class="s2">"John"</span><span class="p">,</span>         <span class="err">//</span> <span class="err">required</span>
+  <span class="nt">"lastName"</span><span class="p">:</span> <span class="s2">"Smith"</span><span class="p">,</span>         <span class="err">//</span> <span class="err">required</span>
+  <span class="nt">"email"</span><span class="p">:</span> <span class="s2">"jsmith@gmail.com"</span><span class="p">,</span> <span class="err">//</span> <span class="err">required</span>
+  <span class="nt">"phone"</span><span class="p">:</span> <span class="s2">"555-234-1122"</span><span class="p">,</span>     <span class="err">//</span> <span class="err">required</span>
+  <span class="nt">"language"</span><span class="p">:</span> <span class="s2">"en"</span>             <span class="err">//</span> <span class="err">required</span>
+<span class="p">}</span>
+</pre></div>
+
+<h2>
+<a name="user-content-success-3" class="anchor" href="#success-3" aria-hidden="true"><span class="octicon octicon-link"></span></a>Success</h2>
+
+<p><strong>Status Code</strong>: 204</p>
+
+<h2>
+<a name="user-content-errors-3" class="anchor" href="#errors-3" aria-hidden="true"><span class="octicon octicon-link"></span></a>Errors</h2>
+
+<p><strong>Status Code</strong>: 400
+<strong>Responses</strong>:</p>
+
+<p>A generic message that simply tells us the server didn't like the data it received and the lead was not saved. </p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+    <span class="nt">"statusCode"</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span>
+    <span class="nt">"errorCode"</span><span class="p">:</span> <span class="s2">"invalidLeadData"</span><span class="p">,</span>
+    <span class="nt">"message"</span><span class="p">:</span> <span class="s2">"Invalid lead data"</span>
+<span class="p">}</span>
+</pre></div>
+
+<h1>
+<a name="user-content-get-all-addresses-by-clientid" class="anchor" href="#get-all-addresses-by-clientid" aria-hidden="true"><span class="octicon octicon-link"></span></a>Get all Addresses by clientId</h1>
+
+<p><strong>Method</strong>: GET
+<strong>URI</strong>: /clients/&lt;clientId&gt;/addresses</p>
+
+<h2>
+<a name="user-content-success-4" class="anchor" href="#success-4" aria-hidden="true"><span class="octicon octicon-link"></span></a>Success</h2>
+
+<p><strong>Status Code</strong>: 200
+<strong>Response Body</strong>:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">[{</span>
+  <span class="nt">"id"</span><span class="p">:</span> <span class="mi">111</span><span class="p">,</span>
+  <span class="nt">"name"</span><span class="p">:</span> <span class="s2">"Joe Smith"</span><span class="p">,</span>
+  <span class="nt">"address1"</span><span class="p">:</span> <span class="s2">"1111 Test Ln"</span><span class="p">,</span>
+  <span class="nt">"address2"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+  <span class="nt">"city"</span><span class="p">:</span> <span class="s2">"Corona"</span><span class="p">,</span>
+  <span class="nt">"state"</span><span class="p">:</span> <span class="s2">"CA"</span><span class="p">,</span>
+  <span class="nt">"zip"</span><span class="p">:</span> <span class="s2">"92880"</span><span class="p">,</span>
+  <span class="nt">"country"</span><span class="p">:</span> <span class="s2">"United States"</span><span class="p">,</span>
+  <span class="nt">"phone"</span><span class="p">:</span> <span class="s2">"555-333-2222"</span>
+<span class="p">}]</span>
+</pre></div>
+
+<h2>
+<a name="user-content-errors-4" class="anchor" href="#errors-4" aria-hidden="true"><span class="octicon octicon-link"></span></a>Errors</h2>
+
+<p><strong>Status Code</strong>: 404
+<strong>Response Body</strong>:</p>
+
+<p>The client ID was not found</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+  <span class="nt">"statusCode"</span><span class="p">:</span> <span class="mi">404</span><span class="p">,</span>
+  <span class="nt">"errorCode"</span><span class="p">:</span> <span class="s2">"clientNotFound"</span><span class="p">,</span>
+  <span class="nt">"message"</span><span class="p">:</span> <span class="err">"Client</span> <span class="err">not</span> <span class="err">found</span>
+<span class="p">}</span>
+</pre></div>
+
+<h1>
+<a name="user-content-get-address" class="anchor" href="#get-address" aria-hidden="true"><span class="octicon octicon-link"></span></a>Get Address</h1>
+
+<p><strong>Info</strong>: Get a specific address for client by clientId
+<strong>Method</strong>: GET
+<strong>URI</strong>: /clients/&lt;clientId&gt;/addresses/&lt;addressId&gt;</p>
+
+<h2>
+<a name="user-content-success-5" class="anchor" href="#success-5" aria-hidden="true"><span class="octicon octicon-link"></span></a>Success</h2>
+
+<p><strong>Status Code</strong>: 200
+<strong>Response</strong>:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+  <span class="nt">"id"</span><span class="p">:</span> <span class="mi">111</span><span class="p">,</span>
+  <span class="nt">"name"</span><span class="p">:</span> <span class="s2">"Joe Smith"</span><span class="p">,</span>
+  <span class="nt">"address1"</span><span class="p">:</span> <span class="s2">"1111 Test Ln"</span><span class="p">,</span>
+  <span class="nt">"address2"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+  <span class="nt">"city"</span><span class="p">:</span> <span class="s2">"Corona"</span><span class="p">,</span>
+  <span class="nt">"state"</span><span class="p">:</span> <span class="s2">"CA"</span><span class="p">,</span>
+  <span class="nt">"zip"</span><span class="p">:</span> <span class="s2">"92880"</span><span class="p">,</span>
+  <span class="nt">"country"</span><span class="p">:</span> <span class="s2">"United States"</span><span class="p">,</span>
+  <span class="nt">"phone"</span><span class="p">:</span> <span class="s2">"555-333-2222"</span>
+<span class="p">}</span>
+</pre></div>
+
+<h2>
+<a name="user-content-errors-5" class="anchor" href="#errors-5" aria-hidden="true"><span class="octicon octicon-link"></span></a>Errors</h2>
+
+<p><strong>Status Code</strong>: 404
+<strong>Response Body</strong>:</p>
+
+<p>The client ID was not found</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+  <span class="nt">"statusCode"</span><span class="p">:</span> <span class="mi">404</span><span class="p">,</span>
+  <span class="nt">"errorCode"</span><span class="p">:</span> <span class="s2">"clientNotFound"</span><span class="p">,</span>
+  <span class="nt">"message"</span><span class="p">:</span> <span class="err">"Client</span> <span class="err">not</span> <span class="err">found</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>The address ID was not found</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+  <span class="nt">"statusCode"</span><span class="p">:</span> <span class="mi">404</span><span class="p">,</span>
+  <span class="nt">"errorCode"</span><span class="p">:</span> <span class="s2">"addressNotFound"</span><span class="p">,</span>
+  <span class="nt">"message"</span><span class="p">:</span> <span class="err">"Address</span> <span class="err">not</span> <span class="err">found</span>
+<span class="p">}</span>
+</pre></div>
+
+<h1>
+<a name="user-content-create-address" class="anchor" href="#create-address" aria-hidden="true"><span class="octicon octicon-link"></span></a>Create Address</h1>
+
+<p><strong>Method</strong>: POST
+<strong>URI</strong>: /clients/&lt;clientId&gt;/addresses
+<strong>Request:</strong></p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+  <span class="nt">"name"</span><span class="p">:</span> <span class="s2">"Joe Smith"</span><span class="p">,</span>        <span class="err">//</span> <span class="err">optional</span>
+  <span class="nt">"address1"</span><span class="p">:</span> <span class="s2">"1111 Test Ln"</span><span class="p">,</span> <span class="err">//</span> <span class="err">required</span>
+  <span class="nt">"address2"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>             <span class="err">//</span> <span class="err">optional</span>
+  <span class="nt">"city"</span><span class="p">:</span> <span class="s2">"Corona"</span><span class="p">,</span>           <span class="err">//</span> <span class="err">required</span>
+  <span class="nt">"state"</span><span class="p">:</span> <span class="s2">"CA"</span><span class="p">,</span>              <span class="err">//</span> <span class="err">required</span>
+  <span class="nt">"zip"</span><span class="p">:</span> <span class="s2">"92880"</span><span class="p">,</span>             <span class="err">//</span> <span class="err">required</span>
+  <span class="nt">"country"</span><span class="p">:</span> <span class="s2">"United States"</span><span class="p">,</span> <span class="err">//</span> <span class="err">required</span>
+  <span class="nt">"phone"</span><span class="p">:</span> <span class="s2">"555-333-2222"</span>     <span class="err">//</span> <span class="err">optional</span>
+<span class="p">}</span>
+</pre></div>
+
+<h2>
+<a name="user-content-success-6" class="anchor" href="#success-6" aria-hidden="true"><span class="octicon octicon-link"></span></a>Success</h2>
+
+<p><strong>Status Code</strong>: 200
+<strong>Response</strong>:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+  <span class="nt">"addressId"</span><span class="p">:</span> <span class="err">&lt;addressId&gt;</span>
+<span class="p">}</span>
+</pre></div>
+
+<h2>
+<a name="user-content-errors-6" class="anchor" href="#errors-6" aria-hidden="true"><span class="octicon octicon-link"></span></a>Errors</h2>
+
+<p><strong>Status Code</strong>: 404
+<strong>Response Body</strong>:</p>
+
+<p>The client ID was not found</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+  <span class="nt">"statusCode"</span><span class="p">:</span> <span class="mi">404</span><span class="p">,</span>
+  <span class="nt">"errorCode"</span><span class="p">:</span> <span class="s2">"clientNotFound"</span><span class="p">,</span>
+  <span class="nt">"message"</span><span class="p">:</span> <span class="err">"Client</span> <span class="err">not</span> <span class="err">found</span>
+<span class="p">}</span>
+</pre></div>
+
+<h1>
+<a name="user-content-update-address" class="anchor" href="#update-address" aria-hidden="true"><span class="octicon octicon-link"></span></a>Update Address</h1>
+
+<p><strong>Method</strong>: PUT
+<strong>URI</strong>: /clients/&lt;clientId&gt;/addresses/&lt;addressId&gt;</p>
+
+<h2>
+<a name="user-content-success-7" class="anchor" href="#success-7" aria-hidden="true"><span class="octicon octicon-link"></span></a>Success</h2>
+
+<p><strong>Status Code</strong>: 204</p>
+
+<h2>
+<a name="user-content-errors-7" class="anchor" href="#errors-7" aria-hidden="true"><span class="octicon octicon-link"></span></a>Errors</h2>
+
+<p><strong>Status Code</strong>: 404
+<strong>Response Body</strong>:</p>
+
+<p>The client ID was not found</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+  <span class="nt">"statusCode"</span><span class="p">:</span> <span class="mi">404</span><span class="p">,</span>
+  <span class="nt">"errorCode"</span><span class="p">:</span> <span class="s2">"clientNotFound"</span><span class="p">,</span>
+  <span class="nt">"message"</span><span class="p">:</span> <span class="err">"Client</span> <span class="err">not</span> <span class="err">found</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>The address ID was not found</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+  <span class="nt">"statusCode"</span><span class="p">:</span> <span class="mi">404</span><span class="p">,</span>
+  <span class="nt">"errorCode"</span><span class="p">:</span> <span class="s2">"addressNotFound"</span><span class="p">,</span>
+  <span class="nt">"message"</span><span class="p">:</span> <span class="err">"Address</span> <span class="err">not</span> <span class="err">found</span>
+<span class="p">}</span>
+</pre></div>
+
+<h1>
+<a name="user-content-delete-address" class="anchor" href="#delete-address" aria-hidden="true"><span class="octicon octicon-link"></span></a>Delete Address</h1>
+
+<p><strong>Method</strong>: DELETE
+<strong>URI</strong>: /clients/&lt;clientId&gt;/addresses/&lt;addressId&gt;</p>
+
+<h2>
+<a name="user-content-success-8" class="anchor" href="#success-8" aria-hidden="true"><span class="octicon octicon-link"></span></a>Success</h2>
+
+<p><strong>Status Code</strong>: 204</p>
+
+<h2>
+<a name="user-content-errors-8" class="anchor" href="#errors-8" aria-hidden="true"><span class="octicon octicon-link"></span></a>Errors</h2>
+
+<p><strong>Status Code</strong>: 404
+<strong>Response Body</strong>:</p>
+
+<p>The client ID was not found</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+  <span class="nt">"statusCode"</span><span class="p">:</span> <span class="mi">404</span><span class="p">,</span>
+  <span class="nt">"errorCode"</span><span class="p">:</span> <span class="s2">"clientNotFound"</span><span class="p">,</span>
+  <span class="nt">"message"</span><span class="p">:</span> <span class="err">"Client</span> <span class="err">not</span> <span class="err">found</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>The address ID was not found</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+  <span class="nt">"statusCode"</span><span class="p">:</span> <span class="mi">404</span><span class="p">,</span>
+  <span class="nt">"errorCode"</span><span class="p">:</span> <span class="s2">"addressNotFound"</span><span class="p">,</span>
+  <span class="nt">"message"</span><span class="p">:</span> <span class="err">"Address</span> <span class="err">not</span> <span class="err">found</span>
+<span class="p">}</span>
+</pre></div>
+
+<h1>
+<a name="user-content-get-all-credit-cards-by-clientid" class="anchor" href="#get-all-credit-cards-by-clientid" aria-hidden="true"><span class="octicon octicon-link"></span></a>Get all Credit Cards by clientId</h1>
+
+<p><strong>Method</strong>: GET
+<strong>URI</strong>: /clients/&lt;clientId&gt;/creditCards</p>
+
+<h2>
+<a name="user-content-success-9" class="anchor" href="#success-9" aria-hidden="true"><span class="octicon octicon-link"></span></a>Success</h2>
+
+<p><strong>Status Code</strong>: 200
+<strong>Response Body</strong>:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">[{</span>
+  <span class="nt">"id"</span><span class="p">:</span> <span class="mi">123</span><span class="p">,</span>
+  <span class="nt">"name"</span><span class="p">:</span> <span class="s2">"Joe Smith"</span><span class="p">,</span>
+  <span class="nt">"card"</span><span class="p">:</span> <span class="s2">"4111111111111111"</span><span class="p">,</span>
+  <span class="nt">"expiration"</span><span class="p">:</span> <span class="s2">"12/1978"</span><span class="p">,</span>
+  <span class="nt">"cvv"</span><span class="p">:</span> <span class="s2">"1111"</span><span class="p">,</span>
+  <span class="nt">"billingAddress1"</span><span class="p">:</span> <span class="s2">"2222 Blah Rd"</span><span class="p">,</span>
+  <span class="nt">"billingAddress2"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+  <span class="nt">"billingCity"</span><span class="p">:</span> <span class="s2">"Culver City"</span><span class="p">,</span>
+  <span class="nt">"billingState"</span><span class="p">:</span> <span class="s2">"CA"</span><span class="p">,</span>
+  <span class="nt">"billingZip"</span><span class="p">:</span> <span class="s2">"90232"</span><span class="p">,</span>
+  <span class="nt">"billingCountry"</span><span class="p">:</span> <span class="s2">"United States"</span><span class="p">,</span>
+  <span class="nt">"billingPhone"</span><span class="p">:</span> <span class="s2">"555-333-2222"</span>
+<span class="p">}]</span>
+</pre></div>
+
+<h2>
+<a name="user-content-errors-9" class="anchor" href="#errors-9" aria-hidden="true"><span class="octicon octicon-link"></span></a>Errors</h2>
+
+<p><strong>Status Code</strong>: 404
+<strong>Response Body</strong>:</p>
+
+<p>The client ID is not found</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+  <span class="nt">"statusCode"</span><span class="p">:</span> <span class="mi">404</span><span class="p">,</span>
+  <span class="nt">"errorCode"</span><span class="p">:</span> <span class="s2">"clientNotFound"</span><span class="p">,</span>
+  <span class="nt">"message"</span><span class="p">:</span> <span class="err">"Client</span> <span class="err">not</span> <span class="err">found</span>
+<span class="p">}</span>
+</pre></div>
+
+<h1>
+<a name="user-content-get-credit-card" class="anchor" href="#get-credit-card" aria-hidden="true"><span class="octicon octicon-link"></span></a>Get Credit Card</h1>
+
+<p><strong>Info</strong>: Get a specific creditCard for client by clientId
+<strong>Method</strong>: GET
+<strong>URI</strong>: /clients/&lt;clientId&gt;/creditCards/&lt;creditCardId&gt;</p>
+
+<h2>
+<a name="user-content-success-10" class="anchor" href="#success-10" aria-hidden="true"><span class="octicon octicon-link"></span></a>Success</h2>
+
+<p><strong>Status Code</strong>: 200
+<strong>Response</strong>:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+  <span class="nt">"id"</span><span class="p">:</span> <span class="mi">111</span><span class="p">,</span>
+  <span class="nt">"name"</span><span class="p">:</span> <span class="s2">"Joe Smith"</span><span class="p">,</span>
+  <span class="nt">"card"</span><span class="p">:</span> <span class="s2">"4111111111111111"</span><span class="p">,</span>
+  <span class="nt">"expiration"</span><span class="p">:</span> <span class="s2">"12/1978"</span><span class="p">,</span>
+  <span class="nt">"cvv"</span><span class="p">:</span> <span class="s2">"1111"</span><span class="p">,</span>
+  <span class="nt">"billingAddress1"</span><span class="p">:</span> <span class="s2">"2222 Blah Rd"</span><span class="p">,</span>
+  <span class="nt">"billingAddress2"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+  <span class="nt">"billingCity"</span><span class="p">:</span> <span class="s2">"Culver City"</span><span class="p">,</span>
+  <span class="nt">"billingState"</span><span class="p">:</span> <span class="s2">"CA"</span><span class="p">,</span>
+  <span class="nt">"billingZip"</span><span class="p">:</span> <span class="s2">"90232"</span><span class="p">,</span>
+  <span class="nt">"billingCountry"</span><span class="p">:</span> <span class="s2">"United States"</span><span class="p">,</span>
+  <span class="nt">"billingPhone"</span><span class="p">:</span> <span class="s2">"555-333-2222"</span>
+<span class="p">}</span>
+</pre></div>
+
+<h2>
+<a name="user-content-errors-10" class="anchor" href="#errors-10" aria-hidden="true"><span class="octicon octicon-link"></span></a>Errors</h2>
+
+<p><strong>Status Code</strong>: 404
+<strong>Response Body</strong>:</p>
+
+<p>The client ID was not found</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+  <span class="nt">"statusCode"</span><span class="p">:</span> <span class="mi">404</span><span class="p">,</span>
+  <span class="nt">"errorCode"</span><span class="p">:</span> <span class="s2">"clientNotFound"</span><span class="p">,</span>
+  <span class="nt">"message"</span><span class="p">:</span> <span class="err">"Client</span> <span class="err">not</span> <span class="err">found</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>The creditCard ID was not found</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+  <span class="nt">"statusCode"</span><span class="p">:</span> <span class="mi">404</span><span class="p">,</span>
+  <span class="nt">"errorCode"</span><span class="p">:</span> <span class="s2">"clientNotFound"</span><span class="p">,</span>
+  <span class="nt">"message"</span><span class="p">:</span> <span class="err">"Client</span> <span class="err">not</span> <span class="err">found</span>
+<span class="p">}</span>
+</pre></div>
+
+<h1>
+<a name="user-content-create-credit-card" class="anchor" href="#create-credit-card" aria-hidden="true"><span class="octicon octicon-link"></span></a>Create Credit Card</h1>
+
+<p><strong>Method</strong>: POST
+<strong>URI</strong>: /clients/&lt;clientId&gt;/creditCards
+<strong>Request:</strong></p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+  <span class="nt">"name"</span><span class="p">:</span> <span class="s2">"Joe Smith"</span><span class="p">,</span>               <span class="err">//</span> <span class="err">required</span>
+  <span class="nt">"card"</span><span class="p">:</span> <span class="s2">"4111111111111111"</span><span class="p">,</span>        <span class="err">//</span> <span class="err">required</span>
+  <span class="nt">"expiration"</span><span class="p">:</span> <span class="s2">"12/1978"</span><span class="p">,</span>           <span class="err">//</span> <span class="err">required</span>
+  <span class="nt">"cvv"</span><span class="p">:</span> <span class="s2">"1111"</span><span class="p">,</span>                     <span class="err">//</span> <span class="err">required</span>
+  <span class="nt">"billingAddress1"</span><span class="p">:</span> <span class="s2">"2222 Blah Rd"</span><span class="p">,</span> <span class="err">//</span> <span class="err">optional</span>
+  <span class="nt">"billingAddress2"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>             <span class="err">//</span> <span class="err">optional</span>
+  <span class="nt">"billingCity"</span><span class="p">:</span> <span class="s2">"Culver City"</span><span class="p">,</span>      <span class="err">//</span> <span class="err">optional</span>
+  <span class="nt">"billingState"</span><span class="p">:</span> <span class="s2">"CA"</span><span class="p">,</span>              <span class="err">//</span> <span class="err">optional</span>
+  <span class="nt">"billingZip"</span><span class="p">:</span> <span class="s2">"90232"</span><span class="p">,</span>             <span class="err">//</span> <span class="err">optional</span>
+  <span class="nt">"billingCountry"</span><span class="p">:</span> <span class="s2">"United States"</span><span class="p">,</span> <span class="err">//</span> <span class="err">optional</span>
+  <span class="nt">"billingPhone"</span><span class="p">:</span> <span class="s2">"555-333-2222"</span>     <span class="err">//</span> <span class="err">optional</span>
+<span class="p">}</span>
+</pre></div>
+
+<h2>
+<a name="user-content-success-11" class="anchor" href="#success-11" aria-hidden="true"><span class="octicon octicon-link"></span></a>Success</h2>
+
+<p><strong>Status Code</strong>: 200
+<strong>Response</strong>:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+  <span class="nt">"creditCardId"</span><span class="p">:</span> <span class="err">&lt;creditCardId&gt;</span>
+<span class="p">}</span>
+</pre></div>
+
+<h2>
+<a name="user-content-errors-11" class="anchor" href="#errors-11" aria-hidden="true"><span class="octicon octicon-link"></span></a>Errors</h2>
+
+<p><strong>Status Code</strong>: 404
+<strong>Response Body</strong>:</p>
+
+<p>The client ID was not found</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+  <span class="nt">"statusCode"</span><span class="p">:</span> <span class="mi">404</span><span class="p">,</span>
+  <span class="nt">"errorCode"</span><span class="p">:</span> <span class="s2">"clientNotFound"</span><span class="p">,</span>
+  <span class="nt">"message"</span><span class="p">:</span> <span class="err">"Client</span> <span class="err">not</span> <span class="err">found</span>
+<span class="p">}</span>
+</pre></div>
+
+<h1>
+<a name="user-content-update-credit-card" class="anchor" href="#update-credit-card" aria-hidden="true"><span class="octicon octicon-link"></span></a>Update Credit Card</h1>
+
+<p><strong>Method</strong>: PUT
+<strong>URI</strong>: /clients/&lt;clientId&gt;/creditCards/&lt;creditCardId&gt;
+<strong>Request:</strong></p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+  <span class="nt">"name"</span><span class="p">:</span> <span class="s2">"Joe Smith"</span><span class="p">,</span>               <span class="err">//</span> <span class="err">required</span>
+  <span class="nt">"card"</span><span class="p">:</span> <span class="s2">"4111111111111111"</span><span class="p">,</span>        <span class="err">//</span> <span class="err">required</span>
+  <span class="nt">"expiration"</span><span class="p">:</span> <span class="s2">"12/1978"</span><span class="p">,</span>           <span class="err">//</span> <span class="err">required</span>
+  <span class="nt">"cvv"</span><span class="p">:</span> <span class="s2">"1111"</span><span class="p">,</span>                     <span class="err">//</span> <span class="err">required</span>
+  <span class="nt">"billingAddress1"</span><span class="p">:</span> <span class="s2">"2222 Blah Rd"</span><span class="p">,</span> <span class="err">//</span> <span class="err">optional</span>
+  <span class="nt">"billingAddress2"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>             <span class="err">//</span> <span class="err">optional</span>
+  <span class="nt">"billingCity"</span><span class="p">:</span> <span class="s2">"Culver City"</span><span class="p">,</span>      <span class="err">//</span> <span class="err">optional</span>
+  <span class="nt">"billingState"</span><span class="p">:</span> <span class="s2">"CA"</span><span class="p">,</span>              <span class="err">//</span> <span class="err">optional</span>
+  <span class="nt">"billingZip"</span><span class="p">:</span> <span class="s2">"90232"</span><span class="p">,</span>             <span class="err">//</span> <span class="err">optional</span>
+  <span class="nt">"billingCountry"</span><span class="p">:</span> <span class="s2">"United States"</span><span class="p">,</span> <span class="err">//</span> <span class="err">optional</span>
+  <span class="nt">"billingPhone"</span><span class="p">:</span> <span class="s2">"555-333-2222"</span>     <span class="err">//</span> <span class="err">optional</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>The client ID was not found</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+  <span class="nt">"statusCode"</span><span class="p">:</span> <span class="mi">404</span><span class="p">,</span>
+  <span class="nt">"errorCode"</span><span class="p">:</span> <span class="s2">"clientNotFound"</span><span class="p">,</span>
+  <span class="nt">"message"</span><span class="p">:</span> <span class="err">"Client</span> <span class="err">not</span> <span class="err">found</span>
+<span class="p">}</span>
+</pre></div>
+
+<h2>
+<a name="user-content-success-12" class="anchor" href="#success-12" aria-hidden="true"><span class="octicon octicon-link"></span></a>Success</h2>
+
+<p><strong>Status Code</strong>: 204</p>
+
+<h2>
+<a name="user-content-errors-12" class="anchor" href="#errors-12" aria-hidden="true"><span class="octicon octicon-link"></span></a>Errors</h2>
+
+<p><strong>Status Code</strong>: 404
+<strong>Response Body</strong>:</p>
+
+<p>The client ID was not found</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+  <span class="nt">"statusCode"</span><span class="p">:</span> <span class="mi">404</span><span class="p">,</span>
+  <span class="nt">"errorCode"</span><span class="p">:</span> <span class="s2">"clientNotFound"</span><span class="p">,</span>
+  <span class="nt">"message"</span><span class="p">:</span> <span class="err">"Client</span> <span class="err">not</span> <span class="err">found</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>The creditCard ID was not found</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+  <span class="nt">"statusCode"</span><span class="p">:</span> <span class="mi">404</span><span class="p">,</span>
+  <span class="nt">"errorCode"</span><span class="p">:</span> <span class="s2">"creditCardNotFound"</span><span class="p">,</span>
+  <span class="nt">"message"</span><span class="p">:</span> <span class="s2">"Credit card not found"</span>
+<span class="p">}</span>
+</pre></div>
+
+<h1>
+<a name="user-content-delete-credit-card" class="anchor" href="#delete-credit-card" aria-hidden="true"><span class="octicon octicon-link"></span></a>Delete Credit Card</h1>
+
+<p><strong>Method</strong>: DELETE
+<strong>URI</strong>: /clients/&lt;clientId&gt;/creditCards/&lt;creditCardId&gt;</p>
+
+<h2>
+<a name="user-content-success-13" class="anchor" href="#success-13" aria-hidden="true"><span class="octicon octicon-link"></span></a>Success</h2>
+
+<p><strong>Status Code</strong>: 204</p>
+
+<h2>
+<a name="user-content-errors-13" class="anchor" href="#errors-13" aria-hidden="true"><span class="octicon octicon-link"></span></a>Errors</h2>
+
+<p><strong>Status Code</strong>: 404
+<strong>Response Body</strong>:</p>
+
+<p>The client ID was not found</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+  <span class="nt">"statusCode"</span><span class="p">:</span> <span class="mi">404</span><span class="p">,</span>
+  <span class="nt">"errorCode"</span><span class="p">:</span> <span class="s2">"clientNotFound"</span><span class="p">,</span>
+  <span class="nt">"message"</span><span class="p">:</span> <span class="err">"Client</span> <span class="err">not</span> <span class="err">found</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>The creditCard ID was not found</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+  <span class="nt">"statusCode"</span><span class="p">:</span> <span class="mi">404</span><span class="p">,</span>
+  <span class="nt">"errorCode"</span><span class="p">:</span> <span class="s2">"creditCardNotFound"</span><span class="p">,</span>
+  <span class="nt">"message"</span><span class="p">:</span> <span class="s2">"Credit card not found"</span>
+<span class="p">}</span>
+</pre></div>
+
+<h1>
+<a name="user-content-create-order" class="anchor" href="#create-order" aria-hidden="true"><span class="octicon octicon-link"></span></a>Create Order</h1>
+
+<p><strong>Method</strong>: POST
+<strong>URI</strong>: /orders
+<strong>Info</strong>: Process a consultant <strong><em>or</em></strong> client order for the specified SKUs (potentially including kit selections)
+<strong>Request</strong>:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+  <span class="nt">"firstName"</span><span class="p">:</span> <span class="s2">"John"</span><span class="p">,</span>         <span class="err">//</span> <span class="err">required</span>
+  <span class="nt">"lastName"</span><span class="p">:</span> <span class="s2">"Smith"</span><span class="p">,</span>         <span class="err">//</span> <span class="err">required</span>
+  <span class="nt">"clientId"</span><span class="p">:</span> <span class="mi">237654</span><span class="p">,</span>          <span class="err">//</span> <span class="err">required</span>
+  <span class="nt">"ssn"</span><span class="p">:</span> <span class="s2">"553-21-1923"</span><span class="p">,</span>        <span class="err">//</span> <span class="err">required</span>
+  <span class="nt">"billingAddressId"</span><span class="p">:</span> <span class="mi">326754</span><span class="p">,</span>  <span class="err">//</span> <span class="err">required</span>
+  <span class="nt">"shippingAddressId"</span><span class="p">:</span> <span class="mi">326755</span><span class="p">,</span> <span class="err">//</span> <span class="err">required</span>
+  <span class="nt">"creditCardId"</span><span class="p">:</span> <span class="mi">74545</span><span class="p">,</span>       <span class="err">//</span> <span class="err">required</span>
+  <span class="nt">"agreementAccepted"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>   <span class="err">//</span> <span class="err">required</span>
+  <span class="nt">"products"</span><span class="p">:</span> <span class="p">[</span>                <span class="err">//</span> <span class="err">required</span>
+    <span class="p">{</span>
+      <span class="nt">"sku"</span><span class="p">:</span> <span class="s2">"25386"</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="nt">"sku"</span><span class="p">:</span> <span class="s2">"14038"</span><span class="p">,</span>
+      <span class="nt">"kitSelections"</span><span class="p">:</span> <span class="p">[</span> <span class="s2">"NUPL1202"</span><span class="p">,</span> <span class="s2">"NUPL7462"</span> <span class="p">]</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+
+<p><strong><em>clientId</em></strong> - this field will be used to associate with a previously created consultant / client
+<strong><em>products</em></strong> - list of products with optional configurations.  TBD: include quantity or simply have multiple items?</p>
+
+<h2>
+<a name="user-content-success-14" class="anchor" href="#success-14" aria-hidden="true"><span class="octicon octicon-link"></span></a>Success</h2>
+
+<p><strong>Status Code</strong>: 200
+<strong>Response</strong>:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+    <span class="nt">"orderId"</span><span class="p">:</span> <span class="err">&lt;orderId&gt;</span>
+<span class="p">}</span>
+</pre></div>
+
+<h2>
+<a name="user-content-errors-14" class="anchor" href="#errors-14" aria-hidden="true"><span class="octicon octicon-link"></span></a>Errors</h2>
+
+<p><strong>Status Code</strong>: 400
+<strong>Info</strong>: Specified data was invalid and should be rejected by the server
+<strong>Responses</strong>:</p>
+
+<p>A generic message that simply tells us the server didn't like the data it received and the order was not processed.  We could break this into more specific errors, but probably not needed for v1.</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+    <span class="nt">"statusCode"</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span>
+    <span class="nt">"errorCode"</span><span class="p">:</span> <span class="s2">"invalidOrderData"</span><span class="p">,</span>
+    <span class="nt">"message"</span><span class="p">:</span> <span class="s2">"Invalid order data"</span>
+<span class="p">}</span>
+</pre></div></article>
+  </div>
