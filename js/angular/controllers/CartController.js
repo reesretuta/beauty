@@ -1,5 +1,5 @@
 angular.module('app.controllers.cart')
-    .controller('CartController', function ($scope, $document, $rootScope, $compile, $routeParams, $modal, $log, $q, Cart, Products, HashKeyCopier) {
+    .controller('CartController', function ($scope, $document, $rootScope, $compile, $routeParams, $modal, $log, $q, Cart, Products, HashKeyCopier, STORE_BASE_URL) {
         $log.debug("CartController");
 
         //change page title
@@ -31,7 +31,7 @@ angular.module('app.controllers.cart')
                 $log.debug("CartController(): loadCart(): loaded cart products into items", items);
             }, function(error) {
                 $log.error("CartController(): loadCart(): cart error", error);
-                $location.path("/products");
+                $location.path(STORE_BASE_URL);
             });
         }
         loadCart();

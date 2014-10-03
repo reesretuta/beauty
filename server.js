@@ -608,15 +608,21 @@ app.use('/i18n', express.static(basepath + '/i18n'));
 //app.use('/api', express.static(__dirname + '/api')); // old used for serving static XML files
 app.use('/api', router);
 
-// any URL beginning with /online_sponsoring without a dot or / should serve index.html, save for /api methods captured above
-app.get('/online_sponsoring(/([^\.]+)?)?$', function (req, res) {
-    console.log('online sponsoring path');
+app.get('/$', function (req, res) {
+    console.log('root');
+    res.redirect("http://www.jafra.com/");
+    res.end();
+});
+
+// any URL beginning with /join without a dot or / should serve online_sponsoring.html, save for /api methods captured above
+app.get('/join*', function (req, res) {
+    console.log('join path');
     res.sendfile(basepath + '/online_sponsoring.html'); // load the single view file (angular will handle the page changes on the front-end)
 });
 
 // any URL without a dot or / should serve index.html, save for /api methods captured above
-app.get('/([^\.]+)?$', function (req, res) {
-    console.log('client direct path');
+app.get('/store*', function (req, res) {
+    console.log('store path');
     res.sendfile(basepath + '/index.html'); // load the single view file (angular will handle the page changes on the front-end)
 });
 

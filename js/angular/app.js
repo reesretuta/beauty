@@ -2,7 +2,7 @@
 
 // Declare app level module which depends on filters, and services
 var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 'ngAnimate', 'ui.bootstrap', 'ui.mask', 'ui.keypress', 'ui.jq', 'app.filters', 'app.services', 'app.controllers', 'app.directives', 'pasvaz.bindonce', 'jmdobry.angular-cache', 'ui.ladda', 'autocomplete', 'ui.event', 'mgo-angular-wizard', 'pascalprecht.translate'])
-    .config([ '$locationProvider', '$routeProvider', '$rootScopeProvider', '$angularCacheFactoryProvider', '$translateProvider', '$provide', 'BASE_URL', function ($locationProvider, $routeProvider, $rootScopeProvider, $angularCacheFactoryProvider, $translateProvider, $provide, BASE_URL) {
+    .config([ '$locationProvider', '$routeProvider', '$rootScopeProvider', '$angularCacheFactoryProvider', '$translateProvider', '$provide', 'BASE_URL', 'STORE_BASE_URL', 'JOIN_BASE_URL', function ($locationProvider, $routeProvider, $rootScopeProvider, $angularCacheFactoryProvider, $translateProvider, $provide, BASE_URL, STORE_BASE_URL, JOIN_BASE_URL) {
         //$locationProvider.html5Mode(true);
         $angularCacheFactoryProvider.setCacheDefaults({
             maxAge: 300000, // default to 5 minute caching
@@ -12,31 +12,31 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
         $locationProvider.html5Mode(true).hashPrefix('!');
         $rootScopeProvider.digestTtl(30);
 
-        $routeProvider.when(BASE_URL + '/', {
+        $routeProvider.when(STORE_BASE_URL + '/', {
           templateUrl: BASE_URL + '/partials/home.html',
           controller: 'HomeController',
           label: 'Home'
-        }).when(BASE_URL + '/products', {
+        }).when(STORE_BASE_URL + '/products', {
           templateUrl: BASE_URL + '/partials/products/products.html',
           controller: 'ProductsController'
-        }).when(BASE_URL + '/products/:productId', {
+        }).when(STORE_BASE_URL + '/products/:productId', {
           templateUrl: BASE_URL + '/partials/products/product.html',
           controller: 'ProductDetailsController'
-        }).when(BASE_URL + '/objects', {
+        }).when(STORE_BASE_URL + '/objects', {
           templateUrl: BASE_URL + '/partials/objects/objects.html',
           controller: 'ObjectsController'
-        }).when(BASE_URL + '/cart', {
+        }).when(STORE_BASE_URL + '/cart', {
           templateUrl: BASE_URL + '/partials/cart/cart.html',
           controller: 'CartController'
-        }).when(BASE_URL + '/checkout', {
+        }).when(STORE_BASE_URL + '/checkout', {
           templateUrl: BASE_URL + '/partials/checkout/checkout.html',
           controller: 'CheckoutController',
           reloadOnSearch: false
-        }).when(BASE_URL + '/online_sponsoring', {
+        }).when(JOIN_BASE_URL + '/', {
           templateUrl: BASE_URL + '/partials/online_sponsoring/landing.html',
           controller: 'OnlineSponsorLandingController',
           reloadOnSearch: false
-        }).when(BASE_URL + '/online_sponsoring/join', {
+        }).when(JOIN_BASE_URL + '/checkout', {
           templateUrl: BASE_URL + '/partials/checkout/checkout.html',
           controller: 'CheckoutController',
           reloadOnSearch: false
@@ -54,5 +54,7 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
     }])
     .run(function ($rootScope, $animate, BASE_URL) {
         $rootScope.BASE_URL = BASE_URL;
+        $rootScope.STORE_BASE_URL = BASE_URL + "/store";
+        $rootScope.JOIN_BASE_URL = BASE_URL + "/join";
         $animate.enabled(true);
     });

@@ -122,7 +122,7 @@
 
                 <div class="navbar-right">
                   <span ng-show="loggedIn()" href="" ng-cloak>{{getUserEmail()}} (<a style="margin-right: 5px; margin-left: 5px;" href="" ng-click="logout()">Logout</a>)</span>
-                  <a ng-show="getItemsInCart()!=null" href="/cart" ng-cloak><i class="fa fa-shopping-cart"></i> {{ 'VIEW_CART' | translate }} ({{getItemsInCart()}})</a>
+                  <a ng-show="getItemsInCart()!=null" ng-href="{{STORE_BASE_URL}}/cart" ng-cloak><i class="fa fa-shopping-cart"></i> {{ 'VIEW_CART' | translate }} ({{getItemsInCart()}})</a>
                 </div>
 
                 <div class="navbar-right">
@@ -141,7 +141,7 @@
               <li><a href="">{{ 'NAV_HOME' | translate }}</a></li>
               <li><a href="">{{ 'NAV_ABOUT' | translate }}</a></li>
               <li><a href="">{{ 'NAV_OPPORTUNITY' | translate }}</a></li>
-              <li class="active"><a ng-href="/" ng-click="categoryClicked(null); setNavStatic('0')">{{ 'NAV_STORE' | translate }}</a></li>
+              <li class="active"><a ng-href="{{STORE_BASE_URL}}" ng-click="categoryClicked(null); setNavStatic('0')">{{ 'NAV_STORE' | translate }}</a></li>
               <li><a href="">{{ 'NAV_PARTY' | translate }}</a></li>
               <li><a href="">{{ 'NAV_MEDIA' | translate }}</a></li>
               <li><a href="">{{ 'NAV_MYPAGE' | translate }}</a></li>
@@ -203,7 +203,7 @@
                   <span ng-bind-html="category.name | unsafe"></span> <i ng-if="category.children" class="fa fa-angle-down pull-right"></i>
                 </a>
                 <!-- follow link if no children -->
-                <a ng-show="category.children == null" ng-href="/products?category={{category.id}}" ng-class="{'active': categoryInPath(category)}" ng-click="categoryClicked(category);">
+                <a ng-show="category.children == null" ng-href="{{STORE_BASE_URL}}/products?category={{category.id}}" ng-class="{'active': categoryInPath(category)}" ng-click="categoryClicked(category);">
                   <span ng-bind-html="category.name | unsafe"></span> <i ng-if="category.children" class="fa fa-angle-down pull-right"></i>
                 </a>
 
@@ -217,7 +217,7 @@
                       <span ng-bind-html="category.name | unsafe"></span> <i ng-if="category.children" class="fa fa-angle-down  pull-right"></i>
                     </a>
                     <!-- follow link if no children -->
-                    <a ng-show="category.children == null || category.children.length == 0" ng-href="/products?category={{category.id}}" ng-class="{'active': categoryInPath(category)}" ng-click="categoryClicked(category);">
+                    <a ng-show="category.children == null || category.children.length == 0" ng-href="{{STORE_BASE_URL}}/products?category={{category.id}}" ng-class="{'active': categoryInPath(category)}" ng-click="categoryClicked(category);">
                       <span ng-bind-html="category.name | unsafe"></span> <i ng-if="category.children" class="fa fa-angle-down  pull-right"></i>
                     </a>
 
@@ -225,7 +225,7 @@
                     <ul ng-if="category.children">
 
                       <li ng-repeat="category in category.children">
-                        <a href="" ng-href="/products?category={{category.id}}" ng-class="{'active': categoryInPath(category)}" ng-click="categoryClicked(category);">
+                        <a href="" ng-href="{{STORE_BASE_URL}}/products?category={{category.id}}" ng-class="{'active': categoryInPath(category)}" ng-click="categoryClicked(category);">
                           <span ng-bind-html="category.name | unsafe"></span>
                         </a>
                       </li>
@@ -241,8 +241,8 @@
             </ul>
             <hr>
             <ul>
-              <li><a ng-href="/products#top" href="/products#top" ng-class="{'active': navStatic == '1'}" ng-click="categoryClicked(null); setNavStatic('1')"><span>All Products</span></a></li>
-              <li><a ng-href="/cart#additem" href="/cart#additem" ng-class="{'active': navStatic == '2'}" ng-click="categoryClicked(null); setNavStatic('2')"><span>Order By Item</span></a></li>
+              <li><a ng-href="{{STORE_BASE_URL}}/products#top" ng-class="{'active': navStatic == '1'}" ng-click="categoryClicked(null); setNavStatic('1')"><span>All Products</span></a></li>
+              <li><a ng-href="{{STORE_BASE_URL}}/cart#additem" ng-class="{'active': navStatic == '2'}" ng-click="categoryClicked(null); setNavStatic('2')"><span>Order By Item</span></a></li>
             </ul>
 
           </aside>

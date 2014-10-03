@@ -1,5 +1,5 @@
 angular.module('app.controllers.main')
-    .controller('MainController', function ($scope, $document, $timeout, $location, $rootScope, $routeParams, $log, $translate, Session, Categories, Cart, Search, BreadcrumbsHelper, RecentlyViewed) {
+    .controller('MainController', function ($scope, $document, $timeout, $location, $rootScope, $routeParams, $log, $translate, STORE_BASE_URL, Session, Categories, Cart, Search, BreadcrumbsHelper, RecentlyViewed) {
 
         $rootScope.adding = false;
 
@@ -33,7 +33,7 @@ angular.module('app.controllers.main')
                     params = $location.search();
 
                 // if we have a composition and run, and the current scope doesn't already have the same run
-                if (path == "/products" && (urlSearch != localSearch)) {
+                if (path == STORE_BASE_URL + "/products" && (urlSearch != localSearch)) {
                     $log.debug("MainController(): changeListener(): location change event in projects page", url, params);
 
                     var urlSearch = S(params.search != null ? params.search : "").toString();
@@ -93,7 +93,7 @@ angular.module('app.controllers.main')
 
         $scope.searchProducts = function(query) {
             $log.debug("MainController(): going to products for search", query);
-            $location.url("/products?search="+(query != null ? query : ''), 'false');
+            $location.url(STORE_BASE_URL + "/products?search="+(query != null ? query : ''), 'false');
         }
 
         $rootScope.getImagePath = function(paths) {

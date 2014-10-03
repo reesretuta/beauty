@@ -1,5 +1,5 @@
 angular.module('app.controllers.checkout')
-    .controller('CheckoutController', function ($location, $scope, $document, $timeout, $rootScope, $anchorScroll, $routeParams, $modal, $log, $q, Session, OrderHelper, Checkout, Cart, Products, Addresses, CreditCards, HashKeyCopier, WizardHandler) {
+    .controller('CheckoutController', function ($location, $scope, $document, $timeout, $rootScope, $anchorScroll, $routeParams, $modal, $log, $q, STORE_BASE_URL, JOIN_BASE_URL, Session, OrderHelper, Checkout, Cart, Products, Addresses, CreditCards, HashKeyCopier, WizardHandler) {
 
         $log.debug("CheckoutController()");
 
@@ -66,8 +66,9 @@ angular.module('app.controllers.checkout')
         $log.debug("CheckoutController(): path", path);
 
         $scope.isOnlineSponsoring = false;
-        if (path && path.match(/online_sponsoring/)) {
+        if (path && path.match(JOIN_BASE_URL)) {
             $scope.isOnlineSponsoring = true;
+            $scope.APP_BASE_URL = JOIN_BASE_URL;
             $log.debug("CheckoutController(): online sponsoring");
 
             // lock profile to new, since we're in online sponsoring
@@ -127,7 +128,8 @@ angular.module('app.controllers.checkout')
             });
         } else {
             // nothing to load, done
-            $log.debug("CheckoutController(): checks complete");
+            $log.debug("CheckoutController(): in store");
+            $scope.APP_BASE_URL = STORE_BASE_URL;
             onlineSponsorChecksCompleteDefer.resolve();
         }
 
@@ -209,7 +211,7 @@ angular.module('app.controllers.checkout')
 
                 if (items.length == 0) {
                     $log.debug("CheckoutController(): loadCheckout(): no items in cart, redirecting to products / landing");
-                    $location.path($scope.isOnlineSponsoring ? "/online_sponsoring" : "/products");
+                    $location.path($scope.isOnlineSponsoring ? JOIN_BASE_URL : STORE_BASE_URL);
                 } else if (Session.isLoggedIn()) {
                     // send the user past login page
                     if (urlStep != 'Start') {
@@ -228,7 +230,7 @@ angular.module('app.controllers.checkout')
                 createChangeListener();
             }, function(error) {
                 $log.error("CheckoutController(): loadCheckout(): cart error", error);
-                $location.path("/products");
+                $location.path(STORE_BASE_URL);
             });
         }
 
@@ -260,7 +262,7 @@ angular.module('app.controllers.checkout')
                 //$log.debug("CheckoutController(): changeListener(): url search", urlStep, "local step", localStep);
 
                 // if we have a composition and run, and the current scope doesn't already have the same run
-                if (path == "/checkout" || path == "/online_sponsoring/checkout" && (urlStep != localStep)) {
+                if (path == STORE_BASE_URL + "/checkout" || path == JOIN_BASE_URL + "/checkout" && (urlStep != localStep)) {
                     $log.debug("CheckoutController(): changeListener():  updating step in response to location change");
                     // NOT SURE IF WE WANT TO KEEP THIS BUT THOUGHT WE SHOULDN'T ALLOW USER TO GO TO LOGIN PAGE AGAIN ONCE THEY PASSED THIS STEP
                     if (urlStep=='') {

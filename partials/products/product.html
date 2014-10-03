@@ -206,7 +206,7 @@
 
         <div ng-repeat="relatedproduct in product.youMayAlsoLike" class="col-xs-6 col-sm-4 col-md-3 col-lg-3 store-item related">
           <div class="store-item-wrapper">
-            <a ng-href="/products/{{relatedproduct.product.sku}}#top">
+            <a ng-href="{{STORE_BASE_URL}}/products/{{relatedproduct.product.sku}}#top">
               <span class="responsive-container img-responsive">
                 <img class="responsive-container img-responsive" ng-src="{{getImagePath(relatedproduct.product.images[0].imagePath)}}">
               </span>
@@ -229,19 +229,19 @@
 
           <div ng-repeat="viewedProduct in recentlyViewedProducts" class="col-xs-6 col-sm-4 col-md-3 col-lg-3 store-item related" ng-show="viewedProduct.sku != product.sku && viewedProduct.sku != product.sku">
             <div class="store-item-wrapper" ng-if="viewedProduct.type!='group'">
-              <a ng-href="/products/{{viewedProduct.sku}}#top">
+              <a ng-href="{{STORE_BASE_URL}}/products/{{viewedProduct.sku}}#top">
                 <span class="responsive-container img-responsive">
                   <img class="responsive-container img-responsive" ng-src="{{getImagePath(viewedProduct.images[0].imagePath)}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';">
                 </span>
               </a>
               <div class="store-item-info">
-                <p class="store-item-title"><a ng-href="/products/{{viewedProduct.sku}}#top">{{viewedProduct.name}}</a></p>
+                <p class="store-item-title"><a ng-href="{{STORE_BASE_URL}}/products/{{viewedProduct.sku}}#top">{{viewedProduct.name}}</a></p>
               </div>
             </div><!--/store-item-wrapper-->
             <div class="store-item-wrapper" ng-if="viewedProduct.type=='group'">
-              <a ng-href="/products/{{viewedProduct.sku}}#top"><img class="img-responsive" ng-src="{{getImagePath(viewedProduct.images[0].imagePath)}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';"></a>
+              <a ng-href="{{STORE_BASE_URL}}/products/{{viewedProduct.sku}}#top"><img class="img-responsive" ng-src="{{getImagePath(viewedProduct.images[0].imagePath)}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';"></a>
               <div class="store-item-info">
-                <p class="store-item-title"><a ng-href="/products/{{viewedProduct.sku}}#top">{{viewedProduct.name}}</a></p>
+                <p class="store-item-title"><a ng-href="{{STORE_BASE_URL}}/products/{{viewedProduct.sku}}#top">{{viewedProduct.name}}</a></p>
               </div>
             </div><!--/store-item-wrapper-->
           </div><!--/span-->

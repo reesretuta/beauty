@@ -11,7 +11,7 @@ angular.module('app.services', ['ngResource'])
             }
         };
     })
-    .factory('Search', function ($timeout, $location, $rootScope, $log) {
+    .factory('Search', function ($timeout, $location, $rootScope, $log, STORE_BASE_URL) {
         var searchService = {};
 
         var SEARCH_DELAY = 1000;
@@ -32,10 +32,10 @@ angular.module('app.services', ['ngResource'])
 //                $log.debug("delay passed, searching", $rootScope.search.queryDelayed);
 //                $rootScope.search.query = $rootScope.search.queryDelayed;
 //                // add the search to the url if we are in products
-//                if ($location.path() == "/products") {
+//                if ($location.path() == STORE_BASE_URL + "/products") {
 //                    $location.search("search", $rootScope.search.query);
 //                } else {
-//                    $location.url("/products");
+//                    $location.url(STORE_BASE_URL + "/products");
 //                    if ($rootScope.search.query != null && $rootScope.search.query !== undefined) {
 //                        $location.search("search", $rootScope.search.query);
 //                    }
@@ -48,10 +48,10 @@ angular.module('app.services', ['ngResource'])
             $log.debug("searching");
             $rootScope.search.query = query;
 
-            if ($location.path() == "/products") {
+            if ($location.path() == STORE_BASE_URL + "/products") {
                 $location.search("search", $rootScope.search.query);
             } else {
-                $location.url("/products");
+                $location.url(STORE_BASE_URL + "/products");
                 if ($rootScope.search.query != null && $rootScope.search.query !== undefined) {
                     $location.search("search", $rootScope.search.query);
                 }
@@ -370,7 +370,7 @@ angular.module('app.services', ['ngResource'])
 
         return checkoutService;
     })
-    .factory('Cart', function ($rootScope, $log, $timeout, $q, Session, Products, growlNotifications) {
+    .factory('Cart', function ($rootScope, $log, $timeout, $q, STORE_BASE_URL, Session, Products, growlNotifications) {
         var cartService = {};
 
         function getLocalSessionCart() {
@@ -450,7 +450,7 @@ angular.module('app.services', ['ngResource'])
             }
 
             // growlnotification when adding to cart
-            growlNotifications.add('<i class="fa fa-shopping-cart"></i> '+item.name+' <a href="/cart"><b>added to cart</b></a>', 'warning', 4000);
+            growlNotifications.add('<i class="fa fa-shopping-cart"></i> '+item.name+' <a href="' + STORE_BASE_URL + '/cart"><b>added to cart</b></a>', 'warning', 4000);
 
             $log.debug("cartService(): addToCart(): saving cart to session", cart);
 
@@ -925,4 +925,6 @@ angular.module('app.services', ['ngResource'])
       return orderHelper;
     })
     .constant('BASE_URL', '')
+    .constant('STORE_BASE_URL', '/store')
+    .constant('JOIN_BASE_URL', '/join')
     .constant('API_URL', '/api');

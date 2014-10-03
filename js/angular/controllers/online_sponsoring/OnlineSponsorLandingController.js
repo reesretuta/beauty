@@ -1,5 +1,5 @@
 angular.module('app.controllers.onlineSponsor')
-.controller('OnlineSponsorLandingController', function ($scope, $document, $location, $rootScope, $routeParams, $log, Categories) {
+.controller('OnlineSponsorLandingController', function ($scope, $document, $location, $rootScope, $routeParams, $log, JOIN_BASE_URL, Categories) {
     $rootScope.page = 'Join';
 
     $scope.join = function(sku) {
@@ -8,6 +8,6 @@ angular.module('app.controllers.onlineSponsor')
         $('.modal-backdrop').remove();
 
         $log.debug("joining with sku", sku);
-        $location.path("/online_sponsoring/join").search("sku", sku);
+        $location.path(JOIN_BASE_URL + "/checkout").search("sku", sku);
     };
 });
