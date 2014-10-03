@@ -12,7 +12,7 @@ var morgan = require('morgan');
 var app = express();
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
-var jafraClient = require('./js/jafra');
+var jafraClient = require('./jafra');
 
 // configure app
 //app.use(bodyParser());
