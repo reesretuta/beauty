@@ -336,7 +336,7 @@ angular.module('app.controllers.checkout')
             $scope.loginError = false;
 
             if ($scope.profile.customerStatus == 'new') {
-                $log.debug("CheckoutController(): loginOrCreateUser(): trying to create client with username=", email);
+                $log.debug("CheckoutController(): loginOrCreateUser(): trying to create client with username=", $scope.profile.loginEmail);
 
                 Session.createClient({
                     email: $scope.profile.loginEmail,
