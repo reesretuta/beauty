@@ -211,7 +211,7 @@ angular.module('app.services', ['ngResource'])
                     });
                 }).error(function(data, status, headers, config) {
                     //failure(data, status, headers, config);
-                    $log.error("sessionService(): createClient(): error creating client", err);
+                    $log.error("sessionService(): createClient(): error creating client", status, data);
                     $log.error(data, status, headers, config);
                     d.reject(data);
                 });
@@ -620,6 +620,38 @@ angular.module('app.services', ['ngResource'])
                 });
             }, function(error) {
                 d.reject('Failed to save address');
+            });
+
+            return d.promise;
+        }
+
+        addressService.removeAddress = function(addressId) {
+            $log.debug("Address(): removeAddress(): removing", addressId);
+            var d = $q.defer();
+
+            var session = Session.getLocalSession();
+
+            addressService.remove({clientId: session.client.id, addressId: addressId}).$promise.then(function(response) {
+                // remove the address from the client data
+                for (var i=0; i < session.client.addresses.length; i++) {
+                    if (session.client.addresses[i].id == addressId) {
+                        session.client.addresses = session.client.addresses.splice(i, 1);
+                        break;
+                    }
+                }
+
+                if (session.checkout && session.checkout.shipping && session.checkout.shipping.id == addressId) {
+                    session.checkout.shipping = null;
+                }
+                if (session.checkout && session.checkout.billing && session.checkout.billing.id == addressId) {
+                    session.checkout.billing = null;
+                }
+
+                $log.debug("addressService(): removeAddress(): removed address from client addresses", session.client.addresses);
+                d.resolve();
+
+            }, function(error) {
+                d.reject('Failed to remove address');
             });
 
             return d.promise;

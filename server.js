@@ -396,29 +396,41 @@ router.route('/clients') // get current client
     .post(function (req, res) {
         // TODO - create the client
 
-        jafraClient.createClient({
-            "email": req.body.email,
-            "password": req.body.password,
-            "firstName": req.body.firstName,
-            lastName: req.body.lastName,
-            dateOfBirth: req.body.dateOfBirth, // optional
-            consultantId: req.body.consultantId,
-            language: req.body.language        // optional
-        }).then(function(r) {
-            console.log("created client", r.response.statusCode, "body", r.result);
+        // validate the email address first, then create the client if it's valid
+        jafraClient.validateEmail(req.body.email).then(function(r) {
+            console.log("validated email", r.status, "result", r.result);
 
-            // add the new client to the session
-            req.session.client = r.result;
+            // email is valid, continue
+            jafraClient.createClient({
+                "email": req.body.email,
+                "password": req.body.password,
+                "firstName": req.body.firstName,
+                lastName: req.body.lastName,
+                dateOfBirth: req.body.dateOfBirth, // optional
+                consultantId: req.body.consultantId,
+                language: req.body.language        // optional
+            }).then(function(r) {
+                console.log("created client", r.response.statusCode, "body", r.result);
 
-            // return response
-            res.status(r.status);
-            res.json(r.result);
+                // add the new client to the session
+                req.session.client = r.result;
+
+                // return response
+                res.status(r.status);
+                res.json(r.result);
+
+            }, function(r) {
+                console.error("failed to create client", r.response.statusCode, "body", r.body);
+                res.status(r.status);
+                res.json(r.result);
+            });
 
         }, function(r) {
-            console.error("failed to create client", r.response.statusCode, "body", r.body);
+            console.error("failed to validate email", r.status, "result", r.result);
             res.status(r.status);
             res.json(r.result);
         });
+
     });
 
 router.route('/clients/:client_id')// get a consultant
@@ -475,25 +487,41 @@ router.route('/consultants/:consultant_id')// get a consultant
 router.route('/clients/:client_id/addresses')// get a client's addresses
     .get(function (req, res) {
         var clientId = req.params.client_id;
-
-        return [
-            {
-                "id": 111,
-                "name": "Joe Smith",
-                "address1": "1111 Test Ln",
-                "address2": "",
-                "city": "Corona",
-                "state": "CA",
-                "zip": "92880",
-                "country": "United States",
-                "phone": "555-333-2222"
-            }
-        ];
+        res.status(200);
+        res.json({id: clientId});
     })
 
-    // create a client
+    // create an address
     .post(function (req, res) {
-        res.json({ addressId: 111 });
+        console.log("create address", req.body);
+        var clientId = req.params.client_id;
+
+        jafraClient.createAddress(clientId, {
+            "name": req.body.name,
+            "address1": req.body.address1,
+            "address2": req.body.address2,
+            "city": req.body.city,
+            "state": req.body.state,
+            "zip": req.body.zip,
+            "country": req.body.country,
+            "phone": req.body.phone
+        }).then(function(r) {
+            console.error("created address", r.status, r.result);
+
+            // return response
+            res.status(r.status);
+
+            // add this address to the session
+            var address = r.result;
+            req.session.client.addresses.push(address);
+
+            // return the address data
+            res.json(address);
+        }, function(r) {
+            console.error("failed to create address", r.status, r.result);
+            res.status(r.status);
+            res.json(r.result);
+        });
     });
 
 router.route('/clients/:client_id/addresses/:address_id')// get a client address
@@ -501,17 +529,6 @@ router.route('/clients/:client_id/addresses/:address_id')// get a client address
         var clientId = req.params.client_id;
         var addressId = req.params.address_id;
 
-        return {
-            "id": addressId,
-            "name": "Joe Smith",
-            "address1": "1111 Test Ln",
-            "address2": "",
-            "city": "Corona",
-            "state": "CA",
-            "zip": "92880",
-            "country": "United States",
-            "phone": "555-333-2222"
-        };
     })
 
     // update a client address
@@ -521,7 +538,36 @@ router.route('/clients/:client_id/addresses/:address_id')// get a client address
 
     // delete a client address
     .delete(function (req, res) {
-        res.status(204);
+        var clientId = req.params.client_id;
+        var addressId = req.params.address_id;
+
+        jafraClient.deleteAddress(clientId, addressId).then(function(r) {
+            console.log("deleted address", clientId, addressId);
+
+            // remove the address from the req.session data
+            for (var i=0; i < req.session.client.addresses.length; i++) {
+                if (req.session.client.addresses[i].id == addressId) {
+                    req.session.client.addresses = req.session.client.addresses.splice(i, 1);
+                    break;
+                }
+            }
+
+            // remove from the checkout data if needed
+            if (req.session.checkout && req.session.checkout.shipping && req.session.checkout.shipping.id == addressId) {
+                req.session.checkout.shipping = null;
+            }
+            if (req.session.checkout && req.session.checkout.billing && req.session.checkout.billing.id == addressId) {
+                req.session.checkout.billing = null;
+            }
+            
+            // return response
+            res.status(r.status);
+            res.json(r.result);
+        }, function(r) {
+            console.error("failed to delete address", r.status, r.result);
+            res.status(r.status);
+            res.json(r.result);
+        });
     });
 
 // CREDIT CARDS
@@ -580,6 +626,28 @@ router.route('/orders')// create an order
             orderId: 1234
         });
     });
+
+//// VALIDATION
+//router.route('/validate/address')// get a client creditCard
+//    .get(function (req, res) {
+//        // must be authenticated
+//        if (req.session.client == null) {
+//            res.status(401);
+//            return;
+//        }
+//
+//        var email = req.param('email');
+//        jafraClient.validateEmail(email).then(function(r) {
+//            console.log("validated email", r.status, "result", r.result);
+//            // return response
+//            res.status(r.status);
+//            res.json(r.result);
+//        }, function(r) {
+//            console.error("failed to validate email", r.status, "result", r.result);
+//            res.status(r.status);
+//            res.json(r.result);
+//        });
+//    })
 
 // Configure Express
 

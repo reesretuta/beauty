@@ -318,6 +318,8 @@ angular.module('app.controllers.checkout')
                     $log.debug("shipping speed selected");
                     $scope.shippingSpeed = shippingSpeed;
                     WizardHandler.wizard('checkoutWizard').goTo('Payment');
+
+                    $scope.checkoutUpdated();
                 } else {
                     $log.error("shipping speed not selected!!!");
                 }
@@ -451,11 +453,10 @@ angular.module('app.controllers.checkout')
             $scope.checkout.shipping = address;
             $scope.checkout.billing = address;
             $scope.shippingSpeed();
-            $scope.checkoutUpdated();
         }
 
         $scope.addAddressAndContinue = function(address) {
-            $log.debug("CheckoutController(): addAddressAndContinue()");
+            $log.debug("CheckoutController(): addAddressAndContinue()", address);
 
             if ($scope.isOnlineSponsoring) {
                 $log.debug("CheckoutController(): addAddressAndContinue(): setting consultant shipping/billing address", address);
@@ -463,7 +464,7 @@ angular.module('app.controllers.checkout')
                 $scope.checkout.billing = address;
                 WizardHandler.wizard('checkoutWizard').goTo('Payment');
             } else {
-                $log.error("CheckoutController(): addAddressAndContinue(): adding address");
+                $log.debug("CheckoutController(): addAddressAndContinue(): adding address");
                 $scope.addAddress(address).then(function() {
                     $log.debug("CheckoutController(): addAddressAndContinue(): added address, showing shipping speed");
                     $scope.shippingSpeed();
@@ -484,9 +485,31 @@ angular.module('app.controllers.checkout')
                 $scope.checkout.shipping = address;
                 $scope.checkout.billing = address;
                 d.resolve(address);
-                $scope.checkoutUpdated();
             }, function(err) {
                 $log.error("CheckoutController(): addAddress(): failed to add address", err);
+                d.reject(err);
+            });
+
+            return d.promise;
+        }
+
+        $scope.removeAddress = function(addressId) {
+            var d = $q.defer();
+
+            $log.debug('CheckoutController(): removeAddress(): address data', addressId);
+
+            Addresses.removeAddress(addressId).then(function() {
+                $log.debug("CheckoutController(): removeAddress(): address removed", addressId);
+                if ($scope.checkout.shipping != null && $scope.checkout.shipping.id == addressId) {
+                    $scope.checkout.shipping = null;
+                }
+                if ($scope.checkout.billing != null && $scope.checkout.billing.id == addressId) {
+                    $scope.checkout.billing = null;
+                }
+                d.resolve();
+                $scope.checkoutUpdated();
+            }, function(err) {
+                $log.error("CheckoutController(): removeAddress()", err);
                 d.reject(err);
             });
 
