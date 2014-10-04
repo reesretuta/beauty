@@ -188,7 +188,7 @@ angular.module('app.services', ['ngResource'])
             var d = $q.defer();
 
             initialized.promise.then(function(session) {
-                $log.debug("Session(): createClient(): attempting to create user username=", email);
+                $log.debug("Session(): createClient(): attempting to create user username=", client.email);
 
                 //$log.debug("Session(): login(): attempting to login with username=", username, "password=", password);
                 var session = $http.post(API_URL + '/clients', {
