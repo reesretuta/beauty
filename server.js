@@ -688,7 +688,7 @@ app.get('/join*', function (req, res) {
 });
 
 // any URL without a dot or / should serve index.html, save for /api methods captured above
-app.get('/store*', function (req, res) {
+app.get('/shop*', function (req, res) {
     console.log('store path');
     res.sendfile(basepath + '/index.html'); // load the single view file (angular will handle the page changes on the front-end)
 });
