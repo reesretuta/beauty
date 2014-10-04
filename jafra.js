@@ -185,7 +185,7 @@ function createClient(client) {
             firstName: client.firstName,
             lastName: client.lastName,
             dateOfBirth: client.dateOfBirth,
-            consultantIds: [client.consultantIds],
+            consultantId: client.consultantId,
             language: client.language
         },
         headers: {

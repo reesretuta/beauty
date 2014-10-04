@@ -184,14 +184,22 @@ angular.module('app.services', ['ngResource'])
             return d.promise;
         }
 
-        sessionService.createClient = function(email, password, phone, dob) {
+        sessionService.createClient = function(client) {
             var d = $q.defer();
 
             initialized.promise.then(function(session) {
-                $log.debug("Session(): createClient(): attempting to create user username=", email, "password=", password);
+                $log.debug("Session(): createClient(): attempting to create user username=", email);
 
                 //$log.debug("Session(): login(): attempting to login with username=", username, "password=", password);
-                var session = $http.post(API_URL + '/clients', {username: email, password: password}, {}).success(function(data, status, headers, config) {
+                var session = $http.post(API_URL + '/clients', {
+                    email: client.email,
+                    password: client.password,
+                    firstName: client.firstName,
+                    lastName: client.lastName,
+                    dateOfBirth: client.dateOfBirth,
+                    consultantId: client.consultantId,
+                    language: client.language
+                }, {}).success(function(data, status, headers, config) {
                     $log.debug("sessionService(): createClient()", data.clientId);
 
                     sessionService.get().then(function(session) {
@@ -486,6 +494,7 @@ angular.module('app.services', ['ngResource'])
 
             var cart = getLocalSessionCart();
             angular.forEach(cart, function(cartItem) {
+                // FIXME - if it's a kit, verify we remove the right kit configuration
                 if (cartItem.sku == item.sku) {
                   var getIndex = cart.indexOf(cartItem);
                   cart.splice(getIndex, 1);
@@ -577,14 +586,8 @@ angular.module('app.services', ['ngResource'])
         }
         return productService;
     })
-    .factory('Clients', function ($resource, $http, $log, API_URL) {
-        return $resource(API_URL + '/clients/:clientId', {clientId: '@_id'});
-    })
     .factory('Consultants', function ($resource, $http, $log, API_URL) {
         return $resource(API_URL + '/consultants/:consultantId', {consultantId: '@_id'});
-    })
-    .factory('Clients', function ($resource, $http, $log, API_URL) {
-        return $resource(API_URL + '/clients/:clientId', {clientId: '@_id'});
     })
     .factory('Addresses', function ($resource, $http, $log, $q, Session, API_URL) {
         var addressService = $resource(API_URL + '/clients/:clientId/addresses/:addressId', {addressId: '@_id'});

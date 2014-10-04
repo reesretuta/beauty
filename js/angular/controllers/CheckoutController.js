@@ -330,15 +330,23 @@ angular.module('app.controllers.checkout')
             $("html, body").css("overflow-y", "hidden");
         }
 
-        $scope.loginOrCreateUser = function(loginEmail, loginPassword) {
+        $scope.loginOrCreateUser = function() {
             $log.debug("CheckoutController(): loginOrCreateUser()");
 
             $scope.loginError = false;
 
             if ($scope.profile.customerStatus == 'new') {
-                $log.debug("CheckoutController(): loginOrCreateUser(): trying to create client with username=", loginEmail, "password=", loginPassword, $scope.profile.customerStatus);
+                $log.debug("CheckoutController(): loginOrCreateUser(): trying to create client with username=", email);
 
-                Session.createClient(loginEmail, loginPassword).then(function(session) {
+                Session.createClient({
+                    email: $scope.profile.loginEmail,
+                    password: $scope.profile.loginPassword,
+                    firstName: $scope.profile.firstName,
+                    lastName: $scope.profile.lastName,
+                    dateOfBirth: $scope.profile.dateOfBirth,
+                    consultantId: $scope.profile.consultantId,
+                    language: $scope.profile.language
+                }).then(function(session) {
                     $log.debug("CheckoutController(): loginOrCreateUser(): created client, moving to next step", session.client);
                     $scope.client = session.client;
                     $scope.profile.customerStatus = 'existing';
@@ -350,10 +358,10 @@ angular.module('app.controllers.checkout')
                     // FIXME - show error here!!!!!
                 });
             } else {
-                $log.debug("CheckoutController(): loginOrCreateUser(): trying to login with username=", loginEmail, "password=", loginPassword, $scope.profile.customerStatus);
+                $log.debug("CheckoutController(): loginOrCreateUser(): trying to login with username=", $scope.profile.loginEmail);
 
                 // do the auth check and store the session id in the root scope
-                Session.login(loginEmail, loginPassword).then(function(session) {
+                Session.login($scope.profile.loginEmail, $scope.profile.loginPassword).then(function(session) {
                     $log.debug("CheckoutController(): loginOrCreateUser(): authenticated, moving to next step", session.client);
                     $scope.client = session.client;
                     $scope.profile.customerStatus = 'existing';
@@ -364,11 +372,13 @@ angular.module('app.controllers.checkout')
                     $scope.loginError = true;
                 });
             }
+
+            $scope.checkoutUpdated();
         }
 
         $scope.completeProfile = function() {
             $log.debug("CheckoutController(): completeProfile(): profile complete", $scope.checkout);
-            Checkout.setCheckout($scope.checkout);
+            $scope.checkoutUpdated();
         }
 
 
@@ -416,6 +426,8 @@ angular.module('app.controllers.checkout')
                     $scope.checkout.billing = $scope.profile.newBillingAddress;
                 }
             }
+
+            $scope.checkoutUpdated();
         }
 
         $scope.addCard = function(card, success, failure) {
@@ -431,6 +443,7 @@ angular.module('app.controllers.checkout')
                 failure();
             });
 
+            $scope.checkoutUpdated();
         }
 
         $scope.selectAddressAndContinue = function(address) {
@@ -438,6 +451,7 @@ angular.module('app.controllers.checkout')
             $scope.checkout.shipping = address;
             $scope.checkout.billing = address;
             $scope.shippingSpeed();
+            $scope.checkoutUpdated();
         }
 
         $scope.addAddressAndContinue = function(address) {
@@ -457,6 +471,7 @@ angular.module('app.controllers.checkout')
                     $log.error("CheckoutController(): addAddressAndContinue(): error adding address", error);
                 });
             }
+            $scope.checkoutUpdated();
         }
 
         $scope.addAddress = function(address) {
@@ -469,6 +484,7 @@ angular.module('app.controllers.checkout')
                 $scope.checkout.shipping = address;
                 $scope.checkout.billing = address;
                 d.resolve(address);
+                $scope.checkoutUpdated();
             }, function(err) {
                 $log.error("CheckoutController(): addAddress(): failed to add address", err);
                 d.reject(err);
@@ -484,12 +500,14 @@ angular.module('app.controllers.checkout')
                 Addresses.addAddress(address).then(function(a) {
                     $log.debug("CheckoutController(): addAddress(): address added", a);
                     $scope.checkout.billing = a;
+                    $scope.checkoutUpdated();
                 }, function(err) {
                     $log.error("CheckoutController(): addAddress(): failed to add address", err);
                 });
             } else {
                 $log.debug("CheckoutController(): addAddress(): setting address to existing address", address);
                 $scope.checkout.billing = address;
+                $scope.checkoutUpdated();
             }
         }
 
@@ -510,6 +528,7 @@ angular.module('app.controllers.checkout')
             $scope.currentStep = '';
             Checkout.clear().then(function() {
                 $log.debug("CheckoutController(): finished(): Checkout cleared", $scope.checkout);
+                $scope.checkoutUpdated();
             });
             Cart.clear().then(function() {
                 $log.debug("CheckoutController(): finished(): Cart cleared", $scope.cart);

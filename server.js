@@ -401,11 +401,11 @@ router.route('/clients') // get current client
             "password": req.body.password,
             "firstName": req.body.firstName,
             lastName: req.body.lastName,
-            phone: req.body.phone,
             dateOfBirth: req.body.dateOfBirth, // optional
+            consultantId: req.body.consultantId,
             language: req.body.language        // optional
         }).then(function(r) {
-            console.log("response", r.response.statusCode, "body", r.result);
+            console.log("created client", r.response.statusCode, "body", r.result);
 
             // add the new client to the session
             req.session.client = r.result;
@@ -415,7 +415,9 @@ router.route('/clients') // get current client
             res.json(r.result);
 
         }, function(r) {
-            console.error("response", r.response.statusCode, "body", r.body);
+            console.error("failed to create client", r.response.statusCode, "body", r.body);
+            res.status(r.status);
+            res.json(r.result);
         });
     });
 

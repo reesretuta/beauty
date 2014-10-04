@@ -42,7 +42,7 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
           reloadOnSearch: false
         }).otherwise({
           templateUrl: BASE_URL + '/partials/page-not-found.html',
-          controller: 'NotFoundController'
+          controller: 'MainController'
         });
 
         $translateProvider.useStaticFilesLoader({

@@ -19,11 +19,11 @@
           <div class="form-group" ng-if="isOnlineSponsoring">
             <label for="firstName" class="col-md-3 control-label">Name</label>
             <div class="col-sm-3">
-              <input name="firstName" ng-model="profile.firstName" ng-change="checkoutUpdated()" class="form-control" id="firstName" placeholder="First" tabindex="1" required="" autocomplete="off">
+              <input name="firstName" ng-model="profile.firstName" class="form-control" id="firstName" placeholder="First" tabindex="1" required="" autocomplete="off">
               <!--valid={{signInForm.firstName.$valid}}-->
             </div>
             <div class="col-sm-3">
-              <input name="lastName" ng-model="profile.lastName" ng-change="checkoutUpdated()" class="form-control" id="lastName" placeholder="Last" tabindex="1" required="" autocomplete="off">
+              <input name="lastName" ng-model="profile.lastName" class="form-control" id="lastName" placeholder="Last" tabindex="1" required="" autocomplete="off">
               <!--valid={{signInForm.lastName.$valid}}-->
             </div>
           </div>
@@ -31,7 +31,7 @@
           <div class="form-group">
             <label for="loginEmail" class="col-md-3 control-label">Email Address</label>
             <div class="col-sm-6">
-              <input name="loginEmail" ng-model="profile.loginEmail" ng-change="checkoutUpdated()" type="email" class="form-control" id="loginEmail" placeholder="Email" tabindex="1" required>
+              <input name="loginEmail" ng-model="profile.loginEmail" type="email" class="form-control" id="loginEmail" placeholder="Email" tabindex="1" required>
               <!--valid={{signInForm.loginEmail.$valid}}-->
             </div>
           </div>
@@ -39,7 +39,7 @@
           <div class="form-group" ng-if="isOnlineSponsoring">
             <label for="phoneNumber" class="col-md-3 control-label">Phone number</label>
             <div class="col-sm-6">
-              <input name="phoneNumber" ui-mask="(999) 999-9999" ng-model="profile.phoneNumber" ng-change="checkoutUpdated()" class="form-control" id="phoneNumber" placeholder="(xxx) xxx-xxxx" tabindex="1" required>
+              <input name="phoneNumber" ui-mask="(999) 999-9999" ng-model="profile.phoneNumber" class="form-control" id="phoneNumber" placeholder="(xxx) xxx-xxxx" tabindex="1" required>
               <!--valid={{signInForm.phoneNumber.$valid}}-->
             </div>
           </div>
@@ -47,7 +47,7 @@
           <div class="form-group">
             <label for="inputPassword3" class="col-md-3 control-label">Password</label>
             <div class="col-sm-4">
-              <input name="loginPassword" ng-model="profile.loginPassword" ng-change="checkoutUpdated()" type="password" class="form-control" id="inputPassword3" placeholder="Password" tabindex="2" required>
+              <input name="loginPassword" ng-model="profile.loginPassword" type="password" class="form-control" id="inputPassword3" placeholder="Password" tabindex="2" required>
               <!--valid={{signInForm.loginPassword.$valid}}-->
             </div>
           </div>
@@ -57,13 +57,13 @@
 
               <div class="radio">
                 <label>
-                  <input name="customerStatus" ng-model="profile.customerStatus" ng-change="checkoutUpdated()" type="radio" id="optionsRadios1" value="new">
+                  <input name="customerStatus" ng-model="profile.customerStatus" type="radio" id="optionsRadios1" value="new">
                   I am a new customer
                 </label>
               </div>
               <div class="radio">
                 <label>
-                  <input name="customerStatus" ng-model="profile.customerStatus" ng-change="checkoutUpdated()" type="radio" id="optionsRadios2" value="existing">
+                  <input name="customerStatus" ng-model="profile.customerStatus" type="radio" id="optionsRadios2" value="existing">
                   I am an existing customer
                 </label>
               </div>
@@ -83,7 +83,7 @@
               <div class="checkbox" ng-if="!isOnlineSponsoring">
                 <label>
                   <!--valid={{signInForm.keepMeSignedIn.$valid}}-->
-                  <input name="keepMeSignedIn" ng-model="checkout.keepMeSignedIn" ng-change="checkoutUpdated()" type="checkbox" checked> Keep me signed in &nbsp;&nbsp;
+                  <input name="keepMeSignedIn" ng-model="checkout.keepMeSignedIn" type="checkbox" checked> Keep me signed in &nbsp;&nbsp;
                   <a popover="Placeholder text" popover-title="Keep me signed in" href=""><i class="fa fa-info-circle"></i> More Info</a>
                 </label>
               </div>
@@ -94,7 +94,7 @@
             <div class="col-md-offset-3 col-sm-9">
               <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                <button ng-if="!isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" tabindex="3" ng-click="loginOrCreateUser(profile.loginEmail, profile.loginPassword)" ng-disabled="!signInForm.$valid">Continue to Secure Checkout &nbsp;<i class="fa fa-caret-right"></i></button>
+                <button ng-if="!isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" tabindex="3" ng-click="loginOrCreateUser()" ng-disabled="!signInForm.$valid">Continue to Secure Checkout &nbsp;<i class="fa fa-caret-right"></i></button>
                 <button ng-if="isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" tabindex="3" wz-next ng-disabled="!signInForm.$valid">Continue to Secure Checkout &nbsp;<i class="fa fa-caret-right"></i></button>
               </div>
             </div>
@@ -121,7 +121,7 @@
             <div class="form-group">
               <label for="inputEmail3" class="col-md-3 control-label">Email Address</label>
               <div class="col-sm-6">
-                <input name="loginEmail2" ng-model="loginEmail2" ng-change="checkoutUpdated()" type="email" class="form-control" id="inputEmail3" placeholder="Email" tabindex="1" required>
+                <input name="loginEmail2" ng-model="loginEmail2" type="email" class="form-control" id="inputEmail3" placeholder="Email" tabindex="1" required>
                 <!--valid={{signInForm.loginEmail.$valid}}-->
               </div>
             </div>
@@ -150,7 +150,7 @@
 <!--            <div class="form-group">
               <label for="inputPassword3" class="col-md-3 control-label">Password</label>
               <div class="col-sm-4">
-                <input name="loginPassword" ng-model="loginPassword" ng-change="checkoutUpdated()" type="password" class="form-control" id="inputPassword3" placeholder="Password" tabindex="2" required>
+                <input name="loginPassword" ng-model="loginPassword" type="password" class="form-control" id="inputPassword3" placeholder="Password" tabindex="2" required>
               </div>
             </div>-->
 
@@ -176,7 +176,7 @@
             <div class="form-group">
               <label for="newPassword" class="col-md-3 control-label">New Password</label>
               <div class="col-sm-4">
-                <input name="newPassword" ng-model="newPassword" pw-check="newpassword2" ng-change="checkoutUpdated()" type="password" class="form-control" id="newPassword" placeholder="Password" tabindex="2" required>
+                <input name="newPassword" ng-model="newPassword" pw-check="newpassword2" type="password" class="form-control" id="newPassword" placeholder="Password" tabindex="2" required>
               </div>
             </div>
 
@@ -304,28 +304,28 @@
             <div class="row form-group" ng-if="!isOnlineSponsoring">
               <label for="shippingFullName" class="col-md-3 control-label">Full Name</label>
               <div class="col-sm-8 col-lg-6">
-                <input id="shippingFullName" name="name" ng-model="profile.newShippingAddress.name" ng-change="checkoutUpdated()" type="text" class="form-control" placeholder="" tabindex="1" required>
+                <input id="shippingFullName" name="name" ng-model="profile.newShippingAddress.name" type="text" class="form-control" placeholder="" tabindex="1" required>
               </div>
             </div>
 
             <div class="row form-group">
               <label for="shippingAddress1" class="col-md-3 control-label">Address Line 1</label>
               <div class="col-sm-8 col-lg-6">
-                <input id="shippingAddress1" name="address1" ng-model="profile.newShippingAddress.address1" ng-change="checkoutUpdated()" type="text" class="form-control" placeholder="Street address, P.O. box, company name, c/o " tabindex="2" required>
+                <input id="shippingAddress1" name="address1" ng-model="profile.newShippingAddress.address1" type="text" class="form-control" placeholder="Street address, P.O. box, company name, c/o " tabindex="2" required>
               </div>
             </div>
 
             <div class="row form-group">
               <label for="shippingAddress2" class="col-md-3 control-label">Address Line 2</label>
               <div class="col-sm-8 col-lg-6">
-                <input id="shippingAddress2" name="address2" ng-model="profile.newShippingAddress.address2" ng-change="checkoutUpdated()" type="text" class="form-control" placeholder="Apartment, suite, unit, building, floor, etc. " tabindex="3">
+                <input id="shippingAddress2" name="address2" ng-model="profile.newShippingAddress.address2" type="text" class="form-control" placeholder="Apartment, suite, unit, building, floor, etc. " tabindex="3">
               </div>
             </div>
 
             <div class="row form-group">
               <label for="shippingCity" class="col-md-3 control-label">City</label>
               <div class="col-sm-7 col-lg-5">
-                <input id="shippingCity" name="city" ng-model="profile.newShippingAddress.city" type="text" ng-change="checkoutUpdated()" class="form-control" placeholder=" " tabindex="4" required>
+                <input id="shippingCity" name="city" ng-model="profile.newShippingAddress.city" type="text" class="form-control" placeholder=" " tabindex="4" required>
               </div>
             </div>
             <div class="row form-group">
@@ -391,21 +391,21 @@
                 </form>
 
               <!-- Removed for now to add the Select tag for 50 states -->
-                <!--input id="shippingStateProvinceRegion" name="stateProvinceRegion" ng-model="profile.newShippingAddress.stateProvinceRegion" ng-change="checkoutUpdated()" type="text" class="form-control" placeholder=" " tabindex="5" required-->
+                <!--input id="shippingStateProvinceRegion" name="stateProvinceRegion" ng-model="profile.newShippingAddress.stateProvinceRegion" type="text" class="form-control" placeholder=" " tabindex="5" required-->
               </div>
             </div>
 
             <div class="row form-group">
               <label for="shippingZipPostalCode" class="col-md-3 control-label">Zip/Postal Code</label>
               <div class="col-sm-5 col-lg-3">
-                <input id="shippingZipPostalCode" name="zipPostalCode" ng-model="profile.newShippingAddress.zipPostalCode" ng-change="checkoutUpdated()" type="text" class="form-control" placeholder=" " tabindex="6" required>
+                <input id="shippingZipPostalCode" name="zipPostalCode" ng-model="profile.newShippingAddress.zipPostalCode" type="text" class="form-control" placeholder=" " tabindex="6" required>
               </div>
             </div>
 
             <div class="row form-group">
               <label for="shippingCountry" class="col-md-3 control-label">Country</label>
               <div class="col-sm-6 col-lg-4">
-                <select id="shippingCountry" ng-init="option[0]" name="country" ng-model="profile.newShippingAddress.country" ng-change="checkoutUpdated()" class="form-control" tabindex="7">
+                <select id="shippingCountry" ng-init="option[0]" name="country" ng-model="profile.newShippingAddress.country" class="form-control" tabindex="7">
                   <option ng-selected="1">United States</option>
                 </select>
               </div>
@@ -558,28 +558,28 @@
                 <div class="row form-group" ng-if="!isOnlineSponsoring" >
                   <label for="billingFullName" class="col-md-3 control-label">Full Name</label>
                   <div class="col-sm-8 col-lg-6">
-                    <input name="name" ng-model="profile.newBillingAddress.name" ng-change="checkoutUpdated()" type="text" class="form-control" id="billingFullName" placeholder="" tabindex="1" required>
+                    <input name="name" ng-model="profile.newBillingAddress.name" type="text" class="form-control" id="billingFullName" placeholder="" tabindex="1" required>
                   </div>
                 </div>
 
                 <div class="row form-group">
                   <label for="billingAddress1" class="col-md-3 control-label">Address Line 1</label>
                   <div class="col-sm-8 col-lg-6">
-                    <input name="address1" ng-model="profile.newBillingAddress.address1" ng-change="checkoutUpdated()" type="text" class="form-control" id="billingAddress1" placeholder="Street address, P.O. box, company name, c/o " tabindex="2" required>
+                    <input name="address1" ng-model="profile.newBillingAddress.address1" type="text" class="form-control" id="billingAddress1" placeholder="Street address, P.O. box, company name, c/o " tabindex="2" required>
                   </div>
                 </div>
 
                 <div class="row form-group">
                   <label for="billingAddress2" class="col-md-3 control-label">Address Line 2</label>
                   <div class="col-sm-8 col-lg-6">
-                    <input name="address2" ng-model="profile.newBillingAddress.address2" ng-change="checkoutUpdated()" type="text" class="form-control" id="billingAddress2" placeholder="Apartment, suite, unit, building, floor, etc. " tabindex="3">
+                    <input name="address2" ng-model="profile.newBillingAddress.address2" type="text" class="form-control" id="billingAddress2" placeholder="Apartment, suite, unit, building, floor, etc. " tabindex="3">
                   </div>
                 </div>
 
                 <div class="row form-group">
                   <label for="billingCity" class="col-md-3 control-label">City</label>
                   <div class="col-sm-7 col-lg-5">
-                    <input name="city" ng-model="profile.newBillingAddress.city" type="text" ng-change="checkoutUpdated()" class="form-control" id="billingCity" placeholder=" " tabindex="4" required>
+                    <input name="city" ng-model="profile.newBillingAddress.city" type="text" class="form-control" id="billingCity" placeholder=" " tabindex="4" required>
                   </div>
                 </div>
 
@@ -646,24 +646,24 @@
                 </form>
 
               <!-- Removed for now to add the Select tag for 50 states -->
-                <!--input id="shippingStateProvinceRegion" name="stateProvinceRegion" ng-model="profile.newShippingAddress.stateProvinceRegion" ng-change="checkoutUpdated()" type="text" class="form-control" placeholder=" " tabindex="5" required-->
+                <!--input id="shippingStateProvinceRegion" name="stateProvinceRegion" ng-model="profile.newShippingAddress.stateProvinceRegion" type="text" class="form-control" placeholder=" " tabindex="5" required-->
               </div>
                   <!--div class="col-sm-6 col-lg-4">
-                    <input name="billingProvinceRegion" ng-model="profile.newBillingAddress.stateProvinceRegion" ng-change="checkoutUpdated()" type="text" class="form-control" id="billingStateProvinceRegion" placeholder=" " tabindex="5" required>
+                    <input name="billingProvinceRegion" ng-model="profile.newBillingAddress.stateProvinceRegion" type="text" class="form-control" id="billingStateProvinceRegion" placeholder=" " tabindex="5" required>
                   </div-->
                 </div>
 
                 <div class="row form-group">
                   <label for="billingZipPostalCode" class="col-md-3 control-label">Zip/Postal Code</label>
                   <div class="col-sm-5 col-lg-3">
-                    <input name="billingzipPostalCode" ng-model="profile.newBillingAddress.zipPostalCode" ng-change="checkoutUpdated()" type="text" class="form-control" id="billingZipPostalCode" placeholder=" " tabindex="6" required>
+                    <input name="billingzipPostalCode" ng-model="profile.newBillingAddress.zipPostalCode" type="text" class="form-control" id="billingZipPostalCode" placeholder=" " tabindex="6" required>
                   </div>
                 </div>
 
                 <div class="row form-group">
                   <label for="billingCountry" class="col-md-3 control-label">Country</label>
                   <div class="col-sm-6 col-lg-4">
-                    <select name="billingCountry" ng-model="profile.newBillingAddress.country" ng-change="checkoutUpdated()" class="form-control" id="billingCountry" tabindex="7">
+                    <select name="billingCountry" ng-model="profile.newBillingAddress.country" class="form-control" id="billingCountry" tabindex="7">
                       <option ng-selected="1">United States</option>
                     </select>
                   </div>
