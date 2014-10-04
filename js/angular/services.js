@@ -960,6 +960,6 @@ angular.module('app.services', ['ngResource'])
       return orderHelper;
     })
     .constant('BASE_URL', '')
-    .constant('STORE_BASE_URL', '/store')
+    .constant('STORE_BASE_URL', '/shop')
     .constant('JOIN_BASE_URL', '/join')
     .constant('API_URL', '/api');

@@ -54,7 +54,7 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
     }])
     .run(function ($rootScope, $animate, BASE_URL) {
         $rootScope.BASE_URL = BASE_URL;
-        $rootScope.STORE_BASE_URL = BASE_URL + "/store";
+        $rootScope.STORE_BASE_URL = BASE_URL + "/shop";
         $rootScope.JOIN_BASE_URL = BASE_URL + "/join";
         $animate.enabled(true);
     });
