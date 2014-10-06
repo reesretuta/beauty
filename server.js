@@ -11,6 +11,7 @@ var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var app = express();
 var session = require('express-session');
+var auth = require("basic-auth");
 var MongoStore = require('connect-mongo')(session);
 var jafraClient = require('./jafra');
 
@@ -47,6 +48,19 @@ if (app.get('env') === 'production') {
 }
 
 app.use(session(sess));
+
+// basic authentication for testing
+app.use(function(req, res, next) {
+    var user = auth(req);
+
+    if (user === undefined || user['name'] !== 'jafra' || user['pass'] !== 'easypassfordpaxton') {
+        res.statusCode = 401;
+        res.setHeader('WWW-Authenticate', 'Basic realm="JafraProto"');
+        res.end('Unauthorized');
+    } else {
+        next();
+    }
+});
 
 // ROUTES FOR OUR API
 // =============================================================================
@@ -590,7 +604,27 @@ router.route('/clients/:client_id/creditCards')// get a client's creditCards
 
     // create a credit card
     .post(function (req, res) {
-        res.json({ creditCardId: 111 });
+        var clientId = req.params.client_id;
+
+        console.log("got data", req.body.encrypted);
+
+        jafraClient.createCreditCard(clientId, req.body.encrypted).then(function(r) {
+            console.error("created credit card", r.status, r.result);
+
+            // return response
+            res.status(r.status);
+
+            // add this CC to the session
+            var res = r.result;
+            //req.session.client.addresses.push(address);
+
+            // return the address data
+            res.json(res);
+        }, function(r) {
+            console.error("failed to create cc", r.status, r.result);
+            res.status(r.status);
+            res.json(r.result);
+        });
     });
 
 router.route('/clients/:client_id/creditCards/:creditCard_id')// get a client creditCard

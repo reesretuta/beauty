@@ -36,6 +36,7 @@
     "string": "^2.1.0",
     "markdown-pdf": "^3.0.2",
     "mongoose": "^3.8.17",
-    "morgan": "^1.3.2"
+    "morgan": "^1.3.2",
+    "basic-auth": "^1.0.0"
   }
 }

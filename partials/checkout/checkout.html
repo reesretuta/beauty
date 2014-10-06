@@ -19,7 +19,7 @@
           <div class="form-group">
             <label for="firstName" class="col-md-3 control-label">Name</label>
             <div class="col-sm-3">
-              <input name="firstName" ng-model="profile.firstName" class="form-control" id="firstName" placeholder="First" tabindex="1" required="isOnlineSponsoring" autocomplete="off">
+              <input name="firstName" ng-model="profile.firstName" class="form-control" id="firstName" placeholder="First" tabindex="1" required="isOnlineSponsoring" autocomplete="off" autofocus="">
               <!--valid={{signInForm.firstName.$valid}}-->
             </div>
             <div class="col-sm-3">
@@ -230,21 +230,15 @@
           <div class="form-group">
             <label for=" " class="col-md-3 control-label">Sponsor ID</label>
             <div class="col-md-4">
-              <input type="text" class="form-control" type="number" ng-model="profile.sponsorId" placeholder="#-digit ID of your JAFRA Consultant Sponsor">
+              <input autofocus="" type="text" class="form-control" type="number" ng-model="profile.sponsorId" placeholder="#-digit ID of your JAFRA Consultant Sponsor">
               <span class="help-block"><small>If you shop with a JAFRA Consultant, enter their ID above. Otherwise, leave blank.</small></span>
             </div>
           </div>
 
           <div class="form-group">
             <label for=" " class="col-md-3 control-label">Date of Birth</label>
-            <div class="col-xs-4 col-md-1">
-              <input type="text" class="form-control" ui-mask="99" placeholder="MM" ng-model="profile.dobMonth" required>
-            </div>
-            <div class="col-xs-4 col-md-1">
-              <input type="text" class="form-control" ui-mask="99" placeholder="DD" ng-model="profile.dobDay" required>
-            </div>
-            <div class="col-xs-4 col-md-1">
-              <input type="text" class="form-control" ui-mask="99" placeholder="YY" ng-model="profile.dobYear" required>
+            <div class="col-xs-4 col-md-4">
+              <input type="text" class="form-control" ui-mask="99/99/9999" placeholder="MM/DD/YYYY" ng-model="profile.dob" required>
             </div>
             <div class="col-md-offset-3 col-sm-9">
               <span class="help-block"><small>You must be 18 or older to join.</small></span>
@@ -331,63 +325,61 @@
             <div class="row form-group">
               <label for="shippingStateProvinceRegion" class="col-md-3 control-label">State/Province/Region</label>
             <!-- TO-DO: Fix CSS width of form control -->
-              <div class="col-sm-6 col-lg-4">
+              <div class="col-sm-5 col-lg-3">
                 <form>
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                        <select name="state" class="form-control" id="shippingStateProvinceRegion" ng-model="profile.newShippingAddress.state" tabindex="5">
-                          <option value="AL">Alabama</option>
-                          <option value="AK">Alaska</option>
-                          <option value="AZ">Arizona</option>
-                          <option value="AR">Arkansas</option>
-                          <option value="CA">California</option>
-                          <option value="CO">Colorado</option>
-                          <option value="CT">Connecticut</option>
-                          <option value="DE">Delaware</option>
-                          <option value="DC">District Of Columbia</option>
-                          <option value="FL">Florida</option>
-                          <option value="GA">Georgia</option>
-                          <option value="HI">Hawaii</option>
-                          <option value="ID">Idaho</option>
-                          <option value="IL">Illinois</option>
-                          <option value="IN">Indiana</option>
-                          <option value="IA">Iowa</option>
-                          <option value="KS">Kansas</option>
-                          <option value="KY">Kentucky</option>
-                          <option value="LA">Louisiana</option>
-                          <option value="ME">Maine</option>
-                          <option value="MD">Maryland</option>
-                          <option value="MA">Massachusetts</option>
-                          <option value="MI">Michigan</option>
-                          <option value="MN">Minnesota</option>
-                          <option value="MS">Mississippi</option>
-                          <option value="MO">Missouri</option>
-                          <option value="MT">Montana</option>
-                          <option value="NE">Nebraska</option>
-                          <option value="NV">Nevada</option>
-                          <option value="NH">New Hampshire</option>
-                          <option value="NJ">New Jersey</option>
-                          <option value="NM">New Mexico</option>
-                          <option value="NY">New York</option>
-                          <option value="NC">North Carolina</option>
-                          <option value="ND">North Dakota</option>
-                          <option value="OH">Ohio</option>
-                          <option value="OK">Oklahoma</option>
-                          <option value="OR">Oregon</option>
-                          <option value="PA">Pennsylvania</option>
-                          <option value="RI">Rhode Island</option>
-                          <option value="SC">South Carolina</option>
-                          <option value="SD">South Dakota</option>
-                          <option value="TN">Tennessee</option>
-                          <option value="TX">Texas</option>
-                          <option value="UT">Utah</option>
-                          <option value="VT">Vermont</option>
-                          <option value="VA">Virginia</option>
-                          <option value="WA">Washington</option>
-                          <option value="WV">West Virginia</option>
-                          <option value="WI">Wisconsin</option>
-                          <option value="WY">Wyoming</option>
-                        </select>
-                    </div>
+                    <select name="state" class="form-control" id="shippingStateProvinceRegion" ng-model="profile.newShippingAddress.state" tabindex="5">
+                      <option value="AL">Alabama</option>
+                      <option value="AK">Alaska</option>
+                      <option value="AZ">Arizona</option>
+                      <option value="AR">Arkansas</option>
+                      <option value="CA">California</option>
+                      <option value="CO">Colorado</option>
+                      <option value="CT">Connecticut</option>
+                      <option value="DE">Delaware</option>
+                      <option value="DC">District Of Columbia</option>
+                      <option value="FL">Florida</option>
+                      <option value="GA">Georgia</option>
+                      <option value="HI">Hawaii</option>
+                      <option value="ID">Idaho</option>
+                      <option value="IL">Illinois</option>
+                      <option value="IN">Indiana</option>
+                      <option value="IA">Iowa</option>
+                      <option value="KS">Kansas</option>
+                      <option value="KY">Kentucky</option>
+                      <option value="LA">Louisiana</option>
+                      <option value="ME">Maine</option>
+                      <option value="MD">Maryland</option>
+                      <option value="MA">Massachusetts</option>
+                      <option value="MI">Michigan</option>
+                      <option value="MN">Minnesota</option>
+                      <option value="MS">Mississippi</option>
+                      <option value="MO">Missouri</option>
+                      <option value="MT">Montana</option>
+                      <option value="NE">Nebraska</option>
+                      <option value="NV">Nevada</option>
+                      <option value="NH">New Hampshire</option>
+                      <option value="NJ">New Jersey</option>
+                      <option value="NM">New Mexico</option>
+                      <option value="NY">New York</option>
+                      <option value="NC">North Carolina</option>
+                      <option value="ND">North Dakota</option>
+                      <option value="OH">Ohio</option>
+                      <option value="OK">Oklahoma</option>
+                      <option value="OR">Oregon</option>
+                      <option value="PA">Pennsylvania</option>
+                      <option value="RI">Rhode Island</option>
+                      <option value="SC">South Carolina</option>
+                      <option value="SD">South Dakota</option>
+                      <option value="TN">Tennessee</option>
+                      <option value="TX">Texas</option>
+                      <option value="UT">Utah</option>
+                      <option value="VT">Vermont</option>
+                      <option value="VA">Virginia</option>
+                      <option value="WA">Washington</option>
+                      <option value="WV">West Virginia</option>
+                      <option value="WI">Wisconsin</option>
+                      <option value="WY">Wyoming</option>
+                    </select>
                 </form>
 
               <!-- Removed for now to add the Select tag for 50 states -->
@@ -404,7 +396,7 @@
 
             <div class="row form-group">
               <label for="shippingCountry" class="col-md-3 control-label">Country</label>
-              <div class="col-sm-6 col-lg-4">
+              <div class="col-sm-5 col-lg-3">
                 <select id="shippingCountry" data-ng-init="profile.newShippingAddress.country='US'" name="country" ng-model="profile.newShippingAddress.country" class="form-control" tabindex="7">
                   <option ng-selected="true" value="US">United States</option>
                 </select>
@@ -414,7 +406,7 @@
             <div class="row form-group" ng-if="!isOnlineSponsoring" ng-class="{ 'has-error' : shippingForm.phoneNumber.$invalid && !shippingForm.phoneNumber.$pristine }">
               <label for="shippingPhoneNumber" class="col-md-3 control-label">Phone Number</label>
               <div class="col-sm-6 col-lg-4">
-                <input id="shippingPhoneNumber" name="phoneNumber" ng-model="profile.newShippingAddress.phone" ng-minlength="10" ng-maxlength="13" maxlength="13" type="text" ng-pattern="/^\(?(\d{3})\)?[ .-]?(\d{3})[ .-]?(\d{4})$/" class="form-control" placeholder=" " tabindex="8" required>
+                <input id="shippingPhoneNumber" name="phoneNumber" ng-model="profile.newShippingAddress.phone" ng-minlength="10" ng-maxlength="13" maxlength="13" type="text" ui-mask="(999) 999-9999" placeholder="(xxx) xxx-xxxx" class="form-control" tabindex="8" required>
                 <span ng-show="shippingForm.phoneNumber.$error.pattern" class="help-block" ng-class="{ 'text-danger' : shippingForm.phoneNumber.$invalid && !shippingForm.phoneNumber.$pristine }">Phone Number needs to be at least 10 numbers.</span>
               </div>
               <a popover="May be printed on shipping label to assist delivery." popover-title="Phone Number" href="" class="form-info-link"><i class="fa fa-info-circle"></i> More Info</a>
@@ -672,7 +664,7 @@
                 <div class="row form-group" ng-if="!isOnlineSponsoring"  ng-class="{ 'has-error' : paymentForm.billingPhoneNumber.$invalid && !paymentForm.billingPhoneNumber.$pristine }">
                   <label for="billingPhoneNumber" class="col-md-3 control-label">Phone Number</label>
                   <div class="col-sm-6 col-lg-4">
-                    <input name="billingPhoneNumber" ng-model="profile.newBillingAddress.phone" ng-minlength="10" ng-maxlength="12" maxlength="12" type="text" class="form-control" id="billingPhoneNumber" placeholder=" " tabindex="8" required>
+                    <input name="billingPhoneNumber" ng-model="profile.newBillingAddress.phone" ng-minlength="10" ng-maxlength="12" maxlength="12" type="text" class="form-control" id="billingPhoneNumber" ui-mask="(999) 999-9999" placeholder="(xxx) xxx-xxxx" tabindex="8" required>
                     <span ng-show="paymentForm.billingPhoneNumber.$error.minlength" class="help-block" ng-class="{ 'text-danger' : paymentForm.billingPhoneNumber.$invalid && !paymentForm.billingPhoneNumber.$pristine }">Phone Number needs to be at least 10 numbers.</span>
                   </div>
                   <a href="" class="form-info-link"><i class="fa fa-info-circle"></i> More Info</a>

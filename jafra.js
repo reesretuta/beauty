@@ -16,6 +16,7 @@ var GET_ADDRESS_URL = BASE_URL + "/JCD05005P.pgm";
 var CREATE_ADDRESS_URL = BASE_URL + "/JCD05005P.pgm";
 var UPDATE_ADDRESS_URL = BASE_URL + "JCD05005P.pgm";
 var DELETE_ADDRESS_URL = BASE_URL + "/JCD05005P.pgm";
+var CREATE_CREDIT_CARD_URL = BASE_URL + "/testrsa.pgm";
 
 var STRIKEIRON_EMAIL_URL = 'http://ws.strikeiron.com/StrikeIron/emv6Hygiene/EMV6Hygiene/VerifyEmail';
 var STRIKEIRON_EMAIL_LICENSE = "2086D15410C1B9F9FF89";
@@ -655,6 +656,72 @@ function validateAddress(address) {
     return deferred.promise;
 }
 
+function createCreditCard(clientId, data) {
+    //console.log("createAddress", email, password);
+    var deferred = Q.defer();
+
+    var r = request.post({
+        url: CREATE_CREDIT_CARD_URL,
+        qs: {
+            clientId: clientId
+        },
+        form: {
+            "dataToDecrypt": data
+        },
+        headers: {
+            'Content-Type' : 'application/x-www-form-urlencoded',
+            'Accept': 'application/json, text/json'
+        },
+        json: true
+    }, function (error, response, body) {
+        if (error || response.statusCode != 201) {
+            console.error("createCreditCard(): error", error, response ? response.statusCode : null, body);
+
+            if (body && body.statusCode && body.errorCode && body.message) {
+                deferred.reject({
+                    status: response.statusCode,
+                    result: {
+                        statusCode: body.statusCode,
+                        errorCode: body.errorCode,
+                        message: body.message
+                    }
+                });
+            } else {
+                deferred.reject({
+                    status: 500,
+                    result: {
+                        statusCode: 500,
+                        errorCode: "createCreditCardFailed",
+                        message: "Failed to create credit card"
+                    }
+                });
+            }
+            return;
+        }
+
+        if (body == null || body.creditCardId == null) {
+            console.log("createCreditCard(): invalid return data", body, typeof body, "creditCardId", body.creditCardId);
+            deferred.reject({
+                status: 500,
+                result: {
+                    statusCode: 500,
+                    errorCode: "createCreditCardReturnDataInvalid",
+                    message: "Failed to get credit card ID from create"
+                }
+            });
+            return;
+        }
+
+        // we should get creditCardId back
+        deferred.resolve({
+            status: 201,
+            result: body.creditCardId
+        });
+    });
+
+    return deferred.promise;
+}
+
 exports.authenticate = authenticate;
 exports.getClient = getClient;
 exports.createClient = createClient;
@@ -667,3 +734,4 @@ exports.updateAddress = updateAddress;
 exports.deleteAddress = deleteAddress;
 exports.validateEmail = validateEmail;
 exports.validateAddress = validateAddress;
+exports.createCreditCard = createCreditCard;
