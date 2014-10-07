@@ -37,7 +37,7 @@ var sess = {
     saveUninitialized: true,
     store: new MongoStore({
         mongoose_connection : models.db,
-        db: models.db,
+        db: config.dbname,
         stringify: false
     })
 };
