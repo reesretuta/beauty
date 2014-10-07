@@ -21,7 +21,7 @@
     "mongoose": "~3.8.13"
   },
   "dependencies": {
-    "connect-mongo": "^0.4.1",
+    "connect-mongo": "git://github.com/devony/connect-mongo.git#fe2e26d850d8207531c4889761edb08c9f0ac4e9",
     "express-session": "^1.8.2",
     "openpgp": "^0.7.2",
     "soap": "^0.5.1",
