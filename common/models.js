@@ -180,7 +180,7 @@ var productSchema = Schema({
         "startDate" : { type: Date, default: null },
         "endDate" : { type: Date, default: null }
     }]
-}, { id: false });
+}, { id: false, autoIndex: true });
 
 // text search
 productSchema.index({
