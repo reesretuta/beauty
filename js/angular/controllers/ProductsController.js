@@ -2,7 +2,7 @@ angular.module('app.controllers.products')
     .controller('ProductsController', function ($sce, HashKeyCopier, Cart, Categories, Products, Search, $scope, $rootScope, $routeParams, $q, $location, $timeout, $window, $log, $modal, $document, BreadcrumbsHelper) {
         $log.debug("ProductsController");
 
-        $rootScope.page = "All Products";
+        $rootScope.title = "All Products";
         $rootScope.section = "store";
 
         $scope.errorMessage = '';
@@ -93,7 +93,7 @@ angular.module('app.controllers.products')
 
                 $log.debug("ProductsController(): loaded category", category);
 
-                $rootScope.page = category.name;
+                $rootScope.title = category.name;
                 categoriesLoadedPromise.resolve(category);
             }, function(data, status, headers) {
                 $log.error("error loading category", data, status);

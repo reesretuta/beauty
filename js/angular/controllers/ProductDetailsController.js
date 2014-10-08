@@ -5,7 +5,7 @@ angular.module('app.controllers.products')
         $scope.productId = $routeParams.productId;
         $scope.categoryId = $routeParams.category;
 
-        $rootScope.page = "Product Details";
+        $rootScope.title = "Product Details";
         $rootScope.section = "store";
 
         $scope.errorMessage = '';
@@ -216,7 +216,7 @@ angular.module('app.controllers.products')
                         // FIXME
                     }
                 }
-                $rootScope.page = product.name;
+                $rootScope.title = product.name;
 
                 if ($scope.categoryId == null) {
                     // load the first category from this product, we probably landed here from search

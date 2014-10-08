@@ -9,7 +9,7 @@ angular.module('app.controllers.checkout')
         var urlStep = S(params.step != null ? params.step : "Start").toString();
 
         //change page title
-        $rootScope.page = "Checkout";
+        $rootScope.title = "Checkout";
         $rootScope.section = "checkout";
 
         $scope.client = {};
