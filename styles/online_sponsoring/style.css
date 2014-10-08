@@ -1,6 +1,40 @@
+.navbar-brand {
+  height: 50px;
+}
+
+/* custom fonts */
+
+.HelveticaNeueLTStd-Th { 
+  font-family: HelveticaNeueLTStd-Th;
+  font-weight: normal;
+  font-style: normal;
+}
+.HelveticaNeueLTStd-Md { 
+  font-family: HelveticaNeueLTStd-Md;
+  font-weight: normal;
+  font-style: normal;
+}
+.DidotLTPro-Roman { 
+  font-family: DidotLTPro-Roman;
+  font-weight: normal;
+  font-style: normal;
+}
+.DidotLTPro-Italic { 
+  font-family: DidotLTPro-Italic;
+  font-weight: normal;
+  font-style: normal;
+}
+.HelveticaNeueLTStd-BdCn { 
+  font-family: HelveticaNeueLTStd-BdCn;
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* end custom fonts */
+
 
 html,body {
-	height: 100%;
+  height: 100%;
 }
 body {
   padding-top: 50px;
@@ -9,27 +43,90 @@ body {
 }
 body.landing-page {
   font-size: 16px;
-  line-height: 1.6;
+  line-height: 1.2;
+}
+
+a.watch-video-link{
+  color: #877650;
+  float: right;
+  font-weight: bold;
+}
+a.watch-video-link:hover {
+  color: #b51a8a;
+  text-decoration: none;
+}
+
+a.watch-video-link span.glyphicon-play {
+color: #482365;
+}
+
+.btn {
+font-size: 0.9em;
+padding: 0.3em 1em;
+background: #c52033;
+opacity: 0.7;
+text-transform: uppercase;
+font-weight: bold;
+letter-spacing: 0.25em;
 }
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
-	font-family: "News Cycle", sans-serif;
-	font-weight: 400;
+  font-family: DidotLTPro-Roman, serif;
+  font-weight: 400;
+  color: #2a2a2a;
 }
 video#bgvid {
-	position: fixed; right: 0; top: 0;
-	min-width: 100%; min-height: 100%;
-	width: auto; height: auto; z-index: -100;
-	background: url(/img/polina.jpg) no-repeat;
-	background-size: cover;
+  position: fixed; right: 0; top: 0;
+  min-width: 100%; min-height: 100%;
+  width: auto; height: auto; z-index: -100;
+  background: url(/img/polina.jpg) no-repeat;
+  background-size: cover;
 }
 #content {
-	background: #fff;
+  background-color: #ededed;
+  width: 100%;
 }
+.contact-description{
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: 400;
+  line-height: 1.42857143;
+  color: #333;
+  white-space: nowrap;
+}
+
+/*this is to allow Placeholder text fade to lighter shade of grey text when input box is selected */
+input:focus::-webkit-input-placeholder {
+    color: #e1e1e1;
+}
+/* Firefox < 19 */
+input:focus:-moz-placeholder {
+    color: #e1e1e1;
+}
+/* Firefox > 19 */
+input:focus::-moz-placeholder {
+    color: #e1e1e1;
+}
+/* Internet Explorer 10 */
+input:focus:-ms-input-placeholder {
+    color: #e1e1e1;
+}
+
 #logo img {
   max-width: 70px;
 }
 .navbar-default .navbar-nav>li>a {
   color:#fff;
+}
+.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:hover, .navbar-default .navbar-nav>.active>a:focus {
+color: #fff;
+border-radius: 0px;
+/* border: 3px solid #c52033;*/
+background-color: #c52033;
+}
+.navbar-joinstyle {
+background-color: #1cc3d6;
+border-radius: 0px;
 }
 .well {
   background-color: #f5f5f5;
@@ -40,258 +137,128 @@ video#bgvid {
   background-color: #E9E8E9;
 }
 #pagenav {
-	margin-bottom: 0;
-	background: none;
-	border-bottom: 1px solid #ccc;
-	margin-top: -50px;
-
-  background: #777; /*#B84C97; #fff;*/
+  margin-bottom: 0;
+  background: none;
+  border-bottom: 1px solid #53366C;
+  margin-top: -50px;
+  background: #53366C;
 }
 
 #pagenav.affix {
-	position: fixed;
-	top: 0;
-	width: 100%;
-	margin-top: 0;
-	z-index: 100;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  margin-top: 0;
+  z-index: 100;
 }
 #pagenav .navbar-default .navbar-nav>.active>a, 
 #pagenav .navbar-default .navbar-nav>.active>a:hover, 
 #pagenav .navbar-default .navbar-nav>.active>a:focus {
-	background: none;
+  background: none;
 }
 .jumbotron {
-	padding-top: 180px;
-	padding-bottom: 180px;
-/*	padding-top: 20vh;
-	padding-bottom: 20vh;*/
-	background: url(/img/herobg-1920x1080.jpg);
-	background-size: cover;
+  padding-top: 180px;
+  padding-bottom: 180px;
+/*  padding-top: 20vh;
+  padding-bottom: 20vh;*/
+  background: url(/img/model_2.jpg);/*url(/img/herobg-1920x1080.jpg);*/
+  background-size: cover;
 }
-.jumbotron .btn {
-	font-size: 24px;
-	padding: 14px 36px;
-	margin-top: 30px;
+#jumbo-title{
+background: rgba(255, 255, 255, 0.3);
 }
-
+#jumbo-description {
+background: rgba(72, 35, 101, 0.5);
+color: #fff;
+font-family: myriad pro;
+padding: 20px;
+}
 .jumbo-videobg {
-	background: none;
-	height: 100%;
+  background: none;
+  height: 100%;
 }
 
-.steps-indicator {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  height: 30px;
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
+/*section#why_jafra_products, section#why_jafra_lifestyle, section#why_jafra_rewards, section#why_jafra_testimonials, section#royal_starter_kit, section#skincare_starter_kit, section#faqs{
+  background-color: #fff;
+  margin-right: 0px;
+  margin-left: 0px;
+}*/
 
-.steps-indicator:before {
-  position: absolute;
-  height: 1px;
-  background-color: #e6e6e6;
-  content: '';
+.subcontainer, .subsection {
+  background: #fff;
 }
-
-.steps-indicator.steps-2:before {
-  right: calc(25%);
-  left: calc(25%);
-}
-
-.steps-indicator.steps-3:before {
-  right: calc(16.666666666666668%);
-  left: calc(16.666666666666668%);
-}
-
-.steps-indicator.steps-4:before {
-  right: calc(12.5%);
-  left: calc(12.5%);
-}
-
-.steps-indicator.steps-5:before {
-  right: calc(10%);
-  left: calc(10%);
-}
-
-.steps-indicator.steps-6:before {
-  right: calc(8.333333333333334%);
-  left: calc(8.333333333333334%);
-}
-
-.steps-indicator.steps-7:before {
-  right: calc(7.142857142857143%);
-  left: calc(7.142857142857143%);
-}
-
-.steps-indicator.steps-8:before {
-  right: calc(6.25%);
-  left: calc(6.25%);
-}
-
-.steps-indicator.steps-9:before {
-  right: calc(5.555555555555555%);
-  left: calc(5.555555555555555%);
-}
-
-.steps-indicator.steps-10:before {
-  right: calc(5%);
-  left: calc(5%);
-}
-
-.steps-indicator * {
-  -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
-}
-
-.steps-indicator li {
+.subcontainer {
   position: relative;
-  float: left;
-  padding: 0;
-  padding-top: 10px;
-  margin: 0;
-  line-height: 15px;
-  text-align: center;
 }
-
-.steps-indicator li a {
-  font-weight: bold;
-  color: #808080;
-  text-decoration: none;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: 0.25s;
-}
-
-.steps-indicator li a:before {
+.subcontainer:before {
+  content:" ";
+  display: block;
   position: absolute;
-  top: -7px;
-  left: calc(43%);
-  width: 14px;
-  height: 14px;
-  background-color: #e6e6e6;
-  border-radius: 100%;
-  content: '';
-  transition: 0.25s;
+  bottom: -18px;
+  width: 120%;
+  height: 18px;
+  left: -10%;
+  background: -webkit-radial-gradient(50% -3%, ellipse cover, rgba(00, 00, 00, 0.25), rgba(97, 97, 97, 0.0) 40%);
+  background:      radial-gradient(ellipse at 50% -3%, rgba(00, 00, 00, 0.25), rgba(97, 97, 97, 0.0) 40%);
 }
 
-.steps-indicator li a:hover {
-  color: #4d4d4d;
+section#why_jafra_products {
+  background: #e0dbcf;
 }
 
-.steps-indicator.steps-2 li {
-  width: calc(50%);
+section#why_jafra_lifestyle {
+  background: #cac0d3;
 }
 
-.steps-indicator.steps-3 li {
-  width: calc(33.333333333333336%);
+section#why_jafra_rewards {
+  background: #faebe6;
 }
 
-.steps-indicator.steps-4 li {
-  width: calc(25%);
+section#why_jafra_testimonials {
+  /*background: #ededed; -- body background color -- */
 }
 
-.steps-indicator.steps-5 li {
-  width: calc(20%);
+section h3.hero-header-title {
+  font-size: 4.5em;
+  font-weight: bold;
 }
 
-.steps-indicator.steps-6 li {
-  width: calc(16.666666666666668%);
+section h3.hero-header-title span.serif-title {
+  font-family: Georgia, serif;
+  font-weight: normal !important;
+  text-transform: lowercase;
 }
 
-.steps-indicator.steps-7 li {
-  width: calc(14.285714285714286%);
+section a.more-link{
+  color: #877650;
+  float: right;
+  font-weight: bold;
+}
+section a.more-link:hover {
+  color: #b51a8a;
+  text-decoration: none;
 }
 
-.steps-indicator.steps-8 li {
-  width: calc(12.5%);
+section a.more-link span.glyphicon-plus {
+color: #482365;
 }
 
-.steps-indicator.steps-9 li {
-  width: calc(11.11111111111111%);
+
+span#live {
+  color: #6A5077;
+  font-size: 102px; /*TODO: to later refactor to mobile/tablet sizes*/
+}
+span#you {
+  color: #A08B6A;
+line-height: 0.8;
+}
+span#imagine {
+  color: #6B517C;
+font-size: 75px;
+line-height: 0.8;
 }
 
-.steps-indicator.steps-10 li {
-  width: calc(10%);
-}
 
-.steps-indicator.steps-11 li {
-  width: calc(9.090909090909092%);
-}
-
-.steps-indicator li.default {
-  pointer-events: none;
-}
-
-.steps-indicator li.default a:hover {
-  color: #808080;
-}
-
-.steps-indicator li.current,
-.steps-indicator li.editing {
-  pointer-events: none;
-}
-
-.steps-indicator li.current a:before {
-  background-color: #808080;
-}
-
-.steps-indicator li.done a:before {
-  background-color: #339933;
-}
-
-.steps-indicator li.editing a:before {
-  background-color: #ff0000;
-}
-
-.steps-indicator {
-    bottom: initial;
-    top: 36px;
-}
-.steps-indicator li a {
-font-size: 12px;
-font-weight: normal;
-margin-left: -10px;
-max-width: 50px;
-}
-.footer-logos {
-  white-space: nowrap;
-}
-.footer-logos a {
-  display: inline-block;
-  height: 53px;
-  background-image: url(/img/footer.png);
-}
-.jafra-logo {
-  width: 108px;
-}
-.jafra-logo:hover, 
-.jafra-logo:focus {
-  background-position: 0 -53px;
-}
-.vorwerk-logo {
-  width: 103px;
-  background-position: -108px 0;
-}
-.vorwerk-logo:hover,
-.vorwerk-logo:focus {
-  background-position: -108px -53px;
-}
-.dsa-logo {
-  width: 58px;
-  background-position: -211px 0;
-}
-.dsa-logo:hover,
-.dsa-logo:focus {
-  background-position: -211px -53px;
-}
-.sign-in-or-account button {
-	margin-bottom: -62px;
-}
 .agreement-content {
   border: 1px solid #f5f5f5;
   box-shadow: inset 0 0 15px 0 rgba(0,0,0,.2);

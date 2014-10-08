@@ -1,371 +1,482 @@
-<!-- Main jumbotron for a primary marketing message or call to action -->
-<div class="jumbotron">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6">
-        <h1>Call to Action</h1>
-        <p>Title and short introduction designed to provide the minimum required context to excite the target user and incentivise them to click the primary call to action.</p>
-        <p><a class="btn btn-primary btn-lg" role="button" href="#" data-toggle="modal" data-target=".bs-example-modal-lg">Join Now</a></p>
-      </div>
-      <div class="col-md-6">
-        <video class="img-responsive" controls poster="/video/polina.jpg" id="ctavid">
-          <source src="/video/polina.webm" type="video/webm">
-          <source src="/video/polina.mp4" type="video/mp4">
-        </video>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="row text-center">
-        <div class="col-md-12">
-          <h2>Choose your Starter Package</h2>
-          <hr>
-        </div>
-        <div class="col-md-1"></div>
-        <div class="col-sm-6 col-md-5">
-          <div class="well">
-            <img class="img-responsive" src="/img/starter_package.png">
-            <h3><b>Starter</b></h3>
-            <p>Donec id elit non mi porta gravida at eget metus.</p>
-
-            <a data-toggle="collapse" href="#collapseOne" onclick="$(this).hide();">
-              What&rsquo;s Inside?
-            </a>
-            <div id="collapseOne" class="panel-collapse collapse">
-              <div class="panel-body text-left">
-                <ul class="list-group">
-                  <li>Cras justo odio</li>
-                  <li>Dapibus ac facilisis in</li>
-                  <li>Morbi leo risus</li>
-                  <li>Porta ac consectetur ac</li>
-                  <li>Vestibulum at eros</li>
-                </ul>
-              </div>
+<section id="top">
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div class="jumbotron">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6">
+              <h2>Become A Consultant</h2>
+              <h1 id="jumbo-title">
+                <span id="live">Live</span> <span class="HelveticaNeueLTStd-Th" style="color:#A08B6A;">the Life</span><br />
+                <span id="you">You</span> <span class="DidotLTPro-Italic" id="imagine">imagine</span>
+              </h1>
+              <p id="jumbo-description">Join JAFRA! It’s fun, easy, and empowering. No experience is necessary.All you need is your desire to turn your dream career into a reality! </p>
+              <p><a class="btn btn-primary btn-med" role="button" href="#" data-toggle="modal" data-target=".bs-example-modal-lg">Get Started</a> <a href="#" class="watch-video-link" data-toggle="modal" data-target=".bs-video-modal-lg"><span class="glyphicon glyphicon-play"></span> WATCH VIDEO</a></p>
+              <p><strong>What do you Imagine?<br />
+              You can make it happen with JAFRA!</strong></p>
             </div>
-            <p class="h4"><strong>$100 Value</strong></p>
-            <h3 class="h1">$49</h3>
-
-            <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
-
-            <div class="product-action">
-              <!-- Split button -->
-              <div class="btn-group">
-                <button type="button" class="btn btn-primary btn-lg" ng-click="join('10019', 'en_US')">Buy English</button>
-                <button type="button" class="btn btn-primary btn-lg dropdown-toggle" ng-click="join('10019')" data-toggle="dropdown">
-                  <span class="caret"></span>
-                  <span class="sr-only">Toggle Dropdown</span>
-                </button>
-                <ul class="dropdown-menu" role="menu">
-                  <li><a href="" ng-click="join('10019', 'en_US')">Buy English</a></li>
-                  <li><a href="" ng-click="join('10019', 'es_US')">Buy Spanish</a></li>
-                </ul>
-              </div>
+            <div class="col-md-6">
+              <!--video class="img-responsive" controls poster="video/polina.jpg" id="ctavid">
+                <source src="/video/polina.webm" type="video/webm">
+                <source src="/video/polina.mp4" type="video/mp4">
+              </video-->  
             </div>
           </div>
         </div>
-        <div class="col-sm-6 col-md-5">
-          <div class="well product-highlighter">
-            <div class="ribbon ribbon-red">
-              <div class="banner">
-                <div class="text">BEST VALUE</div>
+      </div>
+    </section>
+
+    <!-- Modal box that pops up when user clicks on WatchVideo -->
+    <div class="modal fade bs-video-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="row text-center">
+            <video class="img-responsive" controls poster="video/polina.jpg" id="ctavid">
+                <source src="/video/polina.webm" type="video/webm">
+                <source src="/video/polina.mp4" type="video/mp4">
+              </video>  
+          </div>
+          <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+        </div>
+      </div>
+    </div>
+      
+    <!-- Modal box that pops up when user clicks on CTA [Call To Action] -->
+    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="row text-center">
+            <div class="col-md-12">
+              <h2>Choose your Starter Package</h2>
+              <hr>
+            </div>
+            <div class="col-md-1"></div>
+            <div class="col-sm-6 col-md-5">
+              <div class="well">
+                <img class="img-responsive" src="/img/starter_package.png">
+                <h3><b>Starter</b></h3>
+                <p>Donec id elit non mi porta gravida at eget metus.</p>
+                
+                <a data-toggle="collapse" href="#collapseOne" onclick="$(this).hide();">
+                  What&rsquo;s Inside?
+                </a>
+                <div id="collapseOne" class="panel-collapse collapse">
+                  <div class="panel-body text-left">
+                    <ul class="list-group">
+                      <li>Cras justo odio</li>
+                      <li>Dapibus ac facilisis in</li>
+                      <li>Morbi leo risus</li>
+                      <li>Porta ac consectetur ac</li>
+                      <li>Vestibulum at eros</li>
+                    </ul>
+                  </div>
+                </div>
+                <p class="h4"><strong>$100 Value</strong></p>
+                <h3 class="h1">$49</h3>
+                
+                <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+
+                <div class="product-action">
+                  <!-- Split button -->
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-primary btn-lg" ng-click="join('10019', 'en_US')">Buy English</button>
+                    <button type="button" class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown">
+                      <span class="caret"></span>
+                      <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                      <li><a href="sign-in.html" ng-click="join('10019', 'en_US')">Buy English</a></li>
+                      <li><a href="sign-in.html" ng-click="join('10019', 'es_US')">Buy Spanish</a></li>
+                    </ul>
+                  </div>
+                </div>
               </div>
             </div>
-            <img class="img-responsive" src="/img/entrepreneur_package.png">
-            <h3><b>Entrepreneur</b></h3>
-            <p>Donec id elit non mi porta gravida at eget metus.</p>
+            <div class="col-sm-6 col-md-5">
+              <div class="well product-highlighter">
+                <div class="ribbon ribbon-red">
+                  <div class="banner">
+                    <div class="text">BEST VALUE</div>
+                  </div>
+                </div>
+                <img class="img-responsive" src="/img/entrepreneur_package.png">
+                <h3><b>Entrepreneur</b></h3>
+                <p>Donec id elit non mi porta gravida at eget metus.</p>
+                
+                <a data-toggle="collapse" href="#collapseTwo" onclick="$(this).hide();">
+                  What&rsquo;s Inside?
+                </a>
+                <div id="collapseTwo" class="panel-collapse collapse">
+                  <div class="panel-body text-left">
+                    <ul class="list-group">
+                      <li>Cras justo odio</li>
+                      <li>Dapibus ac facilisis in</li>
+                      <li>Morbi leo risus</li>
+                      <li>Porta ac consectetur ac</li>
+                      <li>Vestibulum at eros</li>
+                    </ul>
+                  </div>
+                </div>
+                <p class="h4"><strong>$200 Value</strong></p>
+                <h3 class="h1"><strong>$99</strong></h3>
+                
+                <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
 
-            <a data-toggle="collapse" href="#collapseTwo" onclick="$(this).hide();">
-              What&rsquo;s Inside?
-            </a>
-            <div id="collapseTwo" class="panel-collapse collapse">
-              <div class="panel-body text-left">
-                <ul class="list-group">
-                  <li>Cras justo odio</li>
-                  <li>Dapibus ac facilisis in</li>
-                  <li>Morbi leo risus</li>
-                  <li>Porta ac consectetur ac</li>
-                  <li>Vestibulum at eros</li>
-                </ul>
+                <div class="product-action">
+                  <!-- Split button -->
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-primary btn-lg" ng-click="join('10019', 'en_US')">Buy English</button>
+                    <button type="button" class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown">
+                      <span class="caret"></span>
+                      <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                      <li><a href="sign-in.html" ng-click="join('10019', 'es_US')">Buy English</a></li>
+                      <li><a href="sign-in.html" ng-click="join('10019', 'es_US')">Buy Spanish</a></li>
+                    </ul>
+                  </div>
+                </div>
               </div>
             </div>
-            <p class="h4"><strong>$200 Value</strong></p>
-            <h3 class="h1"><strong>$99</strong></h3>
+            <div class="col-md-1"></div>
+          </div>
+          <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+        </div>
+      </div>
+    </div>
+      
+    <!-- Features & Highlights -->
 
-            <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+    <section id="why_jafra">
+      <div class="container">
+        <h2 class="h1 why-section-title">Why Join Jafra?</h2>
+      </div>
 
-            <div class="product-action">
-              <!-- Split button -->
-              <div class="btn-group">
-                <button type="button" class="btn btn-primary btn-lg" data-dismiss="modal" ng-click="join('10019', 'en_US')">Buy English</button>
-                <button type="button" class="btn btn-primary btn-lg dropdown-toggle" ng-click="join('10019')" data-toggle="dropdown">
-                  <span class="caret"></span>
-                  <span class="sr-only">Toggle Dropdown</span>
-                </button>
-                <ul class="dropdown-menu" role="menu">
-                  <li><a href="" data-dismiss="modal" ng-click="join('10019', 'en_US')">Buy English</a></li>
-                  <li><a href="" data-dismiss="modal" ng-click="join('10019', 'es_US')">Buy Spanish</a></li>
-                </ul>
+      <section class="hero-section-box" id="why_jafra_products">
+        <div class="container subcontainer">
+          <div class="col-md-6">
+            <h3 class="hero-header-title"><span class="serif-title">products</span><br />TO LOVE</h3>
+            <p>Advanced skin care, trendy colors, luxurious toiletries plus exclusive fragrances created by world-renowned European perfumers… you’ll love our product line up! The best part?  You can earn up to 50% commission on your product sales – one of the highest commissions in the industry!</p>
+            <p><a href="#more" class="more-link">MORE <span class="glyphicon glyphicon-plus"></span></a></p>
+          </div>
+          <div class="col-md-6 carousel">
+            <div id="carousel-product-generic" class="carousel slide" data-ride="carousel">
+              <!-- Indicators -->
+              <ol class="carousel-indicators">
+                <li data-target="#carousel-product-generic" data-slide-to="0" class="active"></li>
+                <li data-target="#carousel-product-generic" data-slide-to="1"></li>
+                <li data-target="#carousel-product-generic" data-slide-to="2"></li>
+                <li data-target="#carousel-product-generic" data-slide-to="3"></li>
+                <li data-target="#carousel-product-generic" data-slide-to="4"></li>
+                <li data-target="#carousel-product-generic" data-slide-to="5"></li>
+              </ol>
+
+              <!-- Wrapper for slides -->
+              <div class="carousel-inner">
+                <div class="item active">
+                        <img class="img-responsive" src="/img/products_royalJelly.jpg">
+                </div>
+                <div class="item">
+                        <img class="img-responsive" src="/img/products_PRO.jpg">
+                </div>
+                <div class="item">
+                        <img class="img-responsive" src="/img/products_marineBotanicals.jpg">
+                </div>
+                <div class="item">
+                        <img class="img-responsive" src="/img/products_fragranceWomen.jpg">
+                </div>
+                <div class="item">
+                        <img class="img-responsive" src="/img/products_fragranceMen.jpg">
+                </div>
+                <div class="item">
+                        <img class="img-responsive" src="/img/products_color.jpg">
+                </div>
               </div>
+
+              <!-- Controls -->
+              <a class="left carousel-control" href="#carousel-product-generic" role="button" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left"></span>
+              </a>
+              <a class="right carousel-control" href="#carousel-product-generic" role="button" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right"></span>
+              </a>
             </div>
           </div>
         </div>
-        <div class="col-md-1"></div>
-      </div>
-      <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
-    </div>
-  </div>
-</div>
-
-<div class="container">
-  <!-- Features & Highlights -->
-  <section id="why_jafra">
-    <div class="row text-center">
-      <div class="col-md-12">
-        <h2 class="h1">Why Jafra?</h2>
-        <hr>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-5">
-        <img class="img-responsive" src="/img/4by3.jpg">
-        <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
-      </div>
-      <div class="col-md-4">
-        <h3>World Class Products</h3>
-        <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.</p>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-4 col-md-offset-3 text-right">
-        <h3>Earn Extra Cash</h3>
-        <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.</p>
-      </div>
-      <div class="col-md-5">
-        <img class="img-responsive" src="/img/4by3.jpg">
-        <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-5">
-        <img class="img-responsive" src="/img/4by3.jpg">
-        <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
-      </div>
-      <div class="col-md-4">
-        <h3>Be Your Own Boss</h3>
-        <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-      </div>
-    </div>
-
-    <div class="row text-center">
-      <div class="col-md-12">
-        <h3>JAFRA Consultants Love Their Jobs</h3>
-        <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
-        <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-4">
-        <div class="testimonial text-center">
-          <img class="img-circle" src="/img/1by1.jpg" style="max-width: 64px;" alt="...">
-          <i class="fa fa-twitter" style="margin:0 0 0 -13px"></i>
-          <h4 class="media-heading">Julie Smith</h4>
-          <p><small>@juliesmith</small></p>
-          <p>&ldquo;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.&rdquo;</p>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="testimonial text-center">
-          <img class="img-circle" src="/img/1by1.jpg" style="max-width: 64px;" alt="...">
-          <i class="fa fa-twitter" style="margin:0 0 0 -13px"></i>
-          <h4 class="media-heading">Hannah Williams</h4>
-          <p><small>@hannahbanana</small></p>
-          <p>&ldquo;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.&rdquo;</p>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="testimonial text-center">
-          <img class="img-circle" src="/img/1by1.jpg" style="max-width: 64px;" alt="...">
-          <i class="fa fa-twitter" style="margin:0 0 0 -13px"></i>
-          <h4 class="media-heading">Rosa Mendez</h4>
-          <p><small>@rosylovesjafra</small></p>
-          <p>&ldquo;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.&rdquo;</p>
-        </div>
-        </div-->
-      </div>
-
-      <div class="row text-center">
-        <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
-        <a class="btn btn-primary btn-lg" role="button" href="#" data-toggle="modal" data-target=".bs-example-modal-lg">Start A Career Today</a>
-        <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
-        <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
-      </div>
-    </div>
-  </section>
-
-  <!-- Starter Packages -->
-  <section id="starter_packages">
-    <div class="row text-center">
-      <div class="col-md-12">
-        <h2 class="h1">Starter Packages</h2>
-        <hr>
-      </div>
-      <div class="col-md-2"></div>
-      <div class="col-sm-6 col-md-4">
-        <div class="well">
-          <img class="img-responsive" src="/img/starter_package.png">
-          <h3><b>Starter</b></h3>
-          <p>Donec id elit non mi porta gravida at eget metus.</p>
-
-          <a data-toggle="collapse" href="#collapseOneOne" onclick="$(this).hide();">
-            What&rsquo;s Inside?
-          </a>
-          <div id="collapseOneOne" class="panel-collapse collapse">
-            <div class="panel-body text-left">
-              <ul class="list-group">
-                <li>Cras justo odio</li>
-                <li>Dapibus ac facilisis in</li>
-                <li>Morbi leo risus</li>
-                <li>Porta ac consectetur ac</li>
-                <li>Vestibulum at eros</li>
-              </ul>
-            </div>
-          </div>
-          <p class="h4"><strong>$100 Value</strong></p>
-          <h3 class="h1">$49</h3>
+      </section>
 
           <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
-
-          <div class="product-action">
-            <!-- Split button -->
-            <div class="btn-group">
-              <button type="button" class="btn btn-primary btn-lg" ng-click="join('10019', 'en_US')">Buy English</button>
-              <button type="button" class="btn btn-primary btn-lg dropdown-toggle" ng-click="join('10019')" data-toggle="dropdown">
-                <span class="caret"></span>
-                <span class="sr-only">Toggle Dropdown</span>
-              </button>
-              <ul class="dropdown-menu" role="menu">
-                <li><a href="" ng-click="join('10019', 'en_US')">Buy English</a></li>
-                <li><a href="" ng-click="join('10019', 'es_US')">Buy Spanish</a></li>
-              </ul>
-            </div>
+      <section class="hero-section-box" id="why_jafra_lifestyle">
+        <div class="container subcontainer">
+          <div class="col-md-6">
+            <img class="img-responsive" src="/img/heroshot2.png">
+          </div>
+          <div class="col-md-4">
+            <h3 class="hero-header-title"><span class="serif-title">it's</span><br />YOUR CALL!</h3>
+            <p>JAFRA’s lets you sell your way. Set your own hours, plan work around your family and achieve financial independence doing what you love.</p>
+            <p><a href="#more" class="more-link">MORE <span class="glyphicon glyphicon-plus"></span></a></p>
+          </div>
+          <div class="col-md-2">
+            <img class="img-responsive" src="/img/liner_black.png">
           </div>
         </div>
-      </div>
-      <div class="col-sm-6 col-md-4">
-        <div class="well product-highlighter">
-          <div class="ribbon ribbon-red">
-            <div class="banner">
-              <div class="text">BEST VALUE</div>
-            </div>
-          </div>
-          <img class="img-responsive" src="/img/entrepreneur_package.png">
-          <h3><b>Entrepreneur</b></h3>
-          <p>Donec id elit non mi porta gravida at eget metus.</p>
-
-          <a data-toggle="collapse" href="#collapseTwoTwo" onclick="$(this).hide();">
-            What&rsquo;s Inside?
-          </a>
-          <div id="collapseTwoTwo" class="panel-collapse collapse">
-            <div class="panel-body text-left">
-              <ul class="list-group">
-                <li>Cras justo odio</li>
-                <li>Dapibus ac facilisis in</li>
-                <li>Morbi leo risus</li>
-                <li>Porta ac consectetur ac</li>
-                <li>Vestibulum at eros</li>
-              </ul>
-            </div>
-          </div>
-          <p class="h4"><strong>$200 Value</strong></p>
-          <h3 class="h1"><strong>$99</strong></h3>
-
+      </section>
           <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
 
-          <div class="product-action">
-            <!-- Split button -->
-            <div class="btn-group">
-              <button type="button" class="btn btn-primary btn-lg" ng-click="join('10019', 'en_US')">Buy English</button>
-              <button type="button" class="btn btn-primary btn-lg dropdown-toggle" ng-click="join('10019')" data-toggle="dropdown">
-                <span class="caret"></span>
-                <span class="sr-only">Toggle Dropdown</span>
-              </button>
-              <ul class="dropdown-menu" role="menu">
-                <li><a href="" ng-click="join('10019', 'en_US')">Buy English</a></li>
-                <li><a href="" ng-click="join('10019', 'es_US')">Buy Spanish</a></li>
-              </ul>
+      <section class="hero-section-box" id="why_jafra_rewards">
+        <div class="container subcontainer">
+          <div class="col-md-6">
+            <h3 class="hero-header-title"><span class="serif-title">rewards</span><br />GALORE</h3>
+            <p>Set your own goals to earn exciting gifts, amazing trips, and free JAFRA beauty products.</p>
+            <p><a href="#more" class="more-link">MORE <span class="glyphicon glyphicon-plus"></span></a></p>
+          </div>
+          <div class="col-md-6">
+            
+            <div id="carousel-rewards-generic" class="carousel slide" data-ride="carousel">
+              <!-- Indicators -->
+              <ol class="carousel-indicators">
+                <li data-target="#carousel-rewards-generic" data-slide-to="0" class="active"></li>
+                <li data-target="#carousel-rewards-generic" data-slide-to="1"></li>
+                <li data-target="#carousel-rewards-generic" data-slide-to="2"></li>
+              </ol>
+
+              <!-- Wrapper for slides -->
+              <div class="carousel-inner">
+                <div class="item active">
+                        <img class="img-responsive" src="/img/rewards_jewelry.jpg">
+                </div>
+                <div class="item">
+                        <img class="img-responsive" src="/img/rewards_iPad_CoachBag.jpg">
+                </div>
+                <div class="item">
+                        <img class="img-responsive" src="/img/rewards_summerTrip.jpg">
+                </div>
+              </div>
+
+              <!-- Controls -->
+              <a class="left carousel-control" href="#carousel-rewards-generic" role="button" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left"></span>
+              </a>
+              <a class="right carousel-control" href="#carousel-rewards-generic" role="button" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right"></span>
+              </a>
             </div>
+            <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
           </div>
         </div>
-      </div>
-      <div class="col-md-2"></div>
-    </div>
-    <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
-    <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
-  </section>
+      </section>
 
-  <!-- FAQs -->
-  <section id="FAQs">
-    <div class="row">
-      <div class="col-md-12 text-center">
-        <h2 class="h1">FAQs</h2>
-        <hr>
-      </div>
-      <div class="col-md-6">
-        <h3><b>Q.</b> How does it work?</h3>
-        <p><b>A.</b> Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-      </div>
-      <div class="col-md-6">
-        <h3><b>Q.</b> How much does it cost?</h3>
-        <p><b>A.</b> Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-      </div>
-      <div class="col-md-6">
-        <h3><b>Q.</b> How much can I make?</h3>
-        <p><b>A.</b> Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-      </div>
-      <div class="col-md-6">
-        <h3><b>Q.</b> Are there any puppies on this site?</h3>
-        <p><b>A.</b> Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-      </div>
-      <div class="col-md-6">
-        <h3><b>Q.</b> What about kittens?</h3>
-        <p><b>A.</b> Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-      </div>
-      <div class="col-md-6">
-        <h3><b>Q.</b> How much does a woodchuck chuck wood?</h3>
-        <p><b>A.</b> Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-      </div>
-      <div class="col-md-6">
-        <h3><b>Q.</b> What is there left to do?</h3>
-        <p><b>A.</b> Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-      </div>
-      <div class="col-md-6">
-        <h3><b>Q.</b> Where is the restroom?</h3>
-        <p><b>A.</b> Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-      </div>
-      <div class="col-md-6">
-        <h3><b>Q.</b> How compatible is this container?</h3>
-        <p><b>A.</b> Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-      </div>
-      <div class="col-md-6">
-        <h3><b>Q.</b> Why does it work?</h3>
-        <p><b>A.</b> Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-      </div>
-    </div>
+          <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+      <section class="text-left" id="why_jafra_testimonials">
+        <div class="container subcontainer">
+          <div class="col-md-9">
+            <h3 class="hero-header-title"><span class="serif-title">JAFRA is everything</span><br />WE IMAGINED<br /><span class="serif-title-alt">and more!</span></h3>
+            <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+          </div>
+          <div class="col-md-3"><img style="max-width:250px" src="/img/pastelpatches-2.png" /></div>
 
-    <div class="row text-center">
-      <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
-      <a class="btn btn-primary btn-lg" role="button" href="#" data-toggle="modal" data-target=".bs-example-modal-lg">I&rsquo;m Ready To Join!</a>
-      <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
-      <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
-    </div>
+          <div class="row hero-section-box ">
+            <div class="col-md-3"><img style="max-width:250px" src="/img/lipsticksmears3.png" /></div>
+            <div class="col-md-2">
+              <div class="testimonial text-center">
+                <img class="" src="/img/cherrie.png" alt="Cherrie">
+                <i class="fa fa-twitter" style="margin:0 0 0 -13px"></i>
+                <h4 class="media-heading">Lori Duncan</h4>
+                <p><small></small></p>
+                <p>&ldquo;It’s easy for me to sell JAFRA because I’m so passionate about all the products! They’re such great quality.&rdquo;</p>
+              </div>
+            </div>
 
-  </section>
-</div>
+            <div class="col-md-2">
+              <div class="testimonial text-center">
+                <img class="" src="/img/alegra.png" alt="Alegra">
+                <i class="fa fa-twitter" style="margin:0 0 0 -13px"></i>
+                <h4 class="media-heading">Jennifer Knight</h4>
+                <p><small></small></p>
+                <p>&ldquo;JAFRA has given me the opportunity to earn more money! Plus the sky’s the limit! I can earn as much as I want!&rdquo;</p>
+              </div>
+            </div>
+
+            <div class="col-md-2">
+              <div class="testimonial text-center">
+                <img class="" src="/img/keidi.png" alt="Keidi">
+                <i class="fa fa-twitter" style="margin:0 0 0 -13px"></i>
+                <h4 class="media-heading">Rossy Argueta</h4>
+                <p><small></small></p>
+                <p>&ldquo;I love the freedom JAFRA gives me. I spend more time with my family because I can choose my own schedule. &rdquo;</p>
+              </div>
+            </div>
+            <div class="col-md-3"></div>
+          </div>
+        </div>
+      </section>
+
+    </section>
+
+
+        <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+    <!-- Starter Packages -->
+    <section id="starter_kits">
+
+      <div class="container">
+        <h2 class="h1 why-section-title">SELECT YOUR STARTER KIT</h2>
+      </div>
+
+      <section id="royal_starter_kit" class="subsection">
+        <div class="container subcontainer">
+          <div class="col-md-6">
+            <h3><span>get everything</span><br />
+              YOU NEED
+            </h3>
+            <h3 class="h1">$99</h3>
+            <p class="h4"><strong>A $490+ Retail Value</strong></p>
+            <p><a href="#more" class="more-link">MORE <span class="glyphicon glyphicon-plus"></span></a></p>
+            <div class="product-action">
+                  <!-- Split button -->
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-primary btn-lg" ng-click="join('10019', 'en_US')">Buy English</button>
+                    <button type="button" class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown">
+                      <span class="caret"></span>
+                      <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                      <li><a href="sign-in.html" ng-click="join('10019', 'en_US')">Buy English</a></li>
+                      <li><a href="sign-in.html" ng-click="join('10019', 'es_US')">Buy Spanish</a></li>
+                    </ul>
+                  </div>
+                </div>
+          </div>
+          <div class="col-md-6">
+            <img src="/img/royal_starter_kit.png" />
+          </div>
+        </div>
+      </section>
+          <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+      <section id="skincare_starter_kit" class="subsection">
+        <div class="container subcontainer">
+          <div class="col-md-6">
+            <img src="/img/skincare_starter_kit.png" />
+          </div>
+          <div class="col-md-6">
+            <h3><span>get a</span><br />
+              QUICK START
+            </h3>
+            <h3 class="h1">$39</h3>
+            <p class="h4"><strong>A $198 Retail Value</strong></p>
+            <p><a href="#more" class="more-link">MORE <span class="glyphicon glyphicon-plus"></span></a></p>
+            <div class="product-action">
+                  <!-- Split button -->
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-primary btn-lg" ng-click="join('10019', 'en_US')">Buy English</button>
+                    <button type="button" class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown">
+                      <span class="caret"></span>
+                      <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                      <li><a href="sign-in.html" ng-click="join('10019', 'en_US')">Buy English</a></li>
+                      <li><a href="sign-in.html" ng-click="join('10019', 'es_US')">Buy Spanish</a></li>
+                    </ul>
+                  </div>
+                </div>
+          </div>
+        </div>
+      </section>
+
+        <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+    </section>
+
+    <!-- FAQs -->
+    <section id="FAQs" class="subsection">
+      <div class="container subcontainer">
+
+        <div class="row">
+          <div class="col-md-12">
+            <h2 class="h1 why-section-title">FAQs</h2>
+            <hr>
+          </div>
+          
+          <div class="col-md-6">
+            <div ng-controller="AccordionFAQCtrl">
+              <accordion close-others="oneAtATime">
+                <accordion-group>
+                    <accordion-heading>
+                        <h3><b>Q.</b> What does it mean to be a JAFRA Consultant? <i class="pull-right glyphicon" ng-class="{'glyphicon-minus': status.open, 'glyphicon-plus': !status.open}"></i></h3>
+                    </accordion-heading>
+                    <p><b>A.</b> You’re out there as our representative selling JAFRA’s excellent products directly to customers at hosted parties, casual get-togethers wherever you like or online. It’s up to you! </p>
+                </accordion-group>
+                <accordion-group>
+                    <accordion-heading>
+                        <h3><b>Q.</b> How do I begin to share JAFRA products?<i class="pull-right glyphicon" ng-class="{'glyphicon-minus': status.open, 'glyphicon-plus': !status.open}"></i></h3>
+                    </accordion-heading>
+                    <p><b>A.</b> Simply make a list of your friends, family, and neighbors, and give them a call. Let them know you’re now a JAFRA Consultant, and that you want to show them the beauty of JAFRA products. </p>
+                </accordion-group>
+                <accordion-group>
+                    <accordion-heading>
+                        <h3><b>Q.</b> How much can I expect to earn?<i class="pull-right glyphicon" ng-class="{'glyphicon-minus': status.open, 'glyphicon-plus': !status.open}"></i></h3>
+                    </accordion-heading>
+                    <p><b>A.</b> You’re the CEO of your business so you decide! You can earn up to 50% personal commissions on sales. The more you sell, the more you’ll earn! </p>
+                </accordion-group>
+                <accordion-group>
+                    <accordion-heading>
+                        <h3><b>Q.</b> How will I get paid?<i class="pull-right glyphicon" ng-class="{'glyphicon-minus': status.open, 'glyphicon-plus': !status.open}"></i></h3>
+                    </accordion-heading>
+                    <p><b>A.</b> You have two options. Payments are made: 1) Via direct deposit into your checking account 2) Loaded onto a JAFRA Debit MasterCard.</p>
+                </accordion-group>
+                <accordion-group>
+                    <accordion-heading>
+                        <h3><b>Q.</b> Will I receive training from JAFRA? <i class="pull-right glyphicon" ng-class="{'glyphicon-minus': status.open, 'glyphicon-plus': !status.open}"></i></h3>
+                    </accordion-heading>
+                    <p><b>A.</b> Yes! In no time, you’ll be a JAFRA expert with our convenient and powerful online training. Your JAFRA Manager can also help you learn.</p>
+                </accordion-group>
+              </accordion>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div ng-controller="AccordionFAQCtrl">
+              <accordion close-others="oneAtATime">
+                <accordion-group>
+                    <accordion-heading>
+                        <h3><b>Q.</b> Do I need to work a certain amount of hours? <i class="pull-right glyphicon" ng-class="{'glyphicon-minus': status.open, 'glyphicon-plus': !status.open}"></i></h3>
+                    </accordion-heading>
+                    <p><b>A.</b> No to that. You’re the boss so you decide how much time you spend on your JAFRA business. </p>
+                </accordion-group>
+                <accordion-group>
+                    <accordion-heading>
+                        <h3><b>Q.</b> Do I need to achieve a minimum number of sales? <i class="pull-right glyphicon" ng-class="{'glyphicon-minus': status.open, 'glyphicon-plus': !status.open}"></i></h3>
+                    </accordion-heading>
+                    <p><b>A.</b> We have a rule for this one: To remain a JAFRA Consultant, you are required to place at least $300 or more in retail orders in a 12-month period.</p>
+                </accordion-group>
+                <accordion-group>
+                    <accordion-heading>
+                        <h3><b>Q.</b> How much do I have to invest? <i class="pull-right glyphicon" ng-class="{'glyphicon-minus': status.open, 'glyphicon-plus': !status.open}"></i></h3>
+                    </accordion-heading>
+                    <p><b>A.</b> You can purchase our Royal Starter Kit for $99 plus shipping and handling.  It has everything you need to succeed. Look for Quick Start kits at a lower price. </p>
+                </accordion-group>
+                <accordion-group>
+                    <accordion-heading>
+                        <h3><b>Q.</b> Does JAFRA offer a product guarantee?<i class="pull-right glyphicon" ng-class="{'glyphicon-minus': status.open, 'glyphicon-plus': !status.open}"></i></h3>
+                    </accordion-heading>
+                    <p><b>A.</b> Of course! We offer free, no-hassle returns and exchanges within 6 months of a product’s purchase date. </p>
+                </accordion-group>
+                <accordion-group>
+                    <accordion-heading>
+                        <h3><b>Q.</b> How is JAFRA different from other direct sale cosmetic companies? <i class="pull-right glyphicon" ng-class="{'glyphicon-minus': status.open, 'glyphicon-plus': !status.open}"></i></h3>
+                    </accordion-heading>
+                    <p><b>A.</b> Founded in 1956 in Malibu, California, JAFRA has over 58 years in helping women achieve their dreams.  Over 500,000 Consultants sell our products in 20 countries.  Plus, JAFRA is ranked in the top 25 direct sales companies in the United States.</p>
+                </accordion-group>
+              </accordion>
+            </div>
+         </div>
+
+         <div class="col-md-12 text-center">
+        <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+
+          <a class="btn btn-primary btn-med" role="button" href="#" data-toggle="modal" data-target=".bs-example-modal-lg">Join now</a>
+
+        <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+
+        </div>
+
+        </div>
+      </div>
+    </section>
