@@ -81,11 +81,11 @@ angular.module('app.controllers.checkout')
 
             if (urlStep == 'Finish') {
                 $log.debug("CheckoutController(): finished wizard, redirecting to landing page?");
-                $location.path('/online_sponsoring').search('');
+                $location.path(JOIN_BASE_URL).search('');
                 return;
             } else if (sku == null) {
                 $log.error("CheckoutController(): failed to load sku for online sponsoring");
-                $location.path('/online_sponsoring').search('');
+                $location.path(JOIN_BASE_URL).search('');
                 return;
             } else {
                 if (WizardHandler.wizard('checkoutWizard') != null) {
@@ -141,7 +141,7 @@ angular.module('app.controllers.checkout')
                 if (urlStep != null && urlStep != 'Start' && !Session.isLoggedIn()) {
                     if (urlStep == 'Finish') {
                         $log.debug("CheckoutController(): finished wizard, redirecting to products");
-                        $location.path('/products').search('');
+                        $location.path(STORE_BASE_URL).search('');
                         $location.replace();
                         return;
                     } else {
@@ -160,7 +160,7 @@ angular.module('app.controllers.checkout')
                     }
                 } else if (urlStep == 'Finish') {
                     $log.debug("CheckoutController(): finished wizard, redirecting to products");
-                    $location.path('/products').search('');
+                    $location.path(STORE_BASE_URL).search('');
                     $location.replace();
                     return;
                 } else if (Session.isLoggedIn()) {
@@ -393,7 +393,7 @@ angular.module('app.controllers.checkout')
             var confirmAction = confirm(message);   
 
            if (confirmAction) {
-             $location.path("/");
+             $location.path(STORE_BASE_URL);
            }
 
         }
@@ -556,8 +556,10 @@ angular.module('app.controllers.checkout')
             Cart.clear().then(function() {
                 $log.debug("CheckoutController(): finished(): Cart cleared", $scope.cart);
             });
-            $location.path('/products');
-            $location.replace();
+            if (S($location.path()).startsWith(STORE_BASE_URL)) {
+                $location.path(STORE_BASE_URL);
+                $location.replace();
+            }
         }
 
         function cleanup() {

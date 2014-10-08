@@ -146,7 +146,7 @@ angular.module('app.controllers.main')
 
         $scope.logout = function() {
             Session.logout();
-            $location.path("/");
+            $location.path(STORE_BASE_URL);
         }
 
         $scope.loggedIn = function() {
