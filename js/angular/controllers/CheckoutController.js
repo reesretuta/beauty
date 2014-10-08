@@ -225,7 +225,7 @@ angular.module('app.controllers.checkout')
                 if (items.length == 0) {
                     $log.debug("CheckoutController(): loadCheckout(): no items in cart, redirecting to products / landing");
                     $location.path($scope.isOnlineSponsoring ? JOIN_BASE_URL : STORE_BASE_URL);
-                } else if (Session.isLoggedIn()) {
+                } else if (Session.isLoggedIn() && !$scope.isOnlineSponsoring) {
                     // send the user past login page
                     if (urlStep != 'Start') {
                         $log.debug("CheckoutController(): loadCheckout(): sending logged in user to", urlStep);
@@ -234,7 +234,7 @@ angular.module('app.controllers.checkout')
                         $log.debug("CheckoutController(): loadCheckout(): sending logged in user to Shipping, skipping login/create");
                         WizardHandler.wizard('checkoutWizard').goTo('Shipping');
                     }
-                } else if (!$scope.isOnlineSponsoring) {
+                } else {
                     $log.debug("CheckoutController(): loadCheckout(): sending non-logged in user to Start");
                     WizardHandler.wizard('checkoutWizard').goTo('Start');
                 }
