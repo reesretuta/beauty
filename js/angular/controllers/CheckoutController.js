@@ -41,6 +41,10 @@ angular.module('app.controllers.checkout')
         $log.debug("CheckoutController(): urlStep", urlStep);
         var onlineSponsorChecksCompleteDefer = $q.defer();
 
+        $scope.setCustomerStatus = function(status) {
+            $scope.profile.customerStatus = status;
+        }
+
         // watch current step for changes
         $scope.$watch('currentStep', function(newVal, oldVal) {
             if (newVal != oldVal && newVal != '' && newVal != null) {
