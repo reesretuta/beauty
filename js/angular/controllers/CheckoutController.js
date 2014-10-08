@@ -65,48 +65,57 @@ angular.module('app.controllers.checkout')
         var path = $location.path();
         $log.debug("CheckoutController(): path", path);
 
-        $scope.isOnlineSponsoring = false;
-        if (path && path.match(JOIN_BASE_URL)) {
-            $scope.isOnlineSponsoring = true;
-            $scope.APP_BASE_URL = JOIN_BASE_URL;
-            $log.debug("CheckoutController(): online sponsoring");
+        Session.get().then(function(session) {
+            $log.debug("CheckoutController(): session initialized", session);
 
-            // lock profile to new, since we're in online sponsoring
-            $scope.profile.customerStatus = 'new';
 
-            // get the sku, add the product to cart
-            var sku = S($routeParams.sku != null ? $routeParams.sku : "").toString();
-            var name = S($routeParams.name != null ? $routeParams.name : "").toString();
-            $log.debug("CheckoutController(): online sponsoring: sku=", sku, "name=", name);
-
-            if (urlStep == 'Finish') {
-                $log.debug("CheckoutController(): finished wizard, redirecting to landing page?");
-                $location.path(JOIN_BASE_URL).search('');
-                return;
-            } else if (sku == null) {
-                $log.error("CheckoutController(): failed to load sku for online sponsoring");
-                $location.path(JOIN_BASE_URL).search('');
-                return;
+            if (session.client && session.client.id) {
+                $log.debug("CheckoutController(): user is logged in");
+                $scope.profile.customerStatus = 'existing';
             } else {
-                if (WizardHandler.wizard('checkoutWizard') != null) {
-                    $log.debug("CheckoutController(): loading Start step");
-                    WizardHandler.wizard('checkoutWizard').goTo('Start');
-                    $location.search("step", 'Start');
-                } else {
-                    $timeout(function() {
-                        $log.debug("CheckoutController(): loading Start step after delay");
-                        WizardHandler.wizard('checkoutWizard').goTo('Start');
-                        $location.search("step", 'Start');
-                    }, 0);
-                }
+                $log.debug("CheckoutController(): user is NOT logged in");
+                $scope.profile.customerStatus = 'new';
             }
 
-            // FIXME - verify all previous steps data is available, else restart process
+            $scope.isOnlineSponsoring = false;
+            if (path && path.match(JOIN_BASE_URL)) {
+                $scope.isOnlineSponsoring = true;
+                $scope.APP_BASE_URL = JOIN_BASE_URL;
+                $log.debug("CheckoutController(): online sponsoring");
 
-            $log.debug("CheckoutController(): clearing cart and restarting checkout");
+                // lock profile to new, since we're in online sponsoring
+                $scope.profile.customerStatus = 'new';
 
-            Session.waitForInitialization().then(function(session) {
-                $log.debug("CheckoutController(): session initialized", session);
+                // get the sku, add the product to cart
+                var sku = S($routeParams.sku != null ? $routeParams.sku : "").toString();
+                var name = S($routeParams.name != null ? $routeParams.name : "").toString();
+                $log.debug("CheckoutController(): online sponsoring: sku=", sku, "name=", name);
+
+                if (urlStep == 'Finish') {
+                    $log.debug("CheckoutController(): finished wizard, redirecting to landing page?");
+                    $location.path(JOIN_BASE_URL).search('');
+                    return;
+                } else if (sku == null) {
+                    $log.error("CheckoutController(): failed to load sku for online sponsoring");
+                    $location.path(JOIN_BASE_URL).search('');
+                    return;
+                } else {
+                    if (WizardHandler.wizard('checkoutWizard') != null) {
+                        $log.debug("CheckoutController(): loading Start step");
+                        WizardHandler.wizard('checkoutWizard').goTo('Start');
+                        $location.search("step", 'Start');
+                    } else {
+                        $timeout(function() {
+                            $log.debug("CheckoutController(): loading Start step after delay");
+                            WizardHandler.wizard('checkoutWizard').goTo('Start');
+                            $location.search("step", 'Start');
+                        }, 0);
+                    }
+                }
+
+                // FIXME - verify all previous steps data is available, else restart process
+
+                $log.debug("CheckoutController(): clearing cart and restarting checkout");
 
                 Cart.clear().then(function(cart) {
                     $log.debug("CheckoutController(): previous cart cleared");
@@ -125,13 +134,13 @@ angular.module('app.controllers.checkout')
                 }, function(error) {
                     $log.error("CheckoutController(): failed to update cart");
                 });
-            });
-        } else {
-            // nothing to load, done
-            $log.debug("CheckoutController(): in store");
-            $scope.APP_BASE_URL = STORE_BASE_URL;
-            onlineSponsorChecksCompleteDefer.resolve();
-        }
+            } else {
+                // nothing to load, done
+                $log.debug("CheckoutController(): in store");
+                $scope.APP_BASE_URL = STORE_BASE_URL;
+                onlineSponsorChecksCompleteDefer.resolve();
+            }
+        });
 
         // ensure everything is valid to where we are, else load the proper step
         function checkSteps() {
