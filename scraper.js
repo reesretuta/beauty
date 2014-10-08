@@ -1280,7 +1280,7 @@ models.onReady(function() {
                                     product.description = $('iframe').contents().find("body").html();
                                     product.onHold = $('input[name="group.onHold"]').attr('checked') || false;
                                     product.searchable = $('input[name="group.searchable"]').attr('checked') || false;
-                                    product.status = $('select[name="group.status"] > option:selected').val();
+                                    product.masterStatus = $('select[name="group.status"] > option:selected').val();
                                     product.launchId = $('input[name="group.launchId"]').val() || 0;
                                     product.startDate = moment($('input[name="group.startDate"]').val(), 'MM/DD/YYYY').unix();
                                     product.endDate = moment($('input[name="group.endDate"]').val(), 'MM/DD/YYYY').unix();
