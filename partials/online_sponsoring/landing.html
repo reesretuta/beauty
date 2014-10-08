@@ -392,80 +392,38 @@
             <h2 class="h1 why-section-title">FAQs</h2>
             <hr>
           </div>
-          
+
           <div class="col-md-6">
-            <div ng-controller="AccordionFAQCtrl">
-              <accordion close-others="oneAtATime">
-                <accordion-group>
-                    <accordion-heading>
-                        <h3><b>Q.</b> What does it mean to be a JAFRA Consultant? <i class="pull-right glyphicon" ng-class="{'glyphicon-minus': status.open, 'glyphicon-plus': !status.open}"></i></h3>
-                    </accordion-heading>
-                    <p><b>A.</b> You’re out there as our representative selling JAFRA’s excellent products directly to customers at hosted parties, casual get-togethers wherever you like or online. It’s up to you! </p>
-                </accordion-group>
-                <accordion-group>
-                    <accordion-heading>
-                        <h3><b>Q.</b> How do I begin to share JAFRA products?<i class="pull-right glyphicon" ng-class="{'glyphicon-minus': status.open, 'glyphicon-plus': !status.open}"></i></h3>
-                    </accordion-heading>
-                    <p><b>A.</b> Simply make a list of your friends, family, and neighbors, and give them a call. Let them know you’re now a JAFRA Consultant, and that you want to show them the beauty of JAFRA products. </p>
-                </accordion-group>
-                <accordion-group>
-                    <accordion-heading>
-                        <h3><b>Q.</b> How much can I expect to earn?<i class="pull-right glyphicon" ng-class="{'glyphicon-minus': status.open, 'glyphicon-plus': !status.open}"></i></h3>
-                    </accordion-heading>
-                    <p><b>A.</b> You’re the CEO of your business so you decide! You can earn up to 50% personal commissions on sales. The more you sell, the more you’ll earn! </p>
-                </accordion-group>
-                <accordion-group>
-                    <accordion-heading>
-                        <h3><b>Q.</b> How will I get paid?<i class="pull-right glyphicon" ng-class="{'glyphicon-minus': status.open, 'glyphicon-plus': !status.open}"></i></h3>
-                    </accordion-heading>
-                    <p><b>A.</b> You have two options. Payments are made: 1) Via direct deposit into your checking account 2) Loaded onto a JAFRA Debit MasterCard.</p>
-                </accordion-group>
-                <accordion-group>
-                    <accordion-heading>
-                        <h3><b>Q.</b> Will I receive training from JAFRA? <i class="pull-right glyphicon" ng-class="{'glyphicon-minus': status.open, 'glyphicon-plus': !status.open}"></i></h3>
-                    </accordion-heading>
-                    <p><b>A.</b> Yes! In no time, you’ll be a JAFRA expert with our convenient and powerful online training. Your JAFRA Manager can also help you learn.</p>
-                </accordion-group>
-              </accordion>
+            <div class="accordion" id="FAQaccordion1">
+              <div class="accordion-group">
+                <div class="accordion-heading">
+                  <a class="accordion-toggle" data-toggle="collapse" data-parent="#FAQaccordion1" href="#collapseOne">
+                    Collapsible Group Item #1
+                  </a>
+                </div>
+                <div id="collapseOne" class="accordion-body collapse in">
+                  <div class="accordion-inner">
+                    Anim pariatur cliche...
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-group">
+                <div class="accordion-heading">
+                  <a class="accordion-toggle" data-toggle="collapse" data-parent="#FAQaccordion1" href="#collapseTwo">
+                    Collapsible Group Item #2
+                  </a>
+                </div>
+                <div id="collapseTwo" class="accordion-body collapse">
+                  <div class="accordion-inner">
+                    Anim pariatur cliche...
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
           <div class="col-md-6">
-            <div ng-controller="AccordionFAQCtrl">
-              <accordion close-others="oneAtATime">
-                <accordion-group>
-                    <accordion-heading>
-                        <h3><b>Q.</b> Do I need to work a certain amount of hours? <i class="pull-right glyphicon" ng-class="{'glyphicon-minus': status.open, 'glyphicon-plus': !status.open}"></i></h3>
-                    </accordion-heading>
-                    <p><b>A.</b> No to that. You’re the boss so you decide how much time you spend on your JAFRA business. </p>
-                </accordion-group>
-                <accordion-group>
-                    <accordion-heading>
-                        <h3><b>Q.</b> Do I need to achieve a minimum number of sales? <i class="pull-right glyphicon" ng-class="{'glyphicon-minus': status.open, 'glyphicon-plus': !status.open}"></i></h3>
-                    </accordion-heading>
-                    <p><b>A.</b> We have a rule for this one: To remain a JAFRA Consultant, you are required to place at least $300 or more in retail orders in a 12-month period.</p>
-                </accordion-group>
-                <accordion-group>
-                    <accordion-heading>
-                        <h3><b>Q.</b> How much do I have to invest? <i class="pull-right glyphicon" ng-class="{'glyphicon-minus': status.open, 'glyphicon-plus': !status.open}"></i></h3>
-                    </accordion-heading>
-                    <p><b>A.</b> You can purchase our Royal Starter Kit for $99 plus shipping and handling.  It has everything you need to succeed. Look for Quick Start kits at a lower price. </p>
-                </accordion-group>
-                <accordion-group>
-                    <accordion-heading>
-                        <h3><b>Q.</b> Does JAFRA offer a product guarantee?<i class="pull-right glyphicon" ng-class="{'glyphicon-minus': status.open, 'glyphicon-plus': !status.open}"></i></h3>
-                    </accordion-heading>
-                    <p><b>A.</b> Of course! We offer free, no-hassle returns and exchanges within 6 months of a product’s purchase date. </p>
-                </accordion-group>
-                <accordion-group>
-                    <accordion-heading>
-                        <h3><b>Q.</b> How is JAFRA different from other direct sale cosmetic companies? <i class="pull-right glyphicon" ng-class="{'glyphicon-minus': status.open, 'glyphicon-plus': !status.open}"></i></h3>
-                    </accordion-heading>
-                    <p><b>A.</b> Founded in 1956 in Malibu, California, JAFRA has over 58 years in helping women achieve their dreams.  Over 500,000 Consultants sell our products in 20 countries.  Plus, JAFRA is ranked in the top 25 direct sales companies in the United States.</p>
-                </accordion-group>
-              </accordion>
-            </div>
-         </div>
+          </div>
 
          <div class="col-md-12 text-center">
         <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
