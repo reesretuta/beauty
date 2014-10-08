@@ -10,8 +10,8 @@
       <div id="signin" class="col-sm-12">
 
         <div class="col-md-offset-3">
-          <h1 class="checkouth1" ng-if="!isOnlineSponsoring">Sign in to complete your order</h1>
-          <h1 class="checkouth1" ng-if="isOnlineSponsoring">Create an Account</h1>
+          <h1 class="checkouth1" ng-if="profile.customerStatus == 'existing'">Sign in to complete your order</h1>
+          <h1 class="checkouth1" ng-if="profile.customerStatus == 'new'">Create an Account</h1>
         </div>
         <!--valid={{signInForm.$valid}}-->
         <form name="signInForm" class="form-horizontal" role="form">
