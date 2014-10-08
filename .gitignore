@@ -5,3 +5,5 @@ http-server
 nbproject
 bak
 dump
+
+*.log
