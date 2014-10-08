@@ -54,6 +54,7 @@ app.use(session(sess));
 app.use(function(req, res, next) {
     var user = auth(req);
 
+    console.log("user", user);
     if (user === undefined || user['name'] !== 'jafra' || user['pass'] !== 'easypassfordpaxton') {
         res.statusCode = 401;
         res.setHeader('WWW-Authenticate', 'Basic realm="JafraProto"');
@@ -663,6 +664,39 @@ router.route('/orders')// create an order
     });
 
 //// VALIDATION
+router.route('/validate/address')
+    .post(function (req, res) {
+        // must have a client added to the session first (logged in or going through join)
+//        if (req.session.client == null) {
+//            console.log("permission denied to address validation");
+//            res.status(401);
+//            res.end();
+//            return;
+//        }
+
+        console.log("validating address", req.body);
+
+        // validate the address
+        jafraClient.validateAddress({
+            "name": req.body.name,
+            "address1": req.body.address1,
+            "address2": req.body.address2,
+            "city": req.body.city,
+            "state": req.body.state,
+            "zip": req.body.zip,
+            "country": req.body.country,
+            "phone": req.body.phone
+        }).then(function(r) {
+            console.log("validated email", r.status, "result", r.result);
+            res.status(r.status);
+            res.json(r.result);
+        }, function(r) {
+            console.error("failed to validate email", r.status, "result", r.result);
+            res.status(r.status);
+            res.json(r.result);
+        });
+    })
+
 //router.route('/validate/address')// get a client creditCard
 //    .get(function (req, res) {
 //        // must be authenticated

@@ -574,6 +574,7 @@ function validateEmail(email) {
 }
 
 function validateAddress(address) {
+    console.log("validateAddress()", address);
     var deferred = Q.defer();
 
     var options = {
@@ -584,6 +585,7 @@ function validateAddress(address) {
 
     soap.createClient(STRIKEIRON_ADDRESS_SOAP_URL, options, function(err, client) {
         var userId = STRIKEIRON_ADDRESS_LICENSE;
+
         console.log("license", userId);
 
         client.addSoapHeader({LicenseInfo: {RegisteredUser: {UserID: userId}}});
@@ -594,10 +596,10 @@ function validateAddress(address) {
             "CityStateOrProvinceZIPOrPostalCode":address.city + " " + address.state + " " + address.zip,
             "Country":address.country,
             "Casing":"PROPER"
-        }, function(err, result) {
-            console.log("validateAddress()", error, result);
-            if (error || response.statusCode != 200) {
-                console.error("validateAddress(): error", error, response.statusCode, result);
+        }, function (error, response) {
+            console.log("validateAddress(): response", error, "status", response.NorthAmericanAddressVerificationResult.ServiceStatus.StatusNbr);
+            if (error || response.NorthAmericanAddressVerificationResult.ServiceStatus.StatusNbr != 200) {
+                console.error("validateAddress(): error", error, "response", response);
                 deferred.reject({
                     status: 500,
                     result: {
@@ -608,7 +610,6 @@ function validateAddress(address) {
                 });
                 return;
             }
-
             /**
              * 200 Found
              210 The batch operation completed successfully
@@ -621,12 +622,12 @@ function validateAddress(address) {
              402 City or ZIP Code is Invalid
              500 Internal Error
              */
-            if (result && result.NorthAmericanAddressVerificationResult &&
-                result.NorthAmericanAddressVerificationResult.ServiceResult &&
-                result.NorthAmericanAddressVerificationResult.ServiceResult.USAddress &&
-                result.NorthAmericanAddressVerificationResult.ServiceStatus.StatusNbr == 200)
+            if (response && response.NorthAmericanAddressVerificationResult &&
+                response.NorthAmericanAddressVerificationResult.ServiceResult &&
+                response.NorthAmericanAddressVerificationResult.ServiceResult.USAddress &&
+                response.NorthAmericanAddressVerificationResult.ServiceStatus.StatusNbr == 200)
             {
-                console.log("validateAddress(): success", result.NorthAmericanAddressVerificationResult.ServiceResult.USAddress);
+                console.log("validateAddress(): success", response.NorthAmericanAddressVerificationResult.ServiceResult.USAddress);
 
                 /**
                  * State, Urbanization, ZIPPlus4, ZIPCode, ZIPAddOn, CarrierRoute, PMB, PMBDesignator,
@@ -634,9 +635,22 @@ function validateAddress(address) {
                  * CongressDistrict, County, CountyNumber, StateNumber, GeoCode
                  */
                 //console.log("getClient(): success", body);
+
+                var usAddress = response.NorthAmericanAddressVerificationResult.ServiceResult.USAddress;
+
                 deferred.resolve({
                     status: 200,
-                    result: result.NorthAmericanAddressVerificationResult.ServiceResult.USAddress
+                    result: {
+                        name: address.name,
+                        address1: usAddress.AddressLine1.length > 0 ? usAddress.AddressLine1 : "",
+                        address2: usAddress.AddressLine2.length > 0 ? usAddress.AddressLine2 : "",
+                        city: usAddress.City.length > 0 ? usAddress.City : "",
+                        county: usAddress.County.length > 0 ? usAddress.County : "",
+                        state: usAddress.State.length > 0 ? usAddress.State : "",
+                        zip: usAddress.ZIPPlus4.length > 0 ? usAddress.ZIPPlus4 : "",
+                        geocode:  Object.getOwnPropertyNames(usAddress.GeoCode).length > 0 && usAddress.GeoCode.CensusTract ? usAddress.GeoCode.CensusTract : "",
+                        phone: address.phone
+                    }
                 });
             } else {
                 console.error("validateAddress(): result was not expected", result);

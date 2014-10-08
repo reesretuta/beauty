@@ -599,27 +599,47 @@ angular.module('app.services', ['ngResource'])
             var session = Session.getLocalSession();
             var clientId = session.client.id;
 
-            addressService.save({clientId: clientId}, address).$promise.then(function(response) {
-                var addressId = response.addressId;
-                address.id = addressId;
+            // validate the address first
+            var a = $http.post(API_URL + '/validate/address', {
+                name: address.name,
+                address1: address.address1,
+                address2: address.address2,
+                city: address.city,
+                state: address.state,
+                zip: address.zip,
+                country: address.country,
+                phone: address.phone
+            }, {}).success(function(a, status, headers, config) {
+                $log.debug("Address(): addAddress(): validated, saving", a);
 
-                if (session.client.addresses == null) {
-                    session.client.addresses = [];
-                }
+                // save the address
+                addressService.save({clientId: clientId}, address).$promise.then(function(response) {
+                    var addressId = response.addressId;
+                    address.id = addressId;
 
-                session.client.addresses.push(address);
-                $log.debug("addressService(): addAddress(): adding address to client addresses", session.client.addresses);
+                    if (session.client.addresses == null) {
+                        session.client.addresses = [];
+                    }
 
-                // update the session with the address information
-                Session.save().then(function(session) {
-                    $log.debug("addressService(): addAddress(): saved address to session", session);
-                    d.resolve(address);
-                }, function() {
-                    $log.error("addressService(): addAddress(): failed to save address to session");
-                    d.reject('Failed to update address in session');
+                    session.client.addresses.push(address);
+                    $log.debug("addressService(): addAddress(): adding address to client addresses", session.client.addresses);
+
+                    // update the session with the address information
+                    Session.save().then(function(session) {
+                        $log.debug("addressService(): addAddress(): saved address to session", session);
+                        d.resolve(address);
+                    }, function() {
+                        $log.error("addressService(): addAddress(): failed to save address to session");
+                        d.reject('Failed to update address in session');
+                    });
+                }, function(error) {
+                    d.reject('Failed to save address');
                 });
-            }, function(error) {
-                d.reject('Failed to save address');
+            }).error(function(data, status, headers, config) {
+                //failure(data, status, headers, config);
+                $log.error("Address(): addAddress(): validate()", status, data);
+                $log.error(data, status, headers, config);
+                d.reject(data);
             });
 
             return d.promise;
