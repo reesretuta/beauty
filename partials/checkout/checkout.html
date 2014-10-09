@@ -286,7 +286,7 @@
                   &nbsp;&nbsp;
                   <a href="" ng-click="removeAddress(addressData.id)"><i class="fa fa-times-circle"></i> Remove</a>
                 </div>
-                <a href="" class="btn btn-primary" ng-click="selectAddressAndContinue(addressData)">Ship to this Address</a>
+                <a href="" class="btn btn-primary" ng-click="selectShippingAddressAndContinue(addressData)">Ship to this Address</a>
               </div><!-- /address -->
               
             </div>
@@ -421,7 +421,8 @@
             
             <div class="row form-group">
               <div class="col-md-offset-3 col-sm-9">
-                <button type="button" class="btn btn-primary btn-lg" tabindex=" " ng-disabled="!shippingForm.$valid" ng-click="addAddressAndContinue(profile.newShippingAddress)">Ship to this address &nbsp;<i class="fa fa-caret-right"></i></button>
+                <span class="error" ng-show="shippingAddressError" ng-bind="shippingAddressError"></span>
+                <button type="button" class="btn btn-primary btn-lg" tabindex=" " ng-disabled="!shippingForm.$valid" ng-click="addShippingAddressAndContinue(profile.newShippingAddress)">Ship to this address &nbsp;<i class="fa fa-caret-right"></i></button>
               </div>
             </div>
             
@@ -678,7 +679,8 @@
         
             <div class="form-group">
               <div class="col-md-offset-3 col-sm-9">
-                  <button type="button" ng-click="addPaymentMethod()" class="btn btn-primary btn-lg" tabindex=" " ng-disabled="!paymentForm.$valid">Save Payment Information &nbsp;<i class="fa fa-caret-right"></i></button>
+                <span class="error" ng-show="billingAddressError && !checkout.billSame" ng-bind="billingAddressError"></span>
+                <button type="button" ng-click="addPaymentMethod()" class="btn btn-primary btn-lg" tabindex=" " ng-disabled="!paymentForm.$valid">Save Payment Information &nbsp;<i class="fa fa-caret-right"></i></button>
               </div>
             </div>
             

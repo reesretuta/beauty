@@ -11,12 +11,19 @@ var GET_CLIENT_URL = BASE_URL + "/JCD05007P.pgm";
 var CREATE_CLIENT_URL = BASE_URL + "/JCD05002P.pgm";
 var GET_CONSULTANT_URL = BASE_URL + "/JOS05007P.pgm";
 var CREATE_LEAD_URL = BASE_URL + "/JOS05005P.pgm";
+
 var GET_ADDRESSES_URL = BASE_URL + "/JCD05005P.pgm";
 var GET_ADDRESS_URL = BASE_URL + "/JCD05005P.pgm";
 var CREATE_ADDRESS_URL = BASE_URL + "/JCD05005P.pgm";
 var UPDATE_ADDRESS_URL = BASE_URL + "/JCD05005P.pgm";
 var DELETE_ADDRESS_URL = BASE_URL + "/JCD05005P.pgm";
-var CREATE_CREDIT_CARD_URL = BASE_URL + "/testrsa.pgm";
+
+var GET_CREDIT_CARDS_URL = BASE_URL + "/JCD05008P.pgm";
+var GET_CREDIT_CARD_URL = BASE_URL + "/JCD05008P.pgm";
+var CREATE_CREDIT_CARD_URL = BASE_URL + "/JCD05008P.pgm";
+var UPDATE_CREDIT_CARD_URL = BASE_URL + "/JCD05008P.pgm";
+var DELETE_CREDIT_CARD_URL = BASE_URL + "/JCD05008P.pgm";
+var GET_INVENTORY_URL = BASE_URL + "/JCD05021P.pgm"; // productId=<productId>
 
 var STRIKEIRON_EMAIL_URL = 'http://ws.strikeiron.com/StrikeIron/emv6Hygiene/EMV6Hygiene/VerifyEmail';
 var STRIKEIRON_EMAIL_LICENSE = "2086D15410C1B9F9FF89";
@@ -347,7 +354,6 @@ function createAddress(clientId, address) {
             clientId: clientId
         },
         form: {
-            "clientId": clientId,
             "name": address.name,
             "address1": address.address1,
             "address2": address.address2,
@@ -415,8 +421,69 @@ function createAddress(clientId, address) {
     return deferred.promise;
 }
 
-function updateAddress(address) {
+function updateAddress(clientId, addressId, address) {
+    console.log("updateAddress", clientId, addressId, address);
+    var deferred = Q.defer();
 
+    var r = request.post({
+        url: UPDATE_ADDRESS_URL,
+        qs: {
+            clientId: clientId,
+            addressId: addressId
+        },
+        form: {
+            "name": address.name,
+            "address1": address.address1,
+            "address2": address.address2,
+            "city": address.city,
+            "state": address.state,
+            "zip": address.zip,
+            "country": address.country,
+            "phone": address.phone,
+            "geocode": "00000",
+            "stateDescription": "California",
+            "county" : "Los Angeles"
+        },
+        headers: {
+            'Content-Type' : 'application/x-www-form-urlencoded',
+            'Accept': 'application/json, text/json'
+        },
+        json: true
+    }, function (error, response, body) {
+        if (error || response.statusCode != 204) {
+            console.error("updateAddress(): error", response.statusCode, body);
+
+            if (body && body.statusCode && body.errorCode && body.message) {
+                deferred.reject({
+                    status: response.statusCode,
+                    result: {
+                        statusCode: body.statusCode,
+                        errorCode: body.errorCode,
+                        message: body.message
+                    }
+                });
+            } else {
+                deferred.reject({
+                    status: 500,
+                    result: {
+                        statusCode: 500,
+                        errorCode: "updateAddressFailed",
+                        message: "Failed to update address"
+                    }
+                });
+            }
+            return;
+        }
+
+        // we should get nothing back
+        console.log("updateAddress(): success");
+        deferred.resolve({
+            status: 204,
+            result: null
+        });
+    });
+
+    return deferred.promise;
 }
 
 function deleteAddress(clientId, addressId) {
@@ -670,8 +737,61 @@ function validateAddress(address) {
     return deferred.promise;
 }
 
+//2451 Townsgate Rd., Westlake Village 91361
+
+function getCreditCards(clientId) {
+    //console.log("getCreditCards()", clientId);
+    var deferred = Q.defer();
+
+    request.get({
+        url: GET_CREDIT_CARDS_URL,
+        qs: {
+            clientId: clientId
+        },
+        headers: {
+            'Accept': 'application/json, text/json'
+        },
+        json: true
+    }, function (error, response, body) {
+        if (error || response.statusCode != 200) {
+            console.error("getCreditCards(): error", error, response.statusCode, body);
+            deferred.reject({error: error, response: response, body: body});
+        }
+        //console.log("getCreditCards(): success", body);
+        deferred.resolve({response: response, body: body});
+    });
+
+    return deferred.promise;
+}
+
+function getCreditCard(clientId, creditCardId) {
+    //console.log("getCreditCard()", clientId);
+    var deferred = Q.defer();
+
+    request.get({
+        url: GET_CREDIT_CARD_URL,
+        qs: {
+            clientId: clientId,
+            creditCardId: creditCardId
+        },
+        headers: {
+            'Accept': 'application/json, text/json'
+        },
+        json: true
+    }, function (error, response, body) {
+        if (error || response.statusCode != 200) {
+            console.error("getCreditCard(): error", error, response.statusCode, body);
+            deferred.reject({error: error, response: response, body: body});
+        }
+        //console.log("getCreditCard(): success", body);
+        deferred.resolve({response: response, body: body});
+    });
+
+    return deferred.promise;
+}
+
 function createCreditCard(clientId, data) {
-    //console.log("createAddress", email, password);
+    //console.log("createCreditCard", email, password);
     var deferred = Q.defer();
 
     var r = request.post({
@@ -736,16 +856,141 @@ function createCreditCard(clientId, data) {
     return deferred.promise;
 }
 
+function updateCreditCard(clientId, creditCardId, data) {
+    //console.log("updateCreditCard", email, password);
+    var deferred = Q.defer();
+
+    var r = request.post({
+        url: UPDATE_CREDIT_CARD_URL,
+        qs: {
+            clientId: clientId,
+            creditCardId: creditCardId
+        },
+        form: {
+            "dataToDecrypt": data
+        },
+        headers: {
+            'Content-Type' : 'application/x-www-form-urlencoded',
+            'Accept': 'application/json, text/json'
+        },
+        json: true
+    }, function (error, response, body) {
+        if (error || response.statusCode != 201) {
+            console.error("updateCreditCard(): error", error, response ? response.statusCode : null, body);
+
+            if (body && body.statusCode && body.errorCode && body.message) {
+                deferred.reject({
+                    status: response.statusCode,
+                    result: {
+                        statusCode: body.statusCode,
+                        errorCode: body.errorCode,
+                        message: body.message
+                    }
+                });
+            } else {
+                deferred.reject({
+                    status: 500,
+                    result: {
+                        statusCode: 500,
+                        errorCode: "updateCreditCardFailed",
+                        message: "Failed to update credit card"
+                    }
+                });
+            }
+            return;
+        }
+
+        if (body == null || body.creditCardId == null) {
+            console.log("updateCreditCard(): invalid return data", body, typeof body, "creditCardId", body.creditCardId);
+            deferred.reject({
+                status: 500,
+                result: {
+                    statusCode: 500,
+                    errorCode: "updateCreditCardReturnDataInvalid",
+                    message: "Failed to get credit card ID from update"
+                }
+            });
+            return;
+        }
+
+        // we should get creditCardId back
+        deferred.resolve({
+            status: 204,
+            result: body.creditCardId
+        });
+    });
+
+    return deferred.promise;
+}
+
+function deleteCreditCard(clientId, creditCardId) {
+    console.log("deleteCreditCard", clientId, creditCardId);
+    var deferred = Q.defer();
+
+    var r = request.del({
+        url: DELETE_CREDIT_CARD_URL,
+        qs: {
+            clientId: clientId,
+            creditCardId: creditCardId
+        },
+        headers: {
+            'Accept': 'application/json, text/json'
+        },
+        json: true
+    }, function (error, response, body) {
+        if (error || response.statusCode != 204) {
+            console.error("deleteCreditCard(): error", response.statusCode, body);
+
+            if (body && body.statusCode && body.errorCode && body.message) {
+                deferred.reject({
+                    status: response.statusCode,
+                    result: {
+                        statusCode: body.statusCode,
+                        errorCode: body.errorCode,
+                        message: body.message
+                    }
+                });
+            } else {
+                deferred.reject({
+                    status: 500,
+                    result: {
+                        statusCode: 500,
+                        errorCode: "deleteCreditCardFailed",
+                        message: "Failed to delete creditCard"
+                    }
+                });
+            }
+            return;
+        }
+
+        console.log("deleteCreditCard(): success");
+        deferred.resolve({
+            status: 204,
+            result: null
+        });
+    });
+
+    return deferred.promise;
+}
+
+
 exports.authenticate = authenticate;
 exports.getClient = getClient;
 exports.createClient = createClient;
 exports.getConsultant = getConsultant;
 exports.createLead = createLead;
+
 exports.getAddresses = getAddresses;
 exports.getAddress = getAddress;
 exports.createAddress = createAddress;
 exports.updateAddress = updateAddress;
 exports.deleteAddress = deleteAddress;
+
 exports.validateEmail = validateEmail;
 exports.validateAddress = validateAddress;
+
+exports.getCreditCards = getCreditCards;
+exports.getCreditCard = getCreditCard;
 exports.createCreditCard = createCreditCard;
+exports.updateCreditCard = updateCreditCard;
+exports.deleteCreditCard = deleteCreditCard;

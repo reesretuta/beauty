@@ -1,9 +1,10 @@
 angular.module('app.controllers.products')
     .controller('ProductDetailsController', function ($sce, WizardHandler, HashKeyCopier, Categories, Products, $q, $scope, $rootScope, $routeParams, $location, $timeout, $window, $log, $modal, $document, Cart, BreadcrumbsHelper, RecentlyViewed) {
-        $log.debug("ProductDetailsController");
+        $log.debug("ProductDetailsController()");
 
         $scope.productId = $routeParams.productId;
         $scope.categoryId = $routeParams.category;
+        $log.debug("ProductDetailsController(): productId", $scope.productId, "categoryId", $scope.categoryId);
 
         $rootScope.title = "Product Details";
         $rootScope.section = "store";
@@ -32,7 +33,6 @@ angular.module('app.controllers.products')
                 kitSelections: {}
             });
         }
-
 
         $scope.addToCartGroup = function(sku) {
 
@@ -70,13 +70,15 @@ angular.module('app.controllers.products')
                             qty = 1;
                         }
 
-                        return {
+                        var item = {
                             name: $scope.product.name,
                             sku: $scope.product.sku,
                             quantity: qty,
                             kitSelections: {},
                             product: $scope.product
                         };
+                        console.log("configuring item", item);
+                        return item;
                     },
                     quantity: function() {
                         var qty = $scope.quantities[$scope.product.sku];
@@ -171,7 +173,7 @@ angular.module('app.controllers.products')
 
         var loadCategory = function() {
             $log.debug("ProductDetailsController(): loadCategory(): loading category", $scope.categoryId);
-            Categories.get({"categoryId": $scope.categoryId, "recurse": true}, function(category, status, headers) {
+            Categories.get({"categoryId": $scope.categoryId, "recurse": true}).then(function(category, status, headers) {
                 $scope.category = category;
 
                 $log.debug("ProductDetailsController(): loaded category", category);
@@ -181,7 +183,7 @@ angular.module('app.controllers.products')
 
                 categoryLoaded.resolve(category);
             }, function(data, status, headers) {
-                $log.error("error loading category", data, status);
+                $log.error("ProductDetailsController(): error loading category", data, status);
                 //Hide loader
                 $scope.loading = false;
                 // Set Error message
@@ -195,57 +197,51 @@ angular.module('app.controllers.products')
 
         var loadProduct = function () {
             //var start = new Date().getTime();
-            Products.get({"productId": $scope.productId}, function(product, status, headers, config) {
-                $log.debug("ProductDetailsController(): got product", product);
-                // We do this here to eliminate the flickering.  When Products.query returns initially,
-                // it returns an empty array, which is then populated after the response is obtained from the server.
-                // This causes the table to first be emptied, then re-updated with the new data.
-                if ($scope.product) {
-                    // update the objects, not just replace, else we'll yoink the whole DOM
-                    $scope.product = HashKeyCopier.copyHashKeys($scope.product, product, ["id"]);
-                    //$log.debug("ProductDetailsController(): updating objects", $scope.objects);
-                } else {
-                    $scope.product = product;
-                    //$log.debug("ProductDetailsController(): initializing objects");
-                }
+            $log.debug("ProductDetailsController(): loadProduct()", $scope.productId);
+
+            Products.get({"productId": $scope.productId}).then(function(product, status, headers, config) {
+                $log.debug("ProductDetailsController(): loadProduct(): got product", product);
+
+                $scope.product = product;
+
                 if (product.type == 'group') {
-                    $log.debug("selecting first item in group", product);
+                    $log.debug("ProductDetailsController(): loadProduct(): selecting first item in group", product);
                     $scope.showhide(product.contains[0].product.sku);
 
                     $scope.categoryClicked = function($index) {
                         // FIXME
                     }
                 }
+
+                // set the page title
                 $rootScope.title = product.name;
 
-                if ($scope.categoryId == null) {
+                if ($scope.categoryId == null && $scope.product.categories != null) {
                     // load the first category from this product, we probably landed here from search
-                    if ($scope.product.categories != null) {
-                        var categories = $scope.product.categories.category;
-                        if (Array.isArray(categories)) {
-                            $scope.categoryId = categories[0].id;
-                        } else if (categories != null) {
-                            $scope.categoryId = categories.id;
-                        }
+                    var categories = $scope.product.categories.category;
+                    if (Array.isArray(categories)) {
+                        $scope.categoryId = categories[0].id;
+                    } else if (categories != null) {
+                        $scope.categoryId = categories.id;
                     }
                 }
 
                 if ($scope.categoryId != null) {
-                    $log.debug("ProductDetailsController(): loading category from product", $scope.categoryId);
+                    $log.debug("ProductDetailsController(): loadProduct(): loading category from product", $scope.categoryId);
                     loadCategory();
                 }
 
                 categoryLoaded.promise.then(function() {
                     var path = BreadcrumbsHelper.setPath($scope.category, $scope.product);
-                    $log.debug("ProductDetailsController(): after category & project loaded, path", path);
+                    $log.debug("ProductDetailsController(): loadProduct(): after category & project loaded, path", path);
                 });
 
                 // add product to recently view products
                 $scope.addToRecentlyViewed(product);
 
-
                 $scope.loading = false;
             }, function (data) {
+                $log.error("ProductDetailsController(): loadProduct(): failed to load product", data);
                 //$log.debug('refreshProducts(): groupName=' + groupName + ' failure', data);
                 if (data.status == 401) {
                     // Looks like our session expired.
@@ -255,10 +251,19 @@ angular.module('app.controllers.products')
                 //Hide loader
                 $scope.loading = false;
                 // Set Error message
-                $scope.errorMessage = "An error occurred while retrieving object list. Please refresh the page to try again, or contact your system administrator if the error persists.";
+                $scope.errorMessage = "An error occurred while retrieving product. Please refresh the page to try again, or contact your system administrator if the error persists.";
             });
         }
-        loadProduct();
+        if ($scope.categoryId) {
+            categoryLoaded.promise.then(function(category) {
+                $log.debug("ProductDetailsController(): loading product after category loaded");
+                // kick off the first refresh
+                loadProduct();
+            });
+        } else {
+            $log.debug("ProductDetailsController(): loading product");
+            loadProduct();
+        }
 
         function cleanup() {
         }

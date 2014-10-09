@@ -9,7 +9,7 @@ angular.module('app.controllers.products')
 
         $scope.products = [];
 
-        $log.debug("ConfigureKitModalController(): configuring product", $scope.product);
+        $log.debug("ConfigureKitModalController(): configuring product", $scope.item);
 
         $scope.productIdToProduct = {};
         if ($scope.item.kitSelections == null) {

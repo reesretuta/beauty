@@ -575,6 +575,8 @@ angular.module('app.services', ['ngResource'])
     .factory('Products', function ($resource, $http, $log, $q, Categories, API_URL) {
         var productService = $resource(API_URL + '/products/:productId', {productId: '@_id'});
         var origQuery = productService.query;
+        var origGet = productService.get;
+
         productService.query = function(params) {
             $log.debug('productService(): query()', params);
             var ret = origQuery(params);
@@ -584,6 +586,17 @@ angular.module('app.services', ['ngResource'])
             });
             return ret.$promise;
         }
+
+        productService.get = function(params) {
+            $log.debug('productService(): get()', params);
+            var ret = origGet(params);
+            $log.debug('productService(): get()', params, ret);
+            ret.$promise.then(function(val) {
+                $log.debug("productService(): get(): result", val);
+            });
+            return ret.$promise;
+        }
+
         return productService;
     })
     .factory('Consultants', function ($resource, $http, $log, API_URL) {
@@ -592,12 +605,9 @@ angular.module('app.services', ['ngResource'])
     .factory('Addresses', function ($resource, $http, $log, $q, Session, API_URL) {
         var addressService = $resource(API_URL + '/clients/:clientId/addresses/:addressId', {addressId: '@_id'});
 
-        addressService.addAddress = function(address) {
-            $log.debug("Address(): addAddress(): saving", address);
+        addressService.validateAddress = function(address) {
+            $log.debug("Address(): validateAddress(): saving", address);
             var d = $q.defer();
-
-            var session = Session.getLocalSession();
-            var clientId = session.client.id;
 
             // validate the address first
             var a = $http.post(API_URL + '/validate/address', {
@@ -610,36 +620,45 @@ angular.module('app.services', ['ngResource'])
                 country: address.country,
                 phone: address.phone
             }, {}).success(function(a, status, headers, config) {
-                $log.debug("Address(): addAddress(): validated, saving", a);
+                $log.debug("Address(): validateAddress(): validated, saving", a);
+                d.resolve(a);
+            }).error(function(data, status, headers, config) {
+                $log.error("Address(): validateAddress(): validate()", status, data);
+                d.reject(data);
+            });
+
+            return d.promise;
+        }
+
+        addressService.addAddress = function(address) {
+            $log.debug("Address(): addAddress(): saving", address);
+            var d = $q.defer();
+
+            var session = Session.getLocalSession();
+            var clientId = session.client.id;
 
                 // save the address
-                addressService.save({clientId: clientId}, address).$promise.then(function(response) {
-                    var addressId = response.addressId;
-                    address.id = addressId;
+            addressService.save({clientId: clientId}, address).$promise.then(function(response) {
+                var addressId = response.addressId;
+                address.id = addressId;
 
-                    if (session.client.addresses == null) {
-                        session.client.addresses = [];
-                    }
+                if (session.client.addresses == null) {
+                    session.client.addresses = [];
+                }
 
-                    session.client.addresses.push(address);
-                    $log.debug("addressService(): addAddress(): adding address to client addresses", session.client.addresses);
+                session.client.addresses.push(address);
+                $log.debug("addressService(): addAddress(): adding address to client addresses", session.client.addresses);
 
-                    // update the session with the address information
-                    Session.save().then(function(session) {
-                        $log.debug("addressService(): addAddress(): saved address to session", session);
-                        d.resolve(address);
-                    }, function() {
-                        $log.error("addressService(): addAddress(): failed to save address to session");
-                        d.reject('Failed to update address in session');
-                    });
-                }, function(error) {
-                    d.reject('Failed to save address');
+                // update the session with the address information
+                Session.save().then(function(session) {
+                    $log.debug("addressService(): addAddress(): saved address to session", session);
+                    d.resolve(address);
+                }, function() {
+                    $log.error("addressService(): addAddress(): failed to save address to session");
+                    d.reject('Failed to update address in session');
                 });
-            }).error(function(data, status, headers, config) {
-                //failure(data, status, headers, config);
-                $log.error("Address(): addAddress(): validate()", status, data);
-                $log.error(data, status, headers, config);
-                d.reject(data);
+            }, function(error) {
+                d.reject('Failed to save address');
             });
 
             return d.promise;
@@ -913,18 +932,18 @@ angular.module('app.services', ['ngResource'])
         return breadcrumbService;
     })
     .factory('RecentlyViewed', function ($rootScope, $log, growlNotifications) {
-        var productService = {};
+        var recentlyViewedService = {};
 
         if ($rootScope.recentlyViewed == null) {
             $rootScope.recentlyViewed = {};
             $rootScope.recentlyViewed.items = new Array();
         }
 
-        productService.getItems = function() {
+        recentlyViewedService.getItems = function() {
             return $rootScope.recentlyViewed.items;
         };
 
-        productService.addRecentlyViewed = function(p) {
+        recentlyViewedService.addRecentlyViewed = function(p) {
             var found = 0;
             angular.forEach($rootScope.recentlyViewed.items, function(product) {
                 $log.debug("checking recently added against list", p.sku, product.sku );
@@ -944,7 +963,7 @@ angular.module('app.services', ['ngResource'])
 
             $log.debug("recently viewed is now", $rootScope.recentlyViewed);
         };
-        return productService;
+        return recentlyViewedService;
     })
     .factory('OrderHelper', function ($rootScope, $log, growlNotifications) {
       var orderHelper = {};

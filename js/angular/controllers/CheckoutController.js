@@ -39,6 +39,9 @@ angular.module('app.controllers.checkout')
         // set current step
         $scope.currentStep = 'Start';
 
+        $scope.shippingAddressError = null;
+        $scope.billingAddressError = null;
+
         $log.debug("CheckoutController(): urlStep", urlStep);
         var onlineSponsorChecksCompleteDefer = $q.defer();
 
@@ -462,31 +465,46 @@ angular.module('app.controllers.checkout')
             $scope.checkoutUpdated();
         }
 
-        $scope.selectAddressAndContinue = function(address) {
-            $log.debug("CheckoutController(): selectAddressAndContinue(): shipping and billing set to", address);
+        $scope.selectShippingAddressAndContinue = function(address) {
+            $log.debug("CheckoutController(): selectShippingAddressAndContinue(): shipping and billing set to", address);
             $scope.checkout.shipping = address;
             $scope.checkout.billing = address;
-            $scope.shippingSpeed();
+            $scope.checkoutUpdated();
         }
 
-        $scope.addAddressAndContinue = function(address) {
-            $log.debug("CheckoutController(): addAddressAndContinue()", address);
+        $scope.addShippingAddressAndContinue = function(address) {
+            $log.debug("CheckoutController(): addShippingAddressAndContinue()", address);
+            $scope.shippingAddressError = "";
 
             if ($scope.isOnlineSponsoring) {
-                $log.debug("CheckoutController(): addAddressAndContinue(): setting consultant shipping/billing address", address);
+                $log.debug("CheckoutController(): addShippingAddressAndContinue(): setting consultant shipping/billing address", address);
                 $scope.checkout.shipping = address;
                 $scope.checkout.billing = address;
                 WizardHandler.wizard('checkoutWizard').goTo('Payment');
             } else {
-                $log.debug("CheckoutController(): addAddressAndContinue(): adding address");
-                $scope.addAddress(address).then(function() {
-                    $log.debug("CheckoutController(): addAddressAndContinue(): added address, showing shipping speed");
-                    $scope.shippingSpeed();
+                // validate address
+                Addresses.validateAddress(function(address) {
+                    $log.debug("CheckoutController(): addShippingAddressAndContinue(): validated address, now adding");
+
+                    $scope.addAddress(address).then(function(a) {
+                        $log.debug("CheckoutController(): addShippingAddressAndContinue(): added address", a);
+
+                        $scope.checkout.shipping = a;
+                        $scope.checkout.billing = a;
+
+                        $scope.checkoutUpdated();
+                        WizardHandler.wizard('checkoutWizard').goTo('Payment');
+                    }, function(error) {
+                        $log.error("CheckoutController(): addShippingAddressAndContinue(): error adding address", error);
+                        // FIXME - failed to add, show error
+                        $scope.shippingAddressError = error;
+                    });
                 }, function(error) {
-                    $log.error("CheckoutController(): addAddressAndContinue(): error adding address", error);
+                    $log.error("CheckoutController(): addShippingAddressAndContinue(): error validating address", error);
+                    // FIXME - failed to add, show error
+                    $scope.shippingAddressError = error;
                 });
             }
-            $scope.checkoutUpdated();
         }
 
         $scope.addAddress = function(address) {

@@ -38,12 +38,12 @@
                 <input type="integer" class="form-control qty-input" id="qty3" placeholder="1" ng-model="quantities[product.sku]">
               </div>
             </form></p> -->
-            <p ng-if="product.type == 'product'">
+            <p ng-if="product.type == 'product' || product.kitGroups.length == 0">
               <a class="btn btn-primary primary-cta ladda-button" ui-ladda="adding" data-style="expand-right" ng-click="addToCart(product)">
                 <i class="fa fa-shopping-cart"></i> Add to Cart
               </a>
             </p>
-            <p ng-if="product.type == 'kit'">
+            <p ng-if="product.type == 'kit' && product.kitGroups.length > 0">
               <a class="btn btn-primary primary-cta" ng-href="{{STORE_BASE_URL}}/products/{{product.sku}}#top">
                 <i class="fa fa-cogs"></i> Configure Offer
               </a>

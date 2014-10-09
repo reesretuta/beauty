@@ -167,16 +167,29 @@ router.route('/products')
             //var re = new RegExp(searchString);
             models.Product.find({ $text: { $search: "" + searchString } })//.or([{ 'name': { $regex: re }}, { 'description': { $regex: re }}, { 'usage': { $regex: re }}, { 'ingredients': { $regex: re }}])
                 .and([
-                    {masterStatus: "A"}
+                    {masterStatus: "A", onHold: false},
+                    {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
                 ]).sort('name').limit(20).populate({
                     path: 'upsellItems.product youMayAlsoLike.product contains.product',
-                    model: 'Product'
+                    model: 'Product',
+                    match: { $and: [
+                        {masterStatus: "A", onHold: false},
+                        {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
+                    ]}
                 }).populate({
                     path: 'kitGroups.kitGroup',
-                    model: 'KitGroup'
+                    model: 'KitGroup',
+                    match: { $and: [
+                        {masterStatus: "A", onHold: false},
+                        {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
+                    ]}
                 }).populate({
                     path: 'kitGroups.kitGroup.components.product',
-                    model: 'Product'
+                    model: 'Product',
+                    match: { $and: [
+                        {masterStatus: "A", onHold: false},
+                        {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
+                    ]}
                 }).exec(function (err, products) {
                     if (err) {
                         res.send(err);
@@ -189,15 +202,32 @@ router.route('/products')
         } else if (categoryId != null && !S(categoryId).isEmpty()) {
             console.log("searching for product by category", categoryId);
             var id = parseInt(categoryId);
-            models.Product.find({ categories: id, masterStatus: "A" }).sort('name').limit(20).populate({
+            models.Product.find({
+                $and: [
+                    {categories: id, masterStatus: "A", onHold: false},
+                    {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
+                ]
+            }).sort('name').limit(20).populate({
                 path: 'upsellItems.product youMayAlsoLike.product contains.product',
-                model: 'Product'
+                model: 'Product',
+                match: { $and: [
+                    {masterStatus: "A", onHold: false},
+                    {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
+                ]}
             }).populate({
                 path: 'kitGroups.kitGroup',
-                model: 'KitGroup'
+                model: 'KitGroup',
+                match: { $and: [
+                    {masterStatus: "A", onHold: false},
+                    {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
+                ]}
             }).populate({
                 path: 'kitGroups.kitGroup.components.product',
-                model: 'Product'
+                model: 'Product',
+                match: { $and: [
+                    {masterStatus: "A", onHold: false},
+                    {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
+                ]}
             }).exec(function (err, products) {
                 if (err) {
                     res.send(err);
@@ -212,15 +242,28 @@ router.route('/products')
             }
             console.log("searching for product by IDs", productIds);
 
-            models.Product.find({ _id: { $in: productIds }, masterStatus: "A" }).sort('name').limit(20).populate({
+            models.Product.find({
+                $and: [
+                    {_id: { $in: productIds }, masterStatus: "A", onHold: false},
+                    {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
+                ]
+            }).sort('name').limit(20).populate({
                 path: 'upsellItems.product youMayAlsoLike.product contains.product',
-                model: 'Product'
+                model: 'Product',
+                match: { $and: [
+                    {masterStatus: "A", onHold: false},
+                    {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
+                ]}
             }).populate({
                 path: 'kitGroups.kitGroup',
                 model: 'KitGroup'
             }).populate({
                 path: 'kitGroups.kitGroup.components.product',
-                model: 'Product'
+                model: 'Product',
+                match: { $and: [
+                    {masterStatus: "A", onHold: false},
+                    {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
+                ]}
             }).exec(function (err, products) {
                 if (err) {
                     res.send(err);
@@ -231,7 +274,7 @@ router.route('/products')
             });
         } else {
             console.log("getting product list");
-            models.Product.find({masterStatus: "A"}).sort('name').limit(20).populate({
+            models.Product.find({masterStatus: "A", masterType: "R", onHold: false}).sort('name').limit(20).populate({
                 path: 'upsellItems.product youMayAlsoLike.product contains.product',
                 model: 'Product'
             }).populate({
@@ -256,26 +299,33 @@ router.route('/products/:product_id')
 
     // get the product with that id
     .get(function (req, res) {
-        models.Product.findById(req.params.product_id, function (err, product) {
+        models.Product.find({ _id: req.params.product_id, masterStatus: "A", masterType: "R", onHold: false }, function (err, products) {
             if (err) {
                 res.send(err);
+                return;
+            } else if (products == null || products.length == 0) {
+                res.status(404);
+                res.end();
+                return;
             }
 
             var opts = {
                 path: 'upsellItems.product youMayAlsoLike.product contains.product',
-                model: 'Product'
+                model: 'Product',
+                match: { masterStatus: "A", masterType: "R", onHold: false }
             }
 
             // populate products
-            models.Product.populate(product, opts, function (err, product) {
+            models.Product.populate(products, opts, function (err, products) {
                 var opts = {
-                    path: 'kitGroups.kitGroup'
+                    path: 'kitGroups.kitGroup',
+                    match: { masterStatus: "A", masterType: "R", onHold: false }
                 };
 
                 // populate kit groups
-                models.KitGroup.populate(product, opts, function (err, product) {
+                models.KitGroup.populate(products, opts, function (err, products) {
                     console.log("returning product");
-                    res.json(product);
+                    res.json(products[0]);
                 });
             })
         });
@@ -629,29 +679,76 @@ router.route('/clients/:client_id/creditCards')// get a client's creditCards
         });
     });
 
-router.route('/clients/:client_id/creditCards/:creditCard_id')// get a client creditCard
+router.route('/clients/:client_id/creditCards/:creditCardId')// get a client creditCard
     .get(function (req, res) {
         var clientId = req.params.client_id;
-        var creditCardId = req.params.creditCard_id;
+        var creditCardId = req.params.creditCardId;
 
-        return {
-            "id": 111,
-            "name": "Joe Smith",
-            "lastFour": "1111",
-            "cardType": "visa",
-            "expMonth": "12",
-            "expYear": "2015"
-        };
+        // must be authenticated
+        if (req.session.client == null) {
+            res.status(401);
+            res.end();
+            return;
+        } else if (req.session.client.id != clientId) {
+            res.status(403);
+            res.end();
+            return;
+        }
+
+        jafraClient.getCreditCard(clientId, creditCardId).then(function(r) {
+            console.log("got credit card", r.status, "result", r.result);
+            // return response
+            res.status(r.status);
+            res.json(r.result);
+        }, function(r) {
+            console.error("failed to get credit card", r.status, "result", r.result);
+            res.status(r.status);
+            res.json(r.result);
+        });
     })
 
     // update a client creditCard
     .put(function (req, res) {
-        res.status(204);
+        var clientId = req.params.client_id;
+        var creditCardId = req.params.creditCardId;
+
+        console.log("got data", req.body.encrypted);
+
+        jafraClient.updateCreditCard(clientId, creditCardId, req.body.encrypted).then(function(r) {
+            console.error("created credit card", r.status, r.result);
+
+            // update this CC in the session
+            //req.session.client.creditCards.push(creditCard);
+
+            res.json(r.status);
+            res.json(r.result);
+        }, function(r) {
+            console.error("failed to create cc", r.status, r.result);
+            res.status(r.status);
+            res.json(r.result);
+        });
     })
 
     // delete a client creditCard
     .delete(function (req, res) {
-        res.status(204);
+        var clientId = req.params.client_id;
+        var creditCardId = req.params.creditCardId;
+
+        console.log("got id, cc", clientId, creditCardId);
+
+        jafraClient.deleteCreditCard(clientId, creditCardId).then(function(r) {
+            console.error("deleted credit card", r.status, r.result);
+
+            // remove this CC from the session
+            //req.session.client.creditCards.push(creditCard);
+
+            res.json(r.status);
+            res.json(r.result);
+        }, function(r) {
+            console.error("failed to delete cc", r.status, r.result);
+            res.status(r.status);
+            res.json(r.result);
+        });
     });
 
 // ORDERS
@@ -664,15 +761,15 @@ router.route('/orders')// create an order
     });
 
 //// VALIDATION
-router.route('/validate/address')
+router.route('/validate/address') // validate address
     .post(function (req, res) {
         // must have a client added to the session first (logged in or going through join)
-//        if (req.session.client == null) {
-//            console.log("permission denied to address validation");
-//            res.status(401);
-//            res.end();
-//            return;
-//        }
+        if (req.session.client == null) {
+            console.log("permission denied to address validation");
+            res.status(401);
+            res.end();
+            return;
+        }
 
         console.log("validating address", req.body);
 
@@ -697,26 +794,27 @@ router.route('/validate/address')
         });
     })
 
-//router.route('/validate/address')// get a client creditCard
-//    .get(function (req, res) {
-//        // must be authenticated
-//        if (req.session.client == null) {
-//            res.status(401);
-//            return;
-//        }
-//
-//        var email = req.param('email');
-//        jafraClient.validateEmail(email).then(function(r) {
-//            console.log("validated email", r.status, "result", r.result);
-//            // return response
-//            res.status(r.status);
-//            res.json(r.result);
-//        }, function(r) {
-//            console.error("failed to validate email", r.status, "result", r.result);
-//            res.status(r.status);
-//            res.json(r.result);
-//        });
-//    })
+router.route('/validate/email') // validate email address
+    .get(function (req, res) {
+        // must be authenticated
+        if (req.session.client == null) {
+            res.status(401);
+            res.end();
+            return;
+        }
+
+        var email = req.param('email');
+        jafraClient.validateEmail(email).then(function(r) {
+            console.log("validated email", r.status, "result", r.result);
+            // return response
+            res.status(r.status);
+            res.json(r.result);
+        }, function(r) {
+            console.error("failed to validate email", r.status, "result", r.result);
+            res.status(r.status);
+            res.json(r.result);
+        });
+    })
 
 // Configure Express
 

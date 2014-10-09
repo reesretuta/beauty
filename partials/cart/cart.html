@@ -50,7 +50,7 @@
                 </li>
               </ul>
               <p class="cart-item-actions">
-                <a ng-if="item.product.type == 'kit'" class="btn btn-primary btn-lg" ng-click="configureKit(item)">
+                <a ng-if="item.product.type == 'kit'  && product.kitGroups.length > 0" class="btn btn-primary btn-lg" ng-click="configureKit(item)">
                   <i class="fa fa-cogs"></i> Configure
                 </a>
                 &nbsp;&nbsp;
