@@ -132,6 +132,8 @@ background-color: #c52033;
 background-color: #1cc3d6;
 border-radius: 0px;
 }
+
+
 .well {
   background-color: #f5f5f5;
 }
@@ -364,8 +366,6 @@ line-height: 0.8em;
   max-height: 400px;
   overflow: scroll;
 }
-
-
 .why-section-title{
   text-align: center;
   font-family: DidotLTPro-Roman;
@@ -374,5 +374,19 @@ line-height: 0.8em;
   text-transform: uppercase;
   font-size: 64px;
   color: #482365;
+}
+/* join jafra page nav styles */ 
+.join_nav  > li > a
+{
+	text-shadow:none; 
+	margin:5px; 
+	border-radius: 0px;
+	padding: 5px 16px;
+}
+
+.join_nav  > li > a:hover
+{
+	background:#f00; 
+	color:#fff;
 }
 
