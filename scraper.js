@@ -29,7 +29,13 @@ models.onReady(function() {
 
     var existingProducts = {};
     var AVAILABLE_ONLY = false;
-    var BASE_SITE_URL = "https://stageadmin.jafra.com";
+    var BASE_SITE_URL = process.env.BASE_SITE_URL || "https://stageadmin.jafra.com";
+    var USERNAME = process.env.USERNAME || "jafra_test";
+    var PASSWORD = process.env.PASSWORD || "lavisual1";
+
+    console.log("base url", BASE_SITE_URL);
+    console.log("username", USERNAME);
+    console.log("password", PASSWORD);
 
     // load up the known products / product groups, so we can prioritize loading new ones
     models.Product.find({}, '_id', function(err, products) {
@@ -83,7 +89,9 @@ models.onReady(function() {
         spooky.then([{
             existingProducts: existingProducts,
             AVAILABLE_ONLY: AVAILABLE_ONLY,
-            BASE_SITE_URL: BASE_SITE_URL
+            BASE_SITE_URL: BASE_SITE_URL,
+            USERNAME: USERNAME,
+            PASSWORD: PASSWORD
         }, function() {
             console.log("== LOGIN ==");
 
@@ -103,7 +111,7 @@ models.onReady(function() {
             console.log("login url", login_url);
 
             // LOGIN
-            var data = "pagechanged=N&tab=&redirectPage=%2Fadmin&userid=jafra_test&password=lavisual1";
+            var data = "pagechanged=N&tab=&redirectPage=%2Fadmin&userid=" + USERNAME + "&password=" + PASSWORD;
             casper.open(login_url, {
                 method: 'post',
                 data: data
