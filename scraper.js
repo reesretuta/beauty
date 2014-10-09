@@ -325,8 +325,8 @@ models.onReady(function() {
 
                             var detail = casper.evaluate(function() {
                                 var detail = {};
-                                detail.startDate = moment($('input[name="category.startDate"]').val(), 'MM/DD/YYYY').unix();
-                                detail.endDate = moment($('input[name="category.endDate"]').val(), 'MM/DD/YYYY').unix();
+                                detail.startDate = new Date(moment($('input[name="category.startDate"]').val(), 'MM/DD/YYYY').unix()*1000);
+                                detail.endDate = new Date(moment($('input[name="category.endDate"]').val(), 'MM/DD/YYYY').unix()*1000);
 
                                 // images
                                 var images = [];
@@ -335,8 +335,8 @@ models.onReady(function() {
                                     try {
                                         var image = {};
                                         image.rank = parseInt($(this).find('div.x-grid3-cell-inner.x-grid3-col-1').html());
-                                        image.startDate = moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html(), 'MM/DD/YYYY').unix();
-                                        image.endDate = moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-3').html(), 'MM/DD/YYYY').unix();
+                                        image.startDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html(), 'MM/DD/YYYY').unix()*1000);
+                                        image.endDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-3').html(), 'MM/DD/YYYY').unix()*1000);
                                         image.imagePath = $(this).find('div.x-grid3-cell-inner.x-grid3-col-4 a').attr("href");
                                         image.alt = $(this).find('div.x-grid3-cell-inner.x-grid3-col-5').html();
                                         images.push(image);
@@ -687,8 +687,8 @@ models.onReady(function() {
                                         try {
                                             var image = {};
                                             image.rank = parseInt($(this).find('div.x-grid3-cell-inner.x-grid3-col-1').html());
-                                            image.startDate = moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html(), 'MM/DD/YYYY').unix();
-                                            image.endDate = moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-3').html(), 'MM/DD/YYYY').unix();
+                                            image.startDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html(), 'MM/DD/YYYY').unix()*1000);
+                                            image.endDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-3').html(), 'MM/DD/YYYY').unix()*1000);
                                             image.imagePath = $(this).find('div.x-grid3-cell-inner.x-grid3-col-4 a').attr("href");
                                             image.alt = $(this).find('div.x-grid3-cell-inner.x-grid3-col-5').html();
                                             images.push(image);
@@ -844,8 +844,8 @@ models.onReady(function() {
                                             p.instantProfit = parseFloat(contents.find('input[name="productPrice.instantProfit"]').val());
                                             p.rebate = parseFloat(contents.find('input[name="productPrice.rebate"]').val());
                                             p.shippingSurcharge = parseFloat(contents.find('input[name="productPrice.shippingSurcharge"]').val());
-                                            p.effectiveStartDate = moment(contents.find('input[name="productPrice.startDate"]').val(), 'MM/DD/YYYY').unix();
-                                            p.effectiveEndDate = moment(contents.find('input[name="productPrice.endDate"]').val(), 'MM/DD/YYYY').unix();
+                                            p.effectiveStartDate = new Date(moment(contents.find('input[name="productPrice.startDate"]').val(), 'MM/DD/YYYY').unix()*1000);
+                                            p.effectiveEndDate = new Date(moment(contents.find('input[name="productPrice.endDate"]').val(), 'MM/DD/YYYY').unix()*1000);
 
                                             p.customerTypes = [];
                                             if (contents.find('input[name="customerTypes.itemMapped[0].customerType"]').attr('checked')) {
@@ -1066,8 +1066,8 @@ models.onReady(function() {
                                         item.title = $(this).find('div.x-grid3-cell-inner.x-grid3-col-3').html();
                                         item.description = $(this).find('div.x-grid3-cell-inner.x-grid3-col-4').html();
                                         item.marketingText = $(this).find('div.x-grid3-cell-inner.x-grid3-col-5').html();
-                                        item.startDate = moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-6').html(), 'MM/DD/YYYY').unix();
-                                        item.endDate = moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-7').html(), 'MM/DD/YYYY').unix();
+                                        item.startDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-6').html(), 'MM/DD/YYYY').unix()*1000);
+                                        item.endDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-7').html(), 'MM/DD/YYYY').unix()*1000);
                                         sharedAssets.push(item);
                                     });
                                     return sharedAssets;
@@ -1116,6 +1116,17 @@ models.onReady(function() {
                                             item.quantity = parseInt($(this).find('div.x-grid3-cell-inner.x-grid3-col-1').html());
                                             item.type = $(this).find('div.x-grid3-cell-inner.x-grid3-col-4').html();
 
+                                            var startDateString = $(this).find('div.x-grid3-cell-inner.x-grid3-col-6').html();
+                                            var endDateString = $(this).find('div.x-grid3-cell-inner.x-grid3-col-7').html();
+                                            //console.log("startDateString", startDateString);
+                                            //console.log("endDateString", endDateString);
+
+                                            item.startDate = new Date(moment(startDateString, 'MM/DD/YYYY').unix()*1000);
+                                            item.endDate = new Date(moment(endDateString, 'MM/DD/YYYY').unix()*1000);
+
+                                            //console.log("startDate", item.startDate);
+                                            //console.log("endDate", item.endDate);
+
                                             // save this component as either a contained product or a kit group
                                             var id = $(this).find('div.x-grid3-cell-inner.x-grid3-col-3').html();
                                             if (item.type == 'kitGroup') {
@@ -1125,9 +1136,6 @@ models.onReady(function() {
                                                 item.product = id;
                                                 contains.push(item);
                                             }
-
-                                            item.startDate = moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-6').html(), 'MM/DD/YYYY').unix();
-                                            item.endDate = moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-7').html(), 'MM/DD/YYYY').unix();
                                         });
                                         return {
                                             contains: contains,
@@ -1294,8 +1302,8 @@ models.onReady(function() {
                                     product.searchable = $('input[name="group.searchable"]').attr('checked') || false;
                                     product.masterStatus = $('select[name="group.status"] > option:selected').val();
                                     product.launchId = $('input[name="group.launchId"]').val() || 0;
-                                    product.startDate = moment($('input[name="group.startDate"]').val(), 'MM/DD/YYYY').unix();
-                                    product.endDate = moment($('input[name="group.endDate"]').val(), 'MM/DD/YYYY').unix();
+                                    product.startDate = new Date(moment($('input[name="group.startDate"]').val(), 'MM/DD/YYYY').unix()*1000);
+                                    product.endDate = new Date(moment($('input[name="group.endDate"]').val(), 'MM/DD/YYYY').unix()*1000);
                                     return product;
                                 } catch (ex) {
                                     console.error("error parsing product group detail", JSON.stringify(ex));
@@ -1341,8 +1349,8 @@ models.onReady(function() {
                                     try {
                                         var image = {};
                                         image.rank = parseInt($(this).find('div.x-grid3-cell-inner.x-grid3-col-1').html());
-                                        image.startDate = moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html(), 'MM/DD/YYYY').unix();
-                                        image.endDate = moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-3').html(), 'MM/DD/YYYY').unix();
+                                        image.startDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html(), 'MM/DD/YYYY').unix()*1000);
+                                        image.endDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-3').html(), 'MM/DD/YYYY').unix()*1000);
                                         image.imagePath = $(this).find('div.x-grid3-cell-inner.x-grid3-col-4 a').attr("href");
                                         image.alt = $(this).find('div.x-grid3-cell-inner.x-grid3-col-5').html();
                                         images.push(image);
@@ -1729,8 +1737,8 @@ models.onReady(function() {
                                         var component = {};
                                         component.rank = parseInt($(this).find('div.x-grid3-cell-inner.x-grid3-col-0').html());
                                         component.product = $(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html();
-                                        component.startDate = moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-4').html(), 'MM/DD/YYYY').unix();
-                                        component.endDate = moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-5').html(), 'MM/DD/YYYY').unix();
+                                        component.startDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-4').html(), 'MM/DD/YYYY').unix()*1000);
+                                        component.endDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-5').html(), 'MM/DD/YYYY').unix()*1000);
                                         components.push(component);
                                     });
                                     return components;
