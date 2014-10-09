@@ -4,6 +4,7 @@ angular.module('app.controllers.checkout')
         $log.debug("CheckoutController()");
 
         $scope.cartLoaded = false;
+        $rootScope.inCheckout = true;
 
         var params = $location.search();
         var urlStep = S(params.step != null ? params.step : "Start").toString();

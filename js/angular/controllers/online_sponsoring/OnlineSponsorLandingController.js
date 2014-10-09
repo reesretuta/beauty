@@ -2,6 +2,8 @@ angular.module('app.controllers.onlineSponsor')
 .controller('OnlineSponsorLandingController', function ($scope, $document, $location, $rootScope, $routeParams, $log, JOIN_BASE_URL, Categories) {
     $rootScope.title = 'Join';
 
+    $rootScope.inCheckout = false;
+
     $scope.join = function(sku) {
         $('.modal').modal('hide');
         $('body').removeClass('modal-open');
