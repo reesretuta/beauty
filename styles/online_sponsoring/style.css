@@ -249,6 +249,9 @@ section a.more-link span.glyphicon-plus {
 color: #482365;
 }
 
+.social-media-icons{
+  font-size: 2em;
+}
 
 span#live {
   color: #6A5077;
