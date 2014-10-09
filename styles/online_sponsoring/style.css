@@ -95,7 +95,14 @@ video#bgvid {
   color: #333;
   white-space: nowrap;
 }
-
+.footer-links{
+  background-color: rgb(131,104,137);;
+  padding: 2em;
+}
+.footer-links a {
+  font-size: 18px;
+  color: #fff;
+}
 /*this is to allow Placeholder text fade to lighter shade of grey text when input box is selected */
 input:focus::-webkit-input-placeholder {
     color: #e1e1e1;
@@ -249,6 +256,9 @@ section a.more-link span.glyphicon-plus {
 color: #482365;
 }
 
+.social-media-icons{
+  font-size: 2em;
+}
 
 span#live {
   color: #6A5077;
@@ -267,6 +277,30 @@ font-size: 75px;
 line-height: 0.8;
 }
 
+.starter_kits-price{
+  font-family: DidotLTPro-Roman;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 10em;
+  color: #53366C;
+line-height: 0.8em;
+}
+.starter_kits-label_title{
+  font-family: HelveticaNeueLTStd-BdCn;
+  font-weight: normal;
+  font-style: normal;
+font-size: 2.65em;
+color: #58585A;
+line-height: 0.8em;
+}
+.starter_kits-retail_value{
+  font-family: DidotLTPro-Italic;
+  font-weight: normal;
+  font-style: normal;
+font-size: 2em;
+color: #C32337;
+line-height: 0.8em;
+}
 
 .agreement-content {
   border: 1px solid #f5f5f5;
