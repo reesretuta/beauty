@@ -85,7 +85,6 @@ README.md                - this file
 bower.json               - dependency management of javascript libaries
 common                   - shared files between prototype / scraper
 fonts                    - font files
-http-server              - http server files used to run local dev server
 i18n                     - locale-based text for content
 img                      - image files
 index.html               - main HTML page for this single-page application
