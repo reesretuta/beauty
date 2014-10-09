@@ -853,13 +853,12 @@ app.get('/$', function (req, res) {
     if (req.headers['user-agent'].indexOf("MSIE") >= 0) {
         var myNav = req.headers['user-agent'];
         var IEbrowser = parseInt(myNav.split('MSIE')[1])
-        if (IEbrowser < 9) {
+        if (IEbrowser <= 9) {
             res.sendfile(basepath + '/redirect.html');
-            res.end();
+            return;
         }
     }
     res.redirect("http://www.jafra.com/");
-    res.end();
 });
 
 // any URL beginning with /join without a dot or / should serve online_sponsoring.html, save for /api methods captured above
