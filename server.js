@@ -842,8 +842,22 @@ app.use('/i18n', express.static(basepath + '/i18n'));
 //app.use('/api', express.static(__dirname + '/api')); // old used for serving static XML files
 app.use('/api', router);
 
+//app.get('/$', function (req, res) {
+//    console.log('root', req);
+//    res.redirect("http://www.jafra.com/");
+//    res.end();
+//});
+
 app.get('/$', function (req, res) {
     console.log('root');
+    if (req.headers['user-agent'].indexOf("MSIE") >= 0) {
+        var myNav = req.headers['user-agent'];
+        var IEbrowser = parseInt(myNav.split('MSIE')[1])
+        if (IEbrowser < 9) {
+            res.sendfile(basepath + '/redirect.html');
+            res.end();
+        }
+    }
     res.redirect("http://www.jafra.com/");
     res.end();
 });
