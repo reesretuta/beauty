@@ -1,0 +1,57 @@
+{
+  "email" : "example@example.com",
+  "firstName": "John",         
+  "lastName": "Smith",         
+  "sponsorId": 555678,         
+  "language": "en_US",         
+  "ssn": "553-21-1923",        
+  "dateOfBirth": "12/01/1978", 
+  "phone": "555-333-2222",     
+  "billingAddress": {          
+    "name": "Joe Smith",
+    "address1": "1111 Test Ln",
+    "address2": "",
+    "city": "Corona",
+    "state": "CA",
+    "zip": "92880",
+    "county": "Ventura",
+    "country": "US",
+    "phone": "555-333-2222"
+  },
+  "shippingAddress": {         
+    "name": "Joe Smith",
+    "address1": "1111 Test Ln",
+    "address2": "",
+    "city": "Corona",
+    "county": "Ventura",
+    "geocode": "000000",
+    "state": "CA",
+    "zip": "92880",
+    "country": "US",
+    "phone": "555-333-2222"
+  },
+  "creditCard": {              
+    "name": "Joe Smith",       
+    "card": "4111111111111111",
+    "expMonth": "12",
+    "expYear": "2015",
+    "cvv": "1111"
+  },
+  "agreementAccepted": true,   
+  "source": "facebook",        
+  "total": 102.67,             
+  "products": [                
+    {
+      "sku": "25386",
+      "qty": 2
+    },
+    {
+      "sku": "14038",
+      "qty": 1,
+      "kitSelections": [ 
+        "NUPL1202", 
+        "NUPL7462" 
+      ]
+    }
+  ]
+}
