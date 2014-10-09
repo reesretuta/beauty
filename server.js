@@ -54,7 +54,7 @@ app.use(session(sess));
 app.use(function(req, res, next) {
     var user = auth(req);
 
-    console.log("user", user);
+    //console.log("user", user);
     if (user === undefined || user['name'] !== 'jafra' || user['pass'] !== 'easypassfordpaxton') {
         res.statusCode = 401;
         res.setHeader('WWW-Authenticate', 'Basic realm="JafraProto"');
@@ -178,11 +178,7 @@ router.route('/products')
                     ]}
                 }).populate({
                     path: 'kitGroups.kitGroup',
-                    model: 'KitGroup',
-                    match: { $and: [
-                        {masterStatus: "A", onHold: false},
-                        {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
-                    ]}
+                    model: 'KitGroup'
                 }).populate({
                     path: 'kitGroups.kitGroup.components.product',
                     model: 'Product',
@@ -216,11 +212,7 @@ router.route('/products')
                 ]}
             }).populate({
                 path: 'kitGroups.kitGroup',
-                model: 'KitGroup',
-                match: { $and: [
-                    {masterStatus: "A", onHold: false},
-                    {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
-                ]}
+                model: 'KitGroup'
             }).populate({
                 path: 'kitGroups.kitGroup.components.product',
                 model: 'Product',
@@ -318,8 +310,7 @@ router.route('/products/:product_id')
             // populate products
             models.Product.populate(products, opts, function (err, products) {
                 var opts = {
-                    path: 'kitGroups.kitGroup',
-                    match: { masterStatus: "A", masterType: "R", onHold: false }
+                    path: 'kitGroups.kitGroup'
                 };
 
                 // populate kit groups

@@ -177,6 +177,7 @@ var productSchema = Schema({
     "kitGroups" : [{
         "kitGroup" : {type: String, ref: 'KitGroup'},
         "rank" : Number,
+        "quantity" : Number,
         "startDate" : { type: Date, default: null },
         "endDate" : { type: Date, default: null }
     }]

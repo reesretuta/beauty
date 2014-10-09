@@ -1104,7 +1104,8 @@ models.onReady(function() {
                                         var kitGroups = [];
                                         $('#secondGrid .x-grid3-scroller table tr').each(function(index, row) {
                                             var item = {};
-                                            item.rank = parseInt($(this).find('div.x-grid3-cell-inner.x-grid3-col-1').html());
+                                            item.rank = parseInt($(this).find('div.x-grid3-cell-inner.x-grid3-col-0').html());
+                                            item.quantity = parseInt($(this).find('div.x-grid3-cell-inner.x-grid3-col-1').html());
                                             item.type = $(this).find('div.x-grid3-cell-inner.x-grid3-col-4').html();
 
                                             // save this component as either a contained product or a kit group
@@ -1116,6 +1117,9 @@ models.onReady(function() {
                                                 item.product = id;
                                                 contains.push(item);
                                             }
+
+                                            item.startDate = moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-6').html(), 'MM/DD/YYYY').unix();
+                                            item.endDate = moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-7').html(), 'MM/DD/YYYY').unix();
                                         });
                                         return {
                                             contains: contains,
