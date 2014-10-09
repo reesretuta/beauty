@@ -61,13 +61,13 @@ color: #482365;
 }
 
 .btn {
-font-size: 1.2em;
-padding: 0.5em 1.5em;
+/*font-size: 1.2em;
+padding: 0.5em 1.5em;*/
 background: #c52033;
-opacity: 0.7;
+/*opacity: 0.7;*/
 text-transform: uppercase;
 font-weight: bold;
-letter-spacing: 0.2em;
+/*letter-spacing: 0.2em;*/
 }
 
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
@@ -164,12 +164,34 @@ border-radius: 0px;
   background: none;
 }
 .jumbotron {
-  padding-top: 180px;
-  padding-bottom: 180px;
 /*  padding-top: 20vh;
   padding-bottom: 20vh;*/
   background: url(/img/model_2.jpg);/*url(/img/herobg-1920x1080.jpg);*/
   background-size: cover;
+  background-position: 40% top;
+}
+@media (min-width:768px) {
+    .jumbotron {
+        padding-top: 60px;
+        padding-bottom: 60px;
+    };
+}
+
+@media (min-width:992px) {
+    .jumbotron {
+        padding-top: 100px;
+        padding-bottom: 100px;
+    };
+}
+
+@media (min-width:1200px) {
+    .jumbotron {
+        padding-top: 180px;
+        padding-bottom: 180px;
+    };
+}
+.jumbotron .btn {
+  font-size: 1.2em;
 }
 #jumbo-title{
 background: rgba(255, 255, 255, 0.3);
