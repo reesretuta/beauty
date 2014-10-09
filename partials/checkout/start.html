@@ -1,0 +1,192 @@
+<div id="signin" class="col-sm-12">
+
+  <div class="col-md-offset-3">
+    <h1 class="checkouth1" ng-if="profile.customerStatus == 'existing'">Sign in to complete your order</h1>
+    <h1 class="checkouth1" ng-if="profile.customerStatus == 'new'">Create an Account</h1>
+  </div>
+  <!--valid={{signInForm.$valid}}-->
+  <form name="signInForm" class="form-horizontal" role="form">
+
+    <div class="form-group">
+      <label for="firstName" class="col-md-3 control-label">Name</label>
+      <div class="col-sm-3">
+        <input name="firstName" ng-model="profile.firstName" class="form-control" id="firstName" placeholder="First" tabindex="1" required="isOnlineSponsoring" autocomplete="off" autofocus="">
+        <!--valid={{signInForm.firstName.$valid}}-->
+      </div>
+      <div class="col-sm-3">
+        <input name="lastName" ng-model="profile.lastName" class="form-control" id="lastName" placeholder="Last" tabindex="1" required="isOnlineSponsoring" autocomplete="off">
+        <!--valid={{signInForm.lastName.$valid}}-->
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="loginEmail" class="col-md-3 control-label">Email Address</label>
+      <div class="col-sm-6">
+        <input name="loginEmail" ng-model="profile.loginEmail" type="email" class="form-control" id="loginEmail" placeholder="Email" tabindex="1" required>
+        <!--valid={{signInForm.loginEmail.$valid}}-->
+      </div>
+    </div>
+
+    <div class="form-group" ng-if="isOnlineSponsoring">
+      <label for="phoneNumber" class="col-md-3 control-label">Phone number</label>
+      <div class="col-sm-6">
+        <input name="phoneNumber" ui-mask="(999) 999-9999" ng-model="profile.phoneNumber" class="form-control" id="phoneNumber" placeholder="(###) ###-####" tabindex="1" required>
+        <!--valid={{signInForm.phoneNumber.$valid}}-->
+      </div>
+    </div>
+
+    <div class="form-group" ng-if="!isOnlineSponsoring">
+      <label for="inputPassword3" class="col-md-3 control-label">Password</label>
+      <div class="col-sm-4">
+        <input name="loginPassword" ng-model="profile.loginPassword" type="password" class="form-control" id="inputPassword3" placeholder="Password" tabindex="2" required>
+        <!--valid={{signInForm.loginPassword.$valid}}-->
+      </div>
+    </div>
+
+    <div class="form-group" ng-if="!isOnlineSponsoring">
+      <div class="col-md-offset-3 col-sm-9">
+
+        <div class="radio">
+          <label>
+            <input name="customerStatus" ng-model="profile.customerStatus" type="radio" id="optionsRadios1" value="new">
+            I am a new customer
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input name="customerStatus" ng-model="profile.customerStatus" type="radio" id="optionsRadios2" value="existing">
+            I am an existing customer
+          </label>
+        </div>
+
+      </div>
+    </div>
+    <!--valid={{signInForm.customerStatus.$valid}}-->
+
+    <div class="form-group">
+      <div class="col-md-offset-3 col-sm-9">
+
+        <!--profile.customerStatus={{profile.customerStatus}}-->
+        <div class="row"><div class="col-sm-6"><hr></div></div>
+
+        <div ng-if="loginError" class="alert-danger">Invalid username or password.</div>
+
+        <div class="checkbox" ng-if="!isOnlineSponsoring">
+          <label>
+            <!--valid={{signInForm.keepMeSignedIn.$valid}}-->
+            <input name="keepMeSignedIn" ng-model="checkout.keepMeSignedIn" type="checkbox" checked> Keep me signed in &nbsp;&nbsp;
+            <a popover="Placeholder text" popover-title="Keep me signed in" href=""><i class="fa fa-info-circle"></i> More Info</a>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-md-offset-3 col-sm-9">
+        <div class="input-group">
+          <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+          <button ng-if="!isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" tabindex="3" ng-click="loginOrCreateUser()" ng-disabled="!signInForm.$valid">Continue to Secure Checkout &nbsp;<i class="fa fa-caret-right"></i></button>
+          <button ng-if="isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" tabindex="3" wz-next ng-disabled="!signInForm.$valid">Continue to Secure Checkout &nbsp;<i class="fa fa-caret-right"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group" ng-if="!isOnlineSponsoring">
+      <div class="col-md-offset-3 col-sm-9">
+        <div class="row"><div class="col-sm-6"><hr></div></div>
+        <p><a ng-href="{{APP_BASE_URL}}/checkout?step=Shipping">Checkout as guest</a></p>
+        <p><a href="" onclick="$('#forgot').css('display','block'); $('#signin').css('display','none');">I forgot my password</a></p>
+        <p><a href="">Update profile</a></p>
+      </div>
+    </div>
+  </form>
+</div><!--/span-->
+
+<div id="forgot" class="col-sm-12" style="display: none;">
+
+  <div class="col-md-offset-3">
+    <h1 class="checkouth1">Forgot Your Password</h1>
+  </div>
+  <!--valid={{signInForm.$valid}}-->
+  <form name="forgotPassword" class="form-horizontal" role="form">
+    <div class="form-group">
+      <label for="inputEmail3" class="col-md-3 control-label">Email Address</label>
+      <div class="col-sm-6">
+        <input name="loginEmail2" ng-model="loginEmail2" type="email" class="form-control" id="inputEmail3" placeholder="Email" tabindex="1" required>
+        <!--valid={{signInForm.loginEmail.$valid}}-->
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-md-offset-3 col-sm-9">
+        <div class="input-group">
+          <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+          <button type="button" class="btn btn-primary btn-lg" tabindex="3" onclick="$('#forgot').css('display','none'); $('#thanks').css('display','block')" ng-disabled="!forgotPassword.$valid">Reset Password &nbsp;<i class="fa fa-caret-right"></i></button>
+
+        </div>
+      </div>
+    </div>
+  </form>
+</div><!--/span-->
+
+<div id="thanks" class="col-sm-12" style="display: none;">
+
+  <div class="col-md-offset-3">
+    <h1 class="checkouth1">Thank You!</h1>
+  </div>
+  <!--valid={{signInForm.$valid}}-->
+  <form name="" class="form-horizontal" role="form">
+
+
+    <!--            <div class="form-group">
+                  <label for="inputPassword3" class="col-md-3 control-label">Password</label>
+                  <div class="col-sm-4">
+                    <input name="loginPassword" ng-model="loginPassword" type="password" class="form-control" id="inputPassword3" placeholder="Password" tabindex="2" required>
+                  </div>
+                </div>-->
+
+    <div class="form-group">
+      <div class="col-md-offset-3 col-sm-9">
+        <p>Please check your email and click on the link.</p>
+        <div class="row"><div class="col-sm-6"><hr></div></div>
+        <p><a href="">Resend Email</a></p>
+        <p><a href="" onclick="$('#resetpass').css('display','block'); $('#thanks').css('display','none');">Reset password form (prototype only)</a></p>
+        <p><a ng-href="{{STORE_BASE_URL}}/cart">Back to cart</a></p>
+      </div>
+    </div>
+  </form>
+</div><!--/span-->
+
+<div id="resetpass" class="col-sm-12" style="display: none;">
+
+  <div class="col-md-offset-3">
+    <h1 class="checkouth1">Reset Password</h1>
+  </div>
+  <!--valid={{signInForm.$valid}}-->
+  <form name="resetPassword" class="form-horizontal" role="form">
+    <div class="form-group">
+      <label for="newPassword" class="col-md-3 control-label">New Password</label>
+      <div class="col-sm-4">
+        <input name="newPassword" ng-model="newPassword" pw-check="newpassword2" type="password" class="form-control" id="newPassword" placeholder="Password" tabindex="2" required>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="newPassword2" class="col-md-3 control-label">Confirm New Password</label>
+      <div class="col-sm-4">
+        <input name="newPassword2" ng-model="newPassword2" ng-change="checkoutUpdated();" type="password" class="form-control" id="newPassword2" placeholder="Confirm Password" tabindex="2" required>
+      </div>
+      <span class="error" ng-show="resetPassword.password.$error.pwmatch"> Passwords don't match. </span>
+    </div>
+
+    <div class="form-group">
+      <div class="col-md-offset-3 col-sm-9">
+        <div class="input-group">
+          <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+          <button type="button" class="btn btn-primary btn-lg" tabindex="3" onclick="$('#resetpass').css('display','none');$('#signin').css('display','block')" ng-disabled="!resetPassword.$valid">Reset Password &nbsp;<i class="fa fa-caret-right"></i></button>
+
+        </div>
+      </div>
+    </div>
+  </form>
+</div><!--/span-->

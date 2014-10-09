@@ -37,7 +37,7 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
           controller: 'OnlineSponsorLandingController',
           reloadOnSearch: false
         }).when(JOIN_BASE_URL + '/checkout', {
-          templateUrl: BASE_URL + '/partials/checkout/checkout.html',
+          templateUrl: BASE_URL + '/partials/checkout/checkout-join.html',
           controller: 'CheckoutController',
           reloadOnSearch: false
         }).otherwise({
