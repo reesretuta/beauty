@@ -75,13 +75,6 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   font-weight: 400;
   color: #2a2a2a;
 }
-video#bgvid {
-  position: fixed; right: 0; top: 0;
-  min-width: 100%; min-height: 100%;
-  width: auto; height: auto; z-index: -100;
-  background: url(/img/polina.jpg) no-repeat;
-  background-size: cover;
-}
 #content {
   background-color: #ededed;
   width: 100%;
