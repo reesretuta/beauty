@@ -1006,6 +1006,50 @@ a:focus {
     margin: 0 auto !important;
 }
 
+.glyphicon-chevron-right:before 
+{
+  	 content: " ";
+       
+       display:block;
+       
+       background:url('/img/right-angle-icon2x.png') center center no-repeat;
+       
+      width:60px;
+       height:60px;
+}
+.glyphicon-chevron-left:before 
+{
+	 content: " ";
+      
+       display:block;
+       
+       background:url('/img/lef-angle-icon2x.png') center center no-repeat;
+      
+       width:60px;
+       height:60px;
+      }
+      
+.carousel-control.right
+{
+	background-image:none; 
+}
+
+.carousel-control.left
+{
+	background-image:none; 
+}
+.carousel-control 
+{
+	opacity:.5 ; 
+	text-decoration:none; 
+	outline:0 none; 
+	color:#fff; 	
+
+}
+#liner_black{position:relative; left:36px; top:-7px;}
+
+
+
 /*
  * Responsive Styles
  * --------------------------------------------------
