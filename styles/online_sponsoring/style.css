@@ -286,6 +286,7 @@ color: #482365;
   content: " ";
   display: block;
   position: absolute;
+  z-index: 9999;
   top: -26px;
   right: -38px;
   width: 33px;
