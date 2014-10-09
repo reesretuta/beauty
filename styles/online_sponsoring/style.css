@@ -265,7 +265,7 @@ color: #482365;
 }
 
 /* more links */
-.more-link {
+.more-link, .more-link.collapsed {
   color: #877650;
   font-family: HelveticaNeueLTStd-Md;
   font-size: 13px;
@@ -278,7 +278,7 @@ color: #482365;
   transition: all 200ms ease;
   margin-top: 50px;
 }
-.more-link:hover, .more-link:active, .collapsed .more-link {
+.more-link:hover, .more-link:active, a.collapsed  {
   color: #b51a8a;
   text-decoration: none;
 }
@@ -298,12 +298,19 @@ color: #482365;
   -o-transition: all 200ms ease;
   transition: all 200ms ease;
 }
-.collapsed .more-link:after, .more-link:active:after {
+.more-link:after, .more-link:active:after {
   -moz-transform: rotate(-135deg);
   -webkit-transform: rotate(-135deg);
   -o-transform: rotate(-135deg);
   -ms-transform: rotate(-135deg);
   transform: rotate(-135deg);
+}
+.more-link.collapsed:after {
+  -moz-transform: rotate(0deg);
+  -webkit-transform: rotate(0deg);
+  -o-transform: rotate(0deg);
+  -ms-transform: rotate(0deg);
+  transform: rotate(0deg);
 }
 
 .social-media-icons{
