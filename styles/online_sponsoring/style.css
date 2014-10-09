@@ -264,18 +264,46 @@ font-style: normal;
 color: #482365;
 }
 
-section a.more-link{
+/* more links */
+.more-link {
   color: #877650;
-  float: right;
-  font-weight: bold;
+  font-family: HelveticaNeueLTStd-Md;
+  font-size: 13px;
+  display: inline-block;
+  position: relative;
+  -webkit-transition: all 200ms ease;
+  -moz-transition: all 200ms ease;
+  -ms-transition: all 200ms ease;
+  -o-transition: all 200ms ease;
+  transition: all 200ms ease;
+  margin-top: 50px;
 }
-section a.more-link:hover {
+.more-link:hover, .more-link:active, .collapsed .more-link {
   color: #b51a8a;
   text-decoration: none;
 }
-
-section a.more-link span.glyphicon-plus {
-color: #482365;
+.more-link:after {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: -26px;
+  right: -38px;
+  width: 33px;
+  height: 33px;
+  background: url(/img/plus-icon2x.png);
+  background-size: 100% 100%;
+  -webkit-transition: all 200ms ease;
+  -moz-transition: all 200ms ease;
+  -ms-transition: all 200ms ease;
+  -o-transition: all 200ms ease;
+  transition: all 200ms ease;
+}
+.collapsed .more-link:after, .more-link:active:after {
+  -moz-transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
+  -o-transform: rotate(-135deg);
+  -ms-transform: rotate(-135deg);
+  transform: rotate(-135deg);
 }
 
 .social-media-icons{
@@ -342,3 +370,4 @@ line-height: 0.8em;
   font-size: 64px;
   color: #482365;
 }
+
