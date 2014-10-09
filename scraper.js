@@ -27,8 +27,12 @@ models.onReady(function() {
     var updatedProductGroups = 0
     var updatedKitGroups = 0
 
+    var skippedProducts = 0;
+    var skippedProductKits = 0;
+    var skippedProductGroups = 0
+
     var existingProducts = {};
-    var AVAILABLE_ONLY = false;
+    var AVAILABLE_ONLY = process.env.USERNAME || false;
     var BASE_SITE_URL = process.env.BASE_SITE_URL || "https://stageadmin.jafra.com";
     var USERNAME = process.env.USERNAME || "jafra_test";
     var PASSWORD = process.env.PASSWORD || "lavisual1";
@@ -555,6 +559,11 @@ models.onReady(function() {
                 // mark all unavailable products as unvailable
                 for (var i=0; i < unavailableProducts.length; i++) {
                     this.emit('product.markUnavailable', unavailableProducts[i]);
+                    if (unavailableProducts[i].type == 'kit') {
+                        this.emit('productKit.skip', unavailableProducts[i]);
+                    } else {
+                        this.emit('product.skip', unavailableProducts[i]);
+                    }
                 }
             });
 
@@ -1220,31 +1229,58 @@ models.onReady(function() {
                             var productRe = /<a href="group\.detail\.baseInfo\?groupId=([^"]+)">([^<]+)<\/a>/g;
                             var match;
 
-                            while (match = productRe.exec(content)) {
-                                console.log("found product group page", JSON.stringify(match));
+                            $("#grid-example .x-grid3-scroller table tbody tr").each(function(index, row) {
+                                //console.log("processing product group row");
+                                var productGroupId, systemRef;
+                                var c = $(this).find("div.x-grid3-cell-inner.x-grid3-col-4").html();
 
-                                // load product group detail
-                                var productGroupId = match[1];
-                                var systemRef = match[2];
-
-                                try {
-                                    // NOTE: save the base level information first, so we could load any group system refs later
-                                    fetchProductGroupDetail(productGroupId, systemRef);
-                                    saveProductGroup(productGroupId);
-
-                                    fetchProductGroupImages(productGroupId);
-                                    fetchProductGroupIngredients(productGroupId);
-                                    fetchProductGroupUsage(productGroupId);
-                                    fetchProductGroupCategories(productGroupId);
-                                    fetchProductGroupUpsellItems(productGroupId);
-                                    fetchProductGroupYouMayAlsoLike(productGroupId);
-                                    fetchProductGroupSKUs(productGroupId);
-
-                                    saveProductGroup(productGroupId);
-                                } catch (ex) {
-                                    console.error("error while processing product group", productGroupId, JSON.stringify(ex));
+                                var available = false;
+                                if (c.match(/\/available.gif/)) {
+                                    //console.log("available");
+                                    available = true;
                                 }
-                            }
+
+                                var c2 = $(this).find("div.x-grid3-col.x-grid3-cell.x-grid3-td-3").html();
+                                if (match = productRe.exec(c2)) {
+                                    console.log("found product group page", JSON.stringify(match));
+
+                                    // load product group detail
+                                    productGroupId = match[1];
+                                    systemRef = match[2];
+                                } else {
+                                    console.error("failed to parse product group line", c2);
+                                    return;
+                                }
+
+                                if (AVAILABLE_ONLY == false || available) {
+                                    console.log("processing product group", productGroupId, systemRef);
+
+                                    try {
+                                        // NOTE: save the base level information first, so we could load any group system refs later
+                                        fetchProductGroupDetail(productGroupId, systemRef);
+                                        saveProductGroup(productGroupId);
+
+                                        fetchProductGroupImages(productGroupId);
+                                        fetchProductGroupIngredients(productGroupId);
+                                        fetchProductGroupUsage(productGroupId);
+                                        fetchProductGroupCategories(productGroupId);
+                                        fetchProductGroupUpsellItems(productGroupId);
+                                        fetchProductGroupYouMayAlsoLike(productGroupId);
+                                        fetchProductGroupSKUs(productGroupId);
+
+                                        saveProductGroup(productGroupId);
+                                    } catch (ex) {
+                                        console.error("error while processing product group", productGroupId, JSON.stringify(ex));
+                                    }
+                                } else {
+                                    console.log("skipping unavailable product group", productGroupId, systemRef);
+                                    if (existingProducts[productGroupId] == 1) {
+                                        // mark all unavailable products as unvailable
+                                        this.emit('product.markUnavailable', productGroupId);
+                                        this.emit('productGroup.skip', productGroupId);
+                                    }
+                                }
+                            });
 
                             // continue if we have more pages, else we're done
                             if (content.match(/<a class="linkActive" href="javascript:pageChange\(\d+, true\)">Next &gt;&gt;<\/a>/)) {
@@ -1772,6 +1808,10 @@ models.onReady(function() {
         spooky.run();
     });
 
+    spooky.on('category.skip', function(json) {
+        skippedProducts++;
+    });
+
     spooky.on('category.save', function(json) {
         //console.log('saving category', json);
         try {
@@ -1826,6 +1866,14 @@ models.onReady(function() {
                 console.error("error marking product unavailable", id, JSON.stringify(ex));
             }
         });
+    });
+
+    spooky.on('product.skip', function(json) {
+        skippedProducts++;
+    });
+
+    spooky.on('productKit.skip', function(json) {
+        skippedProducts++;
     });
 
     spooky.on('product.save', function(json) {
@@ -1941,11 +1989,16 @@ models.onReady(function() {
         console.log("Saved", savedProducts, "products");
         console.log("Saved", savedProductKits, "product kits");
         console.log("Saved", savedKitGroups, "kit groups");
+
         console.log("Updated", updatedCategories, "categories");
         console.log("Updated", updatedProductGroups, "product groups");
         console.log("Updated", updatedProducts, "products");
         console.log("Updated", updatedProductKits, "product kits");
         console.log("Updated", updatedKitGroups, "kit groups");
+
+        console.log("Skipped", skippedProductGroups, "product groups");
+        console.log("Skipped", skippedProducts, "products");
+        console.log("Skipped", skippedProductKits, "product kits");
 
         process.exit(0);
     });
