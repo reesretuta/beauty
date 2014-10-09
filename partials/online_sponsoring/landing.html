@@ -6,11 +6,11 @@
             <div class="col-md-6">
               <h2>Become A Consultant</h2>
               <h1 id="jumbo-title">
-                <span id="live">Live</span> <span class="HelveticaNeueLTStd-Th" style="color:#A08B6A;">the Life</span><br />
+                <span id="live">Live</span> <span class="HelveticaNeueLTStd-Th" id="thelife">the Life</span><br />
                 <span id="you">You</span> <span class="DidotLTPro-Italic" id="imagine">imagine</span>
               </h1>
               <p id="jumbo-description">Join JAFRA! It’s fun, easy, and empowering. No experience is necessary.All you need is your desire to turn your dream career into a reality! </p>
-              <p><a class="btn btn-primary btn-med" role="button" href="#" data-toggle="modal" data-target=".bs-example-modal-lg">Get Started</a> <a href="#" class="watch-video-link" data-toggle="modal" data-target=".bs-video-modal-lg"><span class="glyphicon glyphicon-play"></span> WATCH VIDEO</a></p>
+              <p><a class="btn btn-primary btn-med" role="button" href="#" data-toggle="modal" data-target=".bs-example-modal-lg">Get Started</a> <!--a href="#" class="watch-video-link" data-toggle="modal" data-target=".bs-video-modal-lg"><span class="glyphicon glyphicon-play"></span> WATCH VIDEO</a--></p>
               <p><strong>What do you Imagine?<br />
               You can make it happen with JAFRA!</strong></p>
             </div>
@@ -25,7 +25,7 @@
       </div>
     </section>
 
-    <!-- Modal box that pops up when user clicks on WatchVideo -->
+    <!-- Modal box that pops up when user clicks on WatchVideo >
     <div class="modal fade bs-video-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -35,10 +35,9 @@
                 <source src="/video/polina.mp4" type="video/mp4">
               </video>  
           </div>
-          <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
         </div>
       </div>
-    </div>
+    </div-->
       
     <!-- Modal box that pops up when user clicks on CTA [Call To Action] -->
     <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -393,80 +392,56 @@
             <h2 class="h1 why-section-title">FAQs</h2>
             <hr>
           </div>
-          
+
           <div class="col-md-6">
-            <div ng-controller="AccordionFAQCtrl">
-              <accordion close-others="oneAtATime">
-                <accordion-group>
-                    <accordion-heading>
-                        <h3><b>Q.</b> What does it mean to be a JAFRA Consultant? <i class="pull-right glyphicon" ng-class="{'glyphicon-minus': status.open, 'glyphicon-plus': !status.open}"></i></h3>
-                    </accordion-heading>
-                    <p><b>A.</b> You’re out there as our representative selling JAFRA’s excellent products directly to customers at hosted parties, casual get-togethers wherever you like or online. It’s up to you! </p>
-                </accordion-group>
-                <accordion-group>
-                    <accordion-heading>
-                        <h3><b>Q.</b> How do I begin to share JAFRA products?<i class="pull-right glyphicon" ng-class="{'glyphicon-minus': status.open, 'glyphicon-plus': !status.open}"></i></h3>
-                    </accordion-heading>
-                    <p><b>A.</b> Simply make a list of your friends, family, and neighbors, and give them a call. Let them know you’re now a JAFRA Consultant, and that you want to show them the beauty of JAFRA products. </p>
-                </accordion-group>
-                <accordion-group>
-                    <accordion-heading>
-                        <h3><b>Q.</b> How much can I expect to earn?<i class="pull-right glyphicon" ng-class="{'glyphicon-minus': status.open, 'glyphicon-plus': !status.open}"></i></h3>
-                    </accordion-heading>
-                    <p><b>A.</b> You’re the CEO of your business so you decide! You can earn up to 50% personal commissions on sales. The more you sell, the more you’ll earn! </p>
-                </accordion-group>
-                <accordion-group>
-                    <accordion-heading>
-                        <h3><b>Q.</b> How will I get paid?<i class="pull-right glyphicon" ng-class="{'glyphicon-minus': status.open, 'glyphicon-plus': !status.open}"></i></h3>
-                    </accordion-heading>
-                    <p><b>A.</b> You have two options. Payments are made: 1) Via direct deposit into your checking account 2) Loaded onto a JAFRA Debit MasterCard.</p>
-                </accordion-group>
-                <accordion-group>
-                    <accordion-heading>
-                        <h3><b>Q.</b> Will I receive training from JAFRA? <i class="pull-right glyphicon" ng-class="{'glyphicon-minus': status.open, 'glyphicon-plus': !status.open}"></i></h3>
-                    </accordion-heading>
-                    <p><b>A.</b> Yes! In no time, you’ll be a JAFRA expert with our convenient and powerful online training. Your JAFRA Manager can also help you learn.</p>
-                </accordion-group>
-              </accordion>
-            </div>
+            <div class="panel-group" id="accordion">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+          Collapsible Group Item #1
+        </a>
+      </h4>
+    </div>
+    <div id="collapseOne" class="panel-collapse collapse in">
+      <div class="panel-body">
+        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+          Collapsible Group Item #2
+        </a>
+      </h4>
+    </div>
+    <div id="collapseTwo" class="panel-collapse collapse">
+      <div class="panel-body">
+        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+          Collapsible Group Item #3
+        </a>
+      </h4>
+    </div>
+    <div id="collapseThree" class="panel-collapse collapse">
+      <div class="panel-body">
+        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+      </div>
+    </div>
+  </div>
+</div>
           </div>
 
           <div class="col-md-6">
-            <div ng-controller="AccordionFAQCtrl">
-              <accordion close-others="oneAtATime">
-                <accordion-group>
-                    <accordion-heading>
-                        <h3><b>Q.</b> Do I need to work a certain amount of hours? <i class="pull-right glyphicon" ng-class="{'glyphicon-minus': status.open, 'glyphicon-plus': !status.open}"></i></h3>
-                    </accordion-heading>
-                    <p><b>A.</b> No to that. You’re the boss so you decide how much time you spend on your JAFRA business. </p>
-                </accordion-group>
-                <accordion-group>
-                    <accordion-heading>
-                        <h3><b>Q.</b> Do I need to achieve a minimum number of sales? <i class="pull-right glyphicon" ng-class="{'glyphicon-minus': status.open, 'glyphicon-plus': !status.open}"></i></h3>
-                    </accordion-heading>
-                    <p><b>A.</b> We have a rule for this one: To remain a JAFRA Consultant, you are required to place at least $300 or more in retail orders in a 12-month period.</p>
-                </accordion-group>
-                <accordion-group>
-                    <accordion-heading>
-                        <h3><b>Q.</b> How much do I have to invest? <i class="pull-right glyphicon" ng-class="{'glyphicon-minus': status.open, 'glyphicon-plus': !status.open}"></i></h3>
-                    </accordion-heading>
-                    <p><b>A.</b> You can purchase our Royal Starter Kit for $99 plus shipping and handling.  It has everything you need to succeed. Look for Quick Start kits at a lower price. </p>
-                </accordion-group>
-                <accordion-group>
-                    <accordion-heading>
-                        <h3><b>Q.</b> Does JAFRA offer a product guarantee?<i class="pull-right glyphicon" ng-class="{'glyphicon-minus': status.open, 'glyphicon-plus': !status.open}"></i></h3>
-                    </accordion-heading>
-                    <p><b>A.</b> Of course! We offer free, no-hassle returns and exchanges within 6 months of a product’s purchase date. </p>
-                </accordion-group>
-                <accordion-group>
-                    <accordion-heading>
-                        <h3><b>Q.</b> How is JAFRA different from other direct sale cosmetic companies? <i class="pull-right glyphicon" ng-class="{'glyphicon-minus': status.open, 'glyphicon-plus': !status.open}"></i></h3>
-                    </accordion-heading>
-                    <p><b>A.</b> Founded in 1956 in Malibu, California, JAFRA has over 58 years in helping women achieve their dreams.  Over 500,000 Consultants sell our products in 20 countries.  Plus, JAFRA is ranked in the top 25 direct sales companies in the United States.</p>
-                </accordion-group>
-              </accordion>
-            </div>
-         </div>
+          </div>
 
          <div class="col-md-12 text-center">
         <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->

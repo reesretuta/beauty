@@ -60,7 +60,8 @@
       }
     </style>
 
-    <!-- Custom styles for this Online Sponsoring -->
+    <!-- Custom styles for Online Sponsoring -->
+    <link rel="stylesheet" type="text/css"  href="/styles/online_sponsoring/fonts.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css"  href="/styles/online_sponsoring/style.css" rel="stylesheet">
 
   </head>
@@ -75,26 +76,33 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" id="logo" href="/join"><img src="/img/logo.png" alt="logo" /></a>
+          <a class="navbar-brand" id="logo" href="/join"><img src="/img/logo-join.png" alt="logo" /></a>
         </div>
         <div class="navbar-collapse collapse navbar-sections">
 
-          <ul class="nav navbar-nav navbar-right navbar-language" style="margin-left: 40px;">
+          <ul class="nav navbar-nav navbar-right HelveticaNeueLTStd-BdCn navbar-language" style="margin-left: 40px;">
             <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="http://static.flag-sprites.com/i/blank.gif" class="flag flag-us" alt="US English" /> US English <span class="caret"></span></a>
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="/img/flags-us.png" />
+                <!-- TODO: Make US Flag png into sprite sheets... img src="http://static.flag-sprites.com/i/blank.gif" class="flag flag-us" alt="US English" /--> US English <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
                 <li><a href="#">US English</a></li>
                 <li><a href="#">US Spanish</a></li>
               </ul>
             </li>
           </ul>
-
-          <ul class="nav navbar-nav navbar-right">
+          
+          <ul class="nav navbar-nav navbar-right HelveticaNeueLTStd-BdCn">
             <li><a href="#why_jafra">Why JAFRA?</a></li>
-            <li><a href="#starter_packages">Starter Packages</a></li>
+            <li><a href="#starter_kits">Starter Packages</a></li>
             <li><a href="#FAQs">FAQs</a></li>
-            <li><a href="" data-toggle="modal" data-target=".bs-example-modal-lg"><span class="label label-success">Join Now!</span></a></li>
-          </ul>
+            <li><a href="#JOIN_NOW" data-toggle="modal" data-target=".bs-example-modal-lg">Join Now!</a></li>
+            <li class="dropdown"><a href="" class="dropdown-toggle" data-toggle="dropdown">Contact Us</a>
+              <ul class="dropdown-menu">
+                <li class="contact-description">1 (800) 551-2345<br />
+                  Open: M-F 7a-5p
+                </li>
+              </ul>
+            </li>
 
         </div><!--/.navbar-collapse -->
       </div>
@@ -228,6 +236,18 @@
               }
             });
       });
+    </script>
+
+    <!-- Google Analytics -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-9849176-3', 'auto');
+      ga('send', 'pageview');
+
     </script>
   </body>
 </html>
