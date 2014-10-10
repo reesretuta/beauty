@@ -69,7 +69,7 @@
   </head>
 
   <body data-spy="scroll" data-target=".navbar-sections" class="join">
-    <div id="pagenav" class="navbar navbar-default navbar-static-top" role="navigation" ng-if="!inCheckout">
+    <div id="pagenav" class="navbar navbar-default navbar-static-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
@@ -93,7 +93,7 @@
             </li>
           </ul>
           
-          <ul class="join_nav nav navbar-nav navbar-right HelveticaNeueLTStd-BdCn">
+          <ul class="join_nav nav navbar-nav navbar-right HelveticaNeueLTStd-BdCn" ng-if="!inCheckout">
             <li><a href="#why_jafra">Why JAFRA?</a></li>
             <li><a href="#starter_kits">Starter Packages</a></li>
             <li><a href="#FAQs">FAQs</a></li>
@@ -110,12 +110,10 @@
       </div>
     </div>
 
-    <div id="content">
+    <div id="content" ng-class="{checkout: inCheckout}">
     <!-- begin content area -->
       <div ng-view class="ngview" autoscroll="true"></div>
     <!-- end content area -->
-
-      <hr>
 
       <footer>
           <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
