@@ -288,7 +288,7 @@ margin: 8px 0 5px;
   content: " ";
   display: block;
   position: absolute;
-  z-index: 9999;
+  z-index: 99;
   top: -26px;
   right: -38px;
   width: 33px;
