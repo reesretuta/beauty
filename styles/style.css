@@ -536,6 +536,7 @@ a, .btn {
 .store-checkout {
   position: relative;
   padding-bottom: 80px;
+  background: #fff;
 }
 .store-checkout h1 {
   margin-bottom: 30px;
