@@ -824,78 +824,97 @@ models.onReady(function() {
 
                             for (var i=0; i < linkCount; i++) {
                                 console.log("processing link", i);
-                                casper.evaluate(function(i) {
+                                var priceId = casper.evaluate(function(i) {
                                     try {
                                         console.log("getting link", i);
                                         var link = $('#grid-prices .x-grid3-scroller table tr td div.x-grid3-cell-inner.x-grid3-col-priceId a')[i];
                                         console.log("got link", link.href);
                                         var match;
+
                                         if (match = link.href.match(/detailPrice\(([0-9]+)\)/)) {
                                             var priceId = match[1];
-                                            console.log("showing price", priceId);
-                                            detailPrice(priceId);
+                                            //console.log("showing price", priceId);
+                                            //detailPrice(priceId);
+                                            return priceId;
                                         }
                                     } catch (ex) {
                                         console.error("error parsing price link", JSON.stringify(ex));
                                     }
                                 }, i);
-                                casper.waitForSelector('.x-window iframe', function() {
-                                    console.log("price modal loaded for product", productId);
+
+                                var uu = BASE_SITE_URL + "/csr-admin-4/productcatalog/product"+(isKit?'kit':'')+".price.detail?productId=" + productId + "&priceId=" + priceId;
+                                //console.log("fetching price detail page", uu);
+
+                                // pause to not slam the sever
+                                //casper.wait(Math.floor(Math.random() * 2000) + 500);
+
+                                casper.then(function() {
+                                    console.log('Getting product prices', productId);
+                                });
+
+                                casper.thenOpen(uu, function (response) {
+                                    if (response.status !== 200) {
+                                        console.error('Unable to get product price detail page!', productId, priceId);
+                                    } else {
+                                        console.log('Got product price detail page', productId, priceId);
+                                    }
+
                                     var price = casper.evaluate(function() {
                                         try {
-                                            var contents = $('.x-window iframe').contents();
                                             var p = {};
-                                            p.price = parseFloat(contents.find('input[name="productPrice.price"]').val());
-                                            p.typeId = parseInt(contents.find('select[name="productPrice.productPriceTypeId"] > option:selected').val()) || 0;
-                                            p.commissionableVolume = parseFloat(contents.find('input[name="productPrice.commissionablePrice"]').val());
-                                            p.qualifyingVolume = parseFloat(contents.find('input[name="productPrice.businessVolume"]').val());
-                                            p.retailVolume = parseFloat(contents.find('input[name="productPrice.retailVolume"]').val());
-                                            p.instantProfit = parseFloat(contents.find('input[name="productPrice.instantProfit"]').val());
-                                            p.rebate = parseFloat(contents.find('input[name="productPrice.rebate"]').val());
-                                            p.shippingSurcharge = parseFloat(contents.find('input[name="productPrice.shippingSurcharge"]').val());
-                                            p.effectiveStartDate = new Date(moment(contents.find('input[name="productPrice.startDate"]').val(), 'MM/DD/YYYY').unix()*1000);
-                                            p.effectiveEndDate = new Date(moment(contents.find('input[name="productPrice.endDate"]').val(), 'MM/DD/YYYY').unix()*1000);
+                                            p.price = parseFloat($('input[name="productPrice.price"]').val());
+                                            p.typeId = parseInt($('select[name="productPrice.productPriceTypeId"] > option:selected').val()) || 0;
+                                            p.commissionableVolume = parseFloat($('input[name="productPrice.commissionablePrice"]').val());
+                                            p.qualifyingVolume = parseFloat($('input[name="productPrice.businessVolume"]').val());
+                                            p.retailVolume = parseFloat($('input[name="productPrice.retailVolume"]').val());
+                                            p.instantProfit = parseFloat($('input[name="productPrice.instantProfit"]').val());
+                                            p.rebate = parseFloat($('input[name="productPrice.rebate"]').val());
+                                            p.shippingSurcharge = parseFloat($('input[name="productPrice.shippingSurcharge"]').val());
+                                            p.effectiveStartDate = new Date(moment($('input[name="productPrice.startDate"]').val(), 'MM/DD/YYYY').unix()*1000);
+                                            p.effectiveEndDate = new Date(moment($('input[name="productPrice.endDate"]').val(), 'MM/DD/YYYY').unix()*1000);
 
                                             p.customerTypes = [];
-                                            if (contents.find('input[name="customerTypes.itemMapped[0].customerType"]').attr('checked')) {
+                                            if ($('input[name="customerTypes.itemMapped[0].customerType"]').attr('checked')) {
                                                 p.customerTypes.push("Non-Party Customer");
                                             }
-                                            if (contents.find('input[name="customerTypes.itemMapped[1].customerType"]').attr('checked')) {
+                                            if ($('input[name="customerTypes.itemMapped[1].customerType"]').attr('checked')) {
                                                 p.customerTypes.push("Consultant");
                                             }
-                                            if (contents.find('input[name="customerTypes.itemMapped[2].customerType"]').attr('checked')) {
+                                            if ($('input[name="customerTypes.itemMapped[2].customerType"]').attr('checked')) {
                                                 p.customerTypes.push("Employee");
                                             }
-                                            if (contents.find('input[name="customerTypes.itemMapped[3].customerType"]').attr('checked')) {
+                                            if ($('input[name="customerTypes.itemMapped[3].customerType"]').attr('checked')) {
                                                 p.customerTypes.push("Party Guest");
                                             }
-                                            if (contents.find('input[name="customerTypes.itemMapped[4].customerType"]').attr('checked')) {
+                                            if ($('input[name="customerTypes.itemMapped[4].customerType"]').attr('checked')) {
                                                 p.customerTypes.push("Hostess");
                                             }
-                                            if (contents.find('input[name="customerTypes.itemMapped[5].customerType"]').attr('checked')) {
+                                            if ($('input[name="customerTypes.itemMapped[5].customerType"]').attr('checked')) {
                                                 p.customerTypes.push("Fundraiser");
                                             }
-                                            if (contents.find('input[name="customerTypes.itemMapped[6].customerType"]').attr('checked')) {
+                                            if ($('input[name="customerTypes.itemMapped[6].customerType"]').attr('checked')) {
                                                 p.customerTypes.push("Department");
                                             }
 
                                             return p;
                                         } catch (ex) {
                                             console.error("error parsing price modal", JSON.stringify(ex));
+                                            this.capture('error_price_detail_'+productId+'_'+priceId+'.jpg', undefined, {
+                                                format: 'jpg',
+                                                quality: 100
+                                            });
+                                            console.error("failed to load modal in time");
+
                                         }
                                     });
                                     product.prices.push(price);
-                                }, function() {
-                                    this.capture('error_modal'+i+'.jpg', undefined, {
-                                        format: 'jpg',
-                                        quality: 100
-                                    });
-                                    console.error("failed to load modal in time");
                                 });
                             }
+
                             casper.then(function() {
                                 console.log("product", productId, "prices", JSON.stringify(product.prices));
                             });
+
                         }, function() {
                             console.error("timed out waiting to get product prices");
                             //this.exit();
