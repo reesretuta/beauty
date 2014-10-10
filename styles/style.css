@@ -348,7 +348,7 @@ h2 {
   height: 38px;
 }
 .form-control:focus {
-  border-color: #b51a8a;
+  border-color: #53366C;
   box-shadow: 0 0 3px #b51a8a
 }
 .store-heading-nav {
@@ -987,13 +987,13 @@ a:focus {
 }
 .steps-indicator li.current a:before, 
 .steps-indicator li.editing a:before {
-  background-color: #b51a8a;
+  background-color: #53366C;
 }
 .steps-indicator li.done a {
   color: #AA73B1;
 }
 .steps-indicator li.done a:before {
-  background-color: #AA73B1;
+  background-color: #DEC8E0;
 }
 
 .responsive-container {
@@ -1048,8 +1048,19 @@ a:focus {
 }
 #liner_black{position:relative; left:36px; top:-7px;}
 
-
-
+.join 
+{
+	background-color: #53366c;
+}
+.join #content
+{
+  background:#fff; 
+}
+.cardImg 
+{
+	max-height:40px; 
+	float:left; 
+}
 /*
  * Responsive Styles
  * --------------------------------------------------
@@ -1097,6 +1108,23 @@ a:focus {
     max-width: 70%;
   }
 }
+
+
+@media (max-width: 400px)
+{
+	.btn-lg, .btn-group-lg > .btn 
+	{
+	 font-size:12px; 
+	}
+	
+	.checkout-card .btn 
+	{
+		font-size:8px; 
+	}
+	
+}
+
+
 /*
  * placeholder fixes across all browsers
  */
