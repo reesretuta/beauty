@@ -75,13 +75,6 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   font-weight: 400;
   color: #2a2a2a;
 }
-video#bgvid {
-  position: fixed; right: 0; top: 0;
-  min-width: 100%; min-height: 100%;
-  width: auto; height: auto; z-index: -100;
-  background: url(/img/polina.jpg) no-repeat;
-  background-size: cover;
-}
 #content {
   background-color: #ededed;
   width: 100%;
@@ -94,6 +87,10 @@ video#bgvid {
   line-height: 1.42857143;
   color: #333;
   white-space: nowrap;
+}
+.faqs-item .faqs-item-question a{
+  color: 
+  line-height: 0.5;
 }
 .footer-links{
   background-color: rgb(131,104,137);;
@@ -135,6 +132,8 @@ background-color: #c52033;
 background-color: #1cc3d6;
 border-radius: 0px;
 }
+
+
 .well {
   background-color: #f5f5f5;
 }
@@ -264,6 +263,9 @@ font-style: normal;
 color: #482365;
 }
 
+.testimonial .media-heading {
+margin: 8px 0 5px;
+}
 /* more links */
 .more-link, .more-link.collapsed {
   color: #877650;
@@ -286,7 +288,7 @@ color: #482365;
   content: " ";
   display: block;
   position: absolute;
-  z-index: 9999;
+  z-index: 99;
   top: -26px;
   right: -38px;
   width: 33px;
@@ -314,8 +316,8 @@ color: #482365;
   transform: rotate(0deg);
 }
 
-.social-media-icons{
-  font-size: 2em;
+.social-media-icons a  i.fa{
+  color: #333;
 }
 
 span#live {
@@ -367,8 +369,6 @@ line-height: 0.8em;
   max-height: 400px;
   overflow: scroll;
 }
-
-
 .why-section-title{
   text-align: center;
   font-family: DidotLTPro-Roman;
@@ -377,5 +377,38 @@ line-height: 0.8em;
   text-transform: uppercase;
   font-size: 64px;
   color: #482365;
+}
+/* join jafra page nav styles */ 
+.join_nav  > li > a
+{
+	text-shadow:none; 
+	margin:5px; 
+	border-radius: 0px;
+	padding: 5px 16px;
+}
+
+.join_nav  > li > a:hover , .join_nav  > li > a:focus
+{
+	background-color:#c52033 !important; 
+	color:#fff !important;
+} 
+.navbar-language > li > a
+{
+	text-shadow:none; 
+	margin:5px;
+	border-radius: 0px; 
+	
+}
+.navbar-language > li > a:hover , .navbar-language > li > a:hover
+{
+	text-shadow:none; 
+	margin:5px;
+	border-radius: 0px; 
+	background-color:#c52033 !important; 
+	color:#fff !important;
+}
+.navbar-language  .dropdown-menu > li > a
+{
+	color: #aa73b1 !important;
 }
 
