@@ -483,29 +483,99 @@ router.route('/clients') // get current client
                 "password": req.body.password,
                 "firstName": req.body.firstName,
                 lastName: req.body.lastName,
-                dateOfBirth: req.body.dateOfBirth, // optional
+                dateOfBirth: req.body.dateOfBirth,
                 consultantId: req.body.consultantId,
-                language: req.body.language        // optional
-            }).then(function(r) {
-                console.log("created client", r.response.statusCode, "body", r.result);
+                language: req.body.language
+            }).then(function(r2) {
+                console.log("created client", r2.result.statusCode, "body", r2.result);
 
                 // add the new client to the session
-                req.session.client = r.result;
+                req.session.client = r2.result;
 
                 // return response
-                res.status(r.status);
-                res.json(r.result);
-
-            }, function(r) {
-                console.error("failed to create client", r.response.statusCode, "body", r.body);
-                res.status(r.status);
-                res.json(r.result);
+                res.status(r2.status);
+                res.json(r2.result);
+                res.end();
+            }, function(r2) {
+                console.error("failed to create client", r2.result.statusCode, "body", r2.body);
+                res.status(r2.status);
+                res.json(r2.result);
+                res.end();
             });
+
+//            var request = require("request");
+//            var CREATE_CLIENT_URL = "http://189.206.20.52:8091/cgidev2/JCD05002P.pgm";
+//            request.post({
+//                url: CREATE_CLIENT_URL,
+//                form: {
+//                    "email": req.body.email,
+//                    "password": req.body.password,
+//                    "firstName": req.body.firstName,
+//                    lastName: req.body.lastName,
+//                    dateOfBirth: req.body.dateOfBirth,
+//                    consultantId: req.body.consultantId,
+//                    language: req.body.language
+//                },
+//                headers: {
+//                    'Content-Type' : 'application/x-www-form-urlencoded',
+//                    'Accept': 'application/json, text/json'
+//                },
+//                json: true
+//            }, function (error, response, body) {
+//                if (error || response.statusCode != 201) {
+//                    console.error("createClient(): error", response.statusCode, body);
+//
+//                    if (body && body.statusCode && body.errorCode && body.message) {
+//                        console.error("createClient(): error, returning server error");
+//
+//                        // return response
+//                        res.status(body.statusCode);
+//                        res.json(body.message);
+//                        res.end();
+//
+//                    } else {
+//                        console.error("createClient(): error, returning generic error");
+//                        res.status(500);
+//                        res.json({
+//                            statusCode: 500,
+//                            errorCode: "createClientFailed",
+//                            message: "Failed to create client"
+//                        });
+//                        res.end();
+//                    }
+//                    return;
+//                }
+//
+//                if (body == null || body.clientId == null) {
+//                    console.log("createClient(): invalid return data", body, typeof body, "clientId", body.clientId);
+//                    res.status(500);
+//                    res.json({
+//                        statusCode: 500,
+//                        errorCode: "createClientReturnDataInvalid",
+//                        message: "Failed to get client ID from create"
+//                    });
+//                    res.end();
+//                    return;
+//                }
+//
+//                // we should get clientId back
+//                console.debug("createClient(): returning success");
+//                var clientId = body.clientId;
+//
+//                // add the new client to the session
+//                req.session.client = body;
+//
+//                // return response
+//                res.status(201);
+//                res.json(body);
+//                res.end();
+//            });
 
         }, function(r) {
             console.error("failed to validate email", r.status, "result", r.result);
             res.status(r.status);
             res.json(r.result);
+            res.end();
         });
 
     });

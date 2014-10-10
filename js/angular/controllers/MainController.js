@@ -157,7 +157,7 @@ angular.module('app.controllers.main')
             var user = Session.getUser();
             if (user != null) {
                 var email = user.email;
-                $log.debug("MainController(): username", email);
+                //$log.debug("MainController(): getUserEmail()", email);
                 if (email != null) {
                     return email;
                 }

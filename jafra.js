@@ -39,7 +39,7 @@ function authenticate(email, password) {
     //console.log("authenticating", email, password);
     var deferred = Q.defer();
 
-    var r = request.post({
+    request.post({
         url: AUTHENTICATE_URL,
         form: {
             email: email,
@@ -197,7 +197,7 @@ function createClient(client) {
     //console.log("createClient", email, password);
     var deferred = Q.defer();
 
-    var r = request.post({
+    request.post({
         url: CREATE_CLIENT_URL,
         form: {
             email: client.email,
@@ -218,6 +218,7 @@ function createClient(client) {
             console.error("createClient(): error", response.statusCode, body);
 
             if (body && body.statusCode && body.errorCode && body.message) {
+                console.error("createClient(): error, returning server error");
                 deferred.reject({
                     status: response.statusCode,
                     result: {
@@ -227,6 +228,7 @@ function createClient(client) {
                     }
                 });
             } else {
+                console.error("createClient(): error, returning generic error");
                 deferred.reject({
                     status: 500,
                     result: {
@@ -253,6 +255,7 @@ function createClient(client) {
         }
 
         // we should get clientId back
+        console.debug("createClient(): returning success");
         var clientId = body.clientId;
         deferred.resolve({
             status: 201,
@@ -348,7 +351,7 @@ function createAddress(clientId, address) {
     //console.log("createAddress", email, password);
     var deferred = Q.defer();
 
-    var r = request.post({
+    request.post({
         url: CREATE_ADDRESS_URL,
         qs: {
             clientId: clientId
@@ -362,9 +365,9 @@ function createAddress(clientId, address) {
             "zip": address.zip,
             "country": address.country,
             "phone": address.phone,
-            "geocode": "00000",
-            "stateDescription": "California",
-            "county" : "Los Angeles"
+            "geocode": address.geocode,
+            "county" : address.county,
+            "stateDescription": address.state
         },
         headers: {
             'Content-Type' : 'application/x-www-form-urlencoded',
@@ -425,7 +428,7 @@ function updateAddress(clientId, addressId, address) {
     console.log("updateAddress", clientId, addressId, address);
     var deferred = Q.defer();
 
-    var r = request.post({
+    request.post({
         url: UPDATE_ADDRESS_URL,
         qs: {
             clientId: clientId,
@@ -490,7 +493,7 @@ function deleteAddress(clientId, addressId) {
     console.log("deleteAddress", clientId, addressId);
     var deferred = Q.defer();
 
-    var r = request.del({
+    request.del({
         url: DELETE_ADDRESS_URL,
         qs: {
             clientId: clientId,
@@ -650,90 +653,104 @@ function validateAddress(address) {
         }
     }
 
-    soap.createClient(STRIKEIRON_ADDRESS_SOAP_URL, options, function(err, client) {
-        var userId = STRIKEIRON_ADDRESS_LICENSE;
+    try {
+        soap.createClient(STRIKEIRON_ADDRESS_SOAP_URL, options, function(err, client) {
+            var userId = STRIKEIRON_ADDRESS_LICENSE;
 
-        console.log("license", userId);
+            console.log("license", userId);
 
-        client.addSoapHeader({LicenseInfo: {RegisteredUser: {UserID: userId}}});
+            client.addSoapHeader({LicenseInfo: {RegisteredUser: {UserID: userId}}});
 
-        client.NorthAmericanAddressVerification({
-            "AddressLine1":address.address1,
-            "AddressLine2":address.address2,
-            "CityStateOrProvinceZIPOrPostalCode":address.city + " " + address.state + " " + address.zip,
-            "Country":address.country,
-            "Casing":"PROPER"
-        }, function (error, response) {
-            console.log("validateAddress(): response", error, "status", response.NorthAmericanAddressVerificationResult.ServiceStatus.StatusNbr);
-            if (error || response.NorthAmericanAddressVerificationResult.ServiceStatus.StatusNbr != 200) {
-                console.error("validateAddress(): error", error, "response", response);
-                deferred.reject({
-                    status: 500,
-                    result: {
-                        statusCode: 500,
-                        errorCode: "validateAddressFailed",
-                        message: "Unknown error while validating address"
-                    }
-                });
-                return;
-            }
-            /**
-             * 200 Found
-             210 The batch operation completed successfully
-             211 The batch verification operation completed with
-             partial success
-             304 Address Not Found
-             305 Address is ambiguous
-             310 The batch operation was unsuccessful
-             401 At least one address required for batch operation.
-             402 City or ZIP Code is Invalid
-             500 Internal Error
-             */
-            if (response && response.NorthAmericanAddressVerificationResult &&
-                response.NorthAmericanAddressVerificationResult.ServiceResult &&
-                response.NorthAmericanAddressVerificationResult.ServiceResult.USAddress &&
-                response.NorthAmericanAddressVerificationResult.ServiceStatus.StatusNbr == 200)
-            {
-                console.log("validateAddress(): success", response.NorthAmericanAddressVerificationResult.ServiceResult.USAddress);
-
+            client.NorthAmericanAddressVerification({
+                "AddressLine1":address.address1,
+                "AddressLine2":address.address2,
+                "CityStateOrProvinceZIPOrPostalCode":address.city + " " + address.state + " " + address.zip,
+                "Country":address.country,
+                "Casing":"PROPER"
+            }, function (error, response) {
+                console.log("validateAddress(): response", error, "status", response.NorthAmericanAddressVerificationResult.ServiceStatus.StatusNbr);
+                if (error || response.NorthAmericanAddressVerificationResult.ServiceStatus.StatusNbr != 200) {
+                    console.error("validateAddress(): error", error, "response", response);
+                    deferred.reject({
+                        status: 500,
+                        result: {
+                            statusCode: 500,
+                            errorCode: "validateAddressFailed",
+                            message: "Unknown error while validating address"
+                        }
+                    });
+                    return;
+                }
                 /**
-                 * State, Urbanization, ZIPPlus4, ZIPCode, ZIPAddOn, CarrierRoute, PMB, PMBDesignator,
-                 * DeliveryPoint, DPCheckDigit, LACS, CMRA, DPV, DPVFootnote, RDI, RecordType,
-                 * CongressDistrict, County, CountyNumber, StateNumber, GeoCode
+                 * 200 Found
+                 210 The batch operation completed successfully
+                 211 The batch verification operation completed with
+                 partial success
+                 304 Address Not Found
+                 305 Address is ambiguous
+                 310 The batch operation was unsuccessful
+                 401 At least one address required for batch operation.
+                 402 City or ZIP Code is Invalid
+                 500 Internal Error
                  */
-                //console.log("getClient(): success", body);
+                if (response && response.NorthAmericanAddressVerificationResult &&
+                    response.NorthAmericanAddressVerificationResult.ServiceResult &&
+                    response.NorthAmericanAddressVerificationResult.ServiceResult.USAddress &&
+                    response.NorthAmericanAddressVerificationResult.ServiceStatus.StatusNbr == 200)
+                {
+                    console.log("validateAddress(): success", response.NorthAmericanAddressVerificationResult.ServiceResult.USAddress);
 
-                var usAddress = response.NorthAmericanAddressVerificationResult.ServiceResult.USAddress;
+                    /**
+                     * State, Urbanization, ZIPPlus4, ZIPCode, ZIPAddOn, CarrierRoute, PMB, PMBDesignator,
+                     * DeliveryPoint, DPCheckDigit, LACS, CMRA, DPV, DPVFootnote, RDI, RecordType,
+                     * CongressDistrict, County, CountyNumber, StateNumber, GeoCode
+                     */
+                    //console.log("getClient(): success", body);
 
-                deferred.resolve({
-                    status: 200,
-                    result: {
+                    var usAddress = response.NorthAmericanAddressVerificationResult.ServiceResult.USAddress;
+
+                    var a = {
                         name: address.name,
                         address1: usAddress.AddressLine1.length > 0 ? usAddress.AddressLine1 : "",
                         address2: usAddress.AddressLine2.length > 0 ? usAddress.AddressLine2 : "",
                         city: usAddress.City.length > 0 ? usAddress.City : "",
                         county: usAddress.County.length > 0 ? usAddress.County : "",
                         state: usAddress.State.length > 0 ? usAddress.State : "",
-                        zip: usAddress.ZIPPlus4.length > 0 ? usAddress.ZIPPlus4 : "",
+                        zip: usAddress.ZIPCode.length > 0 ? usAddress.ZIPCode : "",
+                        country: "US",
                         geocode:  Object.getOwnPropertyNames(usAddress.GeoCode).length > 0 && usAddress.GeoCode.CensusTract ? usAddress.GeoCode.CensusTract : "",
                         phone: address.phone
-                    }
-                });
-            } else {
-                console.error("validateAddress(): result was not expected", result);
+                    };
+                    console.log("validateAddress(): returning address", a);
 
-                deferred.reject({
-                    status: 500,
-                    result: {
-                        statusCode: 500,
-                        errorCode: "invalidAddress",
-                        message: "Invalid address"
-                    }
-                });
+                    deferred.resolve({
+                        status: 200,
+                        result: a
+                    });
+                } else {
+                    console.error("validateAddress(): result was not expected", result);
+
+                    deferred.reject({
+                        status: 500,
+                        result: {
+                            statusCode: 500,
+                            errorCode: "invalidAddress",
+                            message: "Invalid address"
+                        }
+                    });
+                }
+            });
+        });
+    } catch (ex) {
+        deferred.reject({
+            status: 500,
+            result: {
+                statusCode: 500,
+                errorCode: "errorValidatingAddress",
+                message: "Error while validating address"
             }
         });
-    });
-
+    }
     return deferred.promise;
 }
 
@@ -794,7 +811,7 @@ function createCreditCard(clientId, data) {
     //console.log("createCreditCard", email, password);
     var deferred = Q.defer();
 
-    var r = request.post({
+    request.post({
         url: CREATE_CREDIT_CARD_URL,
         qs: {
             clientId: clientId
@@ -860,7 +877,7 @@ function updateCreditCard(clientId, creditCardId, data) {
     //console.log("updateCreditCard", email, password);
     var deferred = Q.defer();
 
-    var r = request.post({
+    request.post({
         url: UPDATE_CREDIT_CARD_URL,
         qs: {
             clientId: clientId,
@@ -927,7 +944,7 @@ function deleteCreditCard(clientId, creditCardId) {
     console.log("deleteCreditCard", clientId, creditCardId);
     var deferred = Q.defer();
 
-    var r = request.del({
+    request.del({
         url: DELETE_CREDIT_CARD_URL,
         qs: {
             clientId: clientId,
