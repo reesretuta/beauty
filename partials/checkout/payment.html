@@ -144,9 +144,9 @@
   <div class="row form-group">
     <label for="billingStateProvinceRegion" class="col-md-3 control-label">State/Province/Region</label>
     <!-- TO-DO: Fix CSS width of form control -->
-    <div class="col-sm-6 col-lg-4">
+    <div class="col-sm-5 col-lg-3">
       <form>
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <div class="">
           <select id="billingStateProvinceRegion" name="state" ng-model="profile.newBillingAddress.state" class="form-control" tabindex="5">
             <option value="AL">Alabama</option>
             <option value="AK">Alaska</option>
@@ -220,7 +220,7 @@
 
   <div class="row form-group">
     <label for="billingCountry" class="col-md-3 control-label">Country</label>
-    <div class="col-sm-6 col-lg-4">
+    <div class="col-sm-5 col-lg-3">
       <select id="billingCountry" name="billingCountry" data-ng-init="profile.newBillingAddress.country='US'" ng-model="profile.newBillingAddress.country" class="form-control" tabindex="7">
         <option ng-selected="true" value="US">United States</option>
       </select>
