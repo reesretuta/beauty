@@ -421,6 +421,9 @@ line-height: 0.8em;
   margin-top: 50px;
 }
 
+.active a{
+	background-image: none!important;
+}
 /*  ------ RESPONSIVE BREAKPOINTS ------  */
 
 /* Extra-Small screens like handheld devices (iPhone/Android/etc) */
