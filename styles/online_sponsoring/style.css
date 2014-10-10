@@ -88,10 +88,7 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   color: #333;
   white-space: nowrap;
 }
-.faqs-item .faqs-item-question a{
-  color: 
-  line-height: 0.5;
-}
+
 .footer-links{
   background-color: rgb(131,104,137);;
   padding: 2em;
@@ -165,42 +162,40 @@ border-radius: 0px;
 .jumbotron {
 /*  padding-top: 20vh;
   padding-bottom: 20vh;*/
-  background: url(/img/model_2.jpg);/*url(/img/herobg-1920x1080.jpg);*/
+  background: #fff url(/img/model_2.jpg);/*url(/img/herobg-1920x1080.jpg);*/
   background-size: cover;
   background-position: 40% top;
 }
-@media (min-width:768px) {
-    .jumbotron {
-        padding-top: 60px;
-        padding-bottom: 60px;
-    };
-}
-
-@media (min-width:992px) {
-    .jumbotron {
-        padding-top: 100px;
-        padding-bottom: 100px;
-    };
-}
-
-@media (min-width:1200px) {
-    .jumbotron {
-        padding-top: 180px;
-        padding-bottom: 180px;
-    };
-}
 .jumbotron .btn {
   font-size: 1.2em;
+  background-blend-mode: multiply;
 }
-#jumbo-title{
+.jumbo-title{
 background: rgba(255, 255, 255, 0.3);
 line-height: 0.8;
 }
-#jumbo-description {
+.jumbo-description {
 background: rgba(72, 35, 101, 0.5);
 color: #fff;
-font-family: myriad pro;
+/*font-family: HelveticaNeueLTStd-Th;*/
 padding: 20px;
+background-blend-mode: multiply;
+}
+.jumbo-title-span-1 {
+  color: #6A5077;
+  font-size: 102px; 
+}
+.jumbo-title-span-2 {
+  color: #A08B6A;
+}
+.jumbo-title-span-3 {
+  color: #A08B6A;
+  line-height: 0.8;
+}
+.jumbo-title-span-4 {
+  color: #6B517C;
+  font-size: 75px;
+  line-height: 0.8;
 }
 .jumbo-videobg {
   background: none;
@@ -268,9 +263,6 @@ margin: 8px 0 5px;
 }
 /* more links */
 .more-link, .more-link.collapsed {
-  color: #877650;
-  font-family: HelveticaNeueLTStd-Md;
-  font-size: 13px;
   display: inline-block;
   position: relative;
   -webkit-transition: all 200ms ease;
@@ -279,6 +271,11 @@ margin: 8px 0 5px;
   -o-transition: all 200ms ease;
   transition: all 200ms ease;
   margin-top: 50px;
+}
+.more-link span {
+  color: #877650;
+  font-family: HelveticaNeueLTStd-Md;
+  font-size: 13px;
 }
 .more-link:hover, .more-link:active, a.collapsed  {
   color: #b51a8a;
@@ -316,25 +313,21 @@ margin: 8px 0 5px;
   transform: rotate(0deg);
 }
 
-.social-media-icons a  i.fa{
-  color: #333;
+.faqs-item .faqs-item-question a {
+  color: #421F5D;
+  display: block;
+  margin-top: 30px;
+  padding: 0 50px 0 0;
+  font-size: 24px;
+  line-height: 1.4;
+}
+.faqs-item .faqs-item-question a:after {
+  top: 0;
+  right: 10px;
 }
 
-span#live {
-  color: #6A5077;
-  font-size: 102px; /*TODO: to later refactor to mobile/tablet sizes*/
-}
-span#thelife {
-color: #A08B6A;
-}
-span#you {
-  color: #A08B6A;
-line-height: 0.8;
-}
-span#imagine {
-  color: #6B517C;
-font-size: 75px;
-line-height: 0.8;
+.social-media-icons a  i.fa{
+  color: #333;
 }
 
 .starter_kits-price{
@@ -369,7 +362,7 @@ line-height: 0.8em;
   max-height: 400px;
   overflow: scroll;
 }
-.why-section-title{
+.section-title{
   text-align: center;
   font-family: DidotLTPro-Roman;
   font-weight: normal;
@@ -410,5 +403,57 @@ line-height: 0.8em;
 .navbar-language  .dropdown-menu > li > a
 {
 	color: #aa73b1 !important;
+}
+
+
+/*  ------ RESPONSIVE BREAKPOINTS ------  */
+
+/* Extra-Small screens like handheld devices (iPhone/Android/etc) */
+@media (max-width:400px) {
+    .jumbo-title-span-1 {
+      font-size: 50px; 
+    }
+    .jumbo-title-span-2 {
+      font-size: 34px;
+    }
+    .jumbo-title-span-3 {
+    }
+    .jumbo-title-span-4 {
+      font-size: 37px;
+    }
+    .jumbo-videobg {
+      background: none;
+      height: 100%;
+    }
+    p.jumbo-description {
+      font-size: 14px;
+    }
+    .section-title {
+        font-size: 30px;
+    }
+}
+
+/* Small screens like netbooks and tablets (iPad/iPad mini/etc) */
+@media (min-width:768px) {
+    .jumbotron {
+        padding-top: 60px;
+        padding-bottom: 60px;
+    }
+}
+
+/* Medium screens like laptops and smaller desktop monitors */
+@media (min-width:992px) {
+    .jumbotron {
+        padding-top: 100px;
+        padding-bottom: 100px;
+    }
+}
+
+/* Large screens like HDTVs and modern desktop monitors */
+@media (min-width:1200px) {
+    .jumbotron {
+        padding-top: 180px;
+        padding-bottom: 180px;
+    }
 }
 

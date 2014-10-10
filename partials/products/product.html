@@ -146,14 +146,14 @@
                 </div><!-- /color dropdown -->
 
                 <p class="itemsleep">Item #{{selectedProduct.sku}}</p>
-                <p class="pricesleep">${{selectedProduct.prices[0].price}}</p>
+                <p class="pricesleep">${{selectedProduct.currentPrice.price}}</p>
             </div>
             <p class="store-item-sku" ng-if="product.type != 'group'">
               Item #{{product.sku}} - {{product.name}}
             </p>
             <p class="store-item-price">
 
-              <span ng-repeat="detailprice in product.prices[0]">
+              <span ng-repeat="detailprice in product.currentPrice">
                 <span ng-if="detailprice.type==2" class="item-price-sale">
                   ${{detailprice.price}}
                 </span>
@@ -161,9 +161,9 @@
                   ${{detailprice.price}}
                 </span>
               </span>
-              <span ng-if="product.prices[0].price">
+              <span ng-if="product.currentPrice.price">
                 <span class="item-price">
-                  ${{product.prices[0].price}}
+                  ${{product.currentPrice.price}}
                 </span>
               </span>
 

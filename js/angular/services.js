@@ -581,8 +581,12 @@ angular.module('app.services', ['ngResource'])
 
             p.then(function(products) {
                 $log.debug("cartService(): loadProducts(): loaded products", products);
-                // merge back in quantities / kitGroupSelections
+
                 $.each(products, function(index, product) {
+                    // FIXME - calculate the correct display price
+                    Products.selectCurrentPrice(product);
+
+                    // merge back in
                     if (itemMap[product.sku]) {
                         var item = itemMap[product.sku];
                         item.product = product;
@@ -605,25 +609,77 @@ angular.module('app.services', ['ngResource'])
         var origGet = productService.get;
 
         productService.query = function(params) {
+            var d = $q.defer();
+
             $log.debug('productService(): query()', params);
             var ret = origQuery(params);
-            $log.debug('productService(): query()', params, ret);
-            ret.$promise.then(function(val) {
-                $log.debug("productService(): query(): result", val);
+
+            ret.$promise.then(function(products) {
+                $log.debug("productService(): get(): result", products);
+                $.each(products, function(index, product) {
+                    productService.selectCurrentPrice(product);
+                });
+                d.resolve(products);
+            }, function(err) {
+                $log.error("productService(): get(): failure", err);
+                d.reject(err);
             });
-            return ret.$promise;
+
+            return d.promise;
         }
 
         productService.get = function(params) {
+            var d = $q.defer();
+
             $log.debug('productService(): get()', params);
             var ret = origGet(params);
-            $log.debug('productService(): get()', params, ret);
-            ret.$promise.then(function(val) {
-                $log.debug("productService(): get(): result", val);
+
+            ret.$promise.then(function(product) {
+                $log.debug("productService(): get(): result", product);
+                productService.selectCurrentPrice(product);
+                d.resolve(product);
+            }, function(err) {
+                $log.error("productService(): get(): failure", err);
+                d.reject(err);
             });
-            return ret.$promise;
+
+            return d.promise;
         }
 
+        productService.selectCurrentPrice = function(product) {
+            /**
+             * {
+                            "commissionableVolume" : 0,
+                            "instantProfit" : 0,
+                            "price" : 24,
+                            "qualifyingVolume" : 0,
+                            "rebate" : 0,
+                            "retailVolume" : 0,
+                            "shippingSurcharge" : 0,
+                            "typeId" : 1,
+                            "effectiveStartDate" : "2014-10-09T04:00:00.000Z",
+                            "effectiveEndDate" : "2025-01-01T05:00:00Z",
+                            "customerTypes" : [
+                                "Non-Party Customer",
+                                "Consultant",
+                                "Party Guest",
+                                "Hostess"
+                            ]
+                        }
+             */
+            $.each(product.prices, function (index2, price) {
+                $log.debug("cartService(): loadProducts(): processing price", price);
+                var now = new Date().getTime();
+                var start = S(price.effectiveStartDate).isEmpty() ? null : moment(price.effectiveStartDate, 'YYYY-MM-DDTHH:mm:ss.SSSZ').unix()*1000;
+                var end = S(price.effectiveEndDate).isEmpty() ? null : moment(price.effectiveEndDate, 'YYYY-MM-DDTHH:mm:ss.SSSZ').unix()*1000;
+                if ((now >= start || start == null) && (now <= end || end == null)) {
+                    // this is our current price
+                    $log.debug("cartService(): loadProducts(): setting price", price, "now", now, "start", start, "end", end);
+                    product.currentPrice = price;
+                    return;
+                }
+            });
+        }
         return productService;
     })
     .factory('Consultants', function ($resource, $http, $log, API_URL) {
@@ -1054,7 +1110,7 @@ angular.module('app.services', ['ngResource'])
         angular.forEach(items, function(item) {
           //$log.debug("calculating price for item", item);
           if (!(Array.isArray(item.product.prices)) || item.product.prices.length == 1) {
-            total += item.quantity * item.product.prices[0].price;
+            total += item.quantity * item.product.currentPrice.price;
           } else if (item.product.prices.length == 0) {
             // there is a problem, we don't have prices
             $log.error("there are no prices listed for this item", item);
@@ -1068,7 +1124,7 @@ angular.module('app.services', ['ngResource'])
             })
             if (!priceFound) {
               // use the first price in the list (FIXME - need to check dates))
-              total += item.quantity * item.product.prices[0].price;
+              total += item.quantity * item.product.currentPrice.price;
             }
           }
         })
