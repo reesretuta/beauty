@@ -69,7 +69,7 @@
   </head>
 
   <body data-spy="scroll" data-target=".navbar-sections" class="join">
-    <div id="pagenav" ng-class="{navbar-static-top: !inCheckout}" class="navbar navbar-default" role="navigation">
+    <div id="pagenav" class="navbar navbar-default navbar-static-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
@@ -292,6 +292,19 @@
     <script src="/js/angular/filters.js"></script>
     <script src="/js/angular/directives.js"></script>
     <script src="/js/angular/app.js"></script>
+
+    <script>
+      $(function(){ 
+          $('#pagenav').affix({
+              offset: {
+                top: $('.jumbo-videobg').outerHeight()
+              , bottom: function () {
+                  return (this.bottom = $('footer').outerHeight(true))
+                }
+              }
+            });
+      });
+    </script>
 
     <!-- Google Analytics -->
     <script>
