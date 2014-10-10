@@ -37,7 +37,7 @@
         <span class="address-street">{{checkout.shipping.address1}} {{checkout.shipping.address2}}</span>
         <span class="address-region">{{checkout.shipping.city}}, {{checkout.shipping.state}} {{checkout.shipping.zip}}</span>
         <span class="phone-number">{{checkout.shipping.phone}}</span>
-        <span ng-if="!isOnlineSponsoring">Speed: {{shippingSpeed}}</span>
+        <!--<span ng-if="!isOnlineSponsoring">Speed: {{shippingSpeed}}</span>-->
         <div class="address-actions">
           <a ng-href="{{APP_BASE_URL}}/checkout?step=Shipping"><i class="fa fa-pencil-square-o"></i> Change Address</a>
         </div>

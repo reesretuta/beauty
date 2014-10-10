@@ -4,12 +4,13 @@ angular.module('app.controllers.onlineSponsor')
 
     $rootScope.inCheckout = false;
 
-    $scope.join = function(sku) {
+    $scope.join = function(sku, language) {
         $('.modal').modal('hide');
         $('body').removeClass('modal-open');
         $('.modal-backdrop').remove();
 
         $log.debug("joining with sku", sku);
+        $log.debug("language", language);
         $location.path(JOIN_BASE_URL + "/checkout").search("sku", sku);
     };
 });
