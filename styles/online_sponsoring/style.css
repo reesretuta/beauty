@@ -371,6 +371,22 @@ line-height: 0.8em;
   font-size: 64px;
   color: #482365;
 }
+
+.join 
+{
+	background-color: #53366c;
+}
+.join #content
+{
+  background:#fff; 
+}
+
+.cardImg 
+{
+	max-height:40px; 
+	float:left; 
+}
+
 /* join jafra page nav styles */ 
 .join_nav  > li > a
 {
@@ -459,4 +475,19 @@ line-height: 0.8em;
         padding-bottom: 180px;
     }
 }
+/* small phone screens */ 
+@media (max-width: 400px)
+{
+	.btn-lg, .btn-group-lg > .btn 
+	{
+	 font-size:12px; 
+	}
+	
+	.checkout-card .btn 
+	{
+		font-size:8px; 
+	}
+	
+}
+
 

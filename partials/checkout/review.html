@@ -9,68 +9,7 @@
   </div>
 
   <div class="col-md-offset-3 col-lg-8">
-
-    <div class="row">
-
-      <div class="col-xs-6 col-lg-4" ng-if="checkout.card">
-        <h3>Charging To:</h3>
-        <div class="checkout-card clearfix active">
-          <span class="pull-left">{{checkout.card.name}}</span>
-          <img src="/img/46x30" class="pull-right">
-          <p class="card-number">
-            <span>&bull;&bull;&bull;&bull;</span>
-            <span>&bull;&bull;&bull;&bull;</span>
-            <span>&bull;&bull;&bull;&bull;</span>
-            <span>{{substr(ccData.lastFour)}}</span>
-          </p>
-          <p class="card-expiry pull-left">
-            <small>EXP:</small>
-            {{checkout.card.expMonth}}/{{substr(checkout.card.expYear,2,2)}}
-          </p>
-          <a ng-href="{{APP_BASE_URL}}/checkout?step=Payment" class="btn pull-right card-use-btn"><i class="fa fa-pencil-square-o"></i> Change Card</a>
-        </div>
-      </div><!-- /card -->
-
-      <div class="col-xs-6 col-lg-4 checkout-address" ng-if="checkout.shipping">
-        <h3>Shipping To:</h3>
-        <span class="address-name">{{checkout.shipping.name}}</span>
-        <span class="address-street">{{checkout.shipping.address1}} {{checkout.shipping.address2}}</span>
-        <span class="address-region">{{checkout.shipping.city}}, {{checkout.shipping.state}} {{checkout.shipping.zip}}</span>
-        <span class="phone-number">{{checkout.shipping.phone}}</span>
-        <span ng-if="!isOnlineSponsoring">Speed: {{shippingSpeed}}</span>
-        <div class="address-actions">
-          <a ng-href="{{APP_BASE_URL}}/checkout?step=Shipping"><i class="fa fa-pencil-square-o"></i> Change Address</a>
-        </div>
-      </div><!-- /address -->
-
-      <div class="col-xs-6 col-lg-4 checkout-address" ng-if="checkout.billing.name">
-        <h3>Billing To:</h3>
-        <span class="address-name">{{checkout.billing.name}}</span>
-        <span class="address-street">{{checkout.billing.address1}} {{checkout.billing.address2}}</span>
-        <span class="address-region">{{checkout.billing.city}}, {{checkout.billing.state}} {{checkout.billing.zip}}</span>
-        <span class="phone-number">{{checkout.billing.phone}}</span>
-        <div class="address-actions">
-          <a ng-href="{{APP_BASE_URL}}/checkout?step=Payment"><i class="fa fa-pencil-square-o"></i> Change Address</a>
-        </div>
-      </div><!-- /address -->
-
-
-      <div class="col-xs-6 col-lg-4 checkout-address" ng-if="!checkout.billing.name">
-        <h3>Billing To:</h3>
-        <span class="address-name">{{checkout.shipping.name}}</span>
-        <span class="address-street">{{checkout.shipping.address1}} {{checkout.shipping.address2}}</span>
-        <span class="address-region">{{checkout.shipping.city}}, {{checkout.shipping.state}} {{checkout.shipping.zip}}</span>
-        <span class="phone-number">{{checkout.shipping.phone}}</span>
-        <div class="address-actions">
-          <a ng-href="{{APP_BASE_URL}}/checkout?step=Payment"><i class="fa fa-pencil-square-o"></i> Change Address</a>
-        </div>
-      </div><!-- /address -->
-
-    </div><!-- /row -->
-
-    <hr>
-
-    <form class="form order-details" role="form" name="confirmForm">
+<form class="form order-details" role="form" name="confirmForm">
       <a ng-href="{{STORE_BASE_URL}}/cart" ng-if="!isOnlineSponsoring" class="pull-right" style="margin-top:10px"><i class="fa fa-pencil-square-o"></i> make changes</a>
       <h2 class="">Order Details</h2>
       <div class="form-group">
@@ -134,7 +73,69 @@
 
       </div>
 
-      <div class="form-group text-right">
+     
+    
+    <hr>
+    
+    <div class="row">
+
+      <div class="col-xs-6 col-lg-4" ng-if="checkout.card">
+        <h3>Charging To:</h3>
+        <div class="checkout-card clearfix active">
+          <span class="pull-left">{{checkout.card.name}}</span>
+          <img src="/img/46x30" class="pull-right">
+          <p class="card-number">
+            <span>&bull;&bull;&bull;&bull;</span>
+            <span>&bull;&bull;&bull;&bull;</span>
+            <span>&bull;&bull;&bull;&bull;</span>
+            <span>{{substr(ccData.lastFour)}}</span>
+          </p>
+          <p class="card-expiry pull-left">
+            <small>EXP:</small>
+            {{checkout.card.expMonth}}/{{substr(checkout.card.expYear,2,2)}}
+          </p>
+          <a ng-href="{{APP_BASE_URL}}/checkout?step=Payment" class="btn pull-right card-use-btn"><i class="fa fa-pencil-square-o"></i> Change Card</a>
+        </div>
+      </div><!-- /card -->
+
+      <div class="col-xs-6 col-lg-4 checkout-address" ng-if="checkout.shipping">
+        <h3>Shipping To:</h3>
+        <span class="address-name">{{checkout.shipping.name}}</span>
+        <span class="address-street">{{checkout.shipping.address1}} {{checkout.shipping.address2}}</span>
+        <span class="address-region">{{checkout.shipping.city}}, {{checkout.shipping.state}} {{checkout.shipping.zip}}</span>
+        <span class="phone-number">{{checkout.shipping.phone}}</span>
+        <span ng-if="!isOnlineSponsoring">Speed: {{shippingSpeed}}</span>
+        <div class="address-actions">
+          <a ng-href="{{APP_BASE_URL}}/checkout?step=Shipping"><i class="fa fa-pencil-square-o"></i> Change Address</a>
+        </div>
+      </div><!-- /address -->
+
+      <div class="col-xs-6 col-lg-4 checkout-address" ng-if="checkout.billing.name">
+        <h3>Billing To:</h3>
+        <span class="address-name">{{checkout.billing.name}}</span>
+        <span class="address-street">{{checkout.billing.address1}} {{checkout.billing.address2}}</span>
+        <span class="address-region">{{checkout.billing.city}}, {{checkout.billing.state}} {{checkout.billing.zip}}</span>
+        <span class="phone-number">{{checkout.billing.phone}}</span>
+        <div class="address-actions">
+          <a ng-href="{{APP_BASE_URL}}/checkout?step=Payment"><i class="fa fa-pencil-square-o"></i> Change Address</a>
+        </div>
+      </div><!-- /address -->
+
+
+      <div class="col-xs-6 col-lg-4 checkout-address" ng-if="!checkout.billing.name">
+        <h3>Billing To:</h3>
+        <span class="address-name">{{checkout.shipping.name}}</span>
+        <span class="address-street">{{checkout.shipping.address1}} {{checkout.shipping.address2}}</span>
+        <span class="address-region">{{checkout.shipping.city}}, {{checkout.shipping.state}} {{checkout.shipping.zip}}</span>
+        <span class="phone-number">{{checkout.shipping.phone}}</span>
+        <div class="address-actions">
+          <a ng-href="{{APP_BASE_URL}}/checkout?step=Payment"><i class="fa fa-pencil-square-o"></i> Change Address</a>
+        </div>
+      </div><!-- /address -->
+
+    </div><!-- /row -->
+	<hr>
+ <div class="form-group text-right">
         <label class="checkbox-inline">
 
           <input type="checkbox" value="" ng-model="checkout.agree" required>
@@ -147,6 +148,7 @@
       </div>
 
     </form>
+    
   </div>
 
 </div><!--/span-->

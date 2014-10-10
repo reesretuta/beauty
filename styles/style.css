@@ -1048,19 +1048,8 @@ a:focus {
 }
 #liner_black{position:relative; left:36px; top:-7px;}
 
-.join 
-{
-	background-color: #53366c;
-}
-.join #content
-{
-  background:#fff; 
-}
-.cardImg 
-{
-	max-height:40px; 
-	float:left; 
-}
+
+
 /*
  * Responsive Styles
  * --------------------------------------------------
@@ -1110,19 +1099,6 @@ a:focus {
 }
 
 
-@media (max-width: 400px)
-{
-	.btn-lg, .btn-group-lg > .btn 
-	{
-	 font-size:12px; 
-	}
-	
-	.checkout-card .btn 
-	{
-		font-size:8px; 
-	}
-	
-}
 
 
 /*
