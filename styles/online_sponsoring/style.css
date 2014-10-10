@@ -455,6 +455,17 @@ line-height: 0.8em;
     .section-title {
         font-size: 30px;
     }
+
+    .btn-lg, .btn-group-lg > .btn 
+    {
+     font-size:12px; 
+    }
+    
+    .checkout-card .btn 
+    {
+      font-size:8px; 
+    }
+
 }
 
 /* Small screens like netbooks and tablets (iPad/iPad mini/etc) */
@@ -486,19 +497,4 @@ line-height: 0.8em;
         padding-bottom: 180px;
     }
 }
-/* small phone screens */ 
-@media (max-width: 400px)
-{
-	.btn-lg, .btn-group-lg > .btn 
-	{
-	 font-size:12px; 
-	}
-	
-	.checkout-card .btn 
-	{
-		font-size:8px; 
-	}
-	
-}
-
 
