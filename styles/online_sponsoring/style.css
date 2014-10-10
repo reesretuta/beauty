@@ -263,6 +263,9 @@ font-style: normal;
 color: #482365;
 }
 
+.testimonial .media-heading {
+margin: 8px 0 5px;
+}
 /* more links */
 .more-link, .more-link.collapsed {
   color: #877650;
@@ -313,8 +316,8 @@ color: #482365;
   transform: rotate(0deg);
 }
 
-.social-media-icons{
-  font-size: 2em;
+.social-media-icons a  i.fa{
+  color: #333;
 }
 
 span#live {
