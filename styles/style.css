@@ -1052,10 +1052,11 @@ a:focus {
 {
 	background-color: #53366c;
 }
+/*Removed this style to prevent override on Online Sponsoring stylesheet at /styles/online_sponsoring/styles.css
 .join #content
 {
   background:#fff; 
-}
+}*/
 .cardImg 
 {
 	max-height:40px; 
