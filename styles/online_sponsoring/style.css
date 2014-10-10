@@ -404,7 +404,10 @@ line-height: 0.8em;
 {
 	color: #aa73b1 !important;
 }
-
+.spacer{
+	height:55px;
+	width:100%;
+}
 
 /*  ------ RESPONSIVE BREAKPOINTS ------  */
 

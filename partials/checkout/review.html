@@ -71,7 +71,7 @@
     <hr>
 
     <form class="form order-details" role="form" name="confirmForm">
-      <a ng-href="{{STORE_BASE_URL}}/cart" class="pull-right" style="margin-top:10px"><i class="fa fa-pencil-square-o"></i> make changes</a>
+      <a ng-href="{{STORE_BASE_URL}}/cart" ng-if="!isOnlineSponsoring" class="pull-right" style="margin-top:10px"><i class="fa fa-pencil-square-o"></i> make changes</a>
       <h2 class="">Order Details</h2>
       <div class="form-group">
         <table class="table">
