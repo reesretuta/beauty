@@ -268,13 +268,21 @@ router.route('/products')
             console.log("getting product list");
             models.Product.find({masterStatus: "A", masterType: "R", onHold: false}).sort('name').limit(20).populate({
                 path: 'upsellItems.product youMayAlsoLike.product contains.product',
-                model: 'Product'
+                model: 'Product',
+                match: { $and: [
+                    {masterStatus: "A", onHold: false},
+                    {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
+                ]}
             }).populate({
                 path: 'kitGroups.kitGroup',
                 model: 'KitGroup'
             }).populate({
                 path: 'kitGroups.kitGroup.components.product',
-                model: 'Product'
+                model: 'Product',
+                match: { $and: [
+                    {masterStatus: "A", onHold: false},
+                    {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
+                ]}
             }).exec(function (err, products) {
                 if (err) {
                     res.send(err);
@@ -286,16 +294,23 @@ router.route('/products')
         }
     });
 
-// on routes that end in /products/:product_id
-router.route('/products/:product_id')
+// on routes that end in /products/:productId
+router.route('/products/:productId')
 
     // get the product with that id
     .get(function (req, res) {
-        models.Product.find({ _id: req.params.product_id, masterStatus: "A", masterType: "R", onHold: false }, function (err, products) {
+        console.log("getting product", req.params);
+        models.Product.find({ _id: req.params.productId, masterStatus: "A", onHold: false})
+        .or([
+            {masterType: "R"}, {masterType: {$exists: false}, type:"group"}
+        ])
+        .exec(function (err, products) {
             if (err) {
+                console.error("error loading product", err);
                 res.send(err);
                 return;
             } else if (products == null || products.length == 0) {
+                console.error("error loading product", products);
                 res.status(404);
                 res.end();
                 return;
@@ -304,7 +319,10 @@ router.route('/products/:product_id')
             var opts = {
                 path: 'upsellItems.product youMayAlsoLike.product contains.product',
                 model: 'Product',
-                match: { masterStatus: "A", masterType: "R", onHold: false }
+                match: { $and: [
+                    {masterStatus: "A", onHold: false},
+                    {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
+                ]}
             }
 
             // populate products
@@ -558,6 +576,8 @@ router.route('/clients/:client_id/addresses')// get a client's addresses
             "address1": req.body.address1,
             "address2": req.body.address2,
             "city": req.body.city,
+            "county": req.body.county,
+            "geocode": "000000",
             "state": req.body.state,
             "zip": req.body.zip,
             "country": req.body.country,
@@ -658,8 +678,8 @@ router.route('/clients/:client_id/creditCards')// get a client's creditCards
             res.status(r.status);
 
             // add this CC to the session
-            var res = r.result;
-            //req.session.client.addresses.push(address);
+            var cc = r.result;
+            req.session.client.addresses.push(cc);
 
             // return the address data
             res.json(res);
@@ -775,11 +795,11 @@ router.route('/validate/address') // validate address
             "country": req.body.country,
             "phone": req.body.phone
         }).then(function(r) {
-            console.log("validated email", r.status, "result", r.result);
+            console.log("validated address", r.status, "result", r.result);
             res.status(r.status);
             res.json(r.result);
         }, function(r) {
-            console.error("failed to validate email", r.status, "result", r.result);
+            console.error("failed to validate address", r.status, "result", r.result);
             res.status(r.status);
             res.json(r.result);
         });
