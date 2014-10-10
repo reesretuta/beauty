@@ -1049,11 +1049,12 @@ a:focus {
 }
 #liner_black{position:relative; left:36px; top:-7px;}
 
+/*Removed these style to prevent override on Online Sponsoring stylesheet at /styles/online_sponsoring/styles.css at behest per Dain's request
 .join 
 {
 	background-color: #53366c;
 }
-/*Removed this style to prevent override on Online Sponsoring stylesheet at /styles/online_sponsoring/styles.css
+
 .join #content
 {
   background:#fff; 
