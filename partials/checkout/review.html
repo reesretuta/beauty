@@ -104,7 +104,7 @@
               <!--{{item.product.pricing.detailprice.price | currency}}-->
               <!--</span>-->
               <!--</span>-->
-                            <span ng-repeat="detailprice in item.product.prices[0]">
+                            <span ng-repeat="detailprice in item.product.currentPrice">
                               <span ng-if="detailprice.typeId==2" class="item-price-sale">
                                 {{detailprice.price | currency}}
                               </span>
@@ -112,9 +112,9 @@
                                 {{detailprice.price | currency}}
                               </span>
                             </span>
-                            <span ng-if="item.product.prices[0].price">
+                            <span ng-if="item.product.currentPrice.price">
                               <span class="item-price">
-                                {{item.product.prices[0].price | currency}}
+                                {{item.product.currentPrice.price | currency}}
                               </span>
                             </span>
             </td>

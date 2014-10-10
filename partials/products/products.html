@@ -14,7 +14,7 @@
               <p class="store-item-title"><a ng-href="{{STORE_BASE_URL}}/products/{{product.sku}}#top">{{product.name}}</a></p>
               <p class="store-item-price">
 
-              <span ng-repeat="detailprice in product.prices[0]">
+              <span ng-repeat="detailprice in product.currentPrice">
                 <span ng-if="detailprice.type==2" class="item-price-sale">
                   ${{detailprice.price}}
                   <span class="brand-font saleflag">On Sale!</span>
@@ -23,9 +23,9 @@
                   ${{detailprice.price}}
                 </span>
               </span>
-              <span ng-if="product.prices[0].price">
+              <span ng-if="product.currentPrice.price">
                 <span class="item-price">
-                  ${{product.prices[0].price}}
+                  ${{product.currentPrice.price}}
                 </span>
               </span>
 

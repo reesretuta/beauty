@@ -47,7 +47,7 @@ angular.module('app.controllers.cart')
 
                     $log.debug("CartController(): total(): using product", product);
                     if (!(Array.isArray(product.prices)) || product.prices.length == 1) {
-                        total += item.quantity * product.prices[0].price;
+                        total += item.quantity * product.currentPrice.price;
                     } else if (product.prices.length == 0) {
                         // there is a problem, we don't have prices
                         $log.error("CartController(): total(): there are no prices listed for this item", item);
@@ -61,7 +61,7 @@ angular.module('app.controllers.cart')
                         })
                         if (!priceFound) {
                             // use the first price in the list (FIXME - need to check dates))
-                            total += item.quantity * product.prices[0].price;
+                            total += item.quantity * product.currentPrice.price;
                         }
                     }
 
