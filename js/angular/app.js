@@ -68,7 +68,7 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
 
                     // let everyone else know
                     $rootScope.$emit('loginSessionExpired', 'Login session expired');
-                }, 30000);
+                }, 3600000);
             }
 
             function success(response) {
