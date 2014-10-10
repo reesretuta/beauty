@@ -32,7 +32,7 @@ angular.module('app.controllers.main')
                     path = $location.path(),
                     params = $location.search();
 
-                // if we have a composition and run, and the current scope doesn't already have the same run
+                // if we have a store page
                 if (path == STORE_BASE_URL + "/products" && (urlSearch != localSearch)) {
                     $log.debug("MainController(): changeListener(): location change event in projects page", url, params);
 

@@ -30,12 +30,14 @@ var hour = 3600000;
 var sess = {
     secret: 'jkfh873y8hwhd871wh9udhju1w9sdhyy1gef87g87dfgw',
     cookie: {
-        maxAge: hour,
+        maxAge: hour * 8,
         secure: false,
-        path: "/"
+        path: "/",
+        httpOnly: false
     },
     resave: true,
     saveUninitialized: true,
+    unset: "destroy",
     store: new MongoStore({
         mongoose_connection : models.db,
         db: config.db,

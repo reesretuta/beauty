@@ -1,8 +1,8 @@
 'use strict';
 
 // Declare app level module which depends on filters, and services
-var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 'ngAnimate', 'ui.bootstrap', 'ui.mask', 'ui.keypress', 'ui.jq', 'app.filters', 'app.services', 'app.controllers', 'app.directives', 'pasvaz.bindonce', 'jmdobry.angular-cache', 'ui.ladda', 'autocomplete', 'ui.event', 'mgo-angular-wizard', 'pascalprecht.translate'])
-    .config([ '$locationProvider', '$routeProvider', '$rootScopeProvider', '$angularCacheFactoryProvider', '$translateProvider', '$provide', 'BASE_URL', 'STORE_BASE_URL', 'JOIN_BASE_URL', function ($locationProvider, $routeProvider, $rootScopeProvider, $angularCacheFactoryProvider, $translateProvider, $provide, BASE_URL, STORE_BASE_URL, JOIN_BASE_URL) {
+var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 'ngAnimate', 'ngCookies', 'ui.bootstrap', 'ui.mask', 'ui.keypress', 'ui.jq', 'app.filters', 'app.services', 'app.controllers', 'app.directives', 'pasvaz.bindonce', 'jmdobry.angular-cache', 'ui.ladda', 'autocomplete', 'ui.event', 'mgo-angular-wizard', 'pascalprecht.translate'])
+    .config([ '$locationProvider', '$routeProvider', '$rootScopeProvider', '$angularCacheFactoryProvider', '$translateProvider', '$httpProvider', '$provide', 'BASE_URL', 'STORE_BASE_URL', 'JOIN_BASE_URL', function ($locationProvider, $routeProvider, $rootScopeProvider, $angularCacheFactoryProvider, $translateProvider, $httpProvider, $provide, BASE_URL, STORE_BASE_URL, JOIN_BASE_URL) {
         //$locationProvider.html5Mode(true);
         $angularCacheFactoryProvider.setCacheDefaults({
             maxAge: 300000, // default to 5 minute caching
@@ -51,8 +51,42 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
         });
 
         $translateProvider.preferredLanguage('en_US');
-    }])
-    .run(function ($rootScope, $animate, BASE_URL) {
+
+
+        var interceptor = ['$location', '$q', '$timeout', '$rootScope', '$log', function($location, $q, $timeout, $rootScope, $log) {
+            var cancelSessionTimerPromise = null;
+
+            function resetSessionTimer() {
+                $log.debug("resetSessionTimer()");
+                if (cancelSessionTimerPromise != null) {
+                    $timeout.cancel(cancelSessionTimerPromise);
+                }
+
+                // expire login sessions after an hour of inactivity
+                cancelSessionTimerPromise = $timeout(function() {
+                    $log.debug('resetSessionTimer(): session expired, notifying listeners');
+
+                    // let everyone else know
+                    $rootScope.$emit('loginSessionExpired', 'Login session expired');
+                }, 30000);
+            }
+
+            function success(response) {
+                resetSessionTimer();
+                return response;
+            }
+
+            function error(response) {
+                return $q.reject(response);
+            }
+
+            return function(promise) {
+                return promise.then(success, error);
+            }
+        }];
+        $httpProvider.responseInterceptors.push(interceptor);
+
+    }]).run(function ($rootScope, $animate, BASE_URL) {
         $rootScope.BASE_URL = BASE_URL;
         $rootScope.STORE_BASE_URL = BASE_URL + "/shop";
         $rootScope.JOIN_BASE_URL = BASE_URL + "/join";

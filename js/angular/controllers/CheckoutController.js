@@ -400,7 +400,6 @@ angular.module('app.controllers.checkout')
             $scope.checkoutUpdated();
         }
 
-
         $scope.checkoutUpdated = function() {
             $log.debug("CheckoutController(): checkoutUpdated(): checkout updated", $scope.checkout);
             Checkout.setCheckout($scope.checkout);

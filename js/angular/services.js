@@ -64,7 +64,7 @@ angular.module('app.services', ['ngResource'])
 
         return searchService;
     })
-    .factory('Session', function($rootScope, $resource, $log, $http, API_URL, $q) {
+    .factory('Session', function($rootScope, $resource, $log, $location, $http, $cookieStore, $cookies, $timeout, $q, API_URL, STORE_BASE_URL) {
         var sessionService = {};
 
         // load the session
@@ -93,6 +93,23 @@ angular.module('app.services', ['ngResource'])
         }
 
         sessionService.getLocalSession = getLocalSession;
+
+        $rootScope.$on('loginSessionExpired', function (event, data) {
+            $log.debug("session expired, cleaning up", event, data);
+
+            var session = getLocalSession();
+
+            if (session.client && session.client.id) {
+                // remove local client
+                deleteLocalSession();
+                $log.debug("removing session cookie", $cookies["connect.sid"]);
+                $cookieStore.remove("connect.sid");
+
+                alert('You have been logged out due to inactivity');
+                $location.path(STORE_BASE_URL).search();
+                $log.error("session expired")
+            }
+        });
 
         // used for initialization
         function getInternal() {
@@ -411,7 +428,19 @@ angular.module('app.services', ['ngResource'])
                 // load the project for the cart items
                 cartService.loadProducts(session.cart).then(function(items) {
                     $log.debug("cartService().getItems(): loaded items from cart & populated products", items);
-                    d.resolve(items);
+
+                    // filter out invalid cart items
+                    var list = [];
+                    for (var i=0; i < items.length; i++) {
+                        var item = items[i];
+                        if (item.sku) {
+                            list.push(item);
+                        } else {
+                            $log.error("removing bad item from cart");
+                        }
+                    }
+
+                    d.resolve(list);
                 }, function(error) {
                     $log.error("cartService().getItems(): failed to populated products", error);
                     d.reject(error);
