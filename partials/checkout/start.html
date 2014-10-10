@@ -3,6 +3,7 @@
   <div class="col-md-offset-3">
     <h1 class="checkouth1" ng-if="profile.customerStatus == 'existing' && !isOnlineSponsoring">Sign in</h1>
     <h1 class="checkouth1" ng-if="profile.customerStatus == 'new'">Create an Account</h1>
+    <div ng-if="loginError" class="alert alert-danger" role="alert">Invalid username or password.</div>
   </div>
   <!--valid={{signInForm.$valid}}-->
   <form name="signInForm" class="form-horizontal" role="form">
@@ -22,7 +23,7 @@
     <div class="form-group">
       <label for="loginEmail" class="col-md-3 control-label">Email Address</label>
       <div class="col-sm-6">
-        <input name="loginEmail" ng-model="profile.loginEmail" type="email" class="form-control" id="loginEmail" placeholder="Email" tabindex="1" required>
+        <input name="loginEmail" ng-model="profile.loginEmail" type="email" class="form-control" id="loginEmail" placeholder="example@gmail.com" tabindex="1" required>
         <!--valid={{signInForm.loginEmail.$valid}}-->
       </div>
     </div>
@@ -30,7 +31,7 @@
     <div class="form-group" ng-if="isOnlineSponsoring">
       <label for="phoneNumber" class="col-md-3 control-label">Phone number</label>
       <div class="col-sm-6">
-        <input name="phoneNumber" ui-mask="(999) 999-9999" ng-model="profile.phoneNumber" class="form-control" id="phoneNumber" placeholder="(###) ###-####" tabindex="1" required>
+        <input name="phoneNumber" ui-mask="(999) 999-9999" ng-model="profile.phoneNumber" class="form-control" id="phoneNumber" placeholder="(___) ___-____" tabindex="1" required>
         <!--valid={{signInForm.phoneNumber.$valid}}-->
       </div>
     </div>
@@ -42,51 +43,15 @@
         <!--valid={{signInForm.loginPassword.$valid}}-->
       </div>
     </div>
-
-    <div class="form-group" ng-if="!isOnlineSponsoring">
-      <div class="col-md-offset-3 col-sm-9">
-
-        <div class="radio">
-          <label>
-            <input name="customerStatus" ng-model="profile.customerStatus" type="radio" id="optionsRadios1" value="new">
-            I am a new customer
-          </label>
-        </div>
-        <div class="radio">
-          <label>
-            <input name="customerStatus" ng-model="profile.customerStatus" type="radio" id="optionsRadios2" value="existing">
-            I am an existing customer
-          </label>
-        </div>
-
-      </div>
-    </div>
     <!--valid={{signInForm.customerStatus.$valid}}-->
-
-    <div class="form-group">
-      <div class="col-md-offset-3 col-sm-9">
-
-        <!--profile.customerStatus={{profile.customerStatus}}-->
-        <div class="row"><div class="col-sm-6"><hr></div></div>
-
-        <div ng-if="loginError" class="alert-danger">Invalid username or password.</div>
-
-        <div class="checkbox" ng-if="!isOnlineSponsoring">
-          <label>
-            <!--valid={{signInForm.keepMeSignedIn.$valid}}-->
-            <input name="keepMeSignedIn" ng-model="checkout.keepMeSignedIn" type="checkbox" checked> Keep me signed in &nbsp;&nbsp;
-            <a popover="Placeholder text" popover-title="Keep me signed in" href=""><i class="fa fa-info-circle"></i> More Info</a>
-          </label>
-        </div>
-      </div>
-    </div>
 
     <div class="form-group">
       <div class="col-md-offset-3 col-sm-9">
         <div class="input-group">
           <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-          <button ng-if="!isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" tabindex="3" ng-click="loginOrCreateUser()" ng-disabled="!signInForm.$valid">Continue to Secure Checkout &nbsp;<i class="fa fa-caret-right"></i></button>
-          <button ng-if="isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" tabindex="3" wz-next ng-disabled="!signInForm.$valid">Continue to Secure Checkout &nbsp;<i class="fa fa-caret-right"></i></button>
+          <button ng-if="profile.customerStatus == 'existing' && !isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" tabindex="3" ng-click="loginOrCreateUser()" ng-disabled="!signInForm.$valid">Sign In &nbsp;<i class="fa fa-caret-right"></i></button>
+          <button ng-if="profile.customerStatus == 'new' && !isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" tabindex="3" ng-click="loginOrCreateUser()" ng-disabled="!signInForm.$valid">Create Account &nbsp;<i class="fa fa-caret-right"></i></button>
+          <button ng-if="isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" tabindex="3" wz-next ng-disabled="!signInForm.$valid">Continue &nbsp;<i class="fa fa-caret-right"></i></button>
         </div>
       </div>
     </div>
@@ -95,8 +60,10 @@
       <div class="col-md-offset-3 col-sm-9">
         <div class="row"><div class="col-sm-6"><hr></div></div>
         <p><a ng-href="{{APP_BASE_URL}}/checkout?step=Shipping">Checkout as guest</a></p>
-        <p><a href="" onclick="$('#forgot').css('display','block'); $('#signin').css('display','none');">I forgot my password</a></p>
-        <!--<p><a href="">Update profile</a></p>-->
+        <p ng-if="profile.customerStatus == 'existing'"><a href="" onclick="$('#forgot').css('display','block'); $('#signin').css('display','none');">I forgot my password</a></p>
+        <p><br><p>
+        <p ng-if="profile.customerStatus == 'new'">Already a customer? <a href="" ng-click="profile.customerStatus = 'existing'">Sign In</a>.</p>
+        <p ng-if="profile.customerStatus == 'existing'">Not yet a customer? <a href="" ng-click="profile.customerStatus = 'new'">Create Account</a>.</p>
       </div>
     </div>
   </form>
