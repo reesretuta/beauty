@@ -3,7 +3,11 @@
   <div class="col-md-offset-3">
     <h1 class="checkouth1" ng-if="profile.customerStatus == 'existing' && !isOnlineSponsoring">Sign in</h1>
     <h1 class="checkouth1" ng-if="profile.customerStatus == 'new'">Create an Account</h1>
-    <div ng-if="loginError" class="alert alert-danger" role="alert">Invalid username or password.</div>
+    <div class="row">
+      <div class="col-sm-6">
+        <div ng-if="loginError" class="alert alert-danger" role="alert">Invalid username or password.</div>
+      </div>
+    </div>
   </div>
   <!--valid={{signInForm.$valid}}-->
   <form name="signInForm" class="form-horizontal" role="form">
