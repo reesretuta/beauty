@@ -1097,3 +1097,21 @@ a:focus {
     max-width: 70%;
   }
 }
+/*
+ * placeholder fixes across all browsers
+ */
+::-webkit-input-placeholder {
+   color: #999!important;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   color: #999!important;  
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   color: #999!important;  
+}
+
+:-ms-input-placeholder {  
+   color: #999!important;  
+}

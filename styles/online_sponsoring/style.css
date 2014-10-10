@@ -384,9 +384,28 @@ line-height: 0.8em;
 	padding: 5px 16px;
 }
 
-.join_nav  > li > a:hover
+.join_nav  > li > a:hover , .join_nav  > li > a:focus
 {
-	background:#f00; 
-	color:#fff;
+	background-color:#c52033 !important; 
+	color:#fff !important;
+} 
+.navbar-language > li > a
+{
+	text-shadow:none; 
+	margin:5px;
+	border-radius: 0px; 
+	
+}
+.navbar-language > li > a:hover , .navbar-language > li > a:hover
+{
+	text-shadow:none; 
+	margin:5px;
+	border-radius: 0px; 
+	background-color:#c52033 !important; 
+	color:#fff !important;
+}
+.navbar-language  .dropdown-menu > li > a
+{
+	color: #aa73b1 !important;
 }
 
