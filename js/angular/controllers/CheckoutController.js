@@ -13,8 +13,6 @@ angular.module('app.controllers.checkout')
         $rootScope.title = "Checkout";
         $rootScope.section = "checkout";
 
-        $scope.client = {};
-
         // persisted to session
         $scope.checkout = {
             billSame: true,
@@ -33,7 +31,9 @@ angular.module('app.controllers.checkout')
             phoneNumber: '',
             newShippingAddress: {},
             newBillingAddress: {},
-            newCard: {}
+            newCard: {
+                cardType: 'visa'
+            }
         };
 
         // set current step
@@ -183,24 +183,17 @@ angular.module('app.controllers.checkout')
                 } else if (Session.isLoggedIn()) {
                     $log.debug("CheckoutController(): user is logged in, determining checkout step", urlStep);
 
-                    Session.get().then(function(session) {
-                        $log.debug("CheckoutController(): user is logged in. step", urlStep, session.client);
-                        $scope.client = session.client;
-
-                        if (WizardHandler.wizard('checkoutWizard') != null && urlStep == 'Start') {
-                            $log.debug("CheckoutController(): skipping to shipping step");
+                    if (WizardHandler.wizard('checkoutWizard') != null && urlStep == 'Start') {
+                        $log.debug("CheckoutController(): skipping to shipping step");
+                        //$location.search('step', 'Shipping');
+                        WizardHandler.wizard('checkoutWizard').goTo('Shipping');
+                    } else if (urlStep == 'Start') {
+                        $timeout(function() {
+                            $log.debug("CheckoutController(): skipping to shipping step after delay");
                             //$location.search('step', 'Shipping');
                             WizardHandler.wizard('checkoutWizard').goTo('Shipping');
-                        } else if (urlStep == 'Start') {
-                            $timeout(function() {
-                                $log.debug("CheckoutController(): skipping to shipping step after delay");
-                                //$location.search('step', 'Shipping');
-                                WizardHandler.wizard('checkoutWizard').goTo('Shipping');
-                            }, 0);
-                        }
-                    }, function(error) {
-                        $log.error("CheckoutController(): error loading session", error);
-                    });
+                        }, 0);
+                    }
                 }
             }
         }
@@ -367,7 +360,6 @@ angular.module('app.controllers.checkout')
                     language: $scope.profile.language
                 }).then(function(session) {
                     $log.debug("CheckoutController(): loginOrCreateUser(): created client, moving to next step", session.client);
-                    $scope.client = session.client;
                     $scope.profile.customerStatus = 'existing';
                     $scope.checkoutUpdated();
                     // jump to Shipping
@@ -383,7 +375,6 @@ angular.module('app.controllers.checkout')
                 // do the auth check and store the session id in the root scope
                 Session.login($scope.profile.loginEmail, $scope.profile.loginPassword).then(function(session) {
                     $log.debug("CheckoutController(): loginOrCreateUser(): authenticated, moving to next step", session.client);
-                    $scope.client = session.client;
                     $scope.profile.customerStatus = 'existing';
                     $scope.checkoutUpdated();
                     // jump to Shipping
@@ -451,6 +442,7 @@ angular.module('app.controllers.checkout')
             $log.debug("CheckoutController(): selectShippingAddressAndContinue(): shipping and billing set to", address);
             $scope.checkout.shipping = address;
             $scope.checkout.billing = address;
+            WizardHandler.wizard('checkoutWizard').goTo('Payment');
             $scope.checkoutUpdated();
         }
 
@@ -473,6 +465,10 @@ angular.module('app.controllers.checkout')
 
                         $scope.checkout.shipping = a;
                         $scope.checkout.billing = a;
+
+                        // clear the form versions
+                        $scope.profile.newShippingAddress = null;
+                        $scope.profile.newBillingAddress = null;
 
                         $scope.checkoutUpdated();
                         WizardHandler.wizard('checkoutWizard').goTo('Payment');
@@ -520,6 +516,7 @@ angular.module('app.controllers.checkout')
                 if ($scope.checkout.billing != null && $scope.checkout.billing.id == addressId) {
                     $scope.checkout.billing = null;
                 }
+
                 d.resolve();
                 $scope.checkoutUpdated();
             }, function(err) {
