@@ -169,7 +169,7 @@ router.route('/products')
             //var re = new RegExp(searchString);
             models.Product.find({ $text: { $search: "" + searchString } })//.or([{ 'name': { $regex: re }}, { 'description': { $regex: re }}, { 'usage': { $regex: re }}, { 'ingredients': { $regex: re }}])
                 .and([
-                    {masterStatus: "A", onHold: false},
+                    {masterStatus: "A", onHold: false, searchable: true},
                     {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
                 ]).sort('name').limit(20).populate({
                     path: 'upsellItems.product youMayAlsoLike.product contains.product',
@@ -605,7 +605,15 @@ router.route('/clients/:client_id')// get a consultant
 router.route('/consultants') // get current consultant
     // create a client
     .post(function (req, res) {
-        res.json({ consultantId: 1000 });
+        jafraClient.createConsultant().then(function(r) {
+            console.log("success")
+            res.status(r.status);
+            res.json(r.result);
+        }, function(r) {
+            console.error("failure")
+            res.status(r.status);
+            res.json(r.result);
+        });
     });
 
 router.route('/consultants/:consultant_id')// get a consultant
@@ -624,9 +632,9 @@ router.route('/consultants/:consultant_id')// get a consultant
 //        };
 //    })
 
-    // create a consultant
+    // update a consultant
     .post(function (req, res) {
-        res.json({ consultantId: 1000 });
+
     });
 
 // ADDRESSES

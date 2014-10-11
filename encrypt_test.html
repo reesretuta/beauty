@@ -1,12 +1,11 @@
 <html>
 <head>
   <script type="text/javascript" src="/lib/requirejs/require.js"></script>
-  <script type="text/javascript" src="/lib/jquery/dist/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/jquery/dist/jquery.js"></script>
 </head>
 <body>
 
 <script type="text/javascript">
-require(["lib/openpgp.min.js"], function(openpgp) {
   var key = ["-----BEGIN PGP PUBLIC KEY BLOCK-----",
     "Version: GnuPG v1",
     "",
@@ -59,35 +58,77 @@ require(["lib/openpgp.min.js"], function(openpgp) {
     "YPxuUDQHu0aR58vdYj4E/LXBH4Y3Yw==",
     "=jeuV",
     "-----END PGP PUBLIC KEY BLOCK-----"];
-  var publicKey = openpgp.key.readArmored(key.join("\n"));
-  console.log("public key", publicKey);
 
-  var ccData = {
-    "name": "Joe Smith",
-    "card": "4111111111111111",
-    "expMonth": "12",
-    "expYear": "2015",
-    "cvv": "1111",
-    "clientId" : 12
-  }
-  var pgpMessage = openpgp.encryptMessage(publicKey.keys, JSON.stringify(ccData));
-  console.log("encrypted message", pgpMessage);
+  // do PGP encryption here
+  require(["/lib/openpgp.min.js"], function(openpgp) {
+    var publicKey = openpgp.key.readArmored(key.join("\n"));
+    var consultant = JSON.stringify({
+      "email" : "arimus@gmail.com",
+      "firstName": "David",
+      "lastName": "Castro",
+      "language": "en_US",
+      "ssn": "111-11-1111",
+      "dateOfBirth": "12/12/1978",
+      "phone": "555-333-2222",
+      "billingAddress": {
+        "name": "David Castro",
+        "address1": "7661 Indian Canyon Cir",
+        "address2": "",
+        "city": "Corona",
+        "state": "CA",
+        "stateDescription": "CA",
+        "zip": "92880",
+        "county": "Riverside",
+        "country": "US",
+        "geocode": "000000",
+        "phone": "555-333-2222"
+      },
+      "shippingAddress": {
+        "name": "David Castro",
+        "address1": "7661 Indian Canyon Cir",
+        "address2": "",
+        "city": "Corona",
+        "state": "CA",
+        "stateDescription": "CA",
+        "zip": "92880",
+        "county": "Riverside",
+        "country": "US",
+        "geocode": "000000",
+        "phone": "555-333-2222"
+      },
+      "creditCard": {
+        "name": "Dave Castro",
+        "card": "4111111111111111",
+        "expMonth": "12",
+        "expYear": "2015",
+        "cvv": "1111"
+      },
+      "agreementAccepted": true,
+      "source": "facebook",
+      "total": 19.50,
+      "products": [
+        {
+          "sku": "25386",
+          "qty": 1
+        }
+      ]
+    });
 
-  var url = "/api/clients/12/creditCards";
+    var encrypted = openpgp.encryptMessage(publicKey.keys, consultant);
+    encrypted = encrypted.trim();
+    console.log("consultant data", consultant);
+    console.log("encrypted credit card data", encrypted);
 
-  $.ajax({
-    type: "POST",
-    url: url,
-    data: {
-      encrypted: pgpMessage
-    },
-    success: function(data, status) {
-      console.log("success", data, status);
-    },
-    dataType: 'json'
+    $.ajax({
+      type: "POST",
+      url: "http://189.206.20.52:8091/cgidev2/JOS05002P.pgm",
+      data: { valToDecrypt: encrypted }
+    }).done(function(data) {
+      console.log("success", data);
+    }).error(function(err) {
+      console.log("error", err);
+    })
   });
-
-});
 
 </script>
 
