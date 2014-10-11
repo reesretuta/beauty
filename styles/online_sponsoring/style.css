@@ -524,7 +524,7 @@ min-width:131px;
        width:30px;
        height:50px;
       }
-      
+   /*   
 .carousel-control.right
 {
   background-image:none; 
@@ -533,12 +533,12 @@ min-width:131px;
 .carousel .left
 {
   background: none;
-  /*pointer-events: none;*/
+  /*pointer-events: none;
 }
 /*
 .carousel .left .glyphicon {
   display: none;
-}*/
+}
 .carousel .right {
   cursor: pointer;
 }
@@ -549,7 +549,7 @@ min-width:131px;
   outline:0 none; 
   color:#fff;   
 
-}
+}*/
 
 /*
  * Join Styles
