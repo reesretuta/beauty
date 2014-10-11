@@ -566,6 +566,11 @@ angular.module('app.controllers.checkout')
             $log.debug("CheckoutController(): placeOrder(): profile", $scope.profile);
         }
 
+        $scope.placeOrder = function() {
+            $log.debug("CheckoutController(): placeOrder(): checkout", $scope.checkout);
+            $log.debug("CheckoutController(): placeOrder(): profile", $scope.profile);
+        }
+
         $scope.selectShippingAddressAndContinue = function(address) {
             $log.debug("CheckoutController(): selectShippingAddressAndContinue(): shipping and billing set to", address);
             $scope.checkout.shipping = address;
