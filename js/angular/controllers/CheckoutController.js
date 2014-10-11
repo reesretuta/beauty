@@ -585,9 +585,21 @@ angular.module('app.controllers.checkout')
 
             if ($scope.isOnlineSponsoring) {
                 $log.debug("CheckoutController(): addShippingAddressAndContinue(): setting consultant shipping/billing address", address);
-                $scope.checkout.shipping = address;
-                $scope.checkout.billing = address;
-                WizardHandler.wizard('checkoutWizard').goTo('Payment');
+
+                Addresses.validateAddress(address).then(function(a) {
+                    $log.debug("CheckoutController(): addShippingAddressAndContinue(): added address", a);
+
+                    $scope.checkout.shipping = a;
+                    $scope.checkout.billing = a;
+
+                    $scope.checkoutUpdated();
+                    WizardHandler.wizard('checkoutWizard').goTo('Payment');
+                }, function(error) {
+                    $log.error("CheckoutController(): addShippingAddressAndContinue(): error adding address", error);
+                    // FIXME - failed to add, show error
+                    $scope.shippingAddressError = error;
+                });
+
             } else {
                 // validate address
                 Addresses.validateAddress(address).then(function(address2) {

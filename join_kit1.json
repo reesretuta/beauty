@@ -16,7 +16,7 @@
             "shippingSurcharge" : 0,
             "typeId" : 1,
             "effectiveStartDate" : { "$date" : 946702800000 },
-            "effectiveEndDate" : { "$date" : 956702800000 },
+            "effectiveEndDate" : { "$date" : 1735707600000 },
             "customerTypes" : [ 
                 "Non-Party Customer", 
                 "Party Guest", 
@@ -32,7 +32,7 @@
             "imagePath" : "/img/royal_starter_kit.png",
             "rank" : 1,
             "startDate" : { "$date" : 946702800000 },
-            "endDate" : { "$date" : 956702800000 }
+            "endDate" : { "$date" : 1735707600000 }
         }
     ],
     "type" : "kit",

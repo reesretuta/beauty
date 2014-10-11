@@ -667,6 +667,8 @@ angular.module('app.services', ['ngResource'])
                             ]
                         }
              */
+            var priceSelected = false;
+
             $.each(product.prices, function (index2, price) {
                 $log.debug("cartService(): loadProducts(): processing price", price);
                 var now = new Date().getTime();
@@ -676,9 +678,12 @@ angular.module('app.services', ['ngResource'])
                     // this is our current price
                     $log.debug("cartService(): loadProducts(): setting price", price, "now", now, "start", start, "end", end);
                     product.currentPrice = price;
+                    priceSelected = true;
                     return;
                 }
             });
+
+            $log.debug("priceSelected?", priceSelected, product.prices);
         }
         return productService;
     })

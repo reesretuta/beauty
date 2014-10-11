@@ -854,14 +854,6 @@ router.route('/orders')// create an order
 //// VALIDATION
 router.route('/validate/address') // validate address
     .post(function (req, res) {
-        // must have a client added to the session first (logged in or going through join)
-        if (req.session.client == null) {
-            console.log("permission denied to address validation");
-            res.status(401);
-            res.end();
-            return;
-        }
-
         console.log("validating address", req.body);
 
         // validate the address
