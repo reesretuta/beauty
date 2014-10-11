@@ -203,7 +203,7 @@ h2 {
 .dsa-logo:hover,
 .dsa-logo:focus {
   background-position: -211px -53px;
-}
+}/*
 .carousel-control {
   opacity: 0;
   width: 10%;
@@ -216,7 +216,7 @@ h2 {
   left: 50%;
   width: 1em;
   margin: -.5em auto auto -.5em;
-}
+}*/
 .breadcrumb {
   background: none;
   padding: 8px 0;
