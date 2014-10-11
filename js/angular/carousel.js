@@ -14,11 +14,5 @@ function CarouselDemoCtrl($scope){
     {
       image: '/img/products_fragranceWomen.jpg'
     }
-    {
-      image: '/img/products_fragranceMen.jpg'
-    }
-    {
-      image: '/img/products_color.jpg'
-    }
   ];
-}
+};
