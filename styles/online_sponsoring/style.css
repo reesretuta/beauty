@@ -226,6 +226,10 @@ background-blend-mode: multiply;
   background:      radial-gradient(ellipse at 50% -3%, rgba(00, 00, 00, 0.25), rgba(97, 97, 97, 0.0) 40%);
 }
 
+.section-copy {
+  padding: 0 15px 0 30px;
+}
+
 section#why_jafra_products {
   background: #e0dbcf;
 }
@@ -271,6 +275,7 @@ margin: 8px 0 5px;
   -o-transition: all 200ms ease;
   transition: all 200ms ease;
   margin-top: 50px;
+  margin-right: 50px;
 }
 .more-link span {
   color: #877650;
@@ -317,6 +322,7 @@ margin: 8px 0 5px;
   color: #421F5D;
   display: block;
   margin-top: 30px;
+  margin-right: 0;
   padding: 0 50px 0 0;
   font-size: 24px;
   line-height: 1.4;
