@@ -251,7 +251,7 @@ section#why_jafra_rewards {
 }
 
 section#why_jafra_testimonials {
-  /*background: #ededed; -- body background color -- */
+  background: transparent;  /* -- body background color -- */
 }
 
 section h3.hero-header-title {
@@ -269,7 +269,12 @@ font-weight: normal;
 font-style: normal;
 color: #482365;
 }
-
+.testimonials {
+  width: 80%;
+}
+.testimonial {
+  padding: 0 40px 40px;
+}
 .testimonial .media-heading {
 margin: 8px 0 5px;
 }
