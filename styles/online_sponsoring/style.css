@@ -300,6 +300,7 @@ margin: 8px 0 5px;
   -o-transition: all 200ms ease;
   transition: all 200ms ease;
   margin-top: 50px;
+  margin-right: 50px;
 }
 .more-link span {
   color: #877650;
@@ -346,6 +347,7 @@ margin: 8px 0 5px;
   color: #421F5D;
   display: block;
   margin-top: 30px;
+  margin-right: 0;
   padding: 0 50px 0 0;
   font-size: 24px;
   line-height: 1.4;
