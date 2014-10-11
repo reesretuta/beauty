@@ -846,7 +846,7 @@ function validateAddress(address) {
                 "Country":address.country,
                 "Casing":"PROPER"
             }, function (error, response) {
-                console.log("validateAddress(): response", error, "status", response.NorthAmericanAddressVerificationResult.ServiceStatus.StatusNbr);
+                console.log("validateAddress(): response", error);
                 if (error || response.NorthAmericanAddressVerificationResult.ServiceStatus.StatusNbr != 200) {
                     console.error("validateAddress(): error", error, "response", response);
                     deferred.reject({
@@ -854,7 +854,7 @@ function validateAddress(address) {
                         result: {
                             statusCode: 500,
                             errorCode: "validateAddressFailed",
-                            message: "Unknown error while validating address"
+                            message: response.NorthAmericanAddressVerificationResult.ServiceStatus.StatusDescription
                         }
                     });
                     return;
@@ -913,7 +913,7 @@ function validateAddress(address) {
                         result: {
                             statusCode: 500,
                             errorCode: "invalidAddress",
-                            message: "Invalid address"
+                            message: "Invalid Address"
                         }
                     });
                 }
