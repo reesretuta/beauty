@@ -1,4 +1,4 @@
-{
+[{
     "_id" : "19634",
     "kitGroups" : [],
     "contains" : [],
@@ -15,9 +15,8 @@
             "retailVolume" : 0,
             "shippingSurcharge" : 0,
             "typeId" : 1,
-            "_id" : ObjectId("543690e7a0eaec061f6a6f28"),
-            "effectiveStartDate" : ISODate("2000-01-01T05:00:00.000Z"),
-            "effectiveEndDate" : ISODate("2025-01-01T05:00:00.000Z"),
+            "effectiveStartDate" : { "$date" : 946702800000 },
+            "effectiveEndDate" : { "$date" : 956702800000 },
             "customerTypes" : [ 
                 "Non-Party Customer", 
                 "Party Guest", 
@@ -32,9 +31,8 @@
             "alt" : "Color Set",
             "imagePath" : "/img/royal_starter_kit.png",
             "rank" : 1,
-            "_id" : ObjectId("543690e7a0eaec061f6a6f27"),
-            "startDate" : ISODate("2010-07-22T04:00:00.000Z"),
-            "endDate" : ISODate("2025-08-31T04:00:00.000Z")
+            "startDate" : { "$date" : 946702800000 },
+            "endDate" : { "$date" : 956702800000 }
         }
     ],
     "type" : "kit",
@@ -49,4 +47,4 @@
     "masterStatus" : "I",
     "hazmatClass" : 0,
     "description" : "Advanced Dynamics Balancing CleanserAdvanced Dynamics Balancing Toner<br />Advanced Dynamics Balancing Day Moisture<br />Advanced Dynamics Balancing Night Moisture<br />Royal Jelly Milk Balm Advanced<br />Elasticity Recovery Hydrogel + Firmiplex Complex<br />Optimeyes Eye Treatment<br />Royal Almond Rich Body Oil<br />LEGEND EDT<br />Vesen EDT<br />Eau d'Arômes Fragrance Spray<br />Skid EDT<br />Plus you get DYNAMIC Tools!<br />Black JAFRA Tote<br />Clear JAFRA Tote<br />Welcome to JAFRA Literature Set<br />Product Catalogs (5)<br />Seasonal Brochures (10)<br />Hostess Brochure<br />Advanced Dynamic Profiles (10)<br />Skin Care Profiles (10)<br />Women’s Fragrance Profiles (10)<br />Business Cards (50)<br />Client Order Form (10)"
-}
+}]
