@@ -208,6 +208,10 @@ background-blend-mode: multiply;
   margin-left: 0px;
 }*/
 
+.subsection {
+  margin-bottom: 55px;
+}
+
 .subcontainer, .subsection {
   background: #fff;
 }
@@ -224,6 +228,10 @@ background-blend-mode: multiply;
   left: -10%;
   background: -webkit-radial-gradient(50% -3%, ellipse cover, rgba(00, 00, 00, 0.25), rgba(97, 97, 97, 0.0) 40%);
   background:      radial-gradient(ellipse at 50% -3%, rgba(00, 00, 00, 0.25), rgba(97, 97, 97, 0.0) 40%);
+}
+.subcontainer .row {
+  margin-left: -30px;
+  margin-right: -30px;
 }
 
 section#why_jafra_products {
