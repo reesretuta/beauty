@@ -519,11 +519,12 @@ min-width:131px;
 .carousel .left
 {
   background: none;
-  pointer-events: none;
+  /*pointer-events: none;*/
 }
+/*
 .carousel .left .glyphicon {
   display: none;
-}
+}*/
 .carousel .right {
   cursor: pointer;
 }
