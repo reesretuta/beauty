@@ -82,30 +82,18 @@
         </div>
         <div class="navbar-collapse collapse">
 
-          <ul class="nav navbar-nav navbar-right HelveticaNeueLTStd-BdCn navbar-language" style="margin-left: 40px;">
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="/img/flags-us.png" />
-                <!-- TODO: Make US Flag png into sprite sheets... img src="http://static.flag-sprites.com/i/blank.gif" class="flag flag-us" alt="US English" /--> US English <span class="caret"></span></a>
-              <ul class="dropdown-menu" role="menu">
-                <li><a href="#">US English</a></li>
-                <li><a href="#">US Spanish</a></li>
-              </ul>
-            </li>
-          </ul>
           <div id="navbar-sections">
-          <ul class="join_nav nav navbar-nav navbar-right HelveticaNeueLTStd-BdCn" ng-if="!inCheckout">
-            <li><a href="#why_jafra">Why JAFRA?</a></li>
-            <li><a href="#starter_kits">Starter Packages</a></li>
-            <li><a href="#FAQs">FAQs</a></li>
-            <li><a href="#JOIN_NOW" data-toggle="modal" data-target=".bs-example-modal-lg">Join Now!</a></li>
-            <li class="dropdown"><a href="" class="dropdown-toggle" data-toggle="dropdown">Contact Us</a>
+          <ul class="join_nav nav navbar-nav navbar-right HelveticaNeueLTStd-BdCn">
+            <li ng-if="!inCheckout"><a href="#why_jafra">Why JAFRA?</a></li>
+            <li ng-if="!inCheckout"><a href="#starter_kits">Starter Packages</a></li>
+            <li ng-if="!inCheckout"><a href="#FAQs">FAQs</a></li>
+            <li ng-if="!inCheckout"><a href="#JOIN_NOW" data-toggle="modal" data-target=".bs-example-modal-lg">Join Now!</a></li>
+            <li class="dropdown"><a href="" class="dropdown-toggle" data-toggle="dropdown">Contact</a>
               <ul class="dropdown-menu contact-header">
                 <li class="contact-description">1 (800) 551-2345<br />
                   Open: M-F 7a-5p
                 </li>
-                <li class="social_dropdown">
-                	
-
+                <li class="social_dropdown" ng-if="!inCheckout">
                       <div class="social-media-icons center-block">
                         <a target="_blank" href="http://www.facebook.com/JafraWorldwide"><i class="fa fa-facebook-square"></i></a>
                         &nbsp;
@@ -124,6 +112,13 @@
                       </div>
                     
                 </li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">English <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#">English</a></li>
+                <li><a href="#">Spanish</a></li>
               </ul>
             </li>
 			</ul>
@@ -153,7 +148,7 @@
 		                  Open: M-F 7a-5p
 		                </li>
                     <li>
-                      <div class="social-media-icons center-block">
+                      <div class="social-media-icons center-block" ng-if="!inCheckout">
                         <a href="http://www.facebook.com/JafraWorldwide" target="_blank"><i class="fa fa-facebook-square"></i></a>
                         &nbsp;
                         <a href="https://plus.google.com/102586203009783197974" target="_blank"><i class="fa fa-google-plus-square"></i></a>
