@@ -563,13 +563,14 @@ min-width:131px;
   color:#472264!important;
 }
 #lipsticksmear{
-  position:relative;
-  left:-123px;
+  position: absolute;
+  left: -84px;
+  bottom: 70px;
 }
-#pastelpatches{
-  left: 112px;
-    position: relative;
-    top: -23px;
+#pastelpatches {
+  position: absolute;
+  top: -46px;
+  right: -106px;
 }
 
 
@@ -618,6 +619,16 @@ min-width:131px;
     .checkout-card .btn 
     {
       font-size:8px; 
+    }
+    span.serif-title {
+      font-size: 28px;
+    }
+    section h3.hero-header-title {
+      font-size: 43px;
+    }
+    span.serif-title-alt {
+      font-size: 33px;
+      line-height: 36px;
     }
 
 }
