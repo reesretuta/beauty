@@ -312,6 +312,8 @@
 
     <script>
       $(function(){ 
+
+        // if ($(window).width() > 768) {
           $('#pagenav').affix({
               offset: {
                 top: $('.jumbotron').outerHeight()
@@ -319,7 +321,9 @@
                   return (this.bottom = $('footer').outerHeight(true))
                 }
               }
-            });
+          });
+        // }
+
       });
     </script>
     
