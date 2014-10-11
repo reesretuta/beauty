@@ -154,16 +154,18 @@
 
             </div> <!-- /.col -->
 
-            <div class="col-md-6" ng-app="joincarousel">
-                <div id="carousel-product-generic" class="carousel slide" ng-controller="CarouselProductCtrl">
-                  <div style="height: 305px">
-                    <carousel interval="myInterval">
-                      <slide ng-repeat="slide in slides" active="slide.active">
-                        <img ng-src="{{slide.image}}" style="margin:auto;">
-                      </slide>
-                    </carousel>
+            <div class="col-md-6">
+                <div ng-app="app">
+                  <div ng-controller="CarouselDemoCtrl" id="slides_control">
+                    <div>
+                      <carousel interval="myInterval">
+                        <slide ng-repeat="slide in slides" active="slide.active">
+                          <img ng-src="{{slide.image}}">
+                        </slide>
+                      </carousel>
+                    </div>
                   </div>
-              </div> <!-- /.carousel -->
+                </div>   <!-- /.carousel -->
 
             </div> <!-- /.col -->
           

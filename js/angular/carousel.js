@@ -1,22 +1,24 @@
-'use strict';
-
-angular.module('joincarousel', ['ui.bootstrap']);
-
-angular.module('joincarousel').controller('CarouselProductsCtrl', function ($scope) {
+angular.module('app', ['ui.bootstrap']);
+function CarouselDemoCtrl($scope){
   $scope.myInterval = 3000;
   $scope.slides = [
     {
-      image: 'http://lorempixel.com/400/200/'
+      image: '/img/products_royalJelly.jpg'
     },
     {
-      image: 'http://lorempixel.com/400/200/food'
+      image: '/img/products_PRO.jpg'
     },
     {
-      image: 'http://lorempixel.com/400/200/sports'
+      image: '/img/products_marineBotanicals.jpg'
     },
     {
-      image: 'http://lorempixel.com/400/200/people'
+      image: '/img/products_fragranceWomen.jpg'
+    }
+    {
+      image: '/img/products_fragranceMen.jpg'
+    }
+    {
+      image: '/img/products_color.jpg'
     }
   ];
-
-});
+}
