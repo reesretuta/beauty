@@ -438,9 +438,61 @@ line-height: 0.8em;
   margin-top: 50px;
 }
 
-.active a{
+.join li.active a{
 	background-image: none!important;
 }
+
+
+.glyphicon-chevron-right:before 
+{
+     content: " ";
+       
+       display:block;
+       
+       background:url('/img/right-angle-icon2x.png') center center no-repeat;
+       background-size: contain;
+       
+      width:30px;
+       height:50px;
+}
+.glyphicon-chevron-left:before 
+{
+   content: " ";
+      
+       display:block;
+       
+       background:url('/img/lef-angle-icon2x.png') center center no-repeat;
+       background-size: contain;
+      
+       width:30px;
+       height:50px;
+      }
+      
+.carousel-control.right
+{
+  background-image:none; 
+}
+
+.carousel .left
+{
+  background: none;
+  pointer-events: none;
+}
+.carousel .left .glyphicon {
+  display: none;
+}
+.carousel .right {
+  cursor: pointer;
+}
+.carousel-control 
+{
+  opacity:.5 ; 
+  text-decoration:none; 
+  outline:0 none; 
+  color:#fff;   
+
+}
+
 /*  ------ RESPONSIVE BREAKPOINTS ------  */
 
 /* Extra-Small screens like handheld devices (iPhone/Android/etc) */
