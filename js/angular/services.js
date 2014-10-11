@@ -845,7 +845,10 @@ angular.module('app.services', ['ngResource'])
             // do PGP encryption here
             require(["/lib/openpgp.min.js"], function(openpgp) {
                 var publicKey = openpgp.key.readArmored(key.join("\n"));
-                var encrypted = openpgp.encryptMessage(publicKey.keys, JSON.stringify(creditCard));
+                var cardData = JSON.stringify(creditCard);
+                var encrypted = openpgp.encryptMessage(publicKey.keys, cardData);
+                encrypted = encrypted.trim();
+                console.log("credit card data", cardData);
                 console.log("encrypted credit card data", encrypted);
 
                 creditCardService.save({clientId: clientId}, {

@@ -63,7 +63,7 @@ color: #482365;
 .btn {
 /*font-size: 1.2em;
 padding: 0.5em 1.5em;*/
-background: #c52033;
+backgroound: #b51a8a; /*background: #c52033;*/
 /*opacity: 0.7;*/
 text-transform: uppercase;
 font-weight: bold;
@@ -132,7 +132,9 @@ border-radius: 0px;
 
 
 .well {
-  background-color: #f5f5f5;
+  background:none;
+  border:none;
+  box-shadow:none;
 }
 .product-highlighter {
   border: 5px solid #AA7F9E;
@@ -251,25 +253,40 @@ section#why_jafra_rewards {
 }
 
 section#why_jafra_testimonials {
-  /*background: #ededed; -- body background color -- */
+  background: transparent;  /* -- body background color -- */
 }
 
 section h3.hero-header-title {
-font-size: 4.5em;
+font-size: 81px;
 font-family: HelveticaNeueLTStd-BdCn;
 font-weight: normal;
 font-style: normal;
 line-height: 0.9;
 color: #8B7B5B;
+letter-spacing: 0.0589em;
 }
 
-section h3.hero-header-title span.serif-title {
+section h3.hero-header-title span.serif-title, span.serif-title-alt {
+font-size: 55px;
 font-family: DidotLTPro-Italic;
 font-weight: normal;
 font-style: normal;
 color: #482365;
+letter-spacing: normal;
 }
 
+span.serif-title-alt {
+  color: #8B7B5B;
+  font-size: 42px;
+  display: block;
+  line-height: 44px;
+}
+.testimonials {
+  width: 80%;
+}
+.testimonial {
+  padding: 0 40px 40px;
+}
 .testimonial .media-heading {
 margin: 8px 0 5px;
 }
@@ -514,11 +531,12 @@ min-width:131px;
 .carousel .left
 {
   background: none;
-  pointer-events: none;
+  /*pointer-events: none;*/
 }
+/*
 .carousel .left .glyphicon {
   display: none;
-}
+}*/
 .carousel .right {
   cursor: pointer;
 }

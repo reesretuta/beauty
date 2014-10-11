@@ -1,37 +1,39 @@
 {
-  "email" : "example@example.com",
-  "firstName": "John",         
-  "lastName": "Smith",         
-  "sponsorId": 555678,         
+  "email" : "arimus@gmail.com",
+  "firstName": "David",         
+  "lastName": "Castro",         
   "language": "en_US",         
-  "ssn": "553-21-1923",        
-  "dateOfBirth": "12/01/1978", 
+  "ssn": "111-11-1111",        
+  "dateOfBirth": "12/12/1978", 
   "phone": "555-333-2222",     
   "billingAddress": {          
-    "name": "Joe Smith",
-    "address1": "1111 Test Ln",
+    "name": "David Castro",
+    "address1": "7661 Indian Canyon Cir",
     "address2": "",
     "city": "Corona",
     "state": "CA",
+    "stateDescription": "CA",
     "zip": "92880",
-    "county": "Ventura",
+    "county": "Riverside",
     "country": "US",
+    "geocode": "000000",
     "phone": "555-333-2222"
   },
   "shippingAddress": {         
-    "name": "Joe Smith",
-    "address1": "1111 Test Ln",
+    "name": "David Castro",
+    "address1": "7661 Indian Canyon Cir",
     "address2": "",
     "city": "Corona",
-    "county": "Ventura",
-    "geocode": "000000",
     "state": "CA",
+    "stateDescription": "CA",
     "zip": "92880",
+    "county": "Riverside",
     "country": "US",
+    "geocode": "000000",
     "phone": "555-333-2222"
   },
   "creditCard": {              
-    "name": "Joe Smith",       
+    "name": "Dave Castro",       
     "card": "4111111111111111",
     "expMonth": "12",
     "expYear": "2015",
@@ -39,19 +41,11 @@
   },
   "agreementAccepted": true,   
   "source": "facebook",        
-  "total": 102.67,             
+  "total": 19.50,
   "products": [                
     {
       "sku": "25386",
-      "qty": 2
+      "qty": 1
     },
-    {
-      "sku": "14038",
-      "qty": 1,
-      "kitSelections": [ 
-        "NUPL1202", 
-        "NUPL7462" 
-      ]
-    }
   ]
 }

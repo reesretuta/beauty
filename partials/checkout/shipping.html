@@ -5,7 +5,7 @@
     <h1 ng-if="session.client.addresses.length > 0">Choose a shipping address</h1>
     <h1 ng-if="session.client.addresses == null || session.client.addresses.length == 0">Enter a shipping address</h1>
 
-    <div class="row">
+    <div class="row" ng-if="!isOnlineSponsoring">
       <div class="col-xs-6 col-lg-4 checkout-address" ng-repeat="addressData in session.client.addresses">
         <span class="address-name">{{addressData.name}}</span>
         <span class="address-street">{{addressData.address1}} {{addressData.address2}}</span>

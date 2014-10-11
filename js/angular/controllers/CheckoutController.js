@@ -514,19 +514,22 @@ angular.module('app.controllers.checkout')
         $scope.addPaymentMethod = function() {
             if (!$scope.isOnlineSponsoring) {
                 $log.debug("CheckoutController(): addPaymentMethod(): adding card to account", $scope.profile.newCard);
-//                // we need to create a card and add to the account for client direct
-//                CreditCards.addCreditCard($scope.profile.newCard).then(function(card) {
-//                    $log.debug("CheckoutController(): addPaymentMethod(): continuing to review after adding card", card);
-//                    WizardHandler.wizard('checkoutWizard').goTo('Review');
-//                    $scope.checkout.card = card;
-//                    $scope.checkoutUpdated();
-//                }, function(err) {
-//                    $log.error("CheckoutController(): addPaymentMethod(): error");
-//                    alert('error adding card: ' + err);
-//                });
+                // we need to create a card and add to the account for client direct
+                CreditCards.addCreditCard($scope.profile.newCard).then(function(card) {
+                    $log.debug("CheckoutController(): addPaymentMethod(): continuing to review after adding card", card);
+                    $scope.checkout.card = card;
+                    $scope.profile.newCard = null;
 
-                $scope.checkout.card = $scope.profile.newCard;
-                $scope.profile.newCard = null;
+                    // FIXME
+                    // put the products into the checkout
+                    //$scope.checkout.products = $scope.profile.
+
+                    $scope.checkoutUpdated();
+                    WizardHandler.wizard('checkoutWizard').goTo('Review');
+                }, function(err) {
+                    $log.error("CheckoutController(): addPaymentMethod(): error");
+                    alert('error adding card: ' + err);
+                });
 
                 if (!$scope.checkout.billSame) {
                     $log.debug("CheckoutController(): addPaymentMethod(): setting billing address", $scope.profile.newBillingAddress);
@@ -543,21 +546,24 @@ angular.module('app.controllers.checkout')
                 }
             } else {
                 // we just add to checkout for online sponsoring
-                // FIXME - need to encrypt this first!!!
+                $scope.profile.newCard.lastFour = $scope.profile.newCard.card.substr($scope.profile.newCard.card.length - 4);
                 $log.debug("CheckoutController(): addPaymentMethod(): saving the card to the checkout and continuing on", $scope.profile.newCard);
                 $scope.checkout.card = $scope.profile.newCard;
-                $scope.profile.newCard = null;
 
                 if (!$scope.checkout.billSame) {
                     $log.debug("CheckoutController(): addPaymentMethod(): setting billing address", $scope.profile.newBillingAddress);
                     // we just add to checkout for online sponsoring
                     $scope.checkout.billing = $scope.profile.newBillingAddress;
-                    $scope.profile.newBillingAddress = null;
                 }
 
                 $scope.checkoutUpdated();
                 WizardHandler.wizard('checkoutWizard').goTo('Review');
             }
+        }
+
+        $scope.placeOrder = function() {
+            $log.debug("CheckoutController(): placeOrder(): checkout", $scope.checkout);
+            $log.debug("CheckoutController(): placeOrder(): profile", $scope.profile);
         }
 
         $scope.selectShippingAddressAndContinue = function(address) {
