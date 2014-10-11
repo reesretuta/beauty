@@ -283,7 +283,52 @@ function createClient(client) {
 //});
 
 function getConsultant(consultantId) {
+    //console.log("getConsultant()", clientId);
+    var deferred = Q.defer();
 
+    request.get({
+        url: GET_CONSULTANT_URL,
+        qs: {
+            consultantId: consultantId
+        },
+        headers: {
+            'Accept': 'application/json, text/json'
+        },
+        json: true
+    }, function (error, response, body) {
+        console.log("getConsultant()", error, response.statusCode, body);
+        if (error || response.statusCode != 200) {
+            console.error("getConsultant(): error", error, response.statusCode, body);
+            deferred.reject({
+                status: response.statusCode,
+                result: {
+                    statusCode: response.statusCode,
+                    errorCode: body.errorCode,
+                    message: body.message
+                }
+            });
+            return;
+        }
+
+        if (body.id != null) {
+            //console.log("getConsultant(): success", body);
+            deferred.resolve({
+                status: 200,
+                result: body
+            });
+        } else {
+            deferred.reject({
+                status: 500,
+                result: {
+                    statusCode: 500,
+                    errorCode: "clientLoadFailed",
+                    message: "Failed to load client"
+                }
+            });
+        }
+    })
+
+    return deferred.promise;
 }
 
 function createConsultant(encrypted) {

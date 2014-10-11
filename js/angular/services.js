@@ -175,6 +175,28 @@ angular.module('app.services', ['ngResource'])
             return d.promise;
         }
 
+        sessionService.set = function(items) {
+            var d = $q.defer();
+
+            // once we're initialized
+            initialized.promise.then(function() {
+                $log.debug("sessionService(): set()", items);
+                var session = getLocalSession();
+                for (var key in items) {
+                    if (items.hasOwnProperty(key)) {
+                        session[key] = items[key];
+                        $log.debug("sessionService(): set()", key, items[key]);
+                    }
+                }
+                $log.debug("sessionService(): set()", session);
+                return sessionService.save();
+            }, function(err) {
+                $log.error("sessionService(): save(): initialization failed", err);
+            });
+
+            return d.promise;
+        }
+
         sessionService.save = function() {
             var session = getLocalSession();
             $log.debug("sessionService(): save(): request save", session);

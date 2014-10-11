@@ -77,6 +77,10 @@ angular.module('app.controllers.checkout')
         Session.get().then(function(session) {
             $log.debug("CheckoutController(): session initialized", session);
 
+            $scope.profile.sponsorId = session.consultantId;
+            if (session.source) {
+                $scope.profile.source = session.source;
+            }
 
             if (session.client && session.client.id) {
                 $log.debug("CheckoutController(): user is logged in");

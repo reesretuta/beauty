@@ -426,6 +426,9 @@ router.route('/session')
 
         console.log("update session request", session);
 
+        req.session.consultantId = session.consultantId;
+        req.session.source = session.source;
+
         // copy over changes to cart, checkout, language
         req.session.language = session.language;
         if (Array.isArray(session.cart)) {
@@ -620,25 +623,21 @@ router.route('/consultants') // get current consultant
     });
 
 router.route('/consultants/:consultant_id')// get a consultant
-//    .get(function (req, res) {
-//        var consultant_id = req.params.consultant_id;
-//
-//        return {
-//            "id": 1000,
-//            "email": "jsmith@gmail.com",
-//            "firstName": "John",
-//            "lastName": "Smith",
-//            "phone": "555-555-4432",
-//            "dateOfBirth": "12/01/1978",
-//            "sponsorId": 4657323,
-//            "language": "en_US"
-//        };
-//    })
+    .get(function (req, res) {
+        var consultant_id = req.params.consultant_id;
 
-    // update a consultant
-    .post(function (req, res) {
+        // fetch the consultant information & return
+        jafraClient.getConsultant(consultant_id).then(function(r) {
+            res.status(r.status);
+            res.json(r.result);
+        }, function (r) {
+            console.error("server: getClient(): failed to load consultant", r.result);
+            res.status(500);
+            res.json(r.result);
+        });
 
     });
+
 
 // ADDRESSES
 // ----------------------------------------------------
