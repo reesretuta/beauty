@@ -41,7 +41,7 @@
     "searchable" : false,
     "quantity" : "12 products in set",
     "productClass" : 0,
-    "onHold" : "true",
+    "onHold" : "false",
     "name" : "Royal Starter Kit",
     "masterType" : "R",
     "masterStatus" : "A",
