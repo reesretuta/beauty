@@ -470,8 +470,11 @@ line-height: 0.8em;
 {
 	color: #aa73b1 !important;
 	font-weight:normal; 
+  text-align: center;
 }
-
+.dropdown_jafra {
+width: 200px;
+}
  .navbar-language > .open > a,  .navbar-language > .open > a:hover,  .navbar-language > .open > a:focus 
 {
     background-color: #c52033 !important;
@@ -490,7 +493,7 @@ min-width:131px;
 }
 .contact-header .social_dropdown
 {
-    max-width: 100px;
+    max-width: 200px;/* 100px;*/
     margin-left:30px; 
 }
 .spacer{
