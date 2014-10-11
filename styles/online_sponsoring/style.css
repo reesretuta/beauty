@@ -38,7 +38,6 @@ html,body {
 }
 body {
   padding-top: 50px;
-  padding-bottom: 20px;
   position: relative; /* needed for scrollspy */
 }
 body.landing-page {
@@ -128,6 +127,15 @@ background-color: #c52033;
 .navbar-joinstyle {
 background-color: #1cc3d6;
 border-radius: 0px;
+}
+.navbar-toggle,
+.navbar-toggle:hover,
+.navbar-toggle:focus {
+  background: transparent;
+  border: none;
+}
+.navbar-default .navbar-toggle .icon-bar {
+  background-color: #fff;
 }
 
 
@@ -524,7 +532,7 @@ min-width:131px;
        width:30px;
        height:50px;
       }
-   /*   
+      
 .carousel-control.right
 {
   background-image:none; 
@@ -533,9 +541,9 @@ min-width:131px;
 .carousel .left
 {
   background: none;
-  /*pointer-events: none;
+  pointer-events: none;
 }
-/*
+
 .carousel .left .glyphicon {
   display: none;
 }
@@ -549,7 +557,7 @@ min-width:131px;
   outline:0 none; 
   color:#fff;   
 
-}*/
+}
 
 /*
  * Join Styles
@@ -577,9 +585,6 @@ min-width:131px;
   right: -60px; 
   top: -50px;
 }
-
-
-
 
 
 
@@ -638,10 +643,25 @@ min-width:131px;
 
 }
 
+@media (max-width: 767px) {
+    .navbar-fixed-top, #pagenav.affix {
+        min-height: 50px;
+        position: relative;
+        top: auto;
+    }
+    /*.navbar-collapse {
+        max-height: none;
+    }*/
+    body {
+        margin: 0;
+        padding-top: 0;
+        -webkit-overflow-scrolling: touch;
+    }
+
+}
+
 /* Small screens like netbooks and tablets (iPad/iPad mini/etc) */
 @media (min-width:768px) {
-	
-	
 	
     .jumbotron {
         padding-top: 60px;

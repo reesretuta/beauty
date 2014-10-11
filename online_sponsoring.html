@@ -36,7 +36,7 @@
     <script src="/lib/purl/purl.js"></script>
 
     <!-- AddThis widgets for social media sharing -->
-<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5435adb94c0d228e"></script>
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5435adb94c0d228e"></script>
     <!-- ShareThis Widgets for social media sharing >
     <script type="text/javascript">var switchTo5x=true;</script>
     <script type="text/javascript" src="/js/sharethis/buttons.js"></script>
@@ -69,7 +69,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#navbar-sections" class="join">
-    <div id="pagenav" class="navbar navbar-default navbar-static-top" role="navigation">
+    <div id="pagenav" class="navbar navbar-static-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
@@ -312,14 +312,18 @@
 
     <script>
       $(function(){ 
+
+        // if ($(window).width() > 768) {
           $('#pagenav').affix({
               offset: {
-                top: $('.jumbo-videobg').outerHeight()
+                top: $('.jumbotron').outerHeight()
               , bottom: function () {
                   return (this.bottom = $('footer').outerHeight(true))
                 }
               }
-            });
+          });
+        // }
+
       });
     </script>
     
