@@ -1,78 +1,19 @@
 <div class="col-sm-12">
 
   <div class="col-md-offset-3 col-lg-8">
-    <h1>Review &amp; Confirm Order
-              <span class="store-heading-description">
-                Clicking &ldquo;Place Order&ldquo; will charge your payment option in the amount below.
-              </span>
+    <a href="" class="pull-right print-link"><i class="fa fa-print"></i> Print this page</a>
+    <h1>Thank you!
+        <span class="store-heading-description">
+          We have received your order and will be processing it shortly.
+        </span>
     </h1>
   </div>
 
   <div class="col-md-offset-3 col-lg-8">
-
-    <div class="row">
-
-      <div class="col-xs-6 col-lg-4" ng-if="checkout.card">
-        <h3>Charging To:</h3>
-        <div class="checkout-card clearfix active">
-          <span class="pull-left">{{checkout.card.name}}</span>
-          <img src="/img/46x30" class="pull-right">
-          <p class="card-number">
-            <span>&bull;&bull;&bull;&bull;</span>
-            <span>&bull;&bull;&bull;&bull;</span>
-            <span>&bull;&bull;&bull;&bull;</span>
-            <span>{{substr(ccData.lastFour)}}</span>
-          </p>
-          <p class="card-expiry pull-left">
-            <small>EXP:</small>
-            {{checkout.card.expMonth}}/{{substr(checkout.card.expYear,2,2)}}
-          </p>
-          <a ng-href="{{APP_BASE_URL}}/checkout?step=Payment" class="btn pull-right card-use-btn"><i class="fa fa-pencil-square-o"></i> Change Card</a>
-        </div>
-      </div><!-- /card -->
-
-      <div class="col-xs-6 col-lg-4 checkout-address" ng-if="checkout.shipping">
-        <h3>Shipping To:</h3>
-        <span class="address-name">{{checkout.shipping.name}}</span>
-        <span class="address-street">{{checkout.shipping.address1}} {{checkout.shipping.address2}}</span>
-        <span class="address-region">{{checkout.shipping.city}}, {{checkout.shipping.state}} {{checkout.shipping.zip}}</span>
-        <span class="phone-number">{{checkout.shipping.phone}}</span>
-        <span ng-if="!isOnlineSponsoring">Speed: {{shippingSpeed}}</span>
-        <div class="address-actions">
-          <a ng-href="{{APP_BASE_URL}}/checkout?step=Shipping"><i class="fa fa-pencil-square-o"></i> Change Address</a>
-        </div>
-      </div><!-- /address -->
-
-      <div class="col-xs-6 col-lg-4 checkout-address" ng-if="checkout.billing.name">
-        <h3>Billing To:</h3>
-        <span class="address-name">{{checkout.billing.name}}</span>
-        <span class="address-street">{{checkout.billing.address1}} {{checkout.billing.address2}}</span>
-        <span class="address-region">{{checkout.billing.city}}, {{checkout.billing.state}} {{checkout.billing.zip}}</span>
-        <span class="phone-number">{{checkout.billing.phone}}</span>
-        <div class="address-actions">
-          <a ng-href="{{APP_BASE_URL}}/checkout?step=Payment"><i class="fa fa-pencil-square-o"></i> Change Address</a>
-        </div>
-      </div><!-- /address -->
-
-
-      <div class="col-xs-6 col-lg-4 checkout-address" ng-if="!checkout.billing.name">
-        <h3>Billing To:</h3>
-        <span class="address-name">{{checkout.shipping.name}}</span>
-        <span class="address-street">{{checkout.shipping.address1}} {{checkout.shipping.address2}}</span>
-        <span class="address-region">{{checkout.shipping.city}}, {{checkout.shipping.state}} {{checkout.shipping.zip}}</span>
-        <span class="phone-number">{{checkout.shipping.phone}}</span>
-        <div class="address-actions">
-          <a ng-href="{{APP_BASE_URL}}/checkout?step=Payment"><i class="fa fa-pencil-square-o"></i> Change Address</a>
-        </div>
-      </div><!-- /address -->
-
-    </div><!-- /row -->
-
+    <h2 class="">Confirmation Number: <label style="color:black;">1234567890</label></h2>
     <hr>
 
-    <form class="form order-details" role="form" name="confirmForm">
-      <a ng-href="{{STORE_BASE_URL}}/cart" class="pull-right" style="margin-top:10px"><i class="fa fa-pencil-square-o"></i> make changes</a>
-      <h2 class="">Order Details</h2>
+    <form class="form order-details" role="form">
       <div class="form-group">
         <table class="table">
           <thead>
@@ -99,7 +40,7 @@
               <!--${{detailprice.price}}-->
               <!--</span>-->
               <!--</span>-->
-              <!--<span ng-if="product.pricing.detailprice.price">-->
+              <!--<span ng-if="item.product.pricing.detailprice.price">-->
               <!--<span class="item-price">-->
               <!--{{item.product.pricing.detailprice.price | currency}}-->
               <!--</span>-->
@@ -126,27 +67,18 @@
               <p>Subtotal: {{total() | currency}}</p>
               <p>Shipping: $15.00</p>
               <p>Tax: 8.25%</p>
-              <p class="lead"><b>Total Charges: {{(total()* 1.0825) + 15 | currency}}</b></p>
+              <p class="lead"><b class="text-success"><i class="fa fa-check"></i> Successfully Charged: {{(total()* 1.0825) + 15 | currency}}</b></p>
             </td>
           </tr>
           </tfoot>
         </table>
-
-      </div>
-
-      <div class="form-group text-right">
-        <label class="checkbox-inline">
-
-          <input type="checkbox" value="" ng-model="checkout.agree" required>
-
-          I agree to the <a href="" data-toggle="modal" data-target=".bs-example-modal-lg-terms">Terms and Conditions</a>
-          &nbsp;&nbsp;&nbsp;&nbsp;
-        </label>
-        <button type="button" class="btn btn-link pull-left" tabindex=" " ng-click="confirmAlert('Are you sure you\'d like to cancel your order?')">Cancel Order</button>
-        <button type="button" class="btn btn-primary btn-lg" tabindex=" " wz-next ng-disabled="!confirmForm.$valid">Place Order &nbsp;<i class="fa fa-caret-right"></i></button>
       </div>
 
     </form>
+    <h2 class="">How to track your order</h2>
+    <hr>
+    <p>Lorem Ipsum</p>
+
   </div>
 
 </div><!--/span-->
