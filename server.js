@@ -603,14 +603,17 @@ router.route('/clients/:client_id')// get a consultant
 // CONSULTANTS
 // ----------------------------------------------------
 router.route('/consultants') // get current consultant
-    // create a client
+
+    // create a consultant
     .post(function (req, res) {
-        jafraClient.createConsultant().then(function(r) {
-            console.log("success")
+        console.log("got data", req.body.encrypted);
+
+        jafraClient.createConsultant(req.body.encrypted).then(function(r) {
+            console.log("success", r)
             res.status(r.status);
             res.json(r.result);
         }, function(r) {
-            console.error("failure")
+            console.error("failure", r)
             res.status(r.status);
             res.json(r.result);
         });

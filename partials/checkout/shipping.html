@@ -28,28 +28,28 @@
     <div class="row form-group" ng-if="!isOnlineSponsoring">
       <label for="shippingFullName" class="col-md-3 control-label">Full Name</label>
       <div class="col-sm-8 col-lg-6">
-        <input id="shippingFullName" name="name" ng-model="profile.newShippingAddress.name" type="text" class="form-control" placeholder="" tabindex="1" required>
+        <input id="shippingFullName" name="name" ng-model="profile.newShippingAddress.name" type="text" class="form-control" placeholder="" required>
       </div>
     </div>
 
     <div class="row form-group">
       <label for="shippingAddress1" class="col-md-3 control-label">Address Line 1</label>
       <div class="col-sm-8 col-lg-6">
-        <input id="shippingAddress1" name="address1" ng-model="profile.newShippingAddress.address1" type="text" class="form-control" placeholder="Street address, P.O. box, company name, c/o " tabindex="2" required>
+        <input id="shippingAddress1" name="address1" ng-model="profile.newShippingAddress.address1" type="text" class="form-control" placeholder="Street address, P.O. box, company name, c/o " required>
       </div>
     </div>
 
     <div class="row form-group">
       <label for="shippingAddress2" class="col-md-3 control-label">Address Line 2</label>
       <div class="col-sm-8 col-lg-6">
-        <input id="shippingAddress2" name="address2" ng-model="profile.newShippingAddress.address2" type="text" class="form-control" placeholder="Apartment, suite, unit, building, floor, etc. " tabindex="3">
+        <input id="shippingAddress2" name="address2" ng-model="profile.newShippingAddress.address2" type="text" class="form-control" placeholder="Apartment, suite, unit, building, floor, etc. ">
       </div>
     </div>
 
     <div class="row form-group">
       <label for="shippingCity" class="col-md-3 control-label">City</label>
       <div class="col-sm-7 col-lg-5">
-        <input id="shippingCity" name="city" ng-model="profile.newShippingAddress.city" type="text" class="form-control" placeholder="City" tabindex="4" required>
+        <input id="shippingCity" name="city" ng-model="profile.newShippingAddress.city" type="text" class="form-control" placeholder="City" required>
       </div>
     </div>
     <div class="row form-group">
@@ -57,7 +57,7 @@
       <!-- TO-DO: Fix CSS width of form control -->
       <div class="col-sm-5 col-lg-3">
         <form>
-          <select name="state" class="form-control" id="shippingStateProvinceRegion" ng-model="profile.newShippingAddress.state" tabindex="5">
+          <select name="state" class="form-control" id="shippingStateProvinceRegion" ng-model="profile.newShippingAddress.state">
             <option value="AL">Alabama</option>
             <option value="AK">Alaska</option>
             <option value="AZ">Arizona</option>
@@ -113,21 +113,21 @@
         </form>
 
         <!-- Removed for now to add the Select tag for 50 states -->
-        <!--input id="shippingStateProvinceRegion" name="stateProvinceRegion" ng-model="profile.newShippingAddress.stateProvinceRegion" type="text" class="form-control" placeholder=" " tabindex="5" required-->
+        <!--input id="shippingStateProvinceRegion" name="stateProvinceRegion" ng-model="profile.newShippingAddress.stateProvinceRegion" type="text" class="form-control" placeholder=" " required-->
       </div>
     </div>
 
     <div class="row form-group">
       <label for="shippingZipPostalCode" class="col-md-3 control-label">Zip/Postal Code</label>
       <div class="col-sm-5 col-lg-3">
-        <input id="shippingZipPostalCode" name="zip" ng-model="profile.newShippingAddress.zip" type="text" class="form-control" placeholder="Zip" tabindex="6" required>
+        <input id="shippingZipPostalCode" name="zip" ng-model="profile.newShippingAddress.zip" type="text" class="form-control" placeholder="Zip" required>
       </div>
     </div>
 
     <div class="row form-group">
       <label for="shippingCountry" class="col-md-3 control-label">Country</label>
       <div class="col-sm-5 col-lg-3">
-        <select id="shippingCountry" data-ng-init="profile.newShippingAddress.country='US'" name="country" ng-model="profile.newShippingAddress.country" class="form-control" tabindex="7">
+        <select id="shippingCountry" data-ng-init="profile.newShippingAddress.country='US'" name="country" ng-model="profile.newShippingAddress.country" class="form-control">
           <option ng-selected="true" value="US">United States</option>
         </select>
       </div>
@@ -136,7 +136,7 @@
     <div class="row form-group" ng-if="!isOnlineSponsoring" ng-class="{ 'has-error' : shippingForm.phoneNumber.$invalid && !shippingForm.phoneNumber.$pristine }">
       <label for="shippingPhoneNumber" class="col-md-3 control-label">Phone Number</label>
       <div class="col-sm-6 col-lg-4">
-        <input id="shippingPhoneNumber" name="phoneNumber" ng-model="profile.newShippingAddress.phone" type="text" ui-mask="(999) 999-9999" placeholder="(xxx) xxx-xxxx" class="form-control" tabindex="8" required>
+        <input id="shippingPhoneNumber" name="phoneNumber" ng-model="profile.newShippingAddress.phone" type="text" ui-mask="(999) 999-9999" placeholder="(xxx) xxx-xxxx" class="form-control" required>
         <span ng-show="shippingForm.phoneNumber.$error.pattern" class="help-block" ng-class="{ 'text-danger' : shippingForm.phoneNumber.$invalid && !shippingForm.phoneNumber.$pristine }">Phone Number needs to be at least 10 numbers.</span>
       </div>
       <a popover="May be printed on shipping label to assist delivery." popover-title="Phone Number" href="" class="form-info-link"><i class="fa fa-info-circle"></i> More Info</a>
@@ -152,7 +152,7 @@
     <div class="row form-group">
       <div class="col-md-offset-3 col-sm-9">
         <div class="error" ng-show="shippingAddressError" ng-bind="shippingAddressError"></div>
-        <button type="button" class="btn btn-primary btn-lg" tabindex=" " ng-disabled="!shippingForm.$valid" ng-click="addShippingAddressAndContinue(profile.newShippingAddress)">Ship to this address &nbsp;<i class="fa fa-caret-right"></i></button>
+        <button type="button" class="btn btn-primary btn-lg" ng-disabled="!shippingForm.$valid" ng-click="addShippingAddressAndContinue(profile.newShippingAddress)">Ship to this address &nbsp;<i class="fa fa-caret-right"></i></button>
       </div>
     </div>
 

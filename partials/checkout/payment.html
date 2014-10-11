@@ -49,7 +49,7 @@
 <div class="form-group" ng-class="{ 'has-error' : paymentForm.cardName.$invalid && !paymentForm.cardName.$pristine }">
   <label for=" " class="col-md-3 control-label">Name on Card</label>
   <div class="col-sm-6 col-lg-4">
-    <input ng-model="profile.newCard.name" ng-minlength="3" name="cardName" type="text" class="form-control" placeholder=" " tabindex=" " required>
+    <input ng-model="profile.newCard.name" ng-minlength="3" name="cardName" type="text" class="form-control" placeholder=" " required>
     <span ng-show="paymentForm.cardName.$error.minlength" class="help-block" ng-class="{ 'text-danger' : paymentForm.cardName.$invalid && !paymentForm.cardName.$pristine }">Name on card is too short.</span>
     <!--valid={{paymentForm.cardName.$valid}}-->
   </div>
@@ -58,8 +58,8 @@
 <div class="form-group" ng-class="{ 'has-error' : paymentForm.number.$invalid && !paymentForm.number.$pristine }">
   <label for=" " class="col-md-3 control-label">Card Number</label>
   <div class="col-sm-6 col-lg-4">
-    <input ng-model="profile.newCard.card" ng-minlength="13" ng-maxlength="16" maxlength="16" name="number" type="text" class="form-control" id=" " placeholder=" " tabindex=" " required>
-    <span ng-show="paymentForm.number.$error.minlength" class="help-block" ng-class="{ 'text-danger' : paymentForm.number.$invalid && !paymentForm.number.$pristine }">Credit card needs to be at least 13 numbers.</span>
+    <input ng-model="profile.newCard.card" data-ng-blur="visited=true" ng-minlength="13" ng-maxlength="16" maxlength="16" name="number" type="text" class="form-control" id=" " placeholder=" " data-ui-validate=" 'isValidCard($value)' " required>
+    <span ng-show="visited && (paymentForm.number.$error.minlength || paymentForm.number.$error.validator)" class="help-block" ng-class="{ 'text-danger' : paymentForm.number.$invalid && !paymentForm.number.$pristine }">Invalid credit card number</span>
     <!--valid={{paymentForm.number.$valid}}-->
   </div>
   <div class="col-sm-4 col-lg-4"><img class="img-responsive cardImg" src="/img/visa.png"><img class="img-responsive cardImg" src="/img/mastercard.png"><img class="img-responsive cardImg" src="/img/discover.png"><img class="img-responsive cardImg" src="/img/americanexpress.png"></div>
@@ -69,14 +69,14 @@
   <div class="col-sm-5">
     <div class="row">
       <div class="col-xs-4 col-sm-3 col-med-2" ng-class="{ 'has-error' : paymentForm.expMonth.$invalid && !paymentForm.expMonth.$pristine }">
-        <input ng-model="profile.newCard.expMonth" name="expMonth" type="text" class="form-control col-sm-1" ui-mask="99" placeholder="MM" tabindex=" " required>
+        <input ng-model="profile.newCard.expMonth" name="expMonth" type="text" class="form-control col-sm-1" ui-mask="99" placeholder="MM" required>
         <!--valid={{paymentForm.expMonth.$valid}}-->
       </div>
       <div class="col-xs-1">
         <label class="control-label">/</label>
       </div>
       <div class="col-xs-6 col-sm-4 col-med-3" ng-class="{ 'has-error' : paymentForm.expYear.$invalid && !paymentForm.expYear.$pristine }">
-        <input ng-model="profile.newCard.expYear" name="expYear" type="text" class="form-control col-sm-3" ui-mask="9999" placeholder="YYYY" tabindex=" " required>
+        <input ng-model="profile.newCard.expYear" name="expYear" type="text" class="form-control col-sm-3" ui-mask="9999" placeholder="YYYY" required>
         <!--valid={{paymentForm.expYear.$valid}}-->
       </div>
     </div>
@@ -87,7 +87,7 @@
   <div class="col-sm-5">
     <div class="row">
       <div class="col-xs-4 col-sm-4 col-med-2">
-        <input ng-model="profile.newCard.cvv" ng-minlength="3" ng-maxlength="4" maxlength="4" name="cvv" type="text" class="form-control col-sm-1" placeholder="&bull;&bull;&bull;" tabindex=" " required>
+        <input ng-model="profile.newCard.cvv" ng-minlength="3" ng-maxlength="4" maxlength="4" name="cvv" type="text" class="form-control col-sm-1" placeholder="&bull;&bull;&bull;" required>
         <!--valid={{paymentForm.cvv.$valid}}-->
       </div>
       <div class="col-xs-6 col-sm-4 col-med-3">
@@ -116,14 +116,14 @@
   <div class="row form-group" ng-if="!isOnlineSponsoring" >
     <label for="billingFullName" class="col-md-3 control-label">Full Name</label>
     <div class="col-sm-8 col-lg-6">
-      <input name="name" ng-model="profile.newBillingAddress.name" type="text" class="form-control" id="billingFullName" placeholder="" tabindex="1" required>
+      <input name="name" ng-model="profile.newBillingAddress.name" type="text" class="form-control" id="billingFullName" placeholder="" required>
     </div>
   </div>
 
   <div class="row form-group">
     <label for="billingAddress1" class="col-md-3 control-label">Address Line 1</label>
     <div class="col-sm-8 col-lg-6">
-      <input name="address1" ng-model="profile.newBillingAddress.address1" type="text" class="form-control" id="billingAddress1" placeholder="Street address, P.O. box, company name, c/o " tabindex="2" required>
+      <input name="address1" ng-model="profile.newBillingAddress.address1" type="text" class="form-control" id="billingAddress1" placeholder="Street address, P.O. box, company name, c/o " required>
     </div>
   </div>
 
@@ -137,7 +137,7 @@
   <div class="row form-group">
     <label for="billingCity" class="col-md-3 control-label">City</label>
     <div class="col-sm-7 col-lg-5">
-      <input name="city" ng-model="profile.newBillingAddress.city" type="text" class="form-control" id="billingCity" placeholder=" " tabindex="4" required>
+      <input name="city" ng-model="profile.newBillingAddress.city" type="text" class="form-control" id="billingCity" placeholder=" " required>
     </div>
   </div>
 
@@ -204,17 +204,17 @@
       </form>
 
       <!-- Removed for now to add the Select tag for 50 states -->
-      <!--input id="shippingStateProvinceRegion" name="stateProvinceRegion" ng-model="profile.newShippingAddress.stateProvinceRegion" type="text" class="form-control" placeholder=" " tabindex="5" required-->
+      <!--input id="shippingStateProvinceRegion" name="stateProvinceRegion" ng-model="profile.newShippingAddress.stateProvinceRegion" type="text" class="form-control" placeholder=" " required-->
     </div>
     <!--div class="col-sm-6 col-lg-4">
-      <input name="billingProvinceRegion" ng-model="profile.newBillingAddress.stateProvinceRegion" type="text" class="form-control" id="billingStateProvinceRegion" placeholder=" " tabindex="5" required>
+      <input name="billingProvinceRegion" ng-model="profile.newBillingAddress.stateProvinceRegion" type="text" class="form-control" id="billingStateProvinceRegion" placeholder=" " required>
     </div-->
   </div>
 
   <div class="row form-group">
     <label for="billingZipPostalCode" class="col-md-3 control-label">Zip/Postal Code</label>
     <div class="col-sm-5 col-lg-3">
-      <input name="billingzipPostalCode" ng-model="profile.newBillingAddress.zip" type="text" class="form-control" id="billingZipPostalCode" placeholder=" " tabindex="6" required>
+      <input name="billingzipPostalCode" ng-model="profile.newBillingAddress.zip" type="text" class="form-control" id="billingZipPostalCode" placeholder=" " required>
     </div>
   </div>
 
@@ -230,7 +230,7 @@
   <div class="row form-group" ng-if="!isOnlineSponsoring"  ng-class="{ 'has-error' : paymentForm.billingPhoneNumber.$invalid && !paymentForm.billingPhoneNumber.$pristine }">
     <label for="billingPhoneNumber" class="col-md-3 control-label">Phone Number</label>
     <div class="col-sm-6 col-lg-4">
-      <input name="billingPhoneNumber" ng-model="profile.newBillingAddress.phone" ng-minlength="10" ng-maxlength="12" maxlength="12" type="text" class="form-control" id="billingPhoneNumber" ui-mask="(999) 999-9999" placeholder="(xxx) xxx-xxxx" tabindex="8" required>
+      <input name="billingPhoneNumber" ng-model="profile.newBillingAddress.phone" ng-minlength="10" ng-maxlength="12" maxlength="12" type="text" class="form-control" id="billingPhoneNumber" ui-mask="(999) 999-9999" placeholder="(xxx) xxx-xxxx" required>
       <span ng-show="paymentForm.billingPhoneNumber.$error.minlength" class="help-block" ng-class="{ 'text-danger' : paymentForm.billingPhoneNumber.$invalid && !paymentForm.billingPhoneNumber.$pristine }">Phone Number needs to be at least 10 numbers.</span>
     </div>
     <a href="" class="form-info-link"><i class="fa fa-info-circle"></i> More Info</a>
@@ -244,8 +244,8 @@
 
 <div class="form-group">
   <div class="col-md-offset-3 col-sm-9">
-    <span class="error" ng-show="billingAddressError && !checkout.billSame" ng-bind="billingAddressError"></span>
-    <button type="button" ng-click="addPaymentMethod()" class="btn btn-primary btn-lg" tabindex=" " ng-disabled="!paymentForm.$valid">Save Payment Information &nbsp;<i class="fa fa-caret-right"></i></button>
+    <div class="error" ng-show="billingAddressError && !checkout.billSame" ng-bind="billingAddressError"></div>
+    <button type="button" ng-click="addPaymentMethod()" class="btn btn-primary btn-lg" ng-disabled="!paymentForm.$valid">Save Payment Information &nbsp;<i class="fa fa-caret-right"></i></button>
   </div>
 </div>
 
