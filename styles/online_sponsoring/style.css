@@ -132,7 +132,9 @@ border-radius: 0px;
 
 
 .well {
-  background-color: #f5f5f5;
+  background:none;
+  border:none;
+  box-shadow:none;
 }
 .product-highlighter {
   border: 5px solid #AA7F9E;
@@ -255,19 +257,29 @@ section#why_jafra_testimonials {
 }
 
 section h3.hero-header-title {
-font-size: 4.5em;
+font-size: 81px;
 font-family: HelveticaNeueLTStd-BdCn;
 font-weight: normal;
 font-style: normal;
 line-height: 0.9;
 color: #8B7B5B;
+letter-spacing: 0.0589em;
 }
 
-section h3.hero-header-title span.serif-title {
+section h3.hero-header-title span.serif-title, span.serif-title-alt {
+font-size: 55px;
 font-family: DidotLTPro-Italic;
 font-weight: normal;
 font-style: normal;
 color: #482365;
+letter-spacing: normal;
+}
+
+span.serif-title-alt {
+  color: #8B7B5B;
+  font-size: 42px;
+  display: block;
+  line-height: 44px;
 }
 .testimonials {
   width: 80%;
