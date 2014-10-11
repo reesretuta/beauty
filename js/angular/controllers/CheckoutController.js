@@ -6,7 +6,7 @@ angular.module('app.controllers.checkout')
         $scope.cartLoaded = false;
         $rootScope.inCheckout = true;
 
-        var params = $location.search();
+        var params = $location.search();$log.debug("params",params);
         var urlStep = S(params.step != null ? params.step : "Start").toString();
 
         //change page title
@@ -131,8 +131,8 @@ angular.module('app.controllers.checkout')
                     Cart.addToCart({
                         name: name,
                         sku: sku,
-                        kitSelections: {},
-                        quantity: 1
+                        quantity: 1,
+                        kitSelections: {}
                     }).then(function(cart) {
                         $log.debug("CheckoutController(): online sponsoring SKU loaded & added to cart");
                         onlineSponsorChecksCompleteDefer.resolve();
