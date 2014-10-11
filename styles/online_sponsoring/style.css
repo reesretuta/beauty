@@ -572,6 +572,11 @@ min-width:131px;
   top: -46px;
   right: -106px;
 }
+#liner_black {
+  position: absolute;
+  right: -60px; 
+  top: -50px;
+}
 
 
 
