@@ -68,7 +68,7 @@
 
   </head>
 
-  <body data-spy="scroll" data-target=".navbar-sections" class="join">
+  <body data-spy="scroll" data-target="#navbar-sections" class="join">
     <div id="pagenav" class="navbar navbar-default navbar-static-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
@@ -80,7 +80,7 @@
           </button>
           <a class="navbar-brand" id="logo" href="/join"><img src="/img/logo-join.png" alt="logo" /></a>
         </div>
-        <div class="navbar-collapse collapse navbar-sections">
+        <div class="navbar-collapse collapse">
 
           <ul class="nav navbar-nav navbar-right HelveticaNeueLTStd-BdCn navbar-language" style="margin-left: 40px;">
             <li class="dropdown">
@@ -92,20 +92,42 @@
               </ul>
             </li>
           </ul>
-          
+          <div id="navbar-sections">
           <ul class="join_nav nav navbar-nav navbar-right HelveticaNeueLTStd-BdCn" ng-if="!inCheckout">
             <li><a href="#why_jafra">Why JAFRA?</a></li>
             <li><a href="#starter_kits">Starter Packages</a></li>
             <li><a href="#FAQs">FAQs</a></li>
             <li><a href="#JOIN_NOW" data-toggle="modal" data-target=".bs-example-modal-lg">Join Now!</a></li>
             <li class="dropdown"><a href="" class="dropdown-toggle" data-toggle="dropdown">Contact Us</a>
-              <ul class="dropdown-menu">
+              <ul class="dropdown-menu contact-header">
                 <li class="contact-description">1 (800) 551-2345<br />
                   Open: M-F 7a-5p
                 </li>
+                <li class="social_dropdown">
+                	
+
+                      <div class="social-media-icons center-block">
+                        <a target="_blank" href="http://www.facebook.com/JafraWorldwide"><i class="fa fa-facebook-square"></i></a>
+                        &nbsp;
+                        <a target="_blank" href="https://plus.google.com/102586203009783197974"><i class="fa fa-google-plus-square"></i></a>
+                        &nbsp;
+                        <a target="_blank" href="https://www.linkedin.com/company/3077948"><i class="fa fa-linkedin-square"></i></a>
+                        &nbsp;
+                        <a target="_blank" href="https://www.twitter.com/JAFRAWorldwide"><i class="fa fa-twitter-square"></i></a>
+                        &nbsp;
+                        <a target="_blank" href="http://www.youtube.com/user/JAFRACorporate?feature=watch"><i class="fa fa-youtube-square"></i></a>
+                        &nbsp;
+                        <a target="_blank" href="http://pinterest.com/jafracosmetics/"><i class="fa fa-pinterest-square"></i></a>
+                        &nbsp;
+                        <a target="_blank" href="http://instagram.com/jafracosmeticsint"><i class="fa fa-instagram"></i></a>
+                        &nbsp;
+                      </div>
+                    
+                </li>
               </ul>
             </li>
-
+			</ul>
+			</div>
         </div><!--/.navbar-collapse -->
       </div>
     </div>
@@ -303,7 +325,7 @@
             });
       });
     </script>
-
+    
     <!-- Google Analytics -->
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

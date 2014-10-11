@@ -45,13 +45,14 @@
               <h2>SELECT YOUR STARTER KIT</h2>
             </div>
             <div class="col-md-6">
+              <img src="/img/royal_starter_kit.png" class="img-responsive" />
               <h3 class="hero-header-title"><span class="serif-title h1">get everything</span><br />
                 YOU NEED
               </h3>
               <h3 class="h1 starter_kits-price">$99</h3>
               <p class="starter_kits-label_title">Royal Starter Kit</p>
               <p class="starter_kits-retail_value">A $490+ Retail Value</p>
-              <p><a href="#more" class="more-link collapsed"><span>MORE</span></a></p>
+              <p><a href="#royal_starter_info" data-toggle="collapse" data class="more-link collapsed"><span>MORE</span></a></p>
               <div class="product-action">
                 <!-- Split button -->
                 <div class="btn-group">
@@ -60,33 +61,32 @@
                     <span class="caret"></span>
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
-                  <ul class="dropdown-menu" role="menu">
+
+                  <ul class="dropdown-menu kit-select" role="menu">
                     <li><a href="#" ng-click="join('19634', 'en_US', 'Royal Starter Kit', 99)">Buy English</a></li>
                     <li><a href="#" ng-click="join('19635', 'es_US', '', 99)">Buy Spanish</a></li>
+
                   </ul>
                 </div>
               </div>
+              <!-- collapsed section content (default collapsed) -->
+              <div id="royal_starter_info" class="collapse">
+                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis tincidunt turpis et varius. Donec sapien arcu, facilisis vitae nunc sit amet, venenatis consequat felis. Curabitur varius pretium metus. Phasellus ut tellus tempus ipsum malesuada sodales et porttitor diam.</p>
+                
+                  <img src="/img/99_kit_1024x852.jpg" class="img-responsive"/>
+                  <img src="/img/99_kit_bags.jpg" class="img-responsive"/>
+                
+              </div>
             </div>
-            <div class="col-md-6">
-              <img src="/img/royal_starter_kit.png" class="img-responsive" />
-            </div>
-            
-          </div>
-          
-            <hr>
-
-          <div class="row text-center">
             <div class="col-md-6">
               <img src="/img/skincare_starter_kit.png" class="img-responsive" />
-            </div>
-            <div class="col-md-6">
               <h3 class="hero-header-title"><span class="serif-title h1">get a</span><br />
                 QUICK START
               </h3>
               <h3 class="h1 starter_kits-price">$39</h3>
                 <p class="starter_kits-label_title">Skincare Starter Kit</p>
                 <p class="starter_kits-retail_value">A $198 Retail Value</p>
-              <p><a href="#more" class="more-link collapsed"><span>MORE</span></a></p>
+              <p><a href="#skincare_starter_info" data-toggle="collapse" data class="more-link collapsed"><span>MORE</span></a></p>
               <div class="product-action">
                 <!-- Split button -->
                 <div class="btn-group">
@@ -95,115 +95,160 @@
                     <span class="caret"></span>
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
-                  <ul class="dropdown-menu" role="menu">
+
+                  <ul class="dropdown-menu kit-select" role="menu">
                     <li><a href="sign-in.html" ng-click="join('19636', 'en_US', 'Skincare Starter Kit', 39)">Buy English</a></li>
                     <li><a href="sign-in.html" ng-click="join('19637', 'es_US', '', 39)">Buy Spanish</a></li>
+
                   </ul>
                 </div>
               </div>
+              <!-- collapsed section content (default collapsed) -->
+              <div id="skincare_starter_info" class="collapse">
+                  <img src="/img/39_kit_1024x720.jpg" class="img-responsive"/>
+                  <img src="/img/39_kit_bag.jpg" class="img-responsive"/>
+                
+                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis tincidunt turpis et varius. Donec sapien arcu, facilisis vitae nunc sit amet, venenatis consequat felis. Curabitur varius pretium metus. Phasellus ut tellus tempus ipsum malesuada sodales et porttitor diam.</p>
+                
+              </div>
             </div>
+           
+           
           </div>
-          <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
         </div>
       </div>
     </div>
-      
-    <!-- Features & Highlights -->
+
+
+
+    <!-- WHY JAFRA - Features & Highlights -->
 
     <section id="why_jafra">
+
       <div class="container">
         <h2 class="h1 section-title">Why Join Jafra?</h2>
-      </div>
+      </div> <!-- /.container -->
 
-      <section class="hero-section-box" id="why_jafra_products">
+      <section class="subsection" id="why_jafra_products">
+
         <div class="container subcontainer">
-          <div class="col-md-6">
-            <h3 class="hero-header-title"><span class="serif-title">products</span><br />TO LOVE</h3>
-            <p>Advanced skin care, trendy colors, luxurious toiletries plus exclusive fragrances created by world-renowned European perfumers… you’ll love our product line up! The best part?  You can earn up to 50% commission on your product sales – one of the highest commissions in the industry!</p>
-
-            <!-- collapsed section toggle (default collapsed) -->
-            <p class="text-left"><a class="more-link collapsed" data-toggle="collapse" href="#more_products">MORE</a></p>
-
-          </div>
-          <div class="col-md-6 carousel">
-            <div id="carousel-product-generic" class="carousel slide" data-ride="carousel">
-              <!-- Indicators -->
-              <ol class="carousel-indicators">
-                <li data-target="#carousel-product-generic" data-slide-to="0" class="active"></li>
-                <li data-target="#carousel-product-generic" data-slide-to="1"></li>
-                <li data-target="#carousel-product-generic" data-slide-to="2"></li>
-                <li data-target="#carousel-product-generic" data-slide-to="3"></li>
-                <li data-target="#carousel-product-generic" data-slide-to="4"></li>
-                <li data-target="#carousel-product-generic" data-slide-to="5"></li>
-              </ol>
-
-              <!-- Wrapper for slides -->
-              <div class="carousel-inner">
-                <div class="item active">
-                        <img class="img-responsive" src="/img/products_royalJelly.jpg">
-                </div>
-                <div class="item">
-                        <img class="img-responsive" src="/img/products_PRO.jpg">
-                </div>
-                <div class="item">
-                        <img class="img-responsive" src="/img/products_marineBotanicals.jpg">
-                </div>
-                <div class="item">
-                        <img class="img-responsive" src="/img/products_fragranceWomen.jpg">
-                </div>
-                <div class="item">
-                        <img class="img-responsive" src="/img/products_fragranceMen.jpg">
-                </div>
-                <div class="item">
-                        <img class="img-responsive" src="/img/products_color.jpg">
-                </div>
-              </div>
-
-              <!-- Controls -->
-              <a class="left carousel-control" href="#carousel-product-generic" role="button" data-slide="prev">
-                <span class="glyphicon glyphicon-chevron-left"></span>
-              </a>
-              <a class="right carousel-control" href="#carousel-product-generic" role="button" data-slide="next">
-                <span class="glyphicon glyphicon-chevron-right"></span>
-              </a>
-            </div>
-          </div>
-          
-          <!-- collapsed section content (default collapsed) -->
-          <div id="more_products" class="col-md-12 collapse">
+      
+          <div class="row">
+            
             <div class="col-md-6">
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis tincidunt turpis et varius. Donec sapien arcu, facilisis vitae nunc sit amet, venenatis consequat felis. Curabitur varius pretium metus. Phasellus ut tellus tempus ipsum malesuada sodales et porttitor diam.</p>
-            </div>
-            <div class="col-md-6 carousel">
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis tincidunt turpis et varius. Donec sapien arcu, facilisis vitae nunc sit amet, venenatis consequat felis. Curabitur varius pretium metus. Phasellus ut tellus tempus ipsum malesuada sodales et porttitor diam.</p>
-            </div>
-          </div>
-        </div>
-      </section>
 
-          <!-- SPACER --> <div class="spacer">&nbsp;</div> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
-      <section class="hero-section-box" id="why_jafra_lifestyle">
+              <div class="section-copy">
+
+                <h3 class="hero-header-title"><span class="serif-title">products</span><br />TO LOVE</h3>
+                <p>Advanced skin care, trendy colors, luxurious toiletries plus exclusive fragrances created by world-renowned European perfumers… you’ll love our product line up! The best part?  You can earn up to 50% commission on your product sales – one of the highest commissions in the industry!</p>
+
+                <!-- collapsed section toggle (default collapsed) -->
+                <p class="text-right prod_more_link"><a class="more-link collapsed" data-toggle="collapse" href="#more_products">MORE</a></p>
+ 
+                <div id="more_products" class="collapse">
+                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis tincidunt turpis et varius. Donec sapien arcu, facilisis vitae nunc sit amet, venenatis consequat felis. Curabitur varius pretium metus. Phasellus ut tellus tempus ipsum malesuada sodales et porttitor diam.</p>
+                  <p><br><p>
+                </div>
+
+              </div> <!-- /.section-copy -->
+
+            </div> <!-- /.col -->
+
+            <div class="col-md-6">
+
+              <div class="carousel">
+
+                <div id="carousel-product-generic" class="carousel slide" data-ride="carousel">
+                  <!-- Indicators -->
+                  <ol class="carousel-indicators">
+                    <li data-target="#carousel-product-generic" data-slide-to="0" class="active"></li>
+                    <li data-target="#carousel-product-generic" data-slide-to="1"></li>
+                    <li data-target="#carousel-product-generic" data-slide-to="2"></li>
+                    <li data-target="#carousel-product-generic" data-slide-to="3"></li>
+                    <li data-target="#carousel-product-generic" data-slide-to="4"></li>
+                    <li data-target="#carousel-product-generic" data-slide-to="5"></li>
+                  </ol>
+
+                  <!-- Wrapper for slides -->
+                  <div class="carousel-inner">
+                    <div class="item active">
+                            <img class="img-responsive" src="/img/products_royalJelly.jpg">
+                    </div>
+                    <div class="item">
+                            <img class="img-responsive" src="/img/products_PRO.jpg">
+                    </div>
+                    <div class="item">
+                            <img class="img-responsive" src="/img/products_marineBotanicals.jpg">
+                    </div>
+                    <div class="item">
+                            <img class="img-responsive" src="/img/products_fragranceWomen.jpg">
+                    </div>
+                    <div class="item">
+                            <img class="img-responsive" src="/img/products_fragranceMen.jpg">
+                    </div>
+                    <div class="item">
+                            <img class="img-responsive" src="/img/products_color.jpg">
+                    </div>
+                  </div>
+
+                  <!-- Controls -->
+                  <a class="left carousel-control" href="#carousel-product-generic" role="button" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left"></span> <!--  ** left control hidden (angular bug) **  -->
+                  </a>
+                  <a class="right carousel-control" href="#carousel-product-generic" role="button" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                  </a>
+                </div>
+
+              </div> <!-- /.carousel -->
+
+            </div> <!-- /.col -->
+          
+          </div> <!-- /.row -->
+
+        </div> <!-- /.container -->
+
+      </section> <!-- /.subsection -->
+
+
+      <section class="subsection" id="why_jafra_lifestyle">
+
         <div class="container subcontainer">
-          <div class="col-md-6">
-            <img class="img-responsive" src="/img/heroshot2.jpg">
-          </div>
-          <div class="col-md-4">
-            <h3 class="hero-header-title"><span class="serif-title">it's</span><br />YOUR CALL!</h3>
-            <p>JAFRA’s lets you sell your way. Set your own hours, plan work around your family and achieve financial independence doing what you love.</p>
-            <p><a href="#more_call" data-toggle="collapse" class="more-link collapsed"><span>MORE</span></a></p>
-          </div>
-          <div class="col-md-2 hidden-sm hidden-xs">
-            <img class="img-responsive" src="/img/liner_black.png" id="liner_black">
-          </div>
-          <!-- collapsed section content (default collapsed) -->
-          <div id="more_call" class="col-md-12 collapse">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis tincidunt turpis et varius. Donec sapien arcu, facilisis vitae nunc sit amet, venenatis consequat felis. Curabitur varius pretium metus. Phasellus ut tellus tempus ipsum malesuada sodales et porttitor diam.</p>
-          </div>
-        </div>
-      </section>
-          <!-- SPACER --> <div class="spacer">&nbsp;</div>  <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
 
-      <section class="hero-section-box" id="why_jafra_rewards">
+          <div class="row">
+
+            <div class="col-md-6">
+              <img class="img-responsive" src="/img/heroshot2.jpg">
+            </div> <!-- /.col -->
+
+            <div class="col-md-6">
+
+              <div class="section-copy">
+
+                <h3 class="hero-header-title"><span class="serif-title">it&rsquo;s</span><br />YOUR CALL!</h3>
+                <p>JAFRA’s lets you sell your way. Set your own hours, plan work around your family and achieve financial independence doing what you love.</p>
+                <p><a href="#more_call" data-toggle="collapse" class="more-link collapsed"><span>MORE</span></a></p>
+                <!-- collapsed section content (default collapsed) -->
+                <div id="more_call" class="collapse">
+                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis tincidunt turpis et varius. Donec sapien arcu, facilisis vitae nunc sit amet, venenatis consequat felis. Curabitur varius pretium metus. Phasellus ut tellus tempus ipsum malesuada sodales et porttitor diam.</p>
+                </div>
+
+              </div> <!-- /.section-copy -->
+
+            </div> <!-- /.col -->
+
+            <!-- <div class="col-md-2 hidden-sm hidden-xs">
+              <img class="img-responsive" src="/img/liner_black.png" id="liner_black">
+            </div> --> <!-- REMOVE FROM GRID & POSITION ABSIOLUTE -->
+
+          </div> <!-- /.row -->
+
+        </div> <!-- /.container -->
+
+      </section> <!-- /.subsection -->
+
+
+      <section class="subsection" id="why_jafra_rewards">
         <div class="container subcontainer">
           <div class="col-md-6">
             <h3 class="hero-header-title"><span class="serif-title">rewards</span><br />GALORE</h3>
@@ -241,7 +286,6 @@
                 <span class="glyphicon glyphicon-chevron-right"></span>
               </a>
             </div>
-            <!-- SPACER --> <div class="spacer">&nbsp;</div> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
           </div>
           <!-- collapsed section content (default collapsed) -->
           <div id="more_rewards" class="col-md-12 collapse">
@@ -255,16 +299,15 @@
         </div>
       </section>
 
-          <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+      
       <section class="text-left" id="why_jafra_testimonials">
         <div class="container subcontainer">
           <div class="col-md-9">
             <h3 class="hero-header-title"><span class="serif-title">JAFRA is everything</span><br />WE IMAGINED<br /><span class="serif-title-alt">and more!</span></h3>
-            <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
           </div>
           <div class="col-md-3 hidden-sm hidden-xs"><img style="max-width:250px" src="/img/pastelpatches-2.png"  id="pastelpatches"/></div>
 
-          <div class="row hero-section-box ">
+          <div class="row subsection ">
             <div class="col-md-3 hidden-sm hidden-xs"><img style="max-width:250px" src="/img/lipsticksmears3.png" id="lipsticksmear" /></div>
             <div class="col-md-2">
               <div class="testimonial text-center">
@@ -300,10 +343,11 @@
         </div>
       </section>
 
+
     </section>
 
 
-        <!-- SPACER --> <div class="spacer">&nbsp;</div> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+
     <!-- Starter Packages -->
     <section id="starter_kits">
 
@@ -329,9 +373,11 @@
                       <span class="caret"></span>
                       <span class="sr-only">Toggle Dropdown</span>
                     </button>
-                    <ul class="dropdown-menu" role="menu">
+
+                    <ul class="dropdown-menu kit-select" role="menu">
                       <li><a href="sign-in.html" ng-click="join('19634', 'en_US', 'Royal Starter Kit', 99)">Buy English</a></li>
                       <li><a href="sign-in.html" ng-click="join('19635', 'es_US', '', 99)">Buy Spanish</a></li>
+
                     </ul>
                   </div>
                 </div>
@@ -342,7 +388,6 @@
 
           <!-- collapsed section content (default collapsed) -->
           <div id="more_royal" class="col-md-12 collapse">
-          <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
             <div class="col-md-6">
               <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis tincidunt turpis et varius. Donec sapien arcu, facilisis vitae nunc sit amet, venenatis consequat felis. Curabitur varius pretium metus. Phasellus ut tellus tempus ipsum malesuada sodales et porttitor diam.</p>
             </div>
@@ -354,7 +399,6 @@
         </div>
       </section>
 
-          <!-- SPACER --><div class="spacer">&nbsp;</div> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
       <section id="skincare_starter_kit" class="subsection">
         <div class="container subcontainer">
           <div class="col-md-6">
@@ -376,9 +420,11 @@
                   <span class="caret"></span>
                   <span class="sr-only">Toggle Dropdown</span>
                 </button>
-                <ul class="dropdown-menu" role="menu">
+
+                <ul class="dropdown-menu kit-select" role="menu">
                   <li><a href="sign-in.html" ng-click="join('19636', 'en_US', 'Skincare Starter Kit', 39)">Buy English</a></li>
                   <li><a href="sign-in.html" ng-click="join('19637', 'es_US', '', 39)">Buy Spanish</a></li>
+
                 </ul>
               </div>
             </div>
@@ -386,7 +432,6 @@
 
           <!-- collapsed section content (default collapsed) -->
           <div id="more_skincare" class="col-md-12 collapse">
-          <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
             <div class="col-md-6">
               <img src="/img/39_kit_1024x720.jpg" class="img-responsive"/>
               <img src="/img/39_kit_bag.jpg" class="img-responsive"/>
@@ -398,8 +443,8 @@
         </div>
       </section>
 
-        <!-- SPACER --> <div class="spacer">&nbsp;</div> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
     </section>
+
 
     <!-- FAQs -->
     <section id="FAQs">
@@ -557,11 +602,11 @@
           </div>
 
          <div class="col-md-12 text-center">
-        <!-- SPACER --> <div class="spacer">&nbsp;</div> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+
 
           <a class="btn btn-primary btn-med" role="button" href="#" data-toggle="modal" data-target=".bs-example-modal-lg">Join now</a>
 
-        <!-- SPACER --> <div class="spacer">&nbsp;</div> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+
 
         </div>
 
@@ -569,7 +614,7 @@
       </div>
     </section>
 
-        <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+
     <section id="social">
       <div class="container">
         <div class="row text-center">

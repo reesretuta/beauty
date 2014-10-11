@@ -208,6 +208,10 @@ background-blend-mode: multiply;
   margin-left: 0px;
 }*/
 
+.subsection {
+  margin-bottom: 55px;
+}
+
 .subcontainer, .subsection {
   background: #fff;
 }
@@ -224,6 +228,10 @@ background-blend-mode: multiply;
   left: -10%;
   background: -webkit-radial-gradient(50% -3%, ellipse cover, rgba(00, 00, 00, 0.25), rgba(97, 97, 97, 0.0) 40%);
   background:      radial-gradient(ellipse at 50% -3%, rgba(00, 00, 00, 0.25), rgba(97, 97, 97, 0.0) 40%);
+}
+.subcontainer .row {
+  margin-left: -30px;
+  margin-right: -30px;
 }
 
 section#why_jafra_products {
@@ -327,7 +335,7 @@ margin: 8px 0 5px;
 }
 
 .social-media-icons a  i.fa{
-  color: #333;
+  color: #aa73b1;
 }
 
 .starter_kits-price{
@@ -409,7 +417,50 @@ line-height: 0.8em;
 }
 .navbar-language  .dropdown-menu > li > a
 {
+	color: #aa73b1 ;
+}
+
+.navbar-language  .dropdown-menu > li > a:hover
+{
+	color: #000 ;
+	background:#FAEBE6; 
+}
+
+.kit-select > li > a
+{
+	color: #aa73b1 ;
+	font-weight:bold; 
+}
+.kit-select > li > a:hover
+{
+	background:#FAEBE6;
+}
+.dropdown-menu > .contact-description 
+{
 	color: #aa73b1 !important;
+	font-weight:normal; 
+}
+
+ .navbar-language > .open > a,  .navbar-language > .open > a:hover,  .navbar-language > .open > a:focus 
+{
+    background-color: #c52033 !important;
+    color: #fff !important;
+}
+
+.navbar-language .dropdown-menu 
+{
+margin-right:5px; 
+min-width:131px;
+}
+
+.contact-header
+{
+	min-width:120px; 
+}
+.contact-header .social_dropdown
+{
+    max-width: 100px;
+    margin-left:30px; 
 }
 .spacer{
 	height:55px;
@@ -424,6 +475,17 @@ line-height: 0.8em;
 .active a{
 	background-image: none!important;
 }
+
+
+
+
+@media (max-width:990px) {
+	.prod_more_link
+	{
+		text-align:left; 
+	}
+}
+
 /*  ------ RESPONSIVE BREAKPOINTS ------  */
 
 /* Extra-Small screens like handheld devices (iPhone/Android/etc) */
@@ -464,6 +526,9 @@ line-height: 0.8em;
 
 /* Small screens like netbooks and tablets (iPad/iPad mini/etc) */
 @media (min-width:768px) {
+	
+	
+	
     .jumbotron {
         padding-top: 60px;
         padding-bottom: 60px;
