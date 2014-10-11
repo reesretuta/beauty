@@ -482,10 +482,10 @@ angular.module('app.controllers.checkout')
 
                     $scope.checkoutUpdated();
                     WizardHandler.wizard('checkoutWizard').goTo('Payment');
-                }, function(error) {
-                    $log.error("CheckoutController(): addShippingAddressAndContinue(): error adding address", error);
+                }, function(r) {
+                    $log.error("CheckoutController(): addShippingAddressAndContinue(): error adding address", r);
                     // FIXME - failed to add, show error
-                    $scope.shippingAddressError = error;
+                    $scope.shippingAddressError = r.message;
                 });
 
             } else {
