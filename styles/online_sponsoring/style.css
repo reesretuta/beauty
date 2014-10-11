@@ -617,6 +617,10 @@ min-width:131px;
     p.jumbo-description {
       font-size: 14px;
     }
+    
+    .jumbotron p.jumboget {
+    text-align: center;
+    }
     .section-title {
         font-size: 30px;
     }
