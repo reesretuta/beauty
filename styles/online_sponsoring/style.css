@@ -551,6 +551,27 @@ min-width:131px;
 
 }
 
+/*
+ * Join Styles
+ */
+
+#ctavid{
+  padding:22px 2px 0px 36px;
+}
+.why-section-title{
+  text-align:center;
+  color:#472264!important;
+}
+#lipsticksmear{
+  position:relative;
+  left:-123px;
+}
+#pastelpatches{
+  left: 112px;
+    position: relative;
+    top: -23px;
+}
+
 
 
 
