@@ -63,7 +63,7 @@ color: #482365;
 .btn {
 /*font-size: 1.2em;
 padding: 0.5em 1.5em;*/
-backgroound: #b51a8a; /*background: #c52033;*/
+background: #c52033;
 /*opacity: 0.7;*/
 text-transform: uppercase;
 font-weight: bold;
@@ -524,7 +524,7 @@ min-width:131px;
        width:30px;
        height:50px;
       }
-      
+   /*   
 .carousel-control.right
 {
   background-image:none; 
@@ -533,12 +533,12 @@ min-width:131px;
 .carousel .left
 {
   background: none;
-  /*pointer-events: none;*/
+  /*pointer-events: none;
 }
 /*
 .carousel .left .glyphicon {
   display: none;
-}*/
+}
 .carousel .right {
   cursor: pointer;
 }
@@ -549,7 +549,7 @@ min-width:131px;
   outline:0 none; 
   color:#fff;   
 
-}
+}*/
 
 /*
  * Join Styles
@@ -563,13 +563,19 @@ min-width:131px;
   color:#472264!important;
 }
 #lipsticksmear{
-  position:relative;
-  left:-123px;
+  position: absolute;
+  left: -84px;
+  bottom: 70px;
 }
-#pastelpatches{
-  left: 112px;
-    position: relative;
-    top: -23px;
+#pastelpatches {
+  position: absolute;
+  top: -46px;
+  right: -106px;
+}
+#liner_black {
+  position: absolute;
+  right: -60px; 
+  top: -50px;
 }
 
 
@@ -618,6 +624,16 @@ min-width:131px;
     .checkout-card .btn 
     {
       font-size:8px; 
+    }
+    span.serif-title {
+      font-size: 28px;
+    }
+    section h3.hero-header-title {
+      font-size: 43px;
+    }
+    span.serif-title-alt {
+      font-size: 33px;
+      line-height: 36px;
     }
 
 }

@@ -1,7 +1,6 @@
 'use strict';
 
 /* Directives */
-
 angular.module('app.directives', [])// directives
     // this directive is a helper for browsers that can't seem to get % height correct.  this will watch for page
     .directive('resizeHandler', ['$window', '$log', function ($window, $log) {
