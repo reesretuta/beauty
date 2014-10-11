@@ -94,7 +94,7 @@
             <small>EXP:</small>
             {{checkout.card.expMonth}}/{{substr(checkout.card.expYear,2,2)}}
           </p>
-          <a ng-href="{{APP_BASE_URL}}/checkout?step=Payment" class="btn pull-right card-use-btn"><i class="fa fa-pencil-square-o"></i> Change Card</a>
+          <a ng-href="{{APP_BASE_URL}}/checkout?step=Payment" class="pull-right card-use-btn"><i class="fa fa-pencil-square-o"></i> Change Card</a>
         </div>
       </div><!-- /card -->
 
@@ -143,7 +143,7 @@
           I agree to the <a href="" data-toggle="modal" data-target=".bs-example-modal-lg-terms">Terms and Conditions</a>
           &nbsp;&nbsp;&nbsp;&nbsp;
         </label>
-        <button type="button" class="btn btn-link pull-left" tabindex=" " ng-click="confirmAlert('Are you sure you\'d like to cancel your order?')">Cancel Order</button>
+        <button type="button" class="btn-link pull-left" tabindex=" " ng-click="confirmAlert('Are you sure you\'d like to cancel your order?')">Cancel Order</button>
         <button type="button" class="btn btn-primary btn-lg" tabindex=" " wz-next ng-disabled="!confirmForm.$valid">Place Order &nbsp;<i class="fa fa-caret-right"></i></button>
       </div>
 
