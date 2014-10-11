@@ -139,6 +139,113 @@ angular.module('app.controllers.checkout')
                     }, function(error) {
                         $log.error("CheckoutController(): failed to update cart");
                     });
+                    
+                    
+                    
+                    $scope.cart = [];
+            $scope.products = [];
+            $scope.productMap = {};
+            $scope.orderByIdItem = '';
+            $scope.orderByIdQty = 1;
+        
+            var loadCart = function() {
+                $log.debug("CartController(): loadCart()");
+
+                // load cart data
+                Cart.getItems().then(function(items) {
+                    $scope.items = items;
+
+                    $scope.cartLoaded = true;
+                    $log.debug("CartController(): loadCart(): loaded cart products into items", items);
+                }, function(error) {
+                    $log.error("CartController(): loadCart(): cart error", error);
+                    $location.path(STORE_BASE_URL);
+                });
+            }
+            loadCart();
+        
+            $scope.total = function() {
+                var total = 0;
+
+                if ($scope.cartLoaded) {
+                    $log.debug("CartController(): total(): cart loaded, calculating total");
+                    angular.forEach($scope.items, function(item) {
+                        $log.debug("CartController(): total(): calculating price for item", item);
+                        var product = item.product;
+
+                        $log.debug("CartController(): total(): using product", product);
+                        if (!(Array.isArray(product.prices)) || product.prices.length == 1) {
+                            total += item.quantity * product.currentPrice.price;
+                        } else if (product.prices.length == 0) {
+                            // there is a problem, we don't have prices
+                            $log.error("CartController(): total(): there are no prices listed for this item", item);
+                        } else {
+                            var priceFound = 0;
+                            angular.forEach(product.prices, function(price) {
+                                if (price.type==2) {
+                                    priceFound = 1;
+                                    total += item.quantity * price.price;
+                                }
+                            })
+                            if (!priceFound) {
+                                // use the first price in the list (FIXME - need to check dates))
+                                total += item.quantity * product.currentPrice.price;
+                            }
+                        }
+
+        //                total += item.quantity * item.pricing.detailprice.price;
+                    })
+                }
+
+                return total;
+            }
+        
+            $scope.addToCart = function() {
+                $log.debug("CartController(): addToCart(): adding product", $scope.orderByIdItem, "quantity", $scope.orderByIdQty);
+
+                var product;
+                if ($scope.searchProducts[$scope.orderByIdItem]) {
+                    product = $scope.searchProducts[$scope.orderByIdItem];
+                } else if ($scope.searchProductsByName[$scope.orderByIdItem]) {
+                    product = $scope.searchProductsByName[$scope.orderByIdItem];
+                }
+
+                if (product != null) {
+                    if (product.type == 'kit') {
+                        // configure kit
+                        $scope.configureKit({
+                            name: product.name,
+                            sku: product.sku,
+                            product: product,
+                            kitSelections: product.kitSelections,
+                            quantity: $scope.orderByIdQty
+                        }, false);
+                    } else {
+                        $log.debug("CartController(): addToCart(): adding product", product);
+                        Cart.addToCart({
+                            name: product.name,
+                            sku: product.sku,
+                            kitSelections: product.kitSelections,
+                            quantity: $scope.orderByIdQty
+                        });
+                        // clear search
+                        $scope.orderByIdItem = '';
+
+                        $scope.cartLoaded = false;
+                        loadCart();
+                    }
+                } else {
+                    $log.error("CartController(): addToCart(): product not found");
+                }
+            }
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
                 }, function(error) {
                     $log.error("CheckoutController(): failed to update cart");
                 });
@@ -592,6 +699,19 @@ angular.module('app.controllers.checkout')
                 $location.replace();
             }
         }
+        
+        
+        
+        // cart actions added for online sponsoring since we skip the cart controller
+        if($scope.isOnlineSponsoring) {
+            
+        }
+        
+        
+        
+        
+        
+        
 
         function cleanup() {
             if (cancelChangeListener) {
