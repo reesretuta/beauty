@@ -327,7 +327,7 @@ margin: 8px 0 5px;
 }
 
 .social-media-icons a  i.fa{
-  color: #333;
+  color: #aa73b1;
 }
 
 .starter_kits-price{
@@ -410,6 +410,17 @@ line-height: 0.8em;
 .navbar-language  .dropdown-menu > li > a
 {
 	color: #aa73b1 !important;
+}
+
+.kit-select > li > a
+{
+	color: #aa73b1 ;
+	font-weight:bold; 
+}
+.dropdown-menu > .contact-description 
+{
+	color: #aa73b1 !important;
+	font-weight:normal; 
 }
 .spacer{
 	height:55px;
