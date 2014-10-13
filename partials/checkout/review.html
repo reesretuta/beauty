@@ -146,13 +146,13 @@
           I agree to the <a href="" data-toggle="modal" data-target=".bs-example-modal-lg-terms">Terms and Conditions</a>
           &nbsp;&nbsp;&nbsp;&nbsp;
         </label>
-        <button type="button" class="btn-link pull-left" tabindex=" " ng-click="confirmAlert('Are you sure you\'d like to cancel your order?')">Cancel Order</button>
-        <button type="button" class="btn btn-primary btn-lg" tabindex=" " ng-click="processOrder()" ng-disabled="!confirmForm.$valid">Place Order &nbsp;<i class="fa fa-caret-right"></i></button>
+        <button type="button" class="btn-link pull-left" ng-click="confirmAlert('Are you sure you\'d like to cancel your order?')">Cancel Order</button>
+        <button type="button" class="btn btn-primary btn-lg" ng-click="processOrder()" ng-disabled="!confirmForm.$valid">Place Order &nbsp;<i class="fa fa-caret-right"></i></button>
       </div>
 
     </form>
     
-<div class="modal fade bs-example-modal-lg-terms" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal fade bs-example-modal-lg-terms"  role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">

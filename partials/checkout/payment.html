@@ -130,7 +130,7 @@
   <div class="row form-group">
     <label for="billingAddress2" class="col-md-3 control-label">Address Line 2</label>
     <div class="col-sm-8 col-lg-6">
-      <input name="address2" ng-model="profile.newBillingAddress.address2" type="text" class="form-control" id="billingAddress2" placeholder="Apartment, suite, unit, building, floor, etc. " tabindex="3">
+      <input name="address2" ng-model="profile.newBillingAddress.address2" type="text" class="form-control" id="billingAddress2" placeholder="Apartment, suite, unit, building, floor, etc. " >
     </div>
   </div>
 
@@ -147,7 +147,7 @@
     <div class="col-sm-5 col-lg-3">
       <form>
         <div class="">
-          <select id="billingStateProvinceRegion" name="state" ng-model="profile.newBillingAddress.state" class="form-control" tabindex="5">
+          <select id="billingStateProvinceRegion" name="state" ng-model="profile.newBillingAddress.state" class="form-control" >
             <option value="AL">Alabama</option>
             <option value="AK">Alaska</option>
             <option value="AZ">Arizona</option>
@@ -221,7 +221,7 @@
   <div class="row form-group">
     <label for="billingCountry" class="col-md-3 control-label">Country</label>
     <div class="col-sm-5 col-lg-3">
-      <select id="billingCountry" name="billingCountry" data-ng-init="profile.newBillingAddress.country='US'" ng-model="profile.newBillingAddress.country" class="form-control" tabindex="7">
+      <select id="billingCountry" name="billingCountry" data-ng-init="profile.newBillingAddress.country='US'" ng-model="profile.newBillingAddress.country" class="form-control" >
         <option ng-selected="true" value="US">United States</option>
       </select>
     </div>
