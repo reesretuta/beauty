@@ -1,0 +1,50 @@
+[{
+    "_id" : "19634",
+    "kitGroups" : [],
+    "contains" : [],
+    "youMayAlsoLike" : [],
+    "upsellItems" : [],
+    "categories" : [],
+    "prices" : [ 
+        {
+            "commissionableVolume" : 0,
+            "instantProfit" : 0,
+            "price" : 99,
+            "qualifyingVolume" : 0,
+            "rebate" : 0,
+            "retailVolume" : 0,
+            "shippingSurcharge" : 0,
+            "typeId" : 1,
+            "effectiveStartDate" : { "$date" : 946702800000 },
+            "effectiveEndDate" : { "$date" : 1735707600000 },
+            "customerTypes" : [ 
+                "Non-Party Customer", 
+                "Party Guest", 
+                "Hostess"
+            ]
+        }
+    ],
+    "usage" : "Follow label instructions provided with each product in set.",
+    "ingredients" : "",
+    "images" : [ 
+        {
+            "alt" : "Color Set",
+            "imagePath" : "/img/royal_starter_kit.png",
+            "rank" : 1,
+            "startDate" : { "$date" : 946702800000 },
+            "endDate" : { "$date" : 1735707600000 }
+        }
+    ],
+    "type" : "kit",
+    "taxCode" : "P0000000",
+    "standardCost" : 0,
+    "searchable" : false,
+    "quantity" : "12 products in set",
+    "productClass" : 0,
+    "onHold" : "false",
+    "name" : "Royal Starter Kit",
+    "masterType" : "R",
+    "masterStatus" : "A",
+    "hazmatClass" : 0,
+    "description" : "Advanced Dynamics Balancing CleanserAdvanced Dynamics Balancing Toner<br />Advanced Dynamics Balancing Day Moisture<br />Advanced Dynamics Balancing Night Moisture<br />Royal Jelly Milk Balm Advanced<br />Elasticity Recovery Hydrogel + Firmiplex Complex<br />Optimeyes Eye Treatment<br />Royal Almond Rich Body Oil<br />LEGEND EDT<br />Vesen EDT<br />Eau d'Arômes Fragrance Spray<br />Skid EDT<br />Plus you get DYNAMIC Tools!<br />Black JAFRA Tote<br />Clear JAFRA Tote<br />Welcome to JAFRA Literature Set<br />Product Catalogs (5)<br />Seasonal Brochures (10)<br />Hostess Brochure<br />Advanced Dynamic Profiles (10)<br />Skin Care Profiles (10)<br />Women’s Fragrance Profiles (10)<br />Business Cards (50)<br />Client Order Form (10)"
+}]
