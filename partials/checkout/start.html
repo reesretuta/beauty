@@ -49,13 +49,15 @@
     </div>
     <!--valid={{signInForm.customerStatus.$valid}}-->
 
+    <div class="error" ng-show="emailError">Email address is not valid</div>
+
     <div class="form-group">
       <div class="col-md-offset-3 col-sm-9">
         <div class="input-group">
           <span class="input-group-addon"><i class="fa fa-lock"></i></span>
           <button ng-if="profile.customerStatus == 'existing' && !isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" ng-click="loginOrCreateUser()" ng-disabled="!signInForm.$valid">Sign In &nbsp;<i class="fa fa-caret-right"></i></button>
           <button ng-if="profile.customerStatus == 'new' && !isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" ng-click="loginOrCreateUser()" ng-disabled="!signInForm.$valid">Create Account &nbsp;<i class="fa fa-caret-right"></i></button>
-          <button ng-if="isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" wz-next ng-disabled="!signInForm.$valid">Continue &nbsp;<i class="fa fa-caret-right"></i></button>
+          <button ng-if="isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" ng-click="validateEmailAndContinue(profile.loginEmail)" ng-disabled="!signInForm.$valid">Continue &nbsp;<i class="fa fa-caret-right"></i></button>
         </div>
       </div>
     </div>

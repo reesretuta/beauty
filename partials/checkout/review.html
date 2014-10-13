@@ -110,7 +110,7 @@
         </div>
       </div><!-- /address -->
 
-      <div class="col-xs-6 col-lg-4 checkout-address" ng-if="checkout.billing.name">
+      <div class="col-xs-6 col-lg-4 checkout-address" ng-if="!checkout.billSame">
         <h3>Billing To:</h3>
         <span class="address-name">{{checkout.billing.name}}</span>
         <span class="address-street">{{checkout.billing.address1}} {{checkout.billing.address2}}</span>
@@ -122,7 +122,7 @@
       </div><!-- /address -->
 
 
-      <div class="col-xs-6 col-lg-4 checkout-address" ng-if="!checkout.billing.name">
+      <div class="col-xs-6 col-lg-4 checkout-address" ng-if="checkout.billSame">
         <h3>Billing To:</h3>
         <span class="address-name">{{checkout.shipping.name}}</span>
         <span class="address-street">{{checkout.shipping.address1}} {{checkout.shipping.address2}}</span>
@@ -135,7 +135,10 @@
 
     </div><!-- /row -->
 	<hr>
- <div class="form-group text-right">
+
+  <span class="error" ng-show="orderError" ng-bind="orderError"></span>
+
+  <div class="form-group text-right">
         <label class="checkbox-inline">
 
           <input type="checkbox" value="" ng-model="checkout.agree" required>
@@ -143,13 +146,13 @@
           I agree to the <a href="" data-toggle="modal" data-target=".bs-example-modal-lg-terms">Terms and Conditions</a>
           &nbsp;&nbsp;&nbsp;&nbsp;
         </label>
-        <button type="button" class="btn-link pull-left" tabindex=" " ng-click="confirmAlert('Are you sure you\'d like to cancel your order?')">Cancel Order</button>
-        <button type="button" class="btn btn-primary btn-lg" tabindex=" " wz-next ng-disabled="!confirmForm.$valid">Place Order &nbsp;<i class="fa fa-caret-right"></i></button>
+        <button type="button" class="btn-link pull-left" ng-click="confirmAlert('Are you sure you\'d like to cancel your order?')">Cancel Order</button>
+        <button type="button" class="btn btn-primary btn-lg" ng-click="processOrder()" ng-disabled="!confirmForm.$valid">Place Order &nbsp;<i class="fa fa-caret-right"></i></button>
       </div>
 
     </form>
     
-<div class="modal fade bs-example-modal-lg-terms" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal fade bs-example-modal-lg-terms"  role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">

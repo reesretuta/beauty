@@ -1,5 +1,5 @@
 angular.module('app.controllers.checkout')
-    .controller('CheckoutController', function ($location, $scope, $document, $timeout, $rootScope, $anchorScroll, $routeParams, $modal, $log, $q, STORE_BASE_URL, JOIN_BASE_URL, Session, OrderHelper, Checkout, Cart, Products, Addresses, CreditCards, HashKeyCopier, WizardHandler) {
+    .controller('CheckoutController', function ($location, $scope, $document, $timeout, $rootScope, $anchorScroll, $routeParams, $modal, $log, $q, STORE_BASE_URL, JOIN_BASE_URL, Session, Addresses, OrderHelper, Checkout, Cart, Products, Addresses, CreditCards, HashKeyCopier, WizardHandler) {
 
         $log.debug("CheckoutController()");
 
@@ -18,12 +18,15 @@ angular.module('app.controllers.checkout')
             billSame: true,
             shipping: null,
             billing: null,
+            agree: false,
             card: {} // NOTE!!! only encrypted card data should go here
         }
 
         // in memory on client only
         $scope.profile = {
+            source: "web",
             customerStatus: 'new',
+            language: 'en_US',
             firstName: '',
             lastName: '',
             loginEmail: '',
@@ -31,9 +34,7 @@ angular.module('app.controllers.checkout')
             phoneNumber: '',
             newShippingAddress: {},
             newBillingAddress: {},
-            newCard: {
-                cardType: 'visa'
-            }
+            newCard: {}
         };
 
         // set current step
@@ -76,6 +77,10 @@ angular.module('app.controllers.checkout')
         Session.get().then(function(session) {
             $log.debug("CheckoutController(): session initialized", session);
 
+            $scope.profile.sponsorId = session.consultantId;
+            if (session.source) {
+                $scope.profile.source = session.source;
+            }
 
             if (session.client && session.client.id) {
                 $log.debug("CheckoutController(): user is logged in");
@@ -342,6 +347,22 @@ angular.module('app.controllers.checkout')
             $("html, body").css("overflow-y", "hidden");
         }
 
+        $scope.validateEmailAndContinue = function(email) {
+            $scope.emailError = false;
+            $log.debug("CheckoutController(): validateEmailAndContinue()");
+
+            Addresses.validateEmail(email).then(function(r) {
+                $log.debug("CheckoutController(): validated email");
+
+                // move to next step
+                WizardHandler.wizard('checkoutWizard').goTo('Profile');
+            }, function(r) {
+                $log.debug("CheckoutController(): validated email");
+
+                $scope.emailError = true;
+            })
+        }
+
         $scope.loginOrCreateUser = function() {
             $log.debug("CheckoutController(): loginOrCreateUser()");
 
@@ -393,7 +414,12 @@ angular.module('app.controllers.checkout')
 
         $scope.checkoutUpdated = function() {
             $log.debug("CheckoutController(): checkoutUpdated(): checkout updated", $scope.checkout);
-            Checkout.setCheckout($scope.checkout);
+
+            var checkout = angular.copy($scope.checkout);
+            delete checkout.ssn;
+            delete checkout.card;
+
+            Checkout.setCheckout(checkout);
         }
         
         $scope.confirmAlert = function(message) {
@@ -432,6 +458,8 @@ angular.module('app.controllers.checkout')
                         $scope.profile.newBillingAddress = null;
                         $scope.checkoutUpdated();
                         WizardHandler.wizard('checkoutWizard').goTo('Review');
+                    }, function(err) {
+                        $scope.billingAddressError = err;
                     });
                 } else {
                     $scope.checkoutUpdated();
@@ -445,23 +473,209 @@ angular.module('app.controllers.checkout')
 
                 if (!$scope.checkout.billSame) {
                     $log.debug("CheckoutController(): addPaymentMethod(): setting billing address", $scope.profile.newBillingAddress);
-                    // we just add to checkout for online sponsoring
-                    $scope.checkout.billing = $scope.profile.newBillingAddress;
-                }
 
-                $scope.checkoutUpdated();
-                WizardHandler.wizard('checkoutWizard').goTo('Review');
+                    // we just add to checkout for online sponsoring
+                    Addresses.validateAddress($scope.profile.newBillingAddress).then(function(a) {
+                        $log.debug("CheckoutController(): addPaymentMethod(): validated address", a);
+
+                        $log.debug("CheckoutController(): addPaymentMethod(): setting consultant billing address", a);
+                        $scope.checkout.billing = a;
+
+                        $scope.checkoutUpdated();
+                        WizardHandler.wizard('checkoutWizard').goTo('Review');
+                    }, function(r) {
+                        $log.error("CheckoutController(): addShippingAddressAndContinue(): error validating address", r);
+                        // FIXME - failed to add, show error
+                        $scope.billingAddressError = r.message;
+                    });
+                } else {
+                    $scope.checkoutUpdated();
+                    WizardHandler.wizard('checkoutWizard').goTo('Review');
+                }
             }
         }
 
-        $scope.placeOrder = function() {
-            $log.debug("CheckoutController(): placeOrder(): checkout", $scope.checkout);
-            $log.debug("CheckoutController(): placeOrder(): profile", $scope.profile);
+        $scope.isValidCard = function(card) {
+            if (card == null || S(card).isEmpty()) {
+                $log.debug("empty", card);
+                return false;
+            }
+            var res = $scope.validateCard(card);
+            $log.debug("valid", res.valid, card);
+            return res.valid;
         }
 
-        $scope.placeOrder = function() {
+        $scope.validateCard = function(ccnumber) {
+            if (!ccnumber) {
+                return {
+                    valid: false,
+                    type: null
+                };
+            }
+            ccnumber = ccnumber.toString().replace(/\s+/g, '');
+            var len = ccnumber.length;
+            var cardType = null, valid = false;
+            var mul = 0,
+                prodArr = [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [0, 2, 4, 6, 8, 1, 3, 5, 7, 9]],
+                sum = 0;
+
+            while (len--) {
+                sum += prodArr[mul][parseInt(ccnumber.charAt(len), 10)];
+                mul ^= 1;
+            }
+
+            if (sum % 10 === 0 && sum > 0) {
+                valid = true
+            }
+
+            if(/^(34)|^(37)/.test(ccnumber)) {
+                cardType = "American Express";
+            }
+            if(/^(62)|^(88)/.test(ccnumber)) {
+                cardType = "China UnionPay";
+            }
+            if(/^30[0-5]/.test(ccnumber)) {
+                cardType = "Diners Club Carte Blanche";
+            }
+            if(/^(2014)|^(2149)/.test(ccnumber)) {
+                cardType = "Diners Club enRoute";
+            }
+            if(/^36/.test(ccnumber)) {
+                cardType = "Diners Club International";
+            }
+            if(/^(6011)|^(622(1(2[6-9]|[3-9][0-9])|[2-8][0-9]{2}|9([01][0-9]|2[0-5])))|^(64[4-9])|^65/.test(ccnumber)) {
+                cardType = "Discover Card";
+            }
+            if(/^35(2[89]|[3-8][0-9])/.test(ccnumber)) {
+                cardType = "JCB";
+            }
+            if(/^(6304)|^(6706)|^(6771)|^(6709)/.test(ccnumber)) {
+                cardType = "Laser";
+            }
+            if(/^(5018)|^(5020)|^(5038)|^(5893)|^(6304)|^(6759)|^(6761)|^(6762)|^(6763)|^(0604)/.test(ccnumber)) {
+                cardType = "Maestro";
+            }
+            if(/^5[1-5]/.test(ccnumber)) {
+                cardType = "MasterCard";
+            }
+            if (/^4/.test(ccnumber)) {
+                cardType = "Visa"
+            }
+            if (/^(4026)|^(417500)|^(4405)|^(4508)|^(4844)|^(4913)|^(4917)/.test(ccnumber)) {
+                cardType = "Visa Electron"
+            }
+
+            return {
+                valid: valid && ["Visa", "MasterCard", "American Express", "Discover Card"].indexOf(cardType) != -1,
+                type: cardType
+            }
+        }
+
+        $scope.processOrder = function() {
             $log.debug("CheckoutController(): placeOrder(): checkout", $scope.checkout);
             $log.debug("CheckoutController(): placeOrder(): profile", $scope.profile);
+
+            if ($scope.isOnlineSponsoring) {
+                // FIXME - setting card type
+
+                var dob = $scope.profile.dob.replace(/(\d{2})(\d{2})(\d{4})/, '$1/$2/$3');
+                var ssn = $scope.profile.ssn.replace(/(\d{3})(\d{2})(\d{4})/, '$1-$2-$3');
+                var phone = $scope.profile.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+
+                $scope.checkout.card.cardType = $scope.validateCard($scope.checkout.card.card).type;
+                $scope.checkout.shipping.name = $scope.profile.firstName + " " + $scope.profile.lastName;
+                $scope.checkout.billing.name = $scope.profile.firstName + " " + $scope.profile.lastName;
+                $scope.checkout.shipping.phone = phone;
+                $scope.checkout.billing.phone = phone;
+
+                var consultant = {
+                    ssn: ssn,
+                    email: $scope.profile.loginEmail,
+                    firstName: $scope.profile.firstName,
+                    lastName: $scope.profile.lastName,
+                    dateOfBirth: dob,
+                    sponsorId: $scope.profile.sponsorId,
+                    language: $scope.profile.language,
+                    source: $scope.profile.source,
+                    phone: phone,
+                    billingAddress: $scope.checkout.billing,
+                    shippingAddress: $scope.checkout.shipping,
+                    creditCard: $scope.checkout.card,
+                    agreementAccepted: $scope.checkout.agree+"",
+                    total: $scope.items[0].product.currentPrice.price,
+                    products: [
+                        {
+                            "sku": $scope.items[0].product.sku,
+                            "qty": 1
+                        }
+                    ]
+                }
+
+                Session.createConsultant(consultant).then(function(data) {
+                    $log.debug("CheckoutController(): loginOrCreateUser(): created client, moving to next step", data);
+                    // jump to Shipping
+                    WizardHandler.wizard('checkoutWizard').goTo('Finish');
+                }, function(error) {
+                    $log.error("CheckoutController(): loginOrCreateUser(): failed to create client", error);
+                    $scope.orderError = error.message;
+                    // FIXME - show error here!!!!!
+                });
+
+
+                /**
+                 * {
+                 "email" : "arimus5@gmail.com",
+                 "firstName": "David",
+                 "lastName": "Castro",
+                 "language": "en_US",
+                 "ssn": "222-11-1116",
+                 "dateOfBirth": "12/12/1978",
+                 "phone": "555-333-2222",
+                 "billingAddress": {
+                    "name": "David Castro",
+                    "address1": "7661 Indian Canyon Cir",
+                    "address2": "",
+                    "city": "Corona",
+                    "state": "CA",
+                    "stateDescription": "CA",
+                    "zip": "92880",
+                    "county": "Riverside",
+                    "country": "US",
+                    "geocode": "000000",
+                    "phone": "555-333-2222"
+                },
+                "shippingAddress": {
+                    "name": "David Castro",
+                    "address1": "7661 Indian Canyon Cir",
+                    "address2": "",
+                    "city": "Corona",
+                    "state": "CA",
+                    "stateDescription": "CA",
+                    "zip": "92880",
+                    "county": "Riverside",
+                    "country": "US",
+                    "geocode": "000000",
+                    "phone": "555-333-2222"
+                },
+                "creditCard": {
+                    "name": "Dave Castro",
+                    "card": "4111111111111111",
+                    "expMonth": "12",
+                    "expYear": "2015",
+                    "cvv": "1111"
+                },
+                 "agreementAccepted": "true",
+                 "source": "facebook",
+                 "total": 19.50,
+                 "products": [
+                     {
+                         "sku": "25386",
+                         "qty": 1
+                     }
+                 ]
+                }
+                */
+            }
         }
 
         $scope.selectShippingAddressAndContinue = function(address) {
@@ -477,18 +691,22 @@ angular.module('app.controllers.checkout')
             $scope.shippingAddressError = "";
 
             if ($scope.isOnlineSponsoring) {
-                $log.debug("CheckoutController(): addShippingAddressAndContinue(): setting consultant shipping/billing address", address);
+                $log.debug("CheckoutController(): addShippingAddressAndContinue(): validating address", address);
 
                 Addresses.validateAddress(address).then(function(a) {
-                    $log.debug("CheckoutController(): addShippingAddressAndContinue(): added address", a);
+                    $log.debug("CheckoutController(): addShippingAddressAndContinue(): validated address", a);
 
+                    $log.debug("CheckoutController(): addShippingAddressAndContinue(): setting consultant shipping/billing address", address);
                     $scope.checkout.shipping = a;
                     $scope.checkout.billing = a;
+
+                    // set the addresses
+                    $scope.profile.newShippingAddress = a;
 
                     $scope.checkoutUpdated();
                     WizardHandler.wizard('checkoutWizard').goTo('Payment');
                 }, function(r) {
-                    $log.error("CheckoutController(): addShippingAddressAndContinue(): error adding address", r);
+                    $log.error("CheckoutController(): addShippingAddressAndContinue(): error validating address", r);
                     // FIXME - failed to add, show error
                     $scope.shippingAddressError = r.message;
                 });
@@ -577,6 +795,7 @@ angular.module('app.controllers.checkout')
                     d.resolve(a);
                 }, function(err) {
                     $log.error("CheckoutController(): addAddress(): failed to add address", err);
+                    d.reject(err);
                 });
             } else {
                 $log.debug("CheckoutController(): addAddress(): setting address to existing address", address);

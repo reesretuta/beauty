@@ -36,7 +36,7 @@
     <script src="/lib/purl/purl.js"></script>
 
     <!-- AddThis widgets for social media sharing -->
-<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5435adb94c0d228e"></script>
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5435adb94c0d228e"></script>
     <!-- ShareThis Widgets for social media sharing >
     <script type="text/javascript">var switchTo5x=true;</script>
     <script type="text/javascript" src="/js/sharethis/buttons.js"></script>
@@ -69,7 +69,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#navbar-sections" class="join">
-    <div id="pagenav" class="navbar navbar-default navbar-static-top" role="navigation">
+    <div id="pagenav" class="navbar navbar-static-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
@@ -89,9 +89,9 @@
             <li ng-if="!inCheckout"><a href="#FAQs">FAQs</a></li>
             <li ng-if="!inCheckout"><a href="#JOIN_NOW" data-toggle="modal" data-target=".bs-example-modal-lg">Join Now!</a></li>
             <li class="dropdown"><a href="" class="dropdown-toggle" data-toggle="dropdown">Contact</a>
-              <ul class="dropdown-menu contact-header">
+              <ul class="dropdown-menu dropdown_jafra contact-header">
                 <li class="contact-description">1 (800) 551-2345<br />
-                  Open: M-F 7a-5p
+                  Open: M-F 8:30am-5:30pm<br> Pacific
                 </li>
                 <li class="social_dropdown" ng-if="!inCheckout">
                       <div class="social-media-icons center-block">
@@ -143,9 +143,9 @@
 		            <a href="" role="button" data-toggle="modal" data-target=".bs-example-modal-lg">JOIN NOW</a>
 		        </li>
 		  		 <li class="dropup"><a href="" class="dropdown-toggle dropup" data-toggle="dropdown">Contact</a>
-		              <ul class="dropdown-menu">
+		              <ul class="dropdown-menu dropdown_jafra">
 		                <li class="contact-description">1 (800) 551-2345<br />
-		                  Open: M-F 7a-5p
+		                  Open: M-F 8:30am-5:30pm<br> Pacific
 		                </li>
                     <li>
                       <div class="social-media-icons center-block" ng-if="!inCheckout">
@@ -261,6 +261,7 @@
     <script src="/lib/angular-growl-notifications/dist/growl-notifications.js"></script>
     <script src="/lib/angular-translate/angular-translate.js"></script>
     <script src="/lib/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
+    <script src="/lib/angular-scroll/angular-scroll.js"></script>
 
     <!-- angular wizard -->
     <script src="/js/angular/modules/lodash.js"></script>
@@ -274,6 +275,7 @@
     <script src="/lib/angular-ui-utils/modules/keypress/keypress.js"></script>
     <script src="/lib/angular-ui-utils/modules/jq/jq.js"></script>
     <script src="/lib/angular-ui-utils/modules/event/event.js"></script>
+    <script src="/lib/angular-ui-utils/modules/validate/validate.js"></script>
     <script src="/lib/HashKeyCopier/lib/hash-key-copier.js"></script>
     <script src="/lib/string.js/lib/string.min.js"></script>
     <script src="/lib/ladda-bootstrap/dist/spin.min.js"></script>
@@ -300,6 +302,8 @@
     <script src="/js/angular/controllers/ZoomImageModalController.js"></script>
     <script src="/js/angular/controllers/ShippingSpeedModalController.js"></script>
     <script src="/js/angular/controllers/CarouselDemoCtrl.js"></script>
+    <script src="/js/angular/controllers/ScrollController.js"></script>
+    
 
     <!--script src="/js/angular/carousel.js"></script-->
     <!-- online sponsoring home controller -->
@@ -308,17 +312,20 @@
     <script src="/js/angular/filters.js"></script>
     <script src="/js/angular/directives.js"></script>
     <script src="/js/angular/app.js"></script>
-
     <script>
       $(function(){ 
+
+        // if ($(window).width() > 768) {
           $('#pagenav').affix({
               offset: {
-                top: $('.jumbo-videobg').outerHeight()
+                top: $('.jumbotron').outerHeight()
               , bottom: function () {
                   return (this.bottom = $('footer').outerHeight(true))
                 }
               }
-            });
+          });
+        // }
+
       });
     </script>
     

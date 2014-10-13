@@ -426,6 +426,9 @@ router.route('/session')
 
         console.log("update session request", session);
 
+        req.session.consultantId = session.consultantId;
+        req.session.source = session.source;
+
         // copy over changes to cart, checkout, language
         req.session.language = session.language;
         if (Array.isArray(session.cart)) {
@@ -603,39 +606,38 @@ router.route('/clients/:client_id')// get a consultant
 // CONSULTANTS
 // ----------------------------------------------------
 router.route('/consultants') // get current consultant
-    // create a client
+
+    // create a consultant
     .post(function (req, res) {
-        jafraClient.createConsultant().then(function(r) {
-            console.log("success")
+        console.log("got data", req.body.encrypted);
+
+        jafraClient.createConsultant(req.body.encrypted).then(function(r) {
+            console.log("success", r)
             res.status(r.status);
             res.json(r.result);
         }, function(r) {
-            console.error("failure")
+            console.error("failure", r)
             res.status(r.status);
             res.json(r.result);
         });
     });
 
 router.route('/consultants/:consultant_id')// get a consultant
-//    .get(function (req, res) {
-//        var consultant_id = req.params.consultant_id;
-//
-//        return {
-//            "id": 1000,
-//            "email": "jsmith@gmail.com",
-//            "firstName": "John",
-//            "lastName": "Smith",
-//            "phone": "555-555-4432",
-//            "dateOfBirth": "12/01/1978",
-//            "sponsorId": 4657323,
-//            "language": "en_US"
-//        };
-//    })
+    .get(function (req, res) {
+        var consultant_id = req.params.consultant_id;
 
-    // update a consultant
-    .post(function (req, res) {
+        // fetch the consultant information & return
+        jafraClient.getConsultant(consultant_id).then(function(r) {
+            res.status(r.status);
+            res.json(r.result);
+        }, function (r) {
+            console.error("server: getClient(): failed to load consultant", r.result);
+            res.status(500);
+            res.json(r.result);
+        });
 
     });
+
 
 // ADDRESSES
 // ----------------------------------------------------
@@ -879,14 +881,9 @@ router.route('/validate/address') // validate address
 
 router.route('/validate/email') // validate email address
     .get(function (req, res) {
-        // must be authenticated
-        if (req.session.client == null) {
-            res.status(401);
-            res.end();
-            return;
-        }
-
         var email = req.param('email');
+
+        console.log("validating email", email);
         jafraClient.validateEmail(email).then(function(r) {
             console.log("validated email", r.status, "result", r.result);
             // return response
