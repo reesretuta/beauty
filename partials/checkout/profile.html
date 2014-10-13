@@ -25,7 +25,7 @@
       <div class="form-group">
         <label for=" " class="col-md-3 control-label">Sponsor ID</label>
         <div class="col-md-4">
-          <input autofocus="" type="text" class="form-control" type="number" ng-model="profile.sponsorId" placeholder="#-digit ID of your JAFRA Consultant Sponsor">
+          <input autofocus="" name="sponsorId" type="text" class="form-control" ng-pattern="/^[0-9]*$/" ng-model="profile.sponsorId" placeholder="#-digit ID of your JAFRA Consultant Sponsor" required>
           <span class="help-block"><small>If you shop with a JAFRA Consultant, enter their ID above. Otherwise, leave blank.</small></span>
         </div>
       </div>
