@@ -811,7 +811,7 @@ angular.module('app.services', ['ngResource'])
         var addressService = $resource(API_URL + '/clients/:clientId/addresses/:addressId', {addressId: '@_id'});
 
         addressService.validateAddress = function(address) {
-            $log.debug("Address(): validateAddress(): saving", address);
+            $log.debug("Address(): validateAddress(): validating", address);
             var d = $q.defer();
 
             // validate the address first
@@ -899,6 +899,23 @@ angular.module('app.services', ['ngResource'])
 
             return d.promise;
         }
+
+        addressService.validateEmail = function(email) {
+            $log.debug("Address(): validateEmail(): validating", email);
+            var d = $q.defer();
+
+            // validate the address first
+            var a = $http.get(API_URL + '/validate/email?email='+email, {}).success(function(a, status, headers, config) {
+                $log.debug("Address(): validateEmail(): validated", a);
+                d.resolve(a);
+            }).error(function(data, status, headers, config) {
+                $log.error("Address(): validateEmail(): error", status, data);
+                d.reject(data);
+            });
+
+            return d.promise;
+        }
+
         return addressService;
     })
     .factory('CreditCards', function ($resource, $http, $log, $q, Session, API_URL) {

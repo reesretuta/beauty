@@ -727,7 +727,7 @@ function validateEmail(email) {
          *}
          */
 
-        console.log("validateEmail(): body", body);
+        console.log("validateEmail(): body", body, body.WebServiceResponse.VerifyEmailResponse.VerifyEmailResult);
 
         if (body && body.WebServiceResponse && body.WebServiceResponse.VerifyEmailResponse &&
             body.WebServiceResponse.VerifyEmailResponse.VerifyEmailResult &&

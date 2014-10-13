@@ -881,14 +881,9 @@ router.route('/validate/address') // validate address
 
 router.route('/validate/email') // validate email address
     .get(function (req, res) {
-        // must be authenticated
-        if (req.session.client == null) {
-            res.status(401);
-            res.end();
-            return;
-        }
-
         var email = req.param('email');
+
+        console.log("validating email", email);
         jafraClient.validateEmail(email).then(function(r) {
             console.log("validated email", r.status, "result", r.result);
             // return response

@@ -1,5 +1,5 @@
 angular.module('app.controllers.checkout')
-    .controller('CheckoutController', function ($location, $scope, $document, $timeout, $rootScope, $anchorScroll, $routeParams, $modal, $log, $q, STORE_BASE_URL, JOIN_BASE_URL, Session, OrderHelper, Checkout, Cart, Products, Addresses, CreditCards, HashKeyCopier, WizardHandler) {
+    .controller('CheckoutController', function ($location, $scope, $document, $timeout, $rootScope, $anchorScroll, $routeParams, $modal, $log, $q, STORE_BASE_URL, JOIN_BASE_URL, Session, Addresses, OrderHelper, Checkout, Cart, Products, Addresses, CreditCards, HashKeyCopier, WizardHandler) {
 
         $log.debug("CheckoutController()");
 
@@ -345,6 +345,22 @@ angular.module('app.controllers.checkout')
 
             // prevent page content from scrolling while modal is up
             $("html, body").css("overflow-y", "hidden");
+        }
+
+        $scope.validateEmailAndContinue = function(email) {
+            $scope.emailError = false;
+            $log.debug("CheckoutController(): validateEmailAndContinue()");
+
+            Addresses.validateEmail(email).then(function(r) {
+                $log.debug("CheckoutController(): validated email");
+
+                // move to next step
+                WizardHandler.wizard('checkoutWizard').goTo('Profile');
+            }, function(r) {
+                $log.debug("CheckoutController(): validated email");
+
+                $scope.emailError = true;
+            })
         }
 
         $scope.loginOrCreateUser = function() {
