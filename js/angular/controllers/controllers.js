@@ -13,7 +13,8 @@ angular.module('app.controllers', [
   'app.controllers.checkout',
   'app.controllers.recentlyViewed',
   'app.controllers.onlineSponsor',
-  'app.controllers.carousel'
+  'app.controllers.carousel',
+  'app.controllers.scroll'
 ]);
 
 angular.module('app.controllers.top', []);
@@ -28,4 +29,5 @@ angular.module('app.controllers.checkout', []);
 
 angular.module('app.controllers.onlineSponsor', []);
 angular.module('app.controllers.carousel', []);
+angular.module('app.controllers.scroll', ['duScroll']);
 
