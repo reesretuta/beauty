@@ -702,6 +702,14 @@ angular.module('app.controllers.checkout')
 
                     // set the addresses
                     $scope.profile.newShippingAddress = a;
+                    
+                    
+                
+                // add name here since we're not allowing user to input a name for shipping address manually; 
+                $scope.checkout.shipping.name = $scope.profile.firstName + " " + $scope.profile.lastName;
+                $scope.checkout.billing.name = $scope.profile.firstName + " " + $scope.profile.lastName;
+                $scope.checkout.shipping.phone = $scope.profile.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');;
+                $scope.checkout.billing.phone = $scope.profile.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');;
 
                     $scope.checkoutUpdated();
                     WizardHandler.wizard('checkoutWizard').goTo('Payment');
