@@ -718,4 +718,8 @@ min-width:131px;
         padding-bottom: 180px;
     }
 }
-
+@media (min-width:900px) and (max-width:1200px){
+	#lipsticksmear{
+		left:-120px;
+	}
+}
