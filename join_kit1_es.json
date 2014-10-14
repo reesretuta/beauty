@@ -1,5 +1,5 @@
 [{
-    "_id" : "19636",
+    "_id" : "19635",
     "kitGroups" : [],
     "contains" : [],
     "youMayAlsoLike" : [],
@@ -9,7 +9,7 @@
         {
             "commissionableVolume" : 0,
             "instantProfit" : 0,
-            "price" : 39,
+            "price" : 99,
             "qualifyingVolume" : 0,
             "rebate" : 0,
             "retailVolume" : 0,
@@ -46,5 +46,5 @@
     "masterType" : "R",
     "masterStatus" : "A",
     "hazmatClass" : 0,
-    "description" : "Royal Jelly Milk Balm Advanced<br />Elasticity Recovery Hydrogel + Firmiplex Complex<br />Optimeyes Eye Treatment<br />Plus you get DYNAMIC Tools!<br />RED-HOT Business Tote<br />Welcome to JAFRA Literature Set<br />Product Catalogs (5)<br />Seasonal Brochures (10)<br />Hostess Brochure<br />Advanced Dynamic Profiles (10)<br />Skin Care Profiles (10)<br />Women’s Fragrance Profiles (10)<br />Client Order Form (10)"
+    "description" : "Advanced Dynamics Limpiador Facial Equilibrante<br />Advanced Dynamics Loción Facial Equilibrante<br />Advanced Dynamics Crema Facial Equilibrante de Día <br />Advanced Dynamics Crema Facial Humectante Equilibrante de Noche<br />Royal Jelly Milk Balm Advanced<br />Gel Facial Reafirmante + con Complejo Firmiplex<br />Optimeyes Eye Treatment<br />Aceite para el Cuerpo Royal Almond<br />LEGEND EDT<br />Vesen EDT<br />Eau d'Arômes Spray Revitalizante<br />Skid EDT<br />Además recibes ¡HERRAMIENTAS DINÁMICAS!<br />Bolso JAFRA Negro<br />Estuche JAFRA Transparente<br />Juego de Material Impreso Bienvenida a JAFRA<br />Catálogo de Productos (5)<br />Folleto de Temporada (10)<br />Folleto de la Anfitriona<br />Perfil Advanced Dynamics (10)<br />Perfil del Cuidado del Cutis (10)<br />Perfil de Fragancias (10)<br />Tarjetas de Presentación (50)<br />Forma de Pedido del Cliente (10)"
 }]
