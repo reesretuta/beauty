@@ -144,6 +144,9 @@ border-radius: 0px;
   border:none;
   box-shadow:none;
 }
+.product-action {
+/*margin-top: 1.5em;*/
+}
 .product-highlighter {
   border: 5px solid #AA7F9E;
   position: relative;
@@ -368,14 +371,17 @@ margin: 8px 0 5px;
 .social-media-icons a  i.fa{
   color: #aa73b1;
 }
-
+.starter_kits-title {
+margin-top: 10px;
+line-height: 1.2em;
+}
 .starter_kits-price{
   font-family: DidotLTPro-Roman;
   font-weight: normal;
   font-style: normal;
   font-size: 10em;
   color: #53366C;
-line-height: 0.8em;
+line-height: 1.2em; /*0.8em;*/
 }
 .starter_kits-label_title{
   font-family: HelveticaNeueLTStd-BdCn;
@@ -391,7 +397,7 @@ line-height: 0.8em;
   font-style: normal;
 font-size: 2em;
 color: #C32337;
-line-height: 0.8em;
+line-height: 2em; /*0.8em;*/
 }
 
 .agreement-content {
