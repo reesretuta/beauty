@@ -813,8 +813,9 @@ function validateEmail(email) {
         if (body && body.WebServiceResponse && body.WebServiceResponse.VerifyEmailResponse &&
             body.WebServiceResponse.VerifyEmailResponse.VerifyEmailResult &&
             body.WebServiceResponse.VerifyEmailResponse.VerifyEmailResult.ServiceStatus &&
-            body.WebServiceResponse.VerifyEmailResponse.VerifyEmailResult.ServiceStatus.StatusNbr >= 200 &&
-            body.WebServiceResponse.VerifyEmailResponse.VerifyEmailResult.ServiceStatus.StatusNbr < 300)
+            ((body.WebServiceResponse.VerifyEmailResponse.VerifyEmailResult.ServiceStatus.StatusNbr >= 200 &&
+            body.WebServiceResponse.VerifyEmailResponse.VerifyEmailResult.ServiceStatus.StatusNbr < 300) ||
+            body.WebServiceResponse.VerifyEmailResponse.VerifyEmailResult.ServiceStatus.StatusNbr == 311))
         {
             console.log("validateEmail(): valid");
             deferred.resolve({
