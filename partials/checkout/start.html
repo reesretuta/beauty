@@ -15,12 +15,12 @@
     <div class="form-group" ng-if="profile.customerStatus == 'new' || isOnlineSponsoring">
       <label for="firstName" class="col-md-3 control-label">Name</label>
       <div class="col-sm-3" ng-class="{ 'has-error' : signInForm.firstName.$invalid && !signInForm.firstName.$pristine }">
-        <input name="firstName" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model="profile.firstName" ng-model-onblur class="form-control" id="firstName" placeholder="First" required="isOnlineSponsoring" autofocus="" maxlength="40">
+        <input name="firstName" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model="profile.firstName" class="form-control" id="firstName" placeholder="First" required="isOnlineSponsoring" autofocus="" maxlength="40">
         <span ng-show="signInForm.firstName.$invalid && !signInForm.firstName.$pristine" class="help-block" ng-class="{ 'text-danger' : signInForm.firstName.$invalid }">Must contain 2-40 letters.</span>
         <!--valid={{signInForm.firstName.$valid}}-->
       </div>
       <div class="col-sm-3" ng-class="{ 'has-error' : signInForm.lastName.$invalid && !signInForm.lastName.$pristine }">
-        <input name="lastName" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model="profile.lastName" ng-model-onblur class="form-control" id="lastName" placeholder="Last" required="isOnlineSponsoring" maxlength="40">
+        <input name="lastName" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model="profile.lastName" class="form-control" id="lastName" placeholder="Last" required="isOnlineSponsoring" maxlength="40">
         <span ng-show="signInForm.lastName.$invalid && !signInForm.lastName.$pristine" class="help-block" ng-class="{ 'text-danger' : signInForm.lastName.$invalid }">Must contain 2-40 letters.</span>
         <!--valid={{signInForm.lastName.$valid}}-->
       </div>
@@ -29,7 +29,7 @@
     <div class="form-group">
       <label for="loginEmail" class="col-md-3 control-label">Email Address</label>
       <div class="col-sm-6" ng-class="{ 'has-error' : signInForm.loginEmail.$invalid && !signInForm.loginEmail.$pristine }">
-        <input name="loginEmail" ng-pattern="" ng-model="profile.loginEmail" type="email" class="form-control" id="loginEmail" placeholder="example@gmail.com" required>
+        <input name="loginEmail" ng-pattern="/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/" ng-model="profile.loginEmail" type="email" class="form-control" id="loginEmail" placeholder="example@gmail.com" required>
         <span ng-show="signInForm.loginEmail.$invalid && !signInForm.loginEmail.$pristine" class="help-block" ng-class="{ 'text-danger' : signInForm.loginEmail.$invalid }">Must be a valid email address.</span>
         <!--valid={{signInForm.loginEmail.$valid}}-->
       </div>
