@@ -24,19 +24,20 @@
 
       <div class="form-group">
         <label for=" " class="col-md-3 control-label">Sponsor ID</label>
-        <div class="col-md-4">
-          <input autofocus="" name="sponsorId" type="text" class="form-control" ng-pattern="/^[0-9]*$/" ng-model="profile.sponsorId" placeholder="#-digit ID of your JAFRA Consultant Sponsor">
-          <span class="help-block"><small>If you shop with a JAFRA Consultant, enter their ID above. Otherwise, leave blank.</small></span>
+        <div class="col-md-4" ng-class="{ 'has-error' : profileForm.sponsorId.$invalid && !profileForm.sponsorId.$pristine }">
+          <input autofocus="" name="sponsorId" type="tel" class="form-control" ng-pattern="/^[0-9]*$/" ng-model="profile.sponsorId" placeholder="#-digit ID of your JAFRA Consultant Sponsor">
+          <span ng-show="profileForm.sponsorId.$invalid && !profileForm.sponsorId.$pristine" class="help-block" ng-class="{ 'text-danger' : profileForm.sponsorId.$invalid }">Must only contain numbers</span>
+          <span ng-show="profileForm.sponsorId.$pristine" class="help-block"><small>If you shop with a JAFRA Consultant, enter their ID above. Otherwise, leave blank.</small></span>
         </div>
       </div>
 
       <div class="form-group">
         <label for=" " class="col-md-3 control-label">Date of Birth</label>
-        <div class="col-xs-4 col-md-4">
+        <div class="col-xs-4 col-md-3" ng-class="{ 'has-error' : profileForm.dob.$invalid && !profileForm.dob.$pristine }">
           <input type="text" class="form-control" ui-mask="99/99/9999" placeholder="MM/DD/YYYY" ng-model="profile.dob" required>
         </div>
         <div class="col-md-offset-3 col-sm-9">
-          <span class="help-block"><small>You must be 18 or older to join.</small></span>
+          <span ng-show="profileForm.dob.$pristine" class="help-block" ng-class="{ 'text-danger' : profileForm.dob.$invalid }"><small>You must be 18 or older to join.</small></span>
         </div>
       </div>
 
