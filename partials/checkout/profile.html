@@ -1,9 +1,14 @@
   <div id="profile" class="col-sm-12">
 
     <div class="col-md-offset-3">
-      <h1 class="checkouth1">Complete Your JAFRA Consultant Profile</h1>
+      <h1 class="checkouth1">
+        Payee Profile &amp; Sponsor
+        <span class="store-heading-description">
+          We&rsquo;ll need a some information to send your payment checks.
+        </span>
+      </h1>
     </div>
-    <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
+
     <!--valid={{signInForm.$valid}}-->
     <form name="profileForm" class="form-horizontal" role="form">
 
@@ -35,11 +40,11 @@
 
       <div class="form-group">
         <label for=" " class="col-md-3 control-label">Your Date of Birth</label>
-        <div class="col-xs-4 col-md-3" ng-class="{ 'has-error' : profileForm.dob.$invalid && !profileForm.dob.$pristine }">
-          <input type="number" class="form-control" ui-mask="99/99/9999" placeholder="MM/DD/YYYY" ng-model="profile.dob" required>
+        <div class="col-xs-4 col-md-3" ng-class="{ 'has-error' : invalidDOB }">
+          <input type="tel" class="form-control" ui-mask="99/99/9999" placeholder="MM/DD/YYYY" ng-model="profile.dob" ng-blur="verifyAge()">
         </div>
-        <div class="col-md-offset-3 col-sm-9">
-          <span class="help-block"><small>You must be 18 or older to join.</small></span>
+        <div class="col-md-offset-3 col-sm-9">  
+          <span class="help-block"><small ng-class="{ 'text-danger' : invalidDOB }">You must be 18 or older to join.</small></span>
         </div>
         <div class="col-md-offset-3 col-sm-9">
           <div class="row"><div class="col-sm-8"><hr></div></div>
@@ -51,7 +56,7 @@
         <div class="col-md-4" ng-class="{ 'has-error' : profileForm.sponsorId.$invalid && !profileForm.sponsorId.$pristine }">
           <input autofocus="" name="sponsorId" type="number" class="form-control" ng-pattern="/^[0-9]*$/" ng-model="profile.sponsorId" placeholder="#-digit ID of your JAFRA Consultant Sponsor">
           <span ng-show="profileForm.sponsorId.$invalid && !profileForm.sponsorId.$pristine" class="help-block" ng-class="{ 'text-danger' : profileForm.sponsorId.$invalid }">Must only contain numbers</span>
-          <span ng-show="profileForm.sponsorId.$pristine" class="help-block"><small>If you shop with a JAFRA Consultant, enter their ID above. Otherwise, leave blank.</small></span>
+          <span class="help-block"><small>If you shop with a JAFRA Consultant, enter their ID above. Otherwise, leave blank.</small></span>
         </div>
         <div class="col-md-offset-3 col-sm-9">
           <div class="row"><div class="col-sm-8"><hr></div></div>
@@ -60,7 +65,7 @@
 
       <div class="form-group">
         <div class="col-md-offset-3 col-sm-9">
-          <a href="" wz-next ng-disabled="!profileForm.$valid" class="btn btn-primary btn-lg">Continue to Shipping &nbsp;<i class="fa fa-caret-right"></i></a>
+          <a href="" wz-next ng-disabled="!profileForm.$valid || invalidDOB" class="btn btn-primary btn-lg">Continue to Shipping &nbsp;<i class="fa fa-caret-right"></i></a>
         </div>
       </div>
     </form>
@@ -107,7 +112,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <a onclick="" href="/join/">I do not agree</a>
+            <a onclick="" href="/join/">I do not agree</a>&nbsp;&nbsp;
             <button ng-click="checkout.agree = true" data-dismiss="modal" class="btn btn-primary btn-lg" type="button" id="agreement_agree" disabled="" onclick="$('#agreement_modal').css('display','none;');">I agree &nbsp;<i class="fa fa-caret-right"></i></button>
             <p class="pull-left form-control-static"><small>You must read the entire agreement (scroll down) before you can continue.</small></p> 
           </div>
