@@ -52,7 +52,7 @@
     <div class="row form-group">
       <label for="shippingCity" class="col-md-3 control-label">City</label>
       <div class="col-sm-7 col-lg-5" ng-class="{ 'has-error' : shippingForm.newShippingAddress.city.$invalid && !shippingForm.newShippingAddress.city.$pristine }">
-        <input id="shippingCity" name="city" ng-pattern="^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$" ng-model="profile.newShippingAddress.city" type="text" class="form-control" placeholder="City" required>
+        <input id="shippingCity" name="city" ng-pattern="/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/" ng-model="profile.newShippingAddress.city" type="text" class="form-control" placeholder="City" required>
         <span ng-show="shippingForm.newShippingAddress.city.$invalid && !shippingForm.newShippingAddress.city.$pristine" class="help-block text-danger">Please enter a valid city name.</span>
       </div>
     </div>
