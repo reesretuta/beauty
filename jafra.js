@@ -5,7 +5,7 @@ var SHA1 = require("crypto-js/sha1");
 var Q = require('q');
 var soap = require('soap');
 
-var BASE_URL = "http://189.206.20.52:8091/cgidev2";
+var BASE_URL = "http://" + (process.env.JCS_API_URL || "189.206.20.52") + ":8091/cgidev2";
 var AUTHENTICATE_URL = BASE_URL + "/JCD05001P.pgm";
 var GET_CLIENT_URL = BASE_URL + "/JCD05007P.pgm";
 var CREATE_CLIENT_URL = BASE_URL + "/JCD05002P.pgm";

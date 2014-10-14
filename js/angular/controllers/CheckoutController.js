@@ -31,6 +31,7 @@ angular.module('app.controllers.checkout')
             lastName: '',
             loginEmail: '',
             loginPassword: '',
+            dob: '',
             phoneNumber: '',
             newShippingAddress: {},
             newBillingAddress: {},
@@ -300,6 +301,21 @@ angular.module('app.controllers.checkout')
                     $log.debug("CheckoutController(): changeListener(): ignoring");
                 }
             });
+        }
+
+        function isValidBirthDate() {
+            // $scope.profile.dob
+
+            // return true or false
+        }
+
+        $scope.verifyProfileAndContinue = function() {
+            $scope.invalidDOB = false;
+            if (isValidBirthDate($scope.profile.dob)) {
+                WizardHandler.wizard('checkoutWizard').goTo('Shipping');
+            } else {
+                $scope.invalidDOB = true;
+            }
         }
 
         $scope.total = function() {
