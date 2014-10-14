@@ -335,6 +335,18 @@ angular.module('app.controllers.checkout')
             });
         }
 
+        $scope.verifyExp = function() {
+            $log.debug("CheckoutController(): verifyExp(): ", $scope.profile.exp)
+            $scope.invalidExp = false;
+
+            var exp = moment($scope.profile.exp, 'MMYYYY', true);
+            var now = moment();
+            
+            if (!exp.isValid() || now > exp) {
+                $scope.invalidExp = true;
+            }
+        }
+
         $scope.total = function() {
             if ($scope.cartLoaded) {
               return OrderHelper.getTotal($scope.items);
@@ -454,13 +466,13 @@ angular.module('app.controllers.checkout')
 
             Checkout.setCheckout(checkout);
         }
-        
+
         $scope.confirmAlert = function(message) {
             var confirmAction = confirm(message);   
 
-           if (confirmAction) {
-             $location.path(STORE_BASE_URL);
-           }
+            if (confirmAction) {
+                $location.path(STORE_BASE_URL);
+            }
         }
 
         $scope.addPaymentMethod = function() {
