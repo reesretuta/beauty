@@ -608,6 +608,8 @@ angular.module('app.controllers.checkout')
             $log.debug("CheckoutController(): placeOrder(): checkout", $scope.checkout);
             $log.debug("CheckoutController(): placeOrder(): profile", $scope.profile);
 
+            $scope.orderError = "";
+
             if ($scope.isOnlineSponsoring) {
                 // FIXME - setting card type
 
