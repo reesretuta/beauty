@@ -2,14 +2,19 @@
 
   <div class="col-md-offset-3 col-lg-8">
     <h1>Review &amp; Confirm Order
-              <span class="store-heading-description">
-                Clicking &ldquo;Place Order&ldquo; will charge your payment option in the amount below.
-              </span>
+      <span class="store-heading-description">
+        Clicking &ldquo;Place Order&ldquo; will charge your payment option in the amount below.
+      </span>
     </h1>
+    <div class="row">
+      <div class="col-sm-6">
+        <div ng-if="orderError" class="alert alert-danger" role="alert" ng-bind="orderError"></div>
+      </div>
+    </div>
   </div>
 
   <div class="col-md-offset-3 col-lg-8">
-<form class="form order-details" role="form" name="confirmForm">
+  <form class="form order-details" role="form" name="confirmForm">
       <a ng-href="{{STORE_BASE_URL}}/cart" ng-if="!isOnlineSponsoring" class="pull-right" style="margin-top:10px"><i class="fa fa-pencil-square-o"></i> make changes</a>
       <h2 class="">Order Details</h2>
       <div class="form-group">
@@ -148,8 +153,6 @@
 
     </div><!-- /row -->
 	<hr>
-
-  <span class="error" ng-show="orderError" ng-bind="orderError"></span>
 
   <div class="form-group text-right">
         <label class="checkbox-inline">

@@ -353,14 +353,24 @@ function lookupConsultant(encrypted) {
             console.error("lookupConsultant(): error", error, response ? response.statusCode : null, body);
 
             if (body && body.statusCode && body.errorCode && body.message) {
-                deferred.reject({
-                    status: response.statusCode,
-                    result: {
-                        statusCode: body.statusCode,
-                        errorCode: body.errorCode,
-                        message: body.message
-                    }
-                });
+                if (body.statusCode == 404) {
+                    // not found
+                    deferred.reject({
+                        status: 200,
+                        result: {
+                            statusCode: 200,
+                            errorCode: "consultantNotFound",
+                            message: "Consultant not found"
+                        }
+                    });
+                } else {
+                    deferred.reject({
+                        status: response.statusCode,
+                        result: {
+                            exists: false
+                        }
+                    });
+                }
             } else {
                 deferred.reject({
                     status: 500,

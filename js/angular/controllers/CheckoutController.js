@@ -332,6 +332,7 @@ angular.module('app.controllers.checkout')
                 }
             }, function(error) {
                $log.error("CheckoutController(): validateProfileAndContinue()", error);
+               $scope.profileSSNError = true;
             });
         }
 
@@ -620,7 +621,7 @@ angular.module('app.controllers.checkout')
             $log.debug("CheckoutController(): placeOrder(): checkout", $scope.checkout);
             $log.debug("CheckoutController(): placeOrder(): profile", $scope.profile);
 
-            $scope.orderError = "";
+            $scope.orderError = null;
 
             if ($scope.isOnlineSponsoring) {
                 // FIXME - setting card type
@@ -659,11 +660,11 @@ angular.module('app.controllers.checkout')
                 }
 
                 Session.createConsultant(consultant).then(function(data) {
-                    $log.debug("CheckoutController(): loginOrCreateUser(): created client, moving to next step", data);
+                    $log.debug("CheckoutController(): loginOrCreateUser(): created consultant, moving to next step", data);
                     // jump to Shipping
                     WizardHandler.wizard('checkoutWizard').goTo('Finish');
                 }, function(error) {
-                    $log.error("CheckoutController(): loginOrCreateUser(): failed to create client", error);
+                    $log.error("CheckoutController(): loginOrCreateUser(): failed to create consultant", error);
                     $scope.orderError = error.message;
                     // FIXME - show error here!!!!!
                 });
