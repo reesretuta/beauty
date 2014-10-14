@@ -599,7 +599,10 @@ padding-top: 5px;
   right: -60px; 
   top: -50px;
 }
-
+.start_inside{
+	width:50%; 
+	float:left;
+}
 .steps-indicator {
   top: 0;
 }
@@ -671,6 +674,10 @@ padding-top: 5px;
       font-size: 33px;
       line-height: 36px;
     }
+    
+	.start_inside{
+		width:100%; 
+	}
 
 }
 @media (min-width:400px) and (max-width:767px) {
@@ -694,7 +701,11 @@ padding-top: 5px;
         margin: 0;
         padding-top: 0;
         -webkit-overflow-scrolling: touch;
-    }
+    }	
+    .start_inside{
+		width:100%; 
+	}
+
 }
 
 /* Small screens like netbooks and tablets (iPad/iPad mini/etc) */
