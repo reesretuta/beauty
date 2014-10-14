@@ -2,10 +2,17 @@
 
   <div class="col-md-offset-3">
     <h1 class="checkouth1" ng-if="profile.customerStatus == 'existing' && !isOnlineSponsoring">Sign in</h1>
-    <h1 class="checkouth1" ng-if="profile.customerStatus == 'new'">Create an Account</h1>
+    <h1 class="checkouth1" ng-if="profile.customerStatus == 'new' && !isOnlineSponsoring">Create an Account</h1>
+    <h1 class="checkouth1" ng-if="isOnlineSponsoring">
+      Create Consultant Account
+      <span class="store-heading-description">
+        Start by entering your contact information below.
+      </span>
+    </h1>
     <div class="row">
       <div class="col-sm-6">
-        <div ng-if="loginError" class="alert alert-danger" role="alert">Invalid username or password.</div>
+        <div ng-if="loginError" class="alert alert-danger" role="alert">Invalid username or password. Please Try again.</div>
+        <div ng-if="emailError" class="alert alert-danger" role="alert">Invalid email address.</div>
       </div>
     </div>
   </div>
@@ -15,12 +22,12 @@
     <div class="form-group" ng-if="profile.customerStatus == 'new' || isOnlineSponsoring">
       <label for="firstName" class="col-md-3 control-label">Name</label>
       <div class="col-sm-3" ng-class="{ 'has-error' : signInForm.firstName.$invalid && !signInForm.firstName.$pristine }">
-        <input name="firstName" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model="profile.firstName" ng-model-onblur class="form-control" id="firstName" placeholder="First" required="isOnlineSponsoring" autofocus="" maxlength="40">
+        <input name="firstName" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model="profile.firstName" class="form-control" id="firstName" placeholder="First" required="isOnlineSponsoring" autofocus="" maxlength="40">
         <span ng-show="signInForm.firstName.$invalid && !signInForm.firstName.$pristine" class="help-block" ng-class="{ 'text-danger' : signInForm.firstName.$invalid }">Must contain 2-40 letters.</span>
         <!--valid={{signInForm.firstName.$valid}}-->
       </div>
       <div class="col-sm-3" ng-class="{ 'has-error' : signInForm.lastName.$invalid && !signInForm.lastName.$pristine }">
-        <input name="lastName" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model="profile.lastName" ng-model-onblur class="form-control" id="lastName" placeholder="Last" required="isOnlineSponsoring" maxlength="40">
+        <input name="lastName" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model="profile.lastName" class="form-control" id="lastName" placeholder="Last" required="isOnlineSponsoring" maxlength="40">
         <span ng-show="signInForm.lastName.$invalid && !signInForm.lastName.$pristine" class="help-block" ng-class="{ 'text-danger' : signInForm.lastName.$invalid }">Must contain 2-40 letters.</span>
         <!--valid={{signInForm.lastName.$valid}}-->
       </div>
@@ -29,7 +36,7 @@
     <div class="form-group">
       <label for="loginEmail" class="col-md-3 control-label">Email Address</label>
       <div class="col-sm-6" ng-class="{ 'has-error' : signInForm.loginEmail.$invalid && !signInForm.loginEmail.$pristine }">
-        <input name="loginEmail" ng-pattern="" ng-model="profile.loginEmail" type="email" class="form-control" id="loginEmail" placeholder="example@gmail.com" required>
+        <input name="loginEmail" ng-pattern="/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/" ng-model="profile.loginEmail" type="email" class="form-control" id="loginEmail" placeholder="example@gmail.com" required>
         <span ng-show="signInForm.loginEmail.$invalid && !signInForm.loginEmail.$pristine" class="help-block" ng-class="{ 'text-danger' : signInForm.loginEmail.$invalid }">Must be a valid email address.</span>
         <!--valid={{signInForm.loginEmail.$valid}}-->
       </div>
@@ -52,10 +59,10 @@
     </div>
     <!--valid={{signInForm.customerStatus.$valid}}-->
 
-    <div class="error" ng-show="emailError">Email address is not valid</div>
-
     <div class="form-group">
       <div class="col-md-offset-3 col-sm-9">
+        <div class="row"><div class="col-sm-8"><hr></div></div>
+        <p><small>By clicking continue, you agree to JAFRA&rsquo;s <a href="" data-toggle="modal" data-target=".bs-privacy-modal-lg">Privacy Policy</a>.</small></p>
         <div class="input-group">
           <span class="input-group-addon"><i class="fa fa-lock"></i></span>
           <button ng-if="profile.customerStatus == 'existing' && !isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" ng-click="loginOrCreateUser()" ng-disabled="!signInForm.$valid">Sign In &nbsp;<i class="fa fa-caret-right"></i></button>
