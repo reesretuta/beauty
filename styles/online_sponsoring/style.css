@@ -504,6 +504,9 @@ min-width:131px;
     max-width: 200px;/* 100px;*/
     margin-left:30px; 
 }
+.contact-info-well {
+padding-top: 5px;
+}
 .spacer{
 	height:55px;
 	width:100%;
@@ -718,4 +721,8 @@ min-width:131px;
         padding-bottom: 180px;
     }
 }
-
+@media (min-width:900px) and (max-width:1200px){
+	#lipsticksmear{
+		left:-120px;
+	}
+}

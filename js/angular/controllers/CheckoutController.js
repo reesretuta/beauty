@@ -303,17 +303,14 @@ angular.module('app.controllers.checkout')
             });
         }
 
-        function isValidBirthDate() {
-            // $scope.profile.dob
-
-            // return true or false
-        }
-
-        $scope.verifyProfileAndContinue = function() {
+        $scope.verifyAge = function() {
+            $log.debug("CheckoutController(): verifyAge(): ", $scope.profile.dob)
             $scope.invalidDOB = false;
-            if (isValidBirthDate($scope.profile.dob)) {
-                WizardHandler.wizard('checkoutWizard').goTo('Shipping');
-            } else {
+
+            var dob = moment($scope.profile.dob, 'MMDDYYYY', true);
+            var now = moment();
+            
+            if (!dob.isValid() || now.diff(dob,'years') < 18) {
                 $scope.invalidDOB = true;
             }
         }
