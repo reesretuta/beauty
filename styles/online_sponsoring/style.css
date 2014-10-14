@@ -673,7 +673,14 @@ padding-top: 5px;
     }
 
 }
-
+@media (min-width:400px) and (max-width:767px) {
+	.jumbo-title-span-1 {
+	    font-size: 85px;
+	}
+	.jumbo-title-span-4 {
+	    font-size: 60px;
+	}
+}
 @media (max-width: 767px) {
     .navbar-fixed-top, #pagenav.affix {
         min-height: 50px;
@@ -688,7 +695,6 @@ padding-top: 5px;
         padding-top: 0;
         -webkit-overflow-scrolling: touch;
     }
-
 }
 
 /* Small screens like netbooks and tablets (iPad/iPad mini/etc) */
@@ -704,6 +710,12 @@ padding-top: 5px;
         table-layout: fixed;
         float:none;
     }
+	.jumbo-title-span-1 {
+	    font-size: 85px;
+	}
+	.jumbo-title-span-4 {
+	    font-size: 60px;
+	}
 }
 
 /* Medium screens like laptops and smaller desktop monitors */
