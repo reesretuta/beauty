@@ -315,6 +315,18 @@ angular.module('app.controllers.checkout')
             }
         }
 
+        $scope.verifyExp = function() {
+            $log.debug("CheckoutController(): verifyExp(): ", $scope.profile.exp)
+            $scope.invalidExp = false;
+
+            var exp = moment($scope.profile.exp, 'MMYYYY', true);
+            var now = moment();
+            
+            if (!exp.isValid() || now > exp) {
+                $scope.invalidExp = true;
+            }
+        }
+
         $scope.total = function() {
             if ($scope.cartLoaded) {
               return OrderHelper.getTotal($scope.items);
