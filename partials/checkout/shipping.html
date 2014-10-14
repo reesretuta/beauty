@@ -36,7 +36,8 @@
     <div class="row form-group">
       <label for="shippingAddress1" class="col-md-3 control-label">Address Line 1</label>
       <div class="col-sm-8 col-lg-6" ng-class="{ 'has-error' : shippingForm.newShippingAddress.address1.$invalid && !shippingForm.newShippingAddress.address1.$pristine }">
-        <input id="shippingAddress1" name="address1" ng-pattern="/^[a-zA-Z0-9\s,'-]*$/" ng-model="profile.newShippingAddress.address1" type="text" class="form-control" placeholder="Street address, P.O. box, company name, c/o " autofocus required>
+      <!-- ng-pattern="/^[a-zA-Z0-9\s,'-]*$/" causing api validation to fail. -->
+        <input id="shippingAddress1" name="address1" ng-model="profile.newShippingAddress.address1" type="text" class="form-control" placeholder="Street address, P.O. box, company name, c/o " autofocus required>
         <span ng-show="shippingForm.newShippingAddress.address1.$invalid && !shippingForm.newShippingAddress.address1.$pristine" class="help-block text-danger">Please Enter a Valid Address.</span>
       </div>
     </div>
@@ -44,7 +45,8 @@
     <div class="row form-group">
       <label for="shippingAddress2" class="col-md-3 control-label">Address Line 2</label>
       <div class="col-sm-8 col-lg-6" ng-class="{ 'has-error' : shippingForm.newShippingAddress.address2.$invalid && !shippingForm.newShippingAddress.address2.$pristine }">
-        <input id="shippingAddress2" name="address2" ng-pattern="/^[a-zA-Z0-9\s,'-]*$/" ng-model="profile.newShippingAddress.address2" type="text" class="form-control" placeholder="Apartment, suite, unit, building, floor, etc. ">
+      <!--  ng-pattern="/^[a-zA-Z0-9\s,'-]*$/" -->
+        <input id="shippingAddress2" name="address2" ng-model="profile.newShippingAddress.address2" type="text" class="form-control" placeholder="Apartment, suite, unit, building, floor, etc. ">
         <span ng-show="shippingForm.newShippingAddress.address2.$invalid && !shippingForm.newShippingAddress.address2.$pristine" class="help-block text-danger">Please enter a valid address.</span>
       </div>
     </div>
