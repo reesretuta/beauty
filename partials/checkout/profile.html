@@ -29,15 +29,16 @@
           <span class="help-block"><small>If you shop with a JAFRA Consultant, enter their ID above. Otherwise, leave blank.</small></span>
         </div>
       </div>
-
       <div class="form-group">
         <label for=" " class="col-md-3 control-label">Date of Birth</label>
         <div class="col-xs-4 col-md-4">
-          <input type="text" class="form-control" ui-mask="99/99/9999" placeholder="MM/DD/YYYY" ng-model="profile.dob" required>
+          <input type="date" class="form-control" ui-mask="99/99/9999" min="01/01/1890" max="10/14/1996"  placeholder="MM/DD/YYYY" ng-model="profile.dob" required id="dateInput">
         </div>
         <div class="col-md-offset-3 col-sm-9">
           <span class="help-block"><small>You must be 18 or older to join.</small></span>
         </div>
+        <span class="error" ng-show="profileForm.input.$error.date">
+       Not a valid date!</span>
       </div>
 
       <div class="form-group">
@@ -115,5 +116,6 @@
               }
           })
       });
+      
     </script>
     
