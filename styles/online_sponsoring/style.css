@@ -616,7 +616,16 @@ padding-top: 5px;
     margin: 0;
 }
 
-
+body.incheckout .navbar-fixed-top, 
+body.incheckout #pagenav.affix {
+    min-height: 50px !important;
+    position: relative !important;
+    top: auto !important;
+}
+body.incheckout {
+    margin: 0 !important;
+    padding-top: 0 !important;
+}
 
 @media (max-width:990px) {
 	.prod_more_link
