@@ -6,7 +6,8 @@ angular.module('app.controllers.checkout')
         $scope.cartLoaded = false;
         $rootScope.inCheckout = true;
 
-        var params = $location.search();$log.debug("params",params);
+        var params = $location.search();
+        $log.debug("params",params);
         var urlStep = S(params.step != null ? params.step : "Start").toString();
 
         //change page title
@@ -313,6 +314,25 @@ angular.module('app.controllers.checkout')
             if (!dob.isValid() || now.diff(dob,'years') < 18) {
                 $scope.invalidDOB = true;
             }
+        }
+
+        $scope.validateProfileAndContinue = function() {
+            $scope.profileSSNError = false;
+
+            var ssn = $scope.profile.ssn.replace(/(\d{3})(\d{2})(\d{4})/, '$1-$2-$3');
+
+            Session.lookupConsultant(ssn).then(function(data) {
+                $log.debug("CheckoutController(): validateProfileAndContinue()", data);
+                if (!data.exists) {
+                    WizardHandler.wizard('checkoutWizard').goTo('Shipping');
+                } else {
+                    // profile error
+                    $log.debug("CheckoutController(): validateProfileAndContinue(): error with SSN");
+                    $scope.profileSSNError = true;
+                }
+            }, function(error) {
+               $log.error("CheckoutController(): validateProfileAndContinue()", error);
+            });
         }
 
         $scope.total = function() {

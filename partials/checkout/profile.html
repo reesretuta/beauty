@@ -65,7 +65,9 @@
 
       <div class="form-group">
         <div class="col-md-offset-3 col-sm-9">
-          <a href="" wz-next ng-disabled="!profileForm.$valid || invalidDOB" class="btn btn-primary btn-lg">Continue to Shipping &nbsp;<i class="fa fa-caret-right"></i></a>
+          <span class="error" ng-show="profileSSNError">Unable to create profile.  Please contact Jafra support for further assistance.</span>
+
+          <a href="" ng-click="validateProfileAndContinue()" ng-disabled="!profileForm.$valid || invalidDOB" class="btn btn-primary btn-lg">Continue to Shipping &nbsp;<i class="fa fa-caret-right"></i></a>
         </div>
       </div>
     </form>

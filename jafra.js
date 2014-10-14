@@ -12,6 +12,7 @@ var CREATE_CLIENT_URL = BASE_URL + "/JCD05002P.pgm";
 
 var GET_CONSULTANT_URL = BASE_URL + "/JOS05007P.pgm";
 var CREATE_CONSULTANT_URL = BASE_URL + "/JOS05002P.pgm";
+var LOOKUP_CONSULTANT_URL = BASE_URL + "/JOS05004P.pgm";
 var CREATE_LEAD_URL = BASE_URL + "/JOS05005P.pgm";
 
 var GET_ADDRESSES_URL = BASE_URL + "/JCD05005P.pgm";
@@ -327,6 +328,76 @@ function getConsultant(consultantId) {
             });
         }
     })
+
+    return deferred.promise;
+}
+
+function lookupConsultant(encrypted) {
+    console.log("lookupConsultant()", encrypted);
+    var deferred = Q.defer();
+
+    request.post({
+        url: LOOKUP_CONSULTANT_URL,
+        form: {
+            "valToDecrypt": encrypted
+        },
+        headers: {
+            'Content-Type' : 'application/x-www-form-urlencoded',
+            'Accept': 'application/json, text/json'
+        },
+        json: true
+    }, function (error, response, body) {
+        console.log("lookupConsultant(): body", body);
+
+        if (error || response.statusCode != 200) {
+            console.error("lookupConsultant(): error", error, response ? response.statusCode : null, body);
+
+            if (body && body.statusCode && body.errorCode && body.message) {
+                deferred.reject({
+                    status: response.statusCode,
+                    result: {
+                        statusCode: body.statusCode,
+                        errorCode: body.errorCode,
+                        message: body.message
+                    }
+                });
+            } else {
+                deferred.reject({
+                    status: 500,
+                    result: {
+                        statusCode: 500,
+                        errorCode: "lookupConsultantFailed",
+                        message: "Failed to lookup consultant"
+                    }
+                });
+            }
+            return;
+        }
+
+        if (body == null || body.consultantId == null) {
+            console.log("lookupConsultant(): invalid return data", body, typeof body, "consultantId", body.consultantId);
+            deferred.reject({
+                status: 500,
+                result: {
+                    statusCode: 500,
+                    errorCode: "lookupConsultantReturnDataInvalid",
+                    message: "Failed to get consultant ID from lookup"
+                }
+            });
+            return;
+        }
+
+        var exists = body.consultantId > 0;
+        console.log("lookupConsultant(): exists", exists, "consultantId", body.consultantId);
+
+        // we should get consultantId back
+        deferred.resolve({
+            status: 200,
+            result: {
+                exists: exists
+            }
+        });
+    });
 
     return deferred.promise;
 }
@@ -1108,6 +1179,7 @@ exports.getClient = getClient;
 exports.createClient = createClient;
 exports.createConsultant = createConsultant;
 exports.getConsultant = getConsultant;
+exports.lookupConsultant = lookupConsultant;
 exports.createLead = createLead;
 
 exports.getAddresses = getAddresses;
