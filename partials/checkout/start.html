@@ -4,7 +4,7 @@
     <h1 class="checkouth1" ng-if="profile.customerStatus == 'existing' && !isOnlineSponsoring">Sign in</h1>
     <h1 class="checkouth1" ng-if="profile.customerStatus == 'new' && !isOnlineSponsoring">Create an Account</h1>
     <h1 class="checkouth1" ng-if="isOnlineSponsoring">
-      Create Consultant Account
+      Contact Information
       <span class="store-heading-description">
         Start by entering your contact information below.
       </span>
@@ -45,7 +45,7 @@
     <div class="form-group" ng-if="isOnlineSponsoring">
       <label for="phoneNumber" class="col-md-3 control-label">Phone number</label>
       <div class="col-sm-3">
-        <input name="phoneNumber" ui-mask="(999) 999-9999" ng-model="profile.phoneNumber" class="form-control" id="phoneNumber" placeholder="(___) ___-____" required>
+        <input name="phoneNumber" type="tel" ui-mask="(999) 999-9999" ng-model="profile.phoneNumber" class="form-control" id="phoneNumber" placeholder="(___) ___-____" required>
         <!--valid={{signInForm.phoneNumber.$valid}}-->
       </div>
     </div>

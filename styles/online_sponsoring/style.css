@@ -604,6 +604,12 @@ min-width:131px;
   margin-top: 80px;
 }
 
+.store-checkout input[type=number]::-webkit-inner-spin-button,
+.store-checkout input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
 
 
 @media (max-width:990px) {
