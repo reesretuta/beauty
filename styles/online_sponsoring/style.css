@@ -383,6 +383,9 @@ line-height: 1.2em;
   color: #53366C;
 line-height: 1.2em; /*0.8em;*/
 }
+.modal_starter_kits-price{
+  font-size: 6em;
+}
 .starter_kits-label_title{
   font-family: HelveticaNeueLTStd-BdCn;
   font-weight: normal;
