@@ -2,10 +2,17 @@
 
   <div class="col-md-offset-3">
     <h1 class="checkouth1" ng-if="profile.customerStatus == 'existing' && !isOnlineSponsoring">Sign in</h1>
-    <h1 class="checkouth1" ng-if="profile.customerStatus == 'new'">Create an Account</h1>
+    <h1 class="checkouth1" ng-if="profile.customerStatus == 'new' && !isOnlineSponsoring">Create an Account</h1>
+    <h1 class="checkouth1" ng-if="isOnlineSponsoring">
+      Create Consultant Account
+      <span class="store-heading-description">
+        Start by entering your contact information below.
+      </span>
+    </h1>
     <div class="row">
       <div class="col-sm-6">
-        <div ng-if="loginError" class="alert alert-danger" role="alert">Invalid username or password.</div>
+        <div ng-if="loginError" class="alert alert-danger" role="alert">Invalid username or password. Please Try again.</div>
+        <div ng-if="emailError" class="alert alert-danger" role="alert">Invalid email address.</div>
       </div>
     </div>
   </div>
@@ -52,10 +59,10 @@
     </div>
     <!--valid={{signInForm.customerStatus.$valid}}-->
 
-    <div class="error" ng-show="emailError">Email address is not valid</div>
-
     <div class="form-group">
       <div class="col-md-offset-3 col-sm-9">
+        <div class="row"><div class="col-sm-8"><hr></div></div>
+        <p><small>By clicking continue, you agree to JAFRA&rsquo;s <a href="" data-toggle="modal" data-target=".bs-privacy-modal-lg">Privacy Policy</a>.</small></p>
         <div class="input-group">
           <span class="input-group-addon"><i class="fa fa-lock"></i></span>
           <button ng-if="profile.customerStatus == 'existing' && !isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" ng-click="loginOrCreateUser()" ng-disabled="!signInForm.$valid">Sign In &nbsp;<i class="fa fa-caret-right"></i></button>
