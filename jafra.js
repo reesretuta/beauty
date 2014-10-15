@@ -13,7 +13,7 @@ var CREATE_CLIENT_URL = BASE_URL + "/JCD05002P.pgm";
 var GET_CONSULTANT_URL = BASE_URL + "/JOS05007P.pgm";
 var CREATE_CONSULTANT_URL = BASE_URL + "/JOS05002P.pgm";
 var LOOKUP_CONSULTANT_URL = BASE_URL + "/JOS05004P.pgm";
-var CREATE_LEAD_URL = BASE_URL + "/JOS05005P.pgm";
+//var CREATE_LEAD_URL = BASE_URL + "/JOS05005P.pgm";
 
 var GET_ADDRESSES_URL = BASE_URL + "/JCD05005P.pgm";
 var GET_ADDRESS_URL = BASE_URL + "/JCD05005P.pgm";
@@ -27,6 +27,8 @@ var CREATE_CREDIT_CARD_URL = BASE_URL + "/JCD05008P.pgm";
 var UPDATE_CREDIT_CARD_URL = BASE_URL + "/JCD05008P.pgm";
 var DELETE_CREDIT_CARD_URL = BASE_URL + "/JCD05008P.pgm";
 var GET_INVENTORY_URL = BASE_URL + "/JCD05021P.pgm"; // productId=<productId>
+
+var GET_SALES_TAX_URL = BASE_URL + "/JCD05022P.pgm";
 
 var STRIKEIRON_EMAIL_URL = 'http://ws.strikeiron.com/StrikeIron/emv6Hygiene/EMV6Hygiene/VerifyEmail';
 var STRIKEIRON_EMAIL_LICENSE = "2086D15410C1B9F9FF89";
@@ -813,25 +815,29 @@ function validateEmail(email) {
         if (body && body.WebServiceResponse && body.WebServiceResponse.VerifyEmailResponse &&
             body.WebServiceResponse.VerifyEmailResponse.VerifyEmailResult &&
             body.WebServiceResponse.VerifyEmailResponse.VerifyEmailResult.ServiceStatus &&
-            ((body.WebServiceResponse.VerifyEmailResponse.VerifyEmailResult.ServiceStatus.StatusNbr >= 200 &&
-            body.WebServiceResponse.VerifyEmailResponse.VerifyEmailResult.ServiceStatus.StatusNbr < 300) ||
-            body.WebServiceResponse.VerifyEmailResponse.VerifyEmailResult.ServiceStatus.StatusNbr == 311))
+            body.WebServiceResponse.VerifyEmailResponse.VerifyEmailResult.ServiceStatus.StatusNbr)
         {
-            console.log("validateEmail(): valid");
-            deferred.resolve({
-                status: 200,
-                result: body
-            });
-        } else {
-            deferred.reject({
-                status: 500,
-                result: {
-                    statusCode: 500,
-                    errorCode: "invalidEmailAddress",
-                    message: "Invalid email address"
-                }
-            });
+            var statusNbr = parseInt(body.WebServiceResponse.VerifyEmailResponse.VerifyEmailResult.ServiceStatus.StatusNbr);
+            console.log("validateEmail(): statusNbr", statusNbr);
+
+            if (statusNbr == 310 || statusNbr == 311 || (statusNbr >= 200 && statusNbr < 300)) {
+                console.log("validateEmail(): valid");
+                deferred.resolve({
+                    status: 200,
+                    result: body
+                });
+                return;
+            }
         }
+
+        deferred.reject({
+            status: 500,
+            result: {
+                statusCode: 500,
+                errorCode: "invalidEmailAddress",
+                message: "Invalid email address"
+            }
+        });
     });
 
     return deferred.promise;
