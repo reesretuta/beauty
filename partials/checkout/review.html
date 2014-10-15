@@ -7,6 +7,29 @@
       </span>
     </h1>
     <div class="row">
+      <div class="form-group">
+        <label class="col-md-3 control-label">Contact Info</label>
+        <div class="col-sm-9 col-md-5">
+          <div class="well contact-info-well">
+            <h3><span ng-bind="profile.firstName"></span> <span ng-bind="profile.lastName"></span></h3>
+            <p><b ng-bind="profile.loginEmail"></b></p>
+            <p>{{profile.phoneNumber|phone}}</p>
+            <a href="#" wz-prev><i class="fa fa-pencil-square-o"></i> Edit</a>
+          </div>
+        </div>
+        <div class="col-md-offset-3 col-sm-9">
+          <div class="row"><div class="col-sm-8"><hr></div></div>
+        </div>
+        <div class="col-md-offset-3 col-sm-9">
+          <div class="row">
+            <div class="col-sm-6">
+              <div ng-if="profileSSNError" class="alert alert-danger" role="alert">Unable to create profile.  Please contact Jafra support for further assistance.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
       <div class="col-sm-6">
         <div ng-if="orderError" class="alert alert-danger" role="alert" ng-bind="orderError"></div>
       </div>
@@ -112,7 +135,7 @@
             <small>EXP:</small>
             {{checkout.card.expMonth}}/{{substr(checkout.card.expYear,2,2)}}
           </p>
-          <a ng-href="{{APP_BASE_URL}}/checkout?step=Payment" class="pull-right card-use-btn"><i class="fa fa-pencil-square-o"></i> Change Card</a>
+          <a href="" data-toggle="modal" data-target=".bs-example-modal-charging" class="pull-right card-use-btn"><i class="fa fa-pencil-square-o"></i> Change Card</a>
         </div>
       </div><!-- /card -->
 
@@ -124,9 +147,24 @@
         <span class="phone-number">{{checkout.shipping.phone}}</span>
         <span ng-if="!isOnlineSponsoring">Speed: {{shippingSpeed}}</span>
         <div class="address-actions">
-          <a ng-href="{{APP_BASE_URL}}/checkout?step=Shipping"><i class="fa fa-pencil-square-o"></i> Change Address</a>
+          <a href="" data-toggle="modal" data-target=".bs-example-modal-lg-shipping"><i class="fa fa-pencil-square-o"></i> Change Address</a>
         </div>
       </div><!-- /address -->
+
+      <!-- Shipping To MODAL window -->
+<div class="modal fade bs-example-modal-lg-shipping"  role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Shipping To:</h4>
+      </div>
+      <div class="modal-body row">
+        <ng-include src="'/partials/checkout/shipping.html'"/>
+      </div>
+    </div>
+  </div>
+</div>
 
       <div class="col-xs-6 col-lg-4 checkout-address" ng-if="!checkout.billSame">
         <h3>Billing To:</h3>
@@ -135,9 +173,24 @@
         <span class="address-region">{{checkout.billing.city}}, {{checkout.billing.state}} {{checkout.billing.zip}}</span>
         <span class="phone-number">{{checkout.billing.phone}}</span>
         <div class="address-actions">
-          <a ng-href="{{APP_BASE_URL}}/checkout?step=Payment"><i class="fa fa-pencil-square-o"></i> Change Address</a>
+          <a href="" data-toggle="modal" data-target=".bs-example-modal-lg-billing"><i class="fa fa-pencil-square-o"></i> Change Address</a>
         </div>
       </div><!-- /address -->
+
+      <!-- Billing To MODAL window -->
+<div class="modal fade bs-example-modal-lg-billing"  role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Billing To:</h4>
+      </div>
+      <div class="modal-body row">
+        <ng-include src="'/partials/checkout/payment.html'"/>
+      </div>
+    </div>
+  </div>
+</div>
 
 
       <div class="col-xs-6 col-lg-4 checkout-address" ng-if="checkout.billSame">
@@ -147,9 +200,24 @@
         <span class="address-region">{{checkout.shipping.city}}, {{checkout.shipping.state}} {{checkout.shipping.zip}}</span>
         <span class="phone-number">{{checkout.shipping.phone}}</span>
         <div class="address-actions">
-          <a ng-href="{{APP_BASE_URL}}/checkout?step=Payment"><i class="fa fa-pencil-square-o"></i> Change Address</a>
+          <a href="" data-toggle="modal" data-target=".bs-example-modal-lg-billingSame"><i class="fa fa-pencil-square-o"></i> Change Address</a>
         </div>
       </div><!-- /address -->
+
+      <!-- Billing To MODAL window if checkout.billSame -->
+<div class="modal fade bs-example-modal-lg-billingSame"  role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Billing To:</h4>
+      </div>
+      <div class="modal-body row">
+        <ng-include src="'/partials/checkout/payment.html'"/>
+      </div>
+    </div>
+  </div>
+</div>
 
     </div><!-- /row -->
 	<hr>
@@ -167,6 +235,21 @@
       </div>
 
     </form>
+
+      <!-- Charging To MODAL window -->
+<div class="modal fade bs-example-modal-lg-charging"  role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Charging To:</h4>
+      </div>
+      <div class="modal-body row">
+        <ng-include src="'/partials/checkout/payment.html'"/>
+      </div>
+    </div>
+  </div>
+</div>
     
 <div class="modal fade bs-example-modal-lg-terms"  role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
@@ -197,6 +280,7 @@
     </div>
   </div>
 </div>
+  
   </div>
 
 </div><!--/span-->

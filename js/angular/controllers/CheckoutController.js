@@ -472,8 +472,11 @@ angular.module('app.controllers.checkout')
         $scope.confirmAlert = function(message) {
             var confirmAction = confirm(message);   
 
-            if (confirmAction) {
-                $location.path(STORE_BASE_URL);
+            if (confirmAction && $scope.isOnlineSponsoring) {
+                $location.path(JOIN_BASE_URL);
+            }
+            else if (confirmAction && !$scope.isOnlineSponsoring) {
+                $location.path(STORE_BASE_URL);   
             }
         }
 
