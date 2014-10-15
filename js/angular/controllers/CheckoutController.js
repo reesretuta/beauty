@@ -184,7 +184,7 @@ angular.module('app.controllers.checkout')
                         "name" : "David Castro",
                         "phone" : "987-983-7259"
                     },
-                    billSame: true,
+                    billSame: true
                 };
 
                 $scope.confirmation = {
