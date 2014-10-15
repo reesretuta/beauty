@@ -116,6 +116,10 @@ input:focus:-ms-input-placeholder {
 #logo img {
   max-width: 70px;
 }
+ul.modal_lists {
+list-style-type: none;
+padding-left: 0px;
+}
 .navbar-default .navbar-nav>li>a {
   color:#fff;
 }
@@ -605,6 +609,7 @@ padding-top: 5px;
 .start_inside{
 	width:50%; 
 	float:left;
+padding: 20px;
 }
 .steps-indicator {
   top: 0;
