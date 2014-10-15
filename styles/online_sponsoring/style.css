@@ -629,7 +629,9 @@ body.incheckout {
     margin: 0 !important;
     padding-top: 0 !important;
 }
-
+.whats_inside_button{
+	float:right;
+}
 @media (max-width:990px) {
 	.prod_more_link
 	{
@@ -693,6 +695,10 @@ body.incheckout {
     ul.menu_language li a {
       color: #fff;
     }
+    
+.whats_inside_button{
+	float:none;
+}
 
 }
 @media (min-width:400px) and (max-width:767px) {
