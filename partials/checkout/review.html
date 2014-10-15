@@ -1,34 +1,12 @@
-<div class="col-sm-12">
+<div class="container">
 
-  <div class="col-md-offset-3 col-lg-8">
+  <div class="">
     <h1>Review &amp; Confirm Order
       <span class="store-heading-description">
         Clicking &ldquo;Place Order&ldquo; will charge your payment option in the amount below.
       </span>
     </h1>
-    <div class="row">
-      <div class="form-group">
-        <label class="col-md-3 control-label">Contact Info</label>
-        <div class="col-sm-9 col-md-5">
-          <div class="well contact-info-well">
-            <h3><span ng-bind="profile.firstName"></span> <span ng-bind="profile.lastName"></span></h3>
-            <p><b ng-bind="profile.loginEmail"></b></p>
-            <p>{{profile.phoneNumber|phone}}</p>
-            <a href="#" wz-prev><i class="fa fa-pencil-square-o"></i> Edit</a>
-          </div>
-        </div>
-        <div class="col-md-offset-3 col-sm-9">
-          <div class="row"><div class="col-sm-8"><hr></div></div>
-        </div>
-        <div class="col-md-offset-3 col-sm-9">
-          <div class="row">
-            <div class="col-sm-6">
-              <div ng-if="profileSSNError" class="alert alert-danger" role="alert">Unable to create profile.  Please contact Jafra support for further assistance.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    
     <div class="row">
       <div class="col-sm-6">
         <div ng-if="orderError" class="alert alert-danger" role="alert" ng-bind="orderError"></div>
@@ -36,10 +14,9 @@
     </div>
   </div>
 
-  <div class="col-md-offset-3 col-lg-8">
+  <div class="col-md-offset-1 col-md-10">
   <form class="form order-details" role="form" name="confirmForm">
       <a ng-href="{{STORE_BASE_URL}}/cart" ng-if="!isOnlineSponsoring" class="pull-right" style="margin-top:10px"><i class="fa fa-pencil-square-o"></i> make changes</a>
-      <h2 class="">Order Details</h2>
       <div class="form-group">
         <table class="table">
           <thead>
@@ -111,11 +88,41 @@
 
      
     
-    <hr>
+ 
+	<hr>
+
+  <div class="form-group text-right">
+        <label class="checkbox-inline">
+
+          <input type="checkbox" value="" ng-model="checkout.agree" required>
+
+          I agree to the <a href="" data-toggle="modal" data-target=".bs-example-modal-lg-terms">Terms and Conditions</a>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+        </label>
+        <button ng-if="!isOnlineSponsoring" type="button" class="btn-link pull-left" ng-click="confirmAlert('Are you sure you\'d like to cancel your order?')">Cancel Order</ng-bind="expression"utton>
+        <button type="button" class="btn btn-primary btn-lg" ng-click="processOrder()" ng-disabled="!confirmForm.$valid">Place Order &nbsp;<i class="fa fa-caret-right"></i></button>
+      </div>
+
+    </form>
+
+       <hr>
+
     
     <div class="row">
 
-      <div class="col-xs-6 col-lg-4" ng-if="checkout.card">
+      <div class="col-sm-6 col-lg-3" ng-if="isOnlineSponsoring">
+        <h3>Contact Info:</h3>
+        <div>
+          <div class="well contact-info-well">
+            <h3><span ng-bind="profile.firstName"></span> <span ng-bind="profile.lastName"></span></h3>
+            <p><b ng-bind="profile.loginEmail"></b></p>
+            <p>{{profile.phoneNumber|phone}}</p>
+            <a href="#" wz-prev><i class="fa fa-pencil-square-o"></i> Edit</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-3" ng-if="checkout.card">
         <h3>Charging To:</h3>
         <div class="checkout-card clearfix active">
           <span class="pull-left">{{checkout.card.name}}</span>
@@ -134,7 +141,7 @@
         </div>
       </div><!-- /card -->
 
-      <div class="col-xs-6 col-lg-4 checkout-address" ng-if="checkout.shipping">
+      <div class="col-sm-6 col-lg-3 checkout-address" ng-if="checkout.shipping">
         <h3>Shipping To:</h3>
         <span class="address-name">{{checkout.shipping.name}}</span>
         <span class="address-street">{{checkout.shipping.address1}} {{checkout.shipping.address2}}</span>
@@ -215,21 +222,6 @@
 </div>
 
     </div><!-- /row -->
-	<hr>
-
-  <div class="form-group text-right">
-        <label class="checkbox-inline">
-
-          <input type="checkbox" value="" ng-model="checkout.agree" required>
-
-          I agree to the <a href="" data-toggle="modal" data-target=".bs-example-modal-lg-terms">Terms and Conditions</a>
-          &nbsp;&nbsp;&nbsp;&nbsp;
-        </label>
-        <button type="button" class="btn-link pull-left" ng-click="confirmAlert('Are you sure you\'d like to cancel your order?')">Cancel Order</button>
-        <button type="button" class="btn btn-primary btn-lg" ng-click="processOrder()" ng-disabled="!confirmForm.$valid">Place Order &nbsp;<i class="fa fa-caret-right"></i></button>
-      </div>
-
-    </form>
 
       <!-- Charging To MODAL window -->
 <div class="modal fade bs-example-modal-lg-charging"  role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
