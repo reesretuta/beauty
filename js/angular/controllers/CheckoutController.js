@@ -324,6 +324,7 @@ angular.module('app.controllers.checkout')
             Session.lookupConsultant(ssn).then(function(data) {
                 $log.debug("CheckoutController(): validateProfileAndContinue()", data);
                 if (!data.exists) {
+                    // do the sales tax calculations before moving to the next page
                     WizardHandler.wizard('checkoutWizard').goTo('Shipping');
                 } else {
                     // profile error
