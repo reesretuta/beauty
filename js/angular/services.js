@@ -332,9 +332,9 @@ angular.module('app.services', ['ngResource'])
                         }).$promise.then(function(c) {
                             $log.debug("sessionService(): createConsultant(): created consultant");
                             d.resolve(c);
-                        }, function(error) {
-                            $log.error("sessionService(): createConsultant(): failed to create consultant", error);
-                            d.reject(error.data);
+                        }, function(data, status, headers, config) {
+                            $log.error("sessionService(): createConsultant(): failed to create consultant");
+                            d.reject();
                         });
                     } catch (ex) {
                         d.reject({

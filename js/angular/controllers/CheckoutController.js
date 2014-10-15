@@ -149,6 +149,49 @@ angular.module('app.controllers.checkout')
                     }
                 };
 
+                $scope.checkout = {
+                    agree: true,
+                    card: {
+                        name: "Test Name",
+                        card: "4111111111111111",
+                        expMonth: "12",
+                        expYear: "2020",
+                        cvv: "987"
+                    },
+                    shipping: {
+                        "address1" : "7661 Indian Canyon Cir",
+                        "address2" : "",
+                        "city" : "Eastvale",
+                        "county" : "Riverside",
+                        "state" : "CA",
+                        "stateDescription" : "CA",
+                        "zip" : "92880",
+                        "country" : "US",
+                        "geocode" : "040609",
+                        "name" : "David Castro",
+                        "phone" : "987-983-7259"
+                    },
+                    billing: {
+                        "address1" : "7661 Indian Canyon Cir",
+                        "address2" : "",
+                        "city" : "Eastvale",
+                        "county" : "Riverside",
+                        "state" : "CA",
+                        "stateDescription" : "CA",
+                        "zip" : "92880",
+                        "country" : "US",
+                        "geocode" : "040609",
+                        "name" : "David Castro",
+                        "phone" : "987-983-7259"
+                    },
+                    billSame: true,
+                };
+
+                $scope.confirmation = {
+                    orderId: '123345678',
+                    consultantId: '11111111'
+                }
+
                 // clear & add a product to the cart
                 Cart.clear().then(function(cart) {
                     $log.debug("CheckoutController(): previous cart cleared");
@@ -577,8 +620,8 @@ angular.module('app.controllers.checkout')
 
         $scope.addPaymentMethod = function() {
             if (debug) {
+                $log.debug("CheckoutController(): addPaymentMethod(): debug, adding card to checkout", $scope.profile.newCard);
                 $scope.checkout.card = $scope.profile.newCard;
-                $scope.profile.newCard = null;
                 WizardHandler.wizard('checkoutWizard').goTo('Review');
                 return;
             }
@@ -730,7 +773,11 @@ angular.module('app.controllers.checkout')
             $scope.orderError = null;
 
             if ($scope.isOnlineSponsoring) {
-                // FIXME - setting card type
+                if (debug) {
+                    // need to add
+                    $log.debug("CheckoutController(): processOrder(): debug, adding card to checkout", $scope.profile.newCard);
+                    $scope.checkout.card = $scope.profile.newCard;
+                }
 
                 var dob = $scope.profile.dob.replace(/(\d{2})(\d{2})(\d{4})/, '$1/$2/$3');
                 var ssn = $scope.profile.ssn.replace(/(\d{3})(\d{2})(\d{4})/, '$1-$2-$3');
@@ -765,16 +812,25 @@ angular.module('app.controllers.checkout')
                     ]
                 }
 
-                Session.createConsultant(consultant).then(function(data) {
-                    $log.debug("CheckoutController(): loginOrCreateUser(): created consultant, moving to next step", data);
-                    // jump to Shipping
-                    WizardHandler.wizard('checkoutWizard').goTo('Finish');
-                }, function(error) {
-                    $log.error("CheckoutController(): loginOrCreateUser(): failed to create consultant", error);
-                    $scope.orderError = error.message;
-                    // FIXME - show error here!!!!!
-                });
+                if (!debug) {
+                    Session.createConsultant(consultant).then(function(data) {
+                        $log.debug("CheckoutController(): loginOrCreateUser(): created consultant, moving to next step", data);
+                        // jump to Shipping
+                        $scope.confirmation = {
+                            orderId: data.orderId,
+                            consultantId: data.consultantId
+                        };
 
+                        WizardHandler.wizard('checkoutWizard').goTo('Finish');
+                    }, function(error) {
+                        $log.error("CheckoutController(): loginOrCreateUser(): failed to create consultant", error);
+                        $scope.orderError = error.message;
+                        // FIXME - show error here!!!!!
+                    });
+                } else {
+                    WizardHandler.wizard('checkoutWizard').goTo('Finish');
+                    return;
+                }
 
                 /**
                  * {
