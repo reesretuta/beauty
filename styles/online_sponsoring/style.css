@@ -728,6 +728,9 @@ body.incheckout {
 		width:100%;
 		max-width: 100%;
 	}
+	footer .nav .open>a{
+		background-color:#53366C!important;
+	}
 }
 @media (max-width: 767px) {
     .navbar-fixed-top, #pagenav.affix {
