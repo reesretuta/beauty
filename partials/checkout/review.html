@@ -7,6 +7,29 @@
       </span>
     </h1>
     <div class="row">
+      <div class="form-group">
+        <label class="col-md-3 control-label">Contact Info</label>
+        <div class="col-sm-9 col-md-5">
+          <div class="well contact-info-well">
+            <h3><span ng-bind="profile.firstName"></span> <span ng-bind="profile.lastName"></span></h3>
+            <p><b ng-bind="profile.loginEmail"></b></p>
+            <p>{{profile.phoneNumber|phone}}</p>
+            <a href="#" wz-prev><i class="fa fa-pencil-square-o"></i> Edit</a>
+          </div>
+        </div>
+        <div class="col-md-offset-3 col-sm-9">
+          <div class="row"><div class="col-sm-8"><hr></div></div>
+        </div>
+        <div class="col-md-offset-3 col-sm-9">
+          <div class="row">
+            <div class="col-sm-6">
+              <div ng-if="profileSSNError" class="alert alert-danger" role="alert">Unable to create profile.  Please contact Jafra support for further assistance.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
       <div class="col-sm-6">
         <div ng-if="orderError" class="alert alert-danger" role="alert" ng-bind="orderError"></div>
       </div>
