@@ -1,6 +1,6 @@
 <div class="container">
 
-  <div class="">
+  <div class="col-md-offset-1 col-md-10">
     <h1>Review &amp; Confirm Order
       <span class="store-heading-description">
         Clicking &ldquo;Place Order&ldquo; will charge your payment option in the amount below.
@@ -110,7 +110,7 @@
     
     <div class="row">
 
-      <div class="col-sm-6 col-lg-3" ng-if="isOnlineSponsoring">
+      <div class="col-sm-3 col-lg-3" ng-if="isOnlineSponsoring">
         <h3>Contact Info:</h3>
         <div>
           <div class="well contact-info-well">
@@ -122,7 +122,7 @@
         </div>
       </div>
 
-      <div class="col-sm-6 col-lg-3" ng-if="checkout.card">
+      <div class="col-sm-3 col-lg-3" ng-if="checkout.card">
         <h3>Charging To:</h3>
         <div class="checkout-card clearfix active">
           <span class="pull-left">{{checkout.card.name}}</span>
@@ -141,7 +141,7 @@
         </div>
       </div><!-- /card -->
 
-      <div class="col-sm-6 col-lg-3 checkout-address" ng-if="checkout.shipping">
+      <div class="col-sm-3 col-lg-3 checkout-address" ng-if="checkout.shipping">
         <h3>Shipping To:</h3>
         <span class="address-name">{{checkout.shipping.name}}</span>
         <span class="address-street">{{checkout.shipping.address1}} {{checkout.shipping.address2}}</span>
@@ -168,7 +168,7 @@
   </div>
 </div>
 
-      <div class="col-xs-6 col-lg-4 checkout-address" ng-if="!checkout.billSame">
+      <div class="col-xs-3 col-lg-3 checkout-address" ng-if="!checkout.billSame">
         <h3>Billing To:</h3>
         <span class="address-name">{{checkout.billing.name}}</span>
         <span class="address-street">{{checkout.billing.address1}} {{checkout.billing.address2}}</span>
@@ -195,7 +195,7 @@
 </div>
 
 
-      <div class="col-xs-6 col-lg-4 checkout-address" ng-if="checkout.billSame">
+      <div class="col-xs-3 col-lg-3 checkout-address" ng-if="checkout.billSame">
         <h3>Billing To:</h3>
         <span class="address-name">{{checkout.shipping.name}}</span>
         <span class="address-street">{{checkout.shipping.address1}} {{checkout.shipping.address2}}</span>
