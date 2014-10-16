@@ -1,9 +1,9 @@
 <div class="container">
 
   <div class="col-md-offset-1 col-md-10">
-    <h1>Review &amp; Confirm Order
-      <span class="store-heading-description">
-        Clicking &ldquo;Place Order&ldquo; will charge your payment option in the amount below.
+    <h1>{{ 'TIT06' | translate }}
+      <span class="store-heading-description" ng-bind-html="'CHECK_INST_PAY' | translate | unsafe">
+        
       </span>
     </h1>
     
@@ -100,7 +100,7 @@
           &nbsp;&nbsp;&nbsp;&nbsp;
         </label>
         <button ng-if="!isOnlineSponsoring" type="button" class="btn-link pull-left" ng-click="confirmAlert('Are you sure you\'d like to cancel your order?')">Cancel Order</ng-bind="expression"utton>
-        <button type="button" class="btn btn-primary btn-lg" ng-click="processOrder()" ng-disabled="!confirmForm.$valid">Place Order &nbsp;<i class="fa fa-caret-right"></i></button>
+        <button type="button" class="btn btn-primary btn-lg" ng-click="processOrder()" ng-disabled="!confirmForm.$valid">{{ 'BTN_PLACE_ORDER' | translate }} &nbsp;<i class="fa fa-caret-right"></i></button>
       </div>
 
     </form>
@@ -111,7 +111,7 @@
     <div class="row">
 
       <div class="col-sm-3 col-lg-3" ng-if="isOnlineSponsoring">
-        <h3>Contact Info:</h3>
+        <h3>{{ 'CONTACT-INFO-LABEL' | translate }}:</h3>
         <div>
           <div class="well contact-info-well">
             <h3><span ng-bind="profile.firstName"></span> <span ng-bind="profile.lastName"></span></h3>
@@ -123,7 +123,7 @@
       </div>
 
       <div class="col-sm-3 col-lg-3" ng-if="checkout.card">
-        <h3>Charging To:</h3>
+        <h3>{{ 'PAY_TIT1' | translate }}:</h3>
         <div class="checkout-card clearfix active">
           <span class="pull-left">{{checkout.card.name}}</span>
           <img src="/img/46x30" class="pull-right">
@@ -142,7 +142,7 @@
       </div><!-- /card -->
 
       <div class="col-sm-3 col-lg-3 checkout-address" ng-if="checkout.shipping">
-        <h3>Shipping To:</h3>
+        <h3>{{ 'PAY_TIT2' | translate }}:</h3>
         <span class="address-name">{{checkout.shipping.name}}</span>
         <span class="address-street">{{checkout.shipping.address1}} {{checkout.shipping.address2}}</span>
         <span class="address-region">{{checkout.shipping.city}}, {{checkout.shipping.state}} {{checkout.shipping.zip}}</span>
@@ -169,7 +169,7 @@
 </div>
 
       <div class="col-xs-3 col-lg-3 checkout-address" ng-if="!checkout.billSame">
-        <h3>Billing To:</h3>
+        <h3>{{ 'PAY_TIT3' | translate }}:</h3>
         <span class="address-name">{{checkout.billing.name}}</span>
         <span class="address-street">{{checkout.billing.address1}} {{checkout.billing.address2}}</span>
         <span class="address-region">{{checkout.billing.city}}, {{checkout.billing.state}} {{checkout.billing.zip}}</span>

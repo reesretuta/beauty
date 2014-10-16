@@ -126,28 +126,28 @@
   </div>
 
   <div class="row form-group">
-    <label for="billingAddress1" class="col-md-3 control-label">Address Line 1</label>
+    <label for="billingAddress1" class="col-md-3 control-label">{{ 'IN_ADD_LINE1' | translate }}</label>
     <div class="col-sm-8 col-lg-6">
-      <input name="address1" ng-model="profile.newBillingAddress.address1" type="text" class="form-control" id="billingAddress1" placeholder="Street address, P.O. box, company name, c/o " required>
+      <input name="address1" ng-model="profile.newBillingAddress.address1" type="text" class="form-control" id="billingAddress1" placeholder="{{ 'IN_ADD_LINE1_DES' | translate }} " required>
     </div>
   </div>
 
   <div class="row form-group">
-    <label for="billingAddress2" class="col-md-3 control-label">Address Line 2</label>
+    <label for="billingAddress2" class="col-md-3 control-label">{{ 'IN_ADD_LINE2' | translate }}</label>
     <div class="col-sm-8 col-lg-6">
-      <input name="address2" ng-model="profile.newBillingAddress.address2" type="text" class="form-control" id="billingAddress2" placeholder="Apartment, suite, unit, building, floor, etc. " >
+      <input name="address2" ng-model="profile.newBillingAddress.address2" type="text" class="form-control" id="billingAddress2" placeholder="{{ 'IN_ADD_LINE2_DES' | translate }} " >
     </div>
   </div>
 
   <div class="row form-group">
-    <label for="billingCity" class="col-md-3 control-label">City</label>
+    <label for="billingCity" class="col-md-3 control-label">{{ 'IN_CITY' | translate }}</label>
     <div class="col-sm-7 col-lg-5">
       <input name="city" ng-model="profile.newBillingAddress.city" type="text" class="form-control" id="billingCity" placeholder=" " required>
     </div>
   </div>
 
   <div class="row form-group">
-    <label for="billingStateProvinceRegion" class="col-md-3 control-label">State/Province/Region</label>
+    <label for="billingStateProvinceRegion" class="col-md-3 control-label">{{ 'IN_STATE' | translate }}</label>
     <!-- TO-DO: Fix CSS width of form control -->
     <div class="col-sm-5 col-lg-3">
       <form>
@@ -217,14 +217,14 @@
   </div>
 
   <div class="row form-group">
-    <label for="billingZipPostalCode" class="col-md-3 control-label">Zip/Postal Code</label>
+    <label for="billingZipPostalCode" class="col-md-3 control-label">{{ 'IN_ZIP' | translate }}</label>
     <div class="col-sm-5 col-lg-3">
       <input name="billingzipPostalCode" ng-model="profile.newBillingAddress.zip" type="text" class="form-control" id="billingZipPostalCode" placeholder=" " required>
     </div>
   </div>
 
   <div class="row form-group">
-    <label for="billingCountry" class="col-md-3 control-label">Country</label>
+    <label for="billingCountry" class="col-md-3 control-label">{{ 'IN_COUNTY' | translate }}</label>
     <div class="col-sm-5 col-lg-3">
       <select id="billingCountry" name="billingCountry" data-ng-init="profile.newBillingAddress.country='US'" ng-model="profile.newBillingAddress.country" class="form-control" >
         <option ng-selected="true" value="US">United States</option>
