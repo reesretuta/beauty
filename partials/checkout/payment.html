@@ -50,7 +50,7 @@
   <label for=" " class="col-md-3 control-label"><span ng-bind-html="'IN_NAME_CARD' | translate |unsafe"></span></label>
   <div class="col-sm-6 col-lg-4">
     <input ng-model="profile.newCard.name" ng-minlength="3" name="cardName" type="text" class="form-control" placeholder=" " required>
-    <span ng-show="paymentForm.cardName.$error.minlength" class="help-block" ng-class="{ 'text-danger' : paymentForm.cardName.$invalid && !paymentForm.cardName.$pristine }">Name on card is too short.</span>
+    <span ng-show="paymentForm.cardName.$error.minlength" class="help-block" ng-class="{ 'text-danger' : paymentForm.cardName.$invalid && !paymentForm.cardName.$pristine }" ng-bind-html="'NAME_ON_CARD_ERR' | translate | unsafe"></span>
     <!--valid={{paymentForm.cardName.$valid}}-->
   </div>
 </div>
@@ -71,20 +71,21 @@
 </div>
 <div class="form-group">
   <label for=" " class="col-md-3 control-label"><span ng-bind-html="'IN_EXPIRATION' | translate | unsafe"></span></label>
-  <div class="col-sm-5">
+  <div class="col-sm-5" ng-class="{ 'has-error' : (invalidExpiration || paymentForm.expMonth.$invalid || paymentForm.expYear.$invalid) && !paymentForm.expMonth.$pristine && !paymentForm.expYear.$pristine }">
     <div class="row">
-      <div class="col-xs-4 col-sm-3 col-med-2" ng-class="{ 'has-error' : (paymentForm.expMonth.$invalid || cardExpired) && !paymentForm.expMonth.$pristine }">
+      <div class="col-xs-4 col-sm-3 col-med-2">
         <input ng-model="profile.newCard.expMonth" name="expMonth" type="text" class="form-control col-sm-1" ui-mask="99" placeholder="MM" required>
         <!--valid={{paymentForm.expMonth.$valid}}-->
       </div>
       <div class="col-xs-1">
         <label class="control-label">/</label>
       </div>
-      <div class="col-xs-6 col-sm-4 col-med-3" ng-class="{ 'has-error' : (paymentForm.expYear.$invalid || cardExpired) && !paymentForm.expYear.$pristine }">
+      <div class="col-xs-6 col-sm-4 col-med-3">
         <input ng-model="profile.newCard.expYear" name="expYear" type="text" class="form-control col-sm-3" ui-mask="9999" placeholder="YYYY" required>
         <!--valid={{paymentForm.expYear.$valid}}-->
       </div>
     </div>
+    <span ng-show="(invalidExpiration || paymentForm.expMonth.$invalid || paymentForm.expYear.$invalid) && !paymentForm.expMonth.$pristine && !paymentForm.expYear.$pristine" class="help-block text-danger" ng-bind-html="'INVALID_CC_EXPIRATION' | translate | unsafe"></span>
   </div>
 </div>
 <div class="form-group" ng-class="{ 'has-error' : paymentForm.cvv.$invalid && !paymentForm.cvv.$pristine }">
@@ -248,7 +249,7 @@
 <div class="form-group">
   <div class="col-md-offset-3 col-sm-9">
     <div class="error" ng-show="billingAddressError && !checkout.billSame" ng-bind="billingAddressError"></div>
-    <button type="button" ng-click="addPaymentMethod()" class="btn btn-primary btn-lg" ng-disabled="!paymentForm.$valid && !cardExpired">Save Payment Information &nbsp;<i class="fa fa-caret-right"></i></button>
+      <button type="button" ng-click="addPaymentMethod()" class="btn btn-primary btn-lg" ng-disabled="!paymentForm.$valid || invalidExpiration">Save Payment Information &nbsp;<i class="fa fa-caret-right"></i></button>
   </div>
 </div>
 

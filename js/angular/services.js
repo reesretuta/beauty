@@ -332,9 +332,9 @@ angular.module('app.services', ['ngResource'])
                         }).$promise.then(function(c) {
                             $log.debug("sessionService(): createConsultant(): created consultant");
                             d.resolve(c);
-                        }, function(data, status, headers, config) {
-                            $log.error("sessionService(): createConsultant(): failed to create consultant");
-                            d.reject();
+                        }, function(response) {
+                            $log.error("sessionService(): createConsultant(): failed to create consultant", response.data);
+                            d.reject(response.data);
                         });
                     } catch (ex) {
                         d.reject({
@@ -811,9 +811,9 @@ angular.module('app.services', ['ngResource'])
                     productService.selectCurrentPrice(product);
                 });
                 d.resolve(products);
-            }, function(err) {
-                $log.error("productService(): get(): failure", err);
-                d.reject(err);
+            }, function(response) {
+                $log.error("productService(): get(): failure", response.data);
+                d.reject(response.data);
             });
 
             return d.promise;
@@ -829,9 +829,9 @@ angular.module('app.services', ['ngResource'])
                 $log.debug("productService(): get(): result", product);
                 productService.selectCurrentPrice(product);
                 d.resolve(product);
-            }, function(err) {
-                $log.error("productService(): get(): failure", err);
-                d.reject(err);
+            }, function(response) {
+                $log.error("productService(): get(): failure", response.data);
+                d.reject(response.data);
             });
 
             return d.promise;
@@ -955,7 +955,8 @@ angular.module('app.services', ['ngResource'])
                     $log.error("addressService(): addAddress(): failed to save address to session");
                     d.reject('Failed to update address in session');
                 });
-            }, function(error) {
+            }, function(response) {
+                $log.error("addressService(): addAddress(): failed to save address", response.data);
                 d.reject('Failed to save address');
             });
 
@@ -987,7 +988,8 @@ angular.module('app.services', ['ngResource'])
                 $log.debug("addressService(): removeAddress(): removed address from client addresses", session.client.addresses);
                 d.resolve();
 
-            }, function(error) {
+            }, function(response) {
+                $log.error("addressService(): removeAddress(): failed to removed address from client addresses", response.data);
                 d.reject('Failed to remove address');
             });
 
@@ -1095,7 +1097,8 @@ angular.module('app.services', ['ngResource'])
                     session.client.creditCards.push(cc);
                     $log.debug("addressService(): addCreditCard(): adding credit card to client credit cards", session.client.creditCards);
                     d.resolve(creditCard);
-                }, function(error) {
+                }, function(response) {
+                    $log.error("addressService(): addCreditCard(): failed adding credit card to client credit cards", response.data);
                     d.reject('Failed to save creditCard');
                 });
             });
