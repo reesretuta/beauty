@@ -114,7 +114,7 @@
                 </li>
               </ul>
             </li>
-            <li class="dropdown" ng-controller="LanguageSwitchController">
+            <li class="dropdown" ng-controller="LanguageSwitcherController">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span ng-bind-html="getCurrentLanguage() | translate | unsafe"></span> <span class="caret"></span></a>
               <ul class="dropdown-menu menu_language" role="menu">
                 <li><a href="#" ng-click="language('en_US')"><span ng-bind-html="'LAN01' | translate | unsafe"></span></a></li>
@@ -272,7 +272,7 @@
 
     <script src="/js/angular/controllers/controllers.js"></script>
     <script src="/js/angular/controllers/TopController.js"></script>
-    <script src="/js/angular/controllers/LanguageSwitchController.js"></script>
+    <script src="/js/angular/controllers/LanguageSwitcherController.js"></script>
     <script src="/js/angular/controllers/MainController.js"></script>
     <script src="/js/angular/controllers/CategoriesController.js"></script>
     <script src="/js/angular/controllers/HomeController.js"></script>

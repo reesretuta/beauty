@@ -1,4 +1,4 @@
-angular.module('app.controllers.lang').controller('LanguageSwitchController', function ($scope, $document, $log, $timeout, $location, $translate, Session, $rootScope, $routeParams, JOIN_BASE_URL) {
+angular.module('app.controllers.lang').controller('LanguageSwitcherController', function ($scope, $document, $log, $timeout, $location, $translate, Session, $rootScope, $routeParams, JOIN_BASE_URL) {
 
         $scope.language = function (language) {
 
