@@ -84,11 +84,11 @@
 
           <div id="navbar-sections">
           <ul class="join_nav nav navbar-nav navbar-right HelveticaNeueLTStd-BdCn">
-            <li ng-if="!inCheckout"><a href="#why_jafra">{{ 'OS-NAV1' | translate }}</a></li>
-            <li ng-if="!inCheckout"><a href="#starter_kits">{{ 'OS-NAV2' | translate }}</a></li>
-            <li ng-if="!inCheckout"><a href="#FAQs">{{ 'OS-NAV3' | translate }}</a></li>
-            <li ng-if="!inCheckout"><a href="#JOIN_NOW" data-toggle="modal" data-target=".bs-example-modal-lg">{{ 'OS-NAV4' | translate }}</a></li>
-            <li class="dropdown"><a href="" class="dropdown-toggle" data-toggle="dropdown">{{ 'OS-NAV5' | translate }}</a>
+            <li ng-if="!inCheckout"><a href="#why_jafra"><span ng-bind-html="'OS-NAV1' | translate | unsafe"></span></a></li>
+            <li ng-if="!inCheckout"><a href="#starter_kits"><span ng-bind-html="'OS-NAV2' | translate | unsafe"></span></a></li>
+            <li ng-if="!inCheckout"><a href="#FAQs"><span ng-bind-html="'OS-NAV3' | translate | unsafe"></span></a></li>
+            <li ng-if="!inCheckout"><a href="#JOIN_NOW" data-toggle="modal" data-target=".bs-example-modal-lg"><span ng-bind-html="'OS-NAV4' | translate | unsafe"></span></a></li>
+            <li class="dropdown"><a href="" class="dropdown-toggle" data-toggle="dropdown"><span ng-bind-html="'OS-NAV5' | translate | unsafe"></span></a>
               <ul class="dropdown-menu dropdown_jafra contact-header">
                 <li class="contact-description">1 (800) 551-2345<br />
                   Open: M-F 8:30am-5:30pm<br> Pacific
@@ -114,11 +114,11 @@
                 </li>
               </ul>
             </li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ 'LAN01' | translate }} <span class="caret"></span></a>
-              <ul class="dropdown-menu menu_language" role="menu" ng-controller="LanguageSwitchController">
-                <li><a href="#" ng-click="language('en_US')">{{ 'LAN01' | translate }}</a></li>
-                <li><a href="#" ng-click="language('es_US')">{{ 'LAN02' | translate }}</a></li>
+            <li class="dropdown" ng-controller="LanguageSwitchController">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span ng-bind-html="getCurrentLanguage() | translate | unsafe"></span> <span class="caret"></span></a>
+              <ul class="dropdown-menu menu_language" role="menu">
+                <li><a href="#" ng-click="language('en_US')"><span ng-bind-html="'LAN01' | translate | unsafe"></span></a></li>
+                <li><a href="#" ng-click="language('es_US')"><span ng-bind-html="'LAN02' | translate | unsafe"></span></a></li>
               </ul>
             </li>
 			</ul>
@@ -140,9 +140,9 @@
         		<div class="center-block">
         	   <ul class="nav navbar-nav HelveticaNeueLTStd-BdCn">
 		       	<li ng-if="!inCheckout">
-		            <a href="" role="button" data-toggle="modal" data-target=".bs-example-modal-lg">{{ 'OS-JOIN-BTN' | translate }}</a>
+		            <a href="" role="button" data-toggle="modal" data-target=".bs-example-modal-lg"><span ng-bind-html="'OS-JOIN-BTN' | translate | unsafe"></span></a>
 		        </li>
-		  		 <li class="dropup"><a href="" class="dropdown-toggle dropup" data-toggle="dropdown">{{ 'OS-NAV5' | translate }}</a>
+		  		 <li class="dropup"><a href="" class="dropdown-toggle dropup" data-toggle="dropdown"><span ng-bind-html="'OS-NAV5' | translate | unsafe"></span></a>
 		              <ul class="dropdown-menu dropdown_jafra">
 		                <li class="contact-description">1 (800) 551-2345<br />
 		                  Open: M-F 8:30am-5:30pm<br> Pacific
@@ -211,7 +211,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">{{ 'PRIVACY-TITLE' | translate }}</h4>
+        <h4 class="modal-title" id="myModalLabel"><span ng-bind-html="'PRIVACY-TITLE' | translate | unsafe"></span></h4>
       </div>
       <div class="modal-body">
           <div class="agreement-content">

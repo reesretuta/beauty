@@ -1,7 +1,7 @@
 <div class="col-sm-12">
 
 <div class="col-md-offset-3">
-  <h1>{{ 'TIT_PAY_OPTION' | translate }}
+  <h1><span ng-bind-html="'TIT_PAY_OPTION' | translate |unsafe"></span>
               <span class="store-heading-description" ng-bind-html="'PAY_OPTION_DES' | translate | unsafe">
                 
               </span>
@@ -47,7 +47,7 @@
 
 <!-- CARD INFO -->
 <div class="form-group" ng-class="{ 'has-error' : paymentForm.cardName.$invalid && !paymentForm.cardName.$pristine }">
-  <label for=" " class="col-md-3 control-label">{{ 'IN_NAME_CARD' | translate }}</label>
+  <label for=" " class="col-md-3 control-label"><span ng-bind-html="'IN_NAME_CARD' | translate |unsafe"></span></label>
   <div class="col-sm-6 col-lg-4">
     <input ng-model="profile.newCard.name" ng-minlength="3" name="cardName" type="text" class="form-control" placeholder=" " required>
     <span ng-show="paymentForm.cardName.$error.minlength" class="help-block" ng-class="{ 'text-danger' : paymentForm.cardName.$invalid && !paymentForm.cardName.$pristine }">Name on card is too short.</span>
@@ -56,7 +56,7 @@
 </div>
 
 <div class="form-group" ng-class="{ 'has-error' : paymentForm.number.$invalid && !paymentForm.number.$pristine }">
-  <label for=" " class="col-md-3 control-label">{{ 'IN_CARD_NUMBER' | translate }}</label>
+  <label for=" " class="col-md-3 control-label"><span ng-bind-html="'IN_CARD_NUMBER' | translate |unsafe"></span></label>
   <div class="col-sm-6 col-lg-4">
     <input ng-model="profile.newCard.card" data-ng-blur="visited=true" ng-minlength="13" ng-maxlength="16" maxlength="16" name="number" type="text" class="form-control" id=" " placeholder=" " data-ui-validate=" 'isValidCard($value)' " required>
     <span ng-show="visited && (paymentForm.number.$error.minlength || paymentForm.number.$error.validator)" class="help-block" ng-class="{ 'text-danger' : paymentForm.number.$invalid && !paymentForm.number.$pristine }">Invalid credit card number</span>
@@ -70,7 +70,7 @@
   </div>
 </div>
 <div class="form-group">
-  <label for=" " class="col-md-3 control-label">{{ 'IN_EXPIRATION' | translate }}</label>
+  <label for=" " class="col-md-3 control-label"><span ng-bind-html="'IN_EXPIRATION' | translate | unsafe"></span></label>
   <div class="col-sm-5">
     <div class="row">
       <div class="col-xs-4 col-sm-3 col-med-2" ng-class="{ 'has-error' : (paymentForm.expMonth.$invalid || cardExpired) && !paymentForm.expMonth.$pristine }">
@@ -88,7 +88,7 @@
   </div>
 </div>
 <div class="form-group" ng-class="{ 'has-error' : paymentForm.cvv.$invalid && !paymentForm.cvv.$pristine }">
-  <label for=" " class="col-md-3 control-label">{{ 'IN_SECURITY_CODE' | translate }}</label>
+  <label for=" " class="col-md-3 control-label"><span ng-bind-html="'IN_SECURITY_CODE' | translate | unsafe"></span></label>
   <div class="col-sm-5">
     <div class="row">
       <div class="col-xs-4 col-sm-4 col-med-2">
@@ -107,7 +107,7 @@
   <div class="col-md-offset-3 col-sm-9">
     <div class="checkbox">
       <label>
-        <input name="billSame" data-ng-init="checkout.billSame=true" ng-model="checkout.billSame" type="checkbox" tabindex="-2" checked="checked"> {{ 'IN_BILL_SHIP_SAME' | translate }}
+        <input name="billSame" data-ng-init="checkout.billSame=true" ng-model="checkout.billSame" type="checkbox" tabindex="-2" checked="checked"> <span ng-bind-html="'IN_BILL_SHIP_SAME' | translate | unsafe"></span>
         <!--valid={{paymentForm.billSame.$valid}}-->
       </label>
     </div>
@@ -126,28 +126,28 @@
   </div>
 
   <div class="row form-group">
-    <label for="billingAddress1" class="col-md-3 control-label">{{ 'IN_ADD_LINE1' | translate }}</label>
+    <label for="billingAddress1" class="col-md-3 control-label"><span ng-bind-html="'IN_ADD_LINE1' | translate | unsafe"></span></label>
     <div class="col-sm-8 col-lg-6">
       <input name="address1" ng-model="profile.newBillingAddress.address1" type="text" class="form-control" id="billingAddress1" placeholder="{{ 'IN_ADD_LINE1_DES' | translate }} " required>
     </div>
   </div>
 
   <div class="row form-group">
-    <label for="billingAddress2" class="col-md-3 control-label">{{ 'IN_ADD_LINE2' | translate }}</label>
+    <label for="billingAddress2" class="col-md-3 control-label"><span ng-bind-html="'IN_ADD_LINE2' | translate | unsafe"></span></label>
     <div class="col-sm-8 col-lg-6">
       <input name="address2" ng-model="profile.newBillingAddress.address2" type="text" class="form-control" id="billingAddress2" placeholder="{{ 'IN_ADD_LINE2_DES' | translate }} " >
     </div>
   </div>
 
   <div class="row form-group">
-    <label for="billingCity" class="col-md-3 control-label">{{ 'IN_CITY' | translate }}</label>
+    <label for="billingCity" class="col-md-3 control-label"><span ng-bind-html="'IN_CITY' | translate | unsafe"></span></label>
     <div class="col-sm-7 col-lg-5">
       <input name="city" ng-model="profile.newBillingAddress.city" type="text" class="form-control" id="billingCity" placeholder=" " required>
     </div>
   </div>
 
   <div class="row form-group">
-    <label for="billingStateProvinceRegion" class="col-md-3 control-label">{{ 'IN_STATE' | translate }}</label>
+    <label for="billingStateProvinceRegion" class="col-md-3 control-label"><span ng-bind-html="'IN_STATE' | translate | unsafe"></span></label>
     <!-- TO-DO: Fix CSS width of form control -->
     <div class="col-sm-5 col-lg-3">
         <div class="">
@@ -215,14 +215,14 @@
   </div>
 
   <div class="row form-group">
-    <label for="billingZipPostalCode" class="col-md-3 control-label">{{ 'IN_ZIP' | translate }}</label>
+    <label for="billingZipPostalCode" class="col-md-3 control-label"><span ng-bind-html="'IN_ZIP' | translate | unsafe"></span></label>
     <div class="col-sm-5 col-lg-3">
       <input name="billingzipPostalCode" ng-model="profile.newBillingAddress.zip" type="text" class="form-control" id="billingZipPostalCode" placeholder=" " required>
     </div>
   </div>
 
   <div class="row form-group">
-    <label for="billingCountry" class="col-md-3 control-label">{{ 'IN_COUNTY' | translate }}</label>
+    <label for="billingCountry" class="col-md-3 control-label"><span ng-bind-html="'IN_COUNTY' | translate | unsafe"></span></label>
     <div class="col-sm-5 col-lg-3">
       <select id="billingCountry" name="billingCountry" data-ng-init="profile.newBillingAddress.country='US'" ng-model="profile.newBillingAddress.country" class="form-control" >
         <option ng-selected="true" value="US">United States</option>

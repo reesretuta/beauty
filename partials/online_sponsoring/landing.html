@@ -5,11 +5,11 @@
           <div class="row">
             <div class="col-md-6">
               <h1 class="jumbo-title">
-                <span class="jumbo-title-span-1">{{ 'OS-SECTION1-TITLE1' | translate }}</span> <span class="HelveticaNeueLTStd-Th jumbo-title-span-2">{{ 'OS-SECTION1-TITLE2' | translate }}</span><br />
-                <span class="jumbo-title-span-3">{{ 'OS-SECTION1-TITLE3' | translate }}</span> <span class="DidotLTPro-Italic jumbo-title-span-4">{{ 'OS-SECTION1-TITLE4' | translate }}</span>
+                <span class="jumbo-title-span-1"><span ng-bind-html="'OS-SECTION1-TITLE1' | translate | unsafe"></span></span> <span class="HelveticaNeueLTStd-Th jumbo-title-span-2"><span ng-bind-html="'OS-SECTION1-TITLE2' | translate | unsafe"></span></span><br />
+                <span class="jumbo-title-span-3"><span ng-bind-html="'OS-SECTION1-TITLE3' | translate | unsafe"></span></span> <span class="DidotLTPro-Italic jumbo-title-span-4"><span ng-bind-html="'OS-SECTION1-TITLE4' | translate | unsafe"></span></span>
               </h1>
-              <p class="jumbo-description">{{ 'OS-SECTION1-BODY' | translate }}</p>
-              <p class="jumboget"><a class="btn btn-primary HelveticaNeueLTStd-BdCn btn-med" role="button" href="#" data-toggle="modal" data-target=".bs-example-modal-lg">{{ 'OS-SECTION1-BTN' | translate }}</a> <!--a href="#" class="watch-video-link" data-toggle="modal" data-target=".bs-video-modal-lg"><span class="glyphicon glyphicon-play"></span> WATCH VIDEO</a--></p>
+              <p class="jumbo-description"><span ng-bind-html="'OS-SECTION1-BODY' | translate | unsafe"></span></p>
+              <p class="jumboget"><a class="btn btn-primary HelveticaNeueLTStd-BdCn btn-med" role="button" href="#" data-toggle="modal" data-target=".bs-example-modal-lg"><span ng-bind-html="'OS-SECTION1-BTN' | translate | unsafe"></span></a> <!--a href="#" class="watch-video-link" data-toggle="modal" data-target=".bs-video-modal-lg"><span class="glyphicon glyphicon-play"></span> WATCH VIDEO</a--></p>
             </div>
             <div class="col-md-6">
               <!--video class="img-responsive" controls poster="video/polina.jpg" id="ctavid">
@@ -43,32 +43,32 @@
         	
           <div class="row text-center" style="padding: 1em;">
             <div class="col-md-12">
-              <h2>{{ 'OS-KIT-MODAL-TITLE' | translate }}  <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button></h2>
+              <h2><span ng-bind-html="'OS-KIT-MODAL-TITLE' | translate | unsafe"></span>  <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button></h2>
             </div>
             <div class="col-md-6" style="border-right: 1px solid #ededed;">
 
               
-              <h3 class="hero-header-title starter_kits-title"><span class="serif-title h1">{{ 'OS-KIT-PRODUCT1-TITLE1' | translate }}</span><br />
-                {{ 'OS-KIT-PRODUCT1-TITLE2' | translate }}
+              <h3 class="hero-header-title starter_kits-title"><span class="serif-title h1"><span ng-bind-html="'OS-KIT-PRODUCT1-TITLE1' | translate | unsafe"></span></span><br />
+                <span ng-bind-html="'OS-KIT-PRODUCT1-TITLE2' | translate | unsafe"></span>
 
               </h3>
 
-              <h3 class="h1 starter_kits-price modal_starter_kits-price">{{ 'OS-KIT-PRODUCT1-PRICE' | translate }}</h3>
-              <p class="starter_kits-label_title">{{ 'OS-KIT-PRODUCT1-NAME' | translate }}</p>
-              <p class="starter_kits-retail_value">{{ 'OS-KIT-PRODUCT1-VALUE' | translate }}</p>
+              <h3 class="h1 starter_kits-price modal_starter_kits-price"><span ng-bind-html="'OS-KIT-PRODUCT1-PRICE' | translate | unsafe"></span></h3>
+              <p class="starter_kits-label_title"><span ng-bind-html="'OS-KIT-PRODUCT1-NAME' | translate | unsafe"></span></p>
+              <p class="starter_kits-retail_value"><span ng-bind-html="'OS-KIT-PRODUCT1-VALUE' | translate | unsafe"></span></p>
 
               <div class="product-action">
                 <!-- Split button -->
                 <div class="btn-group">
-                  <button type="button" class="btn btn-primary btn-lg HelveticaNeueLTStd-BdCn" ng-click="join('19634', 'en_US', 'Royal Starter Kit', 99)">{{ 'BUY-ENGLISH' | translate }}</button>
+                  <button type="button" class="btn btn-primary btn-lg HelveticaNeueLTStd-BdCn" ng-click="join('19634')"><span ng-bind-html="'BUY-ENGLISH' | translate | unsafe"></span></button>
                   <button type="button" class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown">
                     <span class="caret"></span>
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
 
                   <ul class="dropdown-menu kit-select" role="menu">
-                    <li><a href="#" ng-click="join('19634', 'en_US', 'Royal Starter Kit', 99)">{{ 'BUY-ENGLISH' | translate }}</a></li>
-                    <li><a href="#" ng-click="join('19635', 'es_US', 'Kit del Negocio Royal', 99)">{{ 'BUY-SPANISH' | translate }}</a></li>
+                    <li><a href="#" ng-click="join('19634')"><span ng-bind-html="'BUY-ENGLISH' | translate | unsafe"></span></a></li>
+                    <li><a href="#" ng-click="join('19635')"><span ng-bind-html="'BUY-SPANISH' | translate | unsafe"></span></a></li>
 
                   </ul>
                 </div>
@@ -86,26 +86,26 @@
             </div>
             <div class="col-md-6" style="border-left: 1px solid #ededed;">
 
-              <h3 class="hero-header-title starter_kits-title"><span class="serif-title h1">{{ 'OS-KIT-PRODUCT2-TITLE1' | translate }}</span><br />
-                {{ 'OS-KIT-PRODUCT2-TITLE2' | translate }}
+              <h3 class="hero-header-title starter_kits-title"><span class="serif-title h1"><span ng-bind-html="'OS-KIT-PRODUCT2-TITLE1' | translate | unsafe"></span></span><br />
+                <span ng-bind-html="'OS-KIT-PRODUCT2-TITLE2' | translate | unsafe"></span>
 
               </h3>
-              <h3 class="h1 starter_kits-price modal_starter_kits-price">{{ 'OS-KIT-PRODUCT2-PRICE' | translate }}</h3>
-                <p class="starter_kits-label_title">{{ 'OS-KIT-PRODUCT2-NAME' | translate }}</p>
-                <p class="starter_kits-retail_value">{{ 'OS-KIT-PRODUCT2-VALUE' | translate }}</p>
+              <h3 class="h1 starter_kits-price modal_starter_kits-price"><span ng-bind-html="'OS-KIT-PRODUCT2-PRICE' | translate | unsafe"></span></h3>
+                <p class="starter_kits-label_title"><span ng-bind-html="'OS-KIT-PRODUCT2-NAME' | translate | unsafe"></span></p>
+                <p class="starter_kits-retail_value"><span ng-bind-html="'OS-KIT-PRODUCT2-VALUE' | translate | unsafe"></span></p>
 
               <div class="product-action">
                 <!-- Split button -->
                 <div class="btn-group">
-                  <button type="button" class="btn btn-primary btn-lg HelveticaNeueLTStd-BdCn" ng-click="join('19636', 'en_US', 'Skincare Starter Kit', 39)">{{ 'BUY-ENGLISH' | translate }}</button>
+                  <button type="button" class="btn btn-primary btn-lg HelveticaNeueLTStd-BdCn" ng-click="join('19636')"><span ng-bind-html="'BUY-ENGLISH' | translate | unsafe"></span></button>
                   <button type="button" class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown">
                     <span class="caret"></span>
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
 
                   <ul class="dropdown-menu kit-select" role="menu">
-                    <li><a href="#" ng-click="join('19636', 'en_US', 'Skincare Starter Kit', 39)">{{ 'BUY-ENGLISH' | translate }}</a></li>
-                    <li><a href="#" ng-click="join('19637', 'es_US', 'Cuidado del Cutis', 39)">{{ 'BUY-SPANISH' | translate }}</a></li>
+                    <li><a href="#" ng-click="join('19636')"><span ng-bind-html="'BUY-ENGLISH' | translate | unsafe"></span></a></li>
+                    <li><a href="#" ng-click="join('19637')"><span ng-bind-html="'BUY-SPANISH' | translate | unsafe"></span></a></li>
 
                   </ul>
                 </div>
@@ -139,7 +139,7 @@
     <section id="why_jafra">
 
       <div class="container">
-        <h2 class="h1 section-title">{{ 'OS-LANDING-H1' | translate }}</h2>
+        <h2 class="h1 section-title"><span ng-bind-html="'OS-LANDING-H1' | translate | unsafe"></span></h2>
       </div> <!-- /.container -->
 
       <section class="subsection" id="why_jafra_products">
@@ -152,8 +152,8 @@
 
               <div class="section-copy">
 
-                <h3 class="hero-header-title"><span class="serif-title">{{ 'OS-SECTION2-TITLE1' | translate }}</span><br />{{ 'OS-SECTION2-TITLE2' | translate }}</h3>
-                <p>{{ 'OS-SECTION2-BODY' | translate }}</p>
+                <h3 class="hero-header-title"><span class="serif-title"><span ng-bind-html="'OS-SECTION2-TITLE1' | translate | unsafe"></span></span><br /><span ng-bind-html="'OS-SECTION2-TITLE2' | translate | unsafe"></span></h3>
+                <p><span ng-bind-html="'OS-SECTION2-BODY' | translate | unsafe"></span></p>
 
                 <!-- collapsed section toggle (default collapsed) -->
 <!--                <p class="text-right prod_more_link"><a class="more-link collapsed" data-toggle="collapse" href="#more_products"><span>MORE</span></a></p>-->
@@ -232,8 +232,8 @@
 
               <div class="section-copy">
 
-                <h3 class="hero-header-title"><span class="serif-title" ng-bind-html="'OS-SECTION3-TITLE1' | translate | unsafe"></span><br />{{ 'OS-SECTION3-TITLE2' | translate }}</h3>
-                <p>{{ 'OS-SECTION3-BODY' | translate }}</p>
+                <h3 class="hero-header-title"><span class="serif-title" ng-bind-html="'OS-SECTION3-TITLE1' | translate | unsafe"></span><br /><span ng-bind-html="'OS-SECTION3-TITLE2' | translate | unsafe"></span></h3>
+                <p><span ng-bind-html="'OS-SECTION3-BODY' | translate | unsafe"></span></p>
                 <!--<p class="text-right"><a href="#more_call" data-toggle="collapse" class="more-link collapsed"><span>MORE</span></a></p>-->
                 <!-- collapsed section content (default collapsed) -->
 <!--                <div id="more_call" class="collapse">
@@ -267,8 +267,8 @@
 
               <div class="section-copy">
 
-                <h3 class="hero-header-title"><span class="serif-title">{{ 'OS-SECTION4-TITLE1' | translate }}</span><br />{{ 'OS-SECTION4-TITLE2' | translate }}</h3>
-                <p>{{ 'OS-SECTION4-BODY' | translate }}</p>
+                <h3 class="hero-header-title"><span class="serif-title"><span ng-bind-html="'OS-SECTION4-TITLE1' | translate | unsafe"></span></span><br /><span ng-bind-html="'OS-SECTION4-TITLE2' | translate | unsafe"></span></h3>
+                <p><span ng-bind-html="'OS-SECTION4-BODY' | translate | unsafe"></span></p>
                 <!--<p class="text-right"><a href="#more_rewards" data-toggle="collapse" class="more-link collapsed"><span>MORE</span></a></p>-->
                 <!-- collapsed section content (default collapsed) -->
 <!--                <div id="more_rewards" class="collapse">
@@ -338,7 +338,7 @@
 
             <div class="col-md-12">
               <div class="section-copy text-left">
-                <h3 class="hero-header-title"><span class="serif-title">{{ 'OS-SECTION5-TITLE1' | translate }}</span><br />{{ 'OS-SECTION5-TITLE2' | translate }}<span class="serif-title-alt">{{ 'OS-SECTION5-TITLE3' | translate }}</span></h3>
+                <h3 class="hero-header-title"><span class="serif-title"><span ng-bind-html="'OS-SECTION5-TITLE1' | translate | unsafe"></span></span><br /><span ng-bind-html="'OS-SECTION5-TITLE2' | translate | unsafe"></span><span class="serif-title-alt"><span ng-bind-html="'OS-SECTION5-TITLE3' | translate | unsafe"></span></span></h3>
               </div>
             </div>
 
@@ -350,7 +350,7 @@
                   <i class="fa " style="margin:0 0 0 -13px"></i>
                   <h4 class="media-heading h3">Lori Duncan</h4>
                   <p><small></small></p>
-                  <p>&ldquo;{{ 'OS-SECTION5-QUOTE1' | translate }}&rdquo;</p>
+                  <p>&ldquo;<span ng-bind-html="'OS-SECTION5-QUOTE1' | translate | unsafe"></span>&rdquo;</p>
                 </div>
               </div>
 
@@ -360,7 +360,7 @@
                   <i class="fa " style="margin:0 0 0 -13px"></i>
                   <h4 class="media-heading h3">Jennifer Knight</h4>
                   <p><small></small></p>
-                  <p>&ldquo;{{ 'OS-SECTION5-QUOTE2' | translate }}&rdquo;</p>
+                  <p>&ldquo;<span ng-bind-html="'OS-SECTION5-QUOTE2' | translate | unsafe"></span>&rdquo;</p>
                 </div>
               </div>
 
@@ -370,7 +370,7 @@
                   <i class="fa " style="margin:0 0 0 -13px"></i>
                   <h4 class="media-heading h3">Rossy Argueta</h4>
                   <p><small></small></p>
-                  <p>&ldquo;{{ 'OS-SECTION5-QUOTE3' | translate }} &rdquo;</p>
+                  <p>&ldquo;<span ng-bind-html="'OS-SECTION5-QUOTE3' | translate | unsafe"></span> &rdquo;</p>
                 </div>
               </div>
 
@@ -391,7 +391,7 @@
     <section id="starter_kits">
 
       <div class="container">
-        <h2 class="h1 section-title">{{ 'OS-LANDING-H1-2' | translate }}</h2>
+        <h2 class="h1 section-title"><span ng-bind-html="'OS-LANDING-H1-2' | translate | unsafe"></span></h2>
       </div>
 
       <section id="royal_starter_kit" class="subsection">
@@ -405,27 +405,27 @@
 
             <div class="col-md-6">
               <div class="section-copy">
-                <h3 class="hero-header-title" style="margin-top:10px;"><span class="serif-title h1">{{ 'OS-KIT-PRODUCT1-TITLE1' | translate }}</span><br />
-                  {{ 'OS-KIT-PRODUCT1-TITLE2' | translate }}
+                <h3 class="hero-header-title" style="margin-top:10px;"><span class="serif-title h1"><span ng-bind-html="'OS-KIT-PRODUCT1-TITLE1' | translate | unsafe"></span></span><br />
+                  <span ng-bind-html="'OS-KIT-PRODUCT1-TITLE2' | translate | unsafe"></span>
                 </h3>
-                <h3 class="h1 starter_kits-price">{{ 'OS-KIT-PRODUCT1-PRICE' | translate }}</h3>
-                <p class="starter_kits-label_title">{{ 'OS-KIT-PRODUCT1-NAME' | translate }}</p>
+                <h3 class="h1 starter_kits-price"><span ng-bind-html="'OS-KIT-PRODUCT1-PRICE' | translate | unsafe"></span></h3>
+                <p class="starter_kits-label_title"><span ng-bind-html="'OS-KIT-PRODUCT1-NAME' | translate | unsafe"></span></p>
 
                 <p class="whats_inside_button"><a href="#more_royal" data-toggle="collapse" class="more-link collapsed"><span ng-bind-html="'KIT-DETAILS-TOGGLE' | translate | unsafe"></span></a></p>
 
 
-                <p class="starter_kits-retail_value">{{ 'OS-KIT-PRODUCT1-VALUE' | translate }}</p>
+                <p class="starter_kits-retail_value"><span ng-bind-html="'OS-KIT-PRODUCT1-VALUE' | translate | unsafe"></span></p>
                 <div class="product-action">
                     <!-- Split button -->
                     <div class="btn-group">
-                      <button type="button" class="btn btn-primary btn-lg HelveticaNeueLTStd-BdCn" ng-click="join('19634', 'en_US', 'Royal Starter Kit', 99)">{{ 'BUY-ENGLISH' | translate }}</button>
+                      <button type="button" class="btn btn-primary btn-lg HelveticaNeueLTStd-BdCn" ng-click="join('19634')"><span ng-bind-html="'BUY-ENGLISH' | translate | unsafe"></span></button>
                       <button type="button" class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown">
                         <span class="caret"></span>
                         <span class="sr-only">Toggle Dropdown</span>
                       </button>
                       <ul class="dropdown-menu kit-select" role="menu">
-                        <li><a href="#" ng-click="join('19634', 'en_US', 'Royal Starter Kit', 99)">{{ 'BUY-ENGLISH' | translate }}</a></li>
-                        <li><a href="#" ng-click="join('19635', 'es_US', 'Kit del Negocio Royal', 99)">{{ 'BUY-SPANISH' | translate }}</a></li>
+                        <li><a href="#" ng-click="join('19634')"><span ng-bind-html="'BUY-ENGLISH' | translate | unsafe"></span></a></li>
+                        <li><a href="#" ng-click="join('19635')"><span ng-bind-html="'BUY-SPANISH' | translate | unsafe"></span></a></li>
                       </ul>
                     </div>
                   </div>
@@ -467,26 +467,26 @@
             <div class="col-md-6">
               <div class="section-copy">
 
-                <h3 class="hero-header-title" style="margin-top:10px;"><span class="serif-title h1">{{ 'OS-KIT-PRODUCT2-TITLE1' | translate }}</span>
-                  <span style="display:block; font-size:61px;">{{ 'OS-KIT-PRODUCT2-TITLE2' | translate }}</span>
+                <h3 class="hero-header-title" style="margin-top:10px;"><span class="serif-title h1"><span ng-bind-html="'OS-KIT-PRODUCT2-TITLE1' | translate | unsafe"></span></span>
+                  <span style="display:block; font-size:61px;"><span ng-bind-html="'OS-KIT-PRODUCT2-TITLE2' | translate | unsafe"></span></span>
                 </h3>
-                <h3 class="h1 starter_kits-price" style="font-size:6em;">{{ 'OS-KIT-PRODUCT2-PRICE' | translate }}</h3>
-                  <p class="starter_kits-label_title">{{ 'OS-KIT-PRODUCT2-NAME' | translate }}</p>
+                <h3 class="h1 starter_kits-price" style="font-size:6em;"><span ng-bind-html="'OS-KIT-PRODUCT2-PRICE' | translate | unsafe"></span></h3>
+                  <p class="starter_kits-label_title"><span ng-bind-html="'OS-KIT-PRODUCT2-NAME' | translate | unsafe"></span></p>
                   <p class="pull-right"><a href="#more_skincare" data-toggle="collapse" class="more-link collapsed"><span ng-bind-html="'KIT-DETAILS-TOGGLE' | translate | unsafe"></span></a></p>
-                  <p class="starter_kits-retail_value">{{ 'OS-KIT-PRODUCT2-VALUE' | translate }}</p>
+                  <p class="starter_kits-retail_value"><span ng-bind-html="'OS-KIT-PRODUCT2-VALUE' | translate | unsafe"></span></p>
                 
                 <div class="product-action">
                   <!-- Split button -->
                   <div class="btn-group">
-                    <button type="button" class="btn btn-primary btn-lg HelveticaNeueLTStd-BdCn" ng-click="join('19634', 'en_US', 'Royal Starter Kit', 99)">{{ 'BUY-ENGLISH' | translate }}</button>
+                    <button type="button" class="btn btn-primary btn-lg HelveticaNeueLTStd-BdCn" ng-click="join('19634')"><span ng-bind-html="'BUY-ENGLISH' | translate | unsafe"></span></button>
                     <button type="button" class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown">
                       <span class="caret"></span>
                       <span class="sr-only">Toggle Dropdown</span>
                     </button>
 
                     <ul class="dropdown-menu kit-select" role="menu">
-                      <li><a href="#" ng-click="join('19634', 'en_US', 'Royal Starter Kit', 99)">{{ 'BUY-ENGLISH' | translate }}</a></li>
-                      <li><a href="#" ng-click="join('19635', 'es_US', 'Kit del Negocio Royal', 99)">{{ 'BUY-SPANISH' | translate }}</a></li>
+                      <li><a href="#" ng-click="join('19634')"><span ng-bind-html="'BUY-ENGLISH' | translate | unsafe"></span></a></li>
+                      <li><a href="#" ng-click="join('19635')"><span ng-bind-html="'BUY-SPANISH' | translate | unsafe"></span></a></li>
 
                     </ul>
                   </div>
@@ -519,7 +519,7 @@
     <section id="FAQs">
 
       <div class="container">
-        <h2 class="h1 section-title">{{ 'OS-FAQ-TITLE' | translate }}</h2>
+        <h2 class="h1 section-title"><span ng-bind-html="'OS-FAQ-TITLE' | translate | unsafe"></span></h2>
       </div>
 
       <div class="subsection">
@@ -530,7 +530,7 @@
             <div class="faqs-item">
               <div class="faqs-item-question">
                 <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse1">
-                  {{ 'OS-Q1' | translate }}
+                  <span ng-bind-html="'OS-Q1' | translate | unsafe"></span>
                 </a>
               </div>
               <div class="faqs-item-answer">
@@ -544,7 +544,7 @@
             <div class="faqs-item">
               <div class="faqs-item-question">
                 <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse2">
-                  {{ 'OS-Q2' | translate }}
+                  <span ng-bind-html="'OS-Q2' | translate | unsafe"></span>
                 </a>
               </div>
               <div class="faqs-item-answer">
@@ -557,7 +557,7 @@
             <div class="faqs-item">
               <div class="faqs-item-question">
                 <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse3">
-                  {{ 'OS-Q3' | translate }}
+                  <span ng-bind-html="'OS-Q3' | translate | unsafe"></span>
                 </a>
               </div>
               <div class="faqs-item-answer">
@@ -570,7 +570,7 @@
             <div class="faqs-item">
               <div class="faqs-item-question">
                 <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse4">
-                  {{ 'OS-Q4' | translate }}
+                  <span ng-bind-html="'OS-Q4' | translate | unsafe"></span>
                 </a>
               </div>
               <div class="faqs-item-answer">
@@ -583,7 +583,7 @@
             <div class="faqs-item">
               <div class="faqs-item-question">
                 <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse5">
-                  {{ 'OS-Q5' | translate }}
+                  <span ng-bind-html="'OS-Q5' | translate | unsafe"></span>
                 </a>
               </div>
               <div class="faqs-item-answer">
@@ -596,7 +596,7 @@
             <div class="faqs-item">
               <div class="faqs-item-question">
                 <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse6">
-                  {{ 'OS-Q6' | translate }}
+                  <span ng-bind-html="'OS-Q6' | translate | unsafe"></span>
                 </a>
               </div>
               <div class="faqs-item-answer">
@@ -611,7 +611,7 @@
             <div class="faqs-item">
               <div class="faqs-item-question">
                 <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse7">
-                  {{ 'OS-Q7' | translate }}
+                  <span ng-bind-html="'OS-Q7' | translate | unsafe"></span>
                 </a>
               </div>
               <div class="faqs-item-answer">
@@ -624,7 +624,7 @@
             <div class="faqs-item">
               <div class="faqs-item-question">
                 <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse8">
-                  {{ 'OS-Q8' | translate }}
+                  <span ng-bind-html="'OS-Q8' | translate | unsafe"></span>
                 </a>
               </div>
               <div class="faqs-item-answer">
@@ -637,7 +637,7 @@
             <div class="faqs-item">
               <div class="faqs-item-question">
                 <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse9">
-                  {{ 'OS-Q9' | translate }}
+                  <span ng-bind-html="'OS-Q9' | translate | unsafe"></span>
                 </a>
               </div>
               <div class="faqs-item-answer">
@@ -650,7 +650,7 @@
             <div class="faqs-item">
               <div class="faqs-item-question">
                 <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse10">
-                  {{ 'OS-Q10' | translate }}
+                  <span ng-bind-html="'OS-Q10' | translate | unsafe"></span>
                 </a>
               </div>
               <div class="faqs-item-answer">
@@ -663,7 +663,7 @@
             <div class="faqs-item">
               <div class="faqs-item-question">
                 <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse11">
-                  {{ 'OS-Q11' | translate }}
+                  <span ng-bind-html="'OS-Q11' | translate | unsafe"></span>
                 </a>
               </div>
               <div class="faqs-item-answer">
@@ -678,7 +678,7 @@
 
             <div class="well">
 
-              <a class="btn btn-primary btn-lg HelveticaNeueLTStd-BdCn" role="button" href="#" data-toggle="modal" data-target=".bs-example-modal-lg">{{ 'OS-JOIN-BTN' | translate }}</a>
+              <a class="btn btn-primary btn-lg HelveticaNeueLTStd-BdCn" role="button" href="#" data-toggle="modal" data-target=".bs-example-modal-lg"><span ng-bind-html="'OS-JOIN-BTN' | translate | unsafe"></span></a>
 
             </div>
 

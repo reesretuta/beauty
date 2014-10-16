@@ -89,7 +89,7 @@
                   <img src="/img/40x40" alt="profile photo" class="img-circle pull-left consultant-photo">
                 </a>
                 <a href=""><span class="consultant-name">Denise Paxton</span></a>
-                <p>{{ 'HEADER_CONSULTANTMSG' | translate }}</p>
+                <p><span ng-bind-html="'HEADER_CONSULTANTMSG' | translate | unsafe"></span></p>
 
               </div>
               <div class="col-xs-12 col-sm-6 login-info">
@@ -124,7 +124,7 @@
 
                 <div class="navbar-right">
                   <span ng-show="loggedIn()" href="" ng-cloak>{{getUserEmail()}} (<a style="margin-right: 5px; margin-left: 5px;" href="" ng-click="logout()">Logout</a>)</span>
-                  <a ng-show="getItemsInCart()!=null" ng-href="{{STORE_BASE_URL}}/cart" ng-cloak><i class="fa fa-shopping-cart"></i> {{ 'VIEW_CART' | translate }} ({{getItemsInCart()}})</a>
+                  <a ng-show="getItemsInCart()!=null" ng-href="{{STORE_BASE_URL}}/cart" ng-cloak><i class="fa fa-shopping-cart"></i> <span ng-bind-html="'VIEW_CART' | translate | unsafe"></span> ({{getItemsInCart()}})</a>
                 </div>
 
                 <div class="navbar-right">
@@ -140,13 +140,13 @@
 
           <div class="col-xs-12 col-sm-9 collapse navbar-collapse">
             <ul class="nav navbar-nav">
-              <li><a href="">{{ 'NAV_HOME' | translate }}</a></li>
-              <li><a href="">{{ 'NAV_ABOUT' | translate }}</a></li>
-              <li><a href="">{{ 'NAV_OPPORTUNITY' | translate }}</a></li>
-              <li class="active"><a ng-href="{{STORE_BASE_URL}}" ng-click="categoryClicked(null); setNavStatic('0')">{{ 'NAV_STORE' | translate }}</a></li>
-              <li><a href="">{{ 'NAV_PARTY' | translate }}</a></li>
-              <li><a href="">{{ 'NAV_MEDIA' | translate }}</a></li>
-              <li><a href="">{{ 'NAV_MYPAGE' | translate }}</a></li>
+              <li><a href=""><span ng-bind-html="'NAV_HOME' | translate | unsafe"></span></a></li>
+              <li><a href=""><span ng-bind-html="'NAV_ABOUT' | translate | unsafe"></span></a></li>
+              <li><a href=""><span ng-bind-html="'NAV_OPPORTUNITY' | translate | unsafe"></span></a></li>
+              <li class="active"><a ng-href="{{STORE_BASE_URL}}" ng-click="categoryClicked(null); setNavStatic('0')"><span ng-bind-html="'NAV_STORE' | translate | unsafe"></span></a></li>
+              <li><a href=""><span ng-bind-html="'NAV_PARTY' | translate | unsafe"></span></a></li>
+              <li><a href=""><span ng-bind-html="'NAV_MEDIA' | translate | unsafe"></span></a></li>
+              <li><a href=""><span ng-bind-html="'NAV_MYPAGE' | translate | unsafe"></span></a></li>
             </ul>
           </div><!-- /.nav-collapse -->
         </div>

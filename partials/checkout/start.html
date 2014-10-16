@@ -4,9 +4,9 @@
     <h1 class="checkouth1" ng-if="profile.customerStatus == 'existing' && !isOnlineSponsoring">Sign in</h1>
     <h1 class="checkouth1" ng-if="profile.customerStatus == 'new' && !isOnlineSponsoring">Create an Account</h1>
     <h1 class="checkouth1" ng-if="isOnlineSponsoring">
-      {{ 'OS-START-TITLE' | translate }}
+      <span ng-bind-html="'OS-START-TITLE' | translate | unsafe"></span>
       <span class="store-heading-description">
-        {{ 'OS-START-TAG' | translate }}
+        <span ng-bind-html="'OS-START-TAG' | translate | unsafe"></span>
       </span>
     </h1>
     <div class="row">
@@ -20,7 +20,7 @@
   <form name="signInForm" class="form-horizontal" role="form">
 
     <div class="form-group" ng-if="profile.customerStatus == 'new' || isOnlineSponsoring">
-      <label for="firstName" class="col-md-3 control-label">{{ 'OS-NAME' | translate }}</label>
+      <label for="firstName" class="col-md-3 control-label"><span ng-bind-html="'OS-NAME' | translate | unsafe"></span></label>
       <div class="col-sm-3" ng-class="{ 'has-error' : signInForm.firstName.$invalid && !signInForm.firstName.$pristine }">
         <input name="firstName" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model="profile.firstName" class="form-control" id="firstName" placeholder="First" required="isOnlineSponsoring" autofocus="" maxlength="40">
         <span ng-show="signInForm.firstName.$invalid && !signInForm.firstName.$pristine" class="help-block" ng-class="{ 'text-danger' : signInForm.firstName.$invalid }">Must contain 2-40 letters.</span>
@@ -34,7 +34,7 @@
     </div>
 
     <div class="form-group">
-      <label for="loginEmail" class="col-md-3 control-label">{{ 'EMAIL_ADD' | translate }}</label>
+      <label for="loginEmail" class="col-md-3 control-label"><span ng-bind-html="'EMAIL_ADD' | translate | unsafe"></span></label>
       <div class="col-sm-6" ng-class="{ 'has-error' : signInForm.loginEmail.$invalid && !signInForm.loginEmail.$pristine }">
         <input name="loginEmail" ng-pattern="/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/" ng-model="profile.loginEmail" type="email" class="form-control" id="loginEmail" placeholder="example@gmail.com" required>
         <span ng-show="signInForm.loginEmail.$invalid && !signInForm.loginEmail.$pristine" class="help-block" ng-class="{ 'text-danger' : signInForm.loginEmail.$invalid }">Must be a valid email address.</span>
@@ -43,7 +43,7 @@
     </div>
 
     <div class="form-group" ng-if="isOnlineSponsoring">
-      <label for="phoneNumber" class="col-md-3 control-label">{{ 'IN_PHONE' | translate }}</label>
+      <label for="phoneNumber" class="col-md-3 control-label"><span ng-bind-html="'IN_PHONE' | translate | unsafe"></span></label>
       <div class="col-sm-3">
         <input name="phoneNumber" type="tel" ui-mask="(999) 999-9999" ng-model="profile.phoneNumber" class="form-control" id="phoneNumber" placeholder="(___) ___-____" required>
         <!--valid={{signInForm.phoneNumber.$valid}}-->
@@ -67,7 +67,7 @@
           <span class="input-group-addon"><i class="fa fa-lock"></i></span>
           <button ng-if="profile.customerStatus == 'existing' && !isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" ng-click="loginOrCreateUser()" ng-disabled="!signInForm.$valid">Sign In &nbsp;<i class="fa fa-caret-right"></i></button>
           <button ng-if="profile.customerStatus == 'new' && !isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" ng-click="loginOrCreateUser()" ng-disabled="!signInForm.$valid">Create Account &nbsp;<i class="fa fa-caret-right"></i></button>
-          <button ng-if="isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" ng-click="validateEmailAndContinue(profile.loginEmail)" ng-disabled="!signInForm.$valid">{{ 'BTN_CONTINUE' | translate }} &nbsp;<i class="fa fa-caret-right"></i></button>
+          <button ng-if="isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" ng-click="validateEmailAndContinue(profile.loginEmail)" ng-disabled="!signInForm.$valid"><span ng-bind-html="'BTN_CONTINUE' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i></button>
         </div>
       </div>
     </div>
