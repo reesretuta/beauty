@@ -751,6 +751,37 @@ angular.module('app.controllers.checkout')
             return res.valid;
         }
 
+        function cardChanged() {
+            $log.debug("CheckoutController(): cardChanged()", $scope.profile.newCard);
+            var res = $scope.validateCard($scope.profile.newCard.card);
+            $scope.profile.newCard.cardType = res.type;
+        }
+
+        $scope.$watch('profile.newCard.card', function(newVal, oldVal) {
+            cardChanged();
+        });
+
+        function cardExpirationChanged() {
+            $scope.cardExpired = false;
+
+            var expiration = moment($scope.profile.newCard.expMonth + $scope.profile.newCard.expYear, "MMYYYY", true).endOf("month");
+            var now = moment();
+
+            if (!expiration.isValid() || now.diff(expiration,'days') > 0) {
+                $log.debug("CheckoutController(): cardExpirationChanged(): expired");
+                $scope.cardExpired = true;
+            } else {
+                $log.debug("CheckoutController(): cardExpirationChanged(): not expired");
+            }
+        }
+
+        $scope.$watch('profile.newCard.expMonth', function(newVal, oldVal) {
+            cardExpirationChanged();
+        });
+        $scope.$watch('profile.newCard.expYear', function(newVal, oldVal) {
+            cardExpirationChanged();
+        });
+
         $scope.validateCard = function(ccnumber) {
             if (!ccnumber) {
                 return {
