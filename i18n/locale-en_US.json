@@ -292,5 +292,6 @@
     "OS-NAV3":"Faqs",
     "OS-NAV4":"Join Now!",
     "OS-NAV5":"Contact",
-    "PRIVACY-TITLE":"JoinJAFRA Website Privacy Policy"
+    "PRIVACY-TITLE":"JoinJAFRA Website Privacy Policy",
+    "INVALID_CC_EXPIRATION":"Invalid expiration date"
 }

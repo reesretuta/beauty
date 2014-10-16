@@ -701,7 +701,7 @@ angular.module('app.controllers.checkout')
                         $scope.checkoutUpdated();
                         WizardHandler.wizard('checkoutWizard').goTo('Review');
                     }, function(r) {
-                        $log.error("CheckoutController(): addShippingAddressAndContinue(): error validating address", r);
+                        $log.error("CheckoutController(): addPaymentMethod(): error validating address", r);
                         // FIXME - failed to add, show error
                         $scope.billingAddressError = r.message;
                     });
@@ -772,14 +772,14 @@ angular.module('app.controllers.checkout')
         });
 
         function cardExpirationChanged() {
-            $scope.cardExpired = false;
+            $scope.invalidExpiration = false;
 
             var expiration = moment($scope.profile.newCard.expMonth + $scope.profile.newCard.expYear, "MMYYYY", true).endOf("month");
             var now = moment();
 
             if (!expiration.isValid() || now.diff(expiration,'days') > 0) {
                 $log.debug("CheckoutController(): cardExpirationChanged(): expired");
-                $scope.cardExpired = true;
+                $scope.invalidExpiration = true;
             } else {
                 $log.debug("CheckoutController(): cardExpirationChanged(): not expired");
             }
@@ -881,6 +881,9 @@ angular.module('app.controllers.checkout')
                 $scope.checkout.shipping.phone = phone;
                 $scope.checkout.billing.phone = phone;
 
+                // generate the components
+
+
                 var consultant = {
                     ssn: ssn,
                     email: $scope.profile.loginEmail,
@@ -899,7 +902,9 @@ angular.module('app.controllers.checkout')
                     products: [
                         {
                             "sku": $scope.items[0].product.sku,
-                            "qty": 1
+                            "qty": 1,
+                            "kitSelections": {},
+                            "components": []
                         }
                     ]
                 }
