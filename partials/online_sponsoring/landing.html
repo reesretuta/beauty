@@ -79,8 +79,7 @@
                 <hr>
 
                 <img class="img-responsive" src="/img/99_kit.jpg">
-                <strong>{{ 'OS-KIT-PRODUCT1-VALUE' | translate }}</strong>
-                  <p ng-bind-html="'OS-KIT-PRODUCT1-DESCRIPTION' | translate | unsafe"></p>
+                <div ng-include="'/partials/product1-'+session.language+'.html'"></div>
                   <img src="/img/99_kit_bags.jpg" class="img-responsive"/>
                 
               </div>
@@ -117,8 +116,10 @@
                 <hr>
 
                 <img class="img-responsive" src="/img/39_kit.jpg">
-                <strong>{{ 'OS-KIT-PRODUCT2-VALUE' | translate }}</strong>
-                  <p ng-bind-html="'OS-KIT-PRODUCT2-DESCRIPTION' | translate | unsafe"></p>
+                
+                  <!--<p ng-bind-html="'OS-KIT-PRODUCT2-DESCRIPTION' | translate | unsafe"></p>-->
+                  
+                  <div ng-include="'/partials/product2-'+session.language+'.html'"></div>
 
                   <img src="/img/39_kit_bag.jpg" class="img-responsive"/>
                 	  
