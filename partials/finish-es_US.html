@@ -1,0 +1,104 @@
+<div class="col-md-offset-3 col-lg-8">
+    <a href="" class="pull-right print-link"><i class="fa fa-print"></i> Print this page</a>
+    <h1>FELICITACIONES 
+        <span class="store-heading-description">
+          ¡Ya eres una Consultora de JAFRA y vas en camino a vivir la vida que TÚ imaginas!
+        </span>
+    </h1>
+  </div>
+
+  <div class="col-md-offset-3 col-lg-8">
+    <h3 class="">Tu # de I.D. de Consultora es <label style="color:black;">{{confirmation.consultantId}}</label></h3>
+    <hr>
+    
+    <p>
+        Tu patrocinadora es: ________________<br />
+        O se te asignará una Patrocinadora de JAFRA dentro de los próximos _____ días.  
+    </p>
+    <p>Para que comiences con tu nueva y exitosa carrera, es importante que sigas estos pasos:</p>
+    <p>
+        <!--TODO: STYLING-->
+        1. Para agilizar los trámites de pago, elige una de las opciones que JAFRA te ofrece:<br />
+	•	JAFRA Debit MasterCard- (links to site) – Ver FAQs (links to FAQ PDF) <br />
+	•	Depósito directo-(links to PDF, send to JAFRA) – Ver FAQs (links to FAQ PDF)<br />
+<br />
+2. Para tener acceso al sitio Web de las Consultoras de Jafra, visita jafrabiz.com. Anota tu número de I.D. de Consultora y usa los cuatro últimos dígitos  de tu número de Seguro Social como contraseña.<br />
+Entonces podrás:<br />
+	•	Ordenar producto<br />
+	•	Hacer pagos<br />
+	•	Ver tus reportes<br />
+	•	Revisar tu actividad y más<br />
+<br />
+3. Visita: Conexión de la Consultora en jafrabiz.com para:<br />
+	•	Tener acceso a todas las herramientas de ventas y entrenamiento <br />
+	•	Recibir alertas y estar al día con noticias importantes sobre JAFRA<br />
+<br />
+4. Si tienes preguntas asegúrate de tener esta información en tu lista de contactos:<br /> 
+	•	Número Telefónico de tu Patrocinadora y Líder para que puedas llamarla en cualquier momento.<br />
+	•	El Número teléfonico del Equipo de Servicio a la Consultora de Jafra. <br />
+Llama al 1-800-852-372<br />
+<br />
+NOTA a desarrolladores de sitios web:<br />
+Favor de proveer los siguientes enlaces para pasos a seguir y motivar la acción.<br />
+	•	Jafrabiz.com<br />
+	•	Descargar el Acuerdo de Consultora
+
+
+    </p>
+
+    <h2 class="">Número de Confirmación: <label style="color:black;">{{confirmation.orderId}}</label></h2>
+    <form class="form order-details" role="form">
+      <div class="form-group">
+        <table class="table">
+          <thead>
+          <tr>
+            <th>Qty</th>
+            <th>Description</th>
+            <th align="right">Price</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="item in items">
+            <td>{{item.quantity}}</td>
+            <td>
+              <p class="confirmation-description">
+                {{item.name}}
+              </p>
+            </td>
+            <td align="right">
+              
+                            <span ng-repeat="detailprice in item.product.prices[0]">
+                              <span ng-if="detailprice.typeId==2" class="item-price-sale">
+                                {{detailprice.price | currency}}
+                              </span>
+                              <span ng-if="detailprice.typeId==1" class="item-price-strike">
+                                {{detailprice.price | currency}}
+                              </span>
+                            </span>
+                            <span ng-if="item.product.prices[0].price">
+                              <span class="item-price">
+                                {{item.product.prices[0].price | currency}}
+                              </span>
+                            </span>
+            </td>
+          </tr>
+          </tbody>
+          <tfoot>
+          <tr>
+            <td colspan="3">
+              <p>Subtotal: {{total() | currency}}</p>
+              <p>Shipping: $12.00</p>
+              <p>Tax: 8.25%</p>
+              <p class="lead"><b class="text-success"><i class="fa fa-check"></i> Successfully Charged: {{(total()* 1.0825) + 12 | currency}}</b></p>
+            </td>
+          </tr>
+          </tfoot>
+        </table>
+      </div>
+
+    </form>
+    <h2 class="">¿Cómo hacer seguimiento al pedido?</h2>
+    <hr>
+    <p>Recibirás un número de seguimiento una vez sea enviado el pedido.</p>
+
+  </div>

@@ -96,7 +96,7 @@
 
           <input type="checkbox" value="" ng-model="checkout.agree" required>
 
-          I agree to the <a href="" data-toggle="modal" data-target=".bs-example-modal-lg-terms">Terms and Conditions</a>
+          I agree to the <a href="" data-toggle="modal" data-target=".bs-terms-modal-lg">Terms and Conditions</a>
           &nbsp;&nbsp;&nbsp;&nbsp;
         </label>
         <button ng-if="!isOnlineSponsoring" type="button" class="btn-link pull-left" ng-click="confirmAlert('Are you sure you\'d like to cancel your order?')">Cancel Order</ng-bind="expression"utton>
@@ -185,7 +185,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Billing To:</h4>
+        <h4 class="modal-title" id="myModalLabel">{{ 'PAY_TIT3' | translate }}:</h4>
       </div>
       <div class="modal-body row">
         <ng-include src="'/partials/checkout/payment.html'"/>
@@ -196,7 +196,7 @@
 
 
       <div class="col-xs-3 col-lg-3 checkout-address" ng-if="checkout.billSame">
-        <h3>Billing To:</h3>
+        <h3>{{ 'PAY_TIT3' | translate }}:</h3>
         <span class="address-name">{{checkout.shipping.name}}</span>
         <span class="address-street">{{checkout.shipping.address1}} {{checkout.shipping.address2}}</span>
         <span class="address-region">{{checkout.shipping.city}}, {{checkout.shipping.state}} {{checkout.shipping.zip}}</span>
@@ -212,7 +212,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Billing To:</h4>
+        <h4 class="modal-title" id="myModalLabel">{{ 'PAY_TIT3' | translate }}:</h4>
       </div>
       <div class="modal-body row">
         <ng-include src="'/partials/checkout/payment.html'"/>
@@ -233,36 +233,6 @@
       </div>
       <div class="modal-body row">
         <ng-include src="'/partials/checkout/payment.html'"/>
-      </div>
-    </div>
-  </div>
-</div>
-    
-<div class="modal fade bs-example-modal-lg-terms"  role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Terms and Conditions</h4>
-      </div>
-      <div class="modal-body">
-          <div id="lipsum">
-              <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin dignissim, nibh at pulvinar ornare, nisl mauris maximus nulla, at bibendum metus arcu sed orci. Morbi convallis eu dolor vitae ultricies. Mauris a porttitor tortor, id pellentesque enim. Sed odio sem, placerat eu lorem a, auctor porta enim. Vestibulum egestas, felis a dictum elementum, arcu purus elementum tellus, vel auctor elit diam ac orci. Suspendisse sollicitudin ipsum quis eros rutrum, vel gravida sapien pulvinar. Duis mattis ultricies hendrerit. Phasellus augue libero, tincidunt sit amet tortor non, mollis euismod urna. Cras erat sapien, malesuada eu enim et, bibendum luctus neque. Pellentesque eget euismod sapien. Pellentesque malesuada mauris viverra, placerat ligula id, condimentum nibh. Mauris sed rhoncus lacus, et lacinia erat. Phasellus ultricies ut felis rutrum elementum. Nulla nec ultrices quam. Donec quis congue nisi, quis placerat quam.
-              </p>
-              <p>
-              Aliquam condimentum, tortor mollis efficitur rhoncus, elit felis laoreet lectus, sed bibendum mi urna sed dui. Quisque vitae elit id nulla posuere pretium. Integer feugiat, neque vitae vestibulum convallis, quam diam feugiat nisl, a aliquet velit nunc at turpis. Cras euismod molestie scelerisque. Integer vestibulum, mauris sit amet pretium dignissim, ligula lorem mollis felis, posuere lobortis odio mi vitae dolor. Donec tempus magna nec tellus aliquet, ultrices malesuada ante volutpat. Donec imperdiet odio ut erat suscipit, sed ornare felis ultricies. Duis iaculis odio eget eros facilisis, sed cursus arcu viverra. Proin aliquam tempus vulputate.
-              </p>
-              <p>
-              Sed ornare ante eget nunc sodales vestibulum. Nulla at ultricies elit. Etiam fermentum, justo sit amet elementum suscipit, ex quam fermentum enim, a luctus eros elit vitae tellus. Aliquam condimentum urna vitae ipsum finibus, quis porta augue convallis. Integer gravida dapibus ipsum non rhoncus. Maecenas efficitur semper nisi nec ornare. Donec vulputate consequat augue vitae vulputate. Donec elementum elit tellus, at egestas libero pretium sit amet. Maecenas tempus, orci cursus ornare mollis, est magna ultricies nisi, sed mattis lectus arcu id mi. Morbi id diam eu mauris suscipit ultricies at et mi. Donec quis eros ex. Maecenas iaculis ipsum eget tincidunt dapibus. Maecenas et diam ac neque egestas tempus.
-              </p>
-              <p>
-              Nulla tincidunt diam tellus, vel lacinia ligula sollicitudin id. Curabitur accumsan ipsum eu velit sollicitudin fermentum. Sed ultrices augue et erat bibendum, at bibendum nunc cursus. Aenean suscipit sapien quis eleifend molestie. Ut non ex vel erat pulvinar vehicula ut sit amet mi. Integer at orci ac nunc maximus porttitor tincidunt at orci. Nam sit amet faucibus lorem. Curabitur eget lectus arcu. Vivamus id condimentum augue. Fusce neque justo, viverra eu libero quis, ultricies tincidunt ipsum.
-              </p>
-              <p>
-              Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Duis id pretium metus, eget scelerisque odio. Pellentesque id nisl condimentum massa luctus auctor. Proin porta justo at hendrerit efficitur. Mauris vel euismod sapien, nec fringilla ante. Nulla bibendum quis metus nec consectetur. Quisque vulputate dui quis nisi tempor bibendum. Suspendisse potenti.
-              </p>
-          </div>
       </div>
     </div>
   </div>
