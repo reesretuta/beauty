@@ -1,5 +1,5 @@
 angular.module('app.controllers.checkout')
-    .controller('CheckoutController', function ($location, $scope, $document, $timeout, $rootScope, $anchorScroll, $routeParams, $modal, $log, $q, STORE_BASE_URL, JOIN_BASE_URL, Session, Addresses, OrderHelper, Checkout, Cart, Products, Addresses, CreditCards, HashKeyCopier, WizardHandler) {
+    .controller('CheckoutController', function ($location, $scope, $document, $timeout, $rootScope, $anchorScroll, $routeParams, $modal, $log, $q, STORE_BASE_URL, JOIN_BASE_URL, Geocodes, Session, Addresses, OrderHelper, Checkout, Cart, Products, SalesTax, CreditCards, HashKeyCopier, WizardHandler) {
 
         $log.debug("CheckoutController()");
 
@@ -676,6 +676,18 @@ angular.module('app.controllers.checkout')
                         $log.debug("CheckoutController(): addPaymentMethod(): setting consultant billing address", a);
                         $scope.checkout.billing = a;
 
+                        // fetch sales tax information here
+                        $scope.fetchSalesTax().then(function(salesTaxInfo) {
+                            $log.debug("CheckoutController(): addPaymentMethod(): got sales tax info", salesTaxInfo);
+
+                            $scope.salesTaxInfo = salesTaxInfo;
+
+                            $scope.checkoutUpdated();
+                            WizardHandler.wizard('checkoutWizard').goTo('Review');
+                        }, function(err) {
+                            $scope.billingAddressError = "Error while processing cart";
+                        });
+
                         $scope.checkoutUpdated();
                         WizardHandler.wizard('checkoutWizard').goTo('Review');
                     }, function(r) {
@@ -684,19 +696,58 @@ angular.module('app.controllers.checkout')
                         $scope.billingAddressError = r.message;
                     });
                 } else {
-                    $scope.checkoutUpdated();
-                    WizardHandler.wizard('checkoutWizard').goTo('Review');
+                    // fetch sales tax information here
+                    $scope.fetchSalesTax().then(function(salesTaxInfo) {
+                        $log.debug("CheckoutController(): addPaymentMethod(): got sales tax info", salesTaxInfo);
+
+                        /*
+                        {
+                            SH: "12.00",
+                            SubTotal: "99.00",
+                            TaxAmount: "9.71",
+                            TaxRate: "8.75",
+                            Total: "120.71",
+                            TotalBeforeTax: "111.00"
+                        }
+                        */
+
+                        $scope.salesTaxInfo = salesTaxInfo;
+
+                        $scope.checkoutUpdated();
+                        WizardHandler.wizard('checkoutWizard').goTo('Review');
+                    }, function(err) {
+                        $scope.billingAddressError = "Error while processing cart";
+                    });
                 }
             }
         }
 
+        $scope.fetchSalesTax = function() {
+            var defer = $q.defer();
+
+            SalesTax.calculate(0, 0, $scope.checkout.shipping.geocode, 1414, "P", [
+                {
+                    "sku": $scope.items[0].product.sku,
+                    "qty": 1
+                }
+            ]).then(function(info) {
+                $log.debug("CheckoutController(): fetchSalesTax()", info);
+                defer.resolve(info);
+            }, function(err) {
+                $log.error("CheckoutController(): fetchSalesTax()", err);
+                defer.reject(err);
+            });
+
+            return defer.promise;
+        }
+
         $scope.isValidCard = function(card) {
             if (card == null || S(card).isEmpty()) {
-                $log.debug("empty", card);
+                //$log.debug("empty", card);
                 return false;
             }
             var res = $scope.validateCard(card);
-            $log.debug("valid", res.valid, card);
+            //$log.debug("valid", res.valid, card);
             return res.valid;
         }
 
@@ -803,7 +854,7 @@ angular.module('app.controllers.checkout')
                     shippingAddress: $scope.checkout.shipping,
                     creditCard: $scope.checkout.card,
                     agreementAccepted: $scope.checkout.agree+"",
-                    total: $scope.items[0].product.currentPrice.price,
+                    total: parseFloat($scope.salesTaxInfo.Total),
                     products: [
                         {
                             "sku": $scope.items[0].product.sku,
@@ -928,15 +979,31 @@ angular.module('app.controllers.checkout')
                     a.name = $scope.profile.firstName + " " + $scope.profile.lastName;
                     a.phone = $scope.profile.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');;
 
-                    $log.debug("CheckoutController(): addShippingAddressAndContinue(): setting consultant shipping/billing address", address);
-                    $scope.checkout.shipping = a;
-                    $scope.checkout.billing = a;
+                    // check the zip for geocode for taxes
+                    Geocodes.query({zipCode: a.zip}).$promise.then(function(geocodes) {
+                        $log.debug("CheckoutController(): addShippingAddressAndContinue(): got geocodes", geocodes);
 
-                    // set the addresses
-                    $scope.profile.newShippingAddress = a;
-                    
-                    $scope.checkoutUpdated();
-                    WizardHandler.wizard('checkoutWizard').goTo('Payment');
+                        if (geocodes.length == 1) {
+                            a.geocode = geocodes[0].GEOCODE;
+                        } else {
+                            // FIXME - display a dialog for the user to choose the correct geocode here
+                            a.geocode = geocodes[0].GEOCODE;
+                        }
+
+                        $log.debug("CheckoutController(): addShippingAddressAndContinue(): setting consultant shipping/billing address", a);
+                        $scope.checkout.shipping = a;
+                        $scope.checkout.billing = a;
+
+                        // set the addresses
+                        $scope.profile.newShippingAddress = a;
+
+                        $scope.checkoutUpdated();
+                        WizardHandler.wizard('checkoutWizard').goTo('Payment');
+                    }, function (r) {
+                        $log.error("CheckoutController(): addShippingAddressAndContinue(): error looking up geocode", r);
+                        $scope.shippingAddressError = "Unable to verify address";
+                    })
+
                 }, function(r) {
                     $log.error("CheckoutController(): addShippingAddressAndContinue(): error validating address", r);
                     // FIXME - failed to add, show error

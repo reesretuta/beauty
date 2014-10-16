@@ -758,6 +758,37 @@ angular.module('app.services', ['ngResource'])
 
         return cartService;
     })
+    .factory('Geocodes', function ($resource, $http, $log, $q, API_URL) {
+        return $resource(API_URL + '/geocodes', {});
+    })
+    .factory('SalesTax', function ($resource, $http, $log, $q, API_URL) {
+        var salesTaxService = {};
+
+        salesTaxService.calculate = function(clientId, consultantId, geocode, typeOrder, source, products) {
+            var d = $q.defer();
+
+            //$log.debug("Session(): login(): attempting to login with username=", username, "password=", password);
+            var session = $http.post(API_URL + '/calculateTax', {
+                clientId: clientId,
+                consultantId: consultantId,
+                geocode: geocode,
+                typeOrder: typeOrder,
+                source: source,
+                products: products
+            }).success(function(salesTaxInfo, status, headers, config) {
+                $log.debug("salesTaxService(): get()", salesTaxInfo);
+                d.resolve(salesTaxInfo);
+            }).error(function(data, status, headers, config) {
+                //failure(data, status, headers, config);
+                $log.error("salesTaxService(): get(): error", data, status);
+                d.reject(data);
+            });
+
+            return d.promise;
+        }
+
+        return salesTaxService;
+    })
     .factory('Products', function ($resource, $http, $log, $q, Categories, API_URL) {
         var productService = $resource(API_URL + '/products/:productId', {productId: '@_id'});
         var origQuery = productService.query;

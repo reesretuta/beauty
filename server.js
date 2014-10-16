@@ -897,7 +897,7 @@ router.route('/validate/address') // validate address
             res.status(r.status);
             res.json(r.result);
         });
-    })
+    });
 
 router.route('/validate/email') // validate email address
     .get(function (req, res) {
@@ -914,7 +914,39 @@ router.route('/validate/email') // validate email address
             res.status(r.status);
             res.json(r.result);
         });
-    })
+    });
+
+router.route('/geocodes')
+    .get(function (req, res) {
+        var zipCode = req.param('zipCode');
+
+        console.log("getting geocodes for zip", zipCode);
+        jafraClient.getGeocodes(zipCode).then(function(r) {
+            console.log("got geocodes", r.status, "result", r.result);
+            // return response
+            res.status(r.status);
+            res.json(r.result);
+        }, function(r) {
+            console.error("failed to get geocodes", r.status, "result", r.result);
+            res.status(r.status);
+            res.json(r.result);
+        });
+    });
+
+router.route('/calculateTax')
+    .post(function (req, res) {
+        console.log("getting tax calculations for", req.body);
+        jafraClient.calculateSalesTax(req.body).then(function(r) {
+            console.log("got tax calculations", r.status, "result", r.result);
+            // return response
+            res.status(r.status);
+            res.json(r.result);
+        }, function(r) {
+            console.error("failed to get tax calculations", r.status, "result", r.result);
+            res.status(r.status);
+            res.json(r.result);
+        });
+    });
 
 // Configure Express
 

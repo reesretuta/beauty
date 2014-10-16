@@ -4,8 +4,11 @@ var request = require('request');
 var SHA1 = require("crypto-js/sha1");
 var Q = require('q');
 var soap = require('soap');
+var parseString = require('xml2js').parseString;
 
 var BASE_URL = "http://" + (process.env.JCS_API_URL || "189.206.20.52") + ":8091/cgidev2";
+var BASE_URL2 = "http://" + (process.env.JCS_API_URL || "189.206.20.52") + ":8091/WEBCGIPR";
+
 var AUTHENTICATE_URL = BASE_URL + "/JCD05001P.pgm";
 var GET_CLIENT_URL = BASE_URL + "/JCD05007P.pgm";
 var CREATE_CLIENT_URL = BASE_URL + "/JCD05002P.pgm";
@@ -28,6 +31,7 @@ var UPDATE_CREDIT_CARD_URL = BASE_URL + "/JCD05008P.pgm";
 var DELETE_CREDIT_CARD_URL = BASE_URL + "/JCD05008P.pgm";
 var GET_INVENTORY_URL = BASE_URL + "/JCD05021P.pgm"; // productId=<productId>
 
+var GET_GEOCODES_URL = BASE_URL2 + "/JNS0002R.pgm";
 var GET_SALES_TAX_URL = BASE_URL + "/JCD05022P.pgm";
 
 var STRIKEIRON_EMAIL_URL = 'http://ws.strikeiron.com/StrikeIron/emv6Hygiene/EMV6Hygiene/VerifyEmail';
@@ -919,7 +923,7 @@ function validateAddress(address) {
                         stateDescription: usAddress.State.length > 0 ? usAddress.State : "",
                         zip: usAddress.ZIPCode.length > 0 ? usAddress.ZIPCode : "",
                         country: "US",
-                        geocode:  Object.getOwnPropertyNames(usAddress.GeoCode).length > 0 && usAddress.GeoCode.CensusTract ? usAddress.GeoCode.CensusTract : "",
+                        geocode: "000000",
                         phone: address.phone
                     };
                     console.log("validateAddress(): returning address", a);
@@ -1191,6 +1195,157 @@ function deleteCreditCard(clientId, creditCardId) {
     return deferred.promise;
 }
 
+function getGeocodes(zipCode) {
+    console.log("getGeocodes()", zipCode);
+    var deferred = Q.defer();
+
+    request.get({
+        url: GET_GEOCODES_URL,
+        qs: {
+            MEN_H: "JNS0007X",
+            zipCode_h: zipCode
+        },
+        headers: {
+            'Accept': 'application/json, text/json'
+        },
+        json: true
+    }, function (error, response, body) {
+        console.log("getGeocodes()", error, response.statusCode, body);
+        if (error || response.statusCode != 200) {
+            console.error("getGeocodes(): error", error, response.statusCode, body);
+            deferred.reject({
+                status: response.statusCode,
+                result: {
+                    statusCode: response.statusCode,
+                    errorCode: body.errorCode,
+                    message: body.message
+                }
+            });
+            return;
+        }
+
+        /* Example:
+        <?xml version="1.0" encoding='iso-8859-1'?>
+        <VERTEX>
+            <VERTEXLIST>
+                <LIST ZIPCODE = "91361" GEOCODE = "050377000" CITYCODE = "" CITYDES = "WESTLAKE VILLAGE" COUNTYCODE = "" COUNTYDES = "LOS ANGELES" STATECODE = "CA" STATEDES = "CALIFORNIA" ZIPSTART = "91361" ZIPEND = "91361" ERROR = ""></LIST>
+                <LIST ZIPCODE = "91361" GEOCODE = "051113590" CITYCODE = "" CITYDES = "THOUSAND OAKS" COUNTYCODE = "" COUNTYDES = "VENTURA" STATECODE = "CA" STATEDES = "CALIFORNIA" ZIPSTART = "91361" ZIPEND = "91361" ERROR = ""></LIST>
+                <LIST ZIPCODE = "91361" GEOCODE = "051113590" CITYCODE = "" CITYDES = "WESTLAKE VILLAGE" COUNTYCODE = "" COUNTYDES = "VENTURA" STATECODE = "CA" STATEDES = "CALIFORNIA" ZIPSTART = "91361" ZIPEND = "91361" ERROR = ""></LIST>
+            </VERTEXLIST>
+        </VERTEX>
+        */
+
+        // parse the list of geocodes
+        parseString(body, function (err, result) {
+            console.log("err", err, "result", result);
+
+            if (err) {
+                console.log("getGeocodes(): failure");
+                deferred.reject({
+                    status: 500,
+                    result: {
+                        statusCode: 500,
+                        errorCode: "geocodeListFailed",
+                        message: "Failed to list geocodes"
+                    }
+                });
+                return;
+            }
+
+            if (result && result.VERTEX && Array.isArray(result.VERTEX.VERTEXLIST)) {
+                var list = result.VERTEX.VERTEXLIST[0].LIST;
+                var cities = [];
+                for (var i=0; i < list.length; i++) {
+                    cities.push(list[i]["$"]);
+                }
+
+                console.log("getGeocodes(): success");
+                deferred.resolve({
+                    status: 200,
+                    result: cities
+                });
+                return;
+            }
+
+            deferred.reject({
+                status: 500,
+                result: {
+                    statusCode: 500,
+                    errorCode: "geocodeListFailed",
+                    message: "Failed to list geocodes"
+                }
+            });
+        });
+    })
+
+    return deferred.promise;
+}
+
+function calculateSalesTax(data) {
+    /*
+     {
+         "clientId":<clientId>,   //Required in CD OE
+         "consultantId":<consultantId>, //Required
+         "geocode" : <geocode>,         //Required
+         "typeOrder": <tipeOrder>,      //Required
+         "source"   : <source>          //Required
+         "products" : []                //Required
+     }
+     */
+
+    console.log("getCalculateTax()", data);
+    var deferred = Q.defer();
+
+    request.get({
+        url: GET_SALES_TAX_URL,
+        headers: {
+            'Accept': 'application/json, text/json'
+        },
+        qs: {
+            clientId: data.clientId,
+            consultantId: data.consultantId,
+            geocode: data.geocode,
+            typeOrder: data.typeOrder,
+            source: data.source,
+            products: JSON.stringify(data.products)
+        },
+        json: true
+    }, function (error, response, body) {
+        console.log("getCalculateTax()", error, response.statusCode, body);
+        if (error || response.statusCode != 200) {
+            console.error("getCalculateTax(): error", error, response.statusCode, body);
+            deferred.reject({
+                status: response.statusCode,
+                result: {
+                    statusCode: response.statusCode,
+                    errorCode: body.errorCode,
+                    message: body.message
+                }
+            });
+            return;
+        }
+
+        /* Example:
+         {
+         "SubTotal": 10.50,
+         "SH": 5.00,
+         "TaxRate": 10.50,
+         "TotalBeforeTax": 15.50,
+         "TaxAmount": 2.25,
+         "Total": 17.75
+         }
+         */
+
+        console.log("getCalculateTax(): success", body);
+        deferred.resolve({
+            status: 200,
+            result: body
+        });
+        return;
+    })
+
+    return deferred.promise;
+}
 
 exports.authenticate = authenticate;
 exports.getClient = getClient;
@@ -1214,3 +1369,6 @@ exports.getCreditCard = getCreditCard;
 exports.createCreditCard = createCreditCard;
 exports.updateCreditCard = updateCreditCard;
 exports.deleteCreditCard = deleteCreditCard;
+
+exports.getGeocodes = getGeocodes;
+exports.calculateSalesTax = calculateSalesTax;
