@@ -50,14 +50,12 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
           suffix: '.json'
         });
 
-        $translateProvider
-        .registerAvailableLanguageKeys(['en', 'es'], {
-            'en_US': 'en',
-            'es_US': 'es'
-        })
-        .determinePreferredLanguage()
-        .fallbackLanguage('en');
-
+        $translateProvider.registerAvailableLanguageKeys(['en_US', 'es_US'], {
+            'en_US': 'en_US',
+            'es_US': 'es_US'
+        });
+        $translateProvider.determinePreferredLanguage();
+        $translateProvider.fallbackLanguage('en_US');
 
         var interceptor = ['$location', '$q', '$timeout', '$rootScope', '$log', function($location, $q, $timeout, $rootScope, $log) {
             var cancelSessionTimerPromise = null;
