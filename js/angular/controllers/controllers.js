@@ -4,6 +4,7 @@
 
 angular.module('app.controllers', [
   'app.controllers.top',
+  'app.controllers.lang',
   'app.controllers.main',
   'app.controllers.home',
   'app.controllers.objects',
@@ -18,6 +19,7 @@ angular.module('app.controllers', [
 ]);
 
 angular.module('app.controllers.top', []);
+angular.module('app.controllers.lang', []);
 angular.module('app.controllers.main', ["hashKeyCopier"]);
 angular.module('app.controllers.categories', ["hashKeyCopier"]);
 angular.module('app.controllers.objects', ["hashKeyCopier"]);

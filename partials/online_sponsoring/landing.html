@@ -56,99 +56,59 @@
               <div class="product-action">
                 <!-- Split button -->
                 <div class="btn-group">
-                  <button type="button" class="btn btn-primary btn-lg HelveticaNeueLTStd-BdCn" ng-click="join('19634', 'en_US', 'Royal Starter Kit', 99)">Buy English</button>
+                  <button type="button" class="btn btn-primary btn-lg HelveticaNeueLTStd-BdCn" ng-click="join('19634', 'en_US', 'Royal Starter Kit', 99)">{{ 'BUY-ENGLISH' | translate }}</button>
                   <button type="button" class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown">
                     <span class="caret"></span>
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
 
                   <ul class="dropdown-menu kit-select" role="menu">
-                    <li><a href="#" ng-click="join('19634', 'en_US', 'Royal Starter Kit', 99)">Buy English</a></li>
-                    <li><a href="#" ng-click="join('19635', 'es_US', 'Kit del Negocio Royal', 99)">Buy Spanish</a></li>
+                    <li><a href="#" ng-click="join('19634', 'en_US', 'Royal Starter Kit', 99)">{{ 'BUY-ENGLISH' | translate }}</a></li>
+                    <li><a href="#" ng-click="join('19635', 'es_US', 'Kit del Negocio Royal', 99)">{{ 'BUY-SPANISH' | translate }}</a></li>
 
                   </ul>
                 </div>
               </div>
-              <p class="text-right"><a href="#royal_starter_info" data-toggle="collapse" data class="more-link collapsed"><span>WHAT&rsquo;S INSIDE?</span></a></p>
+              <p class="text-right"><a href="#royal_starter_info" data-toggle="collapse" data class="more-link collapsed"><span ng-bind-html="'KIT-DETAILS-TOGGLE' | translate | unsafe"></span></a></p>
               <!-- collapsed section content (default collapsed) -->
               <div id="royal_starter_info" class="collapse">
                 <hr>
-                <strong>A $490+ Value</strong>
-                  <ul>
-                  	<li>Advanced Dynamics Balancing Cleanser</li>
-                  	<li>Advanced Dynamics Balancing Toner</li>
-                  	<li>Advanced Dynamics Balancing Day Moisture</li>
-                  	<li>Advanced Dynamics Balancing Night Moisture</li>
-                  	<li>Royal Jelly Milk Balm Advanced</li>
-                  	<li>Elasticity Recovery Hydrogel + Firmiplex Complex</li>
-                  	<li>Optimeyes Eye Treatment</li>
-                  	<li>Royal Almond Rich Body Oil</li>
-                  	<li>LEGEND EDT</li>
-				  	<li>Vesen EDT</li>
-				  	<li>Eau d'Arômes Fragrance Spray</li>
-				  	<li>Skid EDT</li>
-                  </ul>
-               <strong>Plus you get DYNAMIC TOOLS!</strong>
-				  	<li>Black JAFRA Tote</li>
-				  	<li>Clear JAFRA Tote</li>
-				  	<li>Welcome to JAFRA Literature Set</li>
-				  	<li>Product Catalogs (5)</li>
-				  	<li>Seasonal Brochures (10)</li>
-				  	<li>Hostess Brochure</li>
-				  	<li>Advanced Dynamic Profiles (10)</li>
-				  	<li>Skin Care Profiles (10)</li>
-				  	<li>Women’s Fragrance Profiles (10)</li>
-				  	<li>Business Cards (50)</li>
-				  	<li>Client Order Form (10)</li>
-
+                <strong>{{ 'OS-KIT-PRODUCT1-VALUE' | translate }}</strong>
+                  <p ng-bind-html="'OS-KIT-PRODUCT1-DESCRIPTION' | translate | unsafe"></p>
                   <img src="/img/99_kit_bags.jpg" class="img-responsive"/>
                 
               </div>
             </div>
             <div class="col-md-6" style="border-left: 1px solid #ededed;">
               <img class="img-responsive" src="/img/39_kit.jpg">
-              <h3 class="hero-header-title starter_kits-title"><span class="serif-title h1">get a</span><br />
-                QUICK START
+              <h3 class="hero-header-title starter_kits-title"><span class="serif-title h1">{{ 'OS-KIT-PRODUCT2-TITLE1' | translate }}</span><br />
+                {{ 'OS-KIT-PRODUCT2-TITLE2' | translate }}
               </h3>
-              <h3 class="h1 starter_kits-price">$39</h3>
-                <p class="starter_kits-label_title">Skincare Starter Kit</p>
-                <p class="starter_kits-retail_value">A $198 Retail Value</p>
+              <h3 class="h1 starter_kits-price">{{ 'OS-KIT-PRODUCT2-PRICE' | translate }}</h3>
+                <p class="starter_kits-label_title">{{ 'OS-KIT-PRODUCT2-NAME' | translate }}</p>
+                <p class="starter_kits-retail_value">{{ 'OS-KIT-PRODUCT2-VALUE' | translate }}</p>
               <div class="product-action">
                 <!-- Split button -->
                 <div class="btn-group">
-                  <button type="button" class="btn btn-primary btn-lg HelveticaNeueLTStd-BdCn" ng-click="join('19636', 'en_US', 'Skincare Starter Kit', 39)">Buy English</button>
+                  <button type="button" class="btn btn-primary btn-lg HelveticaNeueLTStd-BdCn" ng-click="join('19636', 'en_US', 'Skincare Starter Kit', 39)">{{ 'BUY-ENGLISH' | translate }}</button>
                   <button type="button" class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown">
                     <span class="caret"></span>
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
 
                   <ul class="dropdown-menu kit-select" role="menu">
-                    <li><a href="#" ng-click="join('19636', 'en_US', 'Skincare Starter Kit', 39)">Buy English</a></li>
-                    <li><a href="#" ng-click="join('19637', 'es_US', 'Cuidado del Cutis', 39)">Buy Spanish</a></li>
+                    <li><a href="#" ng-click="join('19636', 'en_US', 'Skincare Starter Kit', 39)">{{ 'BUY-ENGLISH' | translate }}</a></li>
+                    <li><a href="#" ng-click="join('19637', 'es_US', 'Cuidado del Cutis', 39)">{{ 'BUY-SPANISH' | translate }}</a></li>
 
                   </ul>
                 </div>
               </div>
-                <p class="text-right"><a href="#skincare_starter_info" data-toggle="collapse" data class="more-link collapsed"><span>WHAT&rsquo;S INSIDE?</span></a></p>
+                <p class="text-right"><a href="#skincare_starter_info" data-toggle="collapse" data class="more-link collapsed"><span ng-bind-html="'KIT-DETAILS-TOGGLE' | translate | unsafe"></span></a></p>
               <!-- collapsed section content (default collapsed) -->
               <div id="skincare_starter_info" class="collapse">
                 <hr>
-                <strong>A $198 Retail Value</strong>
-                  <ul>
-                  	<li>Royal Jelly Milk Balm Advanced</li>
-                  	<li>Elasticity Recovery Hydrogel + Firmiplex Complex</li>
-                  	<li>Optimeyes Eye Treatment</li>
-                  </ul>
-               <strong>Plus you get DYNAMIC Tools!</strong>
-				  	<li>RED-HOT Business Tote</li>
-				  	<li>Welcome to JAFRA Literature Set</li>
-				  	<li>Product Catalogs (5)</li>
-				  	<li>Seasonal Brochures (10)</li>
-				  	<li>Hostess Brochure</li>
-				  	<li>Advanced Dynamic Profiles (10)</li>
-				  	<li>Skin Care Profiles (10)</li>
-				  	<li>Women’s Fragrance Profiles (10)</li>
-				  	<li>Client Order Form (10)</li>
+                <strong>{{ 'OS-KIT-PRODUCT2-VALUE' | translate }}</strong>
+                  <p ng-bind-html="'OS-KIT-PRODUCT2-DESCRIPTION' | translate | unsafe"></p>
                   <img src="/img/39_kit_bag.jpg" class="img-responsive"/>
                 	  
               </div>
@@ -167,7 +127,7 @@
     <section id="why_jafra">
 
       <div class="container">
-        <h2 class="h1 section-title">Why Join Jafra?</h2>
+        <h2 class="h1 section-title">{{ 'OS-LANDING-H1' | translate }}</h2>
       </div> <!-- /.container -->
 
       <section class="subsection" id="why_jafra_products">
@@ -180,16 +140,16 @@
 
               <div class="section-copy">
 
-                <h3 class="hero-header-title"><span class="serif-title">products</span><br />TO LOVE</h3>
-                <p>Advanced skin care, trendy colors, luxurious toiletries plus exclusive fragrances created by world-renowned European perfumers… you’ll love our product line up! The best part?  You can earn up to 50% commission on your product sales – one of the highest commissions in the industry!</p>
+                <h3 class="hero-header-title"><span class="serif-title">{{ 'OS-SECTION2-TITLE1' | translate }}</span><br />{{ 'OS-SECTION2-TITLE2' | translate }}</h3>
+                <p>{{ 'OS-SECTION2-BODY' | translate }}</p>
 
                 <!-- collapsed section toggle (default collapsed) -->
-                <p class="text-right prod_more_link"><a class="more-link collapsed" data-toggle="collapse" href="#more_products"><span>MORE</span></a></p>
+<!--                <p class="text-right prod_more_link"><a class="more-link collapsed" data-toggle="collapse" href="#more_products"><span>MORE</span></a></p>-->
  
-                <div id="more_products" class="collapse">
+<!--                <div id="more_products" class="collapse">
                   <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis tincidunt turpis et varius. Donec sapien arcu, facilisis vitae nunc sit amet, venenatis consequat felis. Curabitur varius pretium metus. Phasellus ut tellus tempus ipsum malesuada sodales et porttitor diam.</p>
                   <p><br><p>
-                </div>
+                </div>-->
 
               </div> <!-- /.section-copy -->
 
@@ -260,11 +220,11 @@
 
               <div class="section-copy">
 
-                <h3 class="hero-header-title"><span class="serif-title">it&rsquo;s</span><br />YOUR CALL!</h3>
-                <p>JAFRA’s lets you sell your way. Set your own hours, plan work around your family and achieve financial independence doing what you love.</p>
-                <p class="text-right"><a href="#more_call" data-toggle="collapse" class="more-link collapsed"><span>MORE</span></a></p>
+                <h3 class="hero-header-title"><span class="serif-title" ng-bind-html="'OS-SECTION3-TITLE1' | translate | unsafe"></span><br />{{ 'OS-SECTION3-TITLE2' | translate }}</h3>
+                <p>{{ 'OS-SECTION3-BODY' | translate }}</p>
+                <!--<p class="text-right"><a href="#more_call" data-toggle="collapse" class="more-link collapsed"><span>MORE</span></a></p>-->
                 <!-- collapsed section content (default collapsed) -->
-                <div id="more_call" class="collapse">
+<!--                <div id="more_call" class="collapse">
                   <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis tincidunt turpis et varius. Donec sapien arcu, facilisis vitae nunc sit amet, venenatis consequat felis. Curabitur varius pretium metus. Phasellus ut tellus tempus ipsum malesuada sodales et porttitor diam.</p>
                   <p>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin dignissim, nibh at pulvinar ornare, nisl mauris maximus nulla, at bibendum metus arcu sed orci. Morbi convallis eu dolor vitae ultricies. Mauris a porttitor tortor, id pellentesque enim. Sed odio sem, placerat eu lorem a, auctor porta enim. Vestibulum egestas, felis a dictum elementum, arcu purus elementum tellus, vel auctor elit diam ac orci. Suspendisse sollicitudin ipsum quis eros rutrum, vel gravida sapien pulvinar. Duis mattis ultricies hendrerit. Phasellus augue libero, tincidunt sit amet tortor non, mollis euismod urna. Cras erat sapien, malesuada eu enim et, bibendum luctus neque. Pellentesque eget euismod sapien. Pellentesque malesuada mauris viverra, placerat ligula id, condimentum nibh. Mauris sed rhoncus lacus, et lacinia erat. Phasellus ultricies ut felis rutrum elementum. Nulla nec ultrices quam. Donec quis congue nisi, quis placerat quam.
@@ -272,7 +232,7 @@
                   <p>
                   Aliquam condimentum, tortor mollis efficitur rhoncus, elit felis laoreet lectus, sed bibendum mi urna sed dui. Quisque vitae elit id nulla posuere pretium. Integer feugiat, neque vitae vestibulum convallis, quam diam feugiat nisl, a aliquet velit nunc at turpis. Cras euismod molestie scelerisque. Integer vestibulum, mauris sit amet pretium dignissim, ligula lorem mollis felis, posuere lobortis odio mi vitae dolor. Donec tempus magna nec tellus aliquet, ultrices malesuada ante volutpat. Donec imperdiet odio ut erat suscipit, sed ornare felis ultricies. Duis iaculis odio eget eros facilisis, sed cursus arcu viverra. Proin aliquam tempus vulputate.
                   </p>
-                </div>
+                </div>-->
 
               </div> <!-- /.section-copy -->
 
@@ -295,14 +255,14 @@
 
               <div class="section-copy">
 
-                <h3 class="hero-header-title"><span class="serif-title">rewards</span><br />GALORE</h3>
-                <p>Set your own goals to earn exciting gifts, amazing trips, and free JAFRA beauty products.</p>
-                <p class="text-right"><a href="#more_rewards" data-toggle="collapse" class="more-link collapsed"><span>MORE</span></a></p>
+                <h3 class="hero-header-title"><span class="serif-title">{{ 'OS-SECTION4-TITLE1' | translate }}</span><br />{{ 'OS-SECTION4-TITLE2' | translate }}</h3>
+                <p>{{ 'OS-SECTION4-BODY' | translate }}</p>
+                <!--<p class="text-right"><a href="#more_rewards" data-toggle="collapse" class="more-link collapsed"><span>MORE</span></a></p>-->
                 <!-- collapsed section content (default collapsed) -->
-                <div id="more_rewards" class="collapse">
+<!--                <div id="more_rewards" class="collapse">
                   <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis tincidunt turpis et varius. Donec sapien arcu, facilisis vitae nunc sit amet, venenatis consequat felis. Curabitur varius pretium metus. Phasellus ut tellus tempus ipsum malesuada sodales et porttitor diam.</p>
                   <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis tincidunt turpis et varius. Donec sapien arcu, facilisis vitae nunc sit amet, venenatis consequat felis. Curabitur varius pretium metus. Phasellus ut tellus tempus ipsum malesuada sodales et porttitor diam.</p>
-                </div>
+                </div>-->
 
               </div>
 
@@ -366,7 +326,7 @@
 
             <div class="col-md-12">
               <div class="section-copy text-left">
-                <h3 class="hero-header-title"><span class="serif-title">JAFRA is everything</span><br />WE IMAGINED<span class="serif-title-alt">and more!</span></h3>
+                <h3 class="hero-header-title"><span class="serif-title">{{ 'OS-SECTION5-TITLE1' | translate }}</span><br />{{ 'OS-SECTION5-TITLE2' | translate }}<span class="serif-title-alt">{{ 'OS-SECTION5-TITLE3' | translate }}</span></h3>
               </div>
             </div>
 
@@ -378,7 +338,7 @@
                   <i class="fa " style="margin:0 0 0 -13px"></i>
                   <h4 class="media-heading h3">Lori Duncan</h4>
                   <p><small></small></p>
-                  <p>&ldquo;It’s easy for me to sell JAFRA because I’m so passionate about all the products! They’re such great quality.&rdquo;</p>
+                  <p>&ldquo;{{ 'OS-SECTION5-QUOTE1' | translate }}&rdquo;</p>
                 </div>
               </div>
 
@@ -388,7 +348,7 @@
                   <i class="fa " style="margin:0 0 0 -13px"></i>
                   <h4 class="media-heading h3">Jennifer Knight</h4>
                   <p><small></small></p>
-                  <p>&ldquo;JAFRA has given me the opportunity to earn more money! Plus the sky’s the limit! I can earn as much as I want!&rdquo;</p>
+                  <p>&ldquo;{{ 'OS-SECTION5-QUOTE2' | translate }}&rdquo;</p>
                 </div>
               </div>
 
@@ -398,7 +358,7 @@
                   <i class="fa " style="margin:0 0 0 -13px"></i>
                   <h4 class="media-heading h3">Rossy Argueta</h4>
                   <p><small></small></p>
-                  <p>&ldquo;I love the freedom JAFRA gives me. I spend more time with my family because I can choose my own schedule. &rdquo;</p>
+                  <p>&ldquo;{{ 'OS-SECTION5-QUOTE3' | translate }} &rdquo;</p>
                 </div>
               </div>
 
@@ -419,7 +379,7 @@
     <section id="starter_kits">
 
       <div class="container">
-        <h2 class="h1 section-title">SELECT YOUR STARTER KIT</h2>
+        <h2 class="h1 section-title">{{ 'OS-LANDING-H1-2' | translate }}</h2>
       </div>
 
       <section id="royal_starter_kit" class="subsection">
@@ -433,26 +393,26 @@
 
             <div class="col-md-6">
               <div class="section-copy">
-                <h3 class="hero-header-title" style="margin-top:10px;"><span class="serif-title h1">get everything</span><br />
-                  YOU NEED
+                <h3 class="hero-header-title" style="margin-top:10px;"><span class="serif-title h1">{{ 'OS-KIT-PRODUCT1-TITLE1' | translate }}</span><br />
+                  {{ 'OS-KIT-PRODUCT1-TITLE2' | translate }}
                 </h3>
-                <h3 class="h1 starter_kits-price">$99</h3>
-                <p class="starter_kits-label_title">Royal Starter Kit</p>
+                <h3 class="h1 starter_kits-price">{{ 'OS-KIT-PRODUCT1-PRICE' | translate }}</h3>
+                <p class="starter_kits-label_title">{{ 'OS-KIT-PRODUCT1-NAME' | translate }}</p>
 
-                <p class="pull-right"><a href="#more_royal" data-toggle="collapse" class="more-link collapsed"><span>WHAT&rsquo;S INSIDE?</span></a></p>
+                <p class="pull-right"><a href="#more_royal" data-toggle="collapse" class="more-link collapsed"><span ng-bind-html="'KIT-DETAILS-TOGGLE' | translate | unsafe"></span></a></p>
 
-                <p class="starter_kits-retail_value">A $490+ Retail Value</p>
+                <p class="starter_kits-retail_value">{{ 'OS-KIT-PRODUCT1-VALUE' | translate }}</p>
                 <div class="product-action">
                     <!-- Split button -->
                     <div class="btn-group">
-                      <button type="button" class="btn btn-primary btn-lg HelveticaNeueLTStd-BdCn" ng-click="join('19634', 'en_US', 'Royal Starter Kit', 99)">Buy English</button>
+                      <button type="button" class="btn btn-primary btn-lg HelveticaNeueLTStd-BdCn" ng-click="join('19634', 'en_US', 'Royal Starter Kit', 99)">{{ 'BUY-ENGLISH' | translate }}</button>
                       <button type="button" class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown">
                         <span class="caret"></span>
                         <span class="sr-only">Toggle Dropdown</span>
                       </button>
                       <ul class="dropdown-menu kit-select" role="menu">
-                        <li><a href="#" ng-click="join('19634', 'en_US', 'Royal Starter Kit', 99)">Buy English</a></li>
-                        <li><a href="#" ng-click="join('19635', 'es_US', 'Kit del Negocio Royal', 99)">Buy Spanish</a></li>
+                        <li><a href="#" ng-click="join('19634', 'en_US', 'Royal Starter Kit', 99)">{{ 'BUY-ENGLISH' | translate }}</a></li>
+                        <li><a href="#" ng-click="join('19635', 'es_US', 'Kit del Negocio Royal', 99)">{{ 'BUY-SPANISH' | translate }}</a></li>
                       </ul>
                     </div>
                   </div>
@@ -470,7 +430,7 @@
               </div>
               <div class="col-md-6">
                 <div class="section-copy">
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis tincidunt turpis et varius. Donec sapien arcu, facilisis vitae nunc sit amet, venenatis consequat felis. Curabitur varius pretium metus. Phasellus ut tellus tempus ipsum malesuada sodales et porttitor diam.</p>
+                  <p ng-bind-html="'OS-KIT-PRODUCT1-DESCRIPTION' | translate | unsafe"></p>
                 </div>
               </div>
             </div>
@@ -493,26 +453,26 @@
             <div class="col-md-6">
               <div class="section-copy">
 
-                <h3 class="hero-header-title" style="margin-top:10px;"><span class="serif-title h1">get a</span>
-                  <span style="display:block; font-size:61px;">QUICK START</span>
+                <h3 class="hero-header-title" style="margin-top:10px;"><span class="serif-title h1">{{ 'OS-KIT-PRODUCT2-TITLE1' | translate }}</span>
+                  <span style="display:block; font-size:61px;">{{ 'OS-KIT-PRODUCT2-TITLE2' | translate }}</span>
                 </h3>
-                <h3 class="h1 starter_kits-price" style="font-size:6em;">$39</h3>
-                  <p class="starter_kits-label_title">Skincare Starter Kit</p>
-                  <p class="pull-right"><a href="#more_skincare" data-toggle="collapse" class="more-link collapsed"><span>WHAT&rsquo;S INSIDE?</span></a></p>
-                  <p class="starter_kits-retail_value">A $198 Retail Value</p>
+                <h3 class="h1 starter_kits-price" style="font-size:6em;">{{ 'OS-KIT-PRODUCT2-PRICE' | translate }}</h3>
+                  <p class="starter_kits-label_title">{{ 'OS-KIT-PRODUCT2-NAME' | translate }}</p>
+                  <p class="pull-right"><a href="#more_skincare" data-toggle="collapse" class="more-link collapsed"><span ng-bind-html="'KIT-DETAILS-TOGGLE' | translate | unsafe"></span></a></p>
+                  <p class="starter_kits-retail_value">{{ 'OS-KIT-PRODUCT2-VALUE' | translate }}</p>
                 
                 <div class="product-action">
                   <!-- Split button -->
                   <div class="btn-group">
-                    <button type="button" class="btn btn-primary btn-lg HelveticaNeueLTStd-BdCn" ng-click="join('19634', 'en_US', 'Royal Starter Kit', 99)">Buy English</button>
+                    <button type="button" class="btn btn-primary btn-lg HelveticaNeueLTStd-BdCn" ng-click="join('19634', 'en_US', 'Royal Starter Kit', 99)">{{ 'BUY-ENGLISH' | translate }}</button>
                     <button type="button" class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown">
                       <span class="caret"></span>
                       <span class="sr-only">Toggle Dropdown</span>
                     </button>
 
                     <ul class="dropdown-menu kit-select" role="menu">
-                      <li><a href="#" ng-click="join('19634', 'en_US', 'Royal Starter Kit', 99)">Buy English</a></li>
-                      <li><a href="#" ng-click="join('19635', 'es_US', 'Kit del Negocio Royal', 99)">Buy Spanish</a></li>
+                      <li><a href="#" ng-click="join('19634', 'en_US', 'Royal Starter Kit', 99)">{{ 'BUY-ENGLISH' | translate }}</a></li>
+                      <li><a href="#" ng-click="join('19635', 'es_US', 'Kit del Negocio Royal', 99)">{{ 'BUY-SPANISH' | translate }}</a></li>
 
                     </ul>
                   </div>
@@ -525,7 +485,7 @@
             <div id="more_skincare" class="col-md-12 collapse">
               <div class="col-md-6">
                 <div class="section-copy">
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis tincidunt turpis et varius. Donec sapien arcu, facilisis vitae nunc sit amet, venenatis consequat felis. Curabitur varius pretium metus. Phasellus ut tellus tempus ipsum malesuada sodales et porttitor diam.</p>
+                  <p ng-bind-html="'OS-KIT-PRODUCT2-DESCRIPTION' | translate | unsafe"></p>
                 </div>
               </div>
               <div class="col-md-6">
@@ -544,7 +504,7 @@
     <section id="FAQs">
 
       <div class="container">
-        <h2 class="h1 section-title">FAQs</h2>
+        <h2 class="h1 section-title">{{ 'OS-FAQ-TITLE' | translate }}</h2>
       </div>
 
       <div class="subsection">
@@ -555,13 +515,13 @@
             <div class="faqs-item">
               <div class="faqs-item-question">
                 <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse1">
-                  Q. What does it mean to be a JAFRA Consultant?
+                  {{ 'OS-Q1' | translate }}
                 </a>
               </div>
               <div class="faqs-item-answer">
                 <!-- collapsed section content (default collapsed) -->
-                <p id="FAQcollapse1" class="collapse">
-                  A. You’re out there as our representative selling JAFRA’s excellent products directly to customers at hosted parties, casual get-togethers wherever you like or online. It’s up to you!
+                <p id="FAQcollapse1" class="collapse" ng-bind-html="'OS-A1' | translate | unsafe">
+                  
                 </p>
               </div>
             </div>
@@ -569,56 +529,65 @@
             <div class="faqs-item">
               <div class="faqs-item-question">
                 <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse2">
-                  Q. How do I begin to share JAFRA products?
+                  {{ 'OS-Q2' | translate }}
                 </a>
               </div>
               <div class="faqs-item-answer">
                 <!-- collapsed section content (default collapsed) -->
-                <p id="FAQcollapse2" class="collapse">
-                  A. Simply make a list of your friends, family, and neighbors, and give them a call. Let them know you’re now a JAFRA Consultant, and that you want to show them the beauty of JAFRA products.
-                </p>
+                <p id="FAQcollapse2" class="collapse" ng-bind-html="'OS-A2' | translate | unsafe">
+                  </p>
               </div>
             </div>
             <hr>
             <div class="faqs-item">
               <div class="faqs-item-question">
                 <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse3">
-                  Q. How much can I expect to earn?
+                  {{ 'OS-Q3' | translate }}
                 </a>
               </div>
               <div class="faqs-item-answer">
                 <!-- collapsed section content (default collapsed) -->
-                <p id="FAQcollapse3" class="collapse">
-                  A. You’re the CEO of your business so you decide! You can earn up to 50% personal commissions on sales. The more you sell, the more you’ll earn!
-                </p>
+                <p id="FAQcollapse3" class="collapse" ng-bind-html="'OS-A3' | translate | unsafe">
+                  </p>
               </div>
             </div>
             <hr>
             <div class="faqs-item">
               <div class="faqs-item-question">
                 <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse4">
-                  Q. How will I get paid?
+                  {{ 'OS-Q4' | translate }}
                 </a>
               </div>
               <div class="faqs-item-answer">
                 <!-- collapsed section content (default collapsed) -->
-                <p id="FAQcollapse4" class="collapse">
-                  A. You have two options. Payments are made: 1) Via direct deposit into your checking account 2) Loaded onto a JAFRA Debit MasterCard.
-                </p>
+                <p id="FAQcollapse4" class="collapse" ng-bind-html="'OS-A4' | translate | unsafe">
+                  </p>
               </div>
             </div>
             <hr>
             <div class="faqs-item">
               <div class="faqs-item-question">
                 <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse5">
-                  Q. Will I receive training from JAFRA?
+                  {{ 'OS-Q5' | translate }}
                 </a>
               </div>
               <div class="faqs-item-answer">
                 <!-- collapsed section content (default collapsed) -->
-                <p id="FAQcollapse5" class="collapse">
-                  A. Yes! In no time, you’ll be a JAFRA expert with our convenient and powerful online training. Your JAFRA Manager can also help you learn.
-                </p>
+                <p id="FAQcollapse5" class="collapse" ng-bind-html="'OS-A5' | translate | unsafe">
+                  </p>
+              </div>
+            </div>
+            <hr>
+            <div class="faqs-item">
+              <div class="faqs-item-question">
+                <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse6">
+                  {{ 'OS-Q6' | translate }}
+                </a>
+              </div>
+              <div class="faqs-item-answer">
+                <!-- collapsed section content (default collapsed) -->
+                <p id="FAQcollapse6" class="collapse" ng-bind-html="'OS-A6' | translate | unsafe">
+                  </p>
               </div>
             </div>
           </div>
@@ -626,71 +595,66 @@
           <div class="col-md-6">
             <div class="faqs-item">
               <div class="faqs-item-question">
-                <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse6">
-                  Q. Do I need to work a certain amount of hours?
-                </a>
-              </div>
-              <div class="faqs-item-answer">
-                <!-- collapsed section content (default collapsed) -->
-                <p id="FAQcollapse6" class="collapse">
-                  A. No to that. You’re the boss so you decide how much time you spend on your JAFRA business.
-                </p>
-              </div>
-            </div>
-            <hr>
-            <div class="faqs-item">
-              <div class="faqs-item-question">
                 <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse7">
-                  Q. Do I need to achieve a minimum number of sales?
+                  {{ 'OS-Q7' | translate }}
                 </a>
               </div>
               <div class="faqs-item-answer">
                 <!-- collapsed section content (default collapsed) -->
-                <p id="FAQcollapse7" class="collapse">
-                  A. We have a rule for this one: To remain a JAFRA Consultant, you are required to place at least $300 or more in retail orders in a 12-month period.
-                </p>
+                <p id="FAQcollapse7" class="collapse" ng-bind-html="'OS-A7' | translate | unsafe">
+                  </p>
               </div>
             </div>
             <hr>
             <div class="faqs-item">
               <div class="faqs-item-question">
                 <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse8">
-                  Q. How much do I have to invest?
+                  {{ 'OS-Q8' | translate }}
                 </a>
               </div>
               <div class="faqs-item-answer">
                 <!-- collapsed section content (default collapsed) -->
-                <p id="FAQcollapse8" class="collapse">
-                  A. You can purchase our Royal Starter Kit for $99 plus shipping and handling. It has everything you need to succeed. Look for Quick Start kits at a lower price.
-                </p>
+                <p id="FAQcollapse8" class="collapse" ng-bind-html="'OS-A8' | translate | unsafe">
+                  </p>
               </div>
             </div>
             <hr>
             <div class="faqs-item">
               <div class="faqs-item-question">
                 <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse9">
-                  Q. Does JAFRA offer a product guarantee?
+                  {{ 'OS-Q9' | translate }}
                 </a>
               </div>
               <div class="faqs-item-answer">
                 <!-- collapsed section content (default collapsed) -->
-                <p id="FAQcollapse9" class="collapse">
-                  A. Of course! We offer free, no-hassle returns and exchanges within 6 months of a product’s purchase date.
-                </p>
+                <p id="FAQcollapse9" class="collapse" ng-bind-html="'OS-A9' | translate | unsafe">
+                  </p>
               </div>
             </div>
             <hr>
             <div class="faqs-item">
               <div class="faqs-item-question">
                 <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse10">
-                  Q. How is JAFRA different from other direct sale cosmetic companies?
+                  {{ 'OS-Q10' | translate }}
                 </a>
               </div>
               <div class="faqs-item-answer">
                 <!-- collapsed section content (default collapsed) -->
-                <p id="FAQcollapse10" class="collapse">
-                  A. Founded in 1956 in Malibu, California, JAFRA has over 58 years in helping women achieve their dreams. Over 500,000 Consultants sell our products in 20 countries. Plus, JAFRA is ranked in the top 25 direct sales companies in the United States.
-                </p>
+                <p id="FAQcollapse10" class="collapse" ng-bind-html="'OS-A10' | translate | unsafe">
+                  </p>
+              </div>
+            </div>
+            <hr>
+            <div class="faqs-item">
+              <div class="faqs-item-question">
+                <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse11">
+                  {{ 'OS-Q11' | translate }}
+                </a>
+              </div>
+              <div class="faqs-item-answer">
+                <!-- collapsed section content (default collapsed) -->
+                <p id="FAQcollapse11" class="collapse" ng-bind-html="'OS-A11' | translate | unsafe">
+                  </p>
               </div>
             </div>
           </div>
@@ -699,7 +663,7 @@
 
             <div class="well">
 
-              <a class="btn btn-primary btn-lg HelveticaNeueLTStd-BdCn" role="button" href="#" data-toggle="modal" data-target=".bs-example-modal-lg">Join now</a>
+              <a class="btn btn-primary btn-lg HelveticaNeueLTStd-BdCn" role="button" href="#" data-toggle="modal" data-target=".bs-example-modal-lg">{{ 'OS-JOIN-BTN' | translate }}</a>
 
             </div>
 
