@@ -607,6 +607,7 @@ angular.module('app.services', ['ngResource'])
         };
 
         cartService.addToCart = function(item) {
+            $log.debug("cartService(): addToCart(): adding", item);
             var d = $q.defer();
 
             $rootScope.adding = true;
@@ -633,9 +634,11 @@ angular.module('app.services', ['ngResource'])
                 $log.debug("cartService(): addToCart(): adding new item", item);
                 cart.push({
                     name: item.name,
+                    name_es_US: item.name_es_US,
                     sku: item.sku,
                     kitSelections: item.kitSelections,
-                    quantity: item.quantity
+                    quantity: item.quantity,
+                    components: item.components
                 });
             }
 
@@ -747,6 +750,8 @@ angular.module('app.services', ['ngResource'])
                         item.product = product;
                     }
                 });
+
+                $log.debug("cartService(): loadProducts(): returning items", items);
                 d.resolve(items);
             }, function(error) {
                 $log.debug("cartService(): loadProducts(): error loading products", error);
@@ -767,7 +772,7 @@ angular.module('app.services', ['ngResource'])
         salesTaxService.calculate = function(clientId, consultantId, geocode, typeOrder, source, products) {
             var d = $q.defer();
 
-            //$log.debug("Session(): login(): attempting to login with username=", username, "password=", password);
+            //$log.debug("salesTaxService(): login(): attempting to login with username=", username, "password=", password);
             var session = $http.post(API_URL + '/calculateTax', {
                 clientId: clientId,
                 consultantId: consultantId,
@@ -869,7 +874,7 @@ angular.module('app.services', ['ngResource'])
                 }
             });
 
-            $log.debug("priceSelected?", priceSelected, product.prices);
+            $log.debug("cartService(): loadProducts(): priceSelected?", priceSelected, product.prices);
         }
         return productService;
     })

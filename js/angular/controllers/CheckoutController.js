@@ -197,12 +197,14 @@ angular.module('app.controllers.checkout')
                     $log.debug("CheckoutController(): previous cart cleared");
 
                     Cart.addToCart({
-                        name: "Royal Starter Kit",
+                        name: "Royal Starter Kit (English)",
+                        name_es_US: "Royal Starter Kit (Ingl&eacute;s)",
                         sku: "19634",
                         quantity: 1,
-                        kitSelections: {}
+                        kitSelections: {},
+                        components: []
                     }).then(function(cart) {
-                        $log.debug("CheckoutController(): online sponsoring SKU loaded & added to cart");
+                        $log.debug("CheckoutController(): online sponsoring SKU loaded & added to cart", cart);
                         onlineSponsorChecksCompleteDefer.resolve();
                     }, function(error) {
                         $log.error("CheckoutController(): failed to update cart");
@@ -220,51 +222,52 @@ angular.module('app.controllers.checkout')
 
                 // get the sku, add the product to cart
                 var sku = S($routeParams.sku != null ? $routeParams.sku : "").toString();
-                var name = S($routeParams.name != null ? $routeParams.name : "").toString();
-                $log.debug("CheckoutController(): online sponsoring: sku=", sku, "name=", name);
+                $log.debug("CheckoutController(): online sponsoring: loading sku=", sku);
 
-                if (urlStep == 'Finish') {
-                    $log.debug("CheckoutController(): finished wizard, redirecting to landing page?");
-                    $location.path(JOIN_BASE_URL).search('');
-                    return;
-                } else if (sku == null) {
-                    $log.error("CheckoutController(): failed to load sku for online sponsoring");
-                    $location.path(JOIN_BASE_URL).search('');
-                    return;
-                } else {
-                    if (WizardHandler.wizard('checkoutWizard') != null) {
-                        $log.debug("CheckoutController(): loading Start step");
-                        WizardHandler.wizard('checkoutWizard').goTo('Start');
-                        $location.search("step", 'Start');
+                // load the product
+                Products.get({productId: sku}).then(function(product) {
+                    $log.debug("CheckoutController(): online sponsoring: loaded sku=", sku, "name=", name);
+
+                    if (urlStep == 'Finish') {
+                        $log.debug("CheckoutController(): finished wizard, redirecting to landing page?");
+                        $location.path(JOIN_BASE_URL).search('');
+                        return;
+                    } else if (sku == null) {
+                        $log.error("CheckoutController(): failed to load sku for online sponsoring");
+                        $location.path(JOIN_BASE_URL).search('');
+                        return;
                     } else {
-                        $timeout(function() {
-                            $log.debug("CheckoutController(): loading Start step after delay");
+                        if (WizardHandler.wizard('checkoutWizard') != null) {
+                            $log.debug("CheckoutController(): loading Start step");
                             WizardHandler.wizard('checkoutWizard').goTo('Start');
                             $location.search("step", 'Start');
-                        }, 0);
+                        } else {
+                            $timeout(function() {
+                                $log.debug("CheckoutController(): loading Start step after delay");
+                                WizardHandler.wizard('checkoutWizard').goTo('Start');
+                                $location.search("step", 'Start');
+                            }, 0);
+                        }
                     }
-                }
 
-                // FIXME - verify all previous steps data is available, else restart process
+                    // FIXME - verify all previous steps data is available, else restart process
 
-                $log.debug("CheckoutController(): clearing cart and restarting checkout");
+                    $log.debug("CheckoutController(): clearing cart and restarting checkout");
 
-                Cart.clear().then(function(cart) {
-                    $log.debug("CheckoutController(): previous cart cleared");
+                    Cart.clear().then(function(cart) {
+                        $log.debug("CheckoutController(): previous cart cleared");
 
-                    Cart.addToCart({
-                        name: name,
-                        sku: sku,
-                        quantity: 1,
-                        kitSelections: {}
-                    }).then(function(cart) {
-                        $log.debug("CheckoutController(): online sponsoring SKU loaded & added to cart");
-                        onlineSponsorChecksCompleteDefer.resolve();
+                        Cart.addToCart(product).then(function(cart) {
+                            $log.debug("CheckoutController(): online sponsoring SKU loaded & added to cart");
+                            onlineSponsorChecksCompleteDefer.resolve();
+                        }, function(error) {
+                            $log.error("CheckoutController(): failed to update cart");
+                        });
                     }, function(error) {
                         $log.error("CheckoutController(): failed to update cart");
                     });
-                }, function(error) {
-                    $log.error("CheckoutController(): failed to update cart");
+                }, function(err) {
+                    $log.error("CheckoutController(): failed to load product");
                 });
             } else {
                 // nothing to load, done
