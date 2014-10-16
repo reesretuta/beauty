@@ -29,7 +29,7 @@
     "images" : [ 
         {
             "alt" : "Color Set",
-            "imagePath" : "/img/skincare_starter_kit.png",
+            "imagePath" : "/img/royal_starter_kit.png",
             "rank" : 1,
             "startDate" : { "$date" : 946702800000 },
             "endDate" : { "$date" : 1735707600000 }

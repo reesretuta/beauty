@@ -34,10 +34,10 @@
                 <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{item.name}} <span class="caret"></span></a>
                   <ul class="dropdown-menu" role="menu">
-                    <li><a ng-click="selectProduct('19636')">{{ 'OS-KIT-PRODUCT1-NAME' | translate }} (English)</a></li>
-                    <li><a ng-click="selectProduct('19637')">{{ 'OS-KIT-PRODUCT1-NAME' | translate }} (Spanish)</a></li>
-                    <li><a ng-click="selectProduct('19634')">{{ 'OS-KIT-PRODUCT2-NAME' | translate }} (English)</a></li>
-                    <li><a ng-click="selectProduct('19635')">{{ 'OS-KIT-PRODUCT2-NAME' | translate }} (Spanish)</a></li>
+                    <li><a ng-click="selectProduct('19634')">{{ 'OS-KIT-PRODUCT1-NAME' | translate }} (English)</a></li>
+                    <li><a ng-click="selectProduct('19635')">{{ 'OS-KIT-PRODUCT1-NAME' | translate }} (Spanish)</a></li>
+                    <li><a ng-click="selectProduct('19636')">{{ 'OS-KIT-PRODUCT2-NAME' | translate }} (English)</a></li>
+                    <li><a ng-click="selectProduct('19637')">{{ 'OS-KIT-PRODUCT2-NAME' | translate }} (Spanish)</a></li>
                   </ul>
                 </li>
               </p>
@@ -96,7 +96,7 @@
 
           <input type="checkbox" value="" ng-model="checkout.agree" required>
 
-          I agree to the <a href="" data-toggle="modal" data-target=".bs-example-modal-lg-terms">Terms and Conditions</a>
+          I agree to the <a href="" data-toggle="modal" data-target=".bs-terms-modal-lg">Terms and Conditions</a>
           &nbsp;&nbsp;&nbsp;&nbsp;
         </label>
         <button ng-if="!isOnlineSponsoring" type="button" class="btn-link pull-left" ng-click="confirmAlert('Are you sure you\'d like to cancel your order?')">Cancel Order</ng-bind="expression"utton>
@@ -185,7 +185,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Billing To:</h4>
+        <h4 class="modal-title" id="myModalLabel">{{ 'PAY_TIT3' | translate }}:</h4>
       </div>
       <div class="modal-body row">
         <ng-include src="'/partials/checkout/payment.html'"/>
@@ -196,7 +196,7 @@
 
 
       <div class="col-xs-3 col-lg-3 checkout-address" ng-if="checkout.billSame">
-        <h3>Billing To:</h3>
+        <h3>{{ 'PAY_TIT3' | translate }}:</h3>
         <span class="address-name">{{checkout.shipping.name}}</span>
         <span class="address-street">{{checkout.shipping.address1}} {{checkout.shipping.address2}}</span>
         <span class="address-region">{{checkout.shipping.city}}, {{checkout.shipping.state}} {{checkout.shipping.zip}}</span>
@@ -212,7 +212,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Billing To:</h4>
+        <h4 class="modal-title" id="myModalLabel">{{ 'PAY_TIT3' | translate }}:</h4>
       </div>
       <div class="modal-body row">
         <ng-include src="'/partials/checkout/payment.html'"/>
@@ -238,7 +238,7 @@
   </div>
 </div>
     
-<div class="modal fade bs-example-modal-lg-terms"  role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<!--<div class="modal fade bs-example-modal-lg-terms"  role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -266,7 +266,7 @@
       </div>
     </div>
   </div>
-</div>
+</div>-->
   
   </div>
 
