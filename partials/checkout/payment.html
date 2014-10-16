@@ -62,11 +62,11 @@
     <span ng-show="visited && (paymentForm.number.$error.minlength || paymentForm.number.$error.validator)" class="help-block" ng-class="{ 'text-danger' : paymentForm.number.$invalid && !paymentForm.number.$pristine }">Invalid credit card number</span>
     <!--valid={{paymentForm.number.$valid}}-->
   </div>
-  <div class="col-sm-4 col-lg-4" ng-model="cardType">
-    <img class="img-responsive cardImg" src="/img/visa.png" ng-show="Visa">
-    <img class="img-responsive cardImg" src="/img/mastercard.png" ng-show="MasterCard">
-    <img class="img-responsive cardImg" src="/img/discover.png" ng-show="Discover Card">
-    <img class="img-responsive cardImg" src="/img/americanexpress.png" ng-show="American Express">
+  <div class="col-sm-4 col-lg-4" ng-model="cardType" ng-show="!paymentForm.number.$error.minlength && !paymentForm.number.$error.validator">
+    <img class="img-responsive cardImg" src="/img/visa.png" ng-show="profile.newCard.cardType=='Visa'">
+    <img class="img-responsive cardImg" src="/img/mastercard.png" ng-show="profile.newCard.cardType=='MasterCard'">
+    <img class="img-responsive cardImg" src="/img/discover.png" ng-show="profile.newCard.cardType=='Discover Card'">
+    <img class="img-responsive cardImg" src="/img/americanexpress.png" ng-show="profile.newCard.cardType=='American Express'">
   </div>
 </div>
 <div class="form-group">

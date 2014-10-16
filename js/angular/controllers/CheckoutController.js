@@ -751,6 +751,16 @@ angular.module('app.controllers.checkout')
             return res.valid;
         }
 
+        function cardChanged() {
+            $log.debug("CheckoutController(): cardChanged()", $scope.profile.newCard);
+            var res = $scope.validateCard($scope.profile.newCard.card);
+            $scope.profile.newCard.cardType = res.type;
+        }
+
+        $scope.$watch('profile.newCard.card', function(newVal, oldVal) {
+            cardChanged();
+        });
+
         $scope.validateCard = function(ccnumber) {
             if (!ccnumber) {
                 return {
