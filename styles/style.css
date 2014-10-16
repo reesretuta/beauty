@@ -89,7 +89,10 @@ h2 {
   text-transform: uppercase;
   color: #fff;
 }
-
+body.join .nav .open>a.language_dropdown, .nav .open>a.language_dropdown:hover, .nav .open>a.language_dropdown:focus {
+background-color: #c52033;
+border-color: #c52033;
+}
 .print-link {
     margin-top: 50px;
 }
