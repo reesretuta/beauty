@@ -609,7 +609,7 @@ router.route('/consultants') // get current consultant
 
     // create a consultant
     .post(function (req, res) {
-        console.log("got data", req.body.encrypted);
+        console.log("create consultant: got data", req.body.encrypted);
 
         jafraClient.createConsultant(req.body.encrypted).then(function(r) {
             console.log("success", r)
@@ -620,6 +620,26 @@ router.route('/consultants') // get current consultant
             res.status(r.status);
             res.json(r.result);
         });
+    });
+
+router.route('/consultants/lookup') // get current consultant
+
+    // lookup a consultant
+    .post(function (req, res) {
+        console.log("lookup consultant: got data", req.body.encrypted);
+
+        // fetch
+        jafraClient.lookupConsultant(req.body.encrypted).then(function(r) {
+            console.log("server: getClient(): looked up");
+            res.status(200);
+            res.json(r.result);
+        }, function (r) {
+            console.error("server: getClient(): failed to load consultant", r.result);
+            res.status(r.status);
+            res.json(r.result);
+            res.end();
+        });
+
     });
 
 router.route('/consultants/:consultant_id')// get a consultant
@@ -877,7 +897,7 @@ router.route('/validate/address') // validate address
             res.status(r.status);
             res.json(r.result);
         });
-    })
+    });
 
 router.route('/validate/email') // validate email address
     .get(function (req, res) {
@@ -894,7 +914,39 @@ router.route('/validate/email') // validate email address
             res.status(r.status);
             res.json(r.result);
         });
-    })
+    });
+
+router.route('/geocodes')
+    .get(function (req, res) {
+        var zipCode = req.param('zipCode');
+
+        console.log("getting geocodes for zip", zipCode);
+        jafraClient.getGeocodes(zipCode).then(function(r) {
+            console.log("got geocodes", r.status, "result", r.result);
+            // return response
+            res.status(r.status);
+            res.json(r.result);
+        }, function(r) {
+            console.error("failed to get geocodes", r.status, "result", r.result);
+            res.status(r.status);
+            res.json(r.result);
+        });
+    });
+
+router.route('/calculateTax')
+    .post(function (req, res) {
+        console.log("getting tax calculations for", req.body);
+        jafraClient.calculateSalesTax(req.body).then(function(r) {
+            console.log("got tax calculations", r.status, "result", r.result);
+            // return response
+            res.status(r.status);
+            res.json(r.result);
+        }, function(r) {
+            console.error("failed to get tax calculations", r.status, "result", r.result);
+            res.status(r.status);
+            res.json(r.result);
+        });
+    });
 
 // Configure Express
 

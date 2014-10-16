@@ -46,13 +46,17 @@
               <h2>{{ 'OS-KIT-MODAL-TITLE' | translate }}  <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button></h2>
             </div>
             <div class="col-md-6" style="border-right: 1px solid #ededed;">
-              <img class="img-responsive" src="/img/99_kit.jpg">
+
+              
               <h3 class="hero-header-title starter_kits-title"><span class="serif-title h1">{{ 'OS-KIT-PRODUCT1-TITLE1' | translate }}</span><br />
                 {{ 'OS-KIT-PRODUCT1-TITLE2' | translate }}
+
               </h3>
-              <h3 class="h1 starter_kits-price">{{ 'OS-KIT-PRODUCT1-PRICE' | translate }}</h3>
+
+              <h3 class="h1 starter_kits-price modal_starter_kits-price">{{ 'OS-KIT-PRODUCT1-PRICE' | translate }}</h3>
               <p class="starter_kits-label_title">{{ 'OS-KIT-PRODUCT1-NAME' | translate }}</p>
               <p class="starter_kits-retail_value">{{ 'OS-KIT-PRODUCT1-VALUE' | translate }}</p>
+
               <div class="product-action">
                 <!-- Split button -->
                 <div class="btn-group">
@@ -73,6 +77,8 @@
               <!-- collapsed section content (default collapsed) -->
               <div id="royal_starter_info" class="collapse">
                 <hr>
+
+                <img class="img-responsive" src="/img/99_kit.jpg">
                 <strong>{{ 'OS-KIT-PRODUCT1-VALUE' | translate }}</strong>
                   <p ng-bind-html="'OS-KIT-PRODUCT1-DESCRIPTION' | translate | unsafe"></p>
                   <img src="/img/99_kit_bags.jpg" class="img-responsive"/>
@@ -80,13 +86,15 @@
               </div>
             </div>
             <div class="col-md-6" style="border-left: 1px solid #ededed;">
-              <img class="img-responsive" src="/img/39_kit.jpg">
+
               <h3 class="hero-header-title starter_kits-title"><span class="serif-title h1">{{ 'OS-KIT-PRODUCT2-TITLE1' | translate }}</span><br />
                 {{ 'OS-KIT-PRODUCT2-TITLE2' | translate }}
+
               </h3>
-              <h3 class="h1 starter_kits-price">{{ 'OS-KIT-PRODUCT2-PRICE' | translate }}</h3>
+              <h3 class="h1 starter_kits-price modal_starter_kits-price">{{ 'OS-KIT-PRODUCT2-PRICE' | translate }}</h3>
                 <p class="starter_kits-label_title">{{ 'OS-KIT-PRODUCT2-NAME' | translate }}</p>
                 <p class="starter_kits-retail_value">{{ 'OS-KIT-PRODUCT2-VALUE' | translate }}</p>
+
               <div class="product-action">
                 <!-- Split button -->
                 <div class="btn-group">
@@ -107,8 +115,11 @@
               <!-- collapsed section content (default collapsed) -->
               <div id="skincare_starter_info" class="collapse">
                 <hr>
+
+                <img class="img-responsive" src="/img/39_kit.jpg">
                 <strong>{{ 'OS-KIT-PRODUCT2-VALUE' | translate }}</strong>
                   <p ng-bind-html="'OS-KIT-PRODUCT2-DESCRIPTION' | translate | unsafe"></p>
+
                   <img src="/img/39_kit_bag.jpg" class="img-responsive"/>
                 	  
               </div>
@@ -399,7 +410,8 @@
                 <h3 class="h1 starter_kits-price">{{ 'OS-KIT-PRODUCT1-PRICE' | translate }}</h3>
                 <p class="starter_kits-label_title">{{ 'OS-KIT-PRODUCT1-NAME' | translate }}</p>
 
-                <p class="pull-right"><a href="#more_royal" data-toggle="collapse" class="more-link collapsed"><span ng-bind-html="'KIT-DETAILS-TOGGLE' | translate | unsafe"></span></a></p>
+                <p class="whats_inside_button"><a href="#more_royal" data-toggle="collapse" class="more-link collapsed"><span ng-bind-html="'KIT-DETAILS-TOGGLE' | translate | unsafe"></span></a></p>
+
 
                 <p class="starter_kits-retail_value">{{ 'OS-KIT-PRODUCT1-VALUE' | translate }}</p>
                 <div class="product-action">
@@ -432,6 +444,7 @@
                 <div class="section-copy">
                   <p ng-bind-html="'OS-KIT-PRODUCT1-DESCRIPTION' | translate | unsafe"></p>
                 </div>
+
               </div>
             </div>
 
@@ -487,6 +500,7 @@
                 <div class="section-copy">
                   <p ng-bind-html="'OS-KIT-PRODUCT2-DESCRIPTION' | translate | unsafe"></p>
                 </div>
+
               </div>
               <div class="col-md-6">
                 <img src="/img/39_kit_bag.jpg" class="img-responsive"/>

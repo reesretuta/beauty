@@ -50,7 +50,13 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
           suffix: '.json'
         });
 
-        $translateProvider.preferredLanguage('en_US');
+        $translateProvider
+        .registerAvailableLanguageKeys(['en', 'es'], {
+            'en_US': 'en',
+            'es_US': 'es'
+        })
+        .determinePreferredLanguage()
+        .fallbackLanguage('en');
 
 
         var interceptor = ['$location', '$q', '$timeout', '$rootScope', '$log', function($location, $q, $timeout, $rootScope, $log) {

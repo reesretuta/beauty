@@ -116,6 +116,10 @@ input:focus:-ms-input-placeholder {
 #logo img {
   max-width: 70px;
 }
+ul.modal_lists {
+list-style-type: none;
+padding-left: 0px;
+}
 .navbar-default .navbar-nav>li>a {
   color:#fff;
 }
@@ -383,6 +387,9 @@ line-height: 1.2em;
   color: #53366C;
 line-height: 1.2em; /*0.8em;*/
 }
+.modal_starter_kits-price{
+  font-size: 6em;
+}
 .starter_kits-label_title{
   font-family: HelveticaNeueLTStd-BdCn;
   font-weight: normal;
@@ -599,7 +606,11 @@ padding-top: 5px;
   right: -60px; 
   top: -50px;
 }
-
+.start_inside{
+	width:50%; 
+	float:left;
+padding: 20px;
+}
 .steps-indicator {
   top: 0;
 }
@@ -613,8 +624,19 @@ padding-top: 5px;
     margin: 0;
 }
 
-
-
+body.incheckout .navbar-fixed-top, 
+body.incheckout #pagenav.affix {
+    min-height: 50px !important;
+    position: relative !important;
+    top: auto !important;
+}
+body.incheckout {
+    margin: 0 !important;
+    padding-top: 0 !important;
+}
+.whats_inside_button{
+	float:right;
+}
 @media (max-width:990px) {
 	.prod_more_link
 	{
@@ -671,9 +693,50 @@ padding-top: 5px;
       font-size: 33px;
       line-height: 36px;
     }
+      
+  	.start_inside{
+  		width:100%; 
+  	}
+    ul.menu_language li a {
+      color: #fff;
+    }
+    
+	.social-media-icons .fa{
+		font-size:30px;
+		text-align:center;
+	}
+	.contact-header .social_dropdown{
+		width:100%;
+		max-width: 100%;
+	}
+	
+	.whats_inside_button{
+		float:none;
+	}
 
 }
-
+@media (min-width:400px) and (max-width:767px) {
+	.jumbo-title-span-1 {
+	    font-size: 85px;
+	}
+	.jumbo-title-span-4 {
+	    font-size: 60px;
+	}
+    ul.menu_language li a {
+      color: #fff;
+    }
+	.social-media-icons .fa{
+		font-size:30px;
+		text-align:center;
+	}
+	.contact-header .social_dropdown{
+		width:100%;
+		max-width: 100%;
+	}
+	footer .nav .open>a{
+		background-color:#53366C!important;
+	}
+}
 @media (max-width: 767px) {
     .navbar-fixed-top, #pagenav.affix {
         min-height: 50px;
@@ -687,8 +750,13 @@ padding-top: 5px;
         margin: 0;
         padding-top: 0;
         -webkit-overflow-scrolling: touch;
-    }
-
+    }	
+    .start_inside{
+		width:100%; 
+	}
+	footer .navbar-nav .open .dropdown-menu{
+		background-color:#53366C!important;
+	}
 }
 
 /* Small screens like netbooks and tablets (iPad/iPad mini/etc) */
@@ -704,6 +772,12 @@ padding-top: 5px;
         table-layout: fixed;
         float:none;
     }
+	.jumbo-title-span-1 {
+	    font-size: 85px;
+	}
+	.jumbo-title-span-4 {
+	    font-size: 60px;
+	}
 }
 
 /* Medium screens like laptops and smaller desktop monitors */
@@ -726,3 +800,4 @@ padding-top: 5px;
 		left:-120px;
 	}
 }
+

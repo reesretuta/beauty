@@ -1,17 +1,22 @@
-<div class="col-sm-12">
+<div class="container">
 
-  <div class="col-md-offset-3 col-lg-8">
+  <div class="col-md-offset-1 col-md-10">
     <h1>Review &amp; Confirm Order
-              <span class="store-heading-description">
-                Clicking &ldquo;Place Order&ldquo; will charge your payment option in the amount below.
-              </span>
+      <span class="store-heading-description">
+        Clicking &ldquo;Place Order&ldquo; will charge your payment option in the amount below.
+      </span>
     </h1>
+    
+    <div class="row">
+      <div class="col-sm-6">
+        <div ng-if="orderError" class="alert alert-danger" role="alert" ng-bind="orderError"></div>
+      </div>
+    </div>
   </div>
 
-  <div class="col-md-offset-3 col-lg-8">
-<form class="form order-details" role="form" name="confirmForm">
+  <div class="col-md-offset-1 col-md-10">
+  <form class="form order-details" role="form" name="confirmForm">
       <a ng-href="{{STORE_BASE_URL}}/cart" ng-if="!isOnlineSponsoring" class="pull-right" style="margin-top:10px"><i class="fa fa-pencil-square-o"></i> make changes</a>
-      <h2 class="">Order Details</h2>
       <div class="form-group">
         <table class="table">
           <thead>
@@ -26,7 +31,15 @@
             <td>{{item.quantity}}</td>
             <td>
               <p class="confirmation-description">
-                {{item.name}}
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{item.name}} <span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a ng-click="selectProduct('19636')">Royal Starter Kit (English)</a></li>
+                    <li><a ng-click="selectProduct('19637')">Kit del Negocio Royal (Spanish)</a></li>
+                    <li><a ng-click="selectProduct('19634')">Skincare Starter Kit (English)</a></li>
+                    <li><a ng-click="selectProduct('19635')">Cuidado del Cutis (Spanish)</a></li>
+                  </ul>
+                </li>
               </p>
             </td>
             <td align="right">
@@ -43,29 +56,29 @@
               <!--{{item.product.pricing.detailprice.price | currency}}-->
               <!--</span>-->
               <!--</span>-->
-                            <span ng-repeat="detailprice in item.product.currentPrice">
-                              <span ng-if="detailprice.typeId==2" class="item-price-sale">
-                                {{detailprice.price | currency}}
-                              </span>
-                              <span ng-if="detailprice.typeId==1" class="item-price-strike">
-                                {{detailprice.price | currency}}
-                              </span>
-                            </span>
-                            <span ng-if="item.product.currentPrice.price">
-                              <span class="item-price">
-                                {{item.product.currentPrice.price | currency}}
-                              </span>
-                            </span>
+              <span ng-repeat="detailprice in item.product.currentPrice">
+                <span ng-if="detailprice.typeId==2" class="item-price-sale">
+                  {{detailprice.price | currency}}
+                </span>
+                <span ng-if="detailprice.typeId==1" class="item-price-strike">
+                  {{detailprice.price | currency}}
+                </span>
+              </span>
+              <span ng-if="item.product.currentPrice.price">
+                <span class="item-price">
+                  {{item.product.currentPrice.price | currency}}
+                </span>
+              </span>
             </td>
           </tr>
           </tbody>
           <tfoot>
           <tr>
             <td colspan="3">
-              <p>Subtotal: {{total() | currency}}</p>
-              <p>Shipping: $12.00</p>
-              <p>Tax: 8.25%</p>
-              <p class="lead"><b>Total Charges: {{(total()* 1.0825) + 12 | currency}}</b></p>
+              <p>Subtotal: {{salesTaxInfo.SubTotal | currency}}</p>
+              <p>Shipping: {{salesTaxInfo.SH | currency}}</p>
+              <p>Tax: {{salesTaxInfo.TaxRate}}%</p>
+              <p class="lead"><b>Total Charges: {{salesTaxInfo.Total | currency}}</b></p>
             </td>
           </tr>
           </tfoot>
@@ -75,11 +88,41 @@
 
      
     
-    <hr>
+ 
+	<hr>
+
+  <div class="form-group text-right">
+        <label class="checkbox-inline">
+
+          <input type="checkbox" value="" ng-model="checkout.agree" required>
+
+          I agree to the <a href="" data-toggle="modal" data-target=".bs-example-modal-lg-terms">Terms and Conditions</a>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+        </label>
+        <button ng-if="!isOnlineSponsoring" type="button" class="btn-link pull-left" ng-click="confirmAlert('Are you sure you\'d like to cancel your order?')">Cancel Order</ng-bind="expression"utton>
+        <button type="button" class="btn btn-primary btn-lg" ng-click="processOrder()" ng-disabled="!confirmForm.$valid">Place Order &nbsp;<i class="fa fa-caret-right"></i></button>
+      </div>
+
+    </form>
+
+       <hr>
+
     
     <div class="row">
 
-      <div class="col-xs-6 col-lg-4" ng-if="checkout.card">
+      <div class="col-sm-3 col-lg-3" ng-if="isOnlineSponsoring">
+        <h3>Contact Info:</h3>
+        <div>
+          <div class="well contact-info-well">
+            <h3><span ng-bind="profile.firstName"></span> <span ng-bind="profile.lastName"></span></h3>
+            <p><b ng-bind="profile.loginEmail"></b></p>
+            <p>{{profile.phoneNumber|phone}}</p>
+            <a href="#" wz-prev><i class="fa fa-pencil-square-o"></i> Edit</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-3 col-lg-3" ng-if="checkout.card">
         <h3>Charging To:</h3>
         <div class="checkout-card clearfix active">
           <span class="pull-left">{{checkout.card.name}}</span>
@@ -94,11 +137,11 @@
             <small>EXP:</small>
             {{checkout.card.expMonth}}/{{substr(checkout.card.expYear,2,2)}}
           </p>
-          <a ng-href="{{APP_BASE_URL}}/checkout?step=Payment" class="pull-right card-use-btn"><i class="fa fa-pencil-square-o"></i> Change Card</a>
+          <a href="" data-toggle="modal" data-target=".bs-example-modal-charging" class="pull-right card-use-btn"><i class="fa fa-pencil-square-o"></i> Change Card</a>
         </div>
       </div><!-- /card -->
 
-      <div class="col-xs-6 col-lg-4 checkout-address" ng-if="checkout.shipping">
+      <div class="col-sm-3 col-lg-3 checkout-address" ng-if="checkout.shipping">
         <h3>Shipping To:</h3>
         <span class="address-name">{{checkout.shipping.name}}</span>
         <span class="address-street">{{checkout.shipping.address1}} {{checkout.shipping.address2}}</span>
@@ -106,51 +149,94 @@
         <span class="phone-number">{{checkout.shipping.phone}}</span>
         <span ng-if="!isOnlineSponsoring">Speed: {{shippingSpeed}}</span>
         <div class="address-actions">
-          <a ng-href="{{APP_BASE_URL}}/checkout?step=Shipping"><i class="fa fa-pencil-square-o"></i> Change Address</a>
+          <a href="" data-toggle="modal" data-target=".bs-example-modal-lg-shipping"><i class="fa fa-pencil-square-o"></i> Change Address</a>
         </div>
       </div><!-- /address -->
 
-      <div class="col-xs-6 col-lg-4 checkout-address" ng-if="!checkout.billSame">
+      <!-- Shipping To MODAL window -->
+<div class="modal fade bs-example-modal-lg-shipping"  role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Shipping To:</h4>
+      </div>
+      <div class="modal-body row">
+        <ng-include src="'/partials/checkout/shipping.html'"/>
+      </div>
+    </div>
+  </div>
+</div>
+
+      <div class="col-xs-3 col-lg-3 checkout-address" ng-if="!checkout.billSame">
         <h3>Billing To:</h3>
         <span class="address-name">{{checkout.billing.name}}</span>
         <span class="address-street">{{checkout.billing.address1}} {{checkout.billing.address2}}</span>
         <span class="address-region">{{checkout.billing.city}}, {{checkout.billing.state}} {{checkout.billing.zip}}</span>
         <span class="phone-number">{{checkout.billing.phone}}</span>
         <div class="address-actions">
-          <a ng-href="{{APP_BASE_URL}}/checkout?step=Payment"><i class="fa fa-pencil-square-o"></i> Change Address</a>
+          <a href="" data-toggle="modal" data-target=".bs-example-modal-lg-billing"><i class="fa fa-pencil-square-o"></i> Change Address</a>
         </div>
       </div><!-- /address -->
 
+      <!-- Billing To MODAL window -->
+<div class="modal fade bs-example-modal-lg-billing"  role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Billing To:</h4>
+      </div>
+      <div class="modal-body row">
+        <ng-include src="'/partials/checkout/payment.html'"/>
+      </div>
+    </div>
+  </div>
+</div>
 
-      <div class="col-xs-6 col-lg-4 checkout-address" ng-if="checkout.billSame">
+
+      <div class="col-xs-3 col-lg-3 checkout-address" ng-if="checkout.billSame">
         <h3>Billing To:</h3>
         <span class="address-name">{{checkout.shipping.name}}</span>
         <span class="address-street">{{checkout.shipping.address1}} {{checkout.shipping.address2}}</span>
         <span class="address-region">{{checkout.shipping.city}}, {{checkout.shipping.state}} {{checkout.shipping.zip}}</span>
         <span class="phone-number">{{checkout.shipping.phone}}</span>
         <div class="address-actions">
-          <a ng-href="{{APP_BASE_URL}}/checkout?step=Payment"><i class="fa fa-pencil-square-o"></i> Change Address</a>
+          <a href="" data-toggle="modal" data-target=".bs-example-modal-lg-billingSame"><i class="fa fa-pencil-square-o"></i> Change Address</a>
         </div>
       </div><!-- /address -->
 
-    </div><!-- /row -->
-	<hr>
-
-  <span class="error" ng-show="orderError" ng-bind="orderError"></span>
-
-  <div class="form-group text-right">
-        <label class="checkbox-inline">
-
-          <input type="checkbox" value="" ng-model="checkout.agree" required>
-
-          I agree to the <a href="" data-toggle="modal" data-target=".bs-example-modal-lg-terms">Terms and Conditions</a>
-          &nbsp;&nbsp;&nbsp;&nbsp;
-        </label>
-        <button type="button" class="btn-link pull-left" ng-click="confirmAlert('Are you sure you\'d like to cancel your order?')">Cancel Order</button>
-        <button type="button" class="btn btn-primary btn-lg" ng-click="processOrder()" ng-disabled="!confirmForm.$valid">Place Order &nbsp;<i class="fa fa-caret-right"></i></button>
+      <!-- Billing To MODAL window if checkout.billSame -->
+<div class="modal fade bs-example-modal-lg-billingSame"  role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Billing To:</h4>
       </div>
+      <div class="modal-body row">
+        <ng-include src="'/partials/checkout/payment.html'"/>
+      </div>
+    </div>
+  </div>
+</div>
 
-    </form>
+    </div><!-- /row -->
+
+      <!-- Charging To MODAL window -->
+<div class="modal fade bs-example-modal-lg-charging"  role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Charging To:</h4>
+      </div>
+      <div class="modal-body row">
+        <ng-include src="'/partials/checkout/payment.html'"/>
+      </div>
+    </div>
+  </div>
+</div>
     
 <div class="modal fade bs-example-modal-lg-terms"  role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
@@ -181,6 +267,7 @@
     </div>
   </div>
 </div>
+  
   </div>
 
 </div><!--/span-->
