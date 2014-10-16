@@ -278,12 +278,17 @@
     "CONSULTANT-AGREEMENT-NOTE":"You must read the entire agreement (scroll down) before you can continue.",
     "OS-PROFILE-TITLE":"Payee Profile & Sponsor",
     "OS-PROFILE-TAG":"We&rsquo;ll need a some information to send your payment checks.",
-    "CONTACT-INFO-LABEL":"Contact Info",
+    "CONTACT-INFO-LABEL":"Datos de contacto",
     "DOB-LABEL":"Your Date of Birth",
     "SSN-LABEL":"Your SSN",
     "SPONSOR-ID-LABEL":"Sponsor ID (optional)",
     "DOB-NOTE":"You must be 18 or older to join.",
     "SPONSOR-ID-NOTE":"If you shop with a JAFRA Consultant, enter their ID above. Otherwise, leave blank.",
     "OS-SHIPPING-TITLE":"Enter a shipping address",
-    "OS-NAME":"Nombre"
+    "OS-NAME":"Nombre",
+    "OS-NAV1":"¿Por qué JAFRA?",
+    "OS-NAV2":"Paquetes Starter",
+    "OS-NAV3":"Preguntas frecuentes",
+    "OS-NAV4":"¡Únete ahora!",
+    "OS-NAV5":"Contacto"
 }

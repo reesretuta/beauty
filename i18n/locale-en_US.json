@@ -286,5 +286,10 @@
     "DOB-NOTE":"You must be 18 or older to join.",
     "SPONSOR-ID-NOTE":"If you shop with a JAFRA Consultant, enter their ID above. Otherwise, leave blank.",
     "OS-SHIPPING-TITLE":"Enter a shipping address",
-    "OS-NAME":"Name"
+    "OS-NAME":"Name",
+    "OS-NAV1":"Why Jafra?",
+    "OS-NAV2":"Starter Packages",
+    "OS-NAV3":"Faqs",
+    "OS-NAV4":"Join Now!",
+    "OS-NAV5":"Contact"
 }
