@@ -226,7 +226,7 @@
     "COUNTRY_US":"United States",
     "IN_PHONE_WRONG":"Phone Number needs to be at least 10 numbers.",
     "TIT_PAY_OPTION":"Select Payment Option",
-    "PAY_OPTION_DES":"You'll be able to review the order before being charged.",
+    "PAY_OPTION_DES":"You&rsquo;ll be able to review the order before being charged.",
     "BTN_USE_THIS_OP":"Use this Option",
     "NAME_ON_CARD_ERR":"Name on card is too short.",
     "NUMBER_CARD_ERR":"Credit card needs to be at least 13 numbers.",

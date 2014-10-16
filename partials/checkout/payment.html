@@ -1,9 +1,9 @@
 <div class="col-sm-12">
 
 <div class="col-md-offset-3">
-  <h1>Select Payment Option
-              <span class="store-heading-description">
-                You&rsquo;ll be able to review the order before being charged.
+  <h1>{{ 'TIT_PAY_OPTION' | translate }}
+              <span class="store-heading-description" ng-bind-html="'PAY_OPTION_DES' | translate | unsafe">
+                
               </span>
   </h1>
 </div>
@@ -47,7 +47,7 @@
 
 <!-- CARD INFO -->
 <div class="form-group" ng-class="{ 'has-error' : paymentForm.cardName.$invalid && !paymentForm.cardName.$pristine }">
-  <label for=" " class="col-md-3 control-label">Name on Card</label>
+  <label for=" " class="col-md-3 control-label">{{ 'IN_NAME_CARD' | translate }}</label>
   <div class="col-sm-6 col-lg-4">
     <input ng-model="profile.newCard.name" ng-minlength="3" name="cardName" type="text" class="form-control" placeholder=" " required>
     <span ng-show="paymentForm.cardName.$error.minlength" class="help-block" ng-class="{ 'text-danger' : paymentForm.cardName.$invalid && !paymentForm.cardName.$pristine }">Name on card is too short.</span>
@@ -56,7 +56,7 @@
 </div>
 
 <div class="form-group" ng-class="{ 'has-error' : paymentForm.number.$invalid && !paymentForm.number.$pristine }">
-  <label for=" " class="col-md-3 control-label">Card Number</label>
+  <label for=" " class="col-md-3 control-label">{{ 'IN_CARD_NUMBER' | translate }}</label>
   <div class="col-sm-6 col-lg-4">
     <input ng-model="profile.newCard.card" data-ng-blur="visited=true" ng-minlength="13" ng-maxlength="16" maxlength="16" name="number" type="text" class="form-control" id=" " placeholder=" " data-ui-validate=" 'isValidCard($value)' " required>
     <span ng-show="visited && (paymentForm.number.$error.minlength || paymentForm.number.$error.validator)" class="help-block" ng-class="{ 'text-danger' : paymentForm.number.$invalid && !paymentForm.number.$pristine }">Invalid credit card number</span>
@@ -70,7 +70,7 @@
   </div>
 </div>
 <div class="form-group">
-  <label for=" " class="col-md-3 control-label">Expiration</label>
+  <label for=" " class="col-md-3 control-label">{{ 'IN_EXPIRATION' | translate }}</label>
   <div class="col-sm-5">
     <div class="row">
       <div class="col-xs-4 col-sm-3 col-med-2" ng-class="{ 'has-error' : paymentForm.expMonth.$invalid && !paymentForm.expMonth.$pristine }">
@@ -88,7 +88,7 @@
   </div>
 </div>
 <div class="form-group" ng-class="{ 'has-error' : paymentForm.cvv.$invalid && !paymentForm.cvv.$pristine }">
-  <label for=" " class="col-md-3 control-label">Security Code</label>
+  <label for=" " class="col-md-3 control-label">{{ 'IN_SECURITY_CODE' | translate }}</label>
   <div class="col-sm-5">
     <div class="row">
       <div class="col-xs-4 col-sm-4 col-med-2">
@@ -107,7 +107,7 @@
   <div class="col-md-offset-3 col-sm-9">
     <div class="checkbox">
       <label>
-        <input name="billSame" data-ng-init="checkout.billSame=true" ng-model="checkout.billSame" type="checkbox" tabindex="-2" checked="checked"> My billing &amp; shipping address are the same
+        <input name="billSame" data-ng-init="checkout.billSame=true" ng-model="checkout.billSame" type="checkbox" tabindex="-2" checked="checked"> {{ 'IN_BILL_SHIP_SAME' | translate }}
         <!--valid={{paymentForm.billSame.$valid}}-->
       </label>
     </div>
