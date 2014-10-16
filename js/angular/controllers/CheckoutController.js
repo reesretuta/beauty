@@ -192,6 +192,13 @@ angular.module('app.controllers.checkout')
                     consultantId: '11111111'
                 }
 
+                $scope.salesTaxInfo = {
+                    "SubTotal": "99.00",
+                    "SH": "5.00",
+                    "TaxRate": "7.75",
+                    "Total": "121.00"
+                }
+
                 // clear & add a product to the cart
                 Cart.clear().then(function(cart) {
                     $log.debug("CheckoutController(): previous cart cleared");
