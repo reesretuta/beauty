@@ -761,6 +761,27 @@ angular.module('app.controllers.checkout')
             cardChanged();
         });
 
+        function cardExpirationChanged() {
+            $scope.cardExpired = false;
+
+            var expiration = moment($scope.profile.newCard.expMonth + $scope.profile.newCard.expYear, "MMYYYY", true).endOf("month");
+            var now = moment();
+
+            if (!expiration.isValid() || now.diff(expiration,'days') > 0) {
+                $log.debug("CheckoutController(): cardExpirationChanged(): expired");
+                $scope.cardExpired = true;
+            } else {
+                $log.debug("CheckoutController(): cardExpirationChanged(): not expired");
+            }
+        }
+
+        $scope.$watch('profile.newCard.expMonth', function(newVal, oldVal) {
+            cardExpirationChanged();
+        });
+        $scope.$watch('profile.newCard.expYear', function(newVal, oldVal) {
+            cardExpirationChanged();
+        });
+
         $scope.validateCard = function(ccnumber) {
             if (!ccnumber) {
                 return {
