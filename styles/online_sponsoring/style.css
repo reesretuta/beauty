@@ -45,6 +45,10 @@ body.landing-page {
   line-height: 1.2;
 }
 
+body.join .nav .open>a.language_dropdown, .nav .open>a.language_dropdown:hover, .nav .open>a.language_dropdown:focus {
+background-color: #c52033;
+border-color: #c52033;
+}
 a.watch-video-link{
   color: #877650;
   float: right;
@@ -319,8 +323,8 @@ margin: 8px 0 5px;
 }
 .more-link span {
   color: #877650;
-  font-family: HelveticaNeueLTStd-Md;
-  font-size: 13px;
+  /*font-family: HelveticaNeueLTStd-Md;
+  font-size: 13px;*/
 }
 .more-link:hover, .more-link:active, a.collapsed  {
   color: #b51a8a;
@@ -799,5 +803,31 @@ body.incheckout {
 	#lipsticksmear{
 		left:-120px;
 	}
+  span.your_call {
+    font-size: 65px;
+  }
+  span.product-title1 {
+    line-height: 0.6 !important;
+    font-size: 30px !important;
+  }
+  span.product-title2 {
+    font-size: 40px !important;
+  }
+  h3.royal_starter_titles {
+    line-height: 0.5 !important;
+  }
+  h3.starter_kits-price {
+    font-size: 5em;
+  }
+  h3.skincare_header_title {
+    margin-top: -39px;
+    height: 86px;
+  }
+  h3.skincare_price {
+    height: 77px;
+  }
+  body.es p.precio_al_publico{
+    font-size: 1.9em;
+  }
 }
 
