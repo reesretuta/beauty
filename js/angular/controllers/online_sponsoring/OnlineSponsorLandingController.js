@@ -6,11 +6,13 @@ angular.module('app.controllers.onlineSponsor')
 
     var cid = $routeParams.cid;
     var source = $routeParams.source;
-    var language = $routeParams.language;
+    var language = S($routeParams.language).isEmpty() ? "en_US" : $routeParams.language;
     $log.debug("OnlineSponsorLandingController(): sponsorId", cid, "source", source, "language", language);
 
-    Session.setLanguage(language);
-    $translate.use(language);
+    if (!S(language).isEmpty()) {
+        Session.setLanguage(language);
+        $translate.use(language);
+    }
 
     Session.set({
         "consultantId": cid,
@@ -21,6 +23,12 @@ angular.module('app.controllers.onlineSponsor')
     }, function(err) {
         $log.debug("OnlineSponsorLandingController(): failed to save to session sponsorId", cid, "source", source, "language", language);
     });
+
+    $scope.getSessionLanguage = function() {
+        var lang = Session.getLanguage();
+        $log.debug("OnlineSponsorLandingController(): get session language", lang);
+        return lang;
+    }
 
     $scope.join = function(sku, language, name, price) {
         $('.modal').modal('hide');
