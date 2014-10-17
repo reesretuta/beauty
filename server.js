@@ -180,11 +180,11 @@ router.route('/products')
                     ]}
                 }).populate({
                     path: 'contains.product',
-                    model: 'Product',
-                    match: { $and: [
-                        {masterStatus: "A"},
-                        {$or: [{masterType: "R"}, {masterType: "B"}, {masterType: {$exists: false}, type:"group"}]}
-                    ]}
+                    model: 'Product'//,
+//                    match: { $and: [
+//                        {masterStatus: "A"},
+//                        {$or: [{masterType: "R"}, {masterType: "B"}, {masterType: {$exists: false}, type:"group"}]}
+//                    ]}
                 }).populate({
                     path: 'kitGroups.kitGroup',
                     model: 'KitGroup'
@@ -223,11 +223,11 @@ router.route('/products')
                 ]}
             }).populate({
                 path: 'contains.product',
-                model: 'Product',
-                match: { $and: [
-                    {masterStatus: "A"},
-                    {$or: [{masterType: "R"}, {masterType: "B"}, {masterType: {$exists: false}, type:"group"}]}
-                ]}
+                model: 'Product'//,
+//                match: { $and: [
+//                    {masterStatus: "A"},
+//                    {$or: [{masterType: "R"}, {masterType: "B"}, {masterType: {$exists: false}, type:"group"}]}
+//                ]}
             }).populate({
                 path: 'kitGroups.kitGroup',
                 model: 'KitGroup'
@@ -266,11 +266,11 @@ router.route('/products')
                 ]}
             }).populate({
                 path: 'contains.product',
-                model: 'Product',
-                match: { $and: [
-                    {masterStatus: "A"},
-                    {$or: [{masterType: "R"}, {masterType: "B"}, {masterType: {$exists: false}, type:"group"}]}
-                ]}
+                model: 'Product'//,
+//                match: { $and: [
+//                    {masterStatus: "A"},
+//                    {$or: [{masterType: "R"}, {masterType: "B"}, {masterType: {$exists: false}, type:"group"}]}
+//                ]}
             }).populate({
                 path: 'kitGroups.kitGroup',
                 model: 'KitGroup'
@@ -300,11 +300,11 @@ router.route('/products')
                 ]}
             }).populate({
                     path: 'contains.product',
-                    model: 'Product',
-                    match: { $and: [
-                        {masterStatus: "A"},
-                        {$or: [{masterType: "R"}, {masterType: "B"}, {masterType: {$exists: false}, type:"group"}]}
-                    ]}
+                    model: 'Product'//,
+//                    match: { $and: [
+//                        {masterStatus: "A"},
+//                        {$or: [{masterType: "R"}, {masterType: "B"}, {masterType: {$exists: false}, type:"group"}]}
+//                    ]}
             }).populate({
                 path: 'kitGroups.kitGroup',
                 model: 'KitGroup'
@@ -361,11 +361,11 @@ router.route('/products/:productId')
             models.Product.populate(products, opts, function (err, products) {
                 var opts = {
                     path: 'contains.product',
-                    model: 'Product',
-                    match: { $and: [
-                        {masterStatus: "A"},
-                        {$or: [{masterType: "R"}, {masterType: "B"}, {masterType: {$exists: false}, type:"group"}]}
-                    ]}
+                    model: 'Product'//,
+//                    match: { $and: [
+//                        {masterStatus: "A"},
+//                        {$or: [{masterType: "R"}, {masterType: "B"}, {masterType: {$exists: false}, type:"group"}]}
+//                    ]}
                 }
 
                 models.Product.populate(products, opts, function (err, products) {
