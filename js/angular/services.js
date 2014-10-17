@@ -573,6 +573,14 @@ angular.module('app.services', ['ngResource'])
             return count;
         };
 
+        cartService.getFirstProductSku = function() {
+            var session = Session.getLocalSession();
+            if (session.cart == null || session.cart.length == 0) {
+                return null;
+            }
+            return session.cart[0].sku;
+        }
+
         cartService.getItems = function() {
             var d = $q.defer();
 

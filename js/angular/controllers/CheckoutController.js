@@ -17,6 +17,10 @@ angular.module('app.controllers.checkout')
         var path = $location.path();
         $log.debug("CheckoutController(): path", path);
 
+        // get the sku, add the product to cart
+        var sku = S($routeParams.sku != null ? $routeParams.sku : "").toString();
+        $log.debug("CheckoutController(): loading sku=", sku);
+
         //change page title
         $rootScope.title = "Checkout";
         $rootScope.section = "checkout";
@@ -55,11 +59,6 @@ angular.module('app.controllers.checkout')
         $scope.setCustomerStatus = function(status) {
             $scope.profile.customerStatus = status;
         }
-
-        // watch session language
-        $scope.$watch(Session.getLocalSession().language, function(newVal, oldVal) {
-            $scope.profile.language = newVal;
-        });
 
         // watch current step for changes
         $scope.$watch('currentStep', function(newVal, oldVal) {
@@ -235,9 +234,35 @@ angular.module('app.controllers.checkout')
                 // lock profile to new, since we're in online sponsoring
                 $scope.profile.customerStatus = 'new';
 
-                // get the sku, add the product to cart
-                var sku = S($routeParams.sku != null ? $routeParams.sku : "").toString();
-                $log.debug("CheckoutController(): online sponsoring: loading sku=", sku);
+                // redirect back home if there is no sku
+                if (S(sku).isEmpty()) {
+                    if ($scope.isOnlineSponsoring) {
+                        $location.path(JOIN_BASE_URL);
+                    }
+                }
+
+                // select language based on product
+                function selectConsultantLanguage(sku) {
+                    switch (sku) {
+                        case "19634":
+                        case "19636":
+                            $scope.profile.language = "en_US";
+                            break;
+                        case "19635":
+                        case "19637":
+                            $scope.profile.language = "es_US";
+                            break;
+                    }
+                    return $scope.profile.language;
+                }
+                selectConsultantLanguage(sku);
+
+                $scope.$watch(Cart.getFirstProductSku(), function(newVal, oldVal) {
+                    if (newVal != null) {
+                        var language = selectConsultantLanguage(newVal);
+                        $log.debug("CheckoutController(): setting consultant language for", sku, "to", language);
+                    }
+                });
 
                 // load the product
                 Products.get({productId: sku}).then(function(product) {
