@@ -17,6 +17,10 @@ angular.module('app.controllers.checkout')
         var path = $location.path();
         $log.debug("CheckoutController(): path", path);
 
+        // get the sku, add the product to cart
+        var sku = S($routeParams.sku != null ? $routeParams.sku : "").toString();
+        $log.debug("CheckoutController(): loading sku=", sku);
+
         //change page title
         $rootScope.title = "Checkout";
         $rootScope.section = "checkout";
@@ -75,7 +79,7 @@ angular.module('app.controllers.checkout')
             }
         });
 
-        // FIXME - ensure that if loading a step, all previous steps were completed
+        // FIXME - Client Direct Only, ensure that if loading a step, all previous steps were completed
 
         Session.get().then(function(session) {
             $log.debug("CheckoutController(): session initialized", session);
@@ -83,6 +87,9 @@ angular.module('app.controllers.checkout')
             $scope.profile.sponsorId = session.consultantId;
             if (session.source) {
                 $scope.profile.source = session.source;
+            }
+            if (session.language) {
+                $scope.profile.language = session.language;
             }
 
             if (session.client && session.client.id) {
@@ -227,9 +234,35 @@ angular.module('app.controllers.checkout')
                 // lock profile to new, since we're in online sponsoring
                 $scope.profile.customerStatus = 'new';
 
-                // get the sku, add the product to cart
-                var sku = S($routeParams.sku != null ? $routeParams.sku : "").toString();
-                $log.debug("CheckoutController(): online sponsoring: loading sku=", sku);
+                // redirect back home if there is no sku
+                if (S(sku).isEmpty()) {
+                    if ($scope.isOnlineSponsoring) {
+                        $location.path(JOIN_BASE_URL);
+                    }
+                }
+
+                // select language based on product
+                function selectConsultantLanguage(sku) {
+                    switch (sku) {
+                        case "19634":
+                        case "19636":
+                            $scope.profile.language = "en_US";
+                            break;
+                        case "19635":
+                        case "19637":
+                            $scope.profile.language = "es_US";
+                            break;
+                    }
+                    return $scope.profile.language;
+                }
+                selectConsultantLanguage(sku);
+
+                $scope.$watch(Cart.getFirstProductSku(), function(newVal, oldVal) {
+                    if (newVal != null) {
+                        var language = selectConsultantLanguage(newVal);
+                        $log.debug("CheckoutController(): setting consultant language for", sku, "to", language);
+                    }
+                });
 
                 // load the product
                 Products.get({productId: sku}).then(function(product) {
@@ -247,12 +280,12 @@ angular.module('app.controllers.checkout')
                         if (WizardHandler.wizard('checkoutWizard') != null) {
                             $log.debug("CheckoutController(): loading Start step");
                             WizardHandler.wizard('checkoutWizard').goTo('Start');
-                            $location.search("step", 'Start');
+                            //$location.search("step", 'Start');
                         } else {
                             $timeout(function() {
                                 $log.debug("CheckoutController(): loading Start step after delay");
                                 WizardHandler.wizard('checkoutWizard').goTo('Start');
-                                $location.search("step", 'Start');
+                                //$location.search("step", 'Start');
                             }, 0);
                         }
                     }
@@ -701,7 +734,7 @@ angular.module('app.controllers.checkout')
                         $scope.checkoutUpdated();
                         WizardHandler.wizard('checkoutWizard').goTo('Review');
                     }, function(r) {
-                        $log.error("CheckoutController(): addShippingAddressAndContinue(): error validating address", r);
+                        $log.error("CheckoutController(): addPaymentMethod(): error validating address", r);
                         // FIXME - failed to add, show error
                         $scope.billingAddressError = r.message;
                     });
@@ -772,14 +805,14 @@ angular.module('app.controllers.checkout')
         });
 
         function cardExpirationChanged() {
-            $scope.cardExpired = false;
+            $scope.invalidExpiration = false;
 
             var expiration = moment($scope.profile.newCard.expMonth + $scope.profile.newCard.expYear, "MMYYYY", true).endOf("month");
             var now = moment();
 
             if (!expiration.isValid() || now.diff(expiration,'days') > 0) {
                 $log.debug("CheckoutController(): cardExpirationChanged(): expired");
-                $scope.cardExpired = true;
+                $scope.invalidExpiration = true;
             } else {
                 $log.debug("CheckoutController(): cardExpirationChanged(): not expired");
             }
@@ -881,6 +914,9 @@ angular.module('app.controllers.checkout')
                 $scope.checkout.shipping.phone = phone;
                 $scope.checkout.billing.phone = phone;
 
+                // generate the components
+
+
                 var consultant = {
                     ssn: ssn,
                     email: $scope.profile.loginEmail,
@@ -899,7 +935,9 @@ angular.module('app.controllers.checkout')
                     products: [
                         {
                             "sku": $scope.items[0].product.sku,
-                            "qty": 1
+                            "qty": 1,
+                            "kitSelections": {},
+                            "components": []
                         }
                     ]
                 }

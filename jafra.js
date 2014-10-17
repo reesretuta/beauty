@@ -437,14 +437,25 @@ function createConsultant(encrypted) {
             console.error("createConsultant(): error", error, response ? response.statusCode : null, body);
 
             if (body && body.statusCode && body.errorCode && body.message) {
-                deferred.reject({
-                    status: response.statusCode,
-                    result: {
-                        statusCode: body.statusCode,
-                        errorCode: body.errorCode,
-                        message: body.message
-                    }
-                });
+                if (body.errorCode == 409) {
+                    deferred.reject({
+                        status: response.statusCode,
+                        result: {
+                            statusCode: body.statusCode,
+                            errorCode: "accountAlreadyExists",
+                            message: "Account already exists"
+                        }
+                    });
+                } else {
+                    deferred.reject({
+                        status: response.statusCode,
+                        result: {
+                            statusCode: body.statusCode,
+                            errorCode: body.errorCode,
+                            message: body.message
+                        }
+                    });
+                }
             } else {
                 deferred.reject({
                     status: 500,
@@ -458,19 +469,18 @@ function createConsultant(encrypted) {
             return;
         }
 
-//        // FIXME!!!!
-//        if (body == null || body.consultantId == null || body.orderId == null) {
-//            console.log("createConsultant(): invalid return data", body, typeof body, "consultantId", body.consultantId, "orderId", body.orderId);
-//            deferred.reject({
-//                status: 500,
-//                result: {
-//                    statusCode: 500,
-//                    errorCode: "createConsultantReturnDataInvalid",
-//                    message: "Failed to get consultant ID from create"
-//                }
-//            });
-//            return;
-//        }
+        if (body == null || body.consultantId == null || body.orderId == null) {
+            console.log("createConsultant(): invalid return data", body, typeof body, "consultantId", body.consultantId, "orderId", body.orderId);
+            deferred.reject({
+                status: 500,
+                result: {
+                    statusCode: 500,
+                    errorCode: "createConsultantReturnDataInvalid",
+                    message: "Failed to get consultant ID from create"
+                }
+            });
+            return;
+        }
 
         // we should get consultantId back
         deferred.resolve({
