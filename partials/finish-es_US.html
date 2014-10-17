@@ -86,9 +86,9 @@ Favor de proveer los siguientes enlaces para pasos a seguir y motivar la acción
           <tfoot>
           <tr>
             <td colspan="3">
-              <p>Subtotal: {{total() | currency}}</p>
-              <p>Shipping: $12.00</p>
-              <p>Tax: 8.25%</p>
+              <p>Subtotal: {{salesTaxInfo.SubTotal | currency}}</p>
+              <p>Shipping: {{salesTaxInfo.SH | currency}}</p>
+              <p>Tax: {{salesTaxInfo.TaxRate}}%</p>
               <p class="lead"><b class="text-success"><i class="fa fa-check"></i> Successfully Charged: {{(total()* 1.0825) + 12 | currency}}</b></p>
             </td>
           </tr>

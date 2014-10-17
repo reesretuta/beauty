@@ -89,10 +89,6 @@ h2 {
   text-transform: uppercase;
   color: #fff;
 }
-body.join .nav .open>a.language_dropdown, .nav .open>a.language_dropdown:hover, .nav .open>a.language_dropdown:focus {
-background-color: #c52033;
-border-color: #c52033;
-}
 .print-link {
     margin-top: 50px;
 }
@@ -1037,40 +1033,6 @@ a:focus {
 @media (min-width: 1024px) {
   .configureKitModal.modal {
     max-width: 70%;
-  }
-}
-
-/* 
-TODO- refactor to bootstrap media queries: 
-i.e.)
-@media (min-width: @screen-md-min) and (max-width: @screen-md-max) { ... }; 
-*/
-@media (min-width: 992px) and (max-width: 1199px) { 
-  span.your_call {
-    font-size: 65px;
-  }
-  span.product-title1 {
-    line-height: 0.6 !important;
-    font-size: 30px !important;
-  }
-  span.product-title2 {
-    font-size: 40px !important;
-  }
-  h3.royal_starter_titles {
-    line-height: 0.5 !important;
-  }
-  h3.starter_kits-price {
-    font-size: 5em;
-  }
-  h3.skincare_header_title {
-    margin-top: -39px;
-    height: 86px;
-  }
-  h3.skincare_price {
-    height: 77px;
-  }
-  body.es p.precio_al_publico{
-    font-size: 1.9em;
   }
 }
 
