@@ -76,6 +76,7 @@ angular.module('app.services', ['ngResource'])
 
         function getLocalSession() {
             if ($rootScope.session == null) {
+                $log.debug("sessionService(): initializing session");
                 $rootScope.session = {
                     language: 'en_US',
                     cart: [],
@@ -85,6 +86,7 @@ angular.module('app.services', ['ngResource'])
 
             return $rootScope.session;
         }
+        getLocalSession();
 
         function deleteLocalSession() {
             if ($rootScope.session != null) {
@@ -417,6 +419,7 @@ angular.module('app.services', ['ngResource'])
         // pull from locally cached session
         sessionService.getLanguage = function() {
             var session = getLocalSession();
+            //$log.debug("sessionService(): getLanguage(): session", session);
             return session.language;
         }
 
@@ -646,7 +649,7 @@ angular.module('app.services', ['ngResource'])
                     sku: item.sku,
                     kitSelections: item.kitSelections,
                     quantity: item.quantity,
-                    components: item.components
+                    contains: item.contains
                 });
             }
 

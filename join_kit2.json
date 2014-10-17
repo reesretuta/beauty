@@ -1,7 +1,21 @@
 [{
     "_id" : "19636",
     "kitGroups" : [],
-    "contains" : [],
+    "contains" : [
+        { "product" : "12038", "quantity" : 1, "rank" : 1,  "startDate" : { "$date" : 946702800000 }, "endDate" : null },
+        { "product" : "14000", "quantity" : 1, "rank" : 1,  "startDate" : { "$date" : 946702800000 }, "endDate" : null },
+        { "product" : "15522", "quantity" : 1, "rank" : 1,  "startDate" : { "$date" : 946702800000 }, "endDate" : null },
+        { "product" : "18372", "quantity" : 1, "rank" : 1,  "startDate" : { "$date" : 946702800000 }, "endDate" : null },
+        { "product" : "18549", "quantity" : 1, "rank" : 1,  "startDate" : { "$date" : 946702800000 }, "endDate" : null },
+        { "product" : "19034", "quantity" : 1, "rank" : 1,  "startDate" : { "$date" : 946702800000 }, "endDate" : null },
+        { "product" : "19038", "quantity" : 1, "rank" : 1,  "startDate" : { "$date" : 946702800000 }, "endDate" : null },
+        { "product" : "19053", "quantity" : 1, "rank" : 1,  "startDate" : { "$date" : 946702800000 }, "endDate" : null },
+        { "product" : "19243", "quantity" : 1, "rank" : 1,  "startDate" : { "$date" : 946702800000 }, "endDate" : null },
+        { "product" : "19354", "quantity" : 1, "rank" : 1,  "startDate" : { "$date" : 946702800000 }, "endDate" : null },
+        { "product" : "19361", "quantity" : 1, "rank" : 1,  "startDate" : { "$date" : 946702800000 }, "endDate" : null },
+        { "product" : "19367", "quantity" : 1, "rank" : 1,  "startDate" : { "$date" : 946702800000 }, "endDate" : null },
+        { "product" : "19496", "quantity" : 1, "rank" : 1,  "startDate" : { "$date" : 946702800000 }, "endDate" : null }
+    ],
     "youMayAlsoLike" : [],
     "upsellItems" : [],
     "categories" : [],

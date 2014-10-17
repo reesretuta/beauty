@@ -260,30 +260,32 @@ angular.module('app.controllers.checkout')
                 $scope.$watch(Cart.getFirstProductSku(), function(newVal, oldVal) {
                     if (newVal != null) {
                         var language = selectConsultantLanguage(newVal);
-                        $log.debug("CheckoutController(): setting consultant language for", sku, "to", language);
+                        $log.debug("CheckoutController(): online sponsoring: setting consultant language for", sku, "to", language);
                     }
                 });
 
+                $log.debug("CheckoutController(): online sponsoring: loading product with sku=", sku);
+
                 // load the product
                 Products.get({productId: sku}).then(function(product) {
-                    $log.debug("CheckoutController(): online sponsoring: loaded sku=", sku, "name=", name);
+                    $log.debug("CheckoutController(): online sponsoring: loaded sku", product.sku, "product", product);
 
                     if (urlStep == 'Finish') {
-                        $log.debug("CheckoutController(): finished wizard, redirecting to landing page?");
+                        $log.debug("CheckoutController(): online sponsoring: finished wizard, redirecting to landing page?");
                         $location.path(JOIN_BASE_URL).search('');
                         return;
                     } else if (sku == null) {
-                        $log.error("CheckoutController(): failed to load sku for online sponsoring");
+                        $log.error("CheckoutController(): online sponsoring: failed to load sku for online sponsoring");
                         $location.path(JOIN_BASE_URL).search('');
                         return;
                     } else {
                         if (WizardHandler.wizard('checkoutWizard') != null) {
-                            $log.debug("CheckoutController(): loading Start step");
+                            $log.debug("CheckoutController(): online sponsoring: loading Start step");
                             WizardHandler.wizard('checkoutWizard').goTo('Start');
                             //$location.search("step", 'Start');
                         } else {
                             $timeout(function() {
-                                $log.debug("CheckoutController(): loading Start step after delay");
+                                $log.debug("CheckoutController(): online sponsoring: loading Start step after delay");
                                 WizardHandler.wizard('checkoutWizard').goTo('Start');
                                 //$location.search("step", 'Start');
                             }, 0);
@@ -292,22 +294,22 @@ angular.module('app.controllers.checkout')
 
                     // FIXME - verify all previous steps data is available, else restart process
 
-                    $log.debug("CheckoutController(): clearing cart and restarting checkout");
+                    $log.debug("CheckoutController(): online sponsoring: clearing cart and restarting checkout");
 
                     Cart.clear().then(function(cart) {
-                        $log.debug("CheckoutController(): previous cart cleared");
+                        $log.debug("CheckoutController(): online sponsoring: previous cart cleared");
 
                         Cart.addToCart(product).then(function(cart) {
-                            $log.debug("CheckoutController(): online sponsoring SKU loaded & added to cart");
+                            $log.debug("CheckoutController(): online sponsoring: SKU loaded & added to cart");
                             onlineSponsorChecksCompleteDefer.resolve();
                         }, function(error) {
-                            $log.error("CheckoutController(): failed to update cart");
+                            $log.error("CheckoutController(): online sponsoring: failed to update cart");
                         });
                     }, function(error) {
-                        $log.error("CheckoutController(): failed to update cart");
+                        $log.error("CheckoutController(): online sponsoring: failed to update cart");
                     });
                 }, function(err) {
-                    $log.error("CheckoutController(): failed to load product");
+                    $log.error("CheckoutController(): online sponsoring: failed to load product");
                 });
             } else {
                 // nothing to load, done
@@ -915,7 +917,16 @@ angular.module('app.controllers.checkout')
                 $scope.checkout.billing.phone = phone;
 
                 // generate the components
-
+                var components = [];
+                for (var i=0; i < $scope.items[0].product.contains.length; i++) {
+                    var component = $scope.items[0].product.contains[i];
+                    if (component.product) {
+                        components.push({
+                            sku: component.product.sku,
+                            qty: component.quantity
+                        });
+                    }
+                }
 
                 var consultant = {
                     ssn: ssn,
@@ -937,7 +948,7 @@ angular.module('app.controllers.checkout')
                             "sku": $scope.items[0].product.sku,
                             "qty": 1,
                             "kitSelections": {},
-                            "components": []
+                            "components": components
                         }
                     ]
                 }

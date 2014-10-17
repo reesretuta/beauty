@@ -172,11 +172,18 @@ router.route('/products')
                     {masterStatus: "A", onHold: false, searchable: true},
                     {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
                 ]).sort('name').limit(20).populate({
-                    path: 'upsellItems.product youMayAlsoLike.product contains.product',
+                    path: 'upsellItems.product youMayAlsoLike.product',
                     model: 'Product',
                     match: { $and: [
                         {masterStatus: "A", onHold: false},
                         {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
+                    ]}
+                }).populate({
+                    path: 'contains.product',
+                    model: 'Product',
+                    match: { $and: [
+                        {masterStatus: "A", onHold: false},
+                        {$or: [{masterType: "R"}, {masterType: "B"}, {masterType: {$exists: false}, type:"group"}]}
                     ]}
                 }).populate({
                     path: 'kitGroups.kitGroup',
@@ -205,12 +212,21 @@ router.route('/products')
                     {categories: id, masterStatus: "A", onHold: false},
                     {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
                 ]
-            }).sort('name').limit(20).populate({
-                path: 'upsellItems.product youMayAlsoLike.product contains.product',
+            }).sort('name')
+            .limit(20)
+            .populate({
+                path: 'upsellItems.product youMayAlsoLike.product',
                 model: 'Product',
                 match: { $and: [
                     {masterStatus: "A", onHold: false},
                     {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
+                ]}
+            }).populate({
+                path: 'contains.product',
+                model: 'Product',
+                match: { $and: [
+                    {masterStatus: "A", onHold: false},
+                    {$or: [{masterType: "R"}, {masterType: "B"}, {masterType: {$exists: false}, type:"group"}]}
                 ]}
             }).populate({
                 path: 'kitGroups.kitGroup',
@@ -242,11 +258,18 @@ router.route('/products')
                     {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
                 ]
             }).sort('name').limit(20).populate({
-                path: 'upsellItems.product youMayAlsoLike.product contains.product',
+                path: 'upsellItems.product youMayAlsoLike.product',
                 model: 'Product',
                 match: { $and: [
                     {masterStatus: "A", onHold: false},
                     {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
+                ]}
+            }).populate({
+                path: 'contains.product',
+                model: 'Product',
+                match: { $and: [
+                    {masterStatus: "A", onHold: false},
+                    {$or: [{masterType: "R"}, {masterType: "B"}, {masterType: {$exists: false}, type:"group"}]}
                 ]}
             }).populate({
                 path: 'kitGroups.kitGroup',
@@ -269,12 +292,19 @@ router.route('/products')
         } else {
             console.log("getting product list");
             models.Product.find({masterStatus: "A", masterType: "R", onHold: false}).sort('name').limit(20).populate({
-                path: 'upsellItems.product youMayAlsoLike.product contains.product',
+                path: 'upsellItems.product youMayAlsoLike.product',
                 model: 'Product',
                 match: { $and: [
                     {masterStatus: "A", onHold: false},
                     {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
                 ]}
+            }).populate({
+                    path: 'contains.product',
+                    model: 'Product',
+                    match: { $and: [
+                        {masterStatus: "A", onHold: false},
+                        {$or: [{masterType: "R"}, {masterType: "B"}, {masterType: {$exists: false}, type:"group"}]}
+                    ]}
             }).populate({
                 path: 'kitGroups.kitGroup',
                 model: 'KitGroup'
@@ -319,7 +349,7 @@ router.route('/products/:productId')
             }
 
             var opts = {
-                path: 'upsellItems.product youMayAlsoLike.product contains.product',
+                path: 'upsellItems.product youMayAlsoLike.product',
                 model: 'Product',
                 match: { $and: [
                     {masterStatus: "A", onHold: false},
@@ -330,13 +360,24 @@ router.route('/products/:productId')
             // populate products
             models.Product.populate(products, opts, function (err, products) {
                 var opts = {
-                    path: 'kitGroups.kitGroup'
-                };
+                    path: 'contains.product',
+                    model: 'Product',
+                    match: { $and: [
+                        {masterStatus: "A", onHold: false},
+                        {$or: [{masterType: "R"}, {masterType: "B"}, {masterType: {$exists: false}, type:"group"}]}
+                    ]}
+                }
 
-                // populate kit groups
-                models.KitGroup.populate(products, opts, function (err, products) {
-                    console.log("returning product");
-                    res.json(products[0]);
+                models.Product.populate(products, opts, function (err, products) {
+                    var opts = {
+                        path: 'kitGroups.kitGroup'
+                    };
+
+                    // populate kit groups
+                    models.KitGroup.populate(products, opts, function (err, products) {
+                        console.log("returning product");
+                        res.json(products[0]);
+                    });
                 });
             })
         });

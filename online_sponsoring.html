@@ -197,7 +197,7 @@
       <div class="modal-body">
           <div class="agreement-content">
              <!--terms partial goes here-->
-              <div ng-include="'/partials/terms-'+session.language+'.html'"></div>
+              <div ng-if="session.language" ng-include="'/partials/terms-'+session.language+'.html'"></div>
           </div>
       </div>
       <div class="modal-footer">
@@ -215,9 +215,9 @@
       </div>
       <div class="modal-body">
           <div class="agreement-content">
-              
+
               <!--privacy policy partial goes here-->
-              <div ng-include="'/partials/privacy-policy-'+session.language+'.html'"></div>
+              <div ng-if="session.language" ng-include="'/partials/privacy-policy-'+session.language+'.html'"></div>
           </div>
       </div>
       <div class="modal-footer">

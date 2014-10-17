@@ -89,7 +89,7 @@
             <div class="agreement-content" id="agreement-content">
               
                 <!--consultant agreement goes here-->
-                <div ng-include="'/partials/consultant-agreement-'+session.language+'.html'"></div>
+                <div ng-if="session.language" ng-include="'/partials/consultant-agreement-'+session.language+'.html'"></div>
             </div>
           </div>
           <div class="modal-footer">

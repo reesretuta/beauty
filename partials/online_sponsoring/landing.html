@@ -79,7 +79,7 @@
                 <hr>
 
                 <img class="img-responsive" src="/img/99_kit.jpg">
-                <div ng-include="'/partials/product1-'+session.language+'.html'"></div>
+                <div ng-if="session.language" ng-include="'/partials/product1-'+session.language+'.html'"></div>
                   <img src="/img/99_kit_bags.jpg" class="img-responsive"/>
                 
               </div>
@@ -119,7 +119,7 @@
                 
                   <!--<p ng-bind-html="'OS-KIT-PRODUCT2-DESCRIPTION' | translate | unsafe"></p>-->
                   
-                  <div ng-include="'/partials/product2-'+session.language+'.html'"></div>
+                  <div ng-if="session.language" ng-include="'/partials/product2-'+session.language+'.html'"></div>
 
                   <img src="/img/39_kit_bag.jpg" class="img-responsive"/>
                 	  
