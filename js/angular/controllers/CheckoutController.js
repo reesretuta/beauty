@@ -56,6 +56,11 @@ angular.module('app.controllers.checkout')
             $scope.profile.customerStatus = status;
         }
 
+        // watch session language
+        $scope.$watch(Session.getLocalSession().language, function(newVal, oldVal) {
+            $scope.profile.language = newVal;
+        });
+
         // watch current step for changes
         $scope.$watch('currentStep', function(newVal, oldVal) {
             if (newVal != oldVal && newVal != '' && newVal != null) {
@@ -75,7 +80,7 @@ angular.module('app.controllers.checkout')
             }
         });
 
-        // FIXME - ensure that if loading a step, all previous steps were completed
+        // FIXME - Client Direct Only, ensure that if loading a step, all previous steps were completed
 
         Session.get().then(function(session) {
             $log.debug("CheckoutController(): session initialized", session);
@@ -83,6 +88,9 @@ angular.module('app.controllers.checkout')
             $scope.profile.sponsorId = session.consultantId;
             if (session.source) {
                 $scope.profile.source = session.source;
+            }
+            if (session.language) {
+                $scope.profile.language = session.language;
             }
 
             if (session.client && session.client.id) {
@@ -247,12 +255,12 @@ angular.module('app.controllers.checkout')
                         if (WizardHandler.wizard('checkoutWizard') != null) {
                             $log.debug("CheckoutController(): loading Start step");
                             WizardHandler.wizard('checkoutWizard').goTo('Start');
-                            $location.search("step", 'Start');
+                            //$location.search("step", 'Start');
                         } else {
                             $timeout(function() {
                                 $log.debug("CheckoutController(): loading Start step after delay");
                                 WizardHandler.wizard('checkoutWizard').goTo('Start');
-                                $location.search("step", 'Start');
+                                //$location.search("step", 'Start');
                             }, 0);
                         }
                     }
