@@ -182,7 +182,7 @@ router.route('/products')
                     path: 'contains.product',
                     model: 'Product',
                     match: { $and: [
-                        {masterStatus: "A", onHold: false},
+                        {masterStatus: "A"},
                         {$or: [{masterType: "R"}, {masterType: "B"}, {masterType: {$exists: false}, type:"group"}]}
                     ]}
                 }).populate({
@@ -225,7 +225,7 @@ router.route('/products')
                 path: 'contains.product',
                 model: 'Product',
                 match: { $and: [
-                    {masterStatus: "A", onHold: false},
+                    {masterStatus: "A"},
                     {$or: [{masterType: "R"}, {masterType: "B"}, {masterType: {$exists: false}, type:"group"}]}
                 ]}
             }).populate({
@@ -268,7 +268,7 @@ router.route('/products')
                 path: 'contains.product',
                 model: 'Product',
                 match: { $and: [
-                    {masterStatus: "A", onHold: false},
+                    {masterStatus: "A"},
                     {$or: [{masterType: "R"}, {masterType: "B"}, {masterType: {$exists: false}, type:"group"}]}
                 ]}
             }).populate({
@@ -302,7 +302,7 @@ router.route('/products')
                     path: 'contains.product',
                     model: 'Product',
                     match: { $and: [
-                        {masterStatus: "A", onHold: false},
+                        {masterStatus: "A"},
                         {$or: [{masterType: "R"}, {masterType: "B"}, {masterType: {$exists: false}, type:"group"}]}
                     ]}
             }).populate({
@@ -363,7 +363,7 @@ router.route('/products/:productId')
                     path: 'contains.product',
                     model: 'Product',
                     match: { $and: [
-                        {masterStatus: "A", onHold: false},
+                        {masterStatus: "A"},
                         {$or: [{masterType: "R"}, {masterType: "B"}, {masterType: {$exists: false}, type:"group"}]}
                     ]}
                 }
