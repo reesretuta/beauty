@@ -30,8 +30,8 @@ angular.module('app.filters', [])// Navigation Item Filter
 
             var value = tel.toString().trim().replace(/[^0-9]/, '');
             var prefix = value.slice(0, 3);
-            var part1 = value.slice(0, 3);
-            var part2 = value.slice(0, 4);
+            var part1 = value.slice(3, 6);
+            var part2 = value.slice(6, 10);
 
             return "(" + prefix + ") " + part1 + "-" + part2;
         };
