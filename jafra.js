@@ -880,7 +880,7 @@ function validateAddress(address) {
                 "AddressLine2":address.address2,
                 "CityStateOrProvinceZIPOrPostalCode":address.city + " " + address.state + " " + address.zip,
                 "Country":address.country,
-                "Casing":"PROPER"
+                "Casing":"UPPER"
             }, function (error, response) {
                 console.log("validateAddress(): response", error);
                 if (error || response.NorthAmericanAddressVerificationResult.ServiceStatus.StatusNbr != 200) {

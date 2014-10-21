@@ -986,8 +986,8 @@ angular.module('app.controllers.checkout')
                 var consultant = {
                     ssn: ssn,
                     email: $scope.profile.loginEmail,
-                    firstName: $scope.profile.firstName,
-                    lastName: $scope.profile.lastName,
+                    firstName: $scope.profile.firstName.toUpperCase(),
+                    lastName: $scope.profile.lastName.toUpperCase(),
                     dateOfBirth: dob,
                     sponsorId: $scope.profile.sponsorId,
                     language: $scope.profile.language,
