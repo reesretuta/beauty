@@ -303,32 +303,55 @@ angular.module('app.controllers.checkout')
             var d = $q.defer();
 
             selectConsultantLanguage(sku);
+            $scope.orderError = null;
 
-            $log.debug("CheckoutController(): online sponsoring: loading product with sku=", sku);
+            $log.debug("CheckoutController(): selectProduct(): loading product with sku=", sku);
 
             // load the product
             Products.get({productId: sku}).then(function(product) {
-                $log.debug("CheckoutController(): online sponsoring: loaded sku", product.sku, "product", product);
+                $log.debug("CheckoutController(): selectProduct(): loaded sku", product.sku, "product", product);
 
                 // FIXME - verify all previous steps data is available, else restart process
 
-                $log.debug("CheckoutController(): online sponsoring: clearing cart and restarting checkout");
+                $log.debug("CheckoutController(): selectProduct(): clearing cart and restarting checkout");
 
                 Cart.clear().then(function(cart) {
-                    $log.debug("CheckoutController(): online sponsoring: previous cart cleared");
+                    $log.debug("CheckoutController(): selectProduct(): previous cart cleared");
 
                     Cart.addToCart(product).then(function(cart) {
-                        $log.debug("CheckoutController(): online sponsoring: SKU loaded & added to cart");
+                        $log.debug("CheckoutController(): selectProduct(): SKU loaded & added to cart");
                         d.resolve(product);
-                        loadCheckout(true);
+                        loadCheckout(true).then(function(checkout) {
+                            // only fetch sales tax info if we have a shipping address
+                            if ($scope.checkout.shipping) {
+                                // fetch sales tax information here
+                                $scope.fetchSalesTax().then(function(salesTaxInfo) {
+                                    $log.debug("CheckoutController(): selectProduct(): got sales tax info", salesTaxInfo);
+
+                                    $scope.salesTaxInfo = salesTaxInfo;
+
+                                    $scope.checkoutUpdated();
+                                }, function(err) {
+                                    // FIXME - some error here
+                                    $log.error("CheckoutController(): selectProduct(): failed to get sales tax info", err);
+                                    $scope.orderError = "Failed to load sales tax";
+                                    $scope.salesTaxInfo = null;
+                                });
+                            }
+                        }, function(err) {
+                            // FIXME - some error here
+                            $log.error("CheckoutController(): selectProduct(): failed to load checkout", err);
+                            $scope.orderError = "Failed to load checkout";
+                            $scope.salesTaxInfo = null;
+                        });
                     }, function(error) {
-                        $log.error("CheckoutController(): online sponsoring: failed to update cart");
+                        $log.error("CheckoutController(): selectProduct(): failed to update cart");
                     });
                 }, function(error) {
-                    $log.error("CheckoutController(): online sponsoring: failed to update cart");
+                    $log.error("CheckoutController(): selectProduct(): failed to update cart");
                 });
             }, function(err) {
-                $log.error("CheckoutController(): online sponsoring: failed to load product");
+                $log.error("CheckoutController(): selectProduct(): failed to load product");
             });
 
             return d.promise;
@@ -389,6 +412,8 @@ angular.module('app.controllers.checkout')
 
         // load the checkout data from the session
         function loadCheckout(noRedirect) {
+            var d = $q.defer();
+
             $log.debug("CheckoutController(): loadCheckout()");
 
             // load checkout data
@@ -409,6 +434,8 @@ angular.module('app.controllers.checkout')
 
                 $scope.cartLoaded = true;
                 $log.debug("CheckoutController(): loadCheckout(): loaded cart products into items", items);
+
+                d.resolve($scope.checkout);
 
                 if (!debug) {
                     if (items.length == 0) {
@@ -436,7 +463,10 @@ angular.module('app.controllers.checkout')
             }, function(error) {
                 $log.error("CheckoutController(): loadCheckout(): cart error", error);
                 $location.path(STORE_BASE_URL);
+                d.reject(error);
             });
+
+            return d.promise;
         }
 
         // wait until the online sponsoring checks are complete including adding SKU to cart, then
@@ -789,18 +819,24 @@ angular.module('app.controllers.checkout')
         $scope.fetchSalesTax = function() {
             var defer = $q.defer();
 
-            SalesTax.calculate(0, 0, $scope.checkout.shipping.geocode, 1414, "P", [
-                {
-                    "sku": $scope.items[0].product.sku,
-                    "qty": 1
-                }
-            ]).then(function(info) {
-                $log.debug("CheckoutController(): fetchSalesTax()", info);
-                defer.resolve(info);
-            }, function(err) {
-                $log.error("CheckoutController(): fetchSalesTax()", err);
-                defer.reject(err);
-            });
+            if ($scope.checkout.shipping) {
+                $log.debug("CheckoutController(): fetchSalesTax(): fetching sales tax for item", $scope.items[0]);
+
+                SalesTax.calculate(0, 0, $scope.checkout.shipping.geocode, 1414, "P", [
+                    {
+                        "sku": $scope.items[0].product.sku,
+                        "qty": 1
+                    }
+                ]).then(function(info) {
+                    $log.debug("CheckoutController(): fetchSalesTax()", info);
+                    defer.resolve(info);
+                }, function(err) {
+                    $log.error("CheckoutController(): fetchSalesTax()", err);
+                    defer.reject(err);
+                });
+            } else {
+                d.resolve();
+            }
 
             return defer.promise;
         }
