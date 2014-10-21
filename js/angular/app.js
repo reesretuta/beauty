@@ -62,7 +62,7 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
         var interceptor = ['$location', '$q', '$timeout', '$rootScope', '$log', function($location, $q, $timeout, $rootScope, $log) {
             var cancelSessionTimerPromise = null;
 
-            function resetSessionTimer() {
+            function resetSessionTimer(response) {
                 $log.debug("resetSessionTimer()");
                 if (cancelSessionTimerPromise != null) {
                     $timeout.cancel(cancelSessionTimerPromise);
@@ -78,7 +78,9 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
             }
 
             function success(response) {
-                resetSessionTimer();
+                if (S(response.config.url).startsWith("/api")) {
+                    resetSessionTimer(response);
+                }
                 return response;
             }
 
