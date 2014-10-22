@@ -4,7 +4,7 @@ angular.module('app.controllers.onlineSponsor')
 
     $rootScope.inCheckout = false;
 
-    var cid = $routeParams.cid;
+    var cid = $routeParams.cid + ""; // force to a string
     var source = $routeParams.source;
     var language = S($routeParams.language).isEmpty() ? "en_US" : $routeParams.language;
     $log.debug("OnlineSponsorLandingController(): sponsorId", cid, "source", source, "language", language);
