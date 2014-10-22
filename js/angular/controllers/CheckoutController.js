@@ -11,6 +11,7 @@ angular.module('app.controllers.checkout')
 
         var urlStep = S(params.step != null ? params.step : "Start").toString();
         var debug = params.debug;
+        $scope.debug = debug;
         $log.debug("CheckoutController(): urlStep", urlStep);
 
         var onlineSponsorChecksCompleteDefer = $q.defer();
@@ -29,7 +30,7 @@ angular.module('app.controllers.checkout')
         $scope.checkout = {
             shipping: null,
             billing: null,
-            card: {} // NOTE!!! only encrypted card data should go here
+            card: null
         }
 
         // in memory on client only
@@ -49,7 +50,8 @@ angular.module('app.controllers.checkout')
             newBillingAddress: {},
             billSame: true,
             agree: true,
-            newCard: {}
+            newCard: {},
+            card: {}
         };
 
         // set current step
@@ -596,10 +598,15 @@ angular.module('app.controllers.checkout')
             }
         }
 
+        $scope.resetCard = function() {
+            $log.debug("CheckoutController(): resetCard()");
+            $scope.profile.newCard = angular.copy($scope.profile.card);
+        }
+
         $scope.addPaymentMethod = function() {
             if (debug) {
                 $log.debug("CheckoutController(): addPaymentMethod(): debug, adding card to checkout", $scope.profile.newCard);
-                $scope.checkout.card = $scope.profile.newCard;
+                $scope.profile.card = angular.copy($scope.profile.newCard);
                 WizardHandler.wizard('checkoutWizard').goTo('Review');
                 return;
             }
@@ -609,7 +616,7 @@ angular.module('app.controllers.checkout')
                 // we need to create a card and add to the account for client direct
                 CreditCards.addCreditCard($scope.profile.newCard).then(function(card) {
                     $log.debug("CheckoutController(): addPaymentMethod(): continuing to review after adding card", card);
-                    $scope.checkout.card = card;
+                    $scope.checkout.card = angular.copy(card);
                     $scope.profile.newCard = null;
 
                     // FIXME
@@ -642,7 +649,7 @@ angular.module('app.controllers.checkout')
                 // we just add to checkout for online sponsoring
                 $scope.profile.newCard.lastFour = $scope.profile.newCard.card.substr($scope.profile.newCard.card.length - 4);
                 $log.debug("CheckoutController(): addPaymentMethod(): saving the card to the checkout and continuing on", $scope.profile.newCard);
-                $scope.checkout.card = $scope.profile.newCard;
+                $scope.profile.card = angular.copy($scope.profile.newCard);
 
                 if (!$scope.profile.billSame) {
                     $log.debug("CheckoutController(): addPaymentMethod(): setting billing address", $scope.profile.newBillingAddress);
@@ -697,6 +704,32 @@ angular.module('app.controllers.checkout')
                         $scope.billingAddressError = "Error while processing cart";
                     });
                 }
+            }
+        }
+
+        // FIXME - only supports Online Sponsoring currently
+        $scope.updatePaymentMethod = function() {
+            if (debug) {
+                $log.debug("CheckoutController(): updatePaymentMethod(): debug, adding card to checkout", $scope.profile.newCard);
+                $scope.profile.card = angular.copy($scope.profile.newCard);
+
+                // close any modals
+                angular.element('.modal').modal('hide');
+
+                return;
+            }
+
+            if ($scope.isOnlineSponsoring) {
+                // we just add to checkout for online sponsoring
+                $scope.profile.newCard.lastFour = $scope.profile.newCard.card.substr($scope.profile.newCard.card.length - 4);
+                $log.debug("CheckoutController(): updatePaymentMethod(): saving the card to the checkout and continuing on", $scope.profile.newCard);
+                $scope.profile.card = angular.copy($scope.profile.newCard);
+
+                // no need to update sales tax, because we just updated the card, not the address
+                $scope.checkoutUpdated();
+
+                // close any modals
+                angular.element('.modal').modal('hide');
             }
         }
 
@@ -776,14 +809,14 @@ angular.module('app.controllers.checkout')
                 if (debug) {
                     // need to add
                     $log.debug("CheckoutController(): processOrder(): debug, adding card to checkout", $scope.profile.newCard);
-                    $scope.checkout.card = $scope.profile.newCard;
+                    $scope.profile.card = angular.copy($scope.profile.newCard);
                 }
 
                 var dob = $scope.profile.dob.replace(/(\d{2})(\d{2})(\d{4})/, '$1/$2/$3');
                 var ssn = $scope.profile.ssn.replace(/(\d{3})(\d{2})(\d{4})/, '$1-$2-$3');
                 var phone = $scope.profile.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
 
-                $scope.checkout.card.cardType = CreditCards.validateCard($scope.checkout.card.card).type;
+                $scope.profile.card.cardType = CreditCards.validateCard($scope.profile.card.card).type;
                 $scope.profile.shipping.name = $scope.profile.firstName + " " + $scope.profile.lastName;
                 $scope.profile.billing.name = $scope.profile.firstName + " " + $scope.profile.lastName;
                 $scope.profile.shipping.phone = phone;
@@ -813,7 +846,7 @@ angular.module('app.controllers.checkout')
                     phone: phone,
                     billingAddress: $scope.profile.billing,
                     shippingAddress: $scope.profile.shipping,
-                    creditCard: $scope.checkout.card,
+                    creditCard: $scope.profile.card,
                     agreementAccepted: $scope.profile.agree+"",
                     total: parseFloat($scope.salesTaxInfo.Total),
                     products: [
@@ -1213,7 +1246,33 @@ angular.module('app.controllers.checkout')
                     "name" : "David Castro",
                     "phone" : "987-983-7259"
                 },
+                shipping : {
+                    "address1" : "7661 Indian Canyon Cir",
+                    "address2" : "",
+                    "city" : "Eastvale",
+                    "county" : "Riverside",
+                    "state" : "CA",
+                    "stateDescription" : "CA",
+                    "zip" : "92880",
+                    "country" : "US",
+                    "geocode" : "040609",
+                    "name" : "David Castro",
+                    "phone" : "987-983-7259"
+                },
                 newBillingAddress : {
+                    "address1" : "7661 Indian Canyon Cir",
+                    "address2" : "",
+                    "city" : "Eastvale",
+                    "county" : "Riverside",
+                    "state" : "CA",
+                    "stateDescription" : "CA",
+                    "zip" : "92880",
+                    "country" : "US",
+                    "geocode" : "040609",
+                    "name" : "David Castro",
+                    "phone" : "987-983-7259"
+                },
+                billing : {
                     "address1" : "7661 Indian Canyon Cir",
                     "address2" : "",
                     "city" : "Eastvale",
@@ -1232,45 +1291,18 @@ angular.module('app.controllers.checkout')
                     card: "4111111111111111",
                     expMonth: "12",
                     expYear: "2020",
-                    cvv: "987"
-                }
-            };
-
-            $scope.checkout = {
-                agree: true,
+                    cvv: 987
+                },
                 card: {
                     name: "Test Name",
                     card: "4111111111111111",
                     expMonth: "12",
                     expYear: "2020",
-                    cvv: "987"
-                },
-                shipping: {
-                    "address1" : "7661 Indian Canyon Cir",
-                    "address2" : "",
-                    "city" : "Eastvale",
-                    "county" : "Riverside",
-                    "state" : "CA",
-                    "stateDescription" : "CA",
-                    "zip" : "92880",
-                    "country" : "US",
-                    "geocode" : "040609",
-                    "name" : "David Castro",
-                    "phone" : "987-983-7259"
-                },
-                billing: {
-                    "address1" : "7661 Indian Canyon Cir",
-                    "address2" : "",
-                    "city" : "Eastvale",
-                    "county" : "Riverside",
-                    "state" : "CA",
-                    "stateDescription" : "CA",
-                    "zip" : "92880",
-                    "country" : "US",
-                    "geocode" : "040609",
-                    "name" : "David Castro",
-                    "phone" : "987-983-7259"
+                    cvv: 987
                 }
+            };
+
+            $scope.checkout = {
             };
 
             $scope.confirmation = {
@@ -1305,6 +1337,10 @@ angular.module('app.controllers.checkout')
             }, function(error) {
                 $log.error("CheckoutController(): failed to update cart");
             });
+        }
+
+        $scope.debugDumpProfile = function() {
+            $log.debug("profile", $scope.profile);
         }
 
         function populateDebugShippingData(address) {

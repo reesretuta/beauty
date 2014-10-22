@@ -122,24 +122,40 @@
         </div>
       </div>
 
-      <div class="col-sm-3 col-lg-3" ng-if="checkout.card">
+      <!-- CARD -->
+      <div class="col-sm-3 col-lg-3" ng-if="profile.card">
         <h3><span ng-bind-html="'PAY_TIT1' | translate | unsafe"></span></h3>
         <div class="checkout-card clearfix active">
-          <span class="pull-left">{{checkout.card.name}}</span>
+          <span class="pull-left">{{profile.card.name}}</span>
           <img src="/img/46x30" class="pull-right">
           <p class="card-number">
             <span>&bull;&bull;&bull;&bull;</span>
             <span>&bull;&bull;&bull;&bull;</span>
             <span>&bull;&bull;&bull;&bull;</span>
-            <span>{{checkout.card.lastFour}}</span>
+            <span>{{profile.card.lastFour}}</span>
           </p>
           <p class="card-expiry pull-left">
             <small>EXP:</small>
-            {{checkout.card.expMonth}}/{{substr(checkout.card.expYear,2,2)}}
+            {{profile.card.expMonth}}/{{substr(profile.card.expYear,2,2)}}
           </p>
-          <a href="" data-toggle="modal" data-target=".bs-example-modal-charging" class="pull-right card-use-btn"><i class="fa fa-pencil-square-o"></i> Change Card</a>
+          <a href="" data-toggle="modal" data-target=".bs-example-modal-charging" ng-click="resetCard()" class="pull-right card-use-btn"><i class="fa fa-pencil-square-o"></i> Change Card</a>
         </div>
       </div><!-- /card -->
+
+      <!-- Charging To MODAL window -->
+      <div class="modal fade bs-example-modal-charging"  role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+              <h4 class="modal-title" id="myModalLabel">Charging To</h4>
+            </div>
+            <div class="modal-body row">
+              <ng-include src="'/partials/checkout/payment-edit-modal.html'"/>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <!-- Shipping card -->
       <div class="col-sm-3 col-lg-3 checkout-address" ng-if="profile.shipping">
@@ -198,21 +214,6 @@
 
     </div><!-- /row -->
 
-      <!-- Charging To MODAL window -->
-      <div class="modal fade bs-example-modal-lg-charging"  role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-              <h4 class="modal-title" id="myModalLabel">Charging To</h4>
-            </div>
-            <div class="modal-body row">
-              <ng-include src="'/partials/checkout/payment.html'"/>
-            </div>
-          </div>
-        </div>
-      </div>
-  
   </div>
 
 </div><!--/span-->
