@@ -423,6 +423,7 @@ angular.module('app.controllers.checkout')
         }
 
         $scope.validateProfileAndContinue = function() {
+            $log.debug("CheckoutController(): validateProfileAndContinue()", $scope.profile);
             $scope.profileSSNError = false;
 
             if (debug) {
@@ -834,6 +835,25 @@ angular.module('app.controllers.checkout')
                     }
                 }
 
+                // uppercase everything we need for JCS (names, addresses)
+                var billing = angular.copy($scope.profile.billing);
+                billing.address1 ? billing.address1 = billing.address1.toUpperCase(): false;
+                billing.address2 ? billing.address2 = billing.address2.toUpperCase(): false;
+                billing.city ? billing.city = billing.city.toUpperCase(): false;
+                billing.county ? billing.county = billing.county.toUpperCase(): false;
+                billing.state ? billing.state = billing.state.toUpperCase(): false;
+                billing.stateDescription ? billing.stateDescription = billing.stateDescription.toUpperCase(): false;
+                billing.name ? billing.name = billing.name.toUpperCase(): false;
+
+                var shipping = angular.copy($scope.profile.shipping);
+                shipping.address1 ? shipping.address1 = shipping.address1.toUpperCase(): false;
+                shipping.address2 ? shipping.address2 = shipping.address2.toUpperCase(): false;
+                shipping.city ? shipping.city = shipping.city.toUpperCase(): false;
+                shipping.county ? shipping.county = shipping.county.toUpperCase(): false;
+                shipping.state ? shipping.state = shipping.state.toUpperCase(): false;
+                shipping.stateDescription ? shipping.stateDescription = shipping.stateDescription.toUpperCase(): false;
+                shipping.name ? shipping.name = shipping.name.toUpperCase(): false;
+
                 var consultant = {
                     ssn: ssn,
                     email: $scope.profile.loginEmail,
@@ -844,8 +864,8 @@ angular.module('app.controllers.checkout')
                     language: $scope.profile.language,
                     source: $scope.profile.source,
                     phone: phone,
-                    billingAddress: $scope.profile.billing,
-                    shippingAddress: $scope.profile.shipping,
+                    billingAddress: billing,
+                    shippingAddress: shipping,
                     creditCard: $scope.profile.card,
                     agreementAccepted: $scope.profile.agree+"",
                     total: parseFloat($scope.salesTaxInfo.Total),

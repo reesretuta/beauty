@@ -880,7 +880,7 @@ function validateAddress(address) {
                 "AddressLine2":address.address2,
                 "CityStateOrProvinceZIPOrPostalCode":address.city + " " + address.state + " " + address.zip,
                 "Country":address.country,
-                "Casing":"UPPER"
+                "Casing":"PROPER"
             }, function (error, response) {
                 console.log("validateAddress(): response", error);
                 if (error || response.NorthAmericanAddressVerificationResult.ServiceStatus.StatusNbr != 200) {
@@ -923,10 +923,23 @@ function validateAddress(address) {
 
                     var usAddress = response.NorthAmericanAddressVerificationResult.ServiceResult.USAddress;
 
+                    var address1 = "";
+                    address1 += usAddress.StreetNumber.length > 0 ? usAddress.StreetNumber + " " : "";
+                    address1 += usAddress.PreDirection.length > 0 ? usAddress.PreDirection + " " : "";
+                    address1 += usAddress.StreetName.length > 0 ? usAddress.StreetName + " " : "";
+                    address1 += usAddress.StreetType.length > 0 ? usAddress.StreetType + " " : "";
+                    address1 += usAddress.PostDirection.length > 0 ? usAddress.PostDirection + " " : "";
+                    address1 = address1.trim();
+
+                    var address2 = "";
+                    address2 += usAddress.Extension.length > 0 ? usAddress.Extension + " " : "";
+                    address2 += usAddress.ExtensionNumber.length > 0 ? usAddress.ExtensionNumber + " " : "";
+                    address2 = address2.trim();
+
                     var a = {
                         name: address.name,
-                        address1: usAddress.AddressLine1.length > 0 ? usAddress.AddressLine1 : "",
-                        address2: usAddress.AddressLine2.length > 0 ? usAddress.AddressLine2 : "",
+                        address1: address1,
+                        address2: address2,
                         city: usAddress.City.length > 0 ? usAddress.City : "",
                         county: usAddress.County.length > 0 ? usAddress.County : "",
                         state: usAddress.State.length > 0 ? usAddress.State : "",
