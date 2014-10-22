@@ -27,10 +27,8 @@ angular.module('app.controllers.checkout')
 
         // persisted to session
         $scope.checkout = {
-            billSame: true,
             shipping: null,
             billing: null,
-            agree: false,
             card: {} // NOTE!!! only encrypted card data should go here
         }
 
@@ -45,8 +43,12 @@ angular.module('app.controllers.checkout')
             loginPassword: '',
             dob: '',
             phoneNumber: '',
+            billing: null,
+            shipping: null,
             newShippingAddress: {},
             newBillingAddress: {},
+            billSame: true,
+            agree: true,
             newCard: {}
         };
 
@@ -107,125 +109,7 @@ angular.module('app.controllers.checkout')
                 $scope.APP_BASE_URL = JOIN_BASE_URL;
                 $log.debug("CheckoutController(): online sponsoring");
 
-                // in debug, we just populate everything for testing
-                $scope.profile = {
-                    source: "web",
-                    customerStatus: 'new',
-                    language: 'en_US',
-                    firstName: 'Joe',
-                    lastName: 'Test',
-                    loginEmail: 'arimus@gmail.com',
-                    loginPassword: 'password',
-                    dob: '01/01/1978',
-                    ssn: '111111111',
-                    phoneNumber: '5554448888',
-                    agree : true,
-                    newShippingAddress : {
-                        "address1" : "7661 Indian Canyon Cir",
-                        "address2" : "",
-                        "city" : "Eastvale",
-                        "county" : "Riverside",
-                        "state" : "CA",
-                        "stateDescription" : "CA",
-                        "zip" : "92880",
-                        "country" : "US",
-                        "geocode" : "040609",
-                        "name" : "David Castro",
-                        "phone" : "987-983-7259"
-                    },
-                    newBillingAddress : {
-                        "address1" : "7661 Indian Canyon Cir",
-                        "address2" : "",
-                        "city" : "Eastvale",
-                        "county" : "Riverside",
-                        "state" : "CA",
-                        "stateDescription" : "CA",
-                        "zip" : "92880",
-                        "country" : "US",
-                        "geocode" : "040609",
-                        "name" : "David Castro",
-                        "phone" : "987-983-7259"
-                    },
-                    "billSame" : true,
-                    newCard: {
-                        name: "Test Name",
-                        card: "4111111111111111",
-                        expMonth: "12",
-                        expYear: "2020",
-                        cvv: "987"
-                    }
-                };
-
-                $scope.checkout = {
-                    agree: true,
-                    card: {
-                        name: "Test Name",
-                        card: "4111111111111111",
-                        expMonth: "12",
-                        expYear: "2020",
-                        cvv: "987"
-                    },
-                    shipping: {
-                        "address1" : "7661 Indian Canyon Cir",
-                        "address2" : "",
-                        "city" : "Eastvale",
-                        "county" : "Riverside",
-                        "state" : "CA",
-                        "stateDescription" : "CA",
-                        "zip" : "92880",
-                        "country" : "US",
-                        "geocode" : "040609",
-                        "name" : "David Castro",
-                        "phone" : "987-983-7259"
-                    },
-                    billing: {
-                        "address1" : "7661 Indian Canyon Cir",
-                        "address2" : "",
-                        "city" : "Eastvale",
-                        "county" : "Riverside",
-                        "state" : "CA",
-                        "stateDescription" : "CA",
-                        "zip" : "92880",
-                        "country" : "US",
-                        "geocode" : "040609",
-                        "name" : "David Castro",
-                        "phone" : "987-983-7259"
-                    },
-                    billSame: true
-                };
-
-                $scope.confirmation = {
-                    orderId: '123345678',
-                    consultantId: '11111111'
-                }
-
-                $scope.salesTaxInfo = {
-                    "SubTotal": "99.00",
-                    "SH": "5.00",
-                    "TaxRate": "7.75",
-                    "Total": "121.00"
-                }
-
-                // clear & add a product to the cart
-                Cart.clear().then(function(cart) {
-                    $log.debug("CheckoutController(): previous cart cleared");
-
-                    Cart.addToCart({
-                        name: "Royal Starter Kit (English)",
-                        name_es_US: "Royal Starter Kit (Ingl&eacute;s)",
-                        sku: "19634",
-                        quantity: 1,
-                        kitSelections: {},
-                        components: []
-                    }).then(function(cart) {
-                        $log.debug("CheckoutController(): online sponsoring SKU loaded & added to cart", cart);
-                        onlineSponsorChecksCompleteDefer.resolve();
-                    }, function(error) {
-                        $log.error("CheckoutController(): failed to update cart");
-                    });
-                }, function(error) {
-                    $log.error("CheckoutController(): failed to update cart");
-                });
+                populateDebugData();
             } else if (path && path.match(JOIN_BASE_URL)) {
                 $scope.isOnlineSponsoring = true;
                 $scope.APP_BASE_URL = JOIN_BASE_URL;
@@ -323,7 +207,7 @@ angular.module('app.controllers.checkout')
                         d.resolve(product);
                         loadCheckout(true).then(function(checkout) {
                             // only fetch sales tax info if we have a shipping address
-                            if ($scope.checkout.shipping) {
+                            if ($scope.profile.shipping) {
                                 // fetch sales tax information here
                                 $scope.fetchSalesTax().then(function(salesTaxInfo) {
                                     $log.debug("CheckoutController(): selectProduct(): got sales tax info", salesTaxInfo);
@@ -739,7 +623,7 @@ angular.module('app.controllers.checkout')
                     alert('error adding card: ' + err);
                 });
 
-                if (!$scope.checkout.billSame) {
+                if (!$scope.profile.billSame) {
                     $log.debug("CheckoutController(): addPaymentMethod(): setting billing address", $scope.profile.newBillingAddress);
                     // we need to create an address to add to the account for client direct
                     $scope.setBillingAddress($scope.profile.newBillingAddress, true).then(function() {
@@ -760,7 +644,7 @@ angular.module('app.controllers.checkout')
                 $log.debug("CheckoutController(): addPaymentMethod(): saving the card to the checkout and continuing on", $scope.profile.newCard);
                 $scope.checkout.card = $scope.profile.newCard;
 
-                if (!$scope.checkout.billSame) {
+                if (!$scope.profile.billSame) {
                     $log.debug("CheckoutController(): addPaymentMethod(): setting billing address", $scope.profile.newBillingAddress);
 
                     // we just add to checkout for online sponsoring
@@ -768,7 +652,7 @@ angular.module('app.controllers.checkout')
                         $log.debug("CheckoutController(): addPaymentMethod(): validated address", a);
 
                         $log.debug("CheckoutController(): addPaymentMethod(): setting consultant billing address", a);
-                        $scope.checkout.billing = a;
+                        $scope.profile.billing = angular.copy(a);
 
                         // fetch sales tax information here
                         $scope.fetchSalesTax().then(function(salesTaxInfo) {
@@ -819,10 +703,10 @@ angular.module('app.controllers.checkout')
         $scope.fetchSalesTax = function() {
             var defer = $q.defer();
 
-            if ($scope.checkout.shipping) {
+            if ($scope.profile.shipping) {
                 $log.debug("CheckoutController(): fetchSalesTax(): fetching sales tax for item", $scope.items[0]);
 
-                SalesTax.calculate(0, 0, $scope.checkout.shipping.geocode, 1414, "P", [
+                SalesTax.calculate(0, 0, $scope.profile.shipping.geocode, 1414, "P", [
                     {
                         "sku": $scope.items[0].product.sku,
                         "qty": 1
@@ -846,14 +730,14 @@ angular.module('app.controllers.checkout')
                 //$log.debug("empty", card);
                 return false;
             }
-            var res = $scope.validateCard(card);
+            var res = CreditCards.validateCard(card);
             //$log.debug("valid", res.valid, card);
             return res.valid;
         }
 
         function cardChanged() {
             $log.debug("CheckoutController(): cardChanged()", $scope.profile.newCard);
-            var res = $scope.validateCard($scope.profile.newCard.card);
+            var res = CreditCards.validateCard($scope.profile.newCard.card);
             $scope.profile.newCard.cardType = res.type;
         }
 
@@ -882,72 +766,6 @@ angular.module('app.controllers.checkout')
             cardExpirationChanged();
         });
 
-        $scope.validateCard = function(ccnumber) {
-            if (!ccnumber) {
-                return {
-                    valid: false,
-                    type: null
-                };
-            }
-            ccnumber = ccnumber.toString().replace(/\s+/g, '');
-            var len = ccnumber.length;
-            var cardType = null, valid = false;
-            var mul = 0,
-                prodArr = [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [0, 2, 4, 6, 8, 1, 3, 5, 7, 9]],
-                sum = 0;
-
-            while (len--) {
-                sum += prodArr[mul][parseInt(ccnumber.charAt(len), 10)];
-                mul ^= 1;
-            }
-
-            if (sum % 10 === 0 && sum > 0) {
-                valid = true
-            }
-
-            if(/^(34)|^(37)/.test(ccnumber)) {
-                cardType = "American Express";
-            }
-            if(/^(62)|^(88)/.test(ccnumber)) {
-                cardType = "China UnionPay";
-            }
-            if(/^30[0-5]/.test(ccnumber)) {
-                cardType = "Diners Club Carte Blanche";
-            }
-            if(/^(2014)|^(2149)/.test(ccnumber)) {
-                cardType = "Diners Club enRoute";
-            }
-            if(/^36/.test(ccnumber)) {
-                cardType = "Diners Club International";
-            }
-            if(/^(6011)|^(622(1(2[6-9]|[3-9][0-9])|[2-8][0-9]{2}|9([01][0-9]|2[0-5])))|^(64[4-9])|^65/.test(ccnumber)) {
-                cardType = "Discover Card";
-            }
-            if(/^35(2[89]|[3-8][0-9])/.test(ccnumber)) {
-                cardType = "JCB";
-            }
-            if(/^(6304)|^(6706)|^(6771)|^(6709)/.test(ccnumber)) {
-                cardType = "Laser";
-            }
-            if(/^(5018)|^(5020)|^(5038)|^(5893)|^(6304)|^(6759)|^(6761)|^(6762)|^(6763)|^(0604)/.test(ccnumber)) {
-                cardType = "Maestro";
-            }
-            if(/^5[1-5]/.test(ccnumber)) {
-                cardType = "MasterCard";
-            }
-            if (/^4/.test(ccnumber)) {
-                cardType = "Visa"
-            }
-            if (/^(4026)|^(417500)|^(4405)|^(4508)|^(4844)|^(4913)|^(4917)/.test(ccnumber)) {
-                cardType = "Visa Electron"
-            }
-
-            return {
-                valid: valid && ["Visa", "MasterCard", "American Express", "Discover Card"].indexOf(cardType) != -1,
-                type: cardType
-            }
-        }
-
         $scope.processOrder = function() {
             $log.debug("CheckoutController(): placeOrder(): checkout", $scope.checkout);
             $log.debug("CheckoutController(): placeOrder(): profile", $scope.profile);
@@ -965,11 +783,11 @@ angular.module('app.controllers.checkout')
                 var ssn = $scope.profile.ssn.replace(/(\d{3})(\d{2})(\d{4})/, '$1-$2-$3');
                 var phone = $scope.profile.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
 
-                $scope.checkout.card.cardType = $scope.validateCard($scope.checkout.card.card).type;
-                $scope.checkout.shipping.name = $scope.profile.firstName + " " + $scope.profile.lastName;
-                $scope.checkout.billing.name = $scope.profile.firstName + " " + $scope.profile.lastName;
-                $scope.checkout.shipping.phone = phone;
-                $scope.checkout.billing.phone = phone;
+                $scope.checkout.card.cardType = CreditCards.validateCard($scope.checkout.card.card).type;
+                $scope.profile.shipping.name = $scope.profile.firstName + " " + $scope.profile.lastName;
+                $scope.profile.billing.name = $scope.profile.firstName + " " + $scope.profile.lastName;
+                $scope.profile.shipping.phone = phone;
+                $scope.profile.billing.phone = phone;
 
                 // generate the components
                 var components = [];
@@ -993,10 +811,10 @@ angular.module('app.controllers.checkout')
                     language: $scope.profile.language,
                     source: $scope.profile.source,
                     phone: phone,
-                    billingAddress: $scope.checkout.billing,
-                    shippingAddress: $scope.checkout.shipping,
+                    billingAddress: $scope.profile.billing,
+                    shippingAddress: $scope.profile.shipping,
                     creditCard: $scope.checkout.card,
-                    agreementAccepted: $scope.checkout.agree+"",
+                    agreementAccepted: $scope.profile.agree+"",
                     total: parseFloat($scope.salesTaxInfo.Total),
                     products: [
                         {
@@ -1084,41 +902,131 @@ angular.module('app.controllers.checkout')
             }
         }
 
+        $scope.selectShippingAddress = function(address) {
+            $log.debug("CheckoutController(): selectShippingAddress(): shipping and billing set to", address);
+            $scope.profile.shipping = angular.copy(address);
+            // only set this if billSame is selected
+            if ($scope.profile.billSame) {
+                $scope.profile.billing = angular.copy(address);
+            }
+            $scope.checkoutUpdated();
+        }
+
         $scope.selectShippingAddressAndContinue = function(address) {
             $log.debug("CheckoutController(): selectShippingAddressAndContinue(): shipping and billing set to", address);
-            $scope.checkout.shipping = address;
-            $scope.checkout.billing = address;
+
+            $scope.selectShippingAddress();
             WizardHandler.wizard('checkoutWizard').goTo('Payment');
-            $scope.checkoutUpdated();
         }
 
         $scope.addShippingAddressAndContinue = function(address) {
             $log.debug("CheckoutController(): addShippingAddressAndContinue()", address);
+            $scope.addShippingAddress(address).then(function() {
+                // fetch sales tax information here
+                $scope.fetchSalesTax().then(function(salesTaxInfo) {
+                    $log.debug("CheckoutController(): addShippingAddressAndContinue(): got sales tax info", salesTaxInfo);
+
+                    $scope.salesTaxInfo = salesTaxInfo;
+
+                    $scope.checkoutUpdated();
+                }, function(err) {
+                    $log.error("CheckoutController(): addShippingAddressAndContinue(): failed to get sales tax info", err);
+                    $scope.orderError = "Failed to load sales tax";
+                    $scope.salesTaxInfo = null;
+                });
+
+                WizardHandler.wizard('checkoutWizard').goTo('Payment');
+            });
+        }
+
+        $scope.addShippingAddress = function(address) {
+            var d = $q.defer();
+
+            addAddress(address).then(function(a) {
+                if ($scope.isOnlineSponsoring) {
+                    $log.debug("CheckoutController(): addShippingAddress(): setting consultant shipping address", a);
+
+                    $scope.profile.shipping = angular.copy(a);
+                    // set the addresses
+                    $scope.profile.newShippingAddress = angular.copy(a);
+
+                    if ($scope.profile.billSame) {
+                        $log.debug("CheckoutController(): addShippingAddress(): setting consultant billing address", a);
+                        $scope.profile.billing = angular.copy(a);
+                        $scope.profile.newBillingAddress = angular.copy(a);
+                    }
+
+                    d.resolve(a);
+                } else {
+                    $log.debug("CheckoutController(): addShippingAddress(): setting client shipping address", a);
+
+                    $scope.profile.shipping = angular.copy(a);
+                    // clear the form versions
+                    $scope.profile.newShippingAddress = null;
+
+                    if ($scope.profile.billSame) {
+                        $log.debug("CheckoutController(): addShippingAddress(): setting client billing address", a);
+                        $scope.profile.billing = angular.copy(a);
+                        $scope.profile.newBillingAddress = null;
+                    }
+
+                    d.resolve(a);
+                }
+            }, function(err) {
+                d.reject(err);
+            });
+
+            return d.promise;
+        }
+
+        $scope.addBillingAddress = function(address) {
+            $log.debug("CheckoutController(): addBillingAddress()", address);
+            var d = $q.defer();
+
+            addAddress(address).then(function(a) {
+                if ($scope.isOnlineSponsoring) {
+                    $log.debug("CheckoutController(): addBillingAddress(): setting consultant billing address", a);
+                    $scope.profile.billSame = false;
+                    $scope.profile.billing = angular.copy(a);
+
+                    // set the addresses
+                    $scope.profile.newBillingAddress = angular.copy(a);
+
+                    d.resolve(a);
+                } else {
+                    $scope.profile.billSame = false;
+                    $scope.profile.billing = angular.copy(a);
+
+                    // clear the form versions
+                    $scope.profile.newBillingAddress = null;
+
+                    d.resolve(a);
+                }
+            }, function(err) {
+                d.reject(err);
+            });
+
+            return d.promise;
+        }
+
+        function addAddress(address) {
+            var d = $q.defer();
+
+            $log.debug("CheckoutController(): addAddress()", address);
             $scope.shippingAddressError = "";
 
             if (debug) {
-                // add name here since we're not allowing user to input a name for shipping address manually;
-                address.name = $scope.profile.firstName + " " + $scope.profile.lastName;
-                address.phone = $scope.profile.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');;
-
-                $log.debug("CheckoutController(): addShippingAddressAndContinue(): setting consultant shipping/billing address", address);
-                $scope.checkout.shipping = address;
-                $scope.checkout.billing = address;
-
-                // set the addresses
-                $scope.profile.newShippingAddress = address;
-
-                $scope.checkoutUpdated();
+                populateDebugShippingData(address);
                 WizardHandler.wizard('checkoutWizard').goTo('Payment');
-
-                return;
+                d.resolve();
+                return d.promise;
             }
 
             if ($scope.isOnlineSponsoring) {
-                $log.debug("CheckoutController(): addShippingAddressAndContinue(): validating address", address);
+                $log.debug("CheckoutController(): addAddress(): validating address", address);
 
                 Addresses.validateAddress(address).then(function(a) {
-                    $log.debug("CheckoutController(): addShippingAddressAndContinue(): validated address", a);
+                    $log.debug("CheckoutController(): addAddress(): validated address", a);
 
                     // add name here since we're not allowing user to input a name for shipping address manually;
                     a.name = $scope.profile.firstName + " " + $scope.profile.lastName;
@@ -1126,7 +1034,7 @@ angular.module('app.controllers.checkout')
 
                     // check the zip for geocode for taxes
                     Geocodes.query({zipCode: a.zip}).$promise.then(function(geocodes) {
-                        $log.debug("CheckoutController(): addShippingAddressAndContinue(): got geocodes", geocodes);
+                        $log.debug("CheckoutController(): addAddress(): got geocodes", geocodes);
 
                         if (geocodes.length == 1) {
                             a.geocode = geocodes[0].GEOCODE;
@@ -1135,70 +1043,57 @@ angular.module('app.controllers.checkout')
                             a.geocode = geocodes[0].GEOCODE;
                         }
 
-                        $log.debug("CheckoutController(): addShippingAddressAndContinue(): setting consultant shipping/billing address", a);
-                        $scope.checkout.shipping = a;
-                        $scope.checkout.billing = a;
-
-                        // set the addresses
-                        $scope.profile.newShippingAddress = a;
-
                         $scope.checkoutUpdated();
-                        WizardHandler.wizard('checkoutWizard').goTo('Payment');
+
+                        // close any modals
+                        angular.element('.modal').modal('hide');
+
+                        d.resolve(a);
                     }, function (r) {
-                        $log.error("CheckoutController(): addShippingAddressAndContinue(): error looking up geocode", r);
+                        $log.error("CheckoutController(): addAddress(): error looking up geocode", r);
                         $scope.shippingAddressError = "Unable to verify address";
+                        d.reject(r.errorMessage);
                     })
 
                 }, function(r) {
-                    $log.error("CheckoutController(): addShippingAddressAndContinue(): error validating address", r);
+                    $log.error("CheckoutController(): addAddress(): error validating address", r);
                     // FIXME - failed to add, show error
                     $scope.shippingAddressError = r.message;
+                    d.reject(r.errorMessage);
                 });
 
             } else {
                 // validate address
                 Addresses.validateAddress(address).then(function(address2) {
-                    $log.debug("CheckoutController(): addShippingAddressAndContinue(): validated address, now adding", address2);
+                    $log.debug("CheckoutController(): addAddress(): validated address, now adding", address2);
 
                     $scope.addAddress(address2).then(function(a) {
-                        $log.debug("CheckoutController(): addShippingAddressAndContinue(): added address", a);
-
-                        $scope.checkout.shipping = a;
-                        $scope.checkout.billing = a;
-
-                        // clear the form versions
-                        $scope.profile.newShippingAddress = null;
-                        $scope.profile.newBillingAddress = null;
+                        $log.debug("CheckoutController(): addAddress(): added address", a);
 
                         $scope.checkoutUpdated();
-                        WizardHandler.wizard('checkoutWizard').goTo('Payment');
+
+                        Addresses.addAddress(address).then(function(address) {
+                            $log.debug("CheckoutController(): addAddress(): address added", address);
+                            $scope.profile.shipping = angular.copy(address);
+                            $scope.profile.billing = angular.copy(address);
+                            d.resolve(address);
+                        }, function(err) {
+                            $log.error("CheckoutController(): addAddress(): failed to add address", err);
+                            d.reject(err);
+                        });
                     }, function(error) {
-                        $log.error("CheckoutController(): addShippingAddressAndContinue(): error adding address", error);
+                        $log.error("CheckoutController(): addAddress(): error adding address", error);
                         // FIXME - failed to add, show error
                         $scope.shippingAddressError = error;
+                        d.reject(error);
                     });
                 }, function(error) {
-                    $log.error("CheckoutController(): addShippingAddressAndContinue(): error validating address", error);
+                    $log.error("CheckoutController(): addAddress(): error validating address", error);
                     // FIXME - failed to add, show error
                     $scope.shippingAddressError = error;
+                    d.reject(error);
                 });
             }
-        }
-
-        $scope.addAddress = function(address) {
-            var d = $q.defer();
-
-            $log.debug('CheckoutController(): addAddress(): address data', address);
-
-            Addresses.addAddress(address).then(function(address) {
-                $log.debug("CheckoutController(): addAddress(): address added", address);
-                $scope.checkout.shipping = address;
-                $scope.checkout.billing = address;
-                d.resolve(address);
-            }, function(err) {
-                $log.error("CheckoutController(): addAddress(): failed to add address", err);
-                d.reject(err);
-            });
 
             return d.promise;
         }
@@ -1210,11 +1105,11 @@ angular.module('app.controllers.checkout')
 
             Addresses.removeAddress(addressId).then(function() {
                 $log.debug("CheckoutController(): removeAddress(): address removed", addressId);
-                if ($scope.checkout.shipping != null && $scope.checkout.shipping.id == addressId) {
-                    $scope.checkout.shipping = null;
+                if ($scope.profile.shipping != null && $scope.profile.shipping.id == addressId) {
+                    $scope.profile.shipping = null;
                 }
-                if ($scope.checkout.billing != null && $scope.checkout.billing.id == addressId) {
-                    $scope.checkout.billing = null;
+                if ($scope.profile.billing != null && $scope.profile.billing.id == addressId) {
+                    $scope.profile.billing = null;
                 }
 
                 d.resolve();
@@ -1234,7 +1129,7 @@ angular.module('app.controllers.checkout')
             if (isNew) {
                 Addresses.addAddress(address).then(function(a) {
                     $log.debug("CheckoutController(): addAddress(): address added", a);
-                    $scope.checkout.billing = a;
+                    $scope.profile.billing = angular.copy(a);
                     $scope.checkoutUpdated();
                     d.resolve(a);
                 }, function(err) {
@@ -1243,7 +1138,7 @@ angular.module('app.controllers.checkout')
                 });
             } else {
                 $log.debug("CheckoutController(): addAddress(): setting address to existing address", address);
-                $scope.checkout.billing = address;
+                $scope.profile.billing = angular.copy(address);
                 $scope.checkoutUpdated();
                 d.resolve(address);
             }
@@ -1290,4 +1185,140 @@ angular.module('app.controllers.checkout')
         $scope.$on('$destroy', function() {
             cleanup();
         });
+
+        function populateDebugData() {
+            // in debug, we just populate everything for testing
+            $scope.profile = {
+                source: "web",
+                customerStatus: 'new',
+                language: 'en_US',
+                firstName: 'Joe',
+                lastName: 'Test',
+                loginEmail: 'arimus@gmail.com',
+                loginPassword: 'password',
+                dob: '01/01/1978',
+                ssn: '111111111',
+                phoneNumber: '5554448888',
+                agree : true,
+                newShippingAddress : {
+                    "address1" : "7661 Indian Canyon Cir",
+                    "address2" : "",
+                    "city" : "Eastvale",
+                    "county" : "Riverside",
+                    "state" : "CA",
+                    "stateDescription" : "CA",
+                    "zip" : "92880",
+                    "country" : "US",
+                    "geocode" : "040609",
+                    "name" : "David Castro",
+                    "phone" : "987-983-7259"
+                },
+                newBillingAddress : {
+                    "address1" : "7661 Indian Canyon Cir",
+                    "address2" : "",
+                    "city" : "Eastvale",
+                    "county" : "Riverside",
+                    "state" : "CA",
+                    "stateDescription" : "CA",
+                    "zip" : "92880",
+                    "country" : "US",
+                    "geocode" : "040609",
+                    "name" : "David Castro",
+                    "phone" : "987-983-7259"
+                },
+                "billSame" : true,
+                newCard: {
+                    name: "Test Name",
+                    card: "4111111111111111",
+                    expMonth: "12",
+                    expYear: "2020",
+                    cvv: "987"
+                }
+            };
+
+            $scope.checkout = {
+                agree: true,
+                card: {
+                    name: "Test Name",
+                    card: "4111111111111111",
+                    expMonth: "12",
+                    expYear: "2020",
+                    cvv: "987"
+                },
+                shipping: {
+                    "address1" : "7661 Indian Canyon Cir",
+                    "address2" : "",
+                    "city" : "Eastvale",
+                    "county" : "Riverside",
+                    "state" : "CA",
+                    "stateDescription" : "CA",
+                    "zip" : "92880",
+                    "country" : "US",
+                    "geocode" : "040609",
+                    "name" : "David Castro",
+                    "phone" : "987-983-7259"
+                },
+                billing: {
+                    "address1" : "7661 Indian Canyon Cir",
+                    "address2" : "",
+                    "city" : "Eastvale",
+                    "county" : "Riverside",
+                    "state" : "CA",
+                    "stateDescription" : "CA",
+                    "zip" : "92880",
+                    "country" : "US",
+                    "geocode" : "040609",
+                    "name" : "David Castro",
+                    "phone" : "987-983-7259"
+                }
+            };
+
+            $scope.confirmation = {
+                orderId: '123345678',
+                consultantId: '11111111'
+            }
+
+            $scope.salesTaxInfo = {
+                "SubTotal": "99.00",
+                "SH": "5.00",
+                "TaxRate": "7.75",
+                "Total": "121.00"
+            }
+
+            // clear & add a product to the cart
+            Cart.clear().then(function(cart) {
+                $log.debug("CheckoutController(): previous cart cleared");
+
+                Cart.addToCart({
+                    name: "Royal Starter Kit (English)",
+                    name_es_US: "Royal Starter Kit (Ingl&eacute;s)",
+                    sku: "19634",
+                    quantity: 1,
+                    kitSelections: {},
+                    components: []
+                }).then(function(cart) {
+                        $log.debug("CheckoutController(): online sponsoring SKU loaded & added to cart", cart);
+                        onlineSponsorChecksCompleteDefer.resolve();
+                    }, function(error) {
+                        $log.error("CheckoutController(): failed to update cart");
+                    });
+            }, function(error) {
+                $log.error("CheckoutController(): failed to update cart");
+            });
+        }
+
+        function populateDebugShippingData(address) {
+            // add name here since we're not allowing user to input a name for shipping address manually;
+            address.name = $scope.profile.firstName + " " + $scope.profile.lastName;
+            address.phone = $scope.profile.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');;
+
+            $log.debug("CheckoutController(): populateDebugShippingData(): setting consultant shipping/billing address", address);
+            $scope.profile.shipping = angular.copy(address);
+            $scope.profile.billing = angular.copy(address);
+
+            // set the addresses
+            $scope.profile.newShippingAddress = angular.copy(address);
+
+            $scope.checkoutUpdated();
+        }
     });

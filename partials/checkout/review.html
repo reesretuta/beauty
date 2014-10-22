@@ -94,7 +94,7 @@
   <div class="form-group text-right">
         <label class="checkbox-inline">
 
-          <input type="checkbox" value="" ng-model="checkout.agree" required>
+          <input type="checkbox" value="" ng-model="profile.agree" required>
 
           I agree to the <a href="" data-toggle="modal" data-target=".bs-terms-modal-lg">Terms and Conditions</a>
           &nbsp;&nbsp;&nbsp;&nbsp;
@@ -141,12 +141,13 @@
         </div>
       </div><!-- /card -->
 
-      <div class="col-sm-3 col-lg-3 checkout-address" ng-if="checkout.shipping">
+      <!-- Shipping card -->
+      <div class="col-sm-3 col-lg-3 checkout-address" ng-if="profile.shipping">
         <h3><span ng-bind-html="'PAY_TIT2' | translate | unsafe"></span></h3>
-        <span class="address-name">{{checkout.shipping.name}}</span>
-        <span class="address-street">{{checkout.shipping.address1}} {{checkout.shipping.address2}}</span>
-        <span class="address-region">{{checkout.shipping.city}}, {{checkout.shipping.state}} {{checkout.shipping.zip}}</span>
-        <span class="phone-number">{{checkout.shipping.phone}}</span>
+        <span class="address-name">{{profile.shipping.name}}</span>
+        <span class="address-street">{{profile.shipping.address1}} {{profile.shipping.address2}}</span>
+        <span class="address-region">{{profile.shipping.city}}, {{profile.shipping.state}} {{profile.shipping.zip}}</span>
+        <span class="phone-number">{{profile.shipping.phone}}</span>
         <span ng-if="!isOnlineSponsoring">Speed: {{shippingSpeed}}</span>
         <div class="address-actions">
           <a href="" data-toggle="modal" data-target=".bs-example-modal-lg-shipping"><i class="fa fa-pencil-square-o"></i> Change Address</a>
@@ -154,89 +155,63 @@
       </div><!-- /address -->
 
       <!-- Shipping To MODAL window -->
-<div class="modal fade bs-example-modal-lg-shipping"  role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Shipping To:</h4>
+      <div class="modal fade bs-example-modal-lg-shipping" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+              <h4 class="modal-title" id="myModalLabel"><span ng-bind-html="'PAY_TIT2' | translate | unsafe"></span></h4>
+            </div>
+            <div class="modal-body row">
+              <ng-include src="'/partials/checkout/shipping-edit-modal.html'"/>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="modal-body row">
-        <ng-include src="'/partials/checkout/shipping.html'"/>
-      </div>
-    </div>
-  </div>
-</div>
 
-      <div class="col-xs-3 col-lg-3 checkout-address" ng-if="!checkout.billSame">
+      <!-- Billing card -->
+      <div class="col-xs-3 col-lg-3 checkout-address">
         <h3><span ng-bind-html="'PAY_TIT3' | translate | unsafe"></span></h3>
-        <span class="address-name">{{checkout.billing.name}}</span>
-        <span class="address-street">{{checkout.billing.address1}} {{checkout.billing.address2}}</span>
-        <span class="address-region">{{checkout.billing.city}}, {{checkout.billing.state}} {{checkout.billing.zip}}</span>
-        <span class="phone-number">{{checkout.billing.phone}}</span>
+        <span class="address-name">{{profile.billing.name}}</span>
+        <span class="address-street">{{profile.billing.address1}} {{profile.billing.address2}}</span>
+        <span class="address-region">{{profile.billing.city}}, {{profile.billing.state}} {{profile.billing.zip}}</span>
+        <span class="phone-number">{{profile.billing.phone}}</span>
         <div class="address-actions">
           <a href="" data-toggle="modal" data-target=".bs-example-modal-lg-billing"><i class="fa fa-pencil-square-o"></i> Change Address</a>
         </div>
       </div><!-- /address -->
 
       <!-- Billing To MODAL window -->
-<div class="modal fade bs-example-modal-lg-billing"  role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel"><span ng-bind-html="'PAY_TIT3' | translate | unsafe"></span>:</h4>
-      </div>
-      <div class="modal-body row">
-        <ng-include src="'/partials/checkout/payment.html'"/>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-      <div class="col-xs-3 col-lg-3 checkout-address" ng-if="checkout.billSame">
-        <h3><span ng-bind-html="'PAY_TIT3' | translate | unsafe"></span></h3>
-        <span class="address-name">{{checkout.shipping.name}}</span>
-        <span class="address-street">{{checkout.shipping.address1}} {{checkout.shipping.address2}}</span>
-        <span class="address-region">{{checkout.shipping.city}}, {{checkout.shipping.state}} {{checkout.shipping.zip}}</span>
-        <span class="phone-number">{{checkout.shipping.phone}}</span>
-        <div class="address-actions">
-          <a href="" data-toggle="modal" data-target=".bs-example-modal-lg-billingSame"><i class="fa fa-pencil-square-o"></i> Change Address</a>
+      <div class="modal fade bs-example-modal-lg-billing"  role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+              <h4 class="modal-title" id="myModalLabel"><span ng-bind-html="'PAY_TIT3' | translate | unsafe"></span>:</h4>
+            </div>
+            <div class="modal-body row">
+              <ng-include src="'/partials/checkout/billing-edit-modal.html'"/>
+            </div>
+          </div>
         </div>
-      </div><!-- /address -->
-
-      <!-- Billing To MODAL window if checkout.billSame -->
-<div class="modal fade bs-example-modal-lg-billingSame"  role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel"><span ng-bind-html="'PAY_TIT3' | translate | unsafe"></span>:</h4>
       </div>
-      <div class="modal-body row">
-        <ng-include src="'/partials/checkout/payment.html'"/>
-      </div>
-    </div>
-  </div>
-</div>
 
     </div><!-- /row -->
 
       <!-- Charging To MODAL window -->
-<div class="modal fade bs-example-modal-lg-charging"  role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Charging To</h4>
+      <div class="modal fade bs-example-modal-lg-charging"  role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+              <h4 class="modal-title" id="myModalLabel">Charging To</h4>
+            </div>
+            <div class="modal-body row">
+              <ng-include src="'/partials/checkout/payment.html'"/>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="modal-body row">
-        <ng-include src="'/partials/checkout/payment.html'"/>
-      </div>
-    </div>
-  </div>
-</div>
   
   </div>
 
