@@ -1140,40 +1140,40 @@ angular.module('app.services', ['ngResource'])
                 valid = true
             }
 
-            if(/^(34)|^(37)/.test(ccnumber)) {
+            if(/^(34|37)/.test(ccnumber) && ccnumber.length == 15) {
                 cardType = "American Express";
             }
-            if(/^(62)|^(88)/.test(ccnumber)) {
+            if(/^(62|88)/.test(ccnumber) && ccnumber.length >= 16  && ccnumber.length <= 19) {
                 cardType = "China UnionPay";
             }
-            if(/^30[0-5]/.test(ccnumber)) {
+            if(/^30[0-5]/.test(ccnumber) && ccnumber.length == 14) {
                 cardType = "Diners Club Carte Blanche";
             }
-            if(/^(2014)|^(2149)/.test(ccnumber)) {
+            if(/^(2014|2149)/.test(ccnumber) && ccnumber.length == 15) {
                 cardType = "Diners Club enRoute";
             }
-            if(/^36/.test(ccnumber)) {
+            if(/^(36|38|39|309)/.test(ccnumber) && ccnumber.length == 14) {
                 cardType = "Diners Club International";
             }
-            if(/^(6011)|^(622(1(2[6-9]|[3-9][0-9])|[2-8][0-9]{2}|9([01][0-9]|2[0-5])))|^(64[4-9])|^65/.test(ccnumber)) {
+            if(/^(6011|64[4-9]|65|622(1(2[6-9]|[3-9][0-9])|[2-8][0-9]{2}|9([01][0-9]|2[0-5])))/.test(ccnumber) && ccnumber.length == 16) {
                 cardType = "Discover Card";
             }
-            if(/^35(2[89]|[3-8][0-9])/.test(ccnumber)) {
+            if(/^35(2[89]|[3-8][0-9])/.test(ccnumber) && ccnumber.length == 16) {
                 cardType = "JCB";
             }
-            if(/^(6304)|^(6706)|^(6771)|^(6709)/.test(ccnumber)) {
+            if(/^(6304|6706|6771|6709)/.test(ccnumber) && ccnumber.length >= 16  && ccnumber.length <= 19) {
                 cardType = "Laser";
             }
-            if(/^(5018)|^(5020)|^(5038)|^(5893)|^(6304)|^(6759)|^(6761)|^(6762)|^(6763)|^(0604)/.test(ccnumber)) {
+            if(/^(5018|5020|5038|5612|5893|6304|6759|6761|6762|6763|0604|6390)/.test(ccnumber) && ccnumber.length >= 12  && ccnumber.length <= 19) {
                 cardType = "Maestro";
             }
-            if(/^5[1-5]/.test(ccnumber)) {
+            if(/^5[1-5]/.test(ccnumber) && ccnumber.length == 16) {
                 cardType = "MasterCard";
             }
-            if (/^4/.test(ccnumber)) {
+            if (/^4/.test(ccnumber) && (ccnumber.length == 13 || ccnumber.length == 16)) {
                 cardType = "Visa"
             }
-            if (/^(4026)|^(417500)|^(4405)|^(4508)|^(4844)|^(4913)|^(4917)/.test(ccnumber)) {
+            if (/^(4026|417500|4405|4508|4844|4913|4917)/.test(ccnumber) && ccnumber.length == 16) {
                 cardType = "Visa Electron"
             }
 
