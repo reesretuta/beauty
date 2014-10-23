@@ -295,5 +295,8 @@
     "OS-NAV4":"Join Now!",
     "OS-NAV5":"Contact",
     "PRIVACY-TITLE":"JoinJAFRA Website Privacy Policy",
-    "INVALID_CC_EXPIRATION":"Invalid expiration date"
+    "INVALID_CC_EXPIRATION":"Invalid expiration date",
+    "MULTIPLE_ADDRESSES":"Multiple Addresses Found",
+    "SELECT_ADDRESS_OPTION":"Multiple Addresses",
+    "SELECT_ADDRESS_OPTION_DESC":"Please choose your address from the list"
 }

@@ -1,0 +1,35 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="close()">&times;</button>
+  <h4 class="modal-title"><span ng-bind-html="'SELECT_ADDRESS_OPTION' | translate |unsafe"></span> <span class="text-muted italic" ng-bind-html="'SELECT_ADDRESS_OPTION_DESC' | translate | unsafe"></span></h4>
+</div>
+
+<div class="modal-body queue-modal-body">
+
+  <div class="row">
+
+    <form name="addressSelectionForm" class="form-horizontal" role="form" novalidate>
+
+    <!-- CARD INFO -->
+    <div class="form-group" >
+      <div class="col-lg-12 col-sm-12" ng-repeat="g in geocodes">
+        <div class="col-lg-1 col-sm-1">
+          <input ng-model="selected.index" name="selectedAddress" type="radio" value="{{g.index}}" required>
+        </div>
+        <div class="col-lg-11 col-sm-11">
+          {{g.ZIPSTART}} - {{g.ZIPEND}} {{g.CITYDES}}, {{g.COUNTYDES}}, {{g.STATECODE}}
+        </div>
+      </div>
+    </div>
+
+    </form>
+  </div>
+</div>
+<div class="modal-footer">
+  <div class="col-lg-6 col-md-6 col-sm-6">
+    <span class="text-muted pull-left">Choose an option and save</span>
+  </div>
+  <div class="col-lg-6 col-md-6 col-sm-6">
+    <button ng-click="close()" class="btn btn-link">Cancel</button>
+    <button ng-click="save()" class="btn btn-primary" ng-disabled="!selected.index"><i class="fa fa-shopping-cart"></i> Save</button>
+  </div>
+</div>

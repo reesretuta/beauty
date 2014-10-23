@@ -295,5 +295,8 @@
     "OS-NAV4":"&iexcl;&Uacute;nete ahora!",
     "OS-NAV5":"Contacto",
     "PRIVACY-TITLE":"Políticas de Privacidad del Sitio de JoinJAFRA en Internet",
-    "INVALID_CC_EXPIRATION":"Fecha de caducidad no válido"
+    "INVALID_CC_EXPIRATION":"Fecha de caducidad no válido",
+    "MULTIPLE_ADDRESSES":"Multiple Addresses Found",
+    "SELECT_ADDRESS_OPTION":"Multiple Addresses",
+    "SELECT_ADDRESS_OPTION_DESC":"Please choose your address from the list"
 }
