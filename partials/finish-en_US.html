@@ -8,13 +8,29 @@
   </div>
 
   <div id="final" class="col-lg-offset-1 col-lg-10">
-    <h3 class="">Your Consultant I.D. # is <label style="color:black;">{{confirmation.consultantId}}</label></h3>
-    <hr>
-    
+          <div class="row text-center">
+            <div class="col-md-offset-2 col-md-8">
+    <h3 class="">Your Consultant I.D. #</h3>
+    <h3 class="h3"><label style="color:black;">{{confirmation.consultantId}}</label></h3>
     <p>
         Your sponsor is: ________________<br />
-        Or a Sponsor will be assigned by JAFRA within the next _____ days. 
+        Or a Sponsor will be assigned by JAFRA within the next _____ days.
     </p>
+  </div>
+</div>
+
+          <div class="row">
+            <div class="col-md-offset-4 col-md-4">
+              <div class="thanks-well text-center">
+                <p class="h4"><a href="http://jafrabiz.com" target="_blank"><b><i class="fa fa-external-link"></i> jafrabiz.com</b></a></p>
+                <small>username:</small>
+                <p><b ng-bind="profile.loginEmail"></b></p>
+                <small>password:</small>
+                <p><b>1234</b></p>
+              </div>
+            </div>
+          </div>
+    <hr>
     <p>To get started on your new and successful career, please take the following important steps:</p>
     <p>
         <!--TODO: STYLING-->
@@ -40,8 +56,8 @@ Then you can:<br />
 <br />
 NOTE to website developers:<br />
 Provide the following links for next steps/ call to action:<br />
-	a. jafrabiz.com<br />
-	b. Download Consultant Agreement
+	<del>a. jafrabiz.com<br />
+	b. Download Consultant Agreement</del>
 
     </p>
 
