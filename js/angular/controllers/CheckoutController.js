@@ -35,6 +35,7 @@ angular.module('app.controllers.checkout')
 
         // in memory on client only
         $scope.profile = {
+            sponsorId: '',
             source: "web",
             customerStatus: 'new',
             language: 'en_US',
@@ -64,6 +65,26 @@ angular.module('app.controllers.checkout')
             $scope.profile.customerStatus = status;
         }
 
+        $scope.invalidDOB = false;
+        $scope.invalidSponsorId = false;
+
+        // initially verify
+        verifyAge();
+        verifySponsorId();
+
+        $scope.$watch('profile.dob', function(newVal, oldVal) {
+            if (newVal != oldVal) {
+                // verify age when dob is exactly 8 characters long
+                verifyAge();
+            }
+        });
+
+        $scope.$watch('profile.sponsorId', function(newVal, oldVal) {
+            if (newVal != oldVal) {
+                verifySponsorId();
+            }
+        });
+
         // watch current step for changes
         $scope.$watch('currentStep', function(newVal, oldVal) {
             if (newVal != oldVal && newVal != '' && newVal != null) {
@@ -88,7 +109,9 @@ angular.module('app.controllers.checkout')
         Session.get().then(function(session) {
             $log.debug("CheckoutController(): session initialized", session);
 
-            $scope.profile.sponsorId = session.consultantId;
+            $scope.profile.sponsorId = session.consultantId == null ? '' : session.consultantId;
+            $log.debug("CheckoutController(): loaded consultantId from session", $scope.profile.sponsorId);
+
             if (session.source) {
                 $scope.profile.source = session.source;
             }
@@ -410,7 +433,7 @@ angular.module('app.controllers.checkout')
             });
         }
 
-        $scope.verifyAge = function() {
+        function verifyAge() {
             $log.debug("CheckoutController(): verifyAge(): ", $scope.profile.dob)
             $scope.invalidDOB = false;
 
@@ -419,6 +442,15 @@ angular.module('app.controllers.checkout')
             
             if (!dob.isValid() || now.diff(dob,'years') < 18) {
                 $scope.invalidDOB = true;
+            }
+        }
+
+        function verifySponsorId() {
+            $log.debug("CheckoutController(): verifySponsorId(): ", $scope.profile.sponsorId)
+            if ($scope.profile.sponsorId == '' || $scope.profile.sponsorId == null) {
+                $scope.invalidSponsorId = false;
+            } else if (!$scope.profile.sponsorId.match(/^[0-9]+$/)) {
+                $scope.invalidSponsorId = true;
             }
         }
 

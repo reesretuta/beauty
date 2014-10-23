@@ -39,7 +39,7 @@
       <div class="col-md-3">
         <div class="input-group">
           <span class="input-group-addon"><i class="fa fa-lock"><!-- lock icon --></i></span>
-          <input type="text" class="form-control" ui-mask="999 - 99 - 9999" placeholder="xxx - xx - xxxx" ng-model="profile.ssn" required autofocus>
+          <input name="ssn" type="text" class="form-control" ui-mask="999 - 99 - 9999" placeholder="xxx - xx - xxxx" ng-model="profile.ssn" required autofocus>
         </div>
         <span class="help-block"><small><span ng-bind-html="'SSN-NOTE' | translate | unsafe"></span></small></span>
       </div>
@@ -47,11 +47,11 @@
 
     <div class="form-group">
       <label class="col-md-3 control-label"><span ng-bind-html="'DOB-LABEL' | translate | unsafe"></span></label>
-      <div class="col-xs-4 col-md-3" ng-class="{ 'has-error' : invalidDOB }">
-        <input type="tel" class="form-control" ui-mask="99/99/9999" placeholder="MM/DD/YYYY" ng-model="profile.dob" ng-blur="verifyAge()">
+      <div class="col-xs-4 col-md-3" ng-class="{ 'has-error' : invalidDOB && !profileForm.dob.$pristine && profile.dob.length == 8 }">
+        <input type="tel" name="dob" class="form-control" ui-mask="99/99/9999" placeholder="MM/DD/YYYY" ng-model="profile.dob">
       </div>
       <div class="col-md-offset-3 col-sm-9">
-        <span class="help-block"><small ng-class="{ 'text-danger' : invalidDOB }"><span ng-bind-html="'DOB-NOTE' | translate | unsafe"></span></small></span>
+        <span class="help-block"><small ng-class="{ 'text-danger' : invalidDOB && !profileForm.dob.$pristine && profile.dob.length == 8 }"><span ng-bind-html="'DOB-NOTE' | translate | unsafe"></span></small></span>
       </div>
       <div class="col-md-offset-3 col-sm-9">
         <div class="row"><div class="col-sm-8"><hr></div></div>
@@ -60,9 +60,9 @@
 
     <div class="form-group">
       <label class="col-md-3 control-label"><span ng-bind-html="'SPONSOR-ID-LABEL' | translate | unsafe"></span></label>
-      <div class="col-md-4" ng-class="{ 'has-error' : profileForm.sponsorId.$invalid && !profileForm.sponsorId.$pristine }">
-        <input name="sponsorId" type="text" class="form-control" ng-pattern="/^[0-9]*$/" ng-model="profile.sponsorId" placeholder="#-digit ID of your JAFRA Consultant Sponsor">
-        <span ng-show="profileForm.sponsorId.$invalid && !profileForm.sponsorId.$pristine" class="help-block" ng-class="{ 'text-danger' : profileForm.sponsorId.$invalid }">Must only contain numbers</span>
+      <div class="col-md-4" ng-class="{ 'has-error' : invalidSponsorId && !profileForm.sponsorId.$pristine }">
+        <input name="sponsorId" type="text" class="form-control" ng-model="profile.sponsorId" placeholder="#-digit ID of your JAFRA Consultant Sponsor">
+        <span ng-show="invalidSponsorId" class="help-block" ng-class="{ 'text-danger' : invalidSponsorId }">Must only contain numbers</span>
         <span class="help-block"><small><span ng-bind-html="'SPONSOR-ID-NOTE' | translate | unsafe"></span></small></span>
       </div>
       <div class="col-md-offset-3 col-sm-9">
@@ -72,7 +72,7 @@
 
     <div class="form-group">
       <div class="col-md-offset-3 col-sm-9">
-        <a href="" ng-click="validateProfileAndContinue()" ng-disabled="!profileForm.$valid || invalidDOB" class="btn btn-primary btn-lg">Continue to Shipping &nbsp;<i class="fa fa-caret-right"></i></a>
+        <a href="" ng-click="validateProfileAndContinue()" ng-disabled="!profileForm.$valid || invalidDOB || invalidSponsorId" class="btn btn-primary btn-lg">Continue to Shipping &nbsp;<i class="fa fa-caret-right"></i></a>
       </div>
     </div>
   </form>
