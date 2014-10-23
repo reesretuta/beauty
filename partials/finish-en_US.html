@@ -99,5 +99,11 @@ Provide the following links for next steps/ call to action:<br />
     <h2 class="">How to track your order</h2>
     <hr>
     <p>Information will be sent after your order has been shipped.</p>
-
+    <hr>
+            <h4 id="myModalLabel" class="modal-title text-center"><span ng-bind-html="'CONSULTANT-AGREEMENT-TITLE' | translate | unsafe"></span></h4>
+            <div class="agreement-content" id="agreement-content">
+              
+                <!--consultant agreement goes here-->
+                <div ng-if="session.language" ng-include="'/partials/consultant-agreement-'+session.language+'.html'"></div>
+            </div>
   </div>

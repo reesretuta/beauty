@@ -100,5 +100,12 @@ Favor de proveer los siguientes enlaces para pasos a seguir y motivar la acción
     <h2 class="">¿Cómo hacer seguimiento al pedido?</h2>
     <hr>
     <p>Recibirás un número de seguimiento una vez sea enviado el pedido.</p>
+    <hr>
+            <h4 id="myModalLabel" class="modal-title text-center"><span ng-bind-html="'CONSULTANT-AGREEMENT-TITLE' | translate | unsafe"></span></h4>
+            <div class="agreement-content" id="agreement-content">
+              
+                <!--consultant agreement goes here-->
+                <div ng-if="session.language" ng-include="'/partials/consultant-agreement-'+session.language+'.html'"></div>
+            </div>
 
   </div>
