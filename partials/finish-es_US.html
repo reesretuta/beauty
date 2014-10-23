@@ -1,4 +1,4 @@
-<div class="col-md-offset-3 col-lg-8">
+<div class="col-lg-offset-1 col-lg-10">
     <a href="" class="pull-right print-link" onClick="printDiv('final');"><i class="fa fa-print"></i> Print this page</a>
     <h1>FELICITACIONES 
         <span class="store-heading-description">
@@ -7,42 +7,58 @@
     </h1>
   </div>
 
-  <div id="final" class="col-md-offset-3 col-lg-8">
-    <h3 class="">Tu # de I.D. de Consultora es <label style="color:black;">{{confirmation.consultantId}}</label></h3>
-    <hr>
+  <div id="final" class="col-lg-offset-1 col-lg-10">
+          <div class="row text-center">
+            <div class="col-md-offset-2 col-md-8">
+    <h3 class="">Tu # de I.D. de Consultora</h3>
+    <h3 class="h3"><label style="color:black;">{{confirmation.consultantId}}</label></h3>
     
     <p>
         Tu patrocinadora es: ________________<br />
         O se te asignará una Patrocinadora de JAFRA dentro de los próximos _____ días.  
     </p>
+  </div>
+</div>
+
+
+          <div class="row">
+            <div class="col-md-offset-4 col-md-4">
+              <div class="thanks-well text-center">
+                <p class="h4"><a href="http://jafrabiz.com" target="_blank"><b><i class="fa fa-external-link"></i> jafrabiz.com</b></a></p>
+                <small>username:</small>
+                <p><b ng-bind="profile.loginEmail"></b></p>
+                <small>password:</small>
+                <p><b>1234</b></p>
+              </div>
+            </div>
+          </div>
+<hr>
     <p>Para que comiences con tu nueva y exitosa carrera, es importante que sigas estos pasos:</p>
+    
+<h3>1. Para agilizar los trámites de pago, elige una de las opciones que JAFRA te ofrece:</h3>
     <p>
-        <!--TODO: STYLING-->
-        1. Para agilizar los trámites de pago, elige una de las opciones que JAFRA te ofrece:<br />
-	•	JAFRA Debit MasterCard- (links to site) – Ver FAQs (links to FAQ PDF) <br />
-	•	Depósito directo-(links to PDF, send to JAFRA) – Ver FAQs (links to FAQ PDF)<br />
-<br />
-2. Para tener acceso al sitio Web de las Consultoras de Jafra, visita jafrabiz.com. Anota tu número de I.D. de Consultora y usa los cuatro últimos dígitos  de tu número de Seguro Social como contraseña.<br />
-Entonces podrás:<br />
-	•	Ordenar producto<br />
-	•	Hacer pagos<br />
-	•	Ver tus reportes<br />
-	•	Revisar tu actividad y más<br />
-<br />
-3. Visita: Conexión de la Consultora en jafrabiz.com para:<br />
-	•	Tener acceso a todas las herramientas de ventas y entrenamiento <br />
-	•	Recibir alertas y estar al día con noticias importantes sobre JAFRA<br />
-<br />
-4. Si tienes preguntas asegúrate de tener esta información en tu lista de contactos:<br /> 
+    	•	JAFRA Debit MasterCard- (links to site) – Ver FAQs (links to FAQ PDF) <br />
+    	•	Depósito directo-(links to PDF, send to JAFRA) – Ver FAQs (links to FAQ PDF)<br />
+    </p>
+<h3>2. Para tener acceso al sitio Web de las Consultoras de Jafra, visita jafrabiz.com. Anota tu número de I.D. de Consultora y usa los cuatro últimos dígitos  de tu número de Seguro Social como contraseña.</h3>
+    <p>
+    Entonces podrás:<br />
+    	•	Ordenar producto<br />
+    	•	Hacer pagos<br />
+    	•	Ver tus reportes<br />
+    	•	Revisar tu actividad y más<br />
+    </p>
+<h3>3. Visita: Conexión de la Consultora en jafrabiz.com para:</h3>
+    <p>
+    	•	Tener acceso a todas las herramientas de ventas y entrenamiento <br />
+    	•	Recibir alertas y estar al día con noticias importantes sobre JAFRA
+    </p>
+<h3>4. Si tienes preguntas asegúrate de tener esta información en tu lista de contactos:</h3> 
+<p>
 	•	Número Telefónico de tu Patrocinadora y Líder para que puedas llamarla en cualquier momento.<br />
 	•	El Número teléfonico del Equipo de Servicio a la Consultora de Jafra. <br />
 Llama al 1-800-852-372<br />
-<br />
-NOTA a desarrolladores de sitios web:<br />
-Favor de proveer los siguientes enlaces para pasos a seguir y motivar la acción.<br />
-	•	Jafrabiz.com<br />
-	•	Descargar el Acuerdo de Consultora
-
+</p>
 
     </p>
 
