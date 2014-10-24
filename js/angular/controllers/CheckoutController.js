@@ -146,6 +146,7 @@ angular.module('app.controllers.checkout')
                 // redirect back home if there is no sku
                 if (S(sku).isEmpty()) {
                     if ($scope.isOnlineSponsoring) {
+                        $log.debug("CheckoutController(): no SKU, redirecting back to join page");
                         $location.path(JOIN_BASE_URL);
                     }
                 }
@@ -157,10 +158,27 @@ angular.module('app.controllers.checkout')
                     }
                 });
 
-                $scope.selectProduct(sku).then(function() {
+                $scope.selectProduct(sku).then(function(product) {
+                    if (!debug) {
+                        if (Session.isLoggedIn() && !$scope.isOnlineSponsoring) {
+                            // send the user past the login page if they are in client direct & logged in
+                            if (urlStep != 'Start') {
+                                $log.debug("CheckoutController(): online sponsoring: sending logged in user to", urlStep);
+                                WizardHandler.wizard('checkoutWizard').goTo(urlStep);
+                            } else {
+                                $log.debug("CheckoutController(): online sponsoring: sending logged in user to Shipping, skipping login/create");
+                                WizardHandler.wizard('checkoutWizard').goTo('Shipping');
+                            }
+                        } else {
+                            $log.debug("CheckoutController(): online sponsoring: sending non-logged in user to Start");
+                            WizardHandler.wizard('checkoutWizard').goTo('Start');
+                        }
+                    }
+
                     onlineSponsorChecksCompleteDefer.resolve();
                 }, function() {
-                    $log.error("CheckoutController(): failed to select product");
+                    $log.error("CheckoutController(): online sponsoring: failed to select product, redirecting user");
+                    $location.path($scope.isOnlineSponsoring ? JOIN_BASE_URL : STORE_BASE_URL);
                 });
 
                 // redirect to different steps as needed on load
@@ -228,9 +246,37 @@ angular.module('app.controllers.checkout')
                     $log.debug("CheckoutController(): selectProduct(): previous cart cleared");
 
                     Cart.addToCart(product).then(function(cart) {
-                        $log.debug("CheckoutController(): selectProduct(): SKU loaded & added to cart");
-                        d.resolve(product);
-                        loadCheckout(true).then(function(checkout) {
+                        $log.debug("CheckoutController(): selectProduct(): SKU loaded & added to cart", cart);
+
+                        $scope.cart = cart;
+
+                        Cart.loadProducts($scope.cart).then(function(items) {
+                            $log.debug("CheckoutController(): selectProduct(): loaded items from cart & populated products", items);
+
+                            // filter out invalid cart items
+                            var list = [];
+                            for (var i=0; i < items.length; i++) {
+                                var item = items[i];
+                                if (item.sku) {
+                                    list.push(item);
+                                } else {
+                                    $log.error("CheckoutController(): selectProduct(): removing bad item from cart");
+                                }
+                            }
+
+                            $scope.items = list;
+                            $scope.cartLoaded = true;
+
+                            if (items.length == 0) {
+                                d.reject('CheckoutController(): selectProduct(): failed to load items');
+                                return;
+                            }
+
+                            // no that we're loaded, create out change listener to track changes
+                            if (cancelChangeListener == null) {
+                                createChangeListener();
+                            }
+
                             // only fetch sales tax info if we have a shipping address
                             if ($scope.profile.shipping) {
                                 // fetch sales tax information here
@@ -240,27 +286,69 @@ angular.module('app.controllers.checkout')
                                     $scope.salesTaxInfo = salesTaxInfo;
 
                                     $scope.checkoutUpdated();
-                                }, function(err) {
-                                    // FIXME - some error here
-                                    $log.error("CheckoutController(): selectProduct(): failed to get sales tax info", err);
+                                    d.resolve(product);
+                                }, function(error) {
+                                    $log.error("CheckoutController(): selectProduct(): failed to get sales tax info, redirecting", error);
                                     $scope.orderError = "Failed to load sales tax";
                                     $scope.salesTaxInfo = null;
+
+                                    if ($scope.isOnlineSponsoring) {
+                                        $location.path(JOIN_BASE_URL);
+                                    } else {
+                                        $location.path(STORE_BASE_URL);
+                                    }
+                                    d.reject(error);
                                 });
+                            } else {
+                                d.resolve(product);
                             }
-                        }, function(err) {
-                            // FIXME - some error here
-                            $log.error("CheckoutController(): selectProduct(): failed to load checkout", err);
-                            $scope.orderError = "Failed to load checkout";
+                        }, function(error) {
+                            $log.error("CheckoutController(): selectProduct(): failed to populated products, redirecting", error);
+                            $scope.orderError = "Failed to load cart";
                             $scope.salesTaxInfo = null;
-                        });
+
+                            if ($scope.isOnlineSponsoring) {
+                                $location.path(JOIN_BASE_URL);
+                            } else {
+                                $location.path(STORE_BASE_URL);
+                            }
+                            d.reject(error);
+                        })
                     }, function(error) {
-                        $log.error("CheckoutController(): selectProduct(): failed to update cart");
+                        $log.error("CheckoutController(): selectProduct(): failed to add to cart, redirecting", error);
+                        $scope.orderError = "Failed to add product to cart";
+                        $scope.salesTaxInfo = null;
+
+                        if ($scope.isOnlineSponsoring) {
+                            $location.path(JOIN_BASE_URL);
+                        } else {
+                            $location.path(STORE_BASE_URL);
+                        }
+                        d.reject(error);
                     });
                 }, function(error) {
-                    $log.error("CheckoutController(): selectProduct(): failed to update cart");
+                    $log.error("CheckoutController(): selectProduct(): failed to clear the cart, redirecting", error);
+                    $scope.orderError = "Failed to clear cart";
+                    $scope.salesTaxInfo = null;
+
+                    if ($scope.isOnlineSponsoring) {
+                        $location.path(JOIN_BASE_URL);
+                    } else {
+                        $location.path(STORE_BASE_URL);
+                    }
+                    d.reject(error);
                 });
-            }, function(err) {
-                $log.error("CheckoutController(): selectProduct(): failed to load product");
+            }, function(error) {
+                $log.error("CheckoutController(): selectProduct(): failed to load product, redirecting", error);
+                $scope.orderError = "Failed to load product";
+                $scope.salesTaxInfo = null;
+
+                if ($scope.isOnlineSponsoring) {
+                    $location.path(JOIN_BASE_URL);
+                } else {
+                    $location.path(STORE_BASE_URL);
+                }
+                d.reject(error);
             });
 
             return d.promise;
@@ -320,59 +408,17 @@ angular.module('app.controllers.checkout')
         }
 
         // load the checkout data from the session
-        function loadCheckout(noRedirect) {
+        function loadCheckout() {
             var d = $q.defer();
 
             $log.debug("CheckoutController(): loadCheckout()");
 
-            // load checkout data
-            $log.debug("CheckoutController(): loadCheckout(): checkout data");
-
-            if (!$scope.isOnlineSponsoring) {
-                Checkout.getCheckout().then(function(checkout) {
-                    $log.debug("CheckoutController(): loadCheckout(): success", checkout);
-                    $scope.checkout = checkout;
-                }, function(error) {
-                    $log.error("CheckoutController(): loadCheckout(): checkout error", error);
-                });
-            }
-
-            // load cart data
-            Cart.getItems().then(function(items) {
-                $scope.items = items;
-
-                $scope.cartLoaded = true;
-                $log.debug("CheckoutController(): loadCheckout(): loaded cart products into items", items);
-
+            Checkout.getCheckout().then(function(checkout) {
+                $log.debug("CheckoutController(): loadCheckout(): success", checkout);
+                $scope.checkout = checkout;
                 d.resolve($scope.checkout);
-
-                if (!debug) {
-                    if (items.length == 0) {
-                        $log.debug("CheckoutController(): loadCheckout(): no items in cart, redirecting to products / landing");
-                        $location.path($scope.isOnlineSponsoring ? JOIN_BASE_URL : STORE_BASE_URL);
-                    } else if (Session.isLoggedIn() && !$scope.isOnlineSponsoring) {
-                        // send the user past login page
-                        if (urlStep != 'Start') {
-                            $log.debug("CheckoutController(): loadCheckout(): sending logged in user to", urlStep);
-                            WizardHandler.wizard('checkoutWizard').goTo(urlStep);
-                        } else {
-                            $log.debug("CheckoutController(): loadCheckout(): sending logged in user to Shipping, skipping login/create");
-                            WizardHandler.wizard('checkoutWizard').goTo('Shipping');
-                        }
-                    } else if (noRedirect == null) {
-                        $log.debug("CheckoutController(): loadCheckout(): sending non-logged in user to Start");
-                        WizardHandler.wizard('checkoutWizard').goTo('Start');
-                    }
-                }
-
-                // no that we're loaded, create out change listener to track changes
-                if (cancelChangeListener == null) {
-                    createChangeListener();
-                }
             }, function(error) {
-                $log.error("CheckoutController(): loadCheckout(): cart error", error);
-                $location.path(STORE_BASE_URL);
-                d.reject(error);
+                $log.error("CheckoutController(): loadCheckout(): checkout error", error);
             });
 
             return d.promise;
@@ -381,11 +427,11 @@ angular.module('app.controllers.checkout')
         // wait until the online sponsoring checks are complete including adding SKU to cart, then
         // handle step validation, checkout process loading
         onlineSponsorChecksCompleteDefer.promise.then(function() {
-            $log.debug("CheckoutController(): loadCheckout(): sponsor checks complete");
+            $log.debug("CheckoutController(): sponsor checks complete");
             checkSteps();
-            loadCheckout();
+            //loadCheckout(); - this is now initiated by selectProduct() which is called on load
         }, function (error) {
-            $log.error("CheckoutController(): loadCheckout(): sponsor checks failed", error);
+            $log.error("CheckoutController(): sponsor checks failed", error);
         });
 
         var cancelChangeListener;
@@ -624,10 +670,12 @@ angular.module('app.controllers.checkout')
             var confirmAction = confirm(message);   
 
             if (confirmAction && $scope.isOnlineSponsoring) {
+                $log.debug("CheckoutController(): confirmAlert(): redirecting back to join page");
                 $location.path(JOIN_BASE_URL);
             }
             else if (confirmAction && !$scope.isOnlineSponsoring) {
-                $location.path(STORE_BASE_URL);   
+                $log.debug("CheckoutController(): confirmAlert(): redirecting back to store page");
+                $location.path(STORE_BASE_URL);
             }
         }
 
@@ -770,7 +818,7 @@ angular.module('app.controllers.checkout')
             var defer = $q.defer();
 
             if ($scope.profile.shipping) {
-                $log.debug("CheckoutController(): fetchSalesTax(): fetching sales tax for item", $scope.items[0]);
+                $log.debug("CheckoutController(): fetchSalesTax(): fetching sales tax for item", $scope.items[0], $scope.profile.shipping.geocode);
 
                 SalesTax.calculate(0, 0, $scope.profile.shipping.geocode, 1414, "P", [
                     {
@@ -1310,6 +1358,7 @@ angular.module('app.controllers.checkout')
                 $log.debug("CheckoutController(): finished(): Cart cleared", $scope.cart);
             });
             if (S($location.path()).startsWith(STORE_BASE_URL)) {
+                $log.debug("CheckoutController(): finished(): redirecting back to store page");
                 $location.path(STORE_BASE_URL);
                 $location.replace();
             }
@@ -1427,7 +1476,7 @@ angular.module('app.controllers.checkout')
 
             // clear & add a product to the cart
             Cart.clear().then(function(cart) {
-                $log.debug("CheckoutController(): previous cart cleared");
+                $log.debug("CheckoutController(): populateDebugData(): previous cart cleared");
 
                 Cart.addToCart({
                     name: "Royal Starter Kit (English)",
@@ -1437,13 +1486,13 @@ angular.module('app.controllers.checkout')
                     kitSelections: {},
                     components: []
                 }).then(function(cart) {
-                        $log.debug("CheckoutController(): online sponsoring SKU loaded & added to cart", cart);
-                        onlineSponsorChecksCompleteDefer.resolve();
-                    }, function(error) {
-                        $log.error("CheckoutController(): failed to update cart");
-                    });
+                    $log.debug("CheckoutController(): populateDebugData(): online sponsoring SKU loaded & added to cart", cart);
+                    onlineSponsorChecksCompleteDefer.resolve();
+                }, function(error) {
+                    $log.error("CheckoutController(): populateDebugData(): failed to update cart");
+                });
             }, function(error) {
-                $log.error("CheckoutController(): failed to update cart");
+                $log.error("CheckoutController(): populateDebugData(): failed to update cart");
             });
         }
 
