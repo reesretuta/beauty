@@ -94,6 +94,31 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
         }];
         $httpProvider.responseInterceptors.push(interceptor);
 
+//        $provide.decorator( '$log', function( $delegate ) {
+//            // Save the original $log.debug()
+//            var debugFn = $delegate.debug;
+//            var errorFn = $delegate.error;
+//
+//            $delegate.debug = function() {
+//                var args    = [].slice.call(arguments);
+//
+//                // send the log message to the server in debug mode
+//                $.ajax("/debug?message="+args.toString(), {});
+//
+//                debugFn.apply(null, args)
+//            };
+//
+//            $delegate.error = function() {
+//                var args    = [].slice.call(arguments);
+//
+//                // send the log message to the server in debug mode
+//                $.ajax("/error?message="+args.toString(), {});
+//
+//                errorFn.apply(null, args)
+//            };
+//
+//            return $delegate;
+//        });
     }]).run(function ($rootScope, $animate, BASE_URL) {
         $rootScope.BASE_URL = BASE_URL;
         $rootScope.STORE_BASE_URL = BASE_URL + "/shop";
