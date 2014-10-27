@@ -965,7 +965,8 @@ angular.module('app.controllers.checkout')
                         // jump to Shipping
                         $scope.confirmation = {
                             orderId: data.orderId,
-                            consultantId: data.consultantId
+                            consultantId: data.consultantId,
+                            sponsor: data.sponsor
                         };
 
                         WizardHandler.wizard('checkoutWizard').goTo('Finish');
