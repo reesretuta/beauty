@@ -1143,6 +1143,40 @@ angular.module('app.controllers.checkout')
             return d.promise;
         }
 
+
+        function showAddressCorrectionModal(address) {
+            var dd = $q.defer();
+
+            var d = $modal.open({
+                backdrop: true,
+                keyboard: true, // we will handle ESC in the modal for cleanup
+                windowClass: "addressCorrectionModal",
+                templateUrl: '/partials/checkout/address-correction-modal.html',
+                controller: 'AddressCorrectionModalController',
+                resolve: {
+                    address: function() {
+                        return address;
+                    }
+                }
+            });
+
+            var body = $document.find('html, body');
+
+            d.result.then(function(result) {
+                $log.debug("CheckoutController(): showAddressCorrectionModal(): address correction modal closed");
+
+                // re-enable scrolling on body
+                body.css("overflow-y", "auto");
+
+                dd.resolve(result);
+            });
+
+            // prevent page content from scrolling while modal is up
+            $("html, body").css("overflow-y", "hidden");
+
+            return dd.promise;
+        }
+
         function selectGeocodeModal(geocodes) {
             var dd = $q.defer();
 
@@ -1176,6 +1210,32 @@ angular.module('app.controllers.checkout')
             return dd.promise;
         }
 
+        function addressFieldsEqual(field1, field2) {
+            var f1 = field1 == null ? "" : field1.trim().toUpperCase();
+            var f2 = field2 == null ? "" : field2.trim().toUpperCase();
+
+            $log.debug("CheckoutController(): addressesEqual(): comparing", f1, f2);
+            if (f1 == f2) {
+                return true;
+            }
+            return false;
+        }
+
+        function addressesEqual(a, b) {
+            if (!addressFieldsEqual(a.address1, b.address1) ||
+                !addressFieldsEqual(a.address2, b.address2) ||
+                !addressFieldsEqual(a.city, b.city) ||
+                !addressFieldsEqual(a.state, b.state) ||
+                !addressFieldsEqual(a.zip, b.zip))
+            {
+                $log.debug("CheckoutController(): addressesEqual(): false", a, b);
+                return false;
+            }
+
+            $log.debug("CheckoutController(): addressesEqual(): true", a, b);
+            return true;
+        }
+
         function addAddress(address) {
             var d = $q.defer();
 
@@ -1189,101 +1249,146 @@ angular.module('app.controllers.checkout')
                 return d.promise;
             }
 
-            if ($scope.isOnlineSponsoring) {
-                $log.debug("CheckoutController(): addAddress(): validating address", address);
+            $log.debug("CheckoutController(): addAddress(): validating address", address);
 
-                Addresses.validateAddress(address).then(function(a) {
-                    $log.debug("CheckoutController(): addAddress(): validated address", a);
+            Addresses.validateAddress(address).then(function(a) {
+                $log.debug("CheckoutController(): addAddress(): validated address", a);
 
-                    // add name here since we're not allowing user to input a name for shipping address manually;
-                    a.name = $scope.profile.firstName + " " + $scope.profile.lastName;
-                    a.phone = $scope.profile.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');;
+                // if this address was validated and corrected, then we need to inform the user
+                if (!addressesEqual(address, a)) {
+                    showAddressCorrectionModal(a).then(function(result) {
+                        $log.debug("CheckoutController(): addAddress(): address correction modal closed");
 
-                    // check the zip for geocode for taxes
-                    Geocodes.query({zipCode: a.zip}).$promise.then(function(geocodes) {
-                        $log.debug("CheckoutController(): addAddress(): got geocodes", geocodes);
+                        var address = result.address;
+                        var canceled = result.canceled;
 
-                        // close any previous modals (e.g. address edit from review page)
-                        angular.element('.modal').modal('hide');
-
-                        if (geocodes.length == 1) {
-                            a.geocode = geocodes[0].GEOCODE;
-                            $scope.checkoutUpdated();
-                            d.resolve(a);
-                        } else {
-                            // display a dialog for the user to choose the correct geocode here
-                            selectGeocodeModal(geocodes).then(function(result) {
-                                $log.error("CheckoutController(): addAddress(): geocode selection dialog closed", result);
-
-                                var geocode = result.geocode;
-                                var canceled = result.canceled;
-
-                                if (canceled) {
-                                    $log.error("CheckoutController(): addAddress(): geocode selection dialog canceled");
-                                    $scope.shippingAddressError = "Must select an address";
-                                    d.reject('Must select an address');
-                                    return;
-                                }
-
-                                if (geocode) {
-                                    a.geocode = geocode.GEOCODE;
-                                    $scope.checkoutUpdated();
-                                    d.resolve(a);
-                                } else {
-                                    $log.error("CheckoutController(): addAddress(): empty geocode");
-                                    $scope.shippingAddressError = "Unable to verify address";
-                                    d.reject('Unable to verify address');
-                                }
-                            }, function(err) {
-                                $log.error("CheckoutController(): addAddress(): failed to select geocode", err);
-                                $scope.shippingAddressError = "Unable to verify address";
-                                d.reject(err);
-                            });
+                        if (canceled) {
+                            $log.debug("CheckoutController(): addAddress(): address correction canceled");
+                            d.reject("Address correction canceled");
+                            return;
                         }
-                    }, function (r) {
-                        $log.error("CheckoutController(): addAddress(): error looking up geocode", r);
-                        $scope.shippingAddressError = "Unable to verify address";
-                        d.reject(r.errorMessage);
-                    });
-                }, function(r) {
-                    $log.error("CheckoutController(): addAddress(): error validating address", r);
-                    // FIXME - failed to add, show error
-                    $scope.shippingAddressError = r.message;
-                    d.reject(r.errorMessage);
-                });
 
-            } else {
-                // validate address
-                Addresses.validateAddress(address).then(function(address2) {
-                    $log.debug("CheckoutController(): addAddress(): validated address, now adding", address2);
-
-                    $scope.addAddress(address2).then(function(a) {
-                        $log.debug("CheckoutController(): addAddress(): added address", a);
-
-                        $scope.checkoutUpdated();
-
-                        Addresses.addAddress(address).then(function(address) {
-                            $log.debug("CheckoutController(): addAddress(): address added", address);
-                            $scope.profile.shipping = angular.copy(address);
-                            $scope.profile.billing = angular.copy(address);
-                            d.resolve(address);
-                        }, function(err) {
-                            $log.error("CheckoutController(): addAddress(): failed to add address", err);
-                            d.reject(err);
+                        selectGeocodeAndAdd(a).then(function(a) {
+                            $log.debug("CheckoutController(): addAddress(): selected geocode and added address", a);
+                            d.resolve(a);
+                        }, function(error) {
+                            $log.error("CheckoutController(): addAddress(): select geocode and add failed", error);
+                            $scope.shippingAddressError = error;
+                            d.reject(error);
                         });
                     }, function(error) {
-                        $log.error("CheckoutController(): addAddress(): error adding address", error);
-                        // FIXME - failed to add, show error
+                        $log.error("CheckoutController(): addAddress(): address not corrected");
                         $scope.shippingAddressError = error;
                         d.reject(error);
                     });
-                }, function(error) {
-                    $log.error("CheckoutController(): addAddress(): error validating address", error);
-                    // FIXME - failed to add, show error
-                    $scope.shippingAddressError = error;
-                    d.reject(error);
-                });
-            }
+                } else {
+                    selectGeocodeAndAdd(a).then(function(a) {
+                        $log.debug("CheckoutController(): addAddress(): selected geocode and added address", a);
+                        d.resolve(a);
+                    }, function(error) {
+                        $log.debug("CheckoutController(): addAddress(): select geocode and add failed", error);
+                        $scope.shippingAddressError = error;
+                        d.reject(error);
+                    });
+                }
+
+
+            }, function(r) {
+                $log.error("CheckoutController(): addAddress(): error validating address", r);
+                // FIXME - failed to add, show error
+                $scope.shippingAddressError = r.message;
+                d.reject(r.errorMessage);
+            });
+
+            return d.promise;
+        }
+
+        function selectGeocodeAndAdd(a) {
+            var d = $q.defer();
+
+            // add name here since we're not allowing user to input a name for shipping address manually;
+            a.name = $scope.profile.firstName + " " + $scope.profile.lastName;
+            a.phone = $scope.profile.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');;
+
+            // check the zip for geocode for taxes
+            Geocodes.query({zipCode: a.zip}).$promise.then(function(geocodes) {
+                $log.debug("CheckoutController(): addAddress(): got geocodes", geocodes);
+
+                // close any previous modals (e.g. address edit from review page)
+                angular.element('.modal').modal('hide');
+
+                // see if we have any exact matches
+                var matchedGeocode = null;
+                for (var i=0; i < geocodes.length; i++) {
+                    var zip = geocodes[i].ZIPCODE;
+                    var city = geocodes[i].CITYDES;
+
+                    if (a.zip == zip && a.city != null && a.city.toUpperCase() == city) {
+                        matchedGeocode = geocodes[i];
+                    }
+                }
+
+                if (geocodes.length == 1) {
+                    $log.debug("CheckoutController(): addAddress(): selecting only geocode returned");
+                    a.geocode = geocodes[0].GEOCODE;
+                    $scope.checkoutUpdated();
+                    d.resolve(a);
+                } else if (matchedGeocode) {
+                    $log.debug("CheckoutController(): addAddress(): selecting exact match geocode");
+                    a.geocode = matchedGeocode.GEOCODE;
+                    $scope.checkoutUpdated();
+                    d.resolve(a);
+                } else {
+                    // display a dialog for the user to choose the correct geocode here
+                    selectGeocodeModal(geocodes).then(function(result) {
+                        $log.debug("CheckoutController(): addAddress(): geocode selection dialog closed", result);
+
+                        var geocode = result.geocode;
+                        var canceled = result.canceled;
+
+                        if (canceled) {
+                            $log.error("CheckoutController(): addAddress(): geocode selection dialog canceled");
+                            $scope.shippingAddressError = "Must select an address";
+                            d.reject('Must select an address');
+                            return;
+                        }
+
+                        if (geocode) {
+                            a.geocode = geocode.GEOCODE;
+                            $scope.checkoutUpdated();
+
+                            if ($scope.isOnlineSponsoring) {
+                                // online sponsoring, we have it in mem
+                                d.resolve(a);
+                            } else {
+                                // client direct, we add it
+                                Addresses.addAddress(a).then(function(address) {
+                                    $log.debug("CheckoutController(): addAddress(): address added", address);
+                                    $scope.profile.shipping = angular.copy(address);
+                                    $scope.profile.billing = angular.copy(address);
+                                    d.resolve(address);
+                                }, function(err) {
+                                    $log.error("CheckoutController(): addAddress(): failed to add address", err);
+                                    $scope.shippingAddressError = error;
+                                    d.reject(err);
+                                });
+                            }
+                        } else {
+                            $log.error("CheckoutController(): addAddress(): empty geocode");
+                            $scope.shippingAddressError = "Unable to verify address";
+                            d.reject('Unable to verify address');
+                        }
+                    }, function(err) {
+                        $log.error("CheckoutController(): addAddress(): failed to select geocode", err);
+                        $scope.shippingAddressError = "Unable to verify address";
+                        d.reject(err);
+                    });
+                }
+            }, function (r) {
+                $log.error("CheckoutController(): addAddress(): error looking up geocode", r);
+                $scope.shippingAddressError = "Unable to verify address";
+                d.reject(r.errorMessage);
+            });
 
             return d.promise;
         }

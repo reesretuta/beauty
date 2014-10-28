@@ -1,0 +1,47 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="close()">&times;</button>
+  <h4 class="modal-title"><span ng-bind-html="'OS-ADDRESS_CORRECTION_TITLE' | translate | unsafe"></span> <span class="text-muted italic" ng-bind-html="'OS-ADDRESS_CORRECTION_TITLE_DESC' | translate | unsafe"></span></h4>
+</div>
+
+<div class="modal-body queue-modal-body">
+    <div class="row">
+      <label for="shippingAddress1" class="col-md-4"><span ng-bind-html="'IN_ADD_LINE1' | translate | unsafe"></span></label>
+      <div id="shippingAddress1" ng-bind="address.address1"></div>
+    </div>
+
+    <div class="row">
+      <label for="shippingAddress2" class="col-md-4"><span ng-bind-html="'IN_ADD_LINE2' | translate | unsafe"></span></label>
+      <div id="shippingAddress2" ng-bind="address.address2"></div>
+    </div>
+
+    <div class="row">
+      <label for="shippingCity" class="col-md-4"><span ng-bind-html="'IN_CITY' | translate | unsafe"></span></label>
+      <div id="shippingCity" ng-bind="address.city"></div>
+    </div>
+
+    <div class="row">
+      <label for="shippingAddress2" class="col-md-4"><span ng-bind-html="'IN_STATE' | translate | unsafe"></span></label>
+      <div id="shippingStateProvinceRegion" ng-bind="address.state"></div>
+    </div>
+
+    <div class="row">
+      <label for="shippingZipPostalCode" class="col-md-4"><span ng-bind-html="'IN_ZIP' | translate | unsafe"></span></label>
+      <div id="shippingZipPostalCode" ng-bind="address.zip"></div>
+    </div>
+
+    <div class="row">
+      <label for="shippingCountry" class="col-md-4"><span ng-bind-html="'IN_COUNTRY' | translate | unsafe"></span></label>
+      <div id="shippingCountry" ng-bind="address.country"></div>
+    </div>
+</div>
+
+<div class="modal-footer">
+  <div class="col-lg-6 col-md-6 col-sm-6">
+    <span class="text-muted pull-left"></span>
+  </div>
+  <div class="col-lg-6 col-md-6 col-sm-6">
+    <button ng-click="close()" class="btn btn-link">Cancel</button>
+    <button ng-click="save()" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> Save</button>
+  </div>
+</div>
+
