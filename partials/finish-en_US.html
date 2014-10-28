@@ -12,10 +12,8 @@
             <div class="col-md-offset-2 col-md-8">
     <h3 class="">Your Consultant I.D. #</h3>
     <h3 class="h3"><label style="color:black;">{{confirmation.consultantId}}</label></h3>
-    <p>
-        Your sponsor is: ________________<br />
-        Or a Sponsor will be assigned by JAFRA within the next _____ days.
-    </p>
+    <p ng-if="confirmation.sponsor">Your sponsor is: #{{confirmation.sponsor.id}} <b>{{confirmation.sponsor.firstName}} {{confirmation.sponsor.lastName}}</b></p>
+    <p ng-if="!confirmation.sponsor">A Sponsor will be assigned by JAFRA within the next 1-3 days.</p>
   </div>
 </div>
 

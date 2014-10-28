@@ -1570,7 +1570,13 @@ angular.module('app.controllers.checkout')
 
             $scope.confirmation = {
                 orderId: '123345678',
-                consultantId: '11111111'
+                consultantId: '11111111',
+                "sponsor": {
+                   "id": 1,
+                   "email": "jsmith@gmail.com",
+                   "firstName": "John",
+                   "lastName": "Smith"
+               }
             }
 
             $scope.salesTaxInfo = {
