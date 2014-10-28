@@ -264,7 +264,7 @@ function createClient(client) {
         }
 
         // we should get clientId back
-        console.debug("createClient(): returning success");
+        console.log("createClient(): returning success");
         var clientId = body.clientId;
         deferred.resolve({
             status: 201,
