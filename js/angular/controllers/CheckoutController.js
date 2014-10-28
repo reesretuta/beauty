@@ -970,6 +970,15 @@ angular.module('app.controllers.checkout')
                         };
 
                         WizardHandler.wizard('checkoutWizard').goTo('Finish');
+
+                        // clear checkout and cart on finish
+                        Checkout.clear().then(function() {
+                            $log.debug("CheckoutController(): finished(): Checkout cleared", $scope.checkout);
+                            $scope.checkoutUpdated();
+                        });
+                        Cart.clear().then(function() {
+                            $log.debug("CheckoutController(): finished(): Cart cleared", $scope.cart);
+                        });
                     }, function(error) {
                         $log.error("CheckoutController(): loginOrCreateUser(): failed to create consultant", error);
                         $scope.orderError = error.message;
