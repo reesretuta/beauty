@@ -953,7 +953,10 @@ angular.module('app.controllers.checkout')
                     $log.debug("CheckoutController(): loginOrCreateUser(): found name/business/co, shuffling fields");
 
                     // we have changed something and need to modify address1 to be this and address2 to be everything else
-                    shipping.address2 = shipping.address1 + ", " + shipping.address2;
+                    shipping.address2 = shipping.address1;
+                    if (!S(shipping.address2).isEmpty()) {
+                        shipping.address2 += ", " + shipping.address2;
+                    }
                     shipping.address1 = shipping.name.replace(new RegExp("^"+fullName+" ?"), "");
                 }
 
