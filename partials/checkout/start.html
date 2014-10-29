@@ -11,7 +11,7 @@
     </h1>
     <div class="row">
       <div class="col-sm-6">
-        <div ng-if="loginError" class="alert alert-danger" role="alert">Invalid username or password. Please Try again.</div>
+        <div ng-if="loginError" class="alert alert-danger" role="alert" data-ng-bind="loginError"></div>
         <div ng-if="emailError" class="alert alert-danger" role="alert">Invalid email address.</div>
       </div>
     </div>

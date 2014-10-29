@@ -240,6 +240,8 @@ angular.module('app.controllers.checkout')
                 $log.debug("CheckoutController(): in store");
                 $scope.APP_BASE_URL = STORE_BASE_URL;
                 onlineSponsorChecksCompleteDefer.resolve();
+
+
             }
         });
 
@@ -461,7 +463,6 @@ angular.module('app.controllers.checkout')
         onlineSponsorChecksCompleteDefer.promise.then(function() {
             $log.debug("CheckoutController(): sponsor checks complete");
             checkSteps();
-            //loadCheckout(); - this is now initiated by selectProduct() which is called on load
         }, function (error) {
             $log.error("CheckoutController(): sponsor checks failed", error);
         });
@@ -632,6 +633,10 @@ angular.module('app.controllers.checkout')
                 Addresses.validateEmail(email).then(function(r) {
                     $log.debug("CheckoutController(): validated email");
 
+                    // set the user name on shipping address
+                    $scope.profile.newShippingAddress.name = $scope.profile.firstName + " " + $scope.profile.lastName;
+                    $scope.profile.newBillingAddress.name = $scope.profile.firstName + " " + $scope.profile.lastName;
+
                     // move to next step
                     WizardHandler.wizard('checkoutWizard').goTo('Profile');
                 }, function(r) {
@@ -645,7 +650,7 @@ angular.module('app.controllers.checkout')
         $scope.loginOrCreateUser = function() {
             $log.debug("CheckoutController(): loginOrCreateUser()");
 
-            $scope.loginError = false;
+            $scope.loginError = null;
 
             if ($scope.profile.customerStatus == 'new') {
                 $log.debug("CheckoutController(): loginOrCreateUser(): trying to create client with username=", $scope.profile.loginEmail);
@@ -660,14 +665,17 @@ angular.module('app.controllers.checkout')
                     language: $scope.profile.language
                 }).then(function(session) {
                     $log.debug("CheckoutController(): loginOrCreateUser(): created client, moving to next step", session.client);
+
+                    // set the name on the shipping address
+                    $scope.profile.newShippingAddress.name = $scope.profile.firstName + " " + $scope.profile.lastName;
+
                     $scope.profile.customerStatus = 'existing';
                     $scope.checkoutUpdated();
                     // jump to Shipping
                     WizardHandler.wizard('checkoutWizard').goTo($scope.isOnlineSponsoring ? 'Profile' : 'Shipping');
                 }, function(error) {
-                    $log.error("CheckoutController(): loginOrCreateUser(): failed to create client");
-                    $scope.loginError = true;
-                    // FIXME - show error here!!!!!
+                    $log.error("CheckoutController(): loginOrCreateUser(): failed to create client", error);
+                    $scope.loginError = error.message;
                 });
             } else {
                 $log.debug("CheckoutController(): loginOrCreateUser(): trying to login with username=", $scope.profile.loginEmail);
@@ -681,7 +689,7 @@ angular.module('app.controllers.checkout')
                     WizardHandler.wizard('checkoutWizard').goTo($scope.isOnlineSponsoring ? 'Profile' : 'Shipping');
                 }, function(error) {
                     $log.error("CheckoutController(): loginOrCreateUser(): failed to authenticate");
-                    $scope.loginError = true;
+                    $scope.loginError = error.message;
                 });
             }
         }
@@ -797,6 +805,9 @@ angular.module('app.controllers.checkout')
                         $scope.billingAddressError = r.message;
                     });
                 } else {
+                    // copy, in case we need to re-copy from a back button from review page
+                    $scope.profile.billing = angular.copy($scope.profile.shipping);
+
                     // fetch sales tax information here
                     $scope.fetchSalesTax().then(function(salesTaxInfo) {
                         $log.debug("CheckoutController(): addPaymentMethod(): got sales tax info", salesTaxInfo);
@@ -868,7 +879,7 @@ angular.module('app.controllers.checkout')
                     defer.reject(err);
                 });
             } else {
-                d.resolve();
+                defer.reject('Unable to lookup address');
             }
 
             return defer.promise;
@@ -1115,6 +1126,7 @@ angular.module('app.controllers.checkout')
 
         $scope.addShippingAddressAndContinue = function(address) {
             $log.debug("CheckoutController(): addShippingAddressAndContinue()", address);
+
             $scope.addShippingAddress(address).then(function() {
                 // fetch sales tax information here
                 $scope.fetchSalesTax().then(function(salesTaxInfo) {

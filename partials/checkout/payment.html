@@ -119,10 +119,17 @@
 
 <div class="cardAddressWrapper" ng-if="profile.billSame==false">
 
-  <div class="row form-group" ng-if="!isOnlineSponsoring" >
-    <label for="billingFullName" class="col-md-3 control-label">Full Name</label>
+  <div class="row form-group" ng-if="!isOnlineSponsoring">
+    <label for="billingFullName" class="col-md-3 control-label"><span ng-bind-html="'IN_FULL_NAME' | translate | unsafe"></span></label>
     <div class="col-sm-8 col-lg-6">
-      <input name="name" ng-model="profile.newBillingAddress.name" type="text" class="form-control" id="billingFullName" placeholder="" required>
+      <input id="billingFullName" name="name" ng-model="profile.newBillingAddress.name" type="text" class="form-control" placeholder="" required>
+    </div>
+  </div>
+
+  <div class="row form-group">
+    <label for="billingBusinessCO" class="col-md-3 control-label"><span ng-bind-html="'IN_BUSINESS_CO' | translate | unsafe"></span></label>
+    <div class="col-sm-8 col-lg-6">
+      <input id="billingBusinessCO" name="name" ng-model="profile.newBillingAddress.businessCO" type="text" class="form-control" placeholder="Business Name, c/o Someone, etc." autocomplete="off">
     </div>
   </div>
 

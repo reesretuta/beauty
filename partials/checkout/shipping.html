@@ -159,7 +159,7 @@
     <div class="row form-group" ng-if="!isOnlineSponsoring" ng-class="{ 'has-error' : shippingForm.phoneNumber.$invalid && !shippingForm.phoneNumber.$pristine }">
       <label for="shippingPhoneNumber" class="col-md-3 control-label">Phone Number</label>
       <div class="col-sm-6 col-lg-4">
-        <input id="shippingPhoneNumber" name="phoneNumber" ng-model="profile.newShippingAddress.phone" type="text" ui-mask="(999) 999-9999" placeholder="(xxx) xxx-xxxx" class="form-control" required>
+        <input id="shippingPhoneNumber" name="phoneNumber" ng-model="profile.newShippingAddress.phone" type="text" ui-mask="(999) 999-9999" placeholder="(xxx) xxx-xxxx" class="form-control">
         <span ng-show="shippingForm.phoneNumber.$error.pattern" class="help-block" ng-class="{ 'text-danger' : shippingForm.phoneNumber.$invalid && !shippingForm.phoneNumber.$pristine }"><span ng-bind-html="'IN_PHONE_WRONG' | translate | unsafe"></span></span>
       </div>
       <a popover="May be printed on shipping label to assist delivery." popover-title="Phone Number" href="" class="form-info-link"><i class="fa fa-info-circle"></i> More Info</a>
@@ -186,44 +186,3 @@
   </form>
 
 </div><!--/span-->
-
-
-<!-- FIXME dynamify shipping/strikeiron confirmation modal 
-<div class="modal fade" tabindex="-1" role="dialog" id="shippingModal" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title">Please Verify Your Address</h4>
-      </div>
-      <div class="modal-body">
-          <p>Please verify your specific address for shipping purposes</p>
-          <hr>
-          <form role="form" name="shippingConfirm">
-            <div class="radio">
-                <label>
-                  <input type="radio" name="addressOptions" id="addressOptions1" ng-model=" " value=" " checked>
-                  10875 Washington Blvd., Culver City, CA 90232
-                </label>
-              </div>
-              <div class="radio">
-                <label>
-                  <input type="radio" name="addressOptions" id="addressOptions2" ng-model=" " value=" ">
-                  10875 W. Washington Blvd., Culver City, CA 90232
-                </label>
-              </div>
-              <div class="radio">
-                <label>
-                  <input type="radio" name="addressOptions" id="addressOptions3" ng-model=" " value=" ">
-                  10875 E. Washington Blvd., Culver City, CA 90232
-                </label>
-              </div>
-          </form>
-      </div>
-      <div class="modal-footer">
-        <button data-dismiss="modal" class="btn btn-link" type="button">Change Address</button> 
-        <button data-dismiss="modal" class="btn btn-primary" type="button">Continue</button> 
-      </div>
-    </div>
-  </div>
-</div> -->
