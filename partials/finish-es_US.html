@@ -105,7 +105,7 @@ Llama al 1-800-852-372<br />
               <p>Subtotal: {{salesTaxInfo.SubTotal | currency}}</p>
               <p>Shipping: {{salesTaxInfo.SH | currency}}</p>
               <p>Tax: {{salesTaxInfo.TaxRate}}%</p>
-              <p class="lead"><b class="text-success"><i class="fa fa-check"></i> Successfully Charged: {{(total()* 1.0825) + 12 | currency}}</b></p>
+              <p class="lead"><b class="text-success"><i class="fa fa-check"></i> Successfully Charged: {{salesTaxInfo.Total | currency}}</b></p>
             </td>
           </tr>
           </tfoot>
