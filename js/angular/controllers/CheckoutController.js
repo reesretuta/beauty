@@ -987,7 +987,7 @@ angular.module('app.controllers.checkout')
 
                     shipping.address2 = add1;
                     if (!S(add2).isEmpty()) {
-                        shipping.address2 += ", " + add2;
+                        shipping.address2 += " " + add2;
                     }
                     shipping.address1 = shipping.businessCO.toUpperCase();
                 }
