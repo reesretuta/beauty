@@ -1,5 +1,5 @@
 angular.module('app.controllers.checkout')
-    .controller('CheckoutController', function ($location, $scope, $document, $timeout, $rootScope, $anchorScroll, $routeParams, $modal, $log, $q, STORE_BASE_URL, JOIN_BASE_URL, Geocodes, Session, Addresses, OrderHelper, Checkout, Cart, Products, SalesTax, CreditCards, HashKeyCopier, WizardHandler) {
+    .controller('CheckoutController', function ($location, $scope, $document, $timeout, $rootScope, $anchorScroll, $routeParams, $modal, $log, $q, STORE_BASE_URL, JOIN_BASE_URL, focus, Geocodes, Session, Addresses, OrderHelper, Checkout, Cart, Products, SalesTax, CreditCards, HashKeyCopier, WizardHandler) {
 
         $log.debug("CheckoutController()");
 
@@ -89,6 +89,13 @@ angular.module('app.controllers.checkout')
         $scope.$watch('currentStep', function(newVal, oldVal) {
             if (newVal != oldVal && newVal != '' && newVal != null) {
                 $log.debug("CheckoutController(): step changed from", oldVal, "to", newVal, 'profile.customerStatus', $scope.profile.customerStatus);
+
+                // do focuses here
+                if (urlStep == "Shipping") {
+                    $log.debug("CheckoutController(): focusing address1 field");
+                    focus('shipping-address1-focus')
+                }
+
                 if (newVal != 'Start') {
                     $location.search("step", newVal);
                 } else if (newVal == 'Finish') {
@@ -514,6 +521,9 @@ angular.module('app.controllers.checkout')
             Session.lookupConsultant(ssn).then(function(data) {
                 $log.debug("CheckoutController(): validateProfileAndContinue()", data);
                 if (!data.exists) {
+                    // set the name on the shipping address
+                    $scope.profile.newShippingAddress.name = $scope.profile.firstName + " " + $scope.profile.lastName;
+
                     // do the sales tax calculations before moving to the next page
                     WizardHandler.wizard('checkoutWizard').goTo('Shipping');
                 } else {
@@ -898,8 +908,8 @@ angular.module('app.controllers.checkout')
                 var phone = $scope.profile.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
 
                 $scope.profile.card.cardType = CreditCards.validateCard($scope.profile.card.card).type;
-                $scope.profile.shipping.name = $scope.profile.firstName + " " + $scope.profile.lastName;
-                $scope.profile.billing.name = $scope.profile.firstName + " " + $scope.profile.lastName;
+                //$scope.profile.shipping.name = $scope.profile.firstName + " " + $scope.profile.lastName;
+                //$scope.profile.billing.name = $scope.profile.firstName + " " + $scope.profile.lastName;
                 $scope.profile.shipping.phone = phone;
                 $scope.profile.billing.phone = phone;
 
@@ -934,6 +944,19 @@ angular.module('app.controllers.checkout')
                 shipping.stateDescription ? shipping.stateDescription = shipping.stateDescription.toUpperCase(): false;
                 shipping.name ? shipping.name = shipping.name.toUpperCase(): false;
 
+                var fullName = ($scope.profile.firstName + " " + $scope.profile.lastName).toUpperCase();
+                $log.debug("CheckoutController(): loginOrCreateUser(): shipping name", shipping.name, "full name", fullName);
+
+
+                // handle c/o & business name, etc.
+                if (S(shipping.name).trim() != S(fullName).trim()) {
+                    $log.debug("CheckoutController(): loginOrCreateUser(): found name/business/co, shuffling fields");
+
+                    // we have changed something and need to modify address1 to be this and address2 to be everything else
+                    shipping.address2 = shipping.address1 + ", " + shipping.address2;
+                    shipping.address1 = shipping.name.replace(new RegExp("^"+fullName+" ?"), "");
+                }
+
                 var consultant = {
                     ssn: ssn,
                     email: $scope.profile.loginEmail,
@@ -958,6 +981,8 @@ angular.module('app.controllers.checkout')
                         }
                     ]
                 }
+
+                $log.debug("CheckoutController(): loginOrCreateUser(): creating consultant", consultant);
 
                 if (!debug) {
                     Session.createConsultant(consultant).then(function(data) {
@@ -1307,7 +1332,7 @@ angular.module('app.controllers.checkout')
             var d = $q.defer();
 
             // add name here since we're not allowing user to input a name for shipping address manually;
-            a.name = $scope.profile.firstName + " " + $scope.profile.lastName;
+            //a.name = $scope.profile.firstName + " " + $scope.profile.lastName;
             a.phone = $scope.profile.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');;
 
             // check the zip for geocode for taxes

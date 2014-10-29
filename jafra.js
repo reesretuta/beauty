@@ -924,12 +924,19 @@ function validateAddress(address) {
                     var usAddress = response.NorthAmericanAddressVerificationResult.ServiceResult.USAddress;
 
                     var address1 = "";
-                    address1 += usAddress.StreetNumber.length > 0 ? usAddress.StreetNumber + " " : "";
-                    address1 += usAddress.PreDirection.length > 0 ? usAddress.PreDirection + " " : "";
-                    address1 += usAddress.StreetName.length > 0 ? usAddress.StreetName + " " : "";
-                    address1 += usAddress.StreetType.length > 0 ? usAddress.StreetType + " " : "";
-                    address1 += usAddress.PostDirection.length > 0 ? usAddress.PostDirection + " " : "";
-                    address1 = address1.trim();
+                    if (usAddress.RecordType != 'P') {
+                        address1 += usAddress.StreetNumber.length > 0 ? usAddress.StreetNumber + " " : "";
+                        address1 += usAddress.PreDirection.length > 0 ? usAddress.PreDirection + " " : "";
+                        address1 += usAddress.StreetName.length > 0 ? usAddress.StreetName + " " : "";
+                        address1 += usAddress.StreetType.length > 0 ? usAddress.StreetType + " " : "";
+                        address1 += usAddress.PostDirection.length > 0 ? usAddress.PostDirection + " " : "";
+                        address1 = address1.trim();
+                    } else {
+                        // PO Box
+                        address1 += usAddress.StreetName.length > 0 ? usAddress.StreetName + " " : "";
+                        address1 += usAddress.StreetNumber.length > 0 ? usAddress.StreetNumber + " " : "";
+                        address1 = address1.trim();
+                    }
 
                     var address2 = "";
                     address2 += usAddress.Extension.length > 0 ? usAddress.Extension + " " : "";

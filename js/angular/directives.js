@@ -73,5 +73,15 @@ angular.module('app.directives', [])// directives
                 });
             }
         };
-    })
-    ;
+    }).directive('focusOn', function($timeout) {
+        return function(scope, elem, attr) {
+            scope.$on('focusOn', function(e, name) {
+                if(name === attr.focusOn) {
+                    console.log('focusing', name, 'elem', elem[0]);
+                    $timeout(function() {
+                        elem[0].focus();
+                    }, 0);
+                }
+            });
+        };
+    });

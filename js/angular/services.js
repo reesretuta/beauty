@@ -544,6 +544,7 @@ angular.module('app.services', ['ngResource'])
                 });
             }, function(error) {
                 $log.error("checkoutService(): clear(): failed to get session for cart clearing");
+                d.reject(error);
             });
 
             return d.promise;
@@ -1449,6 +1450,14 @@ angular.module('app.services', ['ngResource'])
       }
 
       return orderHelper;
+    })
+    .factory('focus', function ($rootScope, $timeout) {
+        return function(name) {
+            $timeout(function (){
+                console.log('broadcast focus event', name);
+                $rootScope.$broadcast('focusOn', name);
+            });
+        }
     })
     .constant('BASE_URL', '')
     .constant('STORE_BASE_URL', '/shop')

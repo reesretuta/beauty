@@ -26,8 +26,8 @@
 
   <form name="shippingForm" class="form-horizontal" role="form" novalidate>
 
-    <div class="row form-group" ng-if="!isOnlineSponsoring">
-      <label for="shippingFullName" class="col-md-3 control-label">Full Name</label>
+    <div class="row form-group">
+      <label for="shippingFullName" class="col-md-3 control-label"><span ng-bind-html="'IN_FULL_NAME' | translate | unsafe"></span></label>
       <div class="col-sm-8 col-lg-6">
         <input id="shippingFullName" name="name" ng-model="profile.newShippingAddress.name" type="text" class="form-control" placeholder="" required>
       </div>
@@ -40,7 +40,7 @@
 
       <!-- ng-pattern="/^[a-zA-Z0-9\s,'-]*$/" causing api validation to fail. -->
 
-        <input id="shippingAddress1" name="address1" ng-model="profile.newShippingAddress.address1" type="text" class="form-control" placeholder="{{ 'IN_ADD_LINE1_DES' | translate }} " autofocus required>
+        <input id="shippingAddress1" name="address1" ng-model="profile.newShippingAddress.address1" type="text" class="form-control" placeholder="{{ 'IN_ADD_LINE1_DES' | translate }} " focus-on="shipping-address1-focus" required>
         <span ng-show="shippingForm.address1.$invalid && !shippingForm.address1.$pristine" class="help-block text-danger">Please Enter a Valid Address.</span>
 
       </div>
