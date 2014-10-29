@@ -1341,15 +1341,15 @@ function calculateSalesTax(data) {
         },
         json: true
     }, function (error, response, body) {
-        console.log("getCalculateTax()", error, response.statusCode, body);
-        if (error || response.statusCode != 200) {
-            console.error("getCalculateTax(): error", error, response.statusCode, body);
+        console.log("getCalculateTax()", error, response ? response.statusCode: null, body);
+        if (error || response == null || response.statusCode != 200) {
+            console.error("getCalculateTax(): error", error, response ? response.statusCode: null, body);
             deferred.reject({
-                status: response.statusCode,
+                status: response ? response.statusCode : 500,
                 result: {
-                    statusCode: response.statusCode,
-                    errorCode: body.errorCode,
-                    message: body.message
+                    statusCode: response ? response.statusCode : 500,
+                    errorCode: body.errorCode ? body.errorCode : "unknownError",
+                    message: body.message ? body.message : "Unknown Error"
                 }
             });
             return;

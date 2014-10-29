@@ -932,6 +932,10 @@ angular.module('app.services', ['ngResource'])
                 phone: address.phone
             }, {}).success(function(a, status, headers, config) {
                 $log.debug("Address(): validateAddress(): validated, saving", a);
+
+                // preserve this
+                a.businessCO = address.businessCO;
+
                 d.resolve(a);
             }).error(function(data, status, headers, config) {
                 $log.error("Address(): validateAddress(): validate()", status, data);
@@ -949,26 +953,29 @@ angular.module('app.services', ['ngResource'])
             var clientId = session.client.id;
 
                 // save the address
-            addressService.save({clientId: clientId}, address).$promise.then(function(address) {
-                $log.debug("addressService(): addAddress(): saved address", address);
+            addressService.save({clientId: clientId}, address).$promise.then(function(adjustedAddress) {
+                $log.debug("adjustedAddressService(): addAddress(): saved address", adjustedAddress);
 
-                if (session.client.addresses == null) {
-                    session.client.addresses = [];
+                // preserve this
+                adjustedAddress.businessCO = address.businessCO;
+
+                if (session.client.adjustedAddresses == null) {
+                    session.client.adjustedAddresses = [];
                 }
 
-                session.client.addresses.push(address);
-                $log.debug("addressService(): addAddress(): adding address to client addresses", session.client.addresses);
+                session.client.adjustedAddresses.push(adjustedAddress);
+                $log.debug("adjustedAddressService(): addAddress(): adding address to client address", session.client.adjustedAddresses);
 
-                // update the session with the address information
+                // update the session with the adjustedAddress information
                 Session.save().then(function(session) {
-                    $log.debug("addressService(): addAddress(): saved address to session", session);
-                    d.resolve(address);
+                    $log.debug("adjustedAddressService(): addAddress(): saved address to session", session);
+                    d.resolve(adjustedAddress);
                 }, function() {
-                    $log.error("addressService(): addAddress(): failed to save address to session");
+                    $log.error("adjustedAddressService(): addAddress(): failed to save address to session");
                     d.reject('Failed to update address in session');
                 });
             }, function(response) {
-                $log.error("addressService(): addAddress(): failed to save address", response.data);
+                $log.error("adjustedAddressService(): addAddress(): failed to save address", response.data);
                 d.reject('Failed to save address');
             });
 

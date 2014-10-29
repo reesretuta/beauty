@@ -90,10 +90,16 @@ angular.module('app.controllers.checkout')
             if (newVal != oldVal && newVal != '' && newVal != null) {
                 $log.debug("CheckoutController(): step changed from", oldVal, "to", newVal, 'profile.customerStatus', $scope.profile.customerStatus);
 
+                urlStep = newVal;
+
                 // do focuses here
-                if (urlStep == "Shipping") {
-                    $log.debug("CheckoutController(): focusing address1 field");
-                    focus('shipping-address1-focus')
+                if (S(urlStep).trim() == "Shipping") {
+                    $("#shippingAddress1").onAvailable(function(){
+                        $log.debug("CheckoutController(): focusing address1 field");
+                        focus('shipping-address1-focus');
+                    });
+                } else {
+                    $log.debug("CheckoutController(): new step is not shipping", newVal);
                 }
 
                 if (newVal != 'Start') {
@@ -110,6 +116,25 @@ angular.module('app.controllers.checkout')
                 $anchorScroll();
             }
         });
+
+        /*==== WATCHER FOR AVAILABLE ELEMENTS IN DOM (NEEDED FOR DYNAMIC CONTENT) ====*/
+
+        $.fn.onAvailable = function(fn){
+            var sel = this.selector;
+            var timer;
+            var self = this;
+            if (this.length > 0) {
+                fn.call(this);
+            } else {
+                timer = setInterval(function(){
+                    if ($(sel).length > 0) {
+                        fn.call($(sel));
+                        clearInterval(timer);
+                    }
+                },100);
+            }
+            return timer;
+        };
 
         // FIXME - Client Direct Only, ensure that if loading a step, all previous steps were completed
 
@@ -908,8 +933,8 @@ angular.module('app.controllers.checkout')
                 var phone = $scope.profile.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
 
                 $scope.profile.card.cardType = CreditCards.validateCard($scope.profile.card.card).type;
-                //$scope.profile.shipping.name = $scope.profile.firstName + " " + $scope.profile.lastName;
-                //$scope.profile.billing.name = $scope.profile.firstName + " " + $scope.profile.lastName;
+                $scope.profile.shipping.name = $scope.profile.firstName + " " + $scope.profile.lastName;
+                $scope.profile.billing.name = $scope.profile.firstName + " " + $scope.profile.lastName;
                 $scope.profile.shipping.phone = phone;
                 $scope.profile.billing.phone = phone;
 
@@ -945,19 +970,26 @@ angular.module('app.controllers.checkout')
                 shipping.name ? shipping.name = shipping.name.toUpperCase(): false;
 
                 var fullName = ($scope.profile.firstName + " " + $scope.profile.lastName).toUpperCase();
-                $log.debug("CheckoutController(): loginOrCreateUser(): shipping name", shipping.name, "full name", fullName);
+                $log.debug("CheckoutController(): loginOrCreateUser(): businessCO", shipping);
 
+                // strip first name if necessary
+                if (shipping.businessCO && !S(shipping.businessCO).isEmpty()) {
+                    shipping.businessCO.replace(new RegExp("^"+fullName), "");
+                }
 
                 // handle c/o & business name, etc.
-                if (S(shipping.name).trim() != S(fullName).trim()) {
-                    $log.debug("CheckoutController(): loginOrCreateUser(): found name/business/co, shuffling fields");
+                if (shipping.businessCO && !S(shipping.businessCO).isEmpty()) {
+                    $log.debug("CheckoutController(): loginOrCreateUser(): found business/co, shuffling fields");
 
                     // we have changed something and need to modify address1 to be this and address2 to be everything else
-                    shipping.address2 = shipping.address1;
-                    if (!S(shipping.address2).isEmpty()) {
-                        shipping.address2 += ", " + shipping.address2;
+                    var add1 = shipping.address1;
+                    var add2 = shipping.address2;
+
+                    shipping.address2 = add1;
+                    if (!S(add2).isEmpty()) {
+                        shipping.address2 += ", " + add2;
                     }
-                    shipping.address1 = shipping.name.replace(new RegExp("^"+fullName+" ?"), "");
+                    shipping.address1 = shipping.businessCO.toUpperCase();
                 }
 
                 var consultant = {
@@ -1335,12 +1367,12 @@ angular.module('app.controllers.checkout')
             var d = $q.defer();
 
             // add name here since we're not allowing user to input a name for shipping address manually;
-            //a.name = $scope.profile.firstName + " " + $scope.profile.lastName;
+            a.name = $scope.profile.firstName + " " + $scope.profile.lastName;
             a.phone = $scope.profile.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');;
 
             // check the zip for geocode for taxes
             Geocodes.query({zipCode: a.zip}).$promise.then(function(geocodes) {
-                $log.debug("CheckoutController(): addAddress(): got geocodes", geocodes);
+                $log.debug("CheckoutController(): selectGeocodeAndAdd(): got geocodes", geocodes);
 
                 // close any previous modals (e.g. address edit from review page)
                 angular.element('.modal').modal('hide');
@@ -1357,25 +1389,25 @@ angular.module('app.controllers.checkout')
                 }
 
                 if (geocodes.length == 1) {
-                    $log.debug("CheckoutController(): addAddress(): selecting only geocode returned");
+                    $log.debug("CheckoutController(): selectGeocodeAndAdd(): selecting only geocode returned");
                     a.geocode = geocodes[0].GEOCODE;
                     $scope.checkoutUpdated();
                     d.resolve(a);
                 } else if (matchedGeocode) {
-                    $log.debug("CheckoutController(): addAddress(): selecting exact match geocode");
+                    $log.debug("CheckoutController(): selectGeocodeAndAdd(): selecting exact match geocode");
                     a.geocode = matchedGeocode.GEOCODE;
                     $scope.checkoutUpdated();
                     d.resolve(a);
                 } else {
                     // display a dialog for the user to choose the correct geocode here
                     selectGeocodeModal(geocodes).then(function(result) {
-                        $log.debug("CheckoutController(): addAddress(): geocode selection dialog closed", result);
+                        $log.debug("CheckoutController(): selectGeocodeAndAdd(): geocode selection dialog closed", result);
 
                         var geocode = result.geocode;
                         var canceled = result.canceled;
 
                         if (canceled) {
-                            $log.error("CheckoutController(): addAddress(): geocode selection dialog canceled");
+                            $log.error("CheckoutController(): selectGeocodeAndAdd(): geocode selection dialog canceled");
                             $scope.shippingAddressError = "Must select an address";
                             d.reject('Must select an address');
                             return;
@@ -1391,29 +1423,29 @@ angular.module('app.controllers.checkout')
                             } else {
                                 // client direct, we add it
                                 Addresses.addAddress(a).then(function(address) {
-                                    $log.debug("CheckoutController(): addAddress(): address added", address);
+                                    $log.debug("CheckoutController(): selectGeocodeAndAdd(): address added", address);
                                     $scope.profile.shipping = angular.copy(address);
                                     $scope.profile.billing = angular.copy(address);
                                     d.resolve(address);
                                 }, function(err) {
-                                    $log.error("CheckoutController(): addAddress(): failed to add address", err);
+                                    $log.error("CheckoutController(): selectGeocodeAndAdd(): failed to add address", err);
                                     $scope.shippingAddressError = error;
                                     d.reject(err);
                                 });
                             }
                         } else {
-                            $log.error("CheckoutController(): addAddress(): empty geocode");
+                            $log.error("CheckoutController(): selectGeocodeAndAdd(): empty geocode");
                             $scope.shippingAddressError = "Unable to verify address";
                             d.reject('Unable to verify address');
                         }
                     }, function(err) {
-                        $log.error("CheckoutController(): addAddress(): failed to select geocode", err);
+                        $log.error("CheckoutController(): selectGeocodeAndAdd(): failed to select geocode", err);
                         $scope.shippingAddressError = "Unable to verify address";
                         d.reject(err);
                     });
                 }
             }, function (r) {
-                $log.error("CheckoutController(): addAddress(): error looking up geocode", r);
+                $log.error("CheckoutController(): selectGeocodeAndAdd(): error looking up geocode", r);
                 $scope.shippingAddressError = "Unable to verify address";
                 d.reject(r.errorMessage);
             });
@@ -1535,7 +1567,8 @@ angular.module('app.controllers.checkout')
                     "country" : "US",
                     "geocode" : "040609",
                     "name" : "David Castro",
-                    "phone" : "987-983-7259"
+                    "phone" : "987-983-7259",
+                    "businessCO": ""
                 },
                 shipping : {
                     "address1" : "7661 Indian Canyon Cir",
@@ -1548,7 +1581,8 @@ angular.module('app.controllers.checkout')
                     "country" : "US",
                     "geocode" : "040609",
                     "name" : "David Castro",
-                    "phone" : "987-983-7259"
+                    "phone" : "987-983-7259",
+                    "businessCO": ""
                 },
                 newBillingAddress : {
                     "address1" : "7661 Indian Canyon Cir",
@@ -1561,7 +1595,8 @@ angular.module('app.controllers.checkout')
                     "country" : "US",
                     "geocode" : "040609",
                     "name" : "David Castro",
-                    "phone" : "987-983-7259"
+                    "phone" : "987-983-7259",
+                    "businessCO": ""
                 },
                 billing : {
                     "address1" : "7661 Indian Canyon Cir",
@@ -1574,7 +1609,8 @@ angular.module('app.controllers.checkout')
                     "country" : "US",
                     "geocode" : "040609",
                     "name" : "David Castro",
-                    "phone" : "987-983-7259"
+                    "phone" : "987-983-7259",
+                    "businessCO": ""
                 },
                 "billSame" : true,
                 newCard: {
