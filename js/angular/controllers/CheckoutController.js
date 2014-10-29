@@ -1568,7 +1568,7 @@ angular.module('app.controllers.checkout')
                     "geocode" : "040609",
                     "name" : "David Castro",
                     "phone" : "987-983-7259",
-                    "businessCO": ""
+                    "businessCO": "Someone c/o Jafra"
                 },
                 shipping : {
                     "address1" : "7661 Indian Canyon Cir",
@@ -1582,7 +1582,7 @@ angular.module('app.controllers.checkout')
                     "geocode" : "040609",
                     "name" : "David Castro",
                     "phone" : "987-983-7259",
-                    "businessCO": ""
+                    "businessCO": "Someone c/o Jafra"
                 },
                 newBillingAddress : {
                     "address1" : "7661 Indian Canyon Cir",
@@ -1596,7 +1596,7 @@ angular.module('app.controllers.checkout')
                     "geocode" : "040609",
                     "name" : "David Castro",
                     "phone" : "987-983-7259",
-                    "businessCO": ""
+                    "businessCO": "Someone c/o Jafra"
                 },
                 billing : {
                     "address1" : "7661 Indian Canyon Cir",
@@ -1610,7 +1610,7 @@ angular.module('app.controllers.checkout')
                     "geocode" : "040609",
                     "name" : "David Castro",
                     "phone" : "987-983-7259",
-                    "businessCO": ""
+                    "businessCO": "Someone c/o Jafra    "
                 },
                 "billSame" : true,
                 newCard: {
