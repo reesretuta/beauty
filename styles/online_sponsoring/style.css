@@ -137,6 +137,12 @@ background-color: #1cc3d6;
 border-radius: 0px;
 }
 .navbar-toggle,
+.navbar-nav>li>a:hover,
+.navbar-nav>li>a:focus,
+.navbar-nav>li.active>a {
+  margin-right: 15px;
+}
+.navbar-toggle,
 .navbar-toggle:hover,
 .navbar-toggle:focus {
   background: transparent;
