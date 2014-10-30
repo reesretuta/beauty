@@ -176,7 +176,8 @@ h2 {
 }
 
 .navbar-clientdirect_logins {
-  padding: 10px;
+  border-radius: 5px; 
+  padding: 8px 1px;
 }
 
 .login-dropdown .dropdown-menu {
