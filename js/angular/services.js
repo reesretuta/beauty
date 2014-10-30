@@ -1184,9 +1184,12 @@ angular.module('app.services', ['ngResource'])
             if (/^(4026|417500|4405|4508|4844|4913|4917)/.test(ccnumber) && ccnumber.length == 16) {
                 cardType = "Visa Electron"
             }
+            if(/^500[0-9]/.test(ccnumber) && ccnumber.length == 16) {
+                cardType = "BMO ABM Card";
+            }
 
             return {
-                valid: valid && ["Visa", "MasterCard", "American Express", "Discover Card"].indexOf(cardType) != -1,
+                valid: valid && ["Visa", "MasterCard", "American Express", "Discover Card", "BMO ABM Card"].indexOf(cardType) != -1,
                 type: cardType
             }
         }
