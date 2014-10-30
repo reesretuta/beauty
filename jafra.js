@@ -763,9 +763,9 @@ function validateEmail(email) {
         },
         json: true
     }, function (error, response, body) {
-        console.log("validateEmail()", error, response.statusCode, body);
+        console.log("validateEmail()", error, response ? response.statusCode: null, body);
         if (error || response.statusCode != 200) {
-            console.error("validateEmail(): error", error, response.statusCode, body);
+            console.error("validateEmail(): error", error, response ? response.statusCode: null, body);
             deferred.reject({
                 status: 500,
                 result: {
