@@ -64,19 +64,87 @@ angular.module('app.services', ['ngResource'])
 
         return searchService;
     })
-    .factory('Session', function($rootScope, $resource, $log, $location, $http, $cookieStore, $cookies, $timeout, $q, Consultants, API_URL, STORE_BASE_URL) {
+    .factory('Session', function($rootScope, $resource, $log, $location, $http, $cookieStore, $cookies, $timeout, $q, localStorageService, API_URL, STORE_BASE_URL) {
         var sessionService = {};
 
-        // load the session
+        // promise that everything waits on before resolving
         var initialized = $q.defer();
 
+        // track session dirty
+        var dirty = false;
+
+        $rootScope.session = {};
+
+        // IN-MEMORY SESSION FUNCTIONS
         function setLocalSession(session) {
             $rootScope.session = session;
         }
 
         function getLocalSession() {
+            return $rootScope.session;
+        }
+
+        function deleteLocalSession() {
+            if ($rootScope.session != null) {
+                $rootScope.session = {
+                    language: 'en_US',
+                    cart: [],
+                    checkout: {}
+                };
+            }
+        }
+
+        // idle client reaches session timeout, log them out and redirect
+        $rootScope.$on('loginSessionExpired', function (event, data) {
+            $log.debug("sessionService(): session expired, cleaning up", event, data);
+
+            var session = getLocalSession();
+
+            if (session.client && session.client.id) {
+                // remove local client
+                deleteLocalSession();
+
+                $log.debug("sessionService(): removing session cookie", $cookies["connect.sid"]);
+                $cookieStore.remove("connect.sid");
+
+                alert('You have been logged out due to inactivity');
+                $location.path(STORE_BASE_URL).search();
+                $log.error("sessionService(): session expired")
+            }
+        });
+
+        var sessionLastUpdated = null;
+        $rootScope.$on('LocalStorageModule.notification.setitem', function (event, data) {
+            if (data.key == 'session') {
+                // if the date is empty or doesn't equal out last timestamp update, then add timestamp
+                if (data.value && (data.value.timestamp == null || data.value.timestamp != sessionLastUpdated)) {
+                    // session was updated, set a timestamp since we want to expire our localstorage
+                    data.value.timestamp = new Date().getTime();
+
+                    // ensure this update doesn't trigger another update recursively
+                    sessionLastUpdated = data.value.timestamp;
+                    $log.debug("sessionService(): setting last session update time", sessionLastUpdated);
+                }
+            }
+        });
+
+        // watch for local session change, mark dirty if needed
+        //$rootScope.watch('session', function(newVal, oldVal) {
+        //    if (newVal != oldVal) {
+        //        // set the last updated for this session
+        //        //$rootScope.$broadcast('LocalStorageModule.notification.setitem', {key: key, newvalue: value, storageType: 'cookie'});
+        //    }
+        //});
+
+        // INITIALIZATION
+        function initialize() {
+            $log.debug("sessionService(): initialize()");
+
+            // bind
+            $rootScope.sessionUnbind = localStorageService.bind($rootScope, 'session');
+
+            // set if not set
             if ($rootScope.session == null) {
-                $log.debug("sessionService(): initializing session");
                 $rootScope.session = {
                     language: 'en_US',
                     cart: [],
@@ -84,84 +152,20 @@ angular.module('app.services', ['ngResource'])
                 };
             }
 
-            return $rootScope.session;
+            $log.debug("sessionService(): initialize(): session is", $rootScope.session);
+            initialized.resolve($rootScope.session);
         }
-        getLocalSession();
+        initialize();
 
-        function deleteLocalSession() {
-            if ($rootScope.session != null) {
-                delete $rootScope.session;
-            }
-        }
-
-        sessionService.getLocalSession = getLocalSession;
-
-        $rootScope.$on('loginSessionExpired', function (event, data) {
-            $log.debug("session expired, cleaning up", event, data);
-
-            var session = getLocalSession();
-
-            if (session.client && session.client.id) {
-                // remove local client
-                deleteLocalSession();
-                $log.debug("removing session cookie", $cookies["connect.sid"]);
-                $cookieStore.remove("connect.sid");
-
-                alert('You have been logged out due to inactivity');
-                $location.path(STORE_BASE_URL).search();
-                $log.error("session expired")
-            }
-        });
-
-        // used for initialization
-        function getInternal() {
-            $log.debug("sessionService(): getInternal()");
-
-            var d = $q.defer();
-
-            $http.get(API_URL + '/session', {}).success(function(session, status, headers, config) {
-                $log.debug("sessionService(): getInternal(): loaded session", session);
-                setLocalSession(session);
-                d.resolve(session);
-            }).error(function(data, status, headers, config) {
-                $log.error(data, status, headers, config);
-                d.reject(data);
-            });
-
-            return d.promise;
-        }
-
-        // waits for initialization before resolving promises
+        // PUBLIC session functions
         sessionService.get = function() {
             $log.debug("sessionService(): get()");
             var d = $q.defer();
-            initialized.promise.then(function() {
-                getInternal().then(function(session) {
-                    $log.debug("sessionService(): get(): returning session", session);
-                    d.resolve(session);
-                }, function(err) {
-                    // initialize anyways, else we are stuck
-                    $log.error("sessionService(): get(): error, failed to get session", err);
-                    d.reject({});
-                });
+            initialized.promise.then(function(session) {
+                d.resolve(session);
             });
             return d.promise;
         }
-
-        // INITIALIZATION
-        function initialize() {
-            $log.debug("sessionService(): initialize()");
-
-            getInternal().then(function(session) {
-                $log.debug("sessionService(): initialize(): initialized session");
-                initialized.resolve(session);
-            }, function(err) {
-                // initialize anyways, else we are stuck
-                $log.error("sessionService(): initialize(): error initializing session", err);
-                initialized.resolve({});
-            });
-        }
-        initialize();
 
         sessionService.waitForInitialization = function() {
             var d = $q.defer();
@@ -177,49 +181,36 @@ angular.module('app.services', ['ngResource'])
             return d.promise;
         }
 
-        sessionService.set = function(items) {
+        sessionService.set = function(a, b) {
             var d = $q.defer();
 
             // once we're initialized
             initialized.promise.then(function() {
-                $log.debug("sessionService(): set()", items);
-                var session = getLocalSession();
-                for (var key in items) {
-                    if (items.hasOwnProperty(key)) {
-                        session[key] = items[key];
-                        $log.debug("sessionService(): set()", key, items[key]);
+                // copy over all properties
+                if (arguments.length == 1) {
+                    var items = a;
+                    $log.debug("sessionService(): set()", items);
+                    var session = getLocalSession();
+                    for (var key in items) {
+                        if (items.hasOwnProperty(key)) {
+                            session[key] = items[key];
+                            $log.debug("sessionService(): set()", key, items[key]);
+                        }
                     }
+
+                    $log.debug("sessionService(): set()", session);
+
+                // set one property
+                } else {
+                    $log.debug("sessionService(): set()", a, b);
+                    var session = getLocalSession();
+                    session[a] = b;
+                    $log.debug("sessionService(): set()", session);
                 }
-                $log.debug("sessionService(): set()", session);
-                return sessionService.save();
+
+                d.resolve(session);
             }, function(err) {
-                $log.error("sessionService(): save(): initialization failed", err);
-            });
-
-            return d.promise;
-        }
-
-        sessionService.save = function() {
-            var session = getLocalSession();
-            $log.debug("sessionService(): save(): request save", session);
-            var d = $q.defer();
-
-            // once we're initialized
-            initialized.promise.then(function() {
-                var session = getLocalSession();
-                $log.debug("sessionService(): save(): saving session", session);
-
-                $http.put(API_URL + '/session', session, {}).success(function(data, status, headers, config) {
-                    $log.debug("sessionService(): save(): saved", session);
-                    //success(session, status, headers);
-                    d.resolve(session);
-                }).error(function(data, status, headers, config) {
-                    //failure(data, status, headers, config);
-                    $log.error("sessionService(): save(): failed", data, status);
-                    d.reject(data);
-                });
-            }, function(err) {
-                $log.error("sessionService(): save(): initialization failed", err);
+                $log.error("sessionService(): set(): initialization failed", err);
             });
 
             return d.promise;
@@ -254,138 +245,6 @@ angular.module('app.services', ['ngResource'])
                     $log.error("sessionService(): createClient(): error creating client", status, data);
                     d.reject(data);
                 });
-            });
-
-
-            return d.promise;
-        }
-
-        var key = ["-----BEGIN PGP PUBLIC KEY BLOCK-----",
-            "Version: GnuPG v1",
-            "",
-            "mQINBFQky5sBEADTdP00khAWlMP6sa1F+CxUmk9gwvytanRW68yPiJPozCF+dbpu",
-            "fRn7JQEMZEzn07D4BZrTulTYiaC5EkrTOvCb3q+f9ghVygerUE/3W9FSkDFjIFVX",
-            "fDzDyeNfbQrvvZn+3VMcvJ/KA8zaoy404md/u/FFxiUCmaAdgFhgA06cpzaeZ32D",
-            "ETiggcSWbgZpa+jJ8BKRuGepdudnPkrQD3ZeVJUkWYw4qQKJMS9GtcLoIR3169gy",
-            "4RHxA4q7h4OcxitXJCPZjwwFqwv0rUK9I7SKicM6vMZ8wEHdf1JCyflS+c5OgMzW",
-            "htKf75PVegILPscDEhwrqDZieSRQupYKFOrZv/ot9HEtY5J6raCFShCmQm22pgsW",
-            "YkXC/hbMOGMxd8AzigFE1vF2+9DQmliIHpnuGsKaMKU58BBvwQqIfWOwCJxFASsb",
-            "noGZJMV4nNK5fvV3qHhozwPoVDGPpQ2LwVs67O0r9B0N9S2uOuxIIJnRnEW+l2bv",
-            "ruRITdg1oD2zcsU2V8+QfOmqN262maojoZD12CMv3pySv9hms0o4+xwjtVk505kn",
-            "P47ar5a2lihT4/RpJ+ry9PHpJqZ4MGRzlDhWn88CDQZ1kAbr4/nDnCpSwx9kVJly",
-            "nwuKKvuxP8nVMBaMEM7EWkzJt2VVdmLHEC2oWHk+e+zR3omVuoGddV1eOQARAQAB",
-            "tCtKYWZyYSBUZXN0IEtleXMgKFRFU1QgT05MWSkgPGRldkBqYWZyYS5jb20+iQI+",
-            "BBMBAgAoBQJUJMubAhsDBQkHhM4ABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAK",
-            "CRAQkgBGDOdQdsXjD/sEJuClBwEYPUEMy2aL8ysslDbgvchzzTBiCsBo3AhBXcLp",
-            "7Y+3VfVEWIUjfxs6Wbe09BsF8CvwLrVHOMDfrrraygeWcJgKc43vsbHJLFhtYLv/",
-            "0zty200KxV8x3D2t4yQo+fo0oEmaS8PO3m//OZ3YhSoup0BdirpdeNF1YJQOs1Ta",
-            "waQ1HJT/iWScwvkiTKyfgxHl3BTYJdjjA65NeeHJtBVH7y6B8eqhYLb3JZe9rfu4",
-            "mgDJ6jNLDBc6pc1ZG395x5joWliA3Xu7UjvCOlVVQlOMy8hRSmnMYjVUy9d53shG",
-            "V2pdibAYwBDqPOuic5ALvA/MmKKJeX/xZpr8kuInPuo9xRERapRo9DY0Aekf0dJx",
-            "eLKo/9sj7EvPD+YNUNFCL85DWa5MlvZAsuPudxIaRA1iG/YOn14DsCnGkE47nATI",
-            "4cWB948Un8V6M12JmeMXB/s2HsX43swaAwXpuzeJxBXSVUvfrRQtQFQmZHohZsLh",
-            "Z1uq9ZdF1Rci3XhFy4bae4u5Dj2xl7yf5WKFSyzW2IesOoSpkJwX+dTBQxYrL/jv",
-            "s6wWypnsjGWyD1/jSdN3DFa/MPHeqFFgLEeXef9bfX0CLcerNlC2Mp6ypbi78NyT",
-            "xYT4BWWnqkICBjpKqd8BSMoY3f1sceNO+GmJ9BU/POHnBE2v4zYbG1ndwFMZjbkC",
-            "DQRUJMubARAAvEO4HEvEePQEdRqBjl1XQSeofcFMkyxwwB1EiBQZyqLZpkjEqfmh",
-            "IK2O4dLMNr9q5LG8yxoV7bVsjums2hsRe5ANn0O+OOEkhY5rF9u5gh81UOpKApHt",
-            "dozmNd5diS1grkFflSKvVvOXcFWKOr8cWSvl9v6AFQ0TidAwinp1JVgXyn/QBR7e",
-            "GXFL6j1kUM3sRiTjW7DGC5fufyUuz3ptkCeq1+FoBc6pwaiMOeLGgSo4XGwbi9S1",
-            "qvK5kU5bMXMiZZClwwj0OsTXhfw6S8dSkE64FOH1YN+bkzZh3q3WT8+5IphKH6Wu",
-            "MIebSPT6bnhYJNkIcJ8VBY4OH47H8SQjqLkcGltiHQ4G/6KEG4DXeOC7We65v2nv",
-            "qiIi9H6vPydsOJqTlVGyUl3y8ENkNRIpHvSSfLx3tPld7/4W0cqWNh7Dy/Kbnbei",
-            "e4K9wExfBmogH9Ulv+tfiOd8PRvdbjx4WZ/Z9bGQkYoDvp22HRi8mN1k3z3RPro+",
-            "HuXN67euVqKTcdqRPCFstgByaHJgEOSwsHSDNI8mxMQ4WJTddMcx+yyNUaeK8CFQ",
-            "TLOzri+LaOW3vNHMhcVoMeMjzq0NeWOeM1xr3VZb/EpzuThZsMv/178T4htwYgqT",
-            "ucrFLjzA2YSpAeWY3Sja42/YNeyPO1cbrGkavUaM3d606K6NnUmP2AMAEQEAAYkC",
-            "JQQYAQIADwUCVCTLmwIbDAUJB4TOAAAKCRAQkgBGDOdQds7rD/0eyBDTiwiTuFb5",
-            "L2tVRhJ/Rb/mu+1dI2UKKO49vL9WR0+W0kpwmfxzMM7SeHv7oMXU9KGvisy7mnlC",
-            "zWYVS7TwoSOvry7zWxvFoVDrUTwY1CGbGoR/zgiX+P85eT8b0vKvtS1j9w8oeav0",
-            "J2kWUr/8CfTLXcdqsITRAVdfrkxxmhq98G8i6+Mlbucc+uL06aultihANqovJyAG",
-            "/rJWmwmmu26tILOMBVgDojiKSGQ3uB6H2EPuVQoQWQaWBSPPAQW/AWfEPFtB3fEF",
-            "m8xEfedAfdewvKv+2iR//TlRB7ofH/Ti7fU0j88W7H/Km96oJbdf/oiIhQJiDNPQ",
-            "OdC8VPeZ2dAL8007Nr/155aCxt3GTTf07cIePKzGNS1QIiImkVN3A2sDwp9Gh7EQ",
-            "s45R32/Gu9SSMlQrKKRiGYeJf58rDPhGo9B3Mp8nT24OKjqdYFhe+TNsWOGKPKWD",
-            "X+7dngwN0+t3G4/NbIKkHJr7mkhA+9MK5nhBTIeTclFmqYmquHMYVjpnIA2r0Ik4",
-            "+suYFTwEcA22t2jc3+zzKg6qqk+z3Rgl4YIKAO7EHBqqTOA6K1ckaV5cjGEeDQg/",
-            "0kLeaIsAcE17RhCPTAtOuxLaFNA7coFzCN2zIJvsaQw7sd3+UvEo4sL58DdTJwJ6",
-            "YPxuUDQHu0aR58vdYj4E/LXBH4Y3Yw==",
-            "=jeuV",
-            "-----END PGP PUBLIC KEY BLOCK-----"];
-
-        sessionService.createConsultant = function(consultant) {
-            var d = $q.defer();
-
-            initialized.promise.then(function(session) {
-                $log.debug("Session(): createConsultant(): attempting to create consultant=", consultant.email);
-
-                // do PGP encryption here
-                require(["/lib/openpgp.min.js"], function(openpgp) {
-                    var publicKey = openpgp.key.readArmored(key.join("\n"));
-                    var consultantData = JSON.stringify(consultant);
-                    var encrypted = openpgp.encryptMessage(publicKey.keys, consultantData);
-                    encrypted = encrypted.trim();
-                    $log.debug("consultant", consultantData);
-                    $log.debug("encrypted consultant data", encrypted);
-
-                    try {
-                        Consultants.save({}, {
-                            encrypted: encrypted
-                        }).$promise.then(function(c) {
-                            $log.debug("sessionService(): createConsultant(): created consultant");
-                            d.resolve(c);
-                        }, function(response) {
-                            $log.error("sessionService(): createConsultant(): failed to create consultant", response.data);
-                            d.reject(response.data);
-                        });
-                    } catch (ex) {
-                        d.reject({
-                            errorCode: 500,
-                            message: "Failed to create order"
-                        });
-                    }
-                });
-
-            });
-
-
-            return d.promise;
-        }
-
-        sessionService.lookupConsultant = function(ssn) {
-            var d = $q.defer();
-
-            initialized.promise.then(function(session) {
-                $log.debug("sessionService(): lookupConsultant(): attempting to lookup consultant", ssn);
-
-                // do PGP encryption here
-                require(["/lib/openpgp.min.js"], function(openpgp) {
-                    var publicKey = openpgp.key.readArmored(key.join("\n"));
-                    var consultantData = JSON.stringify({
-                        "ssn": ssn
-                    });
-                    var encrypted = openpgp.encryptMessage(publicKey.keys, consultantData);
-                    encrypted = encrypted.trim();
-                    $log.debug("sessionService(): lookupConsultant(): consultant ssn data", consultantData);
-                    $log.debug("sessionService(): lookupConsultant(): encrypted consultant ssn", encrypted);
-
-                    try {
-                        Consultants.lookup(encrypted).then(function(c) {
-                            $log.debug("sessionService(): lookupConsultant(): found consultant");
-                            d.resolve(c);
-                        }, function(error) {
-                            $log.error("sessionService(): lookupConsultant(): failed to lookup consultant");
-                            d.reject(error);
-                        });
-                    } catch (ex) {
-                        $log.error("sessionService(): lookupConsultant(): failed to lookup consultant", ex);
-                        d.reject({
-                            errorCode: 500,
-                            message: "Failed to lookup consultant"
-                        });
-                    }
-                });
-
             });
 
 
@@ -495,8 +354,10 @@ angular.module('app.services', ['ngResource'])
         var checkoutService = {};
 
         checkoutService.getLocalCheckout = function() {
-            var session = Session.getLocalSession();
-            return session.checkout;
+            if ($rootScope.session) {
+                return $rootScope.session.checkout;
+            }
+            return {};
         };
 
         checkoutService.getCheckout = function() {
@@ -514,15 +375,8 @@ angular.module('app.services', ['ngResource'])
         checkoutService.setCheckout = function(checkout) {
             var d = $q.defer();
 
-            var session = Session.getLocalSession();
-            session.checkout = checkout;
-
-            Session.save().then(function() {
-                $log.debug("checkoutService(): setCheckout(): saved checkout to session");
-                d.resolve(checkout);
-            }, function(error) {
-                $log.error("checkoutService(): setCheckout(): failed to save checkout to session");
-                d.resolve(error);
+            Session.set('checkout', checkout).then(function(session) {
+                d.resolve(session.checkout);
             });
 
             return d.promise;
@@ -531,17 +385,9 @@ angular.module('app.services', ['ngResource'])
         checkoutService.clear = function() {
             var d = $q.defer();
 
-            Session.get().then(function(session) {
+            Session.set('checkout', {}).then(function(session) {
                 $log.debug("checkoutService(): clear(): got session", session);
-                session.checkout = {};
-
-                Session.save().then(function(session) {
-                    $log.debug("checkoutService(): clear(): cleared checkout from session", session.checkout);
-                    d.resolve(session.checkout);
-                }, function(error) {
-                    $log.error("checkoutService(): clear(): failed to clear checkout from session");
-                    d.reject(error);
-                });
+                d.resolve(session.checkout);
             }, function(error) {
                 $log.error("checkoutService(): clear(): failed to get session for cart clearing");
                 d.reject(error);
@@ -552,22 +398,55 @@ angular.module('app.services', ['ngResource'])
 
         return checkoutService;
     })
-    .factory('Cart', function ($rootScope, $log, $timeout, $q, STORE_BASE_URL, Session, Products, growlNotifications) {
+    .factory('Cart', function ($rootScope, $log, $timeout, $q, STORE_BASE_URL, Session, Product, growlNotifications) {
         var cartService = {};
 
-        function getLocalSessionCart() {
-            var session = Session.getLocalSession();
-            //$log.debug('cartService(): local session cart', session.cart);
-            return session.cart;
+        function getLocalCart() {
+            if ($rootScope.session) {
+                return $rootScope.session.cart;
+            }
+            return {};
+
         }
 
-        function clearLocalSessionCart() {
-            var session = Session.getLocalSession();
-            session.cart = [];
+        cartService.getCart = function() {
+            var d = $q.defer();
+
+            Session.get().then(function(session) {
+                d.resolve(session.cart);
+            }, function(error) {
+                d.reject(error);
+            });
+
+            return d.promise;
         }
 
+        cartService.setCart = function(cart) {
+            var d = $q.defer();
+
+            Session.set('cart', cart).then(function(session) {
+                d.resolve(session.cart);
+            });
+
+            return d.promise;
+        };
+
+        cartService.clear = function() {
+            var d = $q.defer();
+
+            Session.set('cart', {}).then(function(session) {
+                $log.debug("cartService(): clear(): got session", session);
+                d.resolve(session.cart);
+            }, function(error) {
+                $log.error("cartService(): clear(): failed to get session for cart clearing");
+                d.reject(error);
+            });
+
+            return d.promise;
+        }
+        
         cartService.getItemCount = function() {
-            var cart = getLocalSessionCart();
+            var cart = getLocalCart();
             var count = 0;
             angular.forEach(cart, function(cartItem) {
                 count += parseInt(cartItem.quantity);
@@ -578,11 +457,11 @@ angular.module('app.services', ['ngResource'])
         };
 
         cartService.getFirstProductSku = function() {
-            var session = Session.getLocalSession();
-            if (session.cart == null || session.cart.length == 0) {
+            var cart = getLocalCart();
+            if (cart == null || cart.length == 0) {
                 return null;
             }
-            return session.cart[0].sku;
+            return cart[0].sku;
         }
 
         cartService.getItems = function() {
@@ -624,7 +503,7 @@ angular.module('app.services', ['ngResource'])
 
             $rootScope.adding = true;
 
-            var cart = getLocalSessionCart();
+            var cart = getLocalCart();
             $log.debug("cartService(): addToCart()", cart, item);
 
             // check the cart for matching items, so we can update instead of add
@@ -661,27 +540,22 @@ angular.module('app.services', ['ngResource'])
 
             var startTime = new Date().getTime();
 
-            Session.save().then(function(session) {
-                $log.debug("cartService(): addToCart(): saved cart to session", session);
-                d.resolve(cart);
+            // in case we go back async on this at some point
+            d.resolve(cart);
 
-                if (new Date().getTime() - startTime < 1500) {
-                    // wait until we've had 1500ms pass
-                    $timeout(function() {
-                        $rootScope.adding = false;
-                        // set class
-                        //$timeout(function() {
-                        //    // remove check
-                        //}, 2000);
-                    }, 1500 - (new Date().getTime() - startTime));
-                } else {
-                    // > 1500 ms has passed, clear
+            if (new Date().getTime() - startTime < 1500) {
+                // wait until we've had 1500ms pass
+                $timeout(function() {
                     $rootScope.adding = false;
-                }
-            }, function(error) {
-                $log.error("cartService(): addToCart(): failed to save cart to session");
-                d.reject(error);
-            });
+                    // set class
+                    //$timeout(function() {
+                    //    // remove check
+                    //}, 2000);
+                }, 1500 - (new Date().getTime() - startTime));
+            } else {
+                // > 1500 ms has passed, clear
+                $rootScope.adding = false;
+            }
 
             return d.promise;
         };
@@ -689,7 +563,7 @@ angular.module('app.services', ['ngResource'])
         cartService.removeFromCart = function(item) {
             var d = $q.defer();
 
-            var cart = getLocalSessionCart();
+            var cart = getLocalCart();
             angular.forEach(cart, function(cartItem) {
                 // FIXME - if it's a kit, verify we remove the right kit configuration
                 if (cartItem.sku == item.sku) {
@@ -699,34 +573,7 @@ angular.module('app.services', ['ngResource'])
             });
 
             $log.debug("cartService(): removeFromCart(): cart now", cart);
-            $log.debug("cartService(): removeFromCart(): session now", Session.getLocalSession());
-
-            $log.debug("cartService(): removeFromCart(): saving cart to session");
-
-            Session.save().then(function() {
-                $log.debug("cartService(): removeFromCart(): saved cart to session");
-                d.resolve(cart);
-            }, function(error) {
-                $log.error("cartService(): removeFromCart(): failed to save cart to session");
-                d.reject(error);
-            });
-
-            return d.promise;
-        };
-
-        cartService.clear = function() {
-            var d = $q.defer();
-
-            clearLocalSessionCart();
-            $log.debug("cartService(): clear(): session now", Session.getLocalSession());
-
-            Session.save().then(function(session) {
-                $log.debug("cartService(): clear(): saved cart to session", session.cart);
-                d.resolve(session.cart);
-            }, function(error) {
-                $log.error("cartService(): clear(): failed to save cart to session");
-                d.reject(error);
-            });
+            d.resolve(cart);
 
             return d.promise;
         };
@@ -746,15 +593,15 @@ angular.module('app.services', ['ngResource'])
             });
             $log.debug("cartService(): loadProducts(): loading products", productIds);
 
-            var p = Products.query({productIds: productIds});
+            var p = Product.query({productIds: productIds});
             $log.debug("cartService(): loadProducts(): got promise", p);
 
             p.then(function(products) {
                 $log.debug("cartService(): loadProducts(): loaded products", products);
 
                 $.each(products, function(index, product) {
-                    // FIXME - calculate the correct display price
-                    Products.selectCurrentPrice(product);
+                    // find the right current price
+                    Product.selectCurrentPrice(product);
 
                     // merge back in
                     if (itemMap[product.sku]) {
@@ -806,7 +653,7 @@ angular.module('app.services', ['ngResource'])
 
         return salesTaxService;
     })
-    .factory('Products', function ($resource, $http, $log, $q, Categories, API_URL) {
+    .factory('Product', function ($resource, $http, $log, $q, Categories, API_URL) {
         var productService = $resource(API_URL + '/products/:productId', {productId: '@_id'});
         var origQuery = productService.query;
         var origGet = productService.get;
@@ -890,23 +737,89 @@ angular.module('app.services', ['ngResource'])
         }
         return productService;
     })
-    .factory('Consultants', function ($resource, $http, $log, $q, API_URL) {
+    .factory('Consultant', function ($resource, $http, $log, $q, Session, PGP, API_URL) {
         var consultantService = $resource(API_URL + '/consultants/:consultantId', {consultantId: '@_id'});
 
-        consultantService.lookup = function(encrypted) {
-            $log.debug("consultantService(): lookup()", encrypted);
+        var key = PGP.getKey();
+
+        consultantService.lookup = function(ssn) {
             var d = $q.defer();
 
-            // lookup the consultant by SSN
-            var a = $http.post(API_URL + '/consultants/lookup', {
-                encrypted: encrypted
-            }, {}).success(function(exists, status, headers, config) {
-                $log.debug("consultantService(): lookup(): found", a);
-                d.resolve(exists);
-            }).error(function(data, status, headers, config) {
-                $log.error("consultantService(): lookup(): error", status, data);
-                d.reject(data);
+            Session.waitForInitialization().then(function(session) {
+                $log.debug("consultantService(): lookup(): attempting to lookup consultant", ssn);
+
+                // do PGP encryption here
+                require(["/lib/openpgp.min.js"], function(openpgp) {
+                    var publicKey = openpgp.key.readArmored(key.join("\n"));
+                    var consultantData = JSON.stringify({
+                        "ssn": ssn
+                    });
+                    var encrypted = openpgp.encryptMessage(publicKey.keys, consultantData);
+                    encrypted = encrypted.trim();
+                    $log.debug("consultantService(): lookup(): consultant ssn data", consultantData);
+                    $log.debug("consultantService(): lookup(): encrypted consultant ssn", encrypted);
+
+                    try {
+                        // lookup the consultant by SSN
+                        var a = $http.post(API_URL + '/consultants/lookup', {
+                            encrypted: encrypted
+                        }, {}).success(function(data, status, headers, config) {
+                            $log.debug("consultantService(): lookup(): found", data);
+                            d.resolve(data);
+                        }).error(function(data, status, headers, config) {
+                            $log.error("consultantService(): lookup(): error", status, data);
+                            d.reject(data);
+                        });
+                    } catch (ex) {
+                        $log.error("consultantService(): lookup(): failed to lookup consultant", ex);
+                        d.reject({
+                            errorCode: 500,
+                            message: "Failed to lookup consultant"
+                        });
+                    }
+                });
+
             });
+
+
+            return d.promise;
+        }
+
+        consultantService.create = function(consultant) {
+            var d = $q.defer();
+
+            Session.waitForInitialization().then(function(session) {
+                $log.debug("Session(): create(): attempting to create consultant=", consultant.email);
+
+                // do PGP encryption here
+                require(["/lib/openpgp.min.js"], function(openpgp) {
+                    var publicKey = openpgp.key.readArmored(key.join("\n"));
+                    var consultantData = JSON.stringify(consultant);
+                    var encrypted = openpgp.encryptMessage(publicKey.keys, consultantData);
+                    encrypted = encrypted.trim();
+                    $log.debug("consultant", consultantData);
+                    $log.debug("encrypted consultant data", encrypted);
+
+                    try {
+                        consultantService.save({}, {
+                            encrypted: encrypted
+                        }).$promise.then(function(c) {
+                            $log.debug("sessionService(): create(): created consultant");
+                            d.resolve(c);
+                        }, function(response) {
+                            $log.error("sessionService(): create(): failed to create consultant", response.data);
+                            d.reject(response.data);
+                        });
+                    } catch (ex) {
+                        d.reject({
+                            errorCode: 500,
+                            message: "Failed to create order"
+                        });
+                    }
+                });
+
+            });
+
 
             return d.promise;
         }
@@ -949,7 +862,7 @@ angular.module('app.services', ['ngResource'])
             $log.debug("Address(): addAddress(): saving", address);
             var d = $q.defer();
 
-            var session = Session.getLocalSession();
+            var session = Session.get();
             var clientId = session.client.id;
 
                 // save the address
@@ -965,15 +878,7 @@ angular.module('app.services', ['ngResource'])
 
                 session.client.adjustedAddresses.push(adjustedAddress);
                 $log.debug("adjustedAddressService(): addAddress(): adding address to client address", session.client.adjustedAddresses);
-
-                // update the session with the adjustedAddress information
-                Session.save().then(function(session) {
-                    $log.debug("adjustedAddressService(): addAddress(): saved address to session", session);
-                    d.resolve(adjustedAddress);
-                }, function() {
-                    $log.error("adjustedAddressService(): addAddress(): failed to save address to session");
-                    d.reject('Failed to update address in session');
-                });
+                d.resolve(adjustedAddress);
             }, function(response) {
                 $log.error("adjustedAddressService(): addAddress(): failed to save address", response.data);
                 d.reject('Failed to save address');
@@ -986,7 +891,7 @@ angular.module('app.services', ['ngResource'])
             $log.debug("Address(): removeAddress(): removing", addressId);
             var d = $q.defer();
 
-            var session = Session.getLocalSession();
+            var session = Session.get();
 
             addressService.remove({clientId: session.client.id, addressId: addressId}).$promise.then(function(response) {
                 // remove the address from the client data
@@ -1033,67 +938,26 @@ angular.module('app.services', ['ngResource'])
 
         return addressService;
     })
-    .factory('CreditCards', function ($resource, $http, $log, $q, Session, API_URL) {
+    .factory('PGP', function ($resource, $http, $log, $q, BASE_URL) {
+        var pgpService = {};
+        var pgpKey = null;
+
+        pgpService.getKey = function() {
+            return pgp_key;
+        }
+
+        return pgpService;
+    })
+    .factory('CreditCards', function ($resource, $http, $log, $q, Session, PGP, API_URL) {
         var creditCardService = $resource(API_URL + '/clients/:clientId/creditCards/:creditCardId', {creditCardId: '@_id'});
 
-        var key = ["-----BEGIN PGP PUBLIC KEY BLOCK-----",
-            "Version: GnuPG v1",
-            "",
-            "mQINBFQky5sBEADTdP00khAWlMP6sa1F+CxUmk9gwvytanRW68yPiJPozCF+dbpu",
-            "fRn7JQEMZEzn07D4BZrTulTYiaC5EkrTOvCb3q+f9ghVygerUE/3W9FSkDFjIFVX",
-            "fDzDyeNfbQrvvZn+3VMcvJ/KA8zaoy404md/u/FFxiUCmaAdgFhgA06cpzaeZ32D",
-            "ETiggcSWbgZpa+jJ8BKRuGepdudnPkrQD3ZeVJUkWYw4qQKJMS9GtcLoIR3169gy",
-            "4RHxA4q7h4OcxitXJCPZjwwFqwv0rUK9I7SKicM6vMZ8wEHdf1JCyflS+c5OgMzW",
-            "htKf75PVegILPscDEhwrqDZieSRQupYKFOrZv/ot9HEtY5J6raCFShCmQm22pgsW",
-            "YkXC/hbMOGMxd8AzigFE1vF2+9DQmliIHpnuGsKaMKU58BBvwQqIfWOwCJxFASsb",
-            "noGZJMV4nNK5fvV3qHhozwPoVDGPpQ2LwVs67O0r9B0N9S2uOuxIIJnRnEW+l2bv",
-            "ruRITdg1oD2zcsU2V8+QfOmqN262maojoZD12CMv3pySv9hms0o4+xwjtVk505kn",
-            "P47ar5a2lihT4/RpJ+ry9PHpJqZ4MGRzlDhWn88CDQZ1kAbr4/nDnCpSwx9kVJly",
-            "nwuKKvuxP8nVMBaMEM7EWkzJt2VVdmLHEC2oWHk+e+zR3omVuoGddV1eOQARAQAB",
-            "tCtKYWZyYSBUZXN0IEtleXMgKFRFU1QgT05MWSkgPGRldkBqYWZyYS5jb20+iQI+",
-            "BBMBAgAoBQJUJMubAhsDBQkHhM4ABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAK",
-            "CRAQkgBGDOdQdsXjD/sEJuClBwEYPUEMy2aL8ysslDbgvchzzTBiCsBo3AhBXcLp",
-            "7Y+3VfVEWIUjfxs6Wbe09BsF8CvwLrVHOMDfrrraygeWcJgKc43vsbHJLFhtYLv/",
-            "0zty200KxV8x3D2t4yQo+fo0oEmaS8PO3m//OZ3YhSoup0BdirpdeNF1YJQOs1Ta",
-            "waQ1HJT/iWScwvkiTKyfgxHl3BTYJdjjA65NeeHJtBVH7y6B8eqhYLb3JZe9rfu4",
-            "mgDJ6jNLDBc6pc1ZG395x5joWliA3Xu7UjvCOlVVQlOMy8hRSmnMYjVUy9d53shG",
-            "V2pdibAYwBDqPOuic5ALvA/MmKKJeX/xZpr8kuInPuo9xRERapRo9DY0Aekf0dJx",
-            "eLKo/9sj7EvPD+YNUNFCL85DWa5MlvZAsuPudxIaRA1iG/YOn14DsCnGkE47nATI",
-            "4cWB948Un8V6M12JmeMXB/s2HsX43swaAwXpuzeJxBXSVUvfrRQtQFQmZHohZsLh",
-            "Z1uq9ZdF1Rci3XhFy4bae4u5Dj2xl7yf5WKFSyzW2IesOoSpkJwX+dTBQxYrL/jv",
-            "s6wWypnsjGWyD1/jSdN3DFa/MPHeqFFgLEeXef9bfX0CLcerNlC2Mp6ypbi78NyT",
-            "xYT4BWWnqkICBjpKqd8BSMoY3f1sceNO+GmJ9BU/POHnBE2v4zYbG1ndwFMZjbkC",
-            "DQRUJMubARAAvEO4HEvEePQEdRqBjl1XQSeofcFMkyxwwB1EiBQZyqLZpkjEqfmh",
-            "IK2O4dLMNr9q5LG8yxoV7bVsjums2hsRe5ANn0O+OOEkhY5rF9u5gh81UOpKApHt",
-            "dozmNd5diS1grkFflSKvVvOXcFWKOr8cWSvl9v6AFQ0TidAwinp1JVgXyn/QBR7e",
-            "GXFL6j1kUM3sRiTjW7DGC5fufyUuz3ptkCeq1+FoBc6pwaiMOeLGgSo4XGwbi9S1",
-            "qvK5kU5bMXMiZZClwwj0OsTXhfw6S8dSkE64FOH1YN+bkzZh3q3WT8+5IphKH6Wu",
-            "MIebSPT6bnhYJNkIcJ8VBY4OH47H8SQjqLkcGltiHQ4G/6KEG4DXeOC7We65v2nv",
-            "qiIi9H6vPydsOJqTlVGyUl3y8ENkNRIpHvSSfLx3tPld7/4W0cqWNh7Dy/Kbnbei",
-            "e4K9wExfBmogH9Ulv+tfiOd8PRvdbjx4WZ/Z9bGQkYoDvp22HRi8mN1k3z3RPro+",
-            "HuXN67euVqKTcdqRPCFstgByaHJgEOSwsHSDNI8mxMQ4WJTddMcx+yyNUaeK8CFQ",
-            "TLOzri+LaOW3vNHMhcVoMeMjzq0NeWOeM1xr3VZb/EpzuThZsMv/178T4htwYgqT",
-            "ucrFLjzA2YSpAeWY3Sja42/YNeyPO1cbrGkavUaM3d606K6NnUmP2AMAEQEAAYkC",
-            "JQQYAQIADwUCVCTLmwIbDAUJB4TOAAAKCRAQkgBGDOdQds7rD/0eyBDTiwiTuFb5",
-            "L2tVRhJ/Rb/mu+1dI2UKKO49vL9WR0+W0kpwmfxzMM7SeHv7oMXU9KGvisy7mnlC",
-            "zWYVS7TwoSOvry7zWxvFoVDrUTwY1CGbGoR/zgiX+P85eT8b0vKvtS1j9w8oeav0",
-            "J2kWUr/8CfTLXcdqsITRAVdfrkxxmhq98G8i6+Mlbucc+uL06aultihANqovJyAG",
-            "/rJWmwmmu26tILOMBVgDojiKSGQ3uB6H2EPuVQoQWQaWBSPPAQW/AWfEPFtB3fEF",
-            "m8xEfedAfdewvKv+2iR//TlRB7ofH/Ti7fU0j88W7H/Km96oJbdf/oiIhQJiDNPQ",
-            "OdC8VPeZ2dAL8007Nr/155aCxt3GTTf07cIePKzGNS1QIiImkVN3A2sDwp9Gh7EQ",
-            "s45R32/Gu9SSMlQrKKRiGYeJf58rDPhGo9B3Mp8nT24OKjqdYFhe+TNsWOGKPKWD",
-            "X+7dngwN0+t3G4/NbIKkHJr7mkhA+9MK5nhBTIeTclFmqYmquHMYVjpnIA2r0Ik4",
-            "+suYFTwEcA22t2jc3+zzKg6qqk+z3Rgl4YIKAO7EHBqqTOA6K1ckaV5cjGEeDQg/",
-            "0kLeaIsAcE17RhCPTAtOuxLaFNA7coFzCN2zIJvsaQw7sd3+UvEo4sL58DdTJwJ6",
-            "YPxuUDQHu0aR58vdYj4E/LXBH4Y3Yw==",
-            "=jeuV",
-            "-----END PGP PUBLIC KEY BLOCK-----"];
+        var key = PGP.getKey();
 
         creditCardService.addCreditCard = function(creditCard) {
             $log.debug("addressService(): addCreditCard()");
             var d = $q.defer();
 
-            var session = Session.getLocalSession();
+            var session = Session.get();
             var clientId = session.client.id;
 
             // do PGP encryption here
@@ -1198,26 +1062,6 @@ angular.module('app.services', ['ngResource'])
     })
     .factory('Categories', function ($resource, $http, $log, API_URL) {
         var categoriesService = {};
-
-//        function findCategory(categories, id, recurse, parent) {
-//            for (var i=0; i < categories.length; i++) {
-//                var category = categories[i];
-//                $log.debug("categoriesService(): id", category.id, "categoryId", id);
-//                if (parent) {
-//                    category.parentcategory = parent;
-//                }
-//                if (category.id == id) {
-//                    $log.debug("categoriesService(): found category, returning!", category);
-//                    return category;
-//                } else if (recurse && Array.isArray(category.children)) {
-//                    var c = findCategory(category.children, id, true, category);
-//                    if (c != null) {
-//                        return c;
-//                    }
-//                }
-//            }
-//            return null;
-//        }
 
         function generateCategoryMap(categories) {
             //$log.debug("categoriesService(): generateCategoryMap()", categories);

@@ -1,5 +1,5 @@
 angular.module('app.controllers.checkout')
-    .controller('CheckoutController', function ($location, $scope, $document, $timeout, $rootScope, $anchorScroll, $routeParams, $modal, $log, $q, STORE_BASE_URL, JOIN_BASE_URL, focus, Geocodes, Session, Addresses, OrderHelper, Checkout, Cart, Products, SalesTax, CreditCards, HashKeyCopier, WizardHandler) {
+    .controller('CheckoutController', function ($location, $scope, $document, $timeout, $rootScope, $anchorScroll, $routeParams, $modal, $log, $q, STORE_BASE_URL, JOIN_BASE_URL, focus, Geocodes, Session, Consultant, Addresses, OrderHelper, Checkout, Cart, Product, SalesTax, CreditCards, HashKeyCopier, WizardHandler) {
 
         $log.debug("CheckoutController()");
 
@@ -269,7 +269,7 @@ angular.module('app.controllers.checkout')
             $log.debug("CheckoutController(): selectProduct(): loading product with sku=", sku);
 
             // load the product
-            Products.get({productId: sku}).then(function(product) {
+            Product.get({productId: sku}).then(function(product) {
                 $log.debug("CheckoutController(): selectProduct(): loaded sku", product.sku, "product", product);
 
                 // FIXME - verify all previous steps data is available, else restart process
@@ -544,7 +544,7 @@ angular.module('app.controllers.checkout')
             }
             var ssn = $scope.profile.ssn.replace(/(\d{3})(\d{2})(\d{4})/, '$1-$2-$3');
 
-            Session.lookupConsultant(ssn).then(function(data) {
+            Consultant.lookup(ssn).then(function(data) {
                 $log.debug("CheckoutController(): validateProfileAndContinue()", data);
                 if (!data.exists) {
                     // set the name on the shipping address
@@ -1031,7 +1031,7 @@ angular.module('app.controllers.checkout')
                 $log.debug("CheckoutController(): loginOrCreateUser(): creating consultant", consultant);
 
                 if (!debug) {
-                    Session.createConsultant(consultant).then(function(data) {
+                    Consultant.create(consultant).then(function(data) {
                         $log.debug("CheckoutController(): loginOrCreateUser(): created consultant, moving to next step", data);
                         // jump to Shipping
                         $scope.confirmation = {

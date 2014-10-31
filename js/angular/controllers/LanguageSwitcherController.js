@@ -3,7 +3,7 @@ angular.module('app.controllers.lang').controller('LanguageSwitcherController', 
         $scope.language = function (language) {
             //$log.debug('current language',Session.getLanguage());
             $scope.$watch($rootScope.session.language, function (newVal, oldVal) {
-                $translate.use(Session.getLocalSession().language);
+                $translate.use(Session.get().language);
             });
             Session.setLanguage(language);
             //$log.debug('current language',Session.getLanguage());

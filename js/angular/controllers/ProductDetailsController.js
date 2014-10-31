@@ -1,5 +1,5 @@
 angular.module('app.controllers.products')
-    .controller('ProductDetailsController', function ($sce, WizardHandler, HashKeyCopier, Categories, Products, $q, $scope, $rootScope, $routeParams, $location, $timeout, $window, $log, $modal, $document, Cart, BreadcrumbsHelper, RecentlyViewed) {
+    .controller('ProductDetailsController', function ($sce, WizardHandler, HashKeyCopier, Categories, Product, $q, $scope, $rootScope, $routeParams, $location, $timeout, $window, $log, $modal, $document, Cart, BreadcrumbsHelper, RecentlyViewed) {
         $log.debug("ProductDetailsController()");
 
         $scope.productId = $routeParams.productId;
@@ -199,7 +199,7 @@ angular.module('app.controllers.products')
             //var start = new Date().getTime();
             $log.debug("ProductDetailsController(): loadProduct()", $scope.productId);
 
-            Products.get({"productId": $scope.productId}).then(function(product, status, headers, config) {
+            Product.get({"productId": $scope.productId}).then(function(product, status, headers, config) {
                 $log.debug("ProductDetailsController(): loadProduct(): got product", product);
 
                 $scope.product = product;

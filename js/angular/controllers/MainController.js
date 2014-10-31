@@ -59,7 +59,7 @@ angular.module('app.controllers.main')
         });
 
         $scope.$watch('session.language', function(newVal, oldVal) {
-            $translate.use(Session.getLocalSession().language);
+            $translate.use(Session.get().language);
         });
 
         $scope.getItemsInCart = function() {

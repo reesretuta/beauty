@@ -1,8 +1,8 @@
 'use strict';
 
 // Declare app level module which depends on filters, and services
-var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 'ngAnimate', 'ngCookies', 'ui.bootstrap', 'ui.mask', 'ui.keypress', 'ui.jq', 'ui.validate', 'app.filters', 'app.services', 'app.controllers', 'app.directives', 'pasvaz.bindonce', 'jmdobry.angular-cache', 'ui.ladda', 'autocomplete', 'ui.event', 'mgo-angular-wizard', 'pascalprecht.translate'])
-    .config([ '$locationProvider', '$routeProvider', '$rootScopeProvider', '$angularCacheFactoryProvider', '$translateProvider', '$httpProvider', '$provide', 'BASE_URL', 'STORE_BASE_URL', 'JOIN_BASE_URL', function ($locationProvider, $routeProvider, $rootScopeProvider, $angularCacheFactoryProvider, $translateProvider, $httpProvider, $provide, BASE_URL, STORE_BASE_URL, JOIN_BASE_URL) {
+var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 'ngAnimate', 'ngCookies', 'ui.bootstrap', 'ui.mask', 'ui.keypress', 'ui.jq', 'ui.validate', 'app.filters', 'app.services', 'app.controllers', 'app.directives', 'pasvaz.bindonce', 'jmdobry.angular-cache', 'ui.ladda', 'autocomplete', 'ui.event', 'mgo-angular-wizard', 'pascalprecht.translate', 'LocalStorageModule'])
+    .config([ '$locationProvider', '$routeProvider', '$rootScopeProvider', '$angularCacheFactoryProvider', '$translateProvider', '$httpProvider', '$provide', 'localStorageServiceProvider', 'BASE_URL', 'STORE_BASE_URL', 'JOIN_BASE_URL', function ($locationProvider, $routeProvider, $rootScopeProvider, $angularCacheFactoryProvider, $translateProvider, $httpProvider, $provide, localStorageServiceProvider, BASE_URL, STORE_BASE_URL, JOIN_BASE_URL) {
         //$locationProvider.html5Mode(true);
         $angularCacheFactoryProvider.setCacheDefaults({
             maxAge: 300000, // default to 5 minute caching
@@ -11,6 +11,9 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
 
         $locationProvider.html5Mode(true).hashPrefix('!');
         $rootScopeProvider.digestTtl(30);
+
+        // notify on set / remove items
+        localStorageServiceProvider.setNotify(true, true);
 
         $routeProvider.when(STORE_BASE_URL + '/', {
           templateUrl: BASE_URL + '/partials/home.html',

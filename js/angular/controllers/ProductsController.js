@@ -1,5 +1,5 @@
 angular.module('app.controllers.products')
-    .controller('ProductsController', function ($sce, HashKeyCopier, Cart, Categories, Products, Search, $scope, $rootScope, $routeParams, $q, $location, $timeout, $window, $log, $modal, $document, BreadcrumbsHelper) {
+    .controller('ProductsController', function ($sce, HashKeyCopier, Cart, Categories, Product, Search, $scope, $rootScope, $routeParams, $q, $location, $timeout, $window, $log, $modal, $document, BreadcrumbsHelper) {
         $log.debug("ProductsController");
 
         $rootScope.title = "All Products";
@@ -110,9 +110,9 @@ angular.module('app.controllers.products')
 
         var loadProducts = function () {
             //var start = new Date().getTime();
-            Products.query({"categoryId": $scope.categoryId, "search": $scope.query}).then(function(products, responseHeaders) {
+            Product.query({"categoryId": $scope.categoryId, "search": $scope.query}).then(function(products, responseHeaders) {
                 $log.debug("ProductsController(): got products", products);
-                // We do this here to eliminate the flickering.  When Products.query returns initially,
+                // We do this here to eliminate the flickering.  When Product.query returns initially,
                 // it returns an empty array, which is then populated after the response is obtained from the server.
                 // This causes the table to first be emptied, then re-updated with the new data.
                 if(products.length>0) {
