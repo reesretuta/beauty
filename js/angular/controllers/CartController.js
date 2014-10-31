@@ -1,5 +1,5 @@
 angular.module('app.controllers.cart')
-    .controller('CartController', function ($scope, $document, $rootScope, $compile, $routeParams, $modal, $log, $q, Cart, Product, HashKeyCopier, STORE_BASE_URL) {
+    .controller('CartController', function ($scope, $document, $rootScope, $compile, $routeParams, $modal, $log, $q, SalesTax, Cart, Product, HashKeyCopier, STORE_BASE_URL) {
         $log.debug("CartController");
 
         //change page title
@@ -20,22 +20,64 @@ angular.module('app.controllers.cart')
 
         $scope.cartLoaded = false;
 
-        var loadCart = function() {
-            $log.debug("CartController(): loadCart()");
+        function loadCart() {
+            var d = $q.defer();
 
-            // load cart data
-            Cart.getItems().then(function(items) {
-                $scope.items = items;
+            $scope.orderError = null;
 
-                $scope.cartLoaded = true;
-                $log.debug("CartController(): loadCart(): loaded cart products into items", items);
+            $log.debug("CartController(): loadCart(): loading products");
+
+            Cart.getCart().then(function(cart) {
+                $log.debug("CartController(): loadCart(): SKU loaded & added to cart", cart);
+
+                $scope.cart = cart;
+
+                loadProducts(cart);
             }, function(error) {
-                $log.error("CartController(): loadCart(): cart error", error);
+                $log.error("CartController(): loadCart(): failed to add to cart, redirecting", error);
+                $scope.orderError = "Failed to add product to cart";
+                $scope.salesTaxInfo = null;
+
                 $location.path(STORE_BASE_URL);
+                d.reject(error);
+            });
+
+            return d.promise;
+        }
+
+        loadCart();
+
+        function loadProducts(cart) {
+            Cart.loadProducts(cart).then(function(items) {
+                $log.debug("CheckoutController(): loadProducts(): loaded items from cart & populated products", items);
+
+                // filter out invalid cart items
+                var list = [];
+                for (var i=0; i < items.length; i++) {
+                    var item = items[i];
+                    if (item.sku) {
+                        list.push(item);
+                    } else {
+                        $log.error("CheckoutController(): loadProducts(): removing bad item from cart");
+                    }
+                }
+
+                $scope.items = list;
+                $scope.cartLoaded = true;
+
+                if (items.length == 0) {
+                    return;
+                }
+            }, function(error) {
+                $log.error("CheckoutController(): loadProducts(): failed to populated products, redirecting", error);
+                $scope.orderError = "Failed to load cart";
+                $scope.salesTaxInfo = null;
+
+                $location.path(STORE_BASE_URL);
+                d.reject(error);
             });
         }
-        loadCart();
-        
+
         $scope.total = function() {
             var total = 0;
 

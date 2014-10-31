@@ -726,7 +726,7 @@ angular.module('app.services', ['ngResource'])
                 var end = S(price.effectiveEndDate).isEmpty() ? null : moment(price.effectiveEndDate, 'YYYY-MM-DDTHH:mm:ss.SSSZ').unix()*1000;
                 if ((now >= start || start == null) && (now <= end || end == null)) {
                     // this is our current price
-                    $log.debug("cartService(): loadProducts(): setting price", price, "now", now, "start", start, "end", end);
+                    $log.debug("cartService(): selectCurrentPrice(): setting price", price, "now", now, "start", start, "end", end);
                     product.currentPrice = price;
                     priceSelected = true;
                     return;
