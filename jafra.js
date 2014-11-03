@@ -9,6 +9,10 @@ var parseString = require('xml2js').parseString;
 var BASE_URL = "http://" + (process.env.JCS_API_URL || "189.206.20.52") + ":8091/cgidev2";
 var BASE_URL2 = "http://" + (process.env.JCS_API_URL || "189.206.20.52") + ":8091/WEBCGIPR";
 
+var USERNAME = "CDIAPI";
+var PASSWORD = "JCSAPI";
+var AUTH_STRING = "Basic " + new Buffer(USERNAME + ":" + PASSWORD).toString("base64");
+
 var AUTHENTICATE_URL = BASE_URL + "/JCD05001P.pgm";
 var GET_CLIENT_URL = BASE_URL + "/JCD05007P.pgm";
 var CREATE_CLIENT_URL = BASE_URL + "/JCD05002P.pgm";
@@ -42,8 +46,6 @@ var STRIKEIRON_EMAIL_TIMEOUT = 15;
 var STRIKEIRON_ADDRESS_SOAP_URL = 'http://ws.strikeiron.com/NAAddressVerification6?WSDL';
 var STRIKEIRON_ADDRESS_LICENSE = "0DA72EA3199C10ABDE0B";
 
-// NOTE: for now, get URLs all take query string params
-
 function authenticate(email, password) {
     //console.log("authenticating", email, password);
     var deferred = Q.defer();
@@ -56,7 +58,8 @@ function authenticate(email, password) {
         },
         headers: {
             'Content-Type' : 'application/x-www-form-urlencoded',
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+            'Authorization': AUTH_STRING
         },
         json: true
     }, function (error, response, body) {
@@ -145,7 +148,8 @@ function getClient(clientId) {
             clientId: clientId
         },
         headers: {
-            'Accept': 'application/json, text/json'
+            'Accept': 'application/json, text/json',
+            'Authorization': AUTH_STRING
         },
         json: true
     }, function (error, response, body) {
@@ -219,7 +223,7 @@ function createClient(client) {
         },
         headers: {
             'Content-Type' : 'application/x-www-form-urlencoded',
-            'Accept': 'application/json, text/json'
+            'Authorization': AUTH_STRING
         },
         json: true
     }, function (error, response, body) {
@@ -299,7 +303,8 @@ function getConsultant(consultantId) {
             consultantId: consultantId
         },
         headers: {
-            'Accept': 'application/json, text/json'
+            'Accept': 'application/json, text/json',
+            'Authorization': AUTH_STRING
         },
         json: true
     }, function (error, response, body) {
@@ -349,7 +354,8 @@ function lookupConsultant(encrypted) {
         },
         headers: {
             'Content-Type' : 'application/x-www-form-urlencoded',
-            'Accept': 'application/json, text/json'
+            'Accept': 'application/json, text/json',
+            'Authorization': AUTH_STRING
         },
         json: true
     }, function (error, response, body) {
@@ -429,7 +435,8 @@ function createConsultant(encrypted) {
         },
         headers: {
             'Content-Type' : 'application/x-www-form-urlencoded',
-            'Accept': 'application/json, text/json'
+            'Accept': 'application/json, text/json',
+            'Authorization': AUTH_STRING
         },
         json: true
     }, function (error, response, body) {
@@ -506,7 +513,8 @@ function getAddresses(clientId) {
             clientId: clientId
         },
         headers: {
-            'Accept': 'application/json, text/json'
+            'Accept': 'application/json, text/json',
+            'Authorization': AUTH_STRING
         },
         json: true
     }, function (error, response, body) {
@@ -535,7 +543,8 @@ function getAddress(clientId, addressId) {
             addressId: addressId
         },
         headers: {
-            'Accept': 'application/json, text/json'
+            'Accept': 'application/json, text/json',
+            'Authorization': AUTH_STRING
         },
         json: true
     }, function (error, response, body) {
@@ -579,7 +588,8 @@ function createAddress(clientId, address) {
         },
         headers: {
             'Content-Type' : 'application/x-www-form-urlencoded',
-            'Accept': 'application/json, text/json'
+            'Accept': 'application/json, text/json',
+            'Authorization': AUTH_STRING
         },
         json: true
     }, function (error, response, body) {
@@ -657,7 +667,8 @@ function updateAddress(clientId, addressId, address) {
         },
         headers: {
             'Content-Type' : 'application/x-www-form-urlencoded',
-            'Accept': 'application/json, text/json'
+            'Accept': 'application/json, text/json',
+            'Authorization': AUTH_STRING
         },
         json: true
     }, function (error, response, body) {
@@ -708,7 +719,8 @@ function deleteAddress(clientId, addressId) {
             addressId: addressId
         },
         headers: {
-            'Accept': 'application/json, text/json'
+            'Accept': 'application/json, text/json',
+            'Authorization': AUTH_STRING
         },
         json: true
     }, function (error, response, body) {
@@ -1001,7 +1013,8 @@ function getCreditCards(clientId) {
             clientId: clientId
         },
         headers: {
-            'Accept': 'application/json, text/json'
+            'Accept': 'application/json, text/json',
+            'Authorization': AUTH_STRING
         },
         json: true
     }, function (error, response, body) {
@@ -1027,7 +1040,8 @@ function getCreditCard(clientId, creditCardId) {
             creditCardId: creditCardId
         },
         headers: {
-            'Accept': 'application/json, text/json'
+            'Accept': 'application/json, text/json',
+            'Authorization': AUTH_STRING
         },
         json: true
     }, function (error, response, body) {
@@ -1056,7 +1070,8 @@ function createCreditCard(clientId, data) {
         },
         headers: {
             'Content-Type' : 'application/x-www-form-urlencoded',
-            'Accept': 'application/json, text/json'
+            'Accept': 'application/json, text/json',
+            'Authorization': AUTH_STRING
         },
         json: true
     }, function (error, response, body) {
@@ -1123,7 +1138,8 @@ function updateCreditCard(clientId, creditCardId, data) {
         },
         headers: {
             'Content-Type' : 'application/x-www-form-urlencoded',
-            'Accept': 'application/json, text/json'
+            'Accept': 'application/json, text/json',
+            'Authorization': AUTH_STRING
         },
         json: true
     }, function (error, response, body) {
@@ -1186,7 +1202,8 @@ function deleteCreditCard(clientId, creditCardId) {
             creditCardId: creditCardId
         },
         headers: {
-            'Accept': 'application/json, text/json'
+            'Accept': 'application/json, text/json',
+            'Authorization': AUTH_STRING
         },
         json: true
     }, function (error, response, body) {
@@ -1236,7 +1253,8 @@ function getGeocodes(zipCode) {
             zipCode_h: zipCode
         },
         headers: {
-            'Accept': 'application/json, text/json'
+            'Accept': 'application/json, text/json',
+            'Authorization': AUTH_STRING
         },
         json: true
     }, function (error, response, body) {
@@ -1329,7 +1347,8 @@ function calculateSalesTax(data) {
     request.get({
         url: GET_SALES_TAX_URL,
         headers: {
-            'Accept': 'application/json, text/json'
+            'Accept': 'application/json, text/json',
+            'Authorization': AUTH_STRING
         },
         qs: {
             clientId: data.clientId,
