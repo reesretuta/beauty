@@ -80,8 +80,17 @@ angular.module('app.services', ['ngResource'])
                 $rootScope.session = {
                     language: 'en_US',
                     cart: [],
-                    checkout: {}
+                    checkout: {},
+                    client: {}
                 };
+
+                // sanity data checks
+                if (!Array.isArray($rootScope.session.cart)) {
+                    $rootScope.session.cart = [];
+                }
+                if (typeof $rootScope.session.checkout == '') {
+                    
+                }
             }
 
             return $rootScope.session;

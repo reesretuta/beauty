@@ -344,9 +344,15 @@ router.route('/products/:productId')
     // get the product with that id
     .get(function (req, res) {
         console.log("getting product", req.params);
+        var now = new Date();
+
         models.Product.find({ _id: req.params.productId, masterStatus: "A", onHold: false})
         .or([
-            {masterType: "R"}, {masterType: {$exists: false}, type:"group"}
+            {masterType: "R"}, {masterType: {$exists: false}, type:"group"}//,
+//            {$and: [
+//                {"prices.startDate":{$elemMatch:{$lte:now}}},
+//                {"prices.endDate":{$elemMatch:{$gte:now}}}
+//            ]}
         ])
         .exec(function (err, products) {
             if (err) {
@@ -901,14 +907,17 @@ router.route('/clients/:client_id/creditCards')// get a client's creditCards
 
             // add this CC to the session
             var cc = r.result;
-            req.session.client.addresses.push(cc);
+            req.session.client.creditCards.push(cc);
 
             // return the address data
-            res.json(res);
+            res.json(cc);
+            res.end();
+            console.error("create credit card done");
         }, function(r) {
             console.error("failed to create cc", r.status, r.result);
             res.status(r.status);
             res.json(r.result);
+            res.end();
         });
     });
 

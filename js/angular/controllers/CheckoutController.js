@@ -14,7 +14,6 @@ angular.module('app.controllers.checkout')
         $scope.debug = debug;
         $log.debug("CheckoutController(): urlStep", urlStep);
 
-        var onlineSponsorChecksCompleteDefer = $q.defer();
         var path = $location.path();
         $log.debug("CheckoutController(): path", path);
 
@@ -161,13 +160,25 @@ angular.module('app.controllers.checkout')
 
             $scope.isOnlineSponsoring = false;
 
+            // for debugging only
             if (debug) {
-                $scope.isOnlineSponsoring = true;
-                $scope.APP_BASE_URL = JOIN_BASE_URL;
-                $log.debug("CheckoutController(): online sponsoring");
+                if (path && path.match(JOIN_BASE_URL)) {
+                    $log.debug("CheckoutController(): online sponsoring");
+                    $scope.isOnlineSponsoring = true;
+                    $scope.APP_BASE_URL = JOIN_BASE_URL;
+                } else {
+                    $log.debug("CheckoutController(): client direct");
+                    $scope.APP_BASE_URL = STORE_BASE_URL;
+                }
 
                 populateDebugData();
-            } else if (path && path.match(JOIN_BASE_URL)) {
+
+                WizardHandler.wizard('checkoutWizard').goTo(urlStep);
+                return;
+            }
+
+            // Online Sponsoring
+            if (path && path.match(JOIN_BASE_URL)) {
                 $scope.isOnlineSponsoring = true;
                 $scope.APP_BASE_URL = JOIN_BASE_URL;
                 $log.debug("CheckoutController(): online sponsoring");
@@ -185,7 +196,7 @@ angular.module('app.controllers.checkout')
 
                 $scope.$watch(Cart.getFirstProductSku(), function(newVal, oldVal) {
                     if (newVal != null) {
-                        var language = selectConsultantLanguage(newVal);
+                        var language = setConsultantLanguage(newVal);
                         $log.debug("CheckoutController(): online sponsoring: setting consultant language for", sku, "to", language);
                     }
                 });
@@ -206,8 +217,6 @@ angular.module('app.controllers.checkout')
                             WizardHandler.wizard('checkoutWizard').goTo('Start');
                         }
                     }
-
-                    onlineSponsorChecksCompleteDefer.resolve();
                 }, function() {
                     $log.error("CheckoutController(): online sponsoring: failed to select product, redirecting user");
                     $location.path($scope.isOnlineSponsoring ? JOIN_BASE_URL : STORE_BASE_URL);
@@ -226,27 +235,65 @@ angular.module('app.controllers.checkout')
                     if (WizardHandler.wizard('checkoutWizard') != null) {
                         $log.debug("CheckoutController(): online sponsoring: loading Start step");
                         WizardHandler.wizard('checkoutWizard').goTo('Start');
-                        //$location.search("step", 'Start');
                     } else {
                         $timeout(function() {
                             $log.debug("CheckoutController(): online sponsoring: loading Start step after delay");
                             WizardHandler.wizard('checkoutWizard').goTo('Start');
-                            //$location.search("step", 'Start');
                         }, 0);
                     }
                 }
+            // Client Direct
             } else {
                 // nothing to load, done
                 $log.debug("CheckoutController(): in store");
                 $scope.APP_BASE_URL = STORE_BASE_URL;
-                onlineSponsorChecksCompleteDefer.resolve();
 
+                loadCheckout();
 
+                // on a reload, ensure we've loaded session & moved to the correct step
+                if (urlStep != null && urlStep != 'Start' && !Session.isLoggedIn()) {
+                    if (urlStep == 'Finish') {
+                        $log.debug("CheckoutController(): finished wizard, redirecting to products");
+                        $location.path(STORE_BASE_URL).search('');
+                        $location.replace();
+                        return;
+                    } else {
+                        $log.debug("CheckoutController(): sending user to beginning of wizard.  not logged in");
+                        // changing url to reflect beginning of checkout
+                        if (WizardHandler.wizard('checkoutWizard') != null) {
+                            WizardHandler.wizard('checkoutWizard').goTo('Start');
+                        } else {
+                            $timeout(function() {
+                                $log.debug("CheckoutController(): skipping to Start step after delay");
+                                //$location.search('step', 'Shipping');
+                                WizardHandler.wizard('checkoutWizard').goTo('Start');
+                            }, 0);
+                        }
+                    }
+                } else if (urlStep == 'Finish') {
+                    $log.debug("CheckoutController(): finished wizard, redirecting to products");
+                    $location.path(STORE_BASE_URL).search('');
+                    $location.replace();
+                    return;
+                } else if (Session.isLoggedIn()) {
+                    $log.debug("CheckoutController(): user is logged in, determining checkout step", urlStep);
+
+                    if (WizardHandler.wizard('checkoutWizard') != null) {
+                        $log.debug("CheckoutController(): skipping to shipping step");
+                        WizardHandler.wizard('checkoutWizard').goTo('Shipping');
+                    } else {
+                        $timeout(function() {
+                            $log.debug("CheckoutController(): skipping to shipping step after delay");
+                            //$location.search('step', 'Shipping');
+                            WizardHandler.wizard('checkoutWizard').goTo('Shipping');
+                        }, 0);
+                    }
+                }
             }
         });
 
         // select language based on product
-        function selectConsultantLanguage(sku) {
+        function setConsultantLanguage(sku) {
             switch (sku) {
                 case "19634":
                 case "19636":
@@ -263,7 +310,7 @@ angular.module('app.controllers.checkout')
         $scope.selectProduct = function(sku) {
             var d = $q.defer();
 
-            selectConsultantLanguage(sku);
+            setConsultantLanguage(sku);
             $scope.orderError = null;
 
             $log.debug("CheckoutController(): selectProduct(): loading product with sku=", sku);
@@ -284,70 +331,9 @@ angular.module('app.controllers.checkout')
 
                         $scope.cart = cart;
 
-                        Cart.loadProducts($scope.cart).then(function(items) {
-                            $log.debug("CheckoutController(): selectProduct(): loaded items from cart & populated products", items);
-
-                            // filter out invalid cart items
-                            var list = [];
-                            for (var i=0; i < items.length; i++) {
-                                var item = items[i];
-                                if (item.sku) {
-                                    list.push(item);
-                                } else {
-                                    $log.error("CheckoutController(): selectProduct(): removing bad item from cart");
-                                }
-                            }
-
-                            $scope.items = list;
-                            $scope.cartLoaded = true;
-
-                            if (items.length == 0) {
-                                d.reject('CheckoutController(): selectProduct(): failed to load items');
-                                return;
-                            }
-
-                            // no that we're loaded, create out change listener to track changes
-                            if (cancelChangeListener == null) {
-                                createChangeListener();
-                            }
-
-                            // only fetch sales tax info if we have a shipping address
-                            if ($scope.profile.shipping) {
-                                // fetch sales tax information here
-                                $scope.fetchSalesTax().then(function(salesTaxInfo) {
-                                    $log.debug("CheckoutController(): selectProduct(): got sales tax info", salesTaxInfo);
-
-                                    $scope.salesTaxInfo = salesTaxInfo;
-
-                                    $scope.checkoutUpdated();
-                                    d.resolve(product);
-                                }, function(error) {
-                                    $log.error("CheckoutController(): selectProduct(): failed to get sales tax info, redirecting", error);
-                                    $scope.orderError = "Failed to load sales tax";
-                                    $scope.salesTaxInfo = null;
-
-                                    if ($scope.isOnlineSponsoring) {
-                                        $location.path(JOIN_BASE_URL);
-                                    } else {
-                                        $location.path(STORE_BASE_URL);
-                                    }
-                                    d.reject(error);
-                                });
-                            } else {
-                                d.resolve(product);
-                            }
-                        }, function(error) {
-                            $log.error("CheckoutController(): selectProduct(): failed to populated products, redirecting", error);
-                            $scope.orderError = "Failed to load cart";
-                            $scope.salesTaxInfo = null;
-
-                            if ($scope.isOnlineSponsoring) {
-                                $location.path(JOIN_BASE_URL);
-                            } else {
-                                $location.path(STORE_BASE_URL);
-                            }
-                            d.reject(error);
-                        })
+                        loadProducts().then(function() {
+                            d.resolve(product);
+                        });
                     }, function(error) {
                         $log.error("CheckoutController(): selectProduct(): failed to add to cart, redirecting", error);
                         $scope.orderError = "Failed to add product to cart";
@@ -388,59 +374,6 @@ angular.module('app.controllers.checkout')
             return d.promise;
         }
 
-        // ensure everything is valid to where we are, else load the proper step
-        function checkSteps() {
-            if (debug) {
-                WizardHandler.wizard('checkoutWizard').goTo(urlStep);
-                return;
-            }
-
-            // CLIENT DIRECT
-            if (!$scope.isOnlineSponsoring) {
-                // on a reload, ensure we've loaded session & moved to the correct step
-                if (urlStep != null && urlStep != 'Start' && !Session.isLoggedIn()) {
-                    if (urlStep == 'Finish') {
-                        $log.debug("CheckoutController(): finished wizard, redirecting to products");
-                        $location.path(STORE_BASE_URL).search('');
-                        $location.replace();
-                        return;
-                    } else {
-                        $log.debug("CheckoutController(): sending user to beginning of wizard.  not logged in");
-                        // changing url to reflect beginning of checkout
-                        //$location.search('step', null);
-                        if (WizardHandler.wizard('checkoutWizard') != null) {
-                            WizardHandler.wizard('checkoutWizard').goTo('Start');
-                        } else {
-                            $timeout(function() {
-                                $log.debug("CheckoutController(): skipping to Start step after delay");
-                                //$location.search('step', 'Shipping');
-                                WizardHandler.wizard('checkoutWizard').goTo('Start');
-                            }, 0);
-                        }
-                    }
-                } else if (urlStep == 'Finish') {
-                    $log.debug("CheckoutController(): finished wizard, redirecting to products");
-                    $location.path(STORE_BASE_URL).search('');
-                    $location.replace();
-                    return;
-                } else if (Session.isLoggedIn()) {
-                    $log.debug("CheckoutController(): user is logged in, determining checkout step", urlStep);
-
-                    if (WizardHandler.wizard('checkoutWizard') != null && urlStep == 'Start') {
-                        $log.debug("CheckoutController(): skipping to shipping step");
-                        //$location.search('step', 'Shipping');
-                        WizardHandler.wizard('checkoutWizard').goTo('Shipping');
-                    } else if (urlStep == 'Start') {
-                        $timeout(function() {
-                            $log.debug("CheckoutController(): skipping to shipping step after delay");
-                            //$location.search('step', 'Shipping');
-                            WizardHandler.wizard('checkoutWizard').goTo('Shipping');
-                        }, 0);
-                    }
-                }
-            }
-        }
-
         // load the checkout data from the session
         function loadCheckout() {
             var d = $q.defer();
@@ -450,7 +383,19 @@ angular.module('app.controllers.checkout')
             Checkout.getCheckout().then(function(checkout) {
                 $log.debug("CheckoutController(): loadCheckout(): success", checkout);
                 $scope.checkout = checkout;
-                d.resolve($scope.checkout);
+
+                // load the current cart
+                Cart.getItems().then(function(cart) {
+                    $log.debug("CheckoutController(): loadCheckout(): cart loaded", cart);
+
+                    $scope.cart = cart;
+
+                    loadProducts().then(function() {
+                        d.resolve($scope.checkout);
+                    });
+                }, function(error) {
+                    d.reject(error);
+                });
             }, function(error) {
                 $log.error("CheckoutController(): loadCheckout(): checkout error", error);
             });
@@ -458,14 +403,78 @@ angular.module('app.controllers.checkout')
             return d.promise;
         }
 
-        // wait until the online sponsoring checks are complete including adding SKU to cart, then
-        // handle step validation, checkout process loading
-        onlineSponsorChecksCompleteDefer.promise.then(function() {
-            $log.debug("CheckoutController(): sponsor checks complete");
-            checkSteps();
-        }, function (error) {
-            $log.error("CheckoutController(): sponsor checks failed", error);
-        });
+        function loadProducts() {
+            $log.debug("CheckoutController(): loadProducts()");
+            var d = $q.defer();
+
+            Cart.loadProducts($scope.cart).then(function(items) {
+                $log.debug("CheckoutController(): loadProducts(): loaded items from cart & populated products", items);
+
+                // filter out invalid cart items
+                var list = [];
+                for (var i=0; i < items.length; i++) {
+                    var item = items[i];
+                    if (item.sku) {
+                        list.push(item);
+                    } else {
+                        $log.error("CheckoutController(): loadProducts(): removing bad item from cart");
+                    }
+                }
+
+                $scope.items = list;
+                $scope.cartLoaded = true;
+
+                if (items.length == 0) {
+                    d.reject('CheckoutController(): loadProducts(): failed to load items');
+                    d.reject('No items in cart');
+                    return;
+                }
+
+                // no that we're loaded, create out change listener to track changes
+                if (cancelChangeListener == null) {
+                    createChangeListener();
+                }
+
+                // only fetch sales tax info if we have a shipping address
+                if ($scope.profile.shipping) {
+                    // fetch sales tax information here
+                    fetchSalesTax().then(function(salesTaxInfo) {
+                        $log.debug("CheckoutController(): loadProducts(): got sales tax info", salesTaxInfo);
+
+                        $scope.salesTaxInfo = salesTaxInfo;
+
+                        $scope.checkoutUpdated();
+                        d.resolve();
+                    }, function(error) {
+                        $log.error("CheckoutController(): loadProducts(): failed to get sales tax info, redirecting", error);
+                        $scope.orderError = "Failed to load sales tax";
+                        $scope.salesTaxInfo = null;
+
+                        if ($scope.isOnlineSponsoring) {
+                            $location.path(JOIN_BASE_URL);
+                        } else {
+                            $location.path(STORE_BASE_URL);
+                        }
+                        d.reject(error);
+                    });
+                } else {
+                    d.resolve();
+                }
+            }, function(error) {
+                $log.error("CheckoutController(): loadProducts(): failed to populated products, redirecting", error);
+                $scope.orderError = "Failed to load cart";
+                $scope.salesTaxInfo = null;
+
+                if ($scope.isOnlineSponsoring) {
+                    $location.path(JOIN_BASE_URL);
+                } else {
+                    $location.path(STORE_BASE_URL);
+                }
+                d.reject(error);
+            })
+
+            return d.promise;
+        }
 
         var cancelChangeListener;
         function createChangeListener() {
@@ -756,9 +765,21 @@ angular.module('app.controllers.checkout')
                     $scope.checkout.card = angular.copy(card);
                     $scope.profile.newCard = null;
 
-                    // FIXME
-                    // put the products into the checkout
-                    //$scope.checkout.products = $scope.profile.
+                    if (!$scope.profile.billSame) {
+                        $log.debug("CheckoutController(): addPaymentMethod(): setting billing address", $scope.profile.newBillingAddress);
+                        // we need to create an address to add to the account for client direct
+                        $scope.setBillingAddress($scope.profile.newBillingAddress, true).then(function() {
+                            // only do the clear
+                            $scope.profile.newBillingAddress = null;
+                            $scope.checkoutUpdated();
+                            WizardHandler.wizard('checkoutWizard').goTo('Review');
+                        }, function(err) {
+                            $scope.billingAddressError = err;
+                        });
+                    } else {
+                        $scope.checkoutUpdated();
+                        WizardHandler.wizard('checkoutWizard').goTo('Review');
+                    }
 
                     $scope.checkoutUpdated();
                     WizardHandler.wizard('checkoutWizard').goTo('Review');
@@ -766,22 +787,6 @@ angular.module('app.controllers.checkout')
                     $log.error("CheckoutController(): addPaymentMethod(): error");
                     alert('error adding card: ' + err);
                 });
-
-                if (!$scope.profile.billSame) {
-                    $log.debug("CheckoutController(): addPaymentMethod(): setting billing address", $scope.profile.newBillingAddress);
-                    // we need to create an address to add to the account for client direct
-                    $scope.setBillingAddress($scope.profile.newBillingAddress, true).then(function() {
-                        // only do the clear
-                        $scope.profile.newBillingAddress = null;
-                        $scope.checkoutUpdated();
-                        WizardHandler.wizard('checkoutWizard').goTo('Review');
-                    }, function(err) {
-                        $scope.billingAddressError = err;
-                    });
-                } else {
-                    $scope.checkoutUpdated();
-                    WizardHandler.wizard('checkoutWizard').goTo('Review');
-                }
             } else {
                 // we just add to checkout for online sponsoring
                 $scope.profile.newCard.lastFour = $scope.profile.newCard.card.substr($scope.profile.newCard.card.length - 4);
@@ -799,7 +804,7 @@ angular.module('app.controllers.checkout')
                         $scope.profile.billing = angular.copy(a);
 
                         // fetch sales tax information here
-                        $scope.fetchSalesTax().then(function(salesTaxInfo) {
+                        fetchSalesTax().then(function(salesTaxInfo) {
                             $log.debug("CheckoutController(): addPaymentMethod(): got sales tax info", salesTaxInfo);
 
                             $scope.salesTaxInfo = salesTaxInfo;
@@ -822,7 +827,7 @@ angular.module('app.controllers.checkout')
                     $scope.profile.billing = angular.copy($scope.profile.shipping);
 
                     // fetch sales tax information here
-                    $scope.fetchSalesTax().then(function(salesTaxInfo) {
+                    fetchSalesTax().then(function(salesTaxInfo) {
                         $log.debug("CheckoutController(): addPaymentMethod(): got sales tax info", salesTaxInfo);
 
                         /*
@@ -873,18 +878,23 @@ angular.module('app.controllers.checkout')
             }
         }
 
-        $scope.fetchSalesTax = function() {
+        function fetchSalesTax() {
             var defer = $q.defer();
 
             if ($scope.profile.shipping) {
-                $log.debug("CheckoutController(): fetchSalesTax(): fetching sales tax for item", $scope.items[0], $scope.profile.shipping.geocode);
+                $log.debug("CheckoutController(): fetchSalesTax(): fetching sales tax for item", $scope.items, $scope.profile.shipping.geocode);
 
-                SalesTax.calculate(0, 0, $scope.profile.shipping.geocode, 1414, "P", [
-                    {
-                        "sku": $scope.items[0].product.sku,
-                        "qty": 1
-                    }
-                ]).then(function(info) {
+                // build sales tax calculation
+                var products = [];
+                for (var i=0; i < $scope.items.length; i++) {
+                    var item = $scope.items[i];
+                    products.push({
+                        "sku": item.product.sku,
+                        "qty": item.quantity
+                    });
+                }
+
+                SalesTax.calculate(0, 0, $scope.profile.shipping.geocode, 1414, "P", products).then(function(info) {
                     $log.debug("CheckoutController(): fetchSalesTax()", info);
                     defer.resolve(info);
                 }, function(err) {
@@ -940,8 +950,8 @@ angular.module('app.controllers.checkout')
         });
 
         $scope.processOrder = function() {
-            $log.debug("CheckoutController(): placeOrder(): checkout", $scope.checkout);
-            $log.debug("CheckoutController(): placeOrder(): profile", $scope.profile);
+            $log.debug("CheckoutController(): processOrder(): checkout", $scope.checkout);
+            $log.debug("CheckoutController(): processOrder(): profile", $scope.profile);
 
             $scope.orderError = null;
 
@@ -994,7 +1004,7 @@ angular.module('app.controllers.checkout')
                 shipping.name ? shipping.name = shipping.name.toUpperCase(): false;
 
                 var fullName = ($scope.profile.firstName + " " + $scope.profile.lastName).toUpperCase();
-                $log.debug("CheckoutController(): loginOrCreateUser(): businessCO", shipping);
+                $log.debug("CheckoutController(): processOrder(): businessCO", shipping);
 
                 // strip first name if necessary
                 if (shipping.businessCO && !S(shipping.businessCO).isEmpty()) {
@@ -1003,7 +1013,7 @@ angular.module('app.controllers.checkout')
 
                 // handle c/o & business name, etc.
                 if (shipping.businessCO && !S(shipping.businessCO).isEmpty()) {
-                    $log.debug("CheckoutController(): loginOrCreateUser(): found business/co, shuffling fields");
+                    $log.debug("CheckoutController(): processOrder(): found business/co, shuffling fields");
 
                     // we have changed something and need to modify address1 to be this and address2 to be everything else
                     var add1 = shipping.address1;
@@ -1041,11 +1051,11 @@ angular.module('app.controllers.checkout')
                     ]
                 }
 
-                $log.debug("CheckoutController(): loginOrCreateUser(): creating consultant", consultant);
+                $log.debug("CheckoutController(): processOrder(): creating consultant", consultant);
 
                 if (!debug) {
                     Session.createConsultant(consultant).then(function(data) {
-                        $log.debug("CheckoutController(): loginOrCreateUser(): created consultant, moving to next step", data);
+                        $log.debug("CheckoutController(): processOrder(): created consultant, moving to next step", data);
                         // jump to Shipping
                         $scope.confirmation = {
                             orderId: data.orderId,
@@ -1062,7 +1072,7 @@ angular.module('app.controllers.checkout')
                             $log.debug("CheckoutController(): processOrder(): lead removed");
                         });
                     }, function(error) {
-                        $log.error("CheckoutController(): loginOrCreateUser(): failed to create consultant", error);
+                        $log.error("CheckoutController(): processOrder(): failed to create consultant", error);
                         $scope.orderError = error.message;
                         // FIXME - show error here!!!!!
                     });
@@ -1149,7 +1159,7 @@ angular.module('app.controllers.checkout')
 
             $scope.addShippingAddress(address).then(function() {
                 // fetch sales tax information here
-                $scope.fetchSalesTax().then(function(salesTaxInfo) {
+                fetchSalesTax().then(function(salesTaxInfo) {
                     $log.debug("CheckoutController(): addShippingAddressAndContinue(): got sales tax info", salesTaxInfo);
 
                     $scope.salesTaxInfo = salesTaxInfo;
@@ -1349,10 +1359,11 @@ angular.module('app.controllers.checkout')
                 // if this address was validated and corrected, then we need to inform the user
                 if (!addressesEqual(address, a)) {
                     showAddressCorrectionModal(a).then(function(result) {
-                        $log.debug("CheckoutController(): addAddress(): address correction modal closed");
 
                         var address = result.address;
                         var canceled = result.canceled;
+
+                        $log.debug("CheckoutController(): addAddress(): address correction modal closed", address);
 
                         if (canceled) {
                             $log.debug("CheckoutController(): addAddress(): address correction canceled");
@@ -1360,9 +1371,9 @@ angular.module('app.controllers.checkout')
                             return;
                         }
 
-                        selectGeocodeAndAdd(a).then(function(a) {
-                            $log.debug("CheckoutController(): addAddress(): selected geocode and added address", a);
-                            d.resolve(a);
+                        selectGeocodeAndAdd(address).then(function(aa) {
+                            $log.debug("CheckoutController(): addAddress(): selected geocode and added address", aa);
+                            d.resolve(aa);
                         }, function(error) {
                             $log.error("CheckoutController(): addAddress(): select geocode and add failed", error);
                             $scope.shippingAddressError = error;
@@ -1374,9 +1385,9 @@ angular.module('app.controllers.checkout')
                         d.reject(error);
                     });
                 } else {
-                    selectGeocodeAndAdd(a).then(function(a) {
-                        $log.debug("CheckoutController(): addAddress(): selected geocode and added address", a);
-                        d.resolve(a);
+                    selectGeocodeAndAdd(a).then(function(aa) {
+                        $log.debug("CheckoutController(): addAddress(): selected geocode and added address", aa);
+                        d.resolve(aa);
                     }, function(error) {
                         $log.debug("CheckoutController(): addAddress(): select geocode and add failed", error);
                         $scope.shippingAddressError = error;
@@ -1447,6 +1458,10 @@ angular.module('app.controllers.checkout')
 
                         if (geocode) {
                             a.geocode = geocode.GEOCODE;
+
+                            if (a.city.toUpperCase() != geocode.CITYDES && geocode.CITYDES) {
+                                a.city = geocode.CITYDES;
+                            }
                             $scope.checkoutUpdated();
 
                             if ($scope.isOnlineSponsoring) {
@@ -1554,6 +1569,7 @@ angular.module('app.controllers.checkout')
             }
         }
 
+        /*==== CLEANUP ====*/
         function cleanup() {
             if (cancelChangeListener) {
                 $log.debug("CheckoutController(): cleanup(): canceling change listener");
@@ -1561,11 +1577,11 @@ angular.module('app.controllers.checkout')
             }
         }
 
-        /*==== CLEANUP ====*/
         $scope.$on('$destroy', function() {
             cleanup();
         });
 
+        /*==== DEBUG ====*/
         function populateDebugData() {
             // in debug, we just populate everything for testing
             $scope.profile = {
@@ -1687,7 +1703,6 @@ angular.module('app.controllers.checkout')
                     components: []
                 }).then(function(cart) {
                     $log.debug("CheckoutController(): populateDebugData(): online sponsoring SKU loaded & added to cart", cart);
-                    onlineSponsorChecksCompleteDefer.resolve();
                 }, function(error) {
                     $log.error("CheckoutController(): populateDebugData(): failed to update cart");
                 });
@@ -1703,7 +1718,7 @@ angular.module('app.controllers.checkout')
         function populateDebugShippingData(address) {
             // add name here since we're not allowing user to input a name for shipping address manually;
             address.name = $scope.profile.firstName + " " + $scope.profile.lastName;
-            address.phone = $scope.profile.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');;
+            address.phone = $scope.profile.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
 
             $log.debug("CheckoutController(): populateDebugShippingData(): setting consultant shipping/billing address", address);
             $scope.profile.shipping = angular.copy(address);
