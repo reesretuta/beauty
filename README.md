@@ -21,7 +21,7 @@ MongoDB
 Jafra
 -----
 * In another term, unpack the jafra prototype app
-* Change directory into jafraproto
+* Change directory into jafra
 * Import all mongodb data from ./mongo_dump (http://docs.mongodb.org/manual/tutorial/backup-with-mongodump/)
   - Example: path_to_mongo/mongorestore ./mongo_dump
 * Verify data imported by connecting to MondoDB (mongo jafra) and doing a find (db.products.find().count())
