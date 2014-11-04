@@ -1513,14 +1513,6 @@ angular.module('app.controllers.checkout')
             return d.promise;
         }
 
-        $scope.substr = function(string, start, charNo) {
-            if (string == null) {
-                return null;
-            }
-            $scope.string = string.substr(start, charNo)
-            return $scope.result = $scope.string;
-        }
-
         $scope.logStep = function() {
             $log.debug("CheckoutController(): Step continued");
         }
