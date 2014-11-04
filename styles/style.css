@@ -227,7 +227,7 @@ h2 {
   color: #fff;
   background-color: #95519E;
   border-color: #85418E;
-  margin-right: -25px;
+  /*margin-right: -25px;*/
 }
 .navbar-toggle .icon-bar {
   background-color: #fff;
