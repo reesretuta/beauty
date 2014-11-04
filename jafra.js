@@ -1168,7 +1168,7 @@ function createCreditCard(clientId, data) {
             return;
         }
 
-        if (body == null || body.creditCardId == null) {
+        if (body == null || body.id == null) {
             console.log("createCreditCard(): invalid return data", body, typeof body, "creditCardId", body.creditCardId);
             deferred.reject({
                 status: 500,
@@ -1184,7 +1184,7 @@ function createCreditCard(clientId, data) {
         // we should get creditCardId back
         deferred.resolve({
             status: 201,
-            result: body.creditCardId
+            result: body
         });
     });
 
