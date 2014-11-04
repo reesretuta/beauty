@@ -17,12 +17,12 @@
           <span>&bull;&bull;&bull;&bull;</span>
           <span>&bull;&bull;&bull;&bull;</span>
           <span>&bull;&bull;&bull;&bull;</span>
-          <span>{{substr(ccData.lastFour)}}</span>
+          <span>{{ccData.lastFour|substr}}</span>
         </p>
 
         <p class="card-expiry pull-left">
           <small>EXP:</small>
-          {{ccData.expMonth}}/{{substr(ccData.expYear,2,2)}}
+          {{ccData.expMonth}}/{{ccData.expYear|substr:2:2}}
         </p>
         <button class="btn btn-primary pull-right card-use-btn" wz-next ng-click="addCard(ccData)">
           Use this Option <i class="fa fa-caret-right"></i></button>

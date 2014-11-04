@@ -136,7 +136,7 @@
           </p>
           <p class="card-expiry pull-left">
             <small>EXP:</small>
-            {{profile.card.expMonth}}/{{substr(profile.card.expYear,2,2)}}
+            {{profile.card.expMonth}}/{{profile.card.expYear|substr:2:2}}
           </p>
           <a href="" data-toggle="modal" data-target=".bs-example-modal-charging" ng-click="resetCard()" class="pull-right card-use-btn"><i class="fa fa-pencil-square-o"></i> Change Card</a>
         </div>

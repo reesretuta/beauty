@@ -9,6 +9,10 @@ var parseString = require('xml2js').parseString;
 var BASE_URL = "http://" + (process.env.JCS_API_URL || "189.206.20.52") + ":8091/cgidev2";
 var BASE_URL2 = "http://" + (process.env.JCS_API_URL || "189.206.20.52") + ":8091/WEBCGIPR";
 
+var USERNAME = "CDIAPI";
+var PASSWORD = "JCSAPI";
+var AUTH_STRING = "Basic " + new Buffer(USERNAME + ":" + PASSWORD).toString("base64");
+
 var AUTHENTICATE_URL = BASE_URL + "/JCD05001P.pgm";
 var GET_CLIENT_URL = BASE_URL + "/JCD05007P.pgm";
 var CREATE_CLIENT_URL = BASE_URL + "/JCD05002P.pgm";
@@ -16,7 +20,7 @@ var CREATE_CLIENT_URL = BASE_URL + "/JCD05002P.pgm";
 var GET_CONSULTANT_URL = BASE_URL + "/JOS05007P.pgm";
 var CREATE_CONSULTANT_URL = BASE_URL + "/JOS05002P.pgm";
 var LOOKUP_CONSULTANT_URL = BASE_URL + "/JOS05004P.pgm";
-//var CREATE_LEAD_URL = BASE_URL + "/JOS05005P.pgm";
+var CREATE_LEAD_URL = BASE_URL + "/JOS05005P.pgm";
 
 var GET_ADDRESSES_URL = BASE_URL + "/JCD05005P.pgm";
 var GET_ADDRESS_URL = BASE_URL + "/JCD05005P.pgm";
@@ -42,8 +46,6 @@ var STRIKEIRON_EMAIL_TIMEOUT = 15;
 var STRIKEIRON_ADDRESS_SOAP_URL = 'http://ws.strikeiron.com/NAAddressVerification6?WSDL';
 var STRIKEIRON_ADDRESS_LICENSE = "0DA72EA3199C10ABDE0B";
 
-// NOTE: for now, get URLs all take query string params
-
 function authenticate(email, password) {
     //console.log("authenticating", email, password);
     var deferred = Q.defer();
@@ -56,7 +58,8 @@ function authenticate(email, password) {
         },
         headers: {
             'Content-Type' : 'application/x-www-form-urlencoded',
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+            'Authorization': AUTH_STRING
         },
         json: true
     }, function (error, response, body) {
@@ -103,6 +106,11 @@ function authenticate(email, password) {
 
         // fetch the client information & return
         getClient(clientId).then(function(r) {
+            // this is a bug fix
+            if (typeof r.result.creditCards == 'string') {
+                r.result.creditCards = [];
+            }
+
             deferred.resolve({
                 status: r.status,
                 result: r.result
@@ -145,7 +153,8 @@ function getClient(clientId) {
             clientId: clientId
         },
         headers: {
-            'Accept': 'application/json, text/json'
+            'Accept': 'application/json, text/json',
+            'Authorization': AUTH_STRING
         },
         json: true
     }, function (error, response, body) {
@@ -219,7 +228,7 @@ function createClient(client) {
         },
         headers: {
             'Content-Type' : 'application/x-www-form-urlencoded',
-            'Accept': 'application/json, text/json'
+            'Authorization': AUTH_STRING
         },
         json: true
     }, function (error, response, body) {
@@ -299,7 +308,8 @@ function getConsultant(consultantId) {
             consultantId: consultantId
         },
         headers: {
-            'Accept': 'application/json, text/json'
+            'Accept': 'application/json, text/json',
+            'Authorization': AUTH_STRING
         },
         json: true
     }, function (error, response, body) {
@@ -349,7 +359,8 @@ function lookupConsultant(encrypted) {
         },
         headers: {
             'Content-Type' : 'application/x-www-form-urlencoded',
-            'Accept': 'application/json, text/json'
+            'Accept': 'application/json, text/json',
+            'Authorization': AUTH_STRING
         },
         json: true
     }, function (error, response, body) {
@@ -429,7 +440,8 @@ function createConsultant(encrypted) {
         },
         headers: {
             'Content-Type' : 'application/x-www-form-urlencoded',
-            'Accept': 'application/json, text/json'
+            'Accept': 'application/json, text/json',
+            'Authorization': AUTH_STRING
         },
         json: true
     }, function (error, response, body) {
@@ -493,7 +505,75 @@ function createConsultant(encrypted) {
 }
 
 function createLead(lead) {
+    //console.log("createLead", email, password);
+    var deferred = Q.defer();
 
+    request.post({
+        url: CREATE_LEAD_URL,
+        form: {
+            email: lead.email,
+            firstName: lead.firstName,
+            lastName: lead.lastName,
+            phone: lead.phone,
+            language: lead.language
+        },
+        headers: {
+            'Content-Type' : 'application/x-www-form-urlencoded',
+            'Accept': 'application/json, text/json',
+            'Authorization': AUTH_STRING
+        },
+        json: true
+    }, function (error, response, body) {
+        if (error || response.statusCode != 200) {
+            console.error("createLead(): error", response.statusCode, body);
+
+            if (body && body.statusCode && body.errorCode && body.message) {
+                console.error("createLead(): error, returning server error");
+                deferred.reject({
+                    status: response.statusCode,
+                    result: {
+                        statusCode: body.statusCode,
+                        errorCode: body.errorCode,
+                        message: body.message
+                    }
+                });
+            } else {
+                console.error("createLead(): error, returning generic error");
+                deferred.reject({
+                    status: 500,
+                    result: {
+                        statusCode: 500,
+                        errorCode: "createLeadFailed",
+                        message: "Failed to create lead"
+                    }
+                });
+            }
+            return;
+        }
+
+        if (body == null || body.leadId == null) {
+            console.log("createLead(): invalid return data", body, typeof body, "leadId", body.leadId);
+            deferred.reject({
+                status: 500,
+                result: {
+                    statusCode: 500,
+                    errorCode: "createLeadReturnDataInvalid",
+                    message: "Failed to get lead ID from create"
+                }
+            });
+            return;
+        }
+
+        // we should get leadId back
+        console.log("createLead(): returning success");
+        var leadId = body.leadId;
+        deferred.resolve({
+            status: 201,
+            result: body
+        });
+    });
+
+    return deferred.promise;
 }
 
 function getAddresses(clientId) {
@@ -506,16 +586,21 @@ function getAddresses(clientId) {
             clientId: clientId
         },
         headers: {
-            'Accept': 'application/json, text/json'
+            'Accept': 'application/json, text/json',
+            'Authorization': AUTH_STRING
         },
         json: true
     }, function (error, response, body) {
         if (error || response.statusCode != 200) {
             console.error("getAddresses(): error", error, response.statusCode, body);
             deferred.reject({error: error, response: response, body: body});
+            return;
         }
         //console.log("getAddresses(): success", body);
-        deferred.resolve({response: response, body: body});
+        deferred.resolve({
+            status: 200,
+            result: body
+        });
     });
 
     return deferred.promise;
@@ -535,7 +620,8 @@ function getAddress(clientId, addressId) {
             addressId: addressId
         },
         headers: {
-            'Accept': 'application/json, text/json'
+            'Accept': 'application/json, text/json',
+            'Authorization': AUTH_STRING
         },
         json: true
     }, function (error, response, body) {
@@ -579,7 +665,8 @@ function createAddress(clientId, address) {
         },
         headers: {
             'Content-Type' : 'application/x-www-form-urlencoded',
-            'Accept': 'application/json, text/json'
+            'Accept': 'application/json, text/json',
+            'Authorization': AUTH_STRING
         },
         json: true
     }, function (error, response, body) {
@@ -657,7 +744,8 @@ function updateAddress(clientId, addressId, address) {
         },
         headers: {
             'Content-Type' : 'application/x-www-form-urlencoded',
-            'Accept': 'application/json, text/json'
+            'Accept': 'application/json, text/json',
+            'Authorization': AUTH_STRING
         },
         json: true
     }, function (error, response, body) {
@@ -708,7 +796,8 @@ function deleteAddress(clientId, addressId) {
             addressId: addressId
         },
         headers: {
-            'Accept': 'application/json, text/json'
+            'Accept': 'application/json, text/json',
+            'Authorization': AUTH_STRING
         },
         json: true
     }, function (error, response, body) {
@@ -1001,7 +1090,8 @@ function getCreditCards(clientId) {
             clientId: clientId
         },
         headers: {
-            'Accept': 'application/json, text/json'
+            'Accept': 'application/json, text/json',
+            'Authorization': AUTH_STRING
         },
         json: true
     }, function (error, response, body) {
@@ -1027,7 +1117,8 @@ function getCreditCard(clientId, creditCardId) {
             creditCardId: creditCardId
         },
         headers: {
-            'Accept': 'application/json, text/json'
+            'Accept': 'application/json, text/json',
+            'Authorization': AUTH_STRING
         },
         json: true
     }, function (error, response, body) {
@@ -1056,7 +1147,8 @@ function createCreditCard(clientId, data) {
         },
         headers: {
             'Content-Type' : 'application/x-www-form-urlencoded',
-            'Accept': 'application/json, text/json'
+            'Accept': 'application/json, text/json',
+            'Authorization': AUTH_STRING
         },
         json: true
     }, function (error, response, body) {
@@ -1085,7 +1177,7 @@ function createCreditCard(clientId, data) {
             return;
         }
 
-        if (body == null || body.creditCardId == null) {
+        if (body == null || body.id == null) {
             console.log("createCreditCard(): invalid return data", body, typeof body, "creditCardId", body.creditCardId);
             deferred.reject({
                 status: 500,
@@ -1101,7 +1193,7 @@ function createCreditCard(clientId, data) {
         // we should get creditCardId back
         deferred.resolve({
             status: 201,
-            result: body.creditCardId
+            result: body
         });
     });
 
@@ -1123,7 +1215,8 @@ function updateCreditCard(clientId, creditCardId, data) {
         },
         headers: {
             'Content-Type' : 'application/x-www-form-urlencoded',
-            'Accept': 'application/json, text/json'
+            'Accept': 'application/json, text/json',
+            'Authorization': AUTH_STRING
         },
         json: true
     }, function (error, response, body) {
@@ -1186,7 +1279,8 @@ function deleteCreditCard(clientId, creditCardId) {
             creditCardId: creditCardId
         },
         headers: {
-            'Accept': 'application/json, text/json'
+            'Accept': 'application/json, text/json',
+            'Authorization': AUTH_STRING
         },
         json: true
     }, function (error, response, body) {
@@ -1236,7 +1330,8 @@ function getGeocodes(zipCode) {
             zipCode_h: zipCode
         },
         headers: {
-            'Accept': 'application/json, text/json'
+            'Accept': 'application/json, text/json',
+            'Authorization': AUTH_STRING
         },
         json: true
     }, function (error, response, body) {
@@ -1329,7 +1424,8 @@ function calculateSalesTax(data) {
     request.get({
         url: GET_SALES_TAX_URL,
         headers: {
-            'Accept': 'application/json, text/json'
+            'Accept': 'application/json, text/json',
+            'Authorization': AUTH_STRING
         },
         qs: {
             clientId: data.clientId,

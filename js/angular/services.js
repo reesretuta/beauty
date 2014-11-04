@@ -143,13 +143,17 @@ angular.module('app.services', ['ngResource'])
             // bind
             $rootScope.sessionUnbind = localStorageService.bind($rootScope, 'session');
 
-            // set if not set
-            if ($rootScope.session == null) {
+            // check the server session cookie against the local cookie ID & reset cart if not matching
+            if ($rootScope.session.cid != $cookies["connect.sid"] || $rootScope.session == null) {
+                $log.debug("sessionService(): initialize(): creating new local storage session", $cookies["connect.sid"]);
                 $rootScope.session = {
+                    cid: $cookies["connect.sid"],
                     language: 'en_US',
                     cart: [],
                     checkout: {}
                 };
+            } else {
+                $log.debug("sessionService(): initialize(): using existing local storage session", $cookies["connect.sid"]);
             }
 
             $log.debug("sessionService(): initialize(): session is", $rootScope.session);
@@ -182,30 +186,32 @@ angular.module('app.services', ['ngResource'])
         }
 
         sessionService.set = function(a, b) {
+            var numArgs = arguments.length;
+            $log.debug("sessionService(): set()", a, b, numArgs);
             var d = $q.defer();
 
             // once we're initialized
             initialized.promise.then(function() {
                 // copy over all properties
-                if (arguments.length == 1) {
+                if (numArgs == 1) {
                     var items = a;
-                    $log.debug("sessionService(): set()", items);
+                    $log.debug("sessionService(): set(): object", items);
                     var session = getLocalSession();
                     for (var key in items) {
                         if (items.hasOwnProperty(key)) {
                             session[key] = items[key];
-                            $log.debug("sessionService(): set()", key, items[key]);
+                            $log.debug("sessionService(): set(): object", key, items[key]);
                         }
                     }
 
-                    $log.debug("sessionService(): set()", session);
+                    $log.debug("sessionService(): set(): key", session);
 
                 // set one property
                 } else {
-                    $log.debug("sessionService(): set()", a, b);
+                    $log.debug("sessionService(): set(): key", a, b);
                     var session = getLocalSession();
                     session[a] = b;
-                    $log.debug("sessionService(): set()", session);
+                    $log.debug("sessionService(): set(): key", session);
                 }
 
                 d.resolve(session);
@@ -259,11 +265,13 @@ angular.module('app.services', ['ngResource'])
                 //$log.debug("Session(): login(): attempting to login with username=", username, "password=", password);
                 var session = $http.post(API_URL + '/authenticate', {username: username, password: password}, {}).success(function(session, status, headers, config) {
                     $log.debug("sessionService(): login()", session, status);
-                    // update the session
-                    setLocalSession(session);
-                    $log.debug("sessionService(): login(): isLoggedIn()", sessionService.isLoggedIn());
-                    //success(session, status, headers);
-                    d.resolve(session);
+
+                    // update the session with client
+                    var s = getLocalSession();
+                    s.client = session.client;
+
+                    $log.debug("sessionService(): login(), session now", s);
+                    d.resolve(s);
                 }).error(function(data, status, headers, config) {
                     //failure(data, status, headers, config);
                     $log.error("sessionService(): login(): error", data, status);
@@ -373,6 +381,7 @@ angular.module('app.services', ['ngResource'])
         }
 
         checkoutService.setCheckout = function(checkout) {
+            $log.debug("checkoutService(): setCheckout()", checkout);
             var d = $q.defer();
 
             Session.set('checkout', checkout).then(function(session) {
@@ -383,6 +392,7 @@ angular.module('app.services', ['ngResource'])
         };
 
         checkoutService.clear = function() {
+            $log.debug("checkoutService(): clear()");
             var d = $q.defer();
 
             Session.set('checkout', {}).then(function(session) {
@@ -579,6 +589,7 @@ angular.module('app.services', ['ngResource'])
         };
 
         cartService.loadProducts = function(items) {
+            $log.debug("cartService(): loadProducts()", items);
             var d = $q.defer();
 
             if (items == null || items.length == 0) {
@@ -591,13 +602,13 @@ angular.module('app.services', ['ngResource'])
                 productIds.push(item.sku);
                 itemMap[item.sku] = item;
             });
-            $log.debug("cartService(): loadProducts(): loading products", productIds);
+            //$log.debug("cartService(): loadProducts(): loading products", productIds);
 
             var p = Product.query({productIds: productIds});
-            $log.debug("cartService(): loadProducts(): got promise", p);
+            //$log.debug("cartService(): loadProducts(): got promise", p);
 
             p.then(function(products) {
-                $log.debug("cartService(): loadProducts(): loaded products", products);
+                //$log.debug("cartService(): loadProducts(): loaded products", products);
 
                 $.each(products, function(index, product) {
                     // find the right current price
@@ -624,6 +635,9 @@ angular.module('app.services', ['ngResource'])
     })
     .factory('Geocodes', function ($resource, $http, $log, $q, API_URL) {
         return $resource(API_URL + '/geocodes', {});
+    })
+    .factory('Leads', function ($resource, $http, $log, $q, API_URL) {
+        return $resource(API_URL + '/leads', {});
     })
     .factory('SalesTax', function ($resource, $http, $log, $q, API_URL) {
         var salesTaxService = {};
@@ -862,27 +876,32 @@ angular.module('app.services', ['ngResource'])
             $log.debug("Address(): addAddress(): saving", address);
             var d = $q.defer();
 
-            var session = Session.get();
-            var clientId = session.client.id;
+            Session.get().then(function(session) {
+                var clientId = session.client.id;
 
                 // save the address
-            addressService.save({clientId: clientId}, address).$promise.then(function(adjustedAddress) {
-                $log.debug("adjustedAddressService(): addAddress(): saved address", adjustedAddress);
+                addressService.save({clientId: clientId}, address).$promise.then(function(adjustedAddress) {
+                    $log.debug("adjustedAddressService(): addAddress(): saved address", adjustedAddress);
 
-                // preserve this
-                adjustedAddress.businessCO = address.businessCO;
+                    // preserve this
+                    adjustedAddress.businessCO = address.businessCO;
 
-                if (session.client.adjustedAddresses == null) {
-                    session.client.adjustedAddresses = [];
-                }
+                    if (session.client.adjustedAddresses == null) {
+                        session.client.adjustedAddresses = [];
+                    }
 
-                session.client.adjustedAddresses.push(adjustedAddress);
-                $log.debug("adjustedAddressService(): addAddress(): adding address to client address", session.client.adjustedAddresses);
-                d.resolve(adjustedAddress);
-            }, function(response) {
-                $log.error("adjustedAddressService(): addAddress(): failed to save address", response.data);
+                    session.client.adjustedAddresses.push(adjustedAddress);
+                    $log.debug("adjustedAddressService(): addAddress(): adding address to client address", session.client.adjustedAddresses);
+                    d.resolve(adjustedAddress);
+                }, function(response) {
+                    $log.error("adjustedAddressService(): addAddress(): failed to save address", response.data);
+                    d.reject('Failed to save address');
+                });
+            }, function(error) {
+                $log.error("adjustedAddressService(): addAddress(): failed to save address", error);
                 d.reject('Failed to save address');
             });
+
 
             return d.promise;
         }
@@ -891,29 +910,32 @@ angular.module('app.services', ['ngResource'])
             $log.debug("Address(): removeAddress(): removing", addressId);
             var d = $q.defer();
 
-            var session = Session.get();
-
-            addressService.remove({clientId: session.client.id, addressId: addressId}).$promise.then(function(response) {
-                // remove the address from the client data
-                for (var i=0; i < session.client.addresses.length; i++) {
-                    if (session.client.addresses[i].id == addressId) {
-                        session.client.addresses = session.client.addresses.splice(i, 1);
-                        break;
+            var session = Session.get().then(function(session) {
+                addressService.remove({clientId: session.client.id, addressId: addressId}).$promise.then(function(response) {
+                    // remove the address from the client data
+                    for (var i=0; i < session.client.addresses.length; i++) {
+                        if (session.client.addresses[i].id == addressId) {
+                            session.client.addresses = session.client.addresses.splice(i, 1);
+                            break;
+                        }
                     }
-                }
 
-                if (session.checkout && session.checkout.shipping && session.checkout.shipping.id == addressId) {
-                    session.checkout.shipping = null;
-                }
-                if (session.checkout && session.checkout.billing && session.checkout.billing.id == addressId) {
-                    session.checkout.billing = null;
-                }
+                    if (session.checkout && session.checkout.shipping && session.checkout.shipping.id == addressId) {
+                        session.checkout.shipping = null;
+                    }
+                    if (session.checkout && session.checkout.billing && session.checkout.billing.id == addressId) {
+                        session.checkout.billing = null;
+                    }
 
-                $log.debug("addressService(): removeAddress(): removed address from client addresses", session.client.addresses);
-                d.resolve();
+                    $log.debug("addressService(): removeAddress(): removed address from client addresses", session.client.addresses);
+                    d.resolve();
 
-            }, function(response) {
-                $log.error("addressService(): removeAddress(): failed to removed address from client addresses", response.data);
+                }, function(response) {
+                    $log.error("addressService(): removeAddress(): failed to removed address from client addresses", response.data);
+                    d.reject('Failed to remove address');
+                });
+            }, function(error) {
+                $log.error("addressService(): removeAddress(): failed to removed address from client addresses", error);
                 d.reject('Failed to remove address');
             });
 
@@ -957,33 +979,33 @@ angular.module('app.services', ['ngResource'])
             $log.debug("addressService(): addCreditCard()");
             var d = $q.defer();
 
-            var session = Session.get();
-            var clientId = session.client.id;
+            var session = Session.get().then(function(session) {
+                var clientId = session.client.id;
 
-            // do PGP encryption here
-            require(["/lib/openpgp.min.js"], function(openpgp) {
-                var publicKey = openpgp.key.readArmored(key.join("\n"));
-                var cardData = JSON.stringify(creditCard);
-                var encrypted = openpgp.encryptMessage(publicKey.keys, cardData);
-                encrypted = encrypted.trim();
-                console.log("credit card data", cardData);
-                console.log("encrypted credit card data", encrypted);
+                // do PGP encryption here
+                require(["/lib/openpgp.min.js"], function(openpgp) {
+                    var publicKey = openpgp.key.readArmored(key.join("\n"));
+                    var cardData = JSON.stringify(creditCard);
+                    var encrypted = openpgp.encryptMessage(publicKey.keys, cardData);
+                    encrypted = encrypted.trim();
+                    console.log("credit card data", cardData);
+                    console.log("encrypted credit card data", encrypted);
 
-                creditCardService.save({clientId: clientId}, {
-                    encrypted: encrypted
-                }).$promise.then(function(cc) {
-                    if (session.checkout.creditCards == null) {
-                        session.checkout.creditCards = [];
-                    }
-
-                    // update local session, server will update the server session
-                    session.client.creditCards.push(cc);
-                    $log.debug("addressService(): addCreditCard(): adding credit card to client credit cards", session.client.creditCards);
-                    d.resolve(creditCard);
-                }, function(response) {
-                    $log.error("addressService(): addCreditCard(): failed adding credit card to client credit cards", response.data);
-                    d.reject('Failed to save creditCard');
+                    creditCardService.save({clientId: clientId}, {
+                        encrypted: encrypted
+                    }).$promise.then(function(cc) {
+                        // update local session, server will update the server session
+                        session.client.creditCards.push(cc);
+                        $log.debug("addressService(): addCreditCard(): adding credit card to client credit cards", session.client.creditCards);
+                        d.resolve(cc);
+                    }, function(response) {
+                        $log.error("addressService(): addCreditCard(): failed adding credit card to client credit cards", response.data);
+                        d.reject('Failed to save creditCard');
+                    });
                 });
+            }, function(error) {
+                $log.error("addressService(): addCreditCard(): failed adding credit card to client credit cards", error);
+                d.reject('Failed to save creditCard');
             });
 
             return d.promise;

@@ -4,6 +4,8 @@ var config = require('../config/config');
 Schema = mongoose.Schema;
 mongoose.connect(config.db);
 
+mongoose.set('debug', config.debug);
+
 var db = mongoose.connection;
 exports.db = db;
 
@@ -114,6 +116,21 @@ kitGroupSchema.virtual('id').get(function(){
 var KitGroup = mongoose.model('KitGroup', kitGroupSchema);
 exports.KitGroup = KitGroup;
 
+// LEAD
+
+var leadSchema = Schema({
+    "firstName" : String,
+    "lastName" : String,
+    "email" : String,
+    "phone" : String,
+    "language": String,
+    "created": { type: Date, default: Date.now },
+    "sent": { type: Boolean, default: false },
+    "completed": { type: Boolean, default: false }
+}, { autoIndex: true });
+
+var Lead = mongoose.model('Lead', leadSchema);
+exports.Lead = Lead;
 
 // PRODUCTS
 var productPriceSchema = Schema({

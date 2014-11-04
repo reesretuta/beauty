@@ -93,7 +93,7 @@
 
               </div>
               <div class="col-xs-12 col-sm-6 login-info">
-                <div class="navbar-right">
+                <div class="navbar-right navbar-clientdirect_logins">
                   <form>
                   <!--<a ng-show="!loggedIn()" href="" ng-click="login()" ng-cloak>Sign In</a>-->
                   <div class="login-dropdown" ng-show="!loggedIn()" class="dropdown">
@@ -122,12 +122,12 @@
                   </form>
                 </div>
 
-                <div class="navbar-right">
+                <div class="navbar-right navbar-clientdirect_logins">
                   <span ng-show="loggedIn()" href="" ng-cloak>{{getUserEmail()}} (<a style="margin-right: 5px; margin-left: 5px;" href="" ng-click="logout()">Logout</a>)</span>
                   <a ng-show="getItemsInCart()!=null" ng-href="{{STORE_BASE_URL}}/cart" ng-cloak><i class="fa fa-shopping-cart"></i> <span ng-bind-html="'VIEW_CART' | translate | unsafe"></span> ({{getItemsInCart()}})</a>
                 </div>
 
-                <div class="navbar-right">
+                <div class="navbar-right navbar-clientdirect_logins">
                   <img src="https://jafrausa.com/regional/images/en_US/template/icons/flag.png">
                   <select ng-model="session.language">
                     <option value="en_US">English</option>

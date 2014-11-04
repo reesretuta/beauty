@@ -15,11 +15,15 @@ var session = require('express-session');
 var auth = require("basic-auth");
 var MongoStore = require('connect-mongo')(session);
 var jafraClient = require('./jafra');
+var Types = require("mongoose").Types;
+var S = require("string");
 
 // configure app
 //app.use(bodyParser());
 
 var port = process.env.PORT || 8090; // set our port
+var LEAD_PROCESSING_INTERVAL = process.env.LEAD_PROCESSING_INTERVAL || 5 * 60 * 1000; // default: 5 min
+var LEAD_MAX_AGE = process.env.LEAD_MAX_AGE || 60 * 60 * 1000; // default: 1 hour
 
 //var morgan = require('morgan')
 var S = require('string');
@@ -340,9 +344,15 @@ router.route('/products/:productId')
     // get the product with that id
     .get(function (req, res) {
         console.log("getting product", req.params);
+        var now = new Date();
+
         models.Product.find({ _id: req.params.productId, masterStatus: "A", onHold: false})
         .or([
-            {masterType: "R"}, {masterType: {$exists: false}, type:"group"}
+            {masterType: "R"}, {masterType: {$exists: false}, type:"group"}//,
+//            {$and: [
+//                {"prices.startDate":{$elemMatch:{$lte:now}}},
+//                {"prices.endDate":{$elemMatch:{$gte:now}}}
+//            ]}
         ])
         .exec(function (err, products) {
             if (err) {
@@ -417,7 +427,7 @@ router.route('/authenticate')// authenticate a user (accessed at POST http://loc
         }
 
         jafraClient.authenticate(username, password).then(function(r) {
-            console.log("authentication successful");
+            console.log("authentication successful", r);
 
             // set the client in the session
             req.session.client = r.result;
@@ -445,27 +455,27 @@ router.route('/logout')
 // ----------------------------------------------------
 router.route('/session')
     .get(function (req, res) {
-        var updated = false;
-        if (req.session.cart == null) {
-            req.session.cart = [];
-            updated = true;
-        }
-        if (req.session.language == null) {
-            req.session.language = 'en_US';
-            updated = true;
-        }
-        if (req.session.checkout == null) {
-            req.session.checkout = {};
-            updated = true;
-        }
-
-        if (updated) {
-            req.session.save(function(err) {
-                console.log('session saved', req.session);
-                res.json(req.session);
-            });
-            return;
-        }
+//        var updated = false;
+//        if (req.session.cart == null) {
+//            req.session.cart = [];
+//            updated = true;
+//        }
+//        if (req.session.language == null) {
+//            req.session.language = 'en_US';
+//            updated = true;
+//        }
+//        if (req.session.checkout == null) {
+//            req.session.checkout = {};
+//            updated = true;
+//        }
+//
+//        if (updated) {
+//            req.session.save(function(err) {
+//                console.log('session saved', req.session);
+//                res.json(req.session);
+//            });
+//            return;
+//        }
         res.json(req.session);
     })
 
@@ -475,26 +485,26 @@ router.route('/session')
 
         console.log("update session request", session);
 
-        req.session.consultantId = session.consultantId;
-        req.session.source = session.source;
-
-        // copy over changes to cart, checkout, language
-        req.session.language = session.language;
-        if (Array.isArray(session.cart)) {
-            req.session.cart = [];
-            // save only the parts of the session we want
-            for (var i=0; i < session.cart.length; i++) {
-                var cartItem = session.cart[i];
-                var it = {
-                    name: cartItem.name,
-                    sku: cartItem.sku,
-                    kitSelections: cartItem.kitSelections,
-                    quantity: cartItem.quantity
-                };
-                req.session.cart.push(it);
-            }
-        }
-        req.session.checkout = session.checkout;
+//        req.session.consultantId = session.consultantId;
+//        req.session.source = session.source;
+//
+//        // copy over changes to cart, checkout, language
+//        req.session.language = session.language;
+//        if (Array.isArray(session.cart)) {
+//            req.session.cart = [];
+//            // save only the parts of the session we want
+//            for (var i=0; i < session.cart.length; i++) {
+//                var cartItem = session.cart[i];
+//                var it = {
+//                    name: cartItem.name,
+//                    sku: cartItem.sku,
+//                    kitSelections: cartItem.kitSelections,
+//                    quantity: cartItem.quantity
+//                };
+//                req.session.cart.push(it);
+//            }
+//        }
+//        req.session.checkout = session.checkout;
 
         req.session.save(function(err) {
             if (err) {
@@ -515,7 +525,74 @@ router.route('/session')
 // ----------------------------------------------------
 router.route('/leads')// create a lead
     .post(function (req, res) {
-        res.status(204);
+
+        models.Lead.create({
+            email: req.body.email,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            phone: req.body.phone,
+            language: req.body.language
+        }, function (err, lead) {
+            if (err) {
+                console.error("failed to create lead", err);
+                res.status(500);
+                res.json({
+                    statusCode: 500,
+                    errorCode: "leadCreationFailed",
+                    errorMessage: "Failed to create lead"
+                });
+                res.end();
+                return;
+            }
+
+            // any leads that are created will get pushed to JCS on an interval, if they haven't been
+            // closed by the user completing the online sponsoring process
+
+            console.error("created lead", lead);
+
+            res.status(201);
+            res.json(lead);
+            res.end();
+        });
+    })
+
+    .delete(function (req, res) {
+        var email = req.query.email;
+
+        console.log("removing leads for", email);
+
+        if (S(email).isEmpty()) {
+            res.status(400);
+            res.json({
+                statusCode: 400,
+                errorCode: "leadRemoveFailed",
+                errorMessage: "Failed to remove lead"
+            });
+            res.end();
+            return;
+        }
+
+        models.Lead.update({ email: email, sent: false, completed: false }, { completed: true }, {options: { multi: true }}, function (err, count) {
+            if (err) {
+                console.error("failed to remove lead", err);
+                res.status(500);
+                res.json({
+                    statusCode: 500,
+                    errorCode: "leadRemoveFailed",
+                    errorMessage: "Failed to remove lead"
+                });
+                res.end();
+                return;
+            }
+
+            // any leads that are created will get pushed to JCS on an interval, if they haven't been
+            // closed by the user completing the online sponsoring process
+
+            console.error("updated lead count", count);
+
+            res.status(204);
+            res.end();
+        });
     });
 
 // CLIENTS
@@ -713,8 +790,25 @@ router.route('/consultants/:consultant_id')// get a consultant
 router.route('/clients/:client_id/addresses')// get a client's addresses
     .get(function (req, res) {
         var clientId = req.params.client_id;
-        res.status(200);
-        res.json({id: clientId});
+        console.log("create address", req.body);
+
+        jafraClient.getAddresses(clientId).then(function(r) {
+            console.error("got addresses", r.status, r.result);
+
+            // return response
+            res.status(r.status);
+
+            // add this address to the session
+            var addresses = r.result;
+            req.session.client.addresses = addresses;
+
+            // return the address data
+            res.json(addresses);
+        }, function(r) {
+            console.error("failed to get addresses", r.status, r.result);
+            res.status(r.status);
+            res.json(r.result);
+        });
     })
 
     // create an address
@@ -823,21 +917,26 @@ router.route('/clients/:client_id/creditCards')// get a client's creditCards
         console.log("got data", req.body.encrypted);
 
         jafraClient.createCreditCard(clientId, req.body.encrypted).then(function(r) {
-            console.error("created credit card", r.status, r.result);
+            console.log("created credit card", r.status, r.result);
 
             // return response
             res.status(r.status);
 
             // add this CC to the session
             var cc = r.result;
-            req.session.client.addresses.push(cc);
+
+            console.log("created credit card, client", req.session.client);
+            req.session.client.creditCards.push(cc);
 
             // return the address data
-            res.json(res);
+            res.json(cc);
+            res.end();
+            console.error("create credit card done");
         }, function(r) {
             console.error("failed to create cc", r.status, r.result);
             res.status(r.status);
             res.json(r.result);
+            res.end();
         });
     });
 
@@ -996,6 +1095,39 @@ router.route('/calculateTax')
             res.json(r.result);
         });
     });
+
+// Configure Lead Cleanup Interval
+
+setInterval(function() {
+    var now = new Date();
+    var olderThan = new Date(now.getTime() - LEAD_MAX_AGE);
+    //console.log("now", now, "olderThan", olderThan);
+
+    models.Lead.find({created: {$lte: olderThan}, sent: false, completed: false}, function(err, leads) {
+        console.log("found old leads to send to server", leads);
+        for (var i=0; i < leads.length; i++) {
+            var lead = leads[i];
+            jafraClient.createLead({
+                email: lead.email,
+                firstName: lead.firstName,
+                lastName: lead.lastName,
+                phone: lead.phone,
+                language: lead.language
+            }).then(function(r) {
+                console.log("created lead on server", r.result.statusCode, "body", r.result, "removing from local", lead._id);
+                lead.sent = true;
+                lead.save(function (err, product, numberAffected) {
+                    if (err) {
+                        console.error("failed to mark lead sent", err);
+                        return;
+                    }
+                })
+            }, function(r) {
+                console.error("failed to create lead on server", r.result.statusCode, "body", r.body);
+            });
+        }
+    });
+}, LEAD_PROCESSING_INTERVAL);
 
 // Configure Express
 

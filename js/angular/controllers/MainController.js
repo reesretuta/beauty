@@ -134,7 +134,7 @@ angular.module('app.controllers.main')
                 var breadcrumb = $rootScope.breadcrumbs[i];
                 //$log.debug("CategoriesController(): checking if category is in path", category, breadcrumb);
                 if (breadcrumb.type == 'category' && breadcrumb.id == category.id) {
-                    $log.debug("MainController(): clearing static nav");
+                    //$log.debug("MainController(): clearing static nav");
                     $rootScope.navStatic = 0;
                     return true;
                 }

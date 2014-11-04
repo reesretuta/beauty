@@ -20,6 +20,14 @@ angular.module('app.filters', [])// Navigation Item Filter
             if (input!=null)
                 return JSON.stringify(input);
         }
+    }).filter('substr', function() {
+
+        return function(string, start, charNo) {
+            if (string == null) {
+                return null;
+            }
+            return string.substr(start, charNo)
+        }
     }).filter('phone', function () {
         return function (tel) {
             if (!tel) { return ''; }
