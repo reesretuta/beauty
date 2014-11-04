@@ -1,5 +1,5 @@
 angular.module('app.controllers.checkout')
-    .controller('CheckoutController', function ($location, $scope, $document, $timeout, $rootScope, $anchorScroll, $routeParams, $modal, $log, $q, STORE_BASE_URL, JOIN_BASE_URL, focus, Geocodes, Session, Addresses, OrderHelper, Checkout, Cart, Products, SalesTax, CreditCards, HashKeyCopier, WizardHandler) {
+    .controller('CheckoutController', function ($location, $scope, $document, $timeout, $rootScope, $anchorScroll, $routeParams, $modal, $log, $q, STORE_BASE_URL, JOIN_BASE_URL, focus, Geocodes, Session, Addresses, OrderHelper, Checkout, Cart, Products, SalesTax, CreditCards, Leads, HashKeyCopier, WizardHandler) {
 
         $log.debug("CheckoutController()");
 
@@ -639,6 +639,19 @@ angular.module('app.controllers.checkout')
 
                     // move to next step
                     WizardHandler.wizard('checkoutWizard').goTo('Profile');
+
+                    if ($scope.isOnlineSponsoring) {
+                        // generate a lead for this account
+                        Leads.save({
+                            email: email,
+                            firstName: $scope.profile.firstName,
+                            lastName: $scope.profile.lastName,
+                            phone: $scope.profile.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3'),
+                            language: $scope.profile.language
+                        }).$promise.then(function(lead) {
+                            $log.debug("CheckoutController(): lead created");
+                        });
+                    }
                 }, function(r) {
                     $log.debug("CheckoutController(): validated email");
 
@@ -1041,6 +1054,13 @@ angular.module('app.controllers.checkout')
                         };
 
                         WizardHandler.wizard('checkoutWizard').goTo('Finish');
+
+                        // remove the created lead
+                            Leads.remove({
+                            email: $scope.profile.loginEmail
+                        }).$promise.then(function(lead) {
+                            $log.debug("CheckoutController(): processOrder(): lead removed");
+                        });
                     }, function(error) {
                         $log.error("CheckoutController(): loginOrCreateUser(): failed to create consultant", error);
                         $scope.orderError = error.message;

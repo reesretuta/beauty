@@ -20,7 +20,7 @@ var CREATE_CLIENT_URL = BASE_URL + "/JCD05002P.pgm";
 var GET_CONSULTANT_URL = BASE_URL + "/JOS05007P.pgm";
 var CREATE_CONSULTANT_URL = BASE_URL + "/JOS05002P.pgm";
 var LOOKUP_CONSULTANT_URL = BASE_URL + "/JOS05004P.pgm";
-//var CREATE_LEAD_URL = BASE_URL + "/JOS05005P.pgm";
+var CREATE_LEAD_URL = BASE_URL + "/JOS05005P.pgm";
 
 var GET_ADDRESSES_URL = BASE_URL + "/JCD05005P.pgm";
 var GET_ADDRESS_URL = BASE_URL + "/JCD05005P.pgm";
@@ -500,7 +500,75 @@ function createConsultant(encrypted) {
 }
 
 function createLead(lead) {
+    //console.log("createLead", email, password);
+    var deferred = Q.defer();
 
+    request.post({
+        url: CREATE_LEAD_URL,
+        form: {
+            email: lead.email,
+            firstName: lead.firstName,
+            lastName: lead.lastName,
+            phone: lead.phone,
+            language: lead.language
+        },
+        headers: {
+            'Content-Type' : 'application/x-www-form-urlencoded',
+            'Accept': 'application/json, text/json',
+            'Authorization': AUTH_STRING
+        },
+        json: true
+    }, function (error, response, body) {
+        if (error || response.statusCode != 200) {
+            console.error("createLead(): error", response.statusCode, body);
+
+            if (body && body.statusCode && body.errorCode && body.message) {
+                console.error("createLead(): error, returning server error");
+                deferred.reject({
+                    status: response.statusCode,
+                    result: {
+                        statusCode: body.statusCode,
+                        errorCode: body.errorCode,
+                        message: body.message
+                    }
+                });
+            } else {
+                console.error("createLead(): error, returning generic error");
+                deferred.reject({
+                    status: 500,
+                    result: {
+                        statusCode: 500,
+                        errorCode: "createLeadFailed",
+                        message: "Failed to create lead"
+                    }
+                });
+            }
+            return;
+        }
+
+        if (body == null || body.leadId == null) {
+            console.log("createLead(): invalid return data", body, typeof body, "leadId", body.leadId);
+            deferred.reject({
+                status: 500,
+                result: {
+                    statusCode: 500,
+                    errorCode: "createLeadReturnDataInvalid",
+                    message: "Failed to get lead ID from create"
+                }
+            });
+            return;
+        }
+
+        // we should get leadId back
+        console.log("createLead(): returning success");
+        var leadId = body.leadId;
+        deferred.resolve({
+            status: 201,
+            result: body
+        });
+    });
+
+    return deferred.promise;
 }
 
 function getAddresses(clientId) {

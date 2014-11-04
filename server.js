@@ -15,11 +15,15 @@ var session = require('express-session');
 var auth = require("basic-auth");
 var MongoStore = require('connect-mongo')(session);
 var jafraClient = require('./jafra');
+var Types = require("mongoose").Types;
+var S = require("string");
 
 // configure app
 //app.use(bodyParser());
 
 var port = process.env.PORT || 8090; // set our port
+var LEAD_PROCESSING_INTERVAL = process.env.LEAD_PROCESSING_INTERVAL || 5 * 60 * 1000; // default: 5 min
+var LEAD_MAX_AGE = process.env.LEAD_MAX_AGE || 60 * 60 * 1000; // default: 1 hour
 
 //var morgan = require('morgan')
 var S = require('string');
@@ -515,7 +519,74 @@ router.route('/session')
 // ----------------------------------------------------
 router.route('/leads')// create a lead
     .post(function (req, res) {
-        res.status(204);
+
+        models.Lead.create({
+            email: req.body.email,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            phone: req.body.phone,
+            language: req.body.language
+        }, function (err, lead) {
+            if (err) {
+                console.error("failed to create lead", err);
+                res.status(500);
+                res.json({
+                    statusCode: 500,
+                    errorCode: "leadCreationFailed",
+                    errorMessage: "Failed to create lead"
+                });
+                res.end();
+                return;
+            }
+
+            // any leads that are created will get pushed to JCS on an interval, if they haven't been
+            // closed by the user completing the online sponsoring process
+
+            console.error("created lead", lead);
+
+            res.status(201);
+            res.json(lead);
+            res.end();
+        });
+    })
+
+    .delete(function (req, res) {
+        var email = req.query.email;
+
+        console.log("removing leads for", email);
+
+        if (S(email).isEmpty()) {
+            res.status(400);
+            res.json({
+                statusCode: 400,
+                errorCode: "leadRemoveFailed",
+                errorMessage: "Failed to remove lead"
+            });
+            res.end();
+            return;
+        }
+
+        models.Lead.update({ email: email, sent: false, completed: false }, { completed: true }, {options: { multi: true }}, function (err, count) {
+            if (err) {
+                console.error("failed to remove lead", err);
+                res.status(500);
+                res.json({
+                    statusCode: 500,
+                    errorCode: "leadRemoveFailed",
+                    errorMessage: "Failed to remove lead"
+                });
+                res.end();
+                return;
+            }
+
+            // any leads that are created will get pushed to JCS on an interval, if they haven't been
+            // closed by the user completing the online sponsoring process
+
+            console.error("updated lead count", count);
+
+            res.status(204);
+            res.end();
+        });
     });
 
 // CLIENTS
@@ -996,6 +1067,39 @@ router.route('/calculateTax')
             res.json(r.result);
         });
     });
+
+// Configure Lead Cleanup Interval
+
+setInterval(function() {
+    var now = new Date();
+    var olderThan = new Date(now.getTime() - LEAD_MAX_AGE);
+    //console.log("now", now, "olderThan", olderThan);
+
+    models.Lead.find({created: {$lte: olderThan}, sent: false, completed: false}, function(err, leads) {
+        console.log("found old leads to send to server", leads);
+        for (var i=0; i < leads.length; i++) {
+            var lead = leads[i];
+            jafraClient.createLead({
+                email: lead.email,
+                firstName: lead.firstName,
+                lastName: lead.lastName,
+                phone: lead.phone,
+                language: lead.language
+            }).then(function(r) {
+                console.log("created lead on server", r.result.statusCode, "body", r.result, "removing from local", lead._id);
+                lead.sent = true;
+                lead.save(function (err, product, numberAffected) {
+                    if (err) {
+                        console.error("failed to mark lead sent", err);
+                        return;
+                    }
+                })
+            }, function(r) {
+                console.error("failed to create lead on server", r.result.statusCode, "body", r.body);
+            });
+        }
+    });
+}, LEAD_PROCESSING_INTERVAL);
 
 // Configure Express
 
