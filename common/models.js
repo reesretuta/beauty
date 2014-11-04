@@ -4,6 +4,8 @@ var config = require('../config/config');
 Schema = mongoose.Schema;
 mongoose.connect(config.db);
 
+mongoose.set('debug', config.debug);
+
 var db = mongoose.connection;
 exports.db = db;
 
