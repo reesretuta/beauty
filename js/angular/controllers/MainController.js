@@ -1,5 +1,5 @@
 angular.module('app.controllers.main')
-    .controller('MainController', function ($scope, $document, $timeout, $location, $rootScope, $routeParams, $log, $translate, STORE_BASE_URL, Session, Categories, Cart, Search, BreadcrumbsHelper, RecentlyViewed) {
+    .controller('MainController', function ($scope, $document, $timeout, $location, $rootScope, $routeParams, $log, $translate, $q, STORE_BASE_URL, Session, Categories, Cart, Search, BreadcrumbsHelper, RecentlyViewed) {
 
         $rootScope.adding = false;
 
@@ -62,18 +62,6 @@ angular.module('app.controllers.main')
             $translate.use(Session.get().language);
         });
 
-        $scope.getItemsInCart = function() {
-            var d = $q.defer();
-
-            var count = Cart.getItemCount().then(function(count) {
-                d.resolve(count);
-            }, function(error) {
-                d.reject(error);
-            });
-
-            return d.promise;
-        }
-        
         $scope.removeFromCart = function(product) {
             $log.debug("MainController(): removing product", product);
             Cart.removeFromCart(product).then(function() {

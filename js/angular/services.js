@@ -406,11 +406,11 @@ angular.module('app.services', ['ngResource'])
     .factory('Cart', function ($rootScope, $log, $timeout, $q, STORE_BASE_URL, Session, Product, growlNotifications) {
         var cartService = {};
 
-        cartService.getCart = function() {
+        cartService.get = function() {
             var d = $q.defer();
 
             Session.waitForInitialization().then(function(session) {
-                $log.debug("cartService(): getCart()", session.cart);
+                //$log.debug("cartService(): getCart()", session.cart);
                 d.resolve(session.cart);
             }, function(error) {
                 $log.error("cartService(): getCart(): error", error);
@@ -420,7 +420,7 @@ angular.module('app.services', ['ngResource'])
             return d.promise;
         }
 
-        cartService.setCart = function(cart) {
+        cartService.set = function(cart) {
             $log.debug("cartService(): setCart()", cart);
             var d = $q.defer();
 
@@ -456,14 +456,13 @@ angular.module('app.services', ['ngResource'])
         cartService.getItemCount = function() {
             var d = $q.defer();
 
-            var cart = cartService.getCart().then(function(cart) {
-                $log.debug("cartService(): getItemCount(): got cart", cart);
+            var cart = cartService.get().then(function(cart) {
                 var count = 0;
                 angular.forEach(cart, function(cartItem) {
                     count += parseInt(cartItem.quantity);
                 });
 
-                //$log.debug("getItemCount()");
+                //$log.debug("cartService(): getItemCount()", count);
                 d.resolve(count);
             }, function(error) {
                 $log.error("cartService(): getItemCount(): error", error);
@@ -476,7 +475,7 @@ angular.module('app.services', ['ngResource'])
         cartService.getFirstProductSku = function() {
             var d = $q.defer();
 
-            var cart = cartService.getCart().then(function(cart) {
+            var cart = cartService.get().then(function(cart) {
                 $log.debug("cartService(): getFirstProductSku(): got cart", cart);
                 if (cart == null || cart.length == 0 || cart[0] == null) {
                     return null;
@@ -529,7 +528,7 @@ angular.module('app.services', ['ngResource'])
 
             $rootScope.adding = true;
 
-            cartService.getCart().then(function(cart) {
+            cartService.get().then(function(cart) {
                 $log.debug("cartService(): addToCart()", cart, item);
 
                 // check the cart for matching items, so we can update instead of add
@@ -593,7 +592,7 @@ angular.module('app.services', ['ngResource'])
         cartService.removeFromCart = function(item) {
             var d = $q.defer();
 
-            var cart = cartService.getCart().then(function(cart) {
+            var cart = cartService.get().then(function(cart) {
                 angular.forEach(cart, function(cartItem) {
                     // FIXME - if it's a kit, verify we remove the right kit configuration
                     if (cartItem.sku == item.sku) {

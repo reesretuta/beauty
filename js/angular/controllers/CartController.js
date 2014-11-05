@@ -27,7 +27,7 @@ angular.module('app.controllers.cart')
 
             $log.debug("CartController(): loadCart(): loading products");
 
-            Cart.getCart().then(function(cart) {
+            Cart.get().then(function(cart) {
                 $log.debug("CartController(): loadCart(): SKU loaded & added to cart", cart);
 
                 $scope.cart = cart;
