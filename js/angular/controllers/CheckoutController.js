@@ -563,6 +563,12 @@ angular.module('app.controllers.checkout')
         function cardExpirationChanged() {
             $scope.invalidExpiration = false;
 
+            if ($scope.profile.newCard == null || S($scope.profile.newCard.expMonth).isEmpty() || S($scope.profile.newCard.expYear).isEmpty()) {
+                $log.debug("CheckoutController(): cardExpirationChanged(): not fully filled out, unsetting error");
+                $scope.invalidExpiration = false;
+                return;
+            }
+
             var expiration = moment($scope.profile.newCard.expMonth + $scope.profile.newCard.expYear, "MMYYYY", true).endOf("month");
             var now = moment();
 
@@ -1222,23 +1228,10 @@ angular.module('app.controllers.checkout')
         });
 
         $scope.$watch('profile.newCard.expMonth', function(newVal, oldVal) {
-            if (newVal != null) {
-                $log.debug("CheckoutController(): cardExpirationMonthChanged()", newVal);
-                cardExpirationChanged();
-            } else if ($scope.profile.newCard) {
-                $log.debug("CheckoutController(): cardExpirationMonthChanged()", newVal);
-                $scope.profile.newCard.expMonth = null;
-            }
+            cardExpirationChanged();
         });
         $scope.$watch('profile.newCard.expYear', function(newVal, oldVal) {
             cardExpirationChanged();
-            if (newVal != null) {
-                $log.debug("CheckoutController(): cardExpirationYearChanged()", $scope.profile.newCard);
-                cardExpirationChanged();
-            } else if ($scope.profile.newCard) {
-                $log.debug("CheckoutController(): cardExpirationYearChanged()", $scope.profile.newCard);
-                $scope.profile.newCard.expYear = null;
-            }
         });
 
         $scope.processOrder = function() {
