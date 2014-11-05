@@ -1104,7 +1104,19 @@ setInterval(function() {
                     }
                 })
             }, function(r) {
-                console.error("failed to create lead on server", r.result.statusCode, "body", r.body);
+                if (r.status == 409) {
+                    // lead already created, mark sent
+                    console.log("created already on server", r.result.statusCode, "body", r.result, "marking sent", lead._id);
+                    lead.sent = true;
+                    lead.save(function (err, product, numberAffected) {
+                        if (err) {
+                            console.error("failed to mark lead sent", err);
+                            return;
+                        }
+                    })
+                } else {
+                    console.error("failed to create lead on server", r.result.statusCode, "body", r.body);
+                }
             });
         }
     });
