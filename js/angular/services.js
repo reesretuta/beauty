@@ -291,15 +291,10 @@ angular.module('app.services', ['ngResource'])
         }
 
         sessionService.setLanguage = function(language) {
-            var session = getLocalSession();
-            session.language = language;
-
             initialized.promise.then(function() {
-                sessionService.save().then(function() {
-                    $log.debug("sessionService(): save(): saved session");
-                }, function() {
-                    $log.error("sessionService(): save(): failed to save session");
-                });
+                var session = getLocalSession();
+                session.set('language', language);
+                $log.debug("sessionService(): setLanguage(): language set");
             });
         }
 
@@ -411,20 +406,14 @@ angular.module('app.services', ['ngResource'])
     .factory('Cart', function ($rootScope, $log, $timeout, $q, STORE_BASE_URL, Session, Product, growlNotifications) {
         var cartService = {};
 
-        function getLocalCart() {
-            if ($rootScope.session) {
-                return $rootScope.session.cart;
-            }
-            return {};
-
-        }
-
         cartService.getCart = function() {
             var d = $q.defer();
 
-            Session.get().then(function(session) {
+            Session.waitForInitialization().then(function(session) {
+                $log.debug("cartService(): getCart()", session.cart);
                 d.resolve(session.cart);
             }, function(error) {
+                $log.error("cartService(): getCart(): error", error);
                 d.reject(error);
             });
 
@@ -432,11 +421,20 @@ angular.module('app.services', ['ngResource'])
         }
 
         cartService.setCart = function(cart) {
+            $log.debug("cartService(): setCart()", cart);
             var d = $q.defer();
 
-            Session.set('cart', cart).then(function(session) {
-                d.resolve(session.cart);
-            });
+            if (cart == null || !Array.isArray(cart)) {
+                d.reject('Cart must be an array');
+            } else {
+                Session.set('cart', cart).then(function(session) {
+                    $log.debug("cartService(): setCart()");
+                    d.resolve(session.cart);
+                }, function(error) {
+                    $log.error("cartService(): setCart(): error", error);
+                    d.reject(error);
+                });
+            }
 
             return d.promise;
         };
@@ -444,7 +442,7 @@ angular.module('app.services', ['ngResource'])
         cartService.clear = function() {
             var d = $q.defer();
 
-            Session.set('cart', {}).then(function(session) {
+            Session.set('cart', []).then(function(session) {
                 $log.debug("cartService(): clear(): got session", session);
                 d.resolve(session.cart);
             }, function(error) {
@@ -456,22 +454,40 @@ angular.module('app.services', ['ngResource'])
         }
         
         cartService.getItemCount = function() {
-            var cart = getLocalCart();
-            var count = 0;
-            angular.forEach(cart, function(cartItem) {
-                count += parseInt(cartItem.quantity);
+            var d = $q.defer();
+
+            var cart = cartService.getCart().then(function(cart) {
+                $log.debug("cartService(): getItemCount(): got cart", cart);
+                var count = 0;
+                angular.forEach(cart, function(cartItem) {
+                    count += parseInt(cartItem.quantity);
+                });
+
+                //$log.debug("getItemCount()");
+                d.resolve(count);
+            }, function(error) {
+                $log.error("cartService(): getItemCount(): error", error);
+                d.reject(error);
             });
 
-            //$log.debug("getItemCount()");
-            return count;
+            return d.promise;
         };
 
         cartService.getFirstProductSku = function() {
-            var cart = getLocalCart();
-            if (cart == null || cart.length == 0) {
-                return null;
-            }
-            return cart[0].sku;
+            var d = $q.defer();
+
+            var cart = cartService.getCart().then(function(cart) {
+                $log.debug("cartService(): getFirstProductSku(): got cart", cart);
+                if (cart == null || cart.length == 0 || cart[0] == null) {
+                    return null;
+                }
+                d.resolve(cart[0].sku);
+            }, function(error) {
+                $log.error("cartService(): getFirstProductSku(): error", error);
+                d.reject(error);
+            });
+
+            return d.promise;
         }
 
         cartService.getItems = function() {
@@ -513,59 +529,63 @@ angular.module('app.services', ['ngResource'])
 
             $rootScope.adding = true;
 
-            var cart = getLocalCart();
-            $log.debug("cartService(): addToCart()", cart, item);
+            cartService.getCart().then(function(cart) {
+                $log.debug("cartService(): addToCart()", cart, item);
 
-            // check the cart for matching items, so we can update instead of add
-            var updated = false;
-            $.each(cart, function(index, cartItem) {
-                //$log.debug("cartService(): addToCart(): comparing products", p, product);
-                if (cartItem.sku == item.sku && item.kitSelections == null && cartItem.kitSelections == null) {
-                    //$log.debug("cartService(): addToCart(): non-kit products are identical");
-                    var newQty = parseInt(item.quantity) + parseInt(cartItem.quantity);
-                    cartItem.quantity = newQty;
-                    $log.debug("cartService(): addToCart(): added one more", item);
-                    updated = true;
-                    return true;
-                }
-            });
-
-            if (!updated) {
-                // we haven't updated the cart, so this is a new item to add
-                $log.debug("cartService(): addToCart(): adding new item", item);
-                cart.push({
-                    name: item.name,
-                    name_es_US: item.name_es_US,
-                    sku: item.sku,
-                    kitSelections: item.kitSelections,
-                    quantity: item.quantity,
-                    contains: item.contains
+                // check the cart for matching items, so we can update instead of add
+                var updated = false;
+                $.each(cart, function(index, cartItem) {
+                    //$log.debug("cartService(): addToCart(): comparing products", p, product);
+                    if (cartItem.sku == item.sku && item.kitSelections == null && cartItem.kitSelections == null) {
+                        //$log.debug("cartService(): addToCart(): non-kit products are identical");
+                        var newQty = parseInt(item.quantity) + parseInt(cartItem.quantity);
+                        cartItem.quantity = newQty;
+                        $log.debug("cartService(): addToCart(): added one more", item);
+                        updated = true;
+                        return true;
+                    }
                 });
-            }
 
-            // growlnotification when adding to cart
-            growlNotifications.add('<i class="fa fa-shopping-cart"></i> '+item.name+' <a href="' + STORE_BASE_URL + '/cart"><b>added to cart</b></a>', 'warning', 4000);
+                if (!updated) {
+                    // we haven't updated the cart, so this is a new item to add
+                    $log.debug("cartService(): addToCart(): adding new item", item);
+                    cart.push({
+                        name: item.name,
+                        name_es_US: item.name_es_US,
+                        sku: item.sku,
+                        kitSelections: item.kitSelections,
+                        quantity: item.quantity,
+                        contains: item.contains
+                    });
+                }
 
-            $log.debug("cartService(): addToCart(): saving cart to session", cart);
+                // growlnotification when adding to cart
+                growlNotifications.add('<i class="fa fa-shopping-cart"></i> '+item.name+' <a href="' + STORE_BASE_URL + '/cart"><b>added to cart</b></a>', 'warning', 4000);
 
-            var startTime = new Date().getTime();
+                $log.debug("cartService(): addToCart(): saving cart to session", cart);
 
-            // in case we go back async on this at some point
-            d.resolve(cart);
+                var startTime = new Date().getTime();
 
-            if (new Date().getTime() - startTime < 1500) {
-                // wait until we've had 1500ms pass
-                $timeout(function() {
+                // in case we go back async on this at some point
+                d.resolve(cart);
+
+                if (new Date().getTime() - startTime < 1500) {
+                    // wait until we've had 1500ms pass
+                    $timeout(function() {
+                        $rootScope.adding = false;
+                        // set class
+                        //$timeout(function() {
+                        //    // remove check
+                        //}, 2000);
+                    }, 1500 - (new Date().getTime() - startTime));
+                } else {
+                    // > 1500 ms has passed, clear
                     $rootScope.adding = false;
-                    // set class
-                    //$timeout(function() {
-                    //    // remove check
-                    //}, 2000);
-                }, 1500 - (new Date().getTime() - startTime));
-            } else {
-                // > 1500 ms has passed, clear
-                $rootScope.adding = false;
-            }
+                }
+            }, function(error) {
+                $log.error("cartService(): addToCart(): error", error);
+                d.reject(error);
+            });
 
             return d.promise;
         };
@@ -573,17 +593,21 @@ angular.module('app.services', ['ngResource'])
         cartService.removeFromCart = function(item) {
             var d = $q.defer();
 
-            var cart = getLocalCart();
-            angular.forEach(cart, function(cartItem) {
-                // FIXME - if it's a kit, verify we remove the right kit configuration
-                if (cartItem.sku == item.sku) {
-                  var getIndex = cart.indexOf(cartItem);
-                  cart.splice(getIndex, 1);
-                }
-            });
+            var cart = cartService.getCart().then(function(cart) {
+                angular.forEach(cart, function(cartItem) {
+                    // FIXME - if it's a kit, verify we remove the right kit configuration
+                    if (cartItem.sku == item.sku) {
+                        var getIndex = cart.indexOf(cartItem);
+                        cart.splice(getIndex, 1);
+                    }
+                });
 
-            $log.debug("cartService(): removeFromCart(): cart now", cart);
-            d.resolve(cart);
+                $log.debug("cartService(): removeFromCart(): cart now", cart);
+                d.resolve(cart);
+            }, function(error) {
+                $log.error("cartService(): removeFromCart(): error", error);
+                d.reject(error);
+            });
 
             return d.promise;
         };

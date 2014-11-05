@@ -63,14 +63,24 @@ angular.module('app.controllers.main')
         });
 
         $scope.getItemsInCart = function() {
-            var count = Cart.getItemCount();
-            //$log.debug("MainController(): items count", count);
-            return count;
+            var d = $q.defer();
+
+            var count = Cart.getItemCount().then(function(count) {
+                d.resolve(count);
+            }, function(error) {
+                d.reject(error);
+            });
+
+            return d.promise;
         }
         
         $scope.removeFromCart = function(product) {
             $log.debug("MainController(): removing product", product);
-            Cart.removeFromCart(product);
+            Cart.removeFromCart(product).then(function() {
+                $log.debug("MainController(): removed", product);
+            }, function (error) {
+                $log.error("MainController(): error removing", product);
+            });
         }
         
         $scope.quantities = {};
@@ -82,12 +92,16 @@ angular.module('app.controllers.main')
                 qty = 1;
             }
             
-            $log.debug("MainController(): adding product", product, qty);
+            $log.debug("MainController(): addToCart()", product, qty);
             Cart.addToCart({
                 name: product.name,
                 sku: product.sku,
                 kitSelections: product.kitSelections,
                 quantity: qty
+            }).then(function() {
+                $log.debug("MainController(): addToCart()", product);
+            }, function (error) {
+                $log.error("MainController(): addToCart(): error", product);
             });
         }
 

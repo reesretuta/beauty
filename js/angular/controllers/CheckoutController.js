@@ -179,13 +179,6 @@ angular.module('app.controllers.checkout')
                 return;
             }
 
-            // check for items in the cart, if there are none redirect
-            if (session.cart == null || session.cart.length == 0) {
-                $log.debug("CheckoutController(): no items in cart, redirecting");
-                $location.path($scope.isOnlineSponsoring ? JOIN_BASE_URL : STORE_BASE_URL).search('');
-                return;
-            }
-
             // Online Sponsoring
             if (path && path.match(JOIN_BASE_URL)) {
                 $scope.isOnlineSponsoring = true;
@@ -199,16 +192,9 @@ angular.module('app.controllers.checkout')
                 if (S(sku).isEmpty()) {
                     if ($scope.isOnlineSponsoring) {
                         $log.debug("CheckoutController(): no SKU, redirecting back to join page");
-                        $location.path(JOIN_BASE_URL);
+                        $location.path(JOIN_BASE_URL).search('');
                     }
                 }
-
-                $scope.$watch(Cart.getFirstProductSku(), function(newVal, oldVal) {
-                    if (newVal != null) {
-                        var language = setConsultantLanguage(newVal);
-                        $log.debug("CheckoutController(): online sponsoring: setting consultant language for", sku, "to", language);
-                    }
-                });
 
                 $scope.selectProduct(sku).then(function(product) {
                     if (!debug) {
@@ -229,6 +215,13 @@ angular.module('app.controllers.checkout')
                 }, function() {
                     $log.error("CheckoutController(): online sponsoring: failed to select product, redirecting user");
                     $location.path($scope.isOnlineSponsoring ? JOIN_BASE_URL : STORE_BASE_URL);
+                });
+
+                $scope.$watch(Cart.getFirstProductSku(), function(newVal, oldVal) {
+                    if (newVal != null) {
+                        var language = setConsultantLanguage(newVal);
+                        $log.debug("CheckoutController(): online sponsoring: setting consultant language for", sku, "to", language);
+                    }
                 });
 
                 // redirect to different steps as needed on load
@@ -256,6 +249,13 @@ angular.module('app.controllers.checkout')
                 // nothing to load, done
                 $log.debug("CheckoutController(): in store");
                 $scope.APP_BASE_URL = STORE_BASE_URL;
+
+                // check for items in the cart, if there are none redirect
+                if (session.cart == null || session.cart.length == 0) {
+                    $log.debug("CheckoutController(): no items in cart, redirecting");
+                    $location.path($scope.isOnlineSponsoring ? JOIN_BASE_URL : STORE_BASE_URL).search('');
+                    return;
+                }
 
                 // on a reload, ensure we've loaded session & moved to the correct step
                 if (urlStep != null && urlStep != 'Start' && !Session.isLoggedIn()) {
