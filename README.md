@@ -105,3 +105,7 @@ Project Structure
     sprites                  - used for grunt-spritesmith to generate sprite maps (not currently used)
     styles                   - CSS files
 
+Deployment
+==========
+
+Deployment to test/stage/prod can be done through branches
