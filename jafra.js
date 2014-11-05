@@ -5,9 +5,15 @@ var SHA1 = require("crypto-js/sha1");
 var Q = require('q');
 var soap = require('soap');
 var parseString = require('xml2js').parseString;
+var fs = require('fs');
 
-var BASE_URL = "http://" + (process.env.JCS_API_URL || "189.206.20.52") + ":8091/cgidev2";
-var BASE_URL2 = "http://" + (process.env.JCS_API_URL || "189.206.20.52") + ":8091/WEBCGIPR";
+var BASE_URL = "https://" + (process.env.JCS_API_URL || "189.206.20.52") + "/cgidev2";
+var BASE_URL2 = "https://" + (process.env.JCS_API_URL || "189.206.20.52") + "/WEBCGIPR";
+
+var agentOptions = {
+    rejectUnauthorized: true,
+    secureProtocol: 'TLSv1_method'
+};
 
 var USERNAME = "CDIAPI";
 var PASSWORD = "JCSAPI";
@@ -61,10 +67,12 @@ function authenticate(email, password) {
             'Accept': 'application/json',
             'Authorization': AUTH_STRING
         },
+        agentOptions: agentOptions,
+        strictSSL: false,
         json: true
     }, function (error, response, body) {
         if (error || response.statusCode != 200) {
-            console.error("authenticate(): error", error, response.statusCode, body);
+            console.error("authenticate(): error", error, response ? response.statusCode: null, body);
             if (response.statusCode == 401) {
                 deferred.reject({
                     status: response.statusCode,
@@ -156,9 +164,11 @@ function getClient(clientId) {
             'Accept': 'application/json, text/json',
             'Authorization': AUTH_STRING
         },
+        agentOptions: agentOptions,
+        strictSSL: false,
         json: true
     }, function (error, response, body) {
-        console.log("getClient()", error, response.statusCode, body);
+        console.log("getClient()", error, response ? response.statusCode: null, body);
         if (error || response.statusCode != 200) {
             console.error("getClient(): error", error, response.statusCode, body);
             deferred.reject({
@@ -230,10 +240,12 @@ function createClient(client) {
             'Content-Type' : 'application/x-www-form-urlencoded',
             'Authorization': AUTH_STRING
         },
+        agentOptions: agentOptions,
+        strictSSL: false,
         json: true
     }, function (error, response, body) {
         if (error || response.statusCode != 201) {
-            console.error("createClient(): error", response.statusCode, body);
+            console.error("createClient(): error", response ? response.statusCode: null, body);
 
             if (body && body.statusCode && body.errorCode && body.message) {
                 console.error("createClient(): error, returning server error");
@@ -311,9 +323,11 @@ function getConsultant(consultantId) {
             'Accept': 'application/json, text/json',
             'Authorization': AUTH_STRING
         },
+        agentOptions: agentOptions,
+        strictSSL: false,
         json: true
     }, function (error, response, body) {
-        console.log("getConsultant()", error, response.statusCode, body);
+        console.log("getConsultant()", error, response ? response.statusCode: null, body);
         if (error || response.statusCode != 200) {
             console.error("getConsultant(): error", error, response.statusCode, body);
             deferred.reject({
@@ -362,6 +376,8 @@ function lookupConsultant(encrypted) {
             'Accept': 'application/json, text/json',
             'Authorization': AUTH_STRING
         },
+        agentOptions: agentOptions,
+        strictSSL: false,
         json: true
     }, function (error, response, body) {
         console.log("lookupConsultant(): body", body);
@@ -443,6 +459,8 @@ function createConsultant(encrypted) {
             'Accept': 'application/json, text/json',
             'Authorization': AUTH_STRING
         },
+        agentOptions: agentOptions,
+        strictSSL: false,
         json: true
     }, function (error, response, body) {
         if (error || response.statusCode != 201) {
@@ -522,10 +540,12 @@ function createLead(lead) {
             'Accept': 'application/json, text/json',
             'Authorization': AUTH_STRING
         },
+        agentOptions: agentOptions,
+        strictSSL: false,
         json: true
     }, function (error, response, body) {
         if (error || response.statusCode != 200) {
-            console.error("createLead(): error", response.statusCode, body);
+            console.error("createLead(): error", response ? response.statusCode: null, body);
 
             if (body && body.statusCode && body.errorCode && body.message) {
                 console.error("createLead(): error, returning server error");
@@ -589,6 +609,8 @@ function getAddresses(clientId) {
             'Accept': 'application/json, text/json',
             'Authorization': AUTH_STRING
         },
+        agentOptions: agentOptions,
+        strictSSL: false,
         json: true
     }, function (error, response, body) {
         if (error || response.statusCode != 200) {
@@ -623,6 +645,8 @@ function getAddress(clientId, addressId) {
             'Accept': 'application/json, text/json',
             'Authorization': AUTH_STRING
         },
+        agentOptions: agentOptions,
+        strictSSL: false,
         json: true
     }, function (error, response, body) {
         if (error || response.statusCode != 200) {
@@ -668,6 +692,8 @@ function createAddress(clientId, address) {
             'Accept': 'application/json, text/json',
             'Authorization': AUTH_STRING
         },
+        agentOptions: agentOptions,
+        strictSSL: false,
         json: true
     }, function (error, response, body) {
         if (error || response.statusCode != 201) {
@@ -747,6 +773,8 @@ function updateAddress(clientId, addressId, address) {
             'Accept': 'application/json, text/json',
             'Authorization': AUTH_STRING
         },
+        agentOptions: agentOptions,
+        strictSSL: false,
         json: true
     }, function (error, response, body) {
         if (error || response.statusCode != 204) {
@@ -799,6 +827,8 @@ function deleteAddress(clientId, addressId) {
             'Accept': 'application/json, text/json',
             'Authorization': AUTH_STRING
         },
+        agentOptions: agentOptions,
+        strictSSL: false,
         json: true
     }, function (error, response, body) {
         if (error || response.statusCode != 204) {
@@ -1093,10 +1123,12 @@ function getCreditCards(clientId) {
             'Accept': 'application/json, text/json',
             'Authorization': AUTH_STRING
         },
+        agentOptions: agentOptions,
+        strictSSL: false,
         json: true
     }, function (error, response, body) {
         if (error || response.statusCode != 200) {
-            console.error("getCreditCards(): error", error, response.statusCode, body);
+            console.error("getCreditCards(): error", error, response ? response.statusCode: null, body);
             deferred.reject({error: error, response: response, body: body});
         }
         //console.log("getCreditCards(): success", body);
@@ -1120,10 +1152,12 @@ function getCreditCard(clientId, creditCardId) {
             'Accept': 'application/json, text/json',
             'Authorization': AUTH_STRING
         },
+        agentOptions: agentOptions,
+        strictSSL: false,
         json: true
     }, function (error, response, body) {
         if (error || response.statusCode != 200) {
-            console.error("getCreditCard(): error", error, response.statusCode, body);
+            console.error("getCreditCard(): error", error, response ? response.statusCode: null, body);
             deferred.reject({error: error, response: response, body: body});
         }
         //console.log("getCreditCard(): success", body);
@@ -1150,6 +1184,8 @@ function createCreditCard(clientId, data) {
             'Accept': 'application/json, text/json',
             'Authorization': AUTH_STRING
         },
+        agentOptions: agentOptions,
+        strictSSL: false,
         json: true
     }, function (error, response, body) {
         if (error || response.statusCode != 201) {
@@ -1218,6 +1254,8 @@ function updateCreditCard(clientId, creditCardId, data) {
             'Accept': 'application/json, text/json',
             'Authorization': AUTH_STRING
         },
+        agentOptions: agentOptions,
+        strictSSL: false,
         json: true
     }, function (error, response, body) {
         if (error || response.statusCode != 201) {
@@ -1282,10 +1320,12 @@ function deleteCreditCard(clientId, creditCardId) {
             'Accept': 'application/json, text/json',
             'Authorization': AUTH_STRING
         },
+        agentOptions: agentOptions,
+        strictSSL: false,
         json: true
     }, function (error, response, body) {
         if (error || response.statusCode != 204) {
-            console.error("deleteCreditCard(): error", response.statusCode, body);
+            console.error("deleteCreditCard(): error", response ? response.statusCode: null, body);
 
             if (body && body.statusCode && body.errorCode && body.message) {
                 deferred.reject({
@@ -1333,9 +1373,11 @@ function getGeocodes(zipCode) {
             'Accept': 'application/json, text/json',
             'Authorization': AUTH_STRING
         },
+        agentOptions: agentOptions,
+        strictSSL: false,
         json: true
     }, function (error, response, body) {
-        console.log("getGeocodes()", error, response.statusCode, body);
+        console.log("getGeocodes()", error, response ? response.statusCode: null, body);
         if (error || response.statusCode != 200) {
             console.error("getGeocodes(): error", error, response.statusCode, body);
             deferred.reject({
@@ -1435,6 +1477,8 @@ function calculateSalesTax(data) {
             source: data.source,
             products: JSON.stringify(data.products)
         },
+        agentOptions: agentOptions,
+        strictSSL: false,
         json: true
     }, function (error, response, body) {
         console.log("getCalculateTax()", error, response ? response.statusCode: null, body);
