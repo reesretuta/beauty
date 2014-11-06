@@ -1,0 +1,17 @@
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+
+{
+  "id": 111,
+  "name": "Joe Smith",
+  "address1": "1111 Test Ln",
+  "address2": "",
+  "city": "Corona",
+  "state": "CA",
+  "zip": "92880",
+  "country": "US",
+  "phone": "555-333-2222",
+  "geocode":"123456",
+  "stateDescription":   "California",
+  "county" : "Ventura"
+}

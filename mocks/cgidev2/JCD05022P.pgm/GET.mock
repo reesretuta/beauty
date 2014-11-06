@@ -1,0 +1,11 @@
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+
+{
+  "SubTotal": 10.50,
+  "SH": 5.00,
+  "TaxRate": 10.50,
+  "TotalBeforeTax": 15.50,
+  "TaxAmount": 2.25,
+  "Total": 17.75
+}

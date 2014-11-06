@@ -1,0 +1,11 @@
+HTTP/1.1 201 OK
+Content-Type: application/json; charset=utf-8
+
+{
+  "id": 301,
+  "name": "Sandy Smith",
+  "lastFour": "3232",
+  "cardType": "mastercard",
+  "expMonth": "12",
+  "expYear": "2016"
+}

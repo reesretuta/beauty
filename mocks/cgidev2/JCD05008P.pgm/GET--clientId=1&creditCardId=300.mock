@@ -1,0 +1,11 @@
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+
+{
+  "id": 300,
+  "name": "Joe Smith",
+  "lastFour": "1111",
+  "cardType": "visa",
+  "expMonth": "12",
+  "expYear": "2015"
+}

@@ -4,7 +4,9 @@
 // call the packages we need
 require('newrelic');
 var init = require('./config/init')();
-config = require('./config/config');
+var config = require('./config/config');
+
+var env = process.env.NODE_ENV || "development";
 
 var express = require('express');
 var methodOverride = require('method-override');
@@ -17,16 +19,18 @@ var MongoStore = require('connect-mongo')(session);
 var jafraClient = require('./jafra');
 var Types = require("mongoose").Types;
 var S = require("string");
+var http = require('http');
+var mockserver = require('mockserver');
 
 // configure app
 //app.use(bodyParser());
 
 var port = process.env.PORT || 8090; // set our port
+var mock_port = process.env.MOCK_PORT || 9001; // set our port
 var LEAD_PROCESSING_INTERVAL = process.env.LEAD_PROCESSING_INTERVAL || 5 * 60 * 1000; // default: 5 min
 var LEAD_MAX_AGE = process.env.LEAD_MAX_AGE || 60 * 60 * 1000; // default: 1 hour
 
 //var morgan = require('morgan')
-var S = require('string');
 var models = require('./common/models.js');
 
 // SESSION CONFIG
@@ -49,7 +53,7 @@ var sess = {
     })
 };
 
-if (app.get('env') === 'production') {
+if (env === 'production') {
     app.set('trust proxy', 1) // trust first proxy
     sess.cookie.secure = false // serve secure cookies
 }
@@ -1135,6 +1139,11 @@ app.get('/encrypt_test.html$', function (req, res) {
 
 models.onReady(function () {
     console.log('Connected to database');
+
+    if (env === 'test') {
+        http.createServer(mockserver('./mocks')).listen(mock_port);
+        console.log('Mock API server on port ' + mock_port);
+    }
 
     // START THE SERVER
     // =============================================================================

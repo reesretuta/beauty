@@ -1,0 +1,15 @@
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+
+{
+  "id": 5000000,
+  "email": "jsmith@gmail.com",
+  "firstName": "John",
+  "lastName": "Smith",
+  "consultantIds": [],
+  "language": "en_US",
+  "phone": "555-555-4432",
+  "dateOfBirth": "12/01/1978",
+  "creditCards": [],
+  "addresses": []
+}

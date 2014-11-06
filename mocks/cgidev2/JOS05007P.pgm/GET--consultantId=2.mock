@@ -1,0 +1,16 @@
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+
+{
+  "id": 2,
+  "email": "janesmith@gmail.com",
+  "firstName": "John",
+  "lastName": "Smith",
+  "phone": "555-555-4432",
+  "dateOfBirth": "12/01/1978",
+  "sponsorId": 1,
+  "language": "en",
+  "creditCards": [],
+  "billingAddress": {},
+  "shippingAddress": {}
+}
