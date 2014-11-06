@@ -165,8 +165,8 @@ angular.module('app.services', ['ngResource'])
         sessionService.get = function() {
             $log.debug("sessionService(): get()");
             var d = $q.defer();
-            initialized.promise.then(function(session) {
-                d.resolve(session);
+            initialized.promise.then(function() {
+                d.resolve(getLocalSession());
             });
             return d.promise;
         }
@@ -236,16 +236,13 @@ angular.module('app.services', ['ngResource'])
                     dateOfBirth: client.dateOfBirth,
                     consultantId: client.consultantId,
                     language: client.language
-                }, {}).success(function(data, status, headers, config) {
-                    $log.debug("sessionService(): createClient()", data.clientId);
+                }, {}).success(function(client, status, headers, config) {
+                    $log.debug("sessionService(): createClient()", client);
 
-                    sessionService.get().then(function(session) {
-                        $log.debug("sessionService(): createClient(): loaded session");
-                        d.resolve(session);
-                    }, function(err) {
-                        $log.error("sessionService(): createClient(): error loading session", err);
-                        d.reject(err);
-                    });
+                    var session = getLocalSession();
+                    session.client = client;
+
+                    d.resolve(session);
                 }).error(function(data, status, headers, config) {
                     //failure(data, status, headers, config);
                     $log.error("sessionService(): createClient(): error creating client", status, data);
@@ -900,6 +897,11 @@ angular.module('app.services', ['ngResource'])
             var d = $q.defer();
 
             Session.get().then(function(session) {
+                if (session.client == null) {
+                    d.reject("Can't add address, client not authenticated");
+                    return;
+                }
+
                 var clientId = session.client.id;
 
                 // save the address
@@ -924,7 +926,6 @@ angular.module('app.services', ['ngResource'])
                 $log.error("adjustedAddressService(): addAddress(): failed to save address", error);
                 d.reject('Failed to save address');
             });
-
 
             return d.promise;
         }

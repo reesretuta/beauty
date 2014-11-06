@@ -10,9 +10,13 @@ angular.module('app.controllers.checkout')
         $log.debug("CheckoutController(): params", params);
 
         var urlStep = S(params.step != null ? params.step : "Start").toString();
+        $log.debug("CheckoutController(): urlStep", urlStep);
+
         var debug = params.debug;
         $scope.debug = debug;
-        $log.debug("CheckoutController(): urlStep", urlStep);
+
+        var isGuest = params.guest == 'true' ? true : false;
+        $scope.debug = isGuest;
 
         var path = $location.path();
         $log.debug("CheckoutController(): path", path);
@@ -214,7 +218,7 @@ angular.module('app.controllers.checkout')
                     }
                 }, function() {
                     $log.error("CheckoutController(): online sponsoring: failed to select product, redirecting user");
-                    $location.path($scope.isOnlineSponsoring ? JOIN_BASE_URL : STORE_BASE_URL);
+                    $location.path($scope.isOnlineSponsoring ? JOIN_BASE_URL : STORE_BASE_URL).search('');
                 });
 
                 $scope.$watch(Cart.getFirstProductSku(), function(newVal, oldVal) {
@@ -349,9 +353,9 @@ angular.module('app.controllers.checkout')
                         $scope.salesTaxInfo = null;
 
                         if ($scope.isOnlineSponsoring) {
-                            $location.path(JOIN_BASE_URL);
+                            $location.path(JOIN_BASE_URL).search('');
                         } else {
-                            $location.path(STORE_BASE_URL);
+                            $location.path(STORE_BASE_URL).search('');
                         }
                         d.reject(error);
                     });
@@ -361,9 +365,9 @@ angular.module('app.controllers.checkout')
                     $scope.salesTaxInfo = null;
 
                     if ($scope.isOnlineSponsoring) {
-                        $location.path(JOIN_BASE_URL);
+                        $location.path(JOIN_BASE_URL).search('');
                     } else {
-                        $location.path(STORE_BASE_URL);
+                        $location.path(STORE_BASE_URL).search('');
                     }
                     d.reject(error);
                 });
@@ -373,9 +377,9 @@ angular.module('app.controllers.checkout')
                 $scope.salesTaxInfo = null;
 
                 if ($scope.isOnlineSponsoring) {
-                    $location.path(JOIN_BASE_URL);
+                    $location.path(JOIN_BASE_URL).search('');
                 } else {
-                    $location.path(STORE_BASE_URL);
+                    $location.path(STORE_BASE_URL).search('');
                 }
                 d.reject(error);
             });
@@ -724,12 +728,22 @@ angular.module('app.controllers.checkout')
                     $log.debug("CheckoutController(): selectGeocodeAndAdd(): selecting only geocode returned");
                     a.geocode = geocodes[0].GEOCODE;
                     $scope.checkoutUpdated();
-                    d.resolve(a);
+
+                    addAddressToBackend(a).then(function(aa) {
+                        d.resolve(aa);
+                    }, function(error) {
+                        d.reject(error);
+                    });
                 } else if (matchedGeocode) {
                     $log.debug("CheckoutController(): selectGeocodeAndAdd(): selecting exact match geocode");
                     a.geocode = matchedGeocode.GEOCODE;
                     $scope.checkoutUpdated();
-                    d.resolve(a);
+
+                    addAddressToBackend(a).then(function(aa) {
+                        d.resolve(aa);
+                    }, function(error) {
+                        d.reject(error);
+                    });
                 } else {
                     // display a dialog for the user to choose the correct geocode here
                     selectGeocodeModal(geocodes).then(function(result) {
@@ -747,24 +761,17 @@ angular.module('app.controllers.checkout')
 
                         if (geocode) {
                             a.geocode = geocode.GEOCODE;
+
+                            if (a.city.toUpperCase() != geocode.CITYDES && geocode.CITYDES) {
+                                a.city = geocode.CITYDES;
+                            }
                             $scope.checkoutUpdated();
 
-                            if ($scope.isOnlineSponsoring) {
-                                // online sponsoring, we have it in mem
-                                d.resolve(a);
-                            } else {
-                                // client direct, we add it
-                                Addresses.addAddress(a).then(function(address) {
-                                    $log.debug("CheckoutController(): selectGeocodeAndAdd(): address added", address);
-                                    $scope.profile.shipping = angular.copy(address);
-                                    $scope.profile.billing = angular.copy(address);
-                                    d.resolve(address);
-                                }, function(err) {
-                                    $log.error("CheckoutController(): selectGeocodeAndAdd(): failed to add address", err);
-                                    $scope.shippingAddressError = error;
-                                    d.reject(err);
-                                });
-                            }
+                            addAddressToBackend(a).then(function(aa) {
+                                d.resolve(aa);
+                            }, function(error) {
+                                d.reject(error);
+                            });
                         } else {
                             $log.error("CheckoutController(): selectGeocodeAndAdd(): empty geocode");
                             $scope.shippingAddressError = "Unable to verify address";
@@ -781,6 +788,31 @@ angular.module('app.controllers.checkout')
                 $scope.shippingAddressError = "Unable to verify address";
                 d.reject(r.errorMessage);
             });
+
+            return d.promise;
+        }
+
+        function addAddressToBackend(a) {
+            var d = $q.defer();
+
+            if ($scope.isOnlineSponsoring || isGuest) {
+                // online sponsoring, we have it in mem
+                d.resolve(a);
+            } else {
+                $log.debug("CheckoutController(): addAddressToBackend(): adding address", a);
+
+                // client direct, we add it
+                Addresses.addAddress(a).then(function(a) {
+                    $log.debug("CheckoutController(): addAddressToBackend(): address added", a);
+                    $scope.profile.shipping = angular.copy(a);
+                    $scope.profile.billing = angular.copy(a);
+                    d.resolve(a);
+                }, function(error) {
+                    $log.error("CheckoutController(): addAddressToBackend(): failed to add address", error);
+                    $scope.shippingAddressError = error;
+                    d.reject(error);
+                });
+            }
 
             return d.promise;
         }
@@ -1023,8 +1055,6 @@ angular.module('app.controllers.checkout')
             $log.debug("CheckoutController(): checkoutUpdated(): checkout updated", $scope.checkout);
 
             var checkout = angular.copy($scope.checkout);
-            delete checkout.ssn;
-            delete checkout.card;
 
             Checkout.setCheckout(checkout);
         }
@@ -1034,11 +1064,11 @@ angular.module('app.controllers.checkout')
 
             if (confirmAction && $scope.isOnlineSponsoring) {
                 $log.debug("CheckoutController(): confirmAlert(): redirecting back to join page");
-                $location.path(JOIN_BASE_URL);
+                $location.path(JOIN_BASE_URL).search('');
             }
             else if (confirmAction && !$scope.isOnlineSponsoring) {
                 $log.debug("CheckoutController(): confirmAlert(): redirecting back to store page");
-                $location.path(STORE_BASE_URL);
+                $location.path(STORE_BASE_URL).search('');
             }
         }
 
@@ -1472,6 +1502,7 @@ angular.module('app.controllers.checkout')
                 } else {
                     $log.debug("CheckoutController(): addShippingAddress(): setting client shipping address", a);
 
+                    // add the shipping address
                     $scope.profile.shipping = angular.copy(a);
                     // clear the form versions
                     $scope.profile.newShippingAddress = null;
@@ -1681,100 +1712,6 @@ angular.module('app.controllers.checkout')
             return d.promise;
         }
 
-        function selectGeocodeAndAdd(a) {
-            var d = $q.defer();
-
-            // add name here since we're not allowing user to input a name for shipping address manually;
-            a.name = $scope.profile.firstName + " " + $scope.profile.lastName;
-            a.phone = $scope.profile.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');;
-
-            // check the zip for geocode for taxes
-            Geocodes.query({zipCode: a.zip}).$promise.then(function(geocodes) {
-                $log.debug("CheckoutController(): selectGeocodeAndAdd(): got geocodes", geocodes);
-
-                // close any previous modals (e.g. address edit from review page)
-                angular.element('.modal').modal('hide');
-
-                // see if we have any exact matches
-                var matchedGeocode = null;
-                for (var i=0; i < geocodes.length; i++) {
-                    var zip = geocodes[i].ZIPCODE;
-                    var city = geocodes[i].CITYDES;
-
-                    if (a.zip == zip && a.city != null && a.city.toUpperCase() == city) {
-                        matchedGeocode = geocodes[i];
-                    }
-                }
-
-                if (geocodes.length == 1) {
-                    $log.debug("CheckoutController(): selectGeocodeAndAdd(): selecting only geocode returned");
-                    a.geocode = geocodes[0].GEOCODE;
-                    $scope.checkoutUpdated();
-                    d.resolve(a);
-                } else if (matchedGeocode) {
-                    $log.debug("CheckoutController(): selectGeocodeAndAdd(): selecting exact match geocode");
-                    a.geocode = matchedGeocode.GEOCODE;
-                    $scope.checkoutUpdated();
-                    d.resolve(a);
-                } else {
-                    // display a dialog for the user to choose the correct geocode here
-                    selectGeocodeModal(geocodes).then(function(result) {
-                        $log.debug("CheckoutController(): selectGeocodeAndAdd(): geocode selection dialog closed", result);
-
-                        var geocode = result.geocode;
-                        var canceled = result.canceled;
-
-                        if (canceled) {
-                            $log.error("CheckoutController(): selectGeocodeAndAdd(): geocode selection dialog canceled");
-                            $scope.shippingAddressError = "Must select an address";
-                            d.reject('Must select an address');
-                            return;
-                        }
-
-                        if (geocode) {
-                            a.geocode = geocode.GEOCODE;
-
-                            if (a.city.toUpperCase() != geocode.CITYDES && geocode.CITYDES) {
-                                a.city = geocode.CITYDES;
-                            }
-                            $scope.checkoutUpdated();
-
-                            if ($scope.isOnlineSponsoring) {
-                                // online sponsoring, we have it in mem
-                                d.resolve(a);
-                            } else {
-                                // client direct, we add it
-                                Addresses.addAddress(a).then(function(address) {
-                                    $log.debug("CheckoutController(): selectGeocodeAndAdd(): address added", address);
-                                    $scope.profile.shipping = angular.copy(address);
-                                    $scope.profile.billing = angular.copy(address);
-                                    d.resolve(address);
-                                }, function(err) {
-                                    $log.error("CheckoutController(): selectGeocodeAndAdd(): failed to add address", err);
-                                    $scope.shippingAddressError = error;
-                                    d.reject(err);
-                                });
-                            }
-                        } else {
-                            $log.error("CheckoutController(): selectGeocodeAndAdd(): empty geocode");
-                            $scope.shippingAddressError = "Unable to verify address";
-                            d.reject('Unable to verify address');
-                        }
-                    }, function(err) {
-                        $log.error("CheckoutController(): selectGeocodeAndAdd(): failed to select geocode", err);
-                        $scope.shippingAddressError = "Unable to verify address";
-                        d.reject(err);
-                    });
-                }
-            }, function (r) {
-                $log.error("CheckoutController(): selectGeocodeAndAdd(): error looking up geocode", r);
-                $scope.shippingAddressError = "Unable to verify address";
-                d.reject(r.errorMessage);
-            });
-
-            return d.promise;
-        }
-
         $scope.removeAddress = function(addressId) {
             var d = $q.defer();
 
@@ -1839,7 +1776,7 @@ angular.module('app.controllers.checkout')
             });
             if (S($location.path()).startsWith(STORE_BASE_URL)) {
                 $log.debug("CheckoutController(): finished(): redirecting back to store page");
-                $location.path(STORE_BASE_URL);
+                $location.path(STORE_BASE_URL).search('');
                 $location.replace();
             }
         }

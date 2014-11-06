@@ -287,10 +287,38 @@ function createClient(client) {
         // we should get clientId back
         console.log("createClient(): returning success");
         var clientId = body.clientId;
-        deferred.resolve({
-            status: 201,
-            result: body
+
+        // fetch the client information & return
+        getClient(clientId).then(function(r) {
+            if (r.status != 200) {
+                console.error("server: createClient(): failed to load client", r.result);
+                deferred.reject({
+                    status: 500,
+                    result: {
+                        statusCode: 500,
+                        errorCode: "failedToLoadClient",
+                        errorMessage: "Failed to lookup newly created client"
+                    }
+                });
+                return;
+            }
+
+            deferred.resolve({
+                status: 201,
+                result: r.result
+            });
+        }, function (r) {
+            console.error("server: createClient(): failed to load client", r.result);
+            deferred.reject({
+                status: 500,
+                result: {
+                    statusCode: 500,
+                    errorCode: "failedToLoadClient",
+                    errorMessage: "Failed to lookup newly created client"
+                }
+            });
         });
+
     });
 
     return deferred.promise;
