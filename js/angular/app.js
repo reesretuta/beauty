@@ -96,7 +96,14 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
                 return promise.then(success, error);
             }
         }];
-        $httpProvider.responseInterceptors.push(interceptor);
+
+        var path = window.location.pathname;
+        if (path && path.match(STORE_BASE_URL)) {
+            console.log("setting up session expiration listener");
+            $httpProvider.responseInterceptors.push(interceptor);
+        } else {
+            console.log("NOT setting up session expiration listener");
+        }
 
 //        $provide.decorator( '$log', function( $delegate ) {
 //            // Save the original $log.debug()
