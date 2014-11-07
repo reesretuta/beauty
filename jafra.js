@@ -6,9 +6,10 @@ var Q = require('q');
 var soap = require('soap');
 var parseString = require('xml2js').parseString;
 var fs = require('fs');
+var config = require('./config/config');
 
-var BASE_URL = "https://" + (process.env.JCS_API_URL || "189.206.20.52") + "/cgidev2";
-var BASE_URL2 = "https://" + (process.env.JCS_API_URL || "189.206.20.52") + "/WEBCGIPR";
+var BASE_URL = "https://" + (process.env.JCS_API_URL || config.jcs_api_ip) + "/cgidev2";
+var BASE_URL2 = "https://" + (process.env.JCS_API_URL || config.jcs_api_ip) + "/WEBCGIPR";
 
 var agentOptions = {
     rejectUnauthorized: true,
