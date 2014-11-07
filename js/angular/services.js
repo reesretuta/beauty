@@ -142,12 +142,13 @@ angular.module('app.services', ['ngResource'])
 
             // fetch the existing
             $rootScope.session = localStorageService.get('session');
-            if ($rootScope.session == null) {
-                $rootScope.session = {};
-            }
 
             // bind
             $rootScope.sessionUnbind = localStorageService.bind($rootScope, 'session');
+
+            if ($rootScope.session == null) {
+                $rootScope.session = {};
+            }
 
             // check the server session cookie against the local cookie ID & reset cart if not matching
             if ($rootScope.session.cid != $cookies["connect.sid"] || $rootScope.session == null) {
