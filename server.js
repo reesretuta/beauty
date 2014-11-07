@@ -4,7 +4,9 @@
 // call the packages we need
 require('newrelic');
 var init = require('./config/init')();
-config = require('./config/config');
+var config = require('./config/config');
+
+var env = process.env.NODE_ENV || "development";
 
 var express = require('express');
 var methodOverride = require('method-override');
