@@ -5,6 +5,7 @@ http-server
 nbproject
 bak
 dump
+local
 
 *.log
 *.prefs
