@@ -108,4 +108,31 @@ Project Structure
 Deployment
 ==========
 
-Deployment to test/stage/prod can be done through branches
+Deployment to test/stage/prod can be done through branches.  NOT yet, bitbucket
+doesn't trigger hooks for merges yet.  To deploy, ensure you have the following
+remotes:
+
+    heroku  git@heroku.jafra:jafratest.git (fetch)
+    heroku  git@heroku.jafra:jafratest.git (push)
+    heroku-lvi  git@heroku.jafra:jafra.git (fetch)
+    heroku-lvi  git@heroku.jafra:jafra.git (push)
+    heroku-prod git@heroku.jafra:jafra-prod.git (fetch)
+    heroku-prod git@heroku.jafra:jafra-prod.git (push)
+    origin  https://user@bitbucket.org/lavisual/jafra.git (fetch)
+    origin  https://user@bitbucket.org/lavisual/jafra.git (push)
+
+You can add a remote like so:
+
+    git remote add heroku-lvi git@heroku.work:jafra.git
+
+With proper keys configured in ~/.ssh/config and that key added to each of the
+repositories your user should have permission to.  Example:
+
+    Host heroku.jafra
+    HostName heroku.com
+    IdentityFile "/Users/arimus/.ssh/identity.heroku.lavisual"
+    IdentitiesOnly yes
+
+Then simply push to the correct remote, like so:
+
+    git push heroku-lvi master
