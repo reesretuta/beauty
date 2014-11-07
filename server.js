@@ -1145,6 +1145,8 @@ models.onReady(function () {
         console.log('Mock API server on port ' + mock_port);
     }
 
+    console.log('Using JCS API IP ', config.jcs_api_ip);
+
     // START THE SERVER
     // =============================================================================
     app.listen(port);
