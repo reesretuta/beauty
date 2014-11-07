@@ -8,11 +8,11 @@ exports.config = {
   /**
    * Array of application names.
    */
-  app_name : ['Jafra'],
+  app_name : ['Jafra Dev'],
   /**
    * Your New Relic license key.
    */
-  license_key : 'c5aec5019df51a65e365aa965f56a58777a8a079',
+  license_key : 'cb8be9e638d707d85e18c3ca12f3aacf5341d58',
   logging : {
     /**
      * Level at which to log. 'trace' is most useful to New Relic when diagnosing
