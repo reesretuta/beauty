@@ -1491,13 +1491,13 @@ function calculateSalesTax(data) {
     console.log("getCalculateTax()", data);
     var deferred = Q.defer();
 
-    request.get({
+    request.post({
         url: GET_SALES_TAX_URL,
         headers: {
             'Accept': 'application/json, text/json',
             'Authorization': AUTH_STRING
         },
-        qs: {
+        form: {
             clientId: data.clientId,
             consultantId: data.consultantId,
             geocode: data.geocode,
