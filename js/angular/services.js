@@ -140,6 +140,9 @@ angular.module('app.services', ['ngResource'])
         function initialize() {
             $log.debug("sessionService(): initialize()");
 
+            // fetch the existing
+            $rootScope.session = localStorageService.get('session');
+
             // bind
             $rootScope.sessionUnbind = localStorageService.bind($rootScope, 'session');
 
@@ -284,13 +287,16 @@ angular.module('app.services', ['ngResource'])
         sessionService.getLanguage = function() {
             var session = getLocalSession();
             //$log.debug("sessionService(): getLanguage(): session", session);
-            return session.language;
+            if (session) {
+                return session.language;
+            } else {
+                return "en_US";
+            }
         }
 
         sessionService.setLanguage = function(language) {
-            initialized.promise.then(function() {
-                var session = getLocalSession();
-                session.set('language', language);
+            initialized.promise.then(function(session) {
+                sessionService.set('language', language);
                 $log.debug("sessionService(): setLanguage(): language set");
             });
         }

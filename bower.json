@@ -10,20 +10,20 @@
     "**/.*"
   ],
   "dependencies": {
-    "angular": "1.2.24",
-    "bootstrap": "https://github.com/angular-ui/bootstrap.git#0cc532d240e090e69cb6ccfee83a88ae778ced01",
+    "angular": "1.2.26",
+    "bootstrap": "3.1.1",
     "jquery-resize": "*",
     "jquery-migrate": "1.2.1",
     "jquery": "1.11.0",
     "less.js": "1.7.0",
     "font-awesome": "~4.0.3",
-    "angular-animate": "1.2.24",
-    "angular-cookies": "1.2.24",
-    "angular-loader": "1.2.24",
-    "angular-resource": "1.2.24",
-    "angular-route": "1.2.24",
-    "angular-sanitize": "1.2.24",
-    "angular-touch": "1.2.24",
+    "angular-animate": "1.2.26",
+    "angular-cookies": "1.2.26",
+    "angular-loader": "1.2.26",
+    "angular-resource": "1.2.26",
+    "angular-route": "1.2.26",
+    "angular-sanitize": "1.2.26",
+    "angular-touch": "1.2.26",
     "HashKeyCopier": "https://github.com/bennadel/HashKeyCopier.git#a7c731fb2768d95eb249fb779589563dd44e5b74",
     "angular-ui-utils": "0ce930d5228f3671a3dfe2c7b7146627111ab33e",
     "angular-bindonce": "~0.2.1",
@@ -41,13 +41,16 @@
     "allmighty-autocomplete": "2eb28fea0ad30bf3768e566919083cad9b4d562a",
     "openpgpjs": "~0.7.2",
     "requirejs": "~2.1.15",
-    "angular-local-storage": "~0.1.4"
+    "angular-local-storage": "~0.1.4",
+    "angular-bootstrap": "0.11.2"
   },
   "devDependencies": {
-    "angular-mocks": "1.2.24"
+    "angular-mocks": "1.2.26"
   },
   "resolutions": {
-    "bootstrap": ">=3.0.0",
-    "angular-ui-utils": "0ce930d5228f3671a3dfe2c7b7146627111ab33e"
+    "bootstrap": "3.1.1",
+    "angular-ui-utils": "0ce930d5228f3671a3dfe2c7b7146627111ab33e",
+    "angular": "1.2.26",
+    "angular-bootstrap": "0.11.2"
   }
 }
