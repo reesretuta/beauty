@@ -1088,6 +1088,17 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
+// serve up proper PGP dynamically for dev/prod
+app.get('/js/pgp_key.js', function(req, res) {
+    try {
+        res.sendfile(basepath + '/' + config.pgp_key_file);
+    } catch (ex) {
+        console.error("Failed to open PGP key", ex);
+        res.status(404);
+        res.end();
+    }
+});
+
 // Web application
 app.use('/img', express.static(basepath + '/img'));
 app.use('/video', express.static(basepath + '/video'));
