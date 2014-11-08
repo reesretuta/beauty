@@ -1122,7 +1122,7 @@ app.use('/api', router);
 // handle redirects
 app.get('*', function (req, res) {
     if (S(req.hostname).endsWith("joinjafra.com")) {
-        res.redirect("https://usa.jafra.co/join/");
+        res.redirect("https://usa.jafra.com/join/");
         res.end();
         return;
     }
