@@ -1127,13 +1127,16 @@ app.use('/api', router);
 //});
 
 // handle redirects
-app.get('*', function (req, res) {
-    console.log("request for hostname", req.hostname);
+app.get('*', function (req, res, next) {
+    //console.log("request for hostname", req.hostname);
     if (req.hostname && S(req.hostname).endsWith("joinjafra.com")) {
+        console.log("redirecting joinjafra.com to usa.jafra.com");
         res.redirect("https://usa.jafra.com/join/");
         res.end();
         return;
     }
+
+    next();
 });
 
 app.get('/$', function (req, res) {
