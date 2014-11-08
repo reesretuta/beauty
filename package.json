@@ -39,6 +39,7 @@
     "basic-auth": "^1.0.0",
     "newrelic": "^1.13.0",
     "xml2js": "^0.4.4",
-    "mockserver": "^0.10.0"
+    "mockserver": "^0.10.0",
+    "nodetime": "^0.8.15"
   }
 }
