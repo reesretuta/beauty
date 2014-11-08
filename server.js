@@ -1119,15 +1119,17 @@ app.use('/api', router);
 //    res.end();
 //});
 
-app.get('/$', function (req, res) {
-    console.log('root');
-
+// handle redirects
+app.get('*', function (req, res) {
     if (S(req.hostname).endsWith("joinjafra.com")) {
-        res.redirect();
-        res.end("usa.jafra.com");
+        res.redirect("https://usa.jafra.co/join/");
+        res.end();
         return;
     }
+});
 
+app.get('/$', function (req, res) {
+    console.log('root');
     if (req.headers['user-agent'].indexOf("MSIE") >= 0) {
         var myNav = req.headers['user-agent'];
         var IEbrowser = parseInt(myNav.split('MSIE')[1])
