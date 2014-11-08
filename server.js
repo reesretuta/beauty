@@ -1121,6 +1121,13 @@ app.use('/api', router);
 
 app.get('/$', function (req, res) {
     console.log('root');
+
+    if (S(req.hostname).endsWith("joinjafra.com")) {
+        res.redirect();
+        res.end("usa.jafra.com");
+        return;
+    }
+
     if (req.headers['user-agent'].indexOf("MSIE") >= 0) {
         var myNav = req.headers['user-agent'];
         var IEbrowser = parseInt(myNav.split('MSIE')[1])
