@@ -10,21 +10,21 @@
       </thead>
       <tbody>
       <!-- cart items -->
-      <tr ng-hide="cartLoaded">
+      <tr ng-show="cart == null || cart.length == 0">
         <td colspan="3">
           <div class="cart-item-info">
             Loading cart...
           </div>
         </td>
       </tr>
-      <tr ng-show="cartLoaded">
+      <tr ng-show="cart == null || cart.length == 0">
         <td colspan="3">
-          <div class="cart-item-info" ng-if="items.length == 0">
+          <div class="cart-item-info" ng-if="cart.length == 0">
             There are currently no items in your cart.
           </div>
         </td>
       </tr>
-      <tr ng-show="cartLoaded" ng-repeat="item in items" ng-if="items.length > 0">
+      <tr ng-show="cart != null && cart.length > 0" ng-repeat="item in cart">
         <td>
           <div class="cart-item-info">
             <a ng-href="{{STORE_BASE_URL}}/products/{{item.product.sku}}#top" class="col-xs-5 col-sm-3 col-md-2 col-lg-2"
@@ -116,7 +116,7 @@
   <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
     <a href="javascript:history.go(-1)" class="btn btn-link"><i class="fa fa-angle-left"></i> Continue Shopping</a>
   </div>
-  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" ng-if="items.length > 0">
+  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" ng-if="cart.length > 0">
     <a href="{{STORE_BASE_URL}}/checkout#top" class="btn btn-primary btn-lg pull-right">Checkout Now <i class="fa fa-angle-right"></i></a>
   </div>
 </div><!-- /row -->

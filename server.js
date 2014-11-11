@@ -108,37 +108,104 @@ var router = express.Router();
 //});
 
 
+// pre-load categories so we can do some child category searches
+var categoryToChildren = {};
+
+models.Category.find({parent: { $exists: false }, onHold: false, showInMenu: true }).sort('rank').limit(100)
+.populate({
+    path: 'children',
+    match: {onHold: false, showInMenu: true}
+}).exec(function (err, categories) {
+    if (err) {
+        console.error("error loading categories", err);
+        return;
+    }
+
+    var opts = {
+        path: 'children.children',
+        model: 'Category',
+        match: { onHold: false, showInMenu: true }
+    }
+
+    // populate all levels
+    models.Category.populate(categories, opts, function (err, categories) {
+        opts = {
+            path: 'children.children.children',
+            model: 'Category',
+            match: { onHold: false, showInMenu: true }
+        }
+
+        // populate all levels
+        models.Category.populate(categories, opts, function (err, categories) {
+            //console.log(JSON.stringify(categories));
+
+            for (var i=0; i < categories.length; i++) {
+                var category = categories[i];
+                //console.log("category", category._id);
+                var ids = getCategoryAndChildren(category);
+                //console.log("children", ids);
+                console.log("top level category", category._id, ids);
+                categoryToChildren[category._id] = ids;
+                //console.log("category sub-categories", category._id, ids);
+            }
+
+            console.log("categoryToChildren", categoryToChildren);
+        })
+    })
+});
+
+function getCategoryAndChildren(category) {
+    console.log("processing category", category._id);
+    var all = [];
+
+    // add this category
+    all.push(category._id);
+
+    var children = category.children ? category.children : [];
+    for (var i=0; i < children.length; i++) {
+        var child = children[i];
+        console.log("processing category child", child._id);
+        var childIds = getCategoryAndChildren(child);
+        console.log("processing category child", child._id, childIds);
+        categoryToChildren[child._id] = childIds;
+        all = all.concat(childIds);
+    }
+
+    return all;
+}
+
 // CATEGORIES
 // ----------------------------------------------------
 router.route('/categories')// get all the categories
     .get(function (req, res) {
         console.log("getting category list");
-        models.Category.find({parent: { $exists: false }, onHold: false, showInMenu: true }).sort('rank').limit(100).populate({
+        models.Category.find({parent: { $exists: false }, onHold: false, showInMenu: true }).sort('rank').limit(100)
+        .populate({
             path: 'children',
-            match: { onHold: false, showInMenu: true }
+            match: {onHold: false, showInMenu: true}
         }).exec(function (err, categories) {
-                if (err) {
-                    res.send(err);
-                }
+            if (err) {
+                res.send(err);
+            }
 
-                var opts = {
-                    path: 'children.children',
+            var opts = {
+                path: 'children.children',
+                model: 'Category',
+                match: { onHold: false, showInMenu: true }
+            }
+
+            // populate all levels
+            models.Category.populate(categories, opts, function (err, categories) {
+                opts = {
+                    path: 'children.children.children',
                     model: 'Category',
                     match: { onHold: false, showInMenu: true }
                 }
 
-                // populate all levels
-                models.Category.populate(categories, opts, function (err, categories) {
-                    opts = {
-                        path: 'children.children.children',
-                        model: 'Category',
-                        match: { onHold: false, showInMenu: true }
-                    }
-
-                    console.log("returning", categories.length, "categories");
-                    res.json(categories);
-                })
-            });
+                console.log("returning", categories.length, "categories");
+                res.json(categories);
+            })
+        });
     })
 
 router.route('/categories/:category_id')// get the category with that id
@@ -187,27 +254,27 @@ router.route('/products')
         var categoryId = req.query.categoryId;
         var productIds = req.query.productIds;
 
+        var now = new Date();
+
         if (searchString != null && !S(searchString).isEmpty()) {
             console.log("searching for product by string", searchString);
             //var re = new RegExp(searchString);
             models.Product.find({ $text: { $search: "" + searchString } })//.or([{ 'name': { $regex: re }}, { 'description': { $regex: re }}, { 'usage': { $regex: re }}, { 'ingredients': { $regex: re }}])
                 .and([
                     {masterStatus: "A", onHold: false, searchable: true},
-                    {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
+                    {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
+                    {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
                 ]).sort('name').limit(20).populate({
                     path: 'upsellItems.product youMayAlsoLike.product',
                     model: 'Product',
                     match: { $and: [
                         {masterStatus: "A", onHold: false},
-                        {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
+                        {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
+                        {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
                     ]}
                 }).populate({
                     path: 'contains.product',
-                    model: 'Product'//,
-//                    match: { $and: [
-//                        {masterStatus: "A"},
-//                        {$or: [{masterType: "R"}, {masterType: "B"}, {masterType: {$exists: false}, type:"group"}]}
-//                    ]}
+                    model: 'Product'
                 }).populate({
                     path: 'kitGroups.kitGroup',
                     model: 'KitGroup'
@@ -220,6 +287,7 @@ router.route('/products')
                     ]}
                 }).exec(function (err, products) {
                     if (err) {
+                        console.log("error getting products by string", err);
                         res.send(err);
                         return;
                     }
@@ -228,12 +296,13 @@ router.route('/products')
                     res.json(products);
                 });
         } else if (categoryId != null && !S(categoryId).isEmpty()) {
-            console.log("searching for product by category", categoryId);
+            console.log("searching for products by category", categoryId);
             var id = parseInt(categoryId);
             models.Product.find({
                 $and: [
-                    {categories: id, masterStatus: "A", onHold: false},
-                    {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
+                    {categories: {$in: categoryToChildren[categoryId]}, masterStatus: "A", onHold: false},
+                    {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
+                    {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
                 ]
             }).sort('name')
             .limit(20)
@@ -242,15 +311,12 @@ router.route('/products')
                 model: 'Product',
                 match: { $and: [
                     {masterStatus: "A", onHold: false},
-                    {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
+                    {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
+                    {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
                 ]}
             }).populate({
                 path: 'contains.product',
-                model: 'Product'//,
-//                match: { $and: [
-//                    {masterStatus: "A"},
-//                    {$or: [{masterType: "R"}, {masterType: "B"}, {masterType: {$exists: false}, type:"group"}]}
-//                ]}
+                model: 'Product'
             }).populate({
                 path: 'kitGroups.kitGroup',
                 model: 'KitGroup'
@@ -263,8 +329,12 @@ router.route('/products')
                 ]}
             }).exec(function (err, products) {
                 if (err) {
+                    console.log("error getting products by category", err);
                     res.send(err);
+                    return;
                 }
+
+                products = products ? products : [];
 
                 console.log("returning", products.length, "products");
                 res.json(products);
@@ -278,22 +348,21 @@ router.route('/products')
             models.Product.find({
                 $and: [
                     {_id: { $in: productIds }, masterStatus: "A", onHold: false},
-                    {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
+                    {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
+                    {"prices.effectiveStartDate":{$lte: Date.now}},
+                    {"prices.effectiveEndDate":{$gte: Date.now}}
                 ]
             }).sort('name').limit(20).populate({
                 path: 'upsellItems.product youMayAlsoLike.product',
                 model: 'Product',
                 match: { $and: [
                     {masterStatus: "A", onHold: false},
-                    {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
+                    {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
+                    {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
                 ]}
             }).populate({
                 path: 'contains.product',
-                model: 'Product'//,
-//                match: { $and: [
-//                    {masterStatus: "A"},
-//                    {$or: [{masterType: "R"}, {masterType: "B"}, {masterType: {$exists: false}, type:"group"}]}
-//                ]}
+                model: 'Product'
             }).populate({
                 path: 'kitGroups.kitGroup',
                 model: 'KitGroup'
@@ -306,7 +375,9 @@ router.route('/products')
                 ]}
             }).exec(function (err, products) {
                 if (err) {
+                    console.log("error getting products by ID", err);
                     res.send(err);
+                    return;
                 }
 
                 console.log("returning", products.length, "products");
@@ -314,20 +385,23 @@ router.route('/products')
             });
         } else {
             console.log("getting product list");
-            models.Product.find({masterStatus: "A", masterType: "R", onHold: false}).sort('name').limit(20).populate({
+            models.Product.find({
+                $and: [
+                    {masterStatus: "A", onHold: false},
+                    {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
+                    {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
+                ]
+            }).sort('name').limit(20).populate({
                 path: 'upsellItems.product youMayAlsoLike.product',
                 model: 'Product',
                 match: { $and: [
                     {masterStatus: "A", onHold: false},
-                    {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
+                    {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
+                    {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
                 ]}
             }).populate({
-                    path: 'contains.product',
-                    model: 'Product'//,
-//                    match: { $and: [
-//                        {masterStatus: "A"},
-//                        {$or: [{masterType: "R"}, {masterType: "B"}, {masterType: {$exists: false}, type:"group"}]}
-//                    ]}
+                path: 'contains.product',
+                model: 'Product'
             }).populate({
                 path: 'kitGroups.kitGroup',
                 model: 'KitGroup'
@@ -340,7 +414,9 @@ router.route('/products')
                 ]}
             }).exec(function (err, products) {
                 if (err) {
+                    console.log("error getting products", err);
                     res.send(err);
+                    return;
                 }
 
                 console.log("returning", products.length, "products");
@@ -355,60 +431,46 @@ router.route('/products/:productId')
     // get the product with that id
     .get(function (req, res) {
         console.log("getting product", req.params);
+
         var now = new Date();
 
-        models.Product.find({ _id: req.params.productId, masterStatus: "A", onHold: false})
-        .or([
-            {masterType: "R"}, {masterType: {$exists: false}, type:"group"}//,
-//            {$and: [
-//                {"prices.startDate":{$elemMatch:{$lte:now}}},
-//                {"prices.endDate":{$elemMatch:{$gte:now}}}
-//            ]}
-        ])
-        .exec(function (err, products) {
+        models.Product.find({
+            $and: [
+                {_id: req.params.productId, masterStatus: "A", onHold: false},
+                {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
+                {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
+            ]
+        })
+        .populate({
+            path: 'upsellItems.product youMayAlsoLike.product',
+            model: 'Product',
+            match: { $and: [
+                {masterStatus: "A", onHold: false},
+                {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
+                {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
+            ]}
+        }).populate({
+            path: 'contains.product',
+            model: 'Product'
+        }).populate({
+            path: 'kitGroups.kitGroup',
+            model: 'KitGroup'
+        }).populate({
+            path: 'kitGroups.kitGroup.components.product',
+            model: 'Product',
+            match: { $and: [
+                {masterStatus: "A", onHold: false},
+                {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
+            ]}
+        }).exec(function (err, products) {
             if (err) {
-                console.error("error loading product", err);
+                console.error("error populating product", err);
                 res.send(err);
                 return;
-            } else if (products == null || products.length == 0) {
-                console.error("error loading product", products);
-                res.status(404);
-                res.end();
-                return;
             }
 
-            var opts = {
-                path: 'upsellItems.product youMayAlsoLike.product',
-                model: 'Product',
-                match: { $and: [
-                    {masterStatus: "A", onHold: false},
-                    {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
-                ]}
-            }
-
-            // populate products
-            models.Product.populate(products, opts, function (err, products) {
-                var opts = {
-                    path: 'contains.product',
-                    model: 'Product'//,
-//                    match: { $and: [
-//                        {masterStatus: "A"},
-//                        {$or: [{masterType: "R"}, {masterType: "B"}, {masterType: {$exists: false}, type:"group"}]}
-//                    ]}
-                }
-
-                models.Product.populate(products, opts, function (err, products) {
-                    var opts = {
-                        path: 'kitGroups.kitGroup'
-                    };
-
-                    // populate kit groups
-                    models.KitGroup.populate(products, opts, function (err, products) {
-                        console.log("returning product");
-                        res.json(products[0]);
-                    });
-                });
-            })
+            console.log("returning", products.length, "products");
+            res.json(products);
         });
     });
 

@@ -3,7 +3,6 @@ angular.module('app.controllers.checkout')
 
         $log.debug("CheckoutController()");
 
-        $scope.cartLoaded = false;
         $rootScope.inCheckout = true;
 
         var params = $location.search();
@@ -398,11 +397,10 @@ angular.module('app.controllers.checkout')
                 $scope.checkout = checkout;
 
                 // load the current cart
-                Cart.getItems().then(function(cart) {
+                Cart.get().then(function(cart) {
                     $log.debug("CheckoutController(): loadCheckout(): cart loaded", cart);
 
                     $scope.cart = cart;
-                    $scope.cartLoaded = true;
 
                     // redirect if cart is empty
                     if (cart == null || cart.length == 0) {
@@ -529,13 +527,17 @@ angular.module('app.controllers.checkout')
             }
         }
 
-        function selectShippingAddress(address) {
-            $log.debug("CheckoutController(): selectShippingAddress(): shipping and billing set to", address);
+        $scope.selectShippingAddress = function(address) {
+            $log.debug("CheckoutController(): selectShippingAddress(): setting shipping to", address);
             $scope.profile.shipping = angular.copy(address);
+
             // only set this if billSame is selected
             if ($scope.profile.billSame) {
+                $log.debug("CheckoutController(): selectShippingAddress(): setting billing to", address);
                 $scope.profile.billing = angular.copy(address);
             }
+
+            $log.debug("CheckoutController(): selectShippingAddress(): profile now", $scope.profile);
             $scope.checkoutUpdated();
         }
 
@@ -927,7 +929,7 @@ angular.module('app.controllers.checkout')
         }
 
         $scope.total = function() {
-            if ($scope.cartLoaded) {
+            if ($scope.cart != null || $scope.cart.length == 0) {
                 //$log.debug("CheckoutController(): total(): for items", $scope.cart)
                 return OrderHelper.getTotal($scope.cart);
             }
@@ -1075,6 +1077,16 @@ angular.module('app.controllers.checkout')
         $scope.resetCard = function() {
             $log.debug("CheckoutController(): resetCard()");
             $scope.profile.newCard = angular.copy($scope.profile.card);
+        }
+
+        $scope.selectCardAndContinue = function(ccData) {
+            $log.debug("CheckoutController(): selectCardAndContinue()", ccData);
+            $scope.profile.card = angular.copy(ccData);
+
+            $log.debug("CheckoutController(): selectCardAndContinue(): profile now", $scope.profile);
+
+            $scope.checkoutUpdated();
+            WizardHandler.wizard('checkoutWizard').goTo('Review');
         }
 
         $scope.addPaymentMethod = function() {
@@ -1454,10 +1466,23 @@ angular.module('app.controllers.checkout')
         }
 
         $scope.selectShippingAddressAndContinue = function(address) {
-            $log.debug("CheckoutController(): selectShippingAddressAndContinue(): shipping and billing set to", address);
+            $log.debug("CheckoutController(): selectShippingAddressAndContinue(): setting shipping to", address);
 
-            selectShippingAddress();
-            WizardHandler.wizard('checkoutWizard').goTo('Payment');
+            $scope.selectShippingAddress(address);
+
+            // fetch sales tax information here
+            fetchSalesTax().then(function(salesTaxInfo) {
+                $log.debug("CheckoutController(): selectShippingAddressAndContinue(): got sales tax info", salesTaxInfo);
+
+                $scope.salesTaxInfo = salesTaxInfo;
+
+                $scope.checkoutUpdated();
+                WizardHandler.wizard('checkoutWizard').goTo('Payment');
+            }, function(err) {
+                $log.error("CheckoutController(): selectShippingAddressAndContinue(): failed to get sales tax info", err);
+                $scope.orderError = "Failed to load sales tax";
+                $scope.salesTaxInfo = null;
+            });
         }
 
         $scope.addShippingAddressAndContinue = function(address) {
@@ -1471,13 +1496,12 @@ angular.module('app.controllers.checkout')
                     $scope.salesTaxInfo = salesTaxInfo;
 
                     $scope.checkoutUpdated();
+                    WizardHandler.wizard('checkoutWizard').goTo('Payment');
                 }, function(err) {
                     $log.error("CheckoutController(): addShippingAddressAndContinue(): failed to get sales tax info", err);
                     $scope.orderError = "Failed to load sales tax";
                     $scope.salesTaxInfo = null;
                 });
-
-                WizardHandler.wizard('checkoutWizard').goTo('Payment');
             });
         }
 

@@ -149,7 +149,7 @@ var productPriceSchema = Schema({
 
 var productSchema = Schema({
     "_id" : { type: String, unique: true },
-    "onHold" : String,
+    "onHold" : Boolean,
     "standardCost" : Number,
     "productClass" : Number,
     "masterStatus" : String,

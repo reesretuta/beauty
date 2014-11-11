@@ -1,5 +1,5 @@
 angular.module('app.controllers.cart')
-    .controller('CartController', function ($scope, $document, $rootScope, $compile, $routeParams, $modal, $log, $q, SalesTax, Cart, Product, HashKeyCopier, STORE_BASE_URL) {
+    .controller('CartController', function ($scope, $document, $rootScope, $compile, $routeParams, $modal, $log, $q, SalesTax, Cart, Product, OrderHelper, HashKeyCopier, STORE_BASE_URL) {
         $log.debug("CartController");
 
         //change page title
@@ -31,8 +31,6 @@ angular.module('app.controllers.cart')
                 $log.debug("CartController(): loadCart(): SKU loaded & added to cart", cart);
 
                 $scope.cart = cart;
-
-                loadProducts(cart);
             }, function(error) {
                 $log.error("CartController(): loadCart(): failed to add to cart, redirecting", error);
                 $scope.orderError = "Failed to add product to cart";
@@ -47,71 +45,13 @@ angular.module('app.controllers.cart')
 
         loadCart();
 
-        function loadProducts(cart) {
-            Cart.loadProducts(cart).then(function(items) {
-                $log.debug("CheckoutController(): loadProducts(): loaded items from cart & populated products", items);
-
-                // filter out invalid cart items
-                var list = [];
-                for (var i=0; i < items.length; i++) {
-                    var item = items[i];
-                    if (item.sku) {
-                        list.push(item);
-                    } else {
-                        $log.error("CheckoutController(): loadProducts(): removing bad item from cart");
-                    }
-                }
-
-                $scope.items = list;
-                $scope.cartLoaded = true;
-
-                if (items.length == 0) {
-                    return;
-                }
-            }, function(error) {
-                $log.error("CheckoutController(): loadProducts(): failed to populated products, redirecting", error);
-                $scope.orderError = "Failed to load cart";
-                $scope.salesTaxInfo = null;
-
-                $location.path(STORE_BASE_URL);
-                d.reject(error);
-            });
-        }
-
         $scope.total = function() {
-            var total = 0;
-
-            if ($scope.cartLoaded) {
-                $log.debug("CartController(): total(): cart loaded, calculating total");
-                angular.forEach($scope.items, function(item) {
-                    $log.debug("CartController(): total(): calculating price for item", item);
-                    var product = item.product;
-
-                    $log.debug("CartController(): total(): using product", product);
-                    if (!(Array.isArray(product.prices)) || product.prices.length == 1) {
-                        total += item.quantity * product.currentPrice.price;
-                    } else if (product.prices.length == 0) {
-                        // there is a problem, we don't have prices
-                        $log.error("CartController(): total(): there are no prices listed for this item", item);
-                    } else {
-                        var priceFound = 0;
-                        angular.forEach(product.prices, function(price) {
-                            if (price.type==2) {
-                                priceFound = 1;
-                                total += item.quantity * price.price;
-                            }
-                        })
-                        if (!priceFound) {
-                            // use the first price in the list (FIXME - need to check dates))
-                            total += item.quantity * product.currentPrice.price;
-                        }
-                    }
-
-    //                total += item.quantity * item.pricing.detailprice.price;
-                })
+            if ($scope.cart != null || $scope.cart.length == 0) {
+                //$log.debug("CheckoutController(): total(): for items", $scope.cart)
+                return OrderHelper.getTotal($scope.cart);
             }
 
-            return total;
+            return 0;
         }
 
         $scope.changeClass = function (options) {

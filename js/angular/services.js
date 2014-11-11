@@ -413,14 +413,29 @@ angular.module('app.services', ['ngResource'])
     .factory('Cart', function ($rootScope, $log, $timeout, $q, STORE_BASE_URL, Session, Product, growlNotifications) {
         var cartService = {};
 
-        cartService.get = function() {
+        cartService.get = function(noLoadProducts) {
             var d = $q.defer();
 
             Session.waitForInitialization().then(function(session) {
                 //$log.debug("cartService(): getCart()", session.cart);
-                d.resolve(session.cart);
+
+                if (noLoadProducts == null || noLoadProducts == false) {
+                    $log.debug("cartService().get(): loading products for cart");
+
+                    // load the project for the cart items
+                    cartService.loadProducts(session.cart).then(function(items) {
+                        $log.debug("cartService().get(): loaded items from cart & populated products", items);
+
+                        d.resolve(session.cart);
+                    }, function(error) {
+                        $log.error("cartService().get(): failed to populated products", error);
+                        d.reject(error);
+                    })
+                } else {
+                    d.resolve(session.cart);
+                }
             }, function(error) {
-                $log.error("cartService(): getCart(): error", error);
+                $log.error("cartService(): get(): error", error);
                 d.reject(error);
             });
 
@@ -463,7 +478,8 @@ angular.module('app.services', ['ngResource'])
         cartService.getItemCount = function() {
             var d = $q.defer();
 
-            var cart = cartService.get().then(function(cart) {
+            // load cart without product fetching to get count
+            var cart = cartService.get(true).then(function(cart) {
                 var count = 0;
                 angular.forEach(cart, function(cartItem) {
                     count += parseInt(cartItem.quantity);
@@ -496,46 +512,13 @@ angular.module('app.services', ['ngResource'])
             return d.promise;
         }
 
-        cartService.getItems = function() {
-            var d = $q.defer();
-
-            Session.get().then(function(session) {
-                $log.debug("cartService().getItems(): loaded session with cart", session.cart);
-                // load the project for the cart items
-                cartService.loadProducts(session.cart).then(function(items) {
-                    $log.debug("cartService().getItems(): loaded items from cart & populated products", items);
-
-                    // filter out invalid cart items
-                    var list = [];
-                    for (var i=0; i < items.length; i++) {
-                        var item = items[i];
-                        if (item.sku) {
-                            list.push(item);
-                        } else {
-                            $log.error("removing bad item from cart");
-                        }
-                    }
-
-                    d.resolve(list);
-                }, function(error) {
-                    $log.error("cartService().getItems(): failed to populated products", error);
-                    d.reject(error);
-                })
-            }, function(error) {
-                $log.error("cartService().getItems(): failed to get session to get cart items", error);
-                d.reject(error);
-            });
-
-            return d.promise;
-        };
-
         cartService.addToCart = function(item) {
             $log.debug("cartService(): addToCart(): adding", item);
             var d = $q.defer();
 
             $rootScope.adding = true;
 
-            cartService.get().then(function(cart) {
+            cartService.get(true).then(function(cart) {
                 $log.debug("cartService(): addToCart()", cart, item);
 
                 // check the cart for matching items, so we can update instead of add
@@ -572,8 +555,20 @@ angular.module('app.services', ['ngResource'])
 
                 var startTime = new Date().getTime();
 
-                // in case we go back async on this at some point
-                d.resolve(cart);
+                if (!updated) {
+                    // load the products since there are now new items
+                    cartService.loadProducts(cart).then(function(items) {
+                        $log.debug("cartService().get(): loaded items from cart & populated products", items);
+
+                        d.resolve(cart);
+                    }, function(error) {
+                        $log.error("cartService().get(): failed to populated products", error);
+                        d.reject(error);
+                    })
+                } else {
+                    // just updated the cart, don't need to reload products
+                    d.resolve(cart);
+                }
 
                 if (new Date().getTime() - startTime < 1500) {
                     // wait until we've had 1500ms pass
@@ -1231,7 +1226,7 @@ angular.module('app.services', ['ngResource'])
                     type: 'product',
                     name: product.name,
                     id: product.id,
-                    url: '/products/' + product.id,
+                    url: '/shop/products/' + product.id,
                     item: product
                 });
             } else if (list == null) {
@@ -1243,7 +1238,7 @@ angular.module('app.services', ['ngResource'])
                     type: 'category',
                     name: category.name,
                     id: category.id,
-                    url: '/products?category=' + category.id,
+                    url: '/shop/products?category=' + category.id,
                     item: category
                 });
                 return buildPath(category.parentcategory, product, list);
@@ -1280,9 +1275,9 @@ angular.module('app.services', ['ngResource'])
                 };
                 newCrumb.label = crumb.name;
                 if (crumb.type == 'category') {
-                    newCrumb.path = '/products?category=' + crumb.id;
+                    newCrumb.path = '/shop/products?category=' + crumb.id;
                 } else if (crumb.type == 'product') {
-                    newCrumb.path = '/products/' + crumb.id;
+                    newCrumb.path = '/shop/products/' + crumb.id;
                 }
                 newCrumbs.push(newCrumb);
             });

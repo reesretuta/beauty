@@ -27,11 +27,14 @@
           </tr>
           </thead>
           <tbody>
-          <tr ng-repeat="item in items">
+          <tr ng-repeat="item in cart">
             <td>{{item.quantity}}</td>
             <td>
               <p class="confirmation-description">
-                <li class="dropdown">
+                <div ng-if="!isOnlineSponsoring">
+                  <span ng-bind-html="session.language=='en_US' ? item.product.name : item.product.name_es_US | unsafe"></span>
+                </div>
+                <li class="dropdown" ng-if="isOnlineSponsoring">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span ng-bind-html="session.language=='en_US' ? item.product.name : item.product.name_es_US | unsafe"></span> <span class="caret"></span></a>
                   <ul class="dropdown-menu" role="menu">
                     <li><a ng-click="selectProduct('19634')"><span ng-bind-html="'OS-KIT-PRODUCT1-NAME' | translate |unsafe"></span> (<span ng-bind-html="'LAN01' | translate |unsafe"></span>)</a></li>
