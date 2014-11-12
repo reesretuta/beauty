@@ -585,7 +585,7 @@ angular.module('app.services', ['ngResource'])
                         name_es_US: item.name_es_US,
                         sku: item.sku,
                         kitSelections: item.kitSelections,
-                        quantity: item.quantity,
+                        quantity: parseInt(item.quantity),
                         contains: item.contains
                     });
                 }
