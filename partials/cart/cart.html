@@ -10,16 +10,16 @@
       </thead>
       <tbody>
       <!-- cart items -->
-      <tr ng-show="cart == null || cart.length == 0">
+      <tr ng-show="cart == null">
         <td colspan="3">
           <div class="cart-item-info">
             Loading cart...
           </div>
         </td>
       </tr>
-      <tr ng-show="cart == null || cart.length == 0">
+      <tr ng-show="cart.length == 0">
         <td colspan="3">
-          <div class="cart-item-info" ng-if="cart.length == 0">
+          <div class="cart-item-info">
             There are currently no items in your cart.
           </div>
         </td>
