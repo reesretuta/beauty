@@ -144,18 +144,18 @@ models.Category.find({parent: { $exists: false }, onHold: false, showInMenu: tru
                 //console.log("category", category._id);
                 var ids = getCategoryAndChildren(category);
                 //console.log("children", ids);
-                console.log("top level category", category._id, ids);
+                //console.log("top level category", category._id, ids);
                 categoryToChildren[category._id] = ids;
                 //console.log("category sub-categories", category._id, ids);
             }
 
-            console.log("categoryToChildren", categoryToChildren);
+            //console.log("categoryToChildren", categoryToChildren);
         })
     })
 });
 
 function getCategoryAndChildren(category) {
-    console.log("processing category", category._id);
+    //console.log("processing category", category._id);
     var all = [];
 
     // add this category
@@ -164,9 +164,9 @@ function getCategoryAndChildren(category) {
     var children = category.children ? category.children : [];
     for (var i=0; i < children.length; i++) {
         var child = children[i];
-        console.log("processing category child", child._id);
+        //console.log("processing category child", child._id);
         var childIds = getCategoryAndChildren(child);
-        console.log("processing category child", child._id, childIds);
+        //console.log("processing category child", child._id, childIds);
         categoryToChildren[child._id] = childIds;
         all = all.concat(childIds);
     }
@@ -349,8 +349,7 @@ router.route('/products')
                 $and: [
                     {_id: { $in: productIds }, masterStatus: "A", onHold: false},
                     {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
-                    {"prices.effectiveStartDate":{$lte: Date.now}},
-                    {"prices.effectiveEndDate":{$gte: Date.now}}
+                    {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
                 ]
             }).sort('name').limit(20).populate({
                 path: 'upsellItems.product youMayAlsoLike.product',
@@ -826,7 +825,7 @@ router.route('/clients/:client_id/addresses')// get a client's addresses
             "address2": req.body.address2,
             "city": req.body.city,
             "county": req.body.county,
-            "geocode": "000000",
+            "geocode": req.body.geocode,
             "state": req.body.state,
             "zip": req.body.zip,
             "country": req.body.country,
