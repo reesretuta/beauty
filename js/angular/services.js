@@ -64,7 +64,7 @@ angular.module('app.services', ['ngResource'])
 
         return searchService;
     })
-    .factory('Session', function($rootScope, $resource, $log, $location, $http, $cookieStore, $cookies, $timeout, $q, localStorageService, API_URL, STORE_BASE_URL) {
+    .factory('Session', function($rootScope, $resource, $log, $location, $http, $cookieStore, $cookies, $timeout, $q, API_URL, STORE_BASE_URL) {
         var sessionService = {};
 
         // promise that everything waits on before resolving
@@ -86,6 +86,7 @@ angular.module('app.services', ['ngResource'])
 
         function deleteLocalSession() {
             if ($rootScope.session != null) {
+
                 $rootScope.session = {
                     language: 'en_US',
                     cart: [],
@@ -113,58 +114,54 @@ angular.module('app.services', ['ngResource'])
             }
         });
 
-        var sessionLastUpdated = null;
-        $rootScope.$on('LocalStorageModule.notification.setitem', function (event, data) {
-            if (data.key == 'session') {
-                // if the date is empty or doesn't equal out last timestamp update, then add timestamp
-                if (data.value && (data.value.timestamp == null || data.value.timestamp != sessionLastUpdated)) {
-                    // session was updated, set a timestamp since we want to expire our localstorage
-                    data.value.timestamp = new Date().getTime();
-
-                    // ensure this update doesn't trigger another update recursively
-                    sessionLastUpdated = data.value.timestamp;
-                    $log.debug("sessionService(): setting last session update time", sessionLastUpdated);
-                }
-            }
-        });
-
-        // watch for local session change, mark dirty if needed
-        //$rootScope.watch('session', function(newVal, oldVal) {
-        //    if (newVal != oldVal) {
-        //        // set the last updated for this session
-        //        //$rootScope.$broadcast('LocalStorageModule.notification.setitem', {key: key, newvalue: value, storageType: 'cookie'});
+        //var sessionLastUpdated = null;
+        //$rootScope.$on('LocalStorageModule.notification.setitem', function (event, data) {
+        //    if (data.key == 'session') {
+        //        // if the date is empty or doesn't equal out last timestamp update, then add timestamp
+        //        if (data.value && (data.value.timestamp == null || data.value.timestamp != sessionLastUpdated)) {
+        //            // session was updated, set a timestamp since we want to expire our localstorage
+        //            data.value.timestamp = new Date().getTime();
+        //
+        //            // ensure this update doesn't trigger another update recursively
+        //            sessionLastUpdated = data.value.timestamp;
+        //            $log.debug("sessionService(): setting last session update time", sessionLastUpdated);
+        //        }
         //    }
         //});
 
         // INITIALIZATION
         function initialize() {
-            $log.debug("sessionService(): initialize()");
+            $log.debug("sessionService(): initialize(): loading session from server");
 
-            // fetch the existing
-            $rootScope.session = localStorageService.get('session');
+            getFromServer().then(function(session) {
+                $log.debug("sessionService(): initialize(): got session", session);
 
-            // bind
-            $rootScope.sessionUnbind = localStorageService.bind($rootScope, 'session');
+                // copy over values from server session
+                for (var key in session) {
+                    if (session.hasOwnProperty(key)) {
+                        $rootScope.session[key] = session[key];
+                    }
+                }
 
-            if ($rootScope.session == null) {
-                $rootScope.session = {};
-            }
+                //// check the server session cookie against the local cookie ID & reset cart if not matching
+                //if ($rootScope.session.cid != $cookies["connect.sid"] || $rootScope.session == null) {
+                //    $log.debug("sessionService(): initialize(): creating new local storage session", $cookies["connect.sid"]);
+                //    $rootScope.session = {
+                //        cid: $cookies["connect.sid"],
+                //        language: 'en_US',
+                //        cart: [],
+                //        checkout: {}
+                //    };
+                //} else {
+                //    $log.debug("sessionService(): initialize(): using existing local storage session", $cookies["connect.sid"]);
+                //}
 
-            // check the server session cookie against the local cookie ID & reset cart if not matching
-            if ($rootScope.session.cid != $cookies["connect.sid"] || $rootScope.session == null) {
-                $log.debug("sessionService(): initialize(): creating new local storage session", $cookies["connect.sid"]);
-                $rootScope.session = {
-                    cid: $cookies["connect.sid"],
-                    language: 'en_US',
-                    cart: [],
-                    checkout: {}
-                };
-            } else {
-                $log.debug("sessionService(): initialize(): using existing local storage session", $cookies["connect.sid"]);
-            }
-
-            $log.debug("sessionService(): initialize(): session is", $rootScope.session);
-            initialized.resolve($rootScope.session);
+                $log.debug("sessionService(): initialize(): local session is", $rootScope.session);
+                initialized.resolve($rootScope.session);
+            }, function(error) {
+                $log.error("sessionService(): initialize(): failed to initialize session", error);
+                initialized.reject();
+            });
         }
         initialize();
 
@@ -174,6 +171,53 @@ angular.module('app.services', ['ngResource'])
             var d = $q.defer();
             initialized.promise.then(function() {
                 d.resolve(getLocalSession());
+            });
+            return d.promise;
+        }
+
+        function getFromServer() {
+            $log.debug("sessionService(): getFromServer()");
+            var d = $q.defer();
+
+            $http.get(API_URL + '/session', {}).success(function(session, status, headers, config) {
+                $log.debug("sessionService(): getFromServer()", session);
+
+                d.resolve(session);
+            }).error(function(data, status, headers, config) {
+                //failure(data, status, headers, config);
+                $log.error("sessionService(): getFromServer(): error creating client", status, data);
+                d.reject(data);
+            });
+
+            return d.promise;
+        }
+
+        function saveToServer() {
+            var d = $q.defer();
+
+            initialized.promise.then(function(session) {
+                $log.debug("Session(): saveToServer(): saving session", session);
+
+                $http.put(API_URL + '/session', session).success(function(s, status, headers, config) {
+                    $log.debug("sessionService(): saveToServer(): saved", s);
+
+                    d.resolve(s);
+                }).error(function(data, status, headers, config) {
+                    //failure(data, status, headers, config);
+                    $log.error("sessionService(): saveToServer(): error saving session", status, data);
+                    d.reject(data);
+                });
+            });
+
+            return d.promise;
+        }
+
+        sessionService.save = function() {
+            var d = $q.defer();
+            saveToServer().then(function(session) {
+                d.resolve(session);
+            }, function(err) {
+                d.reject(err);
             });
             return d.promise;
         }
@@ -221,9 +265,16 @@ angular.module('app.services', ['ngResource'])
                     $log.debug("sessionService(): set(): key", session);
                 }
 
-                d.resolve(session);
+                saveToServer().then(function(s) {
+                    $log.debug("sessionService(): set(): saved to server", s);
+                    d.resolve(session);
+                }, function (err) {
+                    $log.error("sessionService(): set(): initialization failed", err);
+                    d.reject(err);
+                });
             }, function(err) {
                 $log.error("sessionService(): set(): initialization failed", err);
+                d.reject(err);
             });
 
             return d.promise;
@@ -330,16 +381,7 @@ angular.module('app.services', ['ngResource'])
                 $http.post(API_URL + '/logout', {}, {}).success(function(data, status, headers, config) {
                     $log.debug("sessionService(): logout()");
 
-                    var sess = getLocalSession();
                     deleteLocalSession();
-
-                    //// copy over cart
-                    //var newSess = getLocalSession();
-                    //newSess.cart = sess.cart;
-                    //sessionService.save().then(function(session) {
-                    //    d.resolve(session);
-                    //});
-                    //success({}, status, headers);
                 }).error(function(data, status, headers, config) {
                     //failure(data, status, headers, config);
                     $log.error(data, status, headers, config);
@@ -423,8 +465,8 @@ angular.module('app.services', ['ngResource'])
                     $log.debug("cartService(): get(): loading products for cart", session.cart);
 
                     // load the project for the cart items
-                    cartService.loadProducts(session.cart).then(function(items) {
-                        $log.debug("cartService(): get(): loaded items from cart & populated products", items);
+                    cartService.loadProducts(session.cart).then(function(products) {
+                        $log.debug("cartService(): get(): loaded items from cart & populated products", products);
 
                         d.resolve(session.cart);
                     }, function(error) {
@@ -553,36 +595,41 @@ angular.module('app.services', ['ngResource'])
 
                 $log.debug("cartService(): addToCart(): saving cart to session", cart);
 
-                var startTime = new Date().getTime();
+                Session.save().then(function(s) {
+                    var startTime = new Date().getTime();
 
-                if (!updated) {
-                    // load the products since there are now new items
-                    cartService.loadProducts(cart).then(function(items) {
-                        $log.debug("cartService(): get(): loaded items from cart & populated products", items);
+                    if (!updated) {
+                        // load the products since there are now new items
+                        cartService.loadProducts(cart).then(function(items) {
+                            $log.debug("cartService(): get(): loaded items from cart & populated products", items);
 
+                            d.resolve(cart);
+                        }, function(error) {
+                            $log.error("cartService(): get(): failed to populated products", error);
+                            d.reject(error);
+                        })
+                    } else {
+                        // just updated the cart, don't need to reload products
                         d.resolve(cart);
-                    }, function(error) {
-                        $log.error("cartService(): get(): failed to populated products", error);
-                        d.reject(error);
-                    })
-                } else {
-                    // just updated the cart, don't need to reload products
-                    d.resolve(cart);
-                }
+                    }
 
-                if (new Date().getTime() - startTime < 1500) {
-                    // wait until we've had 1500ms pass
-                    $timeout(function() {
+                    if (new Date().getTime() - startTime < 1500) {
+                        // wait until we've had 1500ms pass
+                        $timeout(function() {
+                            $rootScope.adding = false;
+                            // set class
+                            //$timeout(function() {
+                            //    // remove check
+                            //}, 2000);
+                        }, 1500 - (new Date().getTime() - startTime));
+                    } else {
+                        // > 1500 ms has passed, clear
                         $rootScope.adding = false;
-                        // set class
-                        //$timeout(function() {
-                        //    // remove check
-                        //}, 2000);
-                    }, 1500 - (new Date().getTime() - startTime));
-                } else {
-                    // > 1500 ms has passed, clear
-                    $rootScope.adding = false;
-                }
+                    }
+                }, function(error) {
+                    $log.error("cartService(): get(): failed to save cart to session", error);
+                    d.reject(error);
+                });
             }, function(error) {
                 $log.error("cartService(): addToCart(): error", error);
                 d.reject(error);
@@ -603,8 +650,13 @@ angular.module('app.services', ['ngResource'])
                     }
                 });
 
-                $log.debug("cartService(): removeFromCart(): cart now", cart);
-                d.resolve(cart);
+                Session.save().then(function(s) {
+                    $log.debug("cartService(): removeFromCart(): cart now", cart);
+                    d.resolve(cart);
+                }, function(error) {
+                    $log.error("cartService(): removeFromCart(): error", error);
+                    d.reject(error);
+                });
             }, function(error) {
                 $log.error("cartService(): removeFromCart(): error", error);
                 d.reject(error);
@@ -622,28 +674,24 @@ angular.module('app.services', ['ngResource'])
                 return d.promise;
             }
             var productIds = [];
-            var itemMap = {};
             $.each(items, function(index, item) {
                 productIds.push(item.sku);
-                itemMap[item.sku] = item;
             });
             //$log.debug("cartService(): loadProducts(): loading products", productIds);
 
-            var p = Product.query({productIds: productIds});
-            //$log.debug("cartService(): loadProducts(): got promise", p);
-
-            p.then(function(products) {
-                //$log.debug("cartService(): loadProducts(): loaded products", products);
+            var p = Product.query({productIds: productIds}).then(function(products) {
+                $log.debug("cartService(): loadProducts(): loaded products", products);
 
                 $.each(products, function(index, product) {
                     // find the right current price
                     Product.selectCurrentPrice(product);
 
                     // merge back in
-                    if (itemMap[product.sku]) {
-                        var item = itemMap[product.sku];
-                        item.product = product;
-                    }
+                    $.each(items, function(index, item) {
+                        if (item.sku == product.sku) {
+                            item.product = product;
+                        }
+                    });
                 });
 
                 $log.debug("cartService(): loadProducts(): returning items", items);
@@ -671,7 +719,7 @@ angular.module('app.services', ['ngResource'])
             var d = $q.defer();
 
             //$log.debug("salesTaxService(): login(): attempting to login with username=", username, "password=", password);
-            var session = $http.post(API_URL + '/calculateTax', {
+            $http.post(API_URL + '/calculateTax', {
                 clientId: clientId,
                 consultantId: consultantId,
                 geocode: geocode,
@@ -910,19 +958,19 @@ angular.module('app.services', ['ngResource'])
                 var clientId = session.client.id;
 
                 // save the address
-                addressService.save({clientId: clientId}, address).$promise.then(function(adjustedAddress) {
-                    $log.debug("adjustedAddressService(): addAddress(): saved address", adjustedAddress);
+                addressService.save({clientId: clientId}, address).$promise.then(function(a) {
+                    $log.debug("adjustedAddressService(): addAddress(): saved address", a);
 
                     // preserve this
-                    adjustedAddress.businessCO = address.businessCO;
+                    a.businessCO = address.businessCO;
 
-                    if (session.client.adjustedAddresses == null) {
-                        session.client.adjustedAddresses = [];
+                    if (session.client.addresses == null) {
+                        session.client.addresses = [];
                     }
 
-                    session.client.adjustedAddresses.push(adjustedAddress);
-                    $log.debug("adjustedAddressService(): addAddress(): adding address to client address", session.client.adjustedAddresses);
-                    d.resolve(adjustedAddress);
+                    session.client.addresses.push(a);
+                    $log.debug("adjustedAddressService(): addAddress(): adding address to client address", session.client.addresses);
+                    d.resolve(a);
                 }, function(response) {
                     $log.error("adjustedAddressService(): addAddress(): failed to save address", response.data);
                     d.reject('Failed to save address');
@@ -944,7 +992,7 @@ angular.module('app.services', ['ngResource'])
                     // remove the address from the client data
                     for (var i=0; i < session.client.addresses.length; i++) {
                         if (session.client.addresses[i].id == addressId) {
-                            session.client.addresses = session.client.addresses.splice(i, 1);
+                            session.client.addresses.splice(i, 1);
                             break;
                         }
                     }

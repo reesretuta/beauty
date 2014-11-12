@@ -539,28 +539,39 @@ router.route('/logout')
 // ----------------------------------------------------
 router.route('/session')
     .get(function (req, res) {
-//        var updated = false;
-//        if (req.session.cart == null) {
-//            req.session.cart = [];
-//            updated = true;
-//        }
-//        if (req.session.language == null) {
-//            req.session.language = 'en_US';
-//            updated = true;
-//        }
-//        if (req.session.checkout == null) {
-//            req.session.checkout = {};
-//            updated = true;
-//        }
-//
-//        if (updated) {
-//            req.session.save(function(err) {
-//                console.log('session saved', req.session);
-//                res.json(req.session);
-//            });
-//            return;
-//        }
+        var updated = false;
+        if (req.session.cart == null) {
+            req.session.cart = [];
+            updated = true;
+        }
+        if (req.session.language == null) {
+            req.session.language = 'en_US';
+            updated = true;
+        }
+        if (req.session.checkout == null) {
+            req.session.checkout = {};
+            updated = true;
+        }
+
+        if (updated) {
+            req.session.save(function(err) {
+                if (err) {
+                    console.error('error saving session', err);
+                    res.status(500);
+                    res.end();
+                    return;
+                }
+
+                console.log('session saved', req.session);
+                res.json(req.session);
+                res.end();
+            });
+            return;
+        }
+
+        console.log("returning session", req.session);
         res.json(req.session);
+        res.end();
     })
 
     // update the session with some data
@@ -569,26 +580,26 @@ router.route('/session')
 
         console.log("update session request", session);
 
-//        req.session.consultantId = session.consultantId;
-//        req.session.source = session.source;
-//
-//        // copy over changes to cart, checkout, language
-//        req.session.language = session.language;
-//        if (Array.isArray(session.cart)) {
-//            req.session.cart = [];
-//            // save only the parts of the session we want
-//            for (var i=0; i < session.cart.length; i++) {
-//                var cartItem = session.cart[i];
-//                var it = {
-//                    name: cartItem.name,
-//                    sku: cartItem.sku,
-//                    kitSelections: cartItem.kitSelections,
-//                    quantity: cartItem.quantity
-//                };
-//                req.session.cart.push(it);
-//            }
-//        }
-//        req.session.checkout = session.checkout;
+        req.session.consultantId = session.consultantId;
+        req.session.source = session.source;
+
+        // copy over changes to cart, checkout, language
+        req.session.language = session.language;
+        if (Array.isArray(session.cart)) {
+            req.session.cart = [];
+            // save only the parts of the session we want
+            for (var i=0; i < session.cart.length; i++) {
+                var cartItem = session.cart[i];
+                var it = {
+                    name: cartItem.name,
+                    sku: cartItem.sku,
+                    kitSelections: cartItem.kitSelections,
+                    quantity: cartItem.quantity
+                };
+                req.session.cart.push(it);
+            }
+        }
+        req.session.checkout = session.checkout;
 
         req.session.save(function(err) {
             if (err) {
@@ -599,8 +610,9 @@ router.route('/session')
             }
 
             // session saved
-            console.log('session updated');
-            res.status(204);
+            console.log('session updated', req.session);
+            res.status(200);
+            res.json(req.session);
             res.end();
         });
     })
