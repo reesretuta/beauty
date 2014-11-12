@@ -6,6 +6,13 @@
 var Spooky = require('spooky');
 var S = require('string');
 
+var options = require('minimist')(process.argv.slice(2));
+if (options["products"]) {
+    options["products"] = options["products"] + "";
+    options["products"] = options["products"].split(/,/);
+}
+console.log("options", options);
+
 var models = require('./common/models.js');
 
 models.onError(function(err) {
@@ -32,7 +39,7 @@ models.onReady(function() {
     var skippedProductGroups = 0
 
     var existingProducts = {};
-    var AVAILABLE_ONLY = process.env.USERNAME || false;
+    var AVAILABLE_ONLY = process.env.AVAILABLE_ONLY || options["only-available"] || false;
     var BASE_SITE_URL = process.env.BASE_SITE_URL || "https://stageadmin.jafra.com";
     var USERNAME = process.env.USERNAME || "jafra_test";
     var PASSWORD = process.env.PASSWORD || "lavisual1";
@@ -42,12 +49,13 @@ models.onReady(function() {
     console.log("password", PASSWORD);
 
     // load up the known products / product groups, so we can prioritize loading new ones
-    models.Product.find({}, '_id', function(err, products) {
+    models.Product.find({}, '_id type', function(err, products) {
         if (err) return console.error("error loading products", err);
         if (products != null) {
             for (var i=0; i < products.length; i++) {
                 var id = products[i]._id;
-                existingProducts[id] = 1;
+                existingProducts[id] = products[i].type;
+                //console.log("product", id, "type", products[i].type);
             }
         }
     });
@@ -96,16 +104,16 @@ models.onReady(function() {
             BASE_SITE_URL: BASE_SITE_URL,
             USERNAME: USERNAME,
             PASSWORD: PASSWORD
-        }, function() {
+        }, function () {
             console.log("== LOGIN ==");
 
             // casperjs context here
             var casper = this;
 
-            casper.onResourceReceived = function(response) {
+            casper.onResourceReceived = function (response) {
                 //console.log('Response (#' + response.id + ', stage "' + response.stage + '"): ' + JSON.stringify(response));
             };
-            casper.onResourceError = function(resourceError) {
+            casper.onResourceError = function (resourceError) {
                 console.error('Unable to load resource (#' + resourceError.id + 'URL:' + resourceError.url + ')');
                 console.error('Error code: ' + resourceError.errorCode + '. Description: ' + resourceError.errorString);
             };
@@ -117,22 +125,21 @@ models.onReady(function() {
             // LOGIN
             var data = "pagechanged=N&tab=&redirectPage=%2Fadmin&userid=" + USERNAME + "&password=" + PASSWORD;
             casper.open(login_url, {
-                method: 'post',
-                data: data
-            }).then(function(response) {
-                    console.log('response', JSON.stringify(response));
-                    if (response.status !== 200) {
-                        console.error('Unable to login!', response.status);
-                        this.exit();
-                    } else {
-                        console.log('Logged in');
-                    }
-                });
+                method: 'post', data: data
+            }).then(function (response) {
+                console.log('response', JSON.stringify(response));
+                if (response.status !== 200) {
+                    console.error('Unable to login!', response.status);
+                    this.exit();
+                } else {
+                    console.log('Logged in');
+                }
+            });
 
             // MANAGE SKUS
             var manage_skus_url = BASE_SITE_URL + '/csr-admin-4/productcatalog/product.listing?adminUserId=86&language=en_US';
 
-            casper.thenOpen(manage_skus_url, function(response) {
+            casper.thenOpen(manage_skus_url, function (response) {
                 if (response.status !== 200) {
                     console.error('Unable to get Manage SKUs!', response.status);
                     this.exit();
@@ -142,286 +149,287 @@ models.onReady(function() {
             });
         }]);
 
+        if (!options["skipCategories"] && !options["products"]) {
+            // CATEGORIES
+            spooky.then([{
+                existingProducts: existingProducts,
+                AVAILABLE_ONLY: AVAILABLE_ONLY,
+                BASE_SITE_URL: BASE_SITE_URL
+            }, function () {
+                console.log("== CATEGORIES ==");
 
-        // CATEGORIES
-        spooky.then([{
-            existingProducts: existingProducts,
-            AVAILABLE_ONLY: AVAILABLE_ONLY,
-            BASE_SITE_URL: BASE_SITE_URL
-        }, function () {
-            console.log("== CATEGORIES ==");
+                // casperjs context here
+                var casper = this;
 
-            // casperjs context here
-            var casper = this;
+                casper.onResourceError = function (resourceError) {
+                    console.error('Unable to load resource (#' + resourceError.id + 'URL:' + resourceError.url + ')');
+                    console.error('Error code: ' + resourceError.errorCode + '. Description: ' + resourceError.errorString);
+                };
 
-            casper.onResourceError = function(resourceError) {
-                console.error('Unable to load resource (#' + resourceError.id + 'URL:' + resourceError.url + ')');
-                console.error('Error code: ' + resourceError.errorCode + '. Description: ' + resourceError.errorString);
-            };
+                var categories = [];
 
-            var categories = [];
+                function Category() {
+                }
 
-            function Category() {
-            }
+                var categories_url = BASE_SITE_URL + '/csr-admin-4/productcatalog/product-category.listing';
 
-            var categories_url = BASE_SITE_URL + '/csr-admin-4/productcatalog/product-category.listing';
+                try {
+                    casper.thenOpen(categories_url, function (response) {
+                        if (response.status !== 200) {
+                            console.error('Unable to get categories!', response.status);
+                            this.exit();
+                        } else {
+                            console.log('Got categories page');
 
-            try {
-                casper.thenOpen(categories_url, function(response) {
-                    if (response.status !== 200) {
-                        console.error('Unable to get categories!', response.status);
-                        this.exit();
-                    } else {
-                        console.log('Got categories page');
-
-                        casper.waitUntilVisible('#categoryListing', function() {
-                            console.log("got category listing");
-                        });
-
-                        casper.then(function() {
-                            // open all children, so they render
-                            function expandChildren() {
-                                console.log("expandChildren()");
-
-                                var notExpanded = casper.evaluate(function() {
-                                    var content = $('#categoryListing table.categoryListingTable > tbody > tr:nth-child(2) table').html();
-                                    if (content.match(/<img class="pc-parentCategoryNode" src="\/csr-admin-4\/images\/en_US\/productcatalog\/icons\/plus.gif" alt="">/)) {
-                                        return true;
-                                    }
-                                    return false;
-                                });
-
-                                if (notExpanded) {
-                                    console.log("expandChildren(): not expanded");
-                                    // expand all categories
-                                    casper.evaluate(function() {
-                                        try {
-                                            console.log("expanding sub-categories");
-                                            // expand children
-                                            $("img[src$='/csr-admin-4/images/en_US/productcatalog/icons/plus.gif'].pc-parentCategoryNode").click();
-                                        } catch (ex) {
-                                            console.error("error expanding sub-categories", JSON.stringify(ex));
-                                        }
-                                    });
-                                    casper.wait(1000, function() {
-                                        console.log("expanding children after timeout");
-                                        expandChildren();
-                                    });
-                                } else {
-                                    console.log("expandChildren(): all categories expanded");
-                                }
-                            }
-                            expandChildren();
-                        });
-
-                        // DEBUGGING - capture image after expand
-                        //casper.then(function() {
-                        //    console.log("capturing category page");
-                        //    casper.capture('expand.jpg', undefined, {
-                        //        format: 'jpg',
-                        //        quality: 100
-                        //    });
-                        //});
-
-                        casper.then(function() {
-                            console.log("processing categories");
-
-                            // get all the categories
-                            categories = casper.evaluate(function() {
-                                /**
-                                 * @param {string=} rows
-                                 * @param {number=} level
-                                 */
-                                function getCategories(rows, level) {
-                                    if (level == null) {
-                                        level = 0;
-                                    }
-                                    var indent = "";
-                                    for (var i=0; i < (level?level:0); i++) {
-                                        indent += "  ";
-                                    }
-                                    //console.log(indent, "getCategories("+level+"): START");
-                                    try {
-                                        var categories = [];
-                                        if (rows == null) {
-                                            console.log(indent, "getCategories("+level+"): getting initial categories");
-                                            rows = $('#categoryListing table.categoryListingTable > tbody > tr > td > table > tbody > tr');
-                                        }
-                                        var category = null;
-                                        rows.each(function(index, row) {
-                                            var rowId = $(this).attr("id");
-                                            var isCategory = S(rowId).startsWith('rowDnD');
-                                            var isSubCategory = S(rowId).startsWith('subcat');
-
-                                            if (isCategory) {
-                                                var link = $(this).find("a.navigationNormal");
-                                                var name = link.html().trim();
-                                                var href = link.attr('href');
-                                                var id = -1;
-                                                var match;
-                                                if (match = href.match(/product-category.detail\?action=edit&categoryId=([0-9]+)/)) {
-                                                    id = parseInt(match[1]);
-                                                }
-
-                                                var rank = $(this).find('> td > table > tbody > tr > td:nth-child(4) > input').val();
-                                                var onHold = $(this).find('> td > table > tbody > tr > td:nth-child(6) > input').attr('checked');
-                                                var showInMenu = $(this).find('> td > table > tbody > tr > td:nth-child(8) > input').attr('checked');
-                                                var searchable = $(this).find('> td > table > tbody > tr > td:nth-child(10) > input').attr('checked');
-
-                                                category = {
-                                                    _id: id,
-                                                    name: name,
-                                                    rank: rank,
-                                                    onHold: onHold,
-                                                    showInMenu: showInMenu,
-                                                    searchable: searchable
-                                                };
-                                                categories.push(category);
-                                                console.log(indent, "getCategories("+level+"): category found:", name, id, rank, onHold, showInMenu, searchable);
-                                            } else if (isSubCategory && category != null) {
-                                                //console.log(indent, "getCategories("+level+"): getting children categories");
-                                                // we have a sub-category
-                                                var childRows = $(this).find("> td > div > table > tbody > tr");
-                                                //console.log("childRows", childRows.length);
-
-                                                var children = getCategories(childRows, level+1);
-
-                                                // save the parent category id into the children
-                                                for (var i=0; i < children.length; i++) {
-                                                    children[i].parent = category._id;
-                                                }
-                                                category.children = children;
-                                                category = null;
-                                            }
-                                        });
-                                        //console.log(indent, "getCategories("+level+"): END");
-                                        return categories;
-                                    } catch (ex) {
-                                        console.error(indent, "getCategories("+level+"): error getting category", JSON.stringify(ex));
-                                    }
-                                }
-                                return getCategories();
+                            casper.waitUntilVisible('#categoryListing', function () {
+                                console.log("got category listing");
                             });
 
-                            console.log("got categories");
-                            for (var i=0; i < categories.length; i++) {
-                                // get more category details
-                                saveCategoryDetail(categories[i]);
+                            casper.then(function () {
+                                // open all children, so they render
+                                function expandChildren() {
+                                    console.log("expandChildren()");
 
-                                // save
-                                saveCategory(categories[i]);
+                                    var notExpanded = casper.evaluate(function () {
+                                        var content = $('#categoryListing table.categoryListingTable > tbody > tr:nth-child(2) table').html();
+                                        if (content.match(/<img class="pc-parentCategoryNode" src="\/csr-admin-4\/images\/en_US\/productcatalog\/icons\/plus.gif" alt="">/)) {
+                                            return true;
+                                        }
+                                        return false;
+                                    });
+
+                                    if (notExpanded) {
+                                        console.log("expandChildren(): not expanded");
+                                        // expand all categories
+                                        casper.evaluate(function () {
+                                            try {
+                                                console.log("expanding sub-categories");
+                                                // expand children
+                                                $("img[src$='/csr-admin-4/images/en_US/productcatalog/icons/plus.gif'].pc-parentCategoryNode").click();
+                                            } catch (ex) {
+                                                console.error("error expanding sub-categories", JSON.stringify(ex));
+                                            }
+                                        });
+                                        casper.wait(1000, function () {
+                                            console.log("expanding children after timeout");
+                                            expandChildren();
+                                        });
+                                    } else {
+                                        console.log("expandChildren(): all categories expanded");
+                                    }
+                                }
+                                expandChildren();
+                            });
+
+                            // DEBUGGING - capture image after expand
+                            //casper.then(function() {
+                            //    console.log("capturing category page");
+                            //    casper.capture('expand.jpg', undefined, {
+                            //        format: 'jpg',
+                            //        quality: 100
+                            //    });
+                            //});
+
+                            casper.then(function () {
+                                console.log("processing categories");
+
+                                // get all the categories
+                                categories = casper.evaluate(function () {
+                                    /**
+                                     * @param {string=} rows
+                                     * @param {number=} level
+                                     */
+                                    function getCategories(rows, level) {
+                                        if (level == null) {
+                                            level = 0;
+                                        }
+                                        var indent = "";
+                                        for (var i = 0; i < (level ? level : 0); i++) {
+                                            indent += "  ";
+                                        }
+                                        //console.log(indent, "getCategories("+level+"): START");
+                                        try {
+                                            var categories = [];
+                                            if (rows == null) {
+                                                console.log(indent, "getCategories(" + level + "): getting initial categories");
+                                                rows = $('#categoryListing table.categoryListingTable > tbody > tr > td > table > tbody > tr');
+                                            }
+                                            var category = null;
+                                            rows.each(function (index, row) {
+                                                var rowId = $(this).attr("id");
+                                                var isCategory = S(rowId).startsWith('rowDnD');
+                                                var isSubCategory = S(rowId).startsWith('subcat');
+
+                                                if (isCategory) {
+                                                    var link = $(this).find("a.navigationNormal");
+                                                    var name = link.html().trim();
+                                                    var href = link.attr('href');
+                                                    var id = -1;
+                                                    var match;
+                                                    if (match = href.match(/product-category.detail\?action=edit&categoryId=([0-9]+)/)) {
+                                                        id = parseInt(match[1]);
+                                                    }
+
+                                                    var rank = $(this).find('> td > table > tbody > tr > td:nth-child(4) > input').val();
+                                                    var onHold = $(this).find('> td > table > tbody > tr > td:nth-child(6) > input').attr('checked');
+                                                    var showInMenu = $(this).find('> td > table > tbody > tr > td:nth-child(8) > input').attr('checked');
+                                                    var searchable = $(this).find('> td > table > tbody > tr > td:nth-child(10) > input').attr('checked');
+
+                                                    category = {
+                                                        _id: id,
+                                                        name: name,
+                                                        rank: rank,
+                                                        onHold: onHold,
+                                                        showInMenu: showInMenu,
+                                                        searchable: searchable
+                                                    };
+                                                    categories.push(category);
+                                                    console.log(indent, "getCategories(" + level + "): category found:", name, id, rank, onHold, showInMenu, searchable);
+                                                } else if (isSubCategory && category != null) {
+                                                    //console.log(indent, "getCategories("+level+"): getting children categories");
+                                                    // we have a sub-category
+                                                    var childRows = $(this).find("> td > div > table > tbody > tr");
+                                                    //console.log("childRows", childRows.length);
+
+                                                    var children = getCategories(childRows, level + 1);
+
+                                                    // save the parent category id into the children
+                                                    for (var i = 0; i < children.length; i++) {
+                                                        children[i].parent = category._id;
+                                                    }
+                                                    category.children = children;
+                                                    category = null;
+                                                }
+                                            });
+                                            //console.log(indent, "getCategories("+level+"): END");
+                                            return categories;
+                                        } catch (ex) {
+                                            console.error(indent, "getCategories(" + level + "): error getting category", JSON.stringify(ex));
+                                        }
+                                    }
+                                    return getCategories();
+                                });
+
+                                console.log("got categories");
+                                for (var i = 0; i < categories.length; i++) {
+                                    // get more category details
+                                    saveCategoryDetail(categories[i]);
+
+                                    // save
+                                    saveCategory(categories[i]);
+                                }
+                            });
+                        }
+                    });
+
+                    function saveCategoryDetail(category) {
+                        var categoryId = category._id;
+                        var u = BASE_SITE_URL + "/csr-admin-4/productcatalog/product-category.detail?action=edit&categoryId=" + categoryId;
+                        console.log("Loading category detail");
+
+                        casper.thenOpen(u, function (response) {
+                            if (response.status !== 200) {
+                                console.error('Unable to get category detail page!');
+                                this.exit();
+                            } else {
+                                console.log('Got category detail page');
+
+                                var detail = casper.evaluate(function () {
+                                    var detail = {};
+                                    detail.startDate = new Date(moment($('input[name="category.startDate"]').val(), 'MM/DD/YYYY').unix() * 1000);
+                                    detail.endDate = new Date(moment($('input[name="category.endDate"]').val(), 'MM/DD/YYYY').unix() * 1000);
+
+                                    // images
+                                    var images = [];
+
+                                    $("#gridImages .x-grid3-scroller table tr").each(function () {
+                                        try {
+                                            var image = {};
+                                            image.rank = parseInt($(this).find('div.x-grid3-cell-inner.x-grid3-col-1').html());
+                                            image.startDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html(), 'MM/DD/YYYY').unix() * 1000);
+                                            image.endDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-3').html(), 'MM/DD/YYYY').unix() * 1000);
+                                            image.imagePath = $(this).find('div.x-grid3-cell-inner.x-grid3-col-4 a').attr("href");
+                                            image.alt = $(this).find('div.x-grid3-cell-inner.x-grid3-col-5').html();
+                                            images.push(image);
+                                            console.log('Got image', JSON.stringify(image));
+                                        } catch (ex) {
+                                            console.error('error parsing category image', JSON.stringify(ex));
+                                        }
+                                    });
+                                    detail.images = images;
+
+                                    // customer type
+                                    detail.customerTypes = [];
+                                    if ($('input[name="customerType1"]').attr('checked')) {
+                                        detail.customerTypes.push("Non-Party Customer");
+                                    }
+                                    if ($('input[name="customerType2"]').attr('checked')) {
+                                        detail.customerTypes.push("Consultant");
+                                    }
+                                    if ($('input[name="customerType4"]').attr('checked')) {
+                                        detail.customerTypes.push("Employee");
+                                    }
+                                    if ($('input[name="customerType5"]').attr('checked')) {
+                                        detail.customerTypes.push("Party Guest");
+                                    }
+                                    if ($('input[name="customerType6"]').attr('checked')) {
+                                        detail.customerTypes.push("Hostess");
+                                    }
+                                    if ($('input[name="customerType7"]').attr('checked')) {
+                                        detail.customerTypes.push("Fundraiser");
+                                    }
+                                    if ($('input[name="customerType8"]').attr('checked')) {
+                                        detail.customerTypes.push("Department");
+                                    }
+                                    return detail;
+                                });
+                                category.startDate = detail.startDate;
+                                category.endDate = detail.endDate;
+                                category.images = detail.images;
+                                category.customerTypes = detail.customerTypes;
                             }
                         });
                     }
-                });
 
-                function saveCategoryDetail(category) {
-                    var categoryId = category._id;
-                    var u = BASE_SITE_URL + "/csr-admin-4/productcatalog/product-category.detail?action=edit&categoryId="+categoryId;
-                    console.log("Loading category detail");
+                    function saveCategory(category) {
+                        casper.then(function () {
+                            // handle parent, if any
+                            if (category.children) {
+                                var ids = [];
+                                for (var i = 0; i < category.children.length; i++) {
+                                    var child = category.children[i];
+                                    // save the child
+                                    saveCategory(child);
 
-                    casper.thenOpen(u, function(response) {
-                        if (response.status !== 200) {
-                            console.error('Unable to get category detail page!');
-                            this.exit();
-                        } else {
-                            console.log('Got category detail page');
-
-                            var detail = casper.evaluate(function() {
-                                var detail = {};
-                                detail.startDate = new Date(moment($('input[name="category.startDate"]').val(), 'MM/DD/YYYY').unix()*1000);
-                                detail.endDate = new Date(moment($('input[name="category.endDate"]').val(), 'MM/DD/YYYY').unix()*1000);
-
-                                // images
-                                var images = [];
-
-                                $("#gridImages .x-grid3-scroller table tr").each(function() {
-                                    try {
-                                        var image = {};
-                                        image.rank = parseInt($(this).find('div.x-grid3-cell-inner.x-grid3-col-1').html());
-                                        image.startDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html(), 'MM/DD/YYYY').unix()*1000);
-                                        image.endDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-3').html(), 'MM/DD/YYYY').unix()*1000);
-                                        image.imagePath = $(this).find('div.x-grid3-cell-inner.x-grid3-col-4 a').attr("href");
-                                        image.alt = $(this).find('div.x-grid3-cell-inner.x-grid3-col-5').html();
-                                        images.push(image);
-                                        console.log('Got image', JSON.stringify(image));
-                                    } catch (ex) {
-                                        console.error('error parsing category image', JSON.stringify(ex));
-                                    }
-                                });
-                                detail.images = images;
-
-                                // customer type
-                                detail.customerTypes = [];
-                                if ($('input[name="customerType1"]').attr('checked')) {
-                                    detail.customerTypes.push("Non-Party Customer");
+                                    // add it's ID to the ID list
+                                    ids.push(child._id);
                                 }
-                                if ($('input[name="customerType2"]').attr('checked')) {
-                                    detail.customerTypes.push("Consultant");
-                                }
-                                if ($('input[name="customerType4"]').attr('checked')) {
-                                    detail.customerTypes.push("Employee");
-                                }
-                                if ($('input[name="customerType5"]').attr('checked')) {
-                                    detail.customerTypes.push("Party Guest");
-                                }
-                                if ($('input[name="customerType6"]').attr('checked')) {
-                                    detail.customerTypes.push("Hostess");
-                                }
-                                if ($('input[name="customerType7"]').attr('checked')) {
-                                    detail.customerTypes.push("Fundraiser");
-                                }
-                                if ($('input[name="customerType8"]').attr('checked')) {
-                                    detail.customerTypes.push("Department");
-                                }
-                                return detail;
-                            });
-                            category.startDate = detail.startDate;
-                            category.endDate = detail.endDate;
-                            category.images = detail.images;
-                            category.customerTypes = detail.customerTypes;
-                        }
-                    });
-                }
 
-                function saveCategory(category) {
-                    casper.then(function() {
-                        // handle parent, if any
-                        if (category.children) {
-                            var ids = [];
-                            for (var i=0; i < category.children.length; i++) {
-                                var child = category.children[i];
-                                // save the child
-                                saveCategory(child);
-
-                                // add it's ID to the ID list
-                                ids.push(child._id);
+                                // replace the categories children with a list of IDs for MongoDB
+                                category.children = ids;
                             }
 
-                            // replace the categories children with a list of IDs for MongoDB
-                            category.children = ids;
-                        }
+                            var json = JSON.stringify(category);
+                            console.log("====== Category ======");
+                            console.log(json);
+                            console.log("=====================");
 
-                        var json = JSON.stringify(category);
-                        console.log("====== Category ======");
-                        console.log(json);
-                        console.log("=====================");
+                            this.emit('category.save', json);
+                        });
+                    }
 
-                        this.emit('category.save', json);
-                    });
+                } catch (ex) {
+                    console.error("problem with categories", JSON.stringify(ex));
                 }
-
-            } catch (ex) {
-                console.error("problem with categories", JSON.stringify(ex));
-            }
-        }]);
-
+            }]);
+        }
 
         // PRODUCTS & KITS
         spooky.then([{
             existingProducts: existingProducts,
             AVAILABLE_ONLY: AVAILABLE_ONLY,
-            BASE_SITE_URL: BASE_SITE_URL
+            BASE_SITE_URL: BASE_SITE_URL,
+            options: options
         }, function () {
             console.log("== PRODUCTS ==");
 
@@ -440,13 +448,19 @@ models.onReady(function() {
             var unavailableProducts = [];
 
             // PRODUCT LISTING
-            function getProductListing(pageNum, kits) {
+            function getProductListing(pageNum, kits, productSku) {
                 if (pageNum == null) {
                     pageNum = 1;
                 }
+                console.log('getProductListing(', pageNum, ",", kits, ",", productSku, ")");
 
                 // GET PRODUCT LISTING
-                var u = BASE_SITE_URL + "/csr-admin-4/productcatalog/product"+(kits?'kit':'')+".listing?currentPage=" + pageNum + "&_changePage=Y&searchById=8";
+                var u = BASE_SITE_URL + "/csr-admin-4/productcatalog/product"+(kits?'kit':'')+".listing?currentPage=" + pageNum;
+                if (productSku == null) {
+                    u += "&_changePage=Y&searchById=8";
+                } else {
+                    u += "&searchById=1&sku=" + productSku + "&marketingName=";
+                }
 
                 // pause to not slam the sever
                 //casper.wait(Math.floor(Math.random() * 2000) + 500);
@@ -460,12 +474,21 @@ models.onReady(function() {
                         console.error("Unable to get product "+(kits?'kit':'')+" listing page!");
                         this.exit();
                     } else {
-                        console.log('Got product listing page', pageNum);
+                        if (productSku) {
+                            console.log('Got product listing page', pageNum, "for product id", productSku);
+                        } else {
+                            console.log('Got product listing page', pageNum);
+                        }
 
                         casper.waitUntilVisible('#gridProducts .x-grid3-scroller table tbody tr', function() {
                             try {
-                                console.log("Evaluating product "+(kits?'kit':'')+" listing page", pageNum);
-                                var products = casper.evaluate(function() {
+                                if (productSku) {
+                                    console.log("Evaluating product "+(kits?'kit':'')+" listing page", pageNum, "for product id", productSku);
+                                } else {
+                                    console.log("Evaluating product "+(kits?'kit':'')+" listing page", pageNum);
+                                }
+
+                                var products = casper.evaluate(function(productSku) {
                                     try {
                                         var productRe = /<a href="product(kit)?\.detail\?productId=([^"]+)">([^<]+)<\/a>/;
                                         var products = [];
@@ -485,7 +508,14 @@ models.onReady(function() {
                                             if (match = productRe.exec(c2)) {
                                                 product.id = match[2];
                                                 product.sku = match[3];
-                                                products.push(product);
+
+                                                if (product.sku != productSku) {
+                                                    console.warn("product id doesn't match expected, skipping", product.sku, "!=", productSku);
+                                                } else {
+                                                    console.log("found product", productSku);
+                                                    products.push(product);
+                                                }
+
                                             } else {
                                                 console.error("failed to parse product line");
                                             }
@@ -495,7 +525,7 @@ models.onReady(function() {
                                     } catch (ex) {
                                         console.error("error parsing product "+(kits?'kit':'')+" listing page", JSON.stringify(ex));
                                     }
-                                });
+                                }, productSku);
 
                                 for (var i=0; i < products.length; i++) {
                                     var product = products[i];
@@ -503,19 +533,19 @@ models.onReady(function() {
 
                                     if (AVAILABLE_ONLY == false || product.available == true) {
                                         // add to the list to be fetched if new
-                                        if (existingProducts[product.sku] == 1) {
-                                            console.log("found updated product"+(kits?' kit':''), product.id);
+                                        if (existingProducts[product.sku]) {
+                                            console.log("found updated product"+(kits?' kit':''), product.sku);
                                             updateProducts.push({id: product.id, sku: product.sku, isKit: kits});
                                             // else add to the list to be updated later
                                         } else {
-                                            console.log("found new product"+(kits?' kit':''), product.id);
+                                            console.log("found new product"+(kits?' kit':''), product.sku);
                                             newProducts.push({id: product.id, sku: product.sku, isKit: kits});
                                         }
                                     } else {
                                         console.log("skipping unavailable product"+(kits?' kit':''), JSON.stringify(product));
                                         // mark it as unavailable in the database too, since we now know it's unavailable
-                                        if (existingProducts[product.id] == 1) {
-                                            unavailableProducts.push(product.id);
+                                        if (existingProducts[product.sku]) {
+                                            unavailableProducts.push(product.sku);
                                         }
                                     }
                                 }
@@ -535,18 +565,46 @@ models.onReady(function() {
                             }
                         }, function() {
                             console.error("timed out waiting to get product listing");
-                            this.exit();
+                            if (!options["products"]) {
+                                this.exit();
+                            }
+                            // else just move along, since this is a product page that may have nothing on it
                         });
                     }
                 });
             }
 
-            // get regular products
-            getProductListing(1, false);
+            if (!options["skipProducts"] && !options["products"]) {
+                console.log("getting product listing");
+                // get regular products
+                getProductListing(1, false);
+            }
 
-            // get kits
-            getProductListing(1, true);
+            if (!options["skipKits"] && !options["products"]) {
+                console.log("getting product kit listing");
+                // get kits
+                getProductListing(1, true);
+            }
 
+            if (options["products"]) {
+                console.log("getting listings for specific product");
+
+                for (var i=0; i < options["products"].length; i++) {
+                    var sku = options["products"][i];
+                    console.log("getting listings for product", sku, "known type?", existingProducts[sku]);
+
+                    // try to fetch this product as both a product / kit
+                    if (existingProducts[sku] == "kit") {
+                        getProductListing(1, true, sku);
+                    } else if (existingProducts[sku] == "product") {
+                        getProductListing(1, false, sku);
+                    } else {
+                        // not sure, so just try both
+                        getProductListing(1, false, sku);
+                        getProductListing(1, true, sku);
+                    }
+                }
+            }
 
             casper.then(function() {
                 console.log("got all products & kits, get product listings");
@@ -1195,629 +1253,630 @@ models.onReady(function() {
 
 
         // PRODUCT GROUPS
-        spooky.then([{
-            existingProducts: existingProducts,
-            AVAILABLE_ONLY: AVAILABLE_ONLY,
-            BASE_SITE_URL: BASE_SITE_URL
-        }, function () {
-            console.log("== PRODUCT GROUPS ==");
+        if (!options["skipGroups"] && !options["products"]) {
+            spooky.then([{
+                existingProducts: existingProducts,
+                AVAILABLE_ONLY: AVAILABLE_ONLY,
+                BASE_SITE_URL: BASE_SITE_URL,
+                options: options
+            }, function () {
+                console.log("== PRODUCT GROUPS ==");
 
-            // casperjs context here
-            var casper = this;
+                // casperjs context here
+                var casper = this;
 
-            casper.onResourceError = function(resourceError) {
-                console.error('Unable to load resource (#' + resourceError.id + 'URL:' + resourceError.url + ')');
-                console.error('Error code: ' + resourceError.errorCode + '. Description: ' + resourceError.errorString);
-            };
+                casper.onResourceError = function (resourceError) {
+                    console.error('Unable to load resource (#' + resourceError.id + 'URL:' + resourceError.url + ')');
+                    console.error('Error code: ' + resourceError.errorCode + '. Description: ' + resourceError.errorString);
+                };
 
-            // map of all products
-            var productGroups = {};
+                // map of all products
+                var productGroups = {};
 
-            function ProductGroup() {
-            }
+                // PRODUCT GROUP LISTING
+                function getProductGroupListing(pageNum) {
+                    if (pageNum == null) {
+                        pageNum = 1;
+                    }
 
-            // PRODUCT GROUP LISTING
-            function getProductGroupListing(pageNum) {
-                if (pageNum == null) {
-                    pageNum = 1;
+                    // GET PRODUCT GROUP LISTING
+                    var u = BASE_SITE_URL + "/csr-admin-4/productcatalog/group.listing?currentPage=" + pageNum + "&_changePage=Y";
+
+                    // pause to not slam the sever
+                    //casper.wait(Math.floor(Math.random() * 2000) + 500);
+
+                    casper.then(function () {
+                        console.log("Loading product group listing page", pageNum, u);
+                    });
+
+                    casper.thenOpen(u, function (response) {
+                        if (response.status !== 200) {
+                            console.error('Unable to get product listing page!');
+                            this.exit();
+                        } else {
+                            try {
+                                console.log('Got product group listing page', pageNum);
+
+                                var content = casper.evaluate(function () {
+                                    return document.all[0].outerHTML;
+                                });
+
+                                console.log('Evaluating product group listing page', pageNum);
+                                var productRe = /<a href="group\.detail\.baseInfo\?groupId=([^"]+)">([^<]+)<\/a>/g;
+                                var match;
+
+                                $("#grid-example .x-grid3-scroller table tbody tr").each(function (index, row) {
+                                    //console.log("processing product group row");
+                                    var productGroupId, systemRef;
+                                    var c = $(this).find("div.x-grid3-cell-inner.x-grid3-col-4").html();
+
+                                    var available = false;
+                                    if (c.match(/\/available.gif/)) {
+                                        //console.log("available");
+                                        available = true;
+                                    }
+
+                                    var c2 = $(this).find("div.x-grid3-col.x-grid3-cell.x-grid3-td-3").html();
+                                    if (match = productRe.exec(c2)) {
+                                        console.log("found product group page", JSON.stringify(match));
+
+                                        // load product group detail
+                                        productGroupId = match[1];
+                                        systemRef = match[2];
+                                    } else {
+                                        console.error("failed to parse product group line", c2);
+                                        return;
+                                    }
+
+                                    if (AVAILABLE_ONLY == false || available) {
+                                        console.log("processing product group", productGroupId, systemRef);
+
+                                        try {
+                                            // NOTE: save the base level information first, so we could load any group system refs later
+                                            fetchProductGroupDetail(productGroupId, systemRef);
+                                            saveProductGroup(productGroupId);
+
+                                            fetchProductGroupImages(productGroupId);
+                                            fetchProductGroupIngredients(productGroupId);
+                                            fetchProductGroupUsage(productGroupId);
+                                            fetchProductGroupCategories(productGroupId);
+                                            fetchProductGroupUpsellItems(productGroupId);
+                                            fetchProductGroupYouMayAlsoLike(productGroupId);
+                                            fetchProductGroupSKUs(productGroupId);
+
+                                            saveProductGroup(productGroupId);
+                                        } catch (ex) {
+                                            console.error("error while processing product group", productGroupId, JSON.stringify(ex));
+                                        }
+                                    } else {
+                                        console.log("skipping unavailable product group", productGroupId, systemRef);
+                                        if (existingProducts[productGroupId]) {
+                                            // mark all unavailable products as unvailable
+                                            this.emit('product.markUnavailable', productGroupId);
+                                            this.emit('productGroup.skip', productGroupId);
+                                        }
+                                    }
+                                });
+
+                                // continue if we have more pages, else we're done
+                                if (content.match(/<a class="linkActive" href="javascript:pageChange\(\d+, true\)">Next &gt;&gt;<\/a>/)) {
+                                    // uncomment to enable multiple product group page scraping
+                                    // we have another page
+                                    console.log("have more group listings");
+                                    getProductGroupListing(pageNum + 1);
+                                } else {
+                                    console.log("no more group listings");
+                                }
+                            } catch (ex) {
+                                console.error("error while parsing product group listing page", JSON.stringify(ex));
+                            }
+                        }
+                    });
+                }
+                getProductGroupListing()
+
+                function saveProductGroup(productGroupId) {
+                    casper.then(function () {
+                        var json = JSON.stringify(productGroups[productGroupId]);
+                        console.log("====== Product Group ======");
+                        console.log(json);
+                        console.log("===========================");
+
+                        this.emit('product.save', json);
+                    });
                 }
 
-                // GET PRODUCT GROUP LISTING
-                var u = BASE_SITE_URL + "/csr-admin-4/productcatalog/group.listing?currentPage=" + pageNum + "&_changePage=Y";
+                function fetchProductGroupDetail(productGroupId, systemRef) {
 
-                // pause to not slam the sever
-                //casper.wait(Math.floor(Math.random() * 2000) + 500);
+                    var u = BASE_SITE_URL + "/csr-admin-4/productcatalog/group.detail.baseInfo?groupId=" + productGroupId;
 
-                casper.then(function() {
-                    console.log("Loading product group listing page", pageNum, u);
-                });
+                    // pause to not slam the sever
+                    //casper.wait(Math.floor(Math.random() * 2000) + 500);
 
-                casper.thenOpen(u, function(response) {
-                    if (response.status !== 200) {
-                        console.error('Unable to get product listing page!');
-                        this.exit();
-                    } else {
-                        try {
-                            console.log('Got product group listing page', pageNum);
+                    casper.then(function () {
+                        console.log('Getting product group detail', productGroupId);
+                    });
 
-                            var content = casper.evaluate(function() {
-                                return document.all[0].outerHTML;
-                            });
-
-                            console.log('Evaluating product group listing page', pageNum);
-                            var productRe = /<a href="group\.detail\.baseInfo\?groupId=([^"]+)">([^<]+)<\/a>/g;
-                            var match;
-
-                            $("#grid-example .x-grid3-scroller table tbody tr").each(function(index, row) {
-                                //console.log("processing product group row");
-                                var productGroupId, systemRef;
-                                var c = $(this).find("div.x-grid3-cell-inner.x-grid3-col-4").html();
-
-                                var available = false;
-                                if (c.match(/\/available.gif/)) {
-                                    //console.log("available");
-                                    available = true;
-                                }
-
-                                var c2 = $(this).find("div.x-grid3-col.x-grid3-cell.x-grid3-td-3").html();
-                                if (match = productRe.exec(c2)) {
-                                    console.log("found product group page", JSON.stringify(match));
-
-                                    // load product group detail
-                                    productGroupId = match[1];
-                                    systemRef = match[2];
-                                } else {
-                                    console.error("failed to parse product group line", c2);
-                                    return;
-                                }
-
-                                if (AVAILABLE_ONLY == false || available) {
-                                    console.log("processing product group", productGroupId, systemRef);
-
+                    casper.thenOpen(u, function (response) {
+                        if (response.status !== 200) {
+                            console.error('Unable to get product group detail page!', productGroupId);
+                        } else {
+                            console.log('Got product group detail page', productGroupId);
+                            casper.waitUntilVisible('input[name="groupLocale.name"]', function () {
+                                console.log("DOM available");
+                                var product = casper.evaluate(function () {
                                     try {
-                                        // NOTE: save the base level information first, so we could load any group system refs later
-                                        fetchProductGroupDetail(productGroupId, systemRef);
-                                        saveProductGroup(productGroupId);
-
-                                        fetchProductGroupImages(productGroupId);
-                                        fetchProductGroupIngredients(productGroupId);
-                                        fetchProductGroupUsage(productGroupId);
-                                        fetchProductGroupCategories(productGroupId);
-                                        fetchProductGroupUpsellItems(productGroupId);
-                                        fetchProductGroupYouMayAlsoLike(productGroupId);
-                                        fetchProductGroupSKUs(productGroupId);
-
-                                        saveProductGroup(productGroupId);
+                                        var product = {};
+                                        product.type = "group";
+                                        product.name = $('input[name="groupLocale.name"]').val();
+                                        product.description = $('iframe').contents().find("body").html();
+                                        product.onHold = $('input[name="group.onHold"]').attr('checked') || false;
+                                        product.searchable = $('input[name="group.searchable"]').attr('checked') || false;
+                                        product.masterStatus = $('select[name="group.status"] > option:selected').val();
+                                        product.launchId = $('input[name="group.launchId"]').val() || 0;
+                                        product.startDate = new Date(moment($('input[name="group.startDate"]').val(), 'MM/DD/YYYY').unix() * 1000);
+                                        product.endDate = new Date(moment($('input[name="group.endDate"]').val(), 'MM/DD/YYYY').unix() * 1000);
+                                        return product;
                                     } catch (ex) {
-                                        console.error("error while processing product group", productGroupId, JSON.stringify(ex));
+                                        console.error("error parsing product group detail", JSON.stringify(ex));
                                     }
-                                } else {
-                                    console.log("skipping unavailable product group", productGroupId, systemRef);
-                                    if (existingProducts[productGroupId] == 1) {
-                                        // mark all unavailable products as unvailable
-                                        this.emit('product.markUnavailable', productGroupId);
-                                        this.emit('productGroup.skip', productGroupId);
-                                    }
-                                }
-                            });
+                                });
+                                // set the group systemRef as the ID
+                                product._id = systemRef;
 
-                            // continue if we have more pages, else we're done
-                            if (content.match(/<a class="linkActive" href="javascript:pageChange\(\d+, true\)">Next &gt;&gt;<\/a>/)) {
-                                // uncomment to enable multiple product group page scraping
-                                // we have another page
-                                console.log("have more group listings");
-                                getProductGroupListing(pageNum+1);
-                            } else {
-                                console.log("no more group listings");
-                            }
-                        } catch (ex) {
-                            console.error("error while parsing product group listing page", JSON.stringify(ex));
+                                productGroups[productGroupId] = product;
+                                //console.log("Product Group:", JSON.stringify(productGroup));
+                            }, function () {
+                                console.error("timed out waiting to get product group detail page");
+                                //this.exit();
+                            });
                         }
-                    }
-                });
-            }
-            getProductGroupListing()
+                    });
+                }
 
-            function saveProductGroup(productGroupId) {
-                casper.then(function() {
-                    var json = JSON.stringify(productGroups[productGroupId]);
-                    console.log("====== Product Group ======");
-                    console.log(json);
-                    console.log("===========================");
+                function fetchProductGroupImages(productGroupId) {
 
-                    this.emit('product.save', json);
-                });
-            }
+                    var u = BASE_SITE_URL + "/csr-admin-4/productcatalog/group.detail.images?groupId=" + productGroupId;
 
-            function fetchProductGroupDetail(productGroupId, systemRef) {
+                    // pause to not slam the sever
+                    //casper.wait(Math.floor(Math.random() * 2000) + 500);
 
-                var u = BASE_SITE_URL + "/csr-admin-4/productcatalog/group.detail.baseInfo?groupId=" + productGroupId;
+                    casper.then(function () {
+                        console.log('Getting product group images', productGroupId);
+                    });
 
-                // pause to not slam the sever
-                //casper.wait(Math.floor(Math.random() * 2000) + 500);
+                    casper.thenOpen(u, function (response) {
+                        if (response.status !== 200) {
+                            console.error('Unable to get product group images page!', productGroupId);
+                        } else {
+                            console.log('Got product group images page', productGroupId);
 
-                casper.then(function() {
-                    console.log('Getting product group detail', productGroupId);
-                });
-
-                casper.thenOpen(u, function (response) {
-                    if (response.status !== 200) {
-                        console.error('Unable to get product group detail page!', productGroupId);
-                    } else {
-                        console.log('Got product group detail page', productGroupId);
-                        casper.waitUntilVisible('input[name="groupLocale.name"]', function() {
-                            console.log("DOM available");
-                            var product = casper.evaluate(function() {
-                                try {
-                                    var product = {};
-                                    product.type = "group";
-                                    product.name = $('input[name="groupLocale.name"]').val();
-                                    product.description = $('iframe').contents().find("body").html();
-                                    product.onHold = $('input[name="group.onHold"]').attr('checked') || false;
-                                    product.searchable = $('input[name="group.searchable"]').attr('checked') || false;
-                                    product.masterStatus = $('select[name="group.status"] > option:selected').val();
-                                    product.launchId = $('input[name="group.launchId"]').val() || 0;
-                                    product.startDate = new Date(moment($('input[name="group.startDate"]').val(), 'MM/DD/YYYY').unix()*1000);
-                                    product.endDate = new Date(moment($('input[name="group.endDate"]').val(), 'MM/DD/YYYY').unix()*1000);
-                                    return product;
-                                } catch (ex) {
-                                    console.error("error parsing product group detail", JSON.stringify(ex));
-                                }
-                            });
-                            // set the group systemRef as the ID
-                            product._id = systemRef;
-
-                            productGroups[productGroupId] = product;
-                            //console.log("Product Group:", JSON.stringify(productGroup));
-                        }, function() {
-                            console.error("timed out waiting to get product group detail page");
-                            //this.exit();
-                        });
-                    }
-                });
-            }
-
-            function fetchProductGroupImages(productGroupId) {
-
-                var u = BASE_SITE_URL + "/csr-admin-4/productcatalog/group.detail.images?groupId=" + productGroupId;
-
-                // pause to not slam the sever
-                //casper.wait(Math.floor(Math.random() * 2000) + 500);
-
-                casper.then(function() {
-                    console.log('Getting product group images', productGroupId);
-                });
-
-                casper.thenOpen(u, function (response) {
-                    if (response.status !== 200) {
-                        console.error('Unable to get product group images page!', productGroupId);
-                    } else {
-                        console.log('Got product group images page', productGroupId);
-
-                        casper.waitUntilVisible('#gridImages', function() {
-                            var productGroup = productGroups[productGroupId];
-
-                            productGroup.images = casper.evaluate(function() {
-                                var images = [];
-
-                                $("#gridImages .x-grid3-scroller table tr").each(function() {
-                                    try {
-                                        var image = {};
-                                        image.rank = parseInt($(this).find('div.x-grid3-cell-inner.x-grid3-col-1').html());
-                                        image.startDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html(), 'MM/DD/YYYY').unix()*1000);
-                                        image.endDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-3').html(), 'MM/DD/YYYY').unix()*1000);
-                                        image.imagePath = $(this).find('div.x-grid3-cell-inner.x-grid3-col-4 a').attr("href");
-                                        image.alt = $(this).find('div.x-grid3-cell-inner.x-grid3-col-5').html();
-                                        images.push(image);
-                                        console.log('Got image', JSON.stringify(image));
-                                    } catch (ex) {
-                                        console.error('error parsing product image', JSON.stringify(ex));
-                                    }
-                                });
-
-                                return images;
-                            });
-                            //console.log("Product Group:", JSON.stringify(productGroup));
-                        }, function() {
-                            console.error("timed out waiting to get product group images");
-                            //this.exit();
-                        });
-                    }
-                });
-            }
-
-            function fetchProductGroupIngredients(productGroupId) {
-
-                var u = BASE_SITE_URL + "/csr-admin-4/productcatalog/group.detail.features?groupId=" + productGroupId;
-
-                // pause to not slam the sever
-                //casper.wait(Math.floor(Math.random() * 2000) + 500);
-
-                casper.then(function() {
-                    console.log('Getting product group ingredients', productGroupId);
-                });
-
-                casper.thenOpen(u, function (response) {
-                    if (response.status !== 200) {
-                        console.error('Unable to get product group ingredients page!', productGroupId);
-                    } else {
-                        console.log('Got product group ingredients page', productGroupId);
-
-                        casper.waitUntilVisible('iframe', function() {
-                            var productGroup = productGroups[productGroupId];
-
-                            productGroup.ingredients = casper.evaluate(function() {
-                                return $('iframe').contents().find("body").html();
-                            });
-                            console.log("Product Group Ingredients:", productGroup.ingredients);
-                        }, function() {
-                            console.error("timed out waiting to get product group ingredients");
-                            //this.exit();
-                        });
-                    }
-                });
-            }
-
-            function fetchProductGroupUsage(productGroupId) {
-
-                var u = BASE_SITE_URL + "/csr-admin-4/productcatalog/group.detail.usage?groupId=" + productGroupId;
-
-                // pause to not slam the sever
-                //casper.wait(Math.floor(Math.random() * 2000) + 500);
-
-                casper.then(function() {
-                    console.log('Getting product group usage', productGroupId);
-                });
-
-                casper.thenOpen(u, function (response) {
-                    if (response.status !== 200) {
-                        console.error('Unable to get product group usage page!', productGroupId);
-                    } else {
-                        console.log('Got product group usage page', productGroupId);
-
-                        casper.waitUntilVisible('iframe', function() {
-                            var productGroup = productGroups[productGroupId];
-
-                            productGroup.usage = casper.evaluate(function() {
-                                return $('iframe').contents().find("body").html();
-                            });
-                            console.log("Usage:", productGroup.usage);
-                        }, function() {
-                            console.error("timed out waiting to get product group usage");
-                            //this.exit();
-                        });
-                    }
-                });
-            }
-
-            function fetchProductGroupCategories(productGroupId) {
-
-                var u = BASE_SITE_URL + "/csr-admin-4/productcatalog/group.detail.categories?groupId=" + productGroupId;
-
-                // pause to not slam the sever
-                //casper.wait(Math.floor(Math.random() * 2000) + 500);
-
-                casper.then(function() {
-                    console.log('Getting product group categories', productGroupId);
-                });
-
-                casper.thenOpen(u, function (response) {
-                    if (response.status !== 200) {
-                        console.error('Unable to get product group categories page!', productGroupId);
-                    } else {
-                        console.log('Got product group categories page', productGroupId);
-
-                        casper.waitUntilVisible('#grid-categories .x-grid3-scroller', function() {
-                            var productGroup = productGroups[productGroupId];
-
-                            productGroup.categories = casper.evaluate(function() {
-                                var categories = [];
-                                $('#grid-categories .x-grid3-scroller table tr').each(function(index, row) {
-                                    var href = $(this).find('.x-grid3-cell-inner.x-grid3-col-catId a').attr('href');
-                                    var match;
-                                    if (match = href.match(/removeCategory\(([0-9]+)\)/)) {
-                                        categories.push(parseInt(match[1]));
-                                    }
-                                });
-                                return categories;
-                            });
-                            console.log("Product Group Categories:", JSON.stringify(productGroup.categories));
-                        }, function() {
-                            console.error("timed out waiting to get product group categories");
-                            //this.exit();
-                        });
-                    }
-                });
-            }
-
-            function fetchProductGroupUpsellItems(productGroupId) {
-
-                var u = BASE_SITE_URL + "/csr-admin-4/productcatalog/group.detail.upsell?groupId=" + productGroupId;
-
-                // pause to not slam the sever
-                //casper.wait(Math.floor(Math.random() * 2000) + 500);
-
-                casper.then(function() {
-                    console.log('Getting product group upsellItems', productGroupId);
-                });
-
-                casper.thenOpen(u, function (response) {
-                    if (response.status !== 200) {
-                        console.error('Unable to get product group upsellItems page!', productGroupId);
-                    } else {
-                        console.log('Got product group upsellItems page', productGroupId);
-
-                        casper.waitUntilVisible('#simpleGrid .x-grid3-scroller', function() {
-                            var productGroup = productGroups[productGroupId];
-
-                            productGroup.upsellItems = casper.evaluate(function() {
-                                var upsellItems = [];
-                                $('#simpleGrid .x-grid3-scroller table tr').each(function(index, row) {
-                                    var item = {};
-                                    item.rank = parseInt($(this).find('div.x-grid3-cell-inner.x-grid3-col-1').html());
-                                    item.marketingText = $(this).find('div.x-grid3-cell-inner.x-grid3-col-3').html();
-                                    //item.type = $(this).find('div.x-grid3-cell-inner.x-grid3-col-5').html();
-                                    // for now, all upsell items are products with sub-types: product/kit/group
-                                    item.product = $(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html();
-
-                                    upsellItems.push(item);
-                                });
-                                return upsellItems;
-                            });
-                            console.log("Upsell Items:", JSON.stringify(productGroup.upsellItems));
-                        }, function() {
-                            console.error("timed out waiting to get product group upsellItems");
-                            //this.exit();
-                        });
-                    }
-                });
-            }
-
-            function fetchProductGroupYouMayAlsoLike(productGroupId) {
-
-                var u = BASE_SITE_URL + "/csr-admin-4/productcatalog/group.detail.ymal?groupId=" + productGroupId;
-
-                // pause to not slam the sever
-                //casper.wait(Math.floor(Math.random() * 2000) + 500);
-
-                casper.then(function() {
-                    console.log('Getting product group youMayAlsoLike', productGroupId);
-                });
-
-                casper.thenOpen(u, function (response) {
-                    if (response.status !== 200) {
-                        console.error('Unable to get product group youMayAlsoLike page!', productGroupId);
-                    } else {
-                        console.log('Got product group youMayAlsoLike page', productGroupId);
-
-                        casper.waitUntilVisible('#simpleGrid .x-grid3-scroller', function() {
-                            console.log('youMayAlsoLike loaded');
-                            try {
+                            casper.waitUntilVisible('#gridImages', function () {
                                 var productGroup = productGroups[productGroupId];
 
-                                productGroup.youMayAlsoLike = casper.evaluate(function() {
-                                    var youMayAlsoLike = [];
-                                    $('#simpleGrid .x-grid3-scroller table tr').each(function(index, row) {
+                                productGroup.images = casper.evaluate(function () {
+                                    var images = [];
+
+                                    $("#gridImages .x-grid3-scroller table tr").each(function () {
+                                        try {
+                                            var image = {};
+                                            image.rank = parseInt($(this).find('div.x-grid3-cell-inner.x-grid3-col-1').html());
+                                            image.startDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html(), 'MM/DD/YYYY').unix() * 1000);
+                                            image.endDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-3').html(), 'MM/DD/YYYY').unix() * 1000);
+                                            image.imagePath = $(this).find('div.x-grid3-cell-inner.x-grid3-col-4 a').attr("href");
+                                            image.alt = $(this).find('div.x-grid3-cell-inner.x-grid3-col-5').html();
+                                            images.push(image);
+                                            console.log('Got image', JSON.stringify(image));
+                                        } catch (ex) {
+                                            console.error('error parsing product image', JSON.stringify(ex));
+                                        }
+                                    });
+
+                                    return images;
+                                });
+                                //console.log("Product Group:", JSON.stringify(productGroup));
+                            }, function () {
+                                console.error("timed out waiting to get product group images");
+                                //this.exit();
+                            });
+                        }
+                    });
+                }
+
+                function fetchProductGroupIngredients(productGroupId) {
+
+                    var u = BASE_SITE_URL + "/csr-admin-4/productcatalog/group.detail.features?groupId=" + productGroupId;
+
+                    // pause to not slam the sever
+                    //casper.wait(Math.floor(Math.random() * 2000) + 500);
+
+                    casper.then(function () {
+                        console.log('Getting product group ingredients', productGroupId);
+                    });
+
+                    casper.thenOpen(u, function (response) {
+                        if (response.status !== 200) {
+                            console.error('Unable to get product group ingredients page!', productGroupId);
+                        } else {
+                            console.log('Got product group ingredients page', productGroupId);
+
+                            casper.waitUntilVisible('iframe', function () {
+                                var productGroup = productGroups[productGroupId];
+
+                                productGroup.ingredients = casper.evaluate(function () {
+                                    return $('iframe').contents().find("body").html();
+                                });
+                                console.log("Product Group Ingredients:", productGroup.ingredients);
+                            }, function () {
+                                console.error("timed out waiting to get product group ingredients");
+                                //this.exit();
+                            });
+                        }
+                    });
+                }
+
+                function fetchProductGroupUsage(productGroupId) {
+
+                    var u = BASE_SITE_URL + "/csr-admin-4/productcatalog/group.detail.usage?groupId=" + productGroupId;
+
+                    // pause to not slam the sever
+                    //casper.wait(Math.floor(Math.random() * 2000) + 500);
+
+                    casper.then(function () {
+                        console.log('Getting product group usage', productGroupId);
+                    });
+
+                    casper.thenOpen(u, function (response) {
+                        if (response.status !== 200) {
+                            console.error('Unable to get product group usage page!', productGroupId);
+                        } else {
+                            console.log('Got product group usage page', productGroupId);
+
+                            casper.waitUntilVisible('iframe', function () {
+                                var productGroup = productGroups[productGroupId];
+
+                                productGroup.usage = casper.evaluate(function () {
+                                    return $('iframe').contents().find("body").html();
+                                });
+                                console.log("Usage:", productGroup.usage);
+                            }, function () {
+                                console.error("timed out waiting to get product group usage");
+                                //this.exit();
+                            });
+                        }
+                    });
+                }
+
+                function fetchProductGroupCategories(productGroupId) {
+
+                    var u = BASE_SITE_URL + "/csr-admin-4/productcatalog/group.detail.categories?groupId=" + productGroupId;
+
+                    // pause to not slam the sever
+                    //casper.wait(Math.floor(Math.random() * 2000) + 500);
+
+                    casper.then(function () {
+                        console.log('Getting product group categories', productGroupId);
+                    });
+
+                    casper.thenOpen(u, function (response) {
+                        if (response.status !== 200) {
+                            console.error('Unable to get product group categories page!', productGroupId);
+                        } else {
+                            console.log('Got product group categories page', productGroupId);
+
+                            casper.waitUntilVisible('#grid-categories .x-grid3-scroller', function () {
+                                var productGroup = productGroups[productGroupId];
+
+                                productGroup.categories = casper.evaluate(function () {
+                                    var categories = [];
+                                    $('#grid-categories .x-grid3-scroller table tr').each(function (index, row) {
+                                        var href = $(this).find('.x-grid3-cell-inner.x-grid3-col-catId a').attr('href');
+                                        var match;
+                                        if (match = href.match(/removeCategory\(([0-9]+)\)/)) {
+                                            categories.push(parseInt(match[1]));
+                                        }
+                                    });
+                                    return categories;
+                                });
+                                console.log("Product Group Categories:", JSON.stringify(productGroup.categories));
+                            }, function () {
+                                console.error("timed out waiting to get product group categories");
+                                //this.exit();
+                            });
+                        }
+                    });
+                }
+
+                function fetchProductGroupUpsellItems(productGroupId) {
+
+                    var u = BASE_SITE_URL + "/csr-admin-4/productcatalog/group.detail.upsell?groupId=" + productGroupId;
+
+                    // pause to not slam the sever
+                    //casper.wait(Math.floor(Math.random() * 2000) + 500);
+
+                    casper.then(function () {
+                        console.log('Getting product group upsellItems', productGroupId);
+                    });
+
+                    casper.thenOpen(u, function (response) {
+                        if (response.status !== 200) {
+                            console.error('Unable to get product group upsellItems page!', productGroupId);
+                        } else {
+                            console.log('Got product group upsellItems page', productGroupId);
+
+                            casper.waitUntilVisible('#simpleGrid .x-grid3-scroller', function () {
+                                var productGroup = productGroups[productGroupId];
+
+                                productGroup.upsellItems = casper.evaluate(function () {
+                                    var upsellItems = [];
+                                    $('#simpleGrid .x-grid3-scroller table tr').each(function (index, row) {
                                         var item = {};
                                         item.rank = parseInt($(this).find('div.x-grid3-cell-inner.x-grid3-col-1').html());
-                                        //item.type = $(this).find('div.x-grid3-cell-inner.x-grid3-col-4').html();
+                                        item.marketingText = $(this).find('div.x-grid3-cell-inner.x-grid3-col-3').html();
+                                        //item.type = $(this).find('div.x-grid3-cell-inner.x-grid3-col-5').html();
                                         // for now, all upsell items are products with sub-types: product/kit/group
                                         item.product = $(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html();
 
-                                        youMayAlsoLike.push(item);
+                                        upsellItems.push(item);
                                     });
-                                    return youMayAlsoLike;
+                                    return upsellItems;
                                 });
-                                console.log("You May Also Like Items:", JSON.stringify(productGroup.youMayAlsoLike));
-                            } catch (ex) {
-                                console.error("error processing you may also like item", JSON.stringify(ex));
-                            }
-                        }, function() {
-                            console.error("timed out waiting to get product group youMayAlsoLike");
-                            //this.exit();
-                        });
-                    }
-                });
-            }
-
-            function fetchProductGroupSKUs(productGroupId) {
-
-                var u = BASE_SITE_URL + "/csr-admin-4/productcatalog/group.detail.skus?groupId=" + productGroupId;
-
-                // pause to not slam the sever
-                //casper.wait(Math.floor(Math.random() * 2000) + 500);
-
-                casper.then(function() {
-                    console.log('Getting product group SKUs', productGroupId);
-                });
-
-                casper.thenOpen(u, function (response) {
-                    if (response.status !== 200) {
-                        console.error('Unable to get product group SKUs page!', productGroupId);
-                    } else {
-                        console.log('Got product group SKUs page', productGroupId);
-
-                        casper.waitUntilVisible('#productAdminContent #secondGrid .x-grid3-scroller', function() {
-                            var productGroup = productGroups[productGroupId];
-
-                            productGroup.contains = casper.evaluate(function() {
-                                try {
-                                    var products = [];
-                                    $('#productAdminContent #secondGrid .x-grid3-scroller .x-grid3-row ').each(function(index, row) {
-                                        var product = {};
-                                        //product.type = $(this).find('divx-grid3-cell-inner.x-grid3-col-3').html();
-                                        // for now, all product group items are products
-                                        product.product = $(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html();
-
-                                        products.push(product);
-                                    });
-                                    return products;
-                                } catch (ex) {
-                                    console.error("error processing sku", JSON.stringify(ex));
-                                }
+                                console.log("Upsell Items:", JSON.stringify(productGroup.upsellItems));
+                            }, function () {
+                                console.error("timed out waiting to get product group upsellItems");
+                                //this.exit();
                             });
-                            console.log("SKUs:", JSON.stringify(productGroup.contains));
-                        }, function() {
-                            console.error("timed out waiting to get product group SKUs");
-                            //this.exit();
-                        });
-                    }
-                });
-            }
-
-            casper.then(function() {
-                //console.log("found product groups", JSON.stringify(productGroups));
-            });
-        }]);
-
-
-        // KIT GROUPS
-        spooky.then([{
-            existingProducts: existingProducts,
-            AVAILABLE_ONLY: AVAILABLE_ONLY,
-            BASE_SITE_URL: BASE_SITE_URL
-        }, function () {
-            console.log("== KIT GROUPS ==");
-
-            // casperjs context here
-            var casper = this;
-
-            casper.onResourceError = function(resourceError) {
-                console.error('Unable to load resource (#' + resourceError.id + 'URL:' + resourceError.url + ')');
-                console.error('Error code: ' + resourceError.errorCode + '. Description: ' + resourceError.errorString);
-            };
-
-            // map of all products
-            var kitGroups = {};
-
-            // KIT GROUP LISTING
-            function getKitGroupListing(pageNum) {
-                if (pageNum == null) {
-                    pageNum = 1;
+                        }
+                    });
                 }
 
-                // GET PRODUCT GROUP LISTING
-                var u = BASE_SITE_URL + "/csr-admin-4/productcatalog/kitgroup.listing?currentPage=" + pageNum + "&_changePage=Y";
+                function fetchProductGroupYouMayAlsoLike(productGroupId) {
 
-                // pause to not slam the sever
-                //casper.wait(Math.floor(Math.random() * 2000) + 500);
+                    var u = BASE_SITE_URL + "/csr-admin-4/productcatalog/group.detail.ymal?groupId=" + productGroupId;
 
-                casper.then(function() {
-                    console.log("Loading kit group listing page", pageNum, u);
-                });
+                    // pause to not slam the sever
+                    //casper.wait(Math.floor(Math.random() * 2000) + 500);
 
-                casper.thenOpen(u, function(response) {
-                    if (response.status !== 200) {
-                        console.error('Unable to get kit group listing page!');
-                        this.exit();
-                    } else {
-                        try {
-                            console.log('Got kit group listing page', pageNum);
+                    casper.then(function () {
+                        console.log('Getting product group youMayAlsoLike', productGroupId);
+                    });
 
-                            var content = casper.evaluate(function() {
-                                return document.all[0].outerHTML;
-                            });
+                    casper.thenOpen(u, function (response) {
+                        if (response.status !== 200) {
+                            console.error('Unable to get product group youMayAlsoLike page!', productGroupId);
+                        } else {
+                            console.log('Got product group youMayAlsoLike page', productGroupId);
 
-                            console.log('Evaluating kit group listing page', pageNum);
-                            var productRe = /<a href="kitgroup.edit\?kitGroupId=([^"]+)">([^<]+)<\/a>/g;
-                            var match;
-
-                            while (match = productRe.exec(content)) {
-                                console.log("found kit group page", JSON.stringify(match));
-
-                                // load product group detail
-                                var kitGroupId = match[1];
-                                var systemRef = match[2];
-
+                            casper.waitUntilVisible('#simpleGrid .x-grid3-scroller', function () {
+                                console.log('youMayAlsoLike loaded');
                                 try {
-                                    // NOTE: save the base level information first, so we could load any group system refs later
-                                    fetchKitGroupDetail(kitGroupId, systemRef);
-                                    saveKitGroup(kitGroupId);
-                                } catch (ex) {
-                                    console.error("error while processing kit group", productGroupId, JSON.stringify(ex));
-                                }
-                            }
+                                    var productGroup = productGroups[productGroupId];
 
-                            // continue if we have more pages, else we're done
-                            if (content.match(/<a class="linkActive" href="javascript:pageChange\(\d+, true\)">Next &gt;&gt;<\/a>/)) {
-                                // uncomment to enable multiple product group page scraping
-                                // we have another page
-                                console.log("have more kit group listings");
-                                getKitGroupListing(pageNum+1);
-                            } else {
-                                console.log("no more kit group listings");
-                            }
-                        } catch (ex) {
-                            console.error("error while parsing kit group listing page", JSON.stringify(ex));
-                        }
-                    }
-                });
-            }
-            getKitGroupListing()
+                                    productGroup.youMayAlsoLike = casper.evaluate(function () {
+                                        var youMayAlsoLike = [];
+                                        $('#simpleGrid .x-grid3-scroller table tr').each(function (index, row) {
+                                            var item = {};
+                                            item.rank = parseInt($(this).find('div.x-grid3-cell-inner.x-grid3-col-1').html());
+                                            //item.type = $(this).find('div.x-grid3-cell-inner.x-grid3-col-4').html();
+                                            // for now, all upsell items are products with sub-types: product/kit/group
+                                            item.product = $(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html();
 
-            function saveKitGroup(kitGroupId) {
-                casper.then(function() {
-                    var json = JSON.stringify(kitGroups[kitGroupId]);
-                    console.log("====== Kit Group ======");
-                    console.log(json);
-                    console.log("===========================");
-
-                    this.emit('kitGroup.save', json);
-                });
-            }
-
-            function fetchKitGroupDetail(kitGroupId, systemRef) {
-
-                var u = BASE_SITE_URL + "/csr-admin-4/productcatalog/kitgroup.edit?kitGroupId=" + kitGroupId;
-
-                // pause to not slam the sever
-                ////casper.wait(Math.floor(Math.random() * 2000) + 500);
-
-                casper.then(function() {
-                    console.log('Getting kit group detail', kitGroupId);
-                });
-
-                casper.thenOpen(u, function (response) {
-                    if (response.status !== 200) {
-                        console.error('Unable to get kit group detail page!', kitGroupId);
-                    } else {
-                        console.log('Got kit group detail page', kitGroupId);
-                        casper.waitUntilVisible('#secondGrid .x-grid3-scroller', function() {
-                            console.log("DOM available");
-                            var kitGroup = {};
-                            kitGroup.components = casper.evaluate(function() {
-                                try {
-                                    var components = [];
-                                    $('#secondGrid .x-grid3-scroller .x-grid3-row').each(function(index, row) {
-                                        var component = {};
-                                        component.rank = parseInt($(this).find('div.x-grid3-cell-inner.x-grid3-col-0').html());
-                                        component.product = $(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html();
-                                        component.startDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-4').html(), 'MM/DD/YYYY').unix()*1000);
-                                        component.endDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-5').html(), 'MM/DD/YYYY').unix()*1000);
-                                        components.push(component);
+                                            youMayAlsoLike.push(item);
+                                        });
+                                        return youMayAlsoLike;
                                     });
-                                    return components;
+                                    console.log("You May Also Like Items:", JSON.stringify(productGroup.youMayAlsoLike));
                                 } catch (ex) {
-                                    console.error("error parsing kit group detail", JSON.stringify(ex));
+                                    console.error("error processing you may also like item", JSON.stringify(ex));
                                 }
+                            }, function () {
+                                console.error("timed out waiting to get product group youMayAlsoLike");
+                                //this.exit();
                             });
-                            // set the group systemRef as the ID
-                            kitGroup._id = systemRef;
+                        }
+                    });
+                }
 
-                            kitGroups[kitGroupId] = kitGroup;
-                            //console.log("Product Group:", JSON.stringify(kitGroup));
-                        }, function() {
-                            console.error("timed out waiting to get kit group detail page");
-                            //this.exit();
-                        });
-                    }
+                function fetchProductGroupSKUs(productGroupId) {
+
+                    var u = BASE_SITE_URL + "/csr-admin-4/productcatalog/group.detail.skus?groupId=" + productGroupId;
+
+                    // pause to not slam the sever
+                    //casper.wait(Math.floor(Math.random() * 2000) + 500);
+
+                    casper.then(function () {
+                        console.log('Getting product group SKUs', productGroupId);
+                    });
+
+                    casper.thenOpen(u, function (response) {
+                        if (response.status !== 200) {
+                            console.error('Unable to get product group SKUs page!', productGroupId);
+                        } else {
+                            console.log('Got product group SKUs page', productGroupId);
+
+                            casper.waitUntilVisible('#productAdminContent #secondGrid .x-grid3-scroller', function () {
+                                var productGroup = productGroups[productGroupId];
+
+                                productGroup.contains = casper.evaluate(function () {
+                                    try {
+                                        var products = [];
+                                        $('#productAdminContent #secondGrid .x-grid3-scroller .x-grid3-row ').each(function (index, row) {
+                                            var product = {};
+                                            //product.type = $(this).find('divx-grid3-cell-inner.x-grid3-col-3').html();
+                                            // for now, all product group items are products
+                                            product.product = $(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html();
+
+                                            products.push(product);
+                                        });
+                                        return products;
+                                    } catch (ex) {
+                                        console.error("error processing sku", JSON.stringify(ex));
+                                    }
+                                });
+                                console.log("SKUs:", JSON.stringify(productGroup.contains));
+                            }, function () {
+                                console.error("timed out waiting to get product group SKUs");
+                                //this.exit();
+                            });
+                        }
+                    });
+                }
+
+                casper.then(function () {
+                    //console.log("found product groups", JSON.stringify(productGroups));
                 });
-            }
+            }]);
+        }
 
-            casper.then(function() {
-                //console.log("found kit groups", JSON.stringify(kitGroups));
-            });
-        }]);
+        // KIT GROUPS
+        if (!options["skipKits"] && !options["products"]) {
+            spooky.then([{
+                existingProducts: existingProducts,
+                AVAILABLE_ONLY: AVAILABLE_ONLY,
+                BASE_SITE_URL: BASE_SITE_URL
+            }, function () {
+                console.log("== KIT GROUPS ==");
+
+                // casperjs context here
+                var casper = this;
+
+                casper.onResourceError = function (resourceError) {
+                    console.error('Unable to load resource (#' + resourceError.id + 'URL:' + resourceError.url + ')');
+                    console.error('Error code: ' + resourceError.errorCode + '. Description: ' + resourceError.errorString);
+                };
+
+                // map of all products
+                var kitGroups = {};
+
+                // KIT GROUP LISTING
+                function getKitGroupListing(pageNum) {
+                    if (pageNum == null) {
+                        pageNum = 1;
+                    }
+
+                    // GET PRODUCT GROUP LISTING
+                    var u = BASE_SITE_URL + "/csr-admin-4/productcatalog/kitgroup.listing?currentPage=" + pageNum + "&_changePage=Y";
+
+                    // pause to not slam the sever
+                    //casper.wait(Math.floor(Math.random() * 2000) + 500);
+
+                    casper.then(function () {
+                        console.log("Loading kit group listing page", pageNum, u);
+                    });
+
+                    casper.thenOpen(u, function (response) {
+                        if (response.status !== 200) {
+                            console.error('Unable to get kit group listing page!');
+                            this.exit();
+                        } else {
+                            try {
+                                console.log('Got kit group listing page', pageNum);
+
+                                var content = casper.evaluate(function () {
+                                    return document.all[0].outerHTML;
+                                });
+
+                                console.log('Evaluating kit group listing page', pageNum);
+                                var productRe = /<a href="kitgroup.edit\?kitGroupId=([^"]+)">([^<]+)<\/a>/g;
+                                var match;
+
+                                while (match = productRe.exec(content)) {
+                                    console.log("found kit group page", JSON.stringify(match));
+
+                                    // load product group detail
+                                    var kitGroupId = match[1];
+                                    var systemRef = match[2];
+
+                                    try {
+                                        // NOTE: save the base level information first, so we could load any group system refs later
+                                        fetchKitGroupDetail(kitGroupId, systemRef);
+                                        saveKitGroup(kitGroupId);
+                                    } catch (ex) {
+                                        console.error("error while processing kit group", productGroupId, JSON.stringify(ex));
+                                    }
+                                }
+
+                                // continue if we have more pages, else we're done
+                                if (content.match(/<a class="linkActive" href="javascript:pageChange\(\d+, true\)">Next &gt;&gt;<\/a>/)) {
+                                    // uncomment to enable multiple product group page scraping
+                                    // we have another page
+                                    console.log("have more kit group listings");
+                                    getKitGroupListing(pageNum + 1);
+                                } else {
+                                    console.log("no more kit group listings");
+                                }
+                            } catch (ex) {
+                                console.error("error while parsing kit group listing page", JSON.stringify(ex));
+                            }
+                        }
+                    });
+                }
+                getKitGroupListing()
+
+                function saveKitGroup(kitGroupId) {
+                    casper.then(function () {
+                        var json = JSON.stringify(kitGroups[kitGroupId]);
+                        console.log("====== Kit Group ======");
+                        console.log(json);
+                        console.log("===========================");
+
+                        this.emit('kitGroup.save', json);
+                    });
+                }
+
+                function fetchKitGroupDetail(kitGroupId, systemRef) {
+
+                    var u = BASE_SITE_URL + "/csr-admin-4/productcatalog/kitgroup.edit?kitGroupId=" + kitGroupId;
+
+                    // pause to not slam the sever
+                    ////casper.wait(Math.floor(Math.random() * 2000) + 500);
+
+                    casper.then(function () {
+                        console.log('Getting kit group detail', kitGroupId);
+                    });
+
+                    casper.thenOpen(u, function (response) {
+                        if (response.status !== 200) {
+                            console.error('Unable to get kit group detail page!', kitGroupId);
+                        } else {
+                            console.log('Got kit group detail page', kitGroupId);
+                            casper.waitUntilVisible('#secondGrid .x-grid3-scroller', function () {
+                                console.log("DOM available");
+                                var kitGroup = {};
+                                kitGroup.components = casper.evaluate(function () {
+                                    try {
+                                        var components = [];
+                                        $('#secondGrid .x-grid3-scroller .x-grid3-row').each(function (index, row) {
+                                            var component = {};
+                                            component.rank = parseInt($(this).find('div.x-grid3-cell-inner.x-grid3-col-0').html());
+                                            component.product = $(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html();
+                                            component.startDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-4').html(), 'MM/DD/YYYY').unix() * 1000);
+                                            component.endDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-5').html(), 'MM/DD/YYYY').unix() * 1000);
+                                            components.push(component);
+                                        });
+                                        return components;
+                                    } catch (ex) {
+                                        console.error("error parsing kit group detail", JSON.stringify(ex));
+                                    }
+                                });
+                                // set the group systemRef as the ID
+                                kitGroup._id = systemRef;
+
+                                kitGroups[kitGroupId] = kitGroup;
+                                //console.log("Product Group:", JSON.stringify(kitGroup));
+                            }, function () {
+                                console.error("timed out waiting to get kit group detail page");
+                                //this.exit();
+                            });
+                        }
+                    });
+                }
+
+                casper.then(function () {
+                    //console.log("found kit groups", JSON.stringify(kitGroups));
+                });
+            }]);
+        }
 
         // SEND COMPLETE EVENT
         spooky.then(function() {
@@ -1847,25 +1906,27 @@ models.onReady(function() {
                     if (c != null) {
                         //console.log("found category", JSON.stringify(c));
                         isUpdate = true;
+                    } else {
+                        console.log("didn't find existing category", id);
                     }
+
+                    // do a save
+                    models.Category.update({_id: id}, p, {upsert: true}, function (err, numAffected, rawResponse) {
+                        try {
+                            if (err) return console.error("error saving category", err, JSON.stringify(p));
+                            if (isUpdate) {
+                                updatedCategories++;
+                                console.log("updated category", updatedCategories, numAffected, rawResponse);
+                            } else {
+                                savedCategories++;
+                                console.log("saved category", savedCategories, numAffected, rawResponse);
+                            }
+                        } catch (ex) {
+                            console.error("error saving/updating category", id, JSON.stringify(ex));
+                        }
+                    });
                 } catch (ex) {
                     console.error("error finding category before save/update", id, JSON.stringify(ex));
-                }
-            });
-
-            // do a save
-            models.Category.update({_id: id}, p, {upsert: true}, function (err, numAffected, rawResponse) {
-                try {
-                    if (err) return console.error("error saving category", err, JSON.stringify(p));
-                    if (isUpdate) {
-                        updatedCategories++;
-                        console.log("updated category", updatedCategories, numAffected, rawResponse);
-                    } else {
-                        savedCategories++;
-                        console.log("saved category", savedCategories, numAffected, rawResponse);
-                    }
-                } catch (ex) {
-                    console.error("error saving/updating category", id, JSON.stringify(ex));
                 }
             });
         } catch (ex) {
