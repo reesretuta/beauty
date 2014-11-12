@@ -569,7 +569,7 @@ angular.module('app.services', ['ngResource'])
                     //$log.debug("cartService(): addToCart(): comparing products", p, product);
                     if (cartItem.sku == item.sku && item.kitSelections == null && cartItem.kitSelections == null) {
                         //$log.debug("cartService(): addToCart(): non-kit products are identical");
-                        var newQty = parseInt(item.quantity) + parseInt(cartItem.quantity);
+                        var newQty = item.quantity + cartItem.quantity;
                         cartItem.quantity = newQty;
                         $log.debug("cartService(): addToCart(): added one more", item);
                         updated = true;
@@ -585,7 +585,7 @@ angular.module('app.services', ['ngResource'])
                         name_es_US: item.name_es_US,
                         sku: item.sku,
                         kitSelections: item.kitSelections,
-                        quantity: parseInt(item.quantity),
+                        quantity: item.quantity,
                         contains: item.contains
                     });
                 }

@@ -110,9 +110,17 @@ angular.module('app.controllers.products')
                     $log.debug("add kit to cart", cartItem);
 
                     var n = cartItem.quantity;
-                    cartItem.quantity = 1;
                     for (var i=0; i < n; i++) {
-                        Cart.addToCart(cartItem);
+                        Cart.addToCart({
+                            name: cartItem.name,
+                            sku: cartItem.sku,
+                            kitSelections: cartItem.kitSelections,
+                            quantity: 1
+                        }).then(function() {
+                            $log.debug("MainController(): kit: addToCart()", product);
+                        }, function (error) {
+                            $log.error("MainController(): kit: addToCart(): error", product);
+                        });
                     }
                 }
             });

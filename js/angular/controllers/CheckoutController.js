@@ -338,7 +338,12 @@ angular.module('app.controllers.checkout')
                 Cart.clear().then(function(cart) {
                     $log.debug("CheckoutController(): selectProduct(): previous cart cleared");
 
-                    Cart.addToCart(product).then(function(cart) {
+                    Cart.addToCart({
+                        name: product.name,
+                        sku: product.sku,
+                        kitSelections: product.kitSelections,
+                        quantity: 1
+                    }).then(function(cart) {
                         $log.debug("CheckoutController(): selectProduct(): SKU loaded & added to cart", cart);
 
                         $scope.cart = cart;

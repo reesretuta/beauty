@@ -1490,6 +1490,7 @@ function calculateSalesTax(data) {
      */
 
     console.log("getCalculateTax()", data);
+    console.log("getCalculateTax(): products",JSON.stringify(data.products));
     var deferred = Q.defer();
 
     request.post({
