@@ -420,15 +420,15 @@ angular.module('app.services', ['ngResource'])
                 //$log.debug("cartService(): getCart()", session.cart);
 
                 if (noLoadProducts == null || noLoadProducts == false) {
-                    $log.debug("cartService().get(): loading products for cart");
+                    $log.debug("cartService(): get(): loading products for cart", session.cart);
 
                     // load the project for the cart items
                     cartService.loadProducts(session.cart).then(function(items) {
-                        $log.debug("cartService().get(): loaded items from cart & populated products", items);
+                        $log.debug("cartService(): get(): loaded items from cart & populated products", items);
 
                         d.resolve(session.cart);
                     }, function(error) {
-                        $log.error("cartService().get(): failed to populate products", error);
+                        $log.error("cartService(): get(): failed to populate products", error);
                         d.reject(error);
                     })
                 } else {
@@ -558,11 +558,11 @@ angular.module('app.services', ['ngResource'])
                 if (!updated) {
                     // load the products since there are now new items
                     cartService.loadProducts(cart).then(function(items) {
-                        $log.debug("cartService().get(): loaded items from cart & populated products", items);
+                        $log.debug("cartService(): get(): loaded items from cart & populated products", items);
 
                         d.resolve(cart);
                     }, function(error) {
-                        $log.error("cartService().get(): failed to populated products", error);
+                        $log.error("cartService(): get(): failed to populated products", error);
                         d.reject(error);
                     })
                 } else {
@@ -704,13 +704,13 @@ angular.module('app.services', ['ngResource'])
             var ret = origQuery(params);
 
             ret.$promise.then(function(products) {
-                $log.debug("productService(): get(): result", products);
+                $log.debug("productService(): query(): result", products);
                 $.each(products, function(index, product) {
                     productService.selectCurrentPrice(product);
                 });
                 d.resolve(products);
             }, function(error) {
-                $log.error("productService(): get(): failure", error);
+                $log.error("productService(): query(): failure", error);
                 d.reject(error);
             });
 

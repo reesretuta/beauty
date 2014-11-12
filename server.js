@@ -468,8 +468,20 @@ router.route('/products/:productId')
                 return;
             }
 
-            console.log("returning", products.length, "products");
-            res.json(products);
+            if (products.length == 1) {
+                console.log("returning", products.length, "products");
+                res.json(products[0]);
+                res.end();
+                return;
+            }
+
+            res.status(500);
+            res.json({
+                statusCode: 500,
+                errorCode: "productLookupFailed",
+                errorMessage: "Failed to lookup product"
+            });
+            res.end();
         });
     });
 

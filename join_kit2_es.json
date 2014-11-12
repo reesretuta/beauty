@@ -1,21 +1,7 @@
 [{
-    "_id" : "19637",
+    "_id" : "19823",
     "kitGroups" : [],
-    "contains" : [
-        { "product" : "12038", "quantity" : 1, "rank" : 1,  "startDate" : { "$date" : 946702800000 }, "endDate" : null },
-        { "product" : "14000", "quantity" : 1, "rank" : 1,  "startDate" : { "$date" : 946702800000 }, "endDate" : null },
-        { "product" : "15522", "quantity" : 1, "rank" : 1,  "startDate" : { "$date" : 946702800000 }, "endDate" : null },
-        { "product" : "18373", "quantity" : 1, "rank" : 1,  "startDate" : { "$date" : 946702800000 }, "endDate" : null },
-        { "product" : "18549", "quantity" : 1, "rank" : 1,  "startDate" : { "$date" : 946702800000 }, "endDate" : null },
-        { "product" : "19035", "quantity" : 1, "rank" : 1,  "startDate" : { "$date" : 946702800000 }, "endDate" : null },
-        { "product" : "19039", "quantity" : 1, "rank" : 1,  "startDate" : { "$date" : 946702800000 }, "endDate" : null },
-        { "product" : "19054", "quantity" : 1, "rank" : 1,  "startDate" : { "$date" : 946702800000 }, "endDate" : null },
-        { "product" : "19244", "quantity" : 1, "rank" : 1,  "startDate" : { "$date" : 946702800000 }, "endDate" : null },
-        { "product" : "19355", "quantity" : 1, "rank" : 1,  "startDate" : { "$date" : 946702800000 }, "endDate" : null },
-        { "product" : "19362", "quantity" : 1, "rank" : 1,  "startDate" : { "$date" : 946702800000 }, "endDate" : null },
-        { "product" : "19369", "quantity" : 1, "rank" : 1,  "startDate" : { "$date" : 946702800000 }, "endDate" : null },
-        { "product" : "19497", "quantity" : 1, "rank" : 1,  "startDate" : { "$date" : 946702800000 }, "endDate" : null }
-    ],
+    "contains" : [ ],
     "youMayAlsoLike" : [],
     "upsellItems" : [],
     "categories" : [],
@@ -23,7 +9,7 @@
         {
             "commissionableVolume" : 0,
             "instantProfit" : 0,
-            "price" : 39,
+            "price" : 49,
             "qualifyingVolume" : 0,
             "rebate" : 0,
             "retailVolume" : 0,
@@ -40,26 +26,18 @@
     ],
     "usage" : "Follow label instructions provided with each product in set.",
     "ingredients" : "",
-    "images" : [ 
-        {
-            "alt" : "Color Set",
-            "imagePath" : "/img/skincare_starter_kit.png",
-            "rank" : 1,
-            "startDate" : { "$date" : 946702800000 },
-            "endDate" : { "$date" : 1735707600000 }
-        }
-    ],
+    "images" : [ ],
     "type" : "kit",
     "taxCode" : "P0000000",
     "standardCost" : 0,
     "searchable" : false,
     "quantity" : "1",
     "productClass" : 0,
-    "onHold" : "false",
-    "name" : "Skincare Starter Kit (Spanish)",
-    "name_es_US" : "Skincare Starter Kit (Espa&ntilde;ol)",
+    "onHold" : false,
+    "name" : "Business Kit (Spanish)",
+    "name_es_US" : "Kit Del Negocio (Espa&ntilde;ol)",
     "masterType" : "R",
     "masterStatus" : "A",
     "hazmatClass" : 0,
-    "description" : "Royal Jelly Milk Balm Advanced<br />Gel Facial Reafirmante + con Complejo Firmiplex<br />Optimeyes Eye Treatment<br />Además recibes ¡HERRAMIENTAS DINÁMICAS!<br />Bolso ROJO de Negocios<br />Juego de Material Impreso Bienvenida a JAFRA<br />Catálogo de Productos (5)<br />Folleto de Temporada (10)<br />Folleto de la Anfitriona<br />Perfil Advanced Dynamics (10)<br />Perfil del Cuidado del Cutis (10)<br />Perfil de Fragancias (10)<br />Forma de Pedido del Cliente (10)"
+    "description" : ""
 }]
