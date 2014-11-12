@@ -1,5 +1,5 @@
 angular.module('app.controllers.cart')
-    .controller('CartController', function ($scope, $document, $rootScope, $compile, $routeParams, $modal, $log, $q, SalesTax, Cart, Product, OrderHelper, HashKeyCopier, STORE_BASE_URL) {
+    .controller('CartController', function ($scope, $document, $rootScope, $compile, $routeParams, $modal, $log, $q, $location, SalesTax, Cart, Product, OrderHelper, HashKeyCopier, STORE_BASE_URL) {
         $log.debug("CartController");
 
         //change page title
