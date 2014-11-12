@@ -793,9 +793,9 @@ function updateAddress(clientId, addressId, address) {
             "zip": address.zip,
             "country": address.country,
             "phone": address.phone,
-            "geocode": "00000",
-            "stateDescription": "California",
-            "county" : "Los Angeles"
+            "geocode": address.geocode,
+            "stateDescription": address.state,
+            "county" : address.county
         },
         headers: {
             'Content-Type' : 'application/x-www-form-urlencoded',
