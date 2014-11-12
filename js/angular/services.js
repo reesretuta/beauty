@@ -428,7 +428,7 @@ angular.module('app.services', ['ngResource'])
 
                         d.resolve(session.cart);
                     }, function(error) {
-                        $log.error("cartService().get(): failed to populated products", error);
+                        $log.error("cartService().get(): failed to populate products", error);
                         d.reject(error);
                     })
                 } else {
@@ -709,9 +709,9 @@ angular.module('app.services', ['ngResource'])
                     productService.selectCurrentPrice(product);
                 });
                 d.resolve(products);
-            }, function(response) {
-                $log.error("productService(): get(): failure", response.data);
-                d.reject(response.data);
+            }, function(error) {
+                $log.error("productService(): get(): failure", error);
+                d.reject(error);
             });
 
             return d.promise;
