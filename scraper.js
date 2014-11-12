@@ -509,10 +509,14 @@ models.onReady(function() {
                                                 product.id = match[2];
                                                 product.sku = match[3];
 
-                                                if (product.sku != productSku) {
-                                                    console.warn("product id doesn't match expected, skipping", product.sku, "!=", productSku);
+                                                if (productSku) {
+                                                    if (product.sku != productSku) {
+                                                        console.warn("product id doesn't match expected, skipping", product.sku, "!=", productSku);
+                                                    } else {
+                                                        console.log("found product", productSku);
+                                                        products.push(product);
+                                                    }
                                                 } else {
-                                                    console.log("found product", productSku);
                                                     products.push(product);
                                                 }
 
@@ -697,7 +701,10 @@ models.onReady(function() {
                                         var product = {};
                                         product.name = $('input[name=formalName_en_US]').val();
                                         product.description = $('iframe[name=ext-gen49]').contents().find("body").html();
-                                        product.quantity = $('input[name="sellingQty_en_US"]').val();
+                                        product.quantity = parseInt($('input[name="sellingQty_en_US"]').val());
+                                        if (product.quantity == null || isNaN(product.quantity)) {
+                                            product.quantity = 1;
+                                        }
                                         product.onHold = $('input[name="onHold"]').attr('checked') || false;
                                         product.searchable = $('input[name="searchable"]').attr('checked') || false;
                                         product.masterStatus = $('select[name="status"] > option:selected').val();
@@ -1200,6 +1207,9 @@ models.onReady(function() {
                                             var item = {};
                                             item.rank = parseInt($(this).find('div.x-grid3-cell-inner.x-grid3-col-0').html());
                                             item.quantity = parseInt($(this).find('div.x-grid3-cell-inner.x-grid3-col-1').html());
+                                            if (item.quantity == null || isNaN(item.quantity)) {
+                                                item.quantity = 1;
+                                            }
                                             item.type = $(this).find('div.x-grid3-cell-inner.x-grid3-col-4').html();
 
                                             var startDateString = $(this).find('div.x-grid3-cell-inner.x-grid3-col-6').html();
