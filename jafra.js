@@ -16,8 +16,8 @@ var agentOptions = {
     secureProtocol: 'TLSv1_method'
 };
 
-var USERNAME = "CDIAPI";
-var PASSWORD = "JCSAPI";
+var USERNAME = process.env.JCS_API_USERNAME || "CDIAPI";
+var PASSWORD = process.env.JCS_API_PASSWORD || "JCSAPI";
 var AUTH_STRING = "Basic " + new Buffer(USERNAME + ":" + PASSWORD).toString("base64");
 
 var AUTHENTICATE_URL = BASE_URL + "/JCD05001P.pgm";
