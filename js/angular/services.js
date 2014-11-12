@@ -1379,23 +1379,12 @@ angular.module('app.services', ['ngResource'])
         var total = 0;
         angular.forEach(items, function(item) {
           //$log.debug("calculating price for item", item);
-          if (!(Array.isArray(item.product.prices)) || item.product.prices.length == 1) {
-            total += item.quantity * item.product.currentPrice.price;
-          } else if (item.product.prices.length == 0) {
+          if (item.product.prices.length == 0) {
             // there is a problem, we don't have prices
             $log.error("there are no prices listed for this item", item);
           } else {
-            var priceFound = 0;
-            angular.forEach(item.product.prices, function(price) {
-              if (price.type==2) {
-                priceFound = 1;
-                total += item.quantity * price.price;
-              }
-            })
-            if (!priceFound) {
-              // use the first price in the list (FIXME - need to check dates))
-              total += item.quantity * item.product.currentPrice.price;
-            }
+            // use the first price in the list
+            total += parseInt(item.quantity) * item.product.currentPrice.price;
           }
         })
 

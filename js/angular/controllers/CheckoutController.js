@@ -1213,7 +1213,7 @@ angular.module('app.controllers.checkout')
                     var item = $scope.cart[i];
                     products.push({
                         "sku": item.product.sku,
-                        "qty": item.quantity
+                        "qty": parseInt(item.quantity)
                     });
                 }
 
