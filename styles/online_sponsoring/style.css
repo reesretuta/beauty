@@ -199,7 +199,7 @@ box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
 .jumbotron {
 /*  padding-top: 20vh;
   padding-bottom: 20vh;*/
-  background: #fff url(/img/model_2.jpg);/*url(/img/herobg-1920x1080.jpg);*/
+  background: #fff url(/img/jumbotron_bg-1.jpg);
   background-size: cover;
   background-position: 40% top;
 }
@@ -208,29 +208,31 @@ box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
   background-blend-mode: multiply;
 }
 .jumbo-title{
-background: rgba(255, 255, 255, 0.3);
 line-height: 0.8;
 }
 .jumbo-description {
 background: rgba(72, 35, 101, 0.5);
 color: #fff;
-/*font-family: HelveticaNeueLTStd-Th;*/
 padding: 20px;
 background-blend-mode: multiply;
 }
 .jumbo-title-span-1 {
-  color: #6A5077;
+  color: #FFFFFF;
   font-size: 102px; 
 }
 .jumbo-title-span-2 {
-  color: #A08B6A;
+color: #DBC572;
+background: rgba(105, 0, 0, 0.3);
 }
 .jumbo-title-span-3 {
-  color: #A08B6A;
-  line-height: 0.8;
+color: #DBC572;
+background: rgba(105, 0, 0, 0.3);
+line-height: 0.8;
+margin-left: 1em;
+
 }
 .jumbo-title-span-4 {
-  color: #6B517C;
+  color: #FFFFFF;
   font-size: 75px;
   line-height: 0.8;
 }
