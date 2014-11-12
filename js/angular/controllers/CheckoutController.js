@@ -1309,14 +1309,19 @@ angular.module('app.controllers.checkout')
 
                 // generate the components
                 var components = [];
-                for (var i=0; i < $scope.cart[0].product.contains.length; i++) {
-                    var component = $scope.cart[0].product.contains[i];
-                    if (component.product) {
-                        components.push({
-                            sku: component.product.sku,
-                            qty: component.quantity
-                        });
-                    }
+                var productComponentMap = {
+                    "19634": [{sku: "124", qty: 1}, {sku: "2062", qty: 1}, {sku: "9289", qty: 1}, {sku: "11286", qty: 1}, {sku: "12038", qty: 1}, {sku: "12253", qty: 1}, {sku: "14000", qty: 1}, {sku: "15522", qty: 1}, {sku: "16725", qty: 1}, {sku: "18105", qty: 1}, {sku: "18373", qty: 1}, {sku: "19035", qty: 1}, {sku: "19039", qty: 1}, {sku: "19054", qty: 1}, {sku: "19061", qty: 1}, {sku: "19244", qty: 1}, {sku: "19328", qty: 1}, {sku: "19355", qty: 1}, {sku: "19362", qty: 1}, {sku: "19369", qty: 1}, {sku: "19497", qty: 1}, {sku: "19509", qty: 1}, {sku: "19824", qty: 1}, {sku: "25192", qty: 1}, {sku: "25193", qty: 1}, {sku: "25194", qty: 1}, {sku: "25195", qty: 1}, {sku: "25208", qty: 1}, {sku: "25210", qty: 1}, {sku: "25212", qty: 3}, {sku: "25214", qty: 3}, {sku: "25542", qty: 3}, {sku: "25603", qty: 3}],
+                    "19635": [{sku: "124", qty: 1}, {sku: "2062", qty: 1}, {sku: "9289", qty: 1}, {sku: "11286", qty: 1}, {sku: "12038", qty: 1}, {sku: "12253", qty: 1}, {sku: "14000", qty: 1}, {sku: "15522", qty: 1}, {sku: "16725", qty: 1}, {sku: "18105", qty: 1}, {sku: "18373", qty: 1}, {sku: "19035", qty: 1}, {sku: "19039", qty: 1}, {sku: "19054", qty: 1}, {sku: "19061", qty: 1}, {sku: "19244", qty: 1}, {sku: "19328", qty: 1}, {sku: "19355", qty: 1}, {sku: "19362", qty: 1}, {sku: "19369", qty: 1}, {sku: "19497", qty: 1}, {sku: "19509", qty: 1}, {sku: "19824", qty: 1}, {sku: "25192", qty: 1}, {sku: "25193", qty: 1}, {sku: "25194", qty: 1}, {sku: "25195", qty: 1}, {sku: "25208", qty: 1}, {sku: "25210", qty: 1}, {sku: "25212", qty: 3}, {sku: "25214", qty: 3}, {sku: "25542", qty: 3}, {sku: "25603", qty: 3}],
+                    "19822": [{sku: "25192", qty: 1}, {sku: "25195", qty: 1}, {sku: "25193", qty: 1}, {sku: "25194", qty: 1}, {sku: "15522", qty: 1}, {sku: "12038", qty: 1}, {sku: "19329", qty: 1}, {sku: "19039", qty: 1}, {sku: "19035", qty: 1}, {sku: "19497", qty: 1}, {sku: "19355", qty: 1}, {sku: "19369", qty: 1}, {sku: "19362", qty: 1}, {sku: "19244", qty: 1}, {sku: "18373", qty: 1}, {sku: "19054", qty: 1}, {sku: "19509", qty: 1}, {sku: "19824", qty: 1}, {sku: "25603", qty: 1}, {sku: "25214", qty: 3}, {sku: "25208", qty: 3}, {sku: "25212", qty: 3}, {sku: "25210", qty: 3}],
+                    "19823": [{sku: "25192", qty: 1}, {sku: "25195", qty: 1}, {sku: "25193", qty: 1}, {sku: "25194", qty: 1}, {sku: "15522", qty: 1}, {sku: "12038", qty: 1}, {sku: "19329", qty: 1}, {sku: "19039", qty: 1}, {sku: "19035", qty: 1}, {sku: "19497", qty: 1}, {sku: "19355", qty: 1}, {sku: "19369", qty: 1}, {sku: "19362", qty: 1}, {sku: "19244", qty: 1}, {sku: "18373", qty: 1}, {sku: "19054", qty: 1}, {sku: "19509", qty: 1}, {sku: "19824", qty: 1}, {sku: "25603", qty: 1}, {sku: "25214", qty: 3}, {sku: "25208", qty: 3}, {sku: "25212", qty: 3}, {sku: "25210", qty: 3}]
+                };
+                var components = productComponentMap[$scope.cart[0].product._id];
+
+                for (var i=0; i < components.length; i++) {
+                    components.push({
+                        sku: components[i].sku,
+                        qty: components[i].qty
+                    });
                 }
 
                 // uppercase everything we need for JCS (names, addresses)
