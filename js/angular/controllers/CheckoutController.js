@@ -702,11 +702,18 @@ angular.module('app.controllers.checkout')
         }
 
         function selectGeocodeAndAdd(a) {
+            $log.debug("CheckoutController(): selectGeocodeAndAdd()", a);
             var d = $q.defer();
 
             // add name here since we're not allowing user to input a name for shipping address manually;
-            a.name = $scope.profile.firstName + " " + $scope.profile.lastName;
-            a.phone = $scope.profile.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');;
+            if ($scope.isOnlineSponsoring) {
+                a.name = $scope.profile.firstName + " " + $scope.profile.lastName;
+                a.phone = $scope.profile.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+            } else {
+                if (a.phone) {
+                    a.phone = a.phone.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+                }
+            }
 
             // check the zip for geocode for taxes
             Geocodes.query({zipCode: a.zip}).$promise.then(function(geocodes) {
@@ -795,6 +802,7 @@ angular.module('app.controllers.checkout')
         }
 
         function addAddressToBackend(a) {
+            $log.debug("CheckoutController(): addAddressToBackend()", a);
             var d = $q.defer();
 
             if ($scope.isOnlineSponsoring || isGuest) {
@@ -1506,6 +1514,7 @@ angular.module('app.controllers.checkout')
         }
 
         $scope.addShippingAddress = function(address) {
+            $log.debug("CheckoutController(): addShippingAddress()", address);
             var d = $q.defer();
 
             addAddress(address).then(function(a) {
@@ -1787,7 +1796,7 @@ angular.module('app.controllers.checkout')
         $scope.logStep = function() {
             $log.debug("CheckoutController(): Step continued");
         }
-        
+
         $scope.finished = function() {
             $log.debug("CheckoutController(): finished(): Checkout finished :)");
             $scope.currentStep = '';
