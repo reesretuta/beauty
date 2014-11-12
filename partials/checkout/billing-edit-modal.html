@@ -12,11 +12,11 @@
         <span class="address-region">{{addressData.city}}, {{addressData.state}} {{addressData.zip}}</span>
         <span class="phone-number">{{addressData.phone}}</span>
         <div class="address-actions">
-          <a href="" ng-click="editAddress(addressData.id)"><i class="fa fa-pencil-square-o"></i> Edit</a>
+          <a ng-click="editAddress(addressData.id)"><i class="fa fa-pencil-square-o"></i> Edit</a>
           &nbsp;&nbsp;
-          <a href="" ng-click="removeAddress(addressData.id)"><i class="fa fa-times-circle"></i> Remove</a>
+          <a ng-click="removeAddress(addressData.id)"><i class="fa fa-times-circle"></i> Remove</a>
         </div>
-        <a href="" class="btn btn-primary" ng-click="selectBillingAddress(addressData)"><span ng-bind-html="'BTN_BILL_ADD' | translate | unsafe"></span></a>
+        <a class="btn btn-primary" ng-click="selectBillingAddress(addressData)"><span ng-bind-html="'BTN_BILL_ADD' | translate | unsafe"></span></a>
       </div><!-- /address -->
 
     </div>
