@@ -718,15 +718,18 @@ angular.module('app.services', ['ngResource'])
         salesTaxService.calculate = function(clientId, consultantId, geocode, typeOrder, source, products) {
             var d = $q.defer();
 
-            //$log.debug("salesTaxService(): login(): attempting to login with username=", username, "password=", password);
-            $http.post(API_URL + '/calculateTax', {
+            var taxInfo = {
                 clientId: clientId,
                 consultantId: consultantId,
                 geocode: geocode,
                 typeOrder: typeOrder,
                 source: source,
                 products: products
-            }).success(function(salesTaxInfo, status, headers, config) {
+            };
+            $log.debug("salesTaxService(): calculate()", taxInfo);
+
+            //$log.debug("salesTaxService(): login(): attempting to login with username=", username, "password=", password);
+            $http.post(API_URL + '/calculateTax', taxInfo).success(function(salesTaxInfo, status, headers, config) {
                 $log.debug("salesTaxService(): get()", salesTaxInfo);
                 d.resolve(salesTaxInfo);
             }).error(function(data, status, headers, config) {
