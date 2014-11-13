@@ -161,7 +161,7 @@
     <div class="row form-group" ng-if="!isOnlineSponsoring" ng-class="{ 'has-error' : billingForm.phoneNumber.$invalid && !billingForm.phoneNumber.$pristine }">
       <label for="billingPhoneNumber" class="col-md-3 control-label">Phone Number</label>
       <div class="col-sm-6 col-lg-4">
-        <input id="billingPhoneNumber" name="phoneNumber" ng-model="profile.newBillingAddress.phone" type="text" ui-mask="(999) 999-9999" placeholder="(xxx) xxx-xxxx" class="form-control" required>
+        <input id="billingPhoneNumber" name="phoneNumber" ng-model="profile.newBillingAddress.phone" type="text" ui-mask="(999) 999-9999" placeholder="(xxx) xxx-xxxx" class="form-control">
         <span ng-show="billingForm.phoneNumber.$error.pattern" class="help-block" ng-class="{ 'text-danger' : billingForm.phoneNumber.$invalid && !billingForm.phoneNumber.$pristine }"><span ng-bind-html="'IN_PHONE_WRONG' | translate | unsafe"></span></span>
       </div>
       <a popover="May be printed on billing label to assist delivery." popover-title="Phone Number" href="" class="form-info-link"><i class="fa fa-info-circle"></i> More Info</a>

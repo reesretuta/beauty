@@ -246,7 +246,7 @@
       <input id="billingPhoneNumber" name="phoneNumber" ng-model="profile.newBillingAddress.phone" type="text" ui-mask="(999) 999-9999" placeholder="(xxx) xxx-xxxx" class="form-control">
       <span ng-show="paymentForm.phoneNumber.$error.pattern" class="help-block" ng-class="{ 'text-danger' : paymentForm.phoneNumber.$invalid && !paymentForm.phoneNumber.$pristine }"><span ng-bind-html="'IN_PHONE_WRONG' | translate | unsafe"></span></span>
     </div>
-    <a href="" class="form-info-link"><i class="fa fa-info-circle"></i> More Info</a>
+    <a popover="May be printed on billing label to assist delivery." popover-title="Phone Number" href="" class="form-info-link"><i class="fa fa-info-circle"></i> More Info</a>
   </div>
 
 
