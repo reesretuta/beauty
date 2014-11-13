@@ -553,14 +553,24 @@ function createConsultant(encrypted) {
     return deferred.promise;
 }
 
-function createOrder(encrypted) {
-    //console.log("createOrder", email, password);
+function createOrder(data) {
+    //console.log("createOrder", data);
     var deferred = Q.defer();
 
     request.post({
         url: CREATE_ORDER_URL,
         form: {
-            "valToDecrypt": encrypted
+            "firstName": data.firstName,
+            "lastName": data.lastName,
+            "clientId": data.clientId,
+            "consultantId": data.consultantId,
+            "language": data.language,
+            "billingAddressId": data.billingAddressId,
+            "shippingAddressId": data.shippingAddressId,
+            "creditCardId": data.creditCardId,
+            "source": data.source,
+            "total": data.total,
+            "products": JSON.stringify(data.products)
         },
         headers: {
             'Content-Type' : 'application/x-www-form-urlencoded',

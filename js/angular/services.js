@@ -924,38 +924,22 @@ angular.module('app.services', ['ngResource'])
         orderService.create = function(order) {
             var d = $q.defer();
 
-            Session.waitForInitialization().then(function(session) {
-                $log.debug("Session(): create(): attempting to create order=", order.email);
+            $log.debug("Session(): create(): attempting to create order=", order);
 
-                // do PGP encryption here
-                require(["/lib/openpgp.min.js"], function(openpgp) {
-                    var publicKey = openpgp.key.readArmored(key.join("\n"));
-                    var orderData = JSON.stringify(order);
-                    var encrypted = openpgp.encryptMessage(publicKey.keys, orderData);
-                    encrypted = encrypted.trim();
-                    $log.debug("order", orderData);
-                    $log.debug("encrypted order data", encrypted);
-
-                    try {
-                        orderService.save({}, {
-                            encrypted: encrypted
-                        }).$promise.then(function(c) {
-                            $log.debug("sessionService(): create(): created order");
-                            d.resolve(c);
-                        }, function(response) {
-                            $log.error("sessionService(): create(): failed to create order", response.data);
-                            d.reject(response.data);
-                        });
-                    } catch (ex) {
-                        d.reject({
-                            errorCode: 500,
-                            message: "Failed to create order"
-                        });
-                    }
+            try{
+                orderService.save({}, order).$promise.then(function(c) {
+                    $log.debug("sessionService(): create(): created order");
+                    d.resolve(c);
+                }, function(response) {
+                    $log.error("sessionService(): create(): failed to create order", response.data);
+                    d.reject(response.data);
                 });
-
-            });
-
+            } catch (ex) {
+                d.reject({
+                    errorCode: 500,
+                    message: "Failed to create order"
+                });
+            }
 
             return d.promise;
         }

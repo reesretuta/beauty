@@ -1043,9 +1043,9 @@ router.route('/clients/:client_id/creditCards/:creditCardId')// get a client cre
 // ----------------------------------------------------
 router.route('/orders')// create an order
     .post(function (req, res) {
-        console.log("create order: got data", req.body.encrypted);
+        console.log("create order: got data", req.body);
 
-        jafraClient.createOrder(req.body.encrypted).then(function(r) {
+        jafraClient.createOrder(req.body).then(function(r) {
             console.log("success", r)
             res.status(r.status);
             res.json(r.result);

@@ -1488,10 +1488,13 @@ angular.module('app.controllers.checkout')
 
                 // FIXME - make sure we have a client ID (aka the use is logged in)
 
-                var consultantId = $rootScope.session.cid;
+                var consultantId = $rootScope.session.consultantId;
                 if (!consultantId) {
+                    // FIXME - handle multiple consultant IDs - dialog?
                     if ($rootScope.session.client.consultantIds && $rootScope.session.client.consultantIds.length > 0) {
                         consultantId = $rootScope.session.client.consultantIds[0];
+                    } else {
+                        consultantId = 66556;
                     }
                 }
 
@@ -1516,9 +1519,9 @@ angular.module('app.controllers.checkout')
                     consultantId: consultantId,
                     language: $rootScope.session.client.language,
                     billingAddressId: $scope.profile.billing.id,
-                    shippingAddress: $scope.profile.shipping.id,
+                    shippingAddressId: $scope.profile.shipping.id,
                     creditCardId: $scope.profile.card.id,
-                    source: "web",
+                    source: $rootScope.session.source,
                     total: parseFloat($scope.salesTaxInfo.Total),
                     products: products
                 }
