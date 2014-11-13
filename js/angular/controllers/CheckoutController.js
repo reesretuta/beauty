@@ -623,19 +623,6 @@ angular.module('app.controllers.checkout')
                 // move to next step
                 WizardHandler.wizard('checkoutWizard').goTo('Profile');
 
-                if ($scope.isOnlineSponsoring) {
-                    // generate a lead for this account
-                    Leads.save({
-                        email: email,
-                        firstName: $scope.profile.firstName,
-                        lastName: $scope.profile.lastName,
-                        phone: $scope.profile.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3'),
-                        language: $scope.profile.language
-                    }).$promise.then(function(lead) {
-                        $log.debug("CheckoutController(): lead created");
-                    });
-                }
-
                 // re-enable scrolling on body
                 body.css("overflow-y", "auto");
 
@@ -972,6 +959,21 @@ angular.module('app.controllers.checkout')
                 // move to next step
                 WizardHandler.wizard('checkoutWizard').goTo('Profile');
             } else {
+                if ($scope.isOnlineSponsoring) {
+                    // generate a lead for this account
+                    Leads.save({
+                        email: email,
+                        firstName: $scope.profile.firstName,
+                        lastName: $scope.profile.lastName,
+                        phone: $scope.profile.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3'),
+                        language: $scope.profile.language
+                    }).$promise.then(function(lead) {
+                        $log.debug("CheckoutController(): validateEmailAndContinue(): lead created");
+                    }, function(error) {
+                        $log.error("CheckoutController(): validateEmailAndContinue(): failed to create lead", error);
+                    });
+                }
+
                 Addresses.validateEmail(email).then(function(r) {
                     $log.debug("CheckoutController(): validated email");
 
