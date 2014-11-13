@@ -920,30 +920,35 @@ angular.module('app.services', ['ngResource'])
         var addressService = $resource(API_URL + '/clients/:clientId/addresses/:addressId', {addressId: '@_id'});
 
         addressService.validateAddress = function(address) {
-            $log.debug("Address(): validateAddress(): validating", address);
             var d = $q.defer();
 
-            // validate the address first
-            var a = $http.post(API_URL + '/validate/address', {
-                name: address.name,
-                address1: address.address1,
-                address2: address.address2,
-                city: address.city,
-                state: address.state,
-                zip: address.zip,
-                country: address.country,
-                phone: address.phone
-            }, {}).success(function(a, status, headers, config) {
-                $log.debug("Address(): validateAddress(): validated, saving", a);
+            if (address.state != "PR" && address.state != "VI") {
+                $log.debug("Address(): validateAddress(): validating", address);
+                // validate the address first
+                var a = $http.post(API_URL + '/validate/address', {
+                    name: address.name,
+                    address1: address.address1,
+                    address2: address.address2,
+                    city: address.city,
+                    state: address.state,
+                    zip: address.zip,
+                    country: address.country,
+                    phone: address.phone
+                }, {}).success(function(a, status, headers, config) {
+                    $log.debug("Address(): validateAddress(): validated, saving", a);
 
-                // preserve this
-                a.businessCO = address.businessCO;
+                    // preserve this
+                    a.businessCO = address.businessCO;
 
-                d.resolve(a);
-            }).error(function(data, status, headers, config) {
-                $log.error("Address(): validateAddress(): validate()", status, data);
-                d.reject(data);
-            });
+                    d.resolve(a);
+                }).error(function(data, status, headers, config) {
+                    $log.error("Address(): validateAddress(): error", status, data);
+                    d.reject(data);
+                });
+            } else {
+                $log.debug("Address(): validateAddress(): skipping validation for PR/VI");
+                d.resolve(address);
+            }
 
             return d.promise;
         }

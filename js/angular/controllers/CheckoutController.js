@@ -1096,7 +1096,7 @@ angular.module('app.controllers.checkout')
                     if (!$scope.profile.billSame) {
                         $log.debug("CheckoutController(): addPaymentMethod(): setting billing address", $scope.profile.newBillingAddress);
                         // we need to create an address to add to the account for client direct
-                        $scope.setBillingAddress($scope.profile.newBillingAddress, true).then(function() {
+                        $scope.addBillingAddress($scope.profile.newBillingAddress).then(function(a) {
                             // only do the clear
                             $scope.profile.newBillingAddress = null;
                             $scope.checkoutUpdated();
