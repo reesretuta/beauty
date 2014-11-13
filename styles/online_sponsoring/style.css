@@ -206,15 +206,20 @@ box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
 .jumbotron .btn {
   font-size: 1.2em;
   background-blend-mode: multiply;
+  border-top: 2px solid #D96783;
+  border-bottom: 2px solid #312626;
+}
+.jumbo-row{
+background: rgba(72, 35, 101, 0.5);
+margin-left: -45px;
+margin-right: -45px;
 }
 .jumbo-title{
 line-height: 0.8;
 }
 .jumbo-description {
-background: rgba(72, 35, 101, 0.5);
 color: #fff;
 padding: 20px;
-background-blend-mode: multiply;
 }
 .jumbo-title-span-1 {
   color: #FFFFFF;
