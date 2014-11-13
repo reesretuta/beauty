@@ -27,12 +27,12 @@ angular.module('app.controllers.products')
         $scope.quantities = {};
 
         $scope.addToCart = function(product) {
-            $log.debug("ProductsController(): adding product", product);
+            $log.debug("ProductsController(): addToCart(): adding product", product);
             var qty = $scope.quantities[product.sku];
             if (qty == null) {
                 qty = 1;
             }
-            $log.debug("ProductsController(): adding product", product, qty);
+            $log.debug("ProductsController(): addToCart(): adding product", product, qty);
             Cart.addToCart({
                 name: product.name,
                 sku: product.sku,

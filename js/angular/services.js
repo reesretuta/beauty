@@ -382,6 +382,7 @@ angular.module('app.services', ['ngResource'])
                     $log.debug("sessionService(): logout()");
 
                     deleteLocalSession();
+                    initialize();
                 }).error(function(data, status, headers, config) {
                     //failure(data, status, headers, config);
                     $log.error(data, status, headers, config);
@@ -458,7 +459,7 @@ angular.module('app.services', ['ngResource'])
         cartService.get = function(noLoadProducts) {
             var d = $q.defer();
 
-            Session.waitForInitialization().then(function(session) {
+            Session.get().then(function(session) {
                 //$log.debug("cartService(): getCart()", session.cart);
 
                 if (noLoadProducts == null || noLoadProducts == false) {
@@ -835,7 +836,7 @@ angular.module('app.services', ['ngResource'])
         consultantService.lookup = function(ssn) {
             var d = $q.defer();
 
-            Session.waitForInitialization().then(function(session) {
+            Session.waitForInitialization().then(function() {
                 $log.debug("consultantService(): lookup(): attempting to lookup consultant", ssn);
 
                 // do PGP encryption here
@@ -878,7 +879,7 @@ angular.module('app.services', ['ngResource'])
         consultantService.create = function(consultant) {
             var d = $q.defer();
 
-            Session.waitForInitialization().then(function(session) {
+            Session.waitForInitialization().then(function() {
                 $log.debug("Session(): create(): attempting to create consultant=", consultant.email);
 
                 // do PGP encryption here
