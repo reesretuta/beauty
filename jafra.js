@@ -29,6 +29,8 @@ var CREATE_CONSULTANT_URL = BASE_URL + "/JOS05002P.pgm";
 var LOOKUP_CONSULTANT_URL = BASE_URL + "/JOS05004P.pgm";
 var CREATE_LEAD_URL = BASE_URL + "/JOS05005P.pgm";
 
+var CREATE_ORDER_URL = BASE_URL + "/JCD05020P.pgm";
+
 var GET_ADDRESSES_URL = BASE_URL + "/JCD05005P.pgm";
 var GET_ADDRESS_URL = BASE_URL + "/JCD05005P.pgm";
 var CREATE_ADDRESS_URL = BASE_URL + "/JCD05005P.pgm";
@@ -550,6 +552,73 @@ function createConsultant(encrypted) {
 
     return deferred.promise;
 }
+
+function createOrder(encrypted) {
+    //console.log("createOrder", email, password);
+    var deferred = Q.defer();
+
+    request.post({
+        url: CREATE_ORDER_URL,
+        form: {
+            "valToDecrypt": encrypted
+        },
+        headers: {
+            'Content-Type' : 'application/x-www-form-urlencoded',
+            'Accept': 'application/json, text/json',
+            'Authorization': AUTH_STRING
+        },
+        agentOptions: agentOptions,
+        strictSSL: false,
+        json: true
+    }, function (error, response, body) {
+        if (error || response.statusCode != 201) {
+            console.error("createOrder(): error", error, response ? response.statusCode : null, body);
+
+            if (body && body.statusCode && body.errorCode && body.message) {
+                deferred.reject({
+                    status: response.statusCode,
+                    result: {
+                        statusCode: body.statusCode,
+                        errorCode: body.errorCode,
+                        message: body.message
+                    }
+                });
+            } else {
+                deferred.reject({
+                    status: 500,
+                    result: {
+                        statusCode: 500,
+                        errorCode: "createOrderFailed",
+                        message: "Failed to create order"
+                    }
+                });
+            }
+            return;
+        }
+
+        if (body == null || body.orderId == null || body.orderId == null) {
+            console.log("createOrder(): invalid return data", body, typeof body, "orderId", body.orderId, "orderId", body.orderId);
+            deferred.reject({
+                status: 500,
+                result: {
+                    statusCode: 500,
+                    errorCode: "createOrderReturnDataInvalid",
+                    message: "Failed to get order ID from create"
+                }
+            });
+            return;
+        }
+
+        // we should get orderId back
+        deferred.resolve({
+            status: 201,
+            result: body
+        });
+    });
+
+    return deferred.promise;
+}
+
 
 function createLead(lead) {
     //console.log("createLead", email, password);
@@ -1554,6 +1623,8 @@ exports.createConsultant = createConsultant;
 exports.getConsultant = getConsultant;
 exports.lookupConsultant = lookupConsultant;
 exports.createLead = createLead;
+
+exports.createOrder = createOrder;
 
 exports.getAddresses = getAddresses;
 exports.getAddress = getAddress;

@@ -1043,8 +1043,16 @@ router.route('/clients/:client_id/creditCards/:creditCardId')// get a client cre
 // ----------------------------------------------------
 router.route('/orders')// create an order
     .post(function (req, res) {
-        res.json({
-            orderId: 1234
+        console.log("create order: got data", req.body.encrypted);
+
+        jafraClient.createOrder(req.body.encrypted).then(function(r) {
+            console.log("success", r)
+            res.status(r.status);
+            res.json(r.result);
+        }, function(r) {
+            console.error("failure", r)
+            res.status(r.status);
+            res.json(r.result);
         });
     });
 

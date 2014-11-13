@@ -894,10 +894,56 @@ angular.module('app.services', ['ngResource'])
                         consultantService.save({}, {
                             encrypted: encrypted
                         }).$promise.then(function(c) {
-                            $log.debug("sessionService(): create(): created consultant");
+                                $log.debug("sessionService(): create(): created consultant");
+                                d.resolve(c);
+                            }, function(response) {
+                                $log.error("sessionService(): create(): failed to create consultant", response.data);
+                                d.reject(response.data);
+                            });
+                    } catch (ex) {
+                        d.reject({
+                            errorCode: 500,
+                            message: "Failed to create order"
+                        });
+                    }
+                });
+
+            });
+
+
+            return d.promise;
+        }
+
+        return consultantService;
+    })
+    .factory('Order', function ($resource, $http, $log, $q, Session, PGP, API_URL) {
+        var orderService = $resource(API_URL + '/orders/:orderId', {orderId: '@_id'});
+
+        var key = PGP.getKey();
+
+        orderService.create = function(order) {
+            var d = $q.defer();
+
+            Session.waitForInitialization().then(function(session) {
+                $log.debug("Session(): create(): attempting to create order=", order.email);
+
+                // do PGP encryption here
+                require(["/lib/openpgp.min.js"], function(openpgp) {
+                    var publicKey = openpgp.key.readArmored(key.join("\n"));
+                    var orderData = JSON.stringify(order);
+                    var encrypted = openpgp.encryptMessage(publicKey.keys, orderData);
+                    encrypted = encrypted.trim();
+                    $log.debug("order", orderData);
+                    $log.debug("encrypted order data", encrypted);
+
+                    try {
+                        orderService.save({}, {
+                            encrypted: encrypted
+                        }).$promise.then(function(c) {
+                            $log.debug("sessionService(): create(): created order");
                             d.resolve(c);
                         }, function(response) {
-                            $log.error("sessionService(): create(): failed to create consultant", response.data);
+                            $log.error("sessionService(): create(): failed to create order", response.data);
                             d.reject(response.data);
                         });
                     } catch (ex) {
@@ -914,7 +960,7 @@ angular.module('app.services', ['ngResource'])
             return d.promise;
         }
 
-        return consultantService;
+        return orderService;
     })
     .factory('Addresses', function ($resource, $http, $log, $q, Session, API_URL) {
         var addressService = $resource(API_URL + '/clients/:clientId/addresses/:addressId', {addressId: '@_id'});

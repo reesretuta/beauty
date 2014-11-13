@@ -1,5 +1,5 @@
 angular.module('app.controllers.checkout')
-    .controller('CheckoutController', function ($location, $scope, $document, $timeout, $rootScope, $anchorScroll, $routeParams, $modal, $log, $q, STORE_BASE_URL, JOIN_BASE_URL, focus, Geocodes, Session, Consultant, Addresses, OrderHelper, Checkout, Cart, Product, SalesTax, CreditCards, Leads, HashKeyCopier, WizardHandler) {
+    .controller('CheckoutController', function ($location, $scope, $document, $timeout, $rootScope, $anchorScroll, $routeParams, $modal, $log, $q, STORE_BASE_URL, JOIN_BASE_URL, focus, Geocodes, Session, Consultant, Addresses, Order, OrderHelper, Checkout, Cart, Product, SalesTax, CreditCards, Leads, HashKeyCopier, WizardHandler) {
 
         $log.debug("CheckoutController()");
 
@@ -1091,7 +1091,7 @@ angular.module('app.controllers.checkout')
                 // we need to create a card and add to the account for client direct
                 CreditCards.addCreditCard($scope.profile.newCard).then(function(card) {
                     $log.debug("CheckoutController(): addPaymentMethod(): continuing to review after adding card", card);
-                    $scope.checkout.card = angular.copy(card);
+                    $scope.profile.card = angular.copy(card);
                     $scope.profile.newCard = null;
 
                     if (!$scope.profile.billSame) {
@@ -1460,125 +1460,41 @@ angular.module('app.controllers.checkout')
                 // Client Direct
 
                 $scope.profile.card.cardType = CreditCards.validateCard($scope.profile.card.card).type;
-                $scope.profile.shipping.name = $scope.profile.firstName + " " + $scope.profile.lastName;
-                $scope.profile.billing.name = $scope.profile.firstName + " " + $scope.profile.lastName;
-                $scope.profile.shipping.phone = phone;
-                $scope.profile.billing.phone = phone;
 
                 // generate the components
-                var components = [];
-                var productComponentMap = {
-                    "19634": [{sku: "124", qty: 1}, {sku: "2062", qty: 1}, {sku: "9289", qty: 1}, {sku: "11286", qty: 1}, {sku: "12038", qty: 1}, {sku: "12253", qty: 1}, {sku: "14000", qty: 1}, {sku: "15522", qty: 1}, {sku: "16725", qty: 1}, {sku: "18105", qty: 1}, {sku: "18373", qty: 1}, {sku: "19035", qty: 1}, {sku: "19039", qty: 1}, {sku: "19054", qty: 1}, {sku: "19061", qty: 1}, {sku: "19244", qty: 1}, {sku: "19328", qty: 1}, {sku: "19355", qty: 1}, {sku: "19362", qty: 1}, {sku: "19369", qty: 1}, {sku: "19497", qty: 1}, {sku: "19509", qty: 1}, {sku: "19824", qty: 1}, {sku: "25192", qty: 1}, {sku: "25193", qty: 1}, {sku: "25194", qty: 1}, {sku: "25195", qty: 1}, {sku: "25208", qty: 1}, {sku: "25210", qty: 1}, {sku: "25212", qty: 3}, {sku: "25214", qty: 3}, {sku: "25542", qty: 3}, {sku: "25603", qty: 3}],
-                    "19635": [{sku: "124", qty: 1}, {sku: "2062", qty: 1}, {sku: "9289", qty: 1}, {sku: "11286", qty: 1}, {sku: "12038", qty: 1}, {sku: "12253", qty: 1}, {sku: "14000", qty: 1}, {sku: "15522", qty: 1}, {sku: "16725", qty: 1}, {sku: "18105", qty: 1}, {sku: "18373", qty: 1}, {sku: "19035", qty: 1}, {sku: "19039", qty: 1}, {sku: "19054", qty: 1}, {sku: "19061", qty: 1}, {sku: "19244", qty: 1}, {sku: "19328", qty: 1}, {sku: "19355", qty: 1}, {sku: "19362", qty: 1}, {sku: "19369", qty: 1}, {sku: "19497", qty: 1}, {sku: "19509", qty: 1}, {sku: "19824", qty: 1}, {sku: "25192", qty: 1}, {sku: "25193", qty: 1}, {sku: "25194", qty: 1}, {sku: "25195", qty: 1}, {sku: "25208", qty: 1}, {sku: "25210", qty: 1}, {sku: "25212", qty: 3}, {sku: "25214", qty: 3}, {sku: "25542", qty: 3}, {sku: "25603", qty: 3}],
-                    "19822": [{sku: "25192", qty: 1}, {sku: "25195", qty: 1}, {sku: "25193", qty: 1}, {sku: "25194", qty: 1}, {sku: "15522", qty: 1}, {sku: "12038", qty: 1}, {sku: "19329", qty: 1}, {sku: "19039", qty: 1}, {sku: "19035", qty: 1}, {sku: "19497", qty: 1}, {sku: "19355", qty: 1}, {sku: "19369", qty: 1}, {sku: "19362", qty: 1}, {sku: "19244", qty: 1}, {sku: "18373", qty: 1}, {sku: "19054", qty: 1}, {sku: "19509", qty: 1}, {sku: "19824", qty: 1}, {sku: "25603", qty: 1}, {sku: "25214", qty: 3}, {sku: "25208", qty: 3}, {sku: "25212", qty: 3}, {sku: "25210", qty: 3}],
-                    "19823": [{sku: "25192", qty: 1}, {sku: "25195", qty: 1}, {sku: "25193", qty: 1}, {sku: "25194", qty: 1}, {sku: "15522", qty: 1}, {sku: "12038", qty: 1}, {sku: "19329", qty: 1}, {sku: "19039", qty: 1}, {sku: "19035", qty: 1}, {sku: "19497", qty: 1}, {sku: "19355", qty: 1}, {sku: "19369", qty: 1}, {sku: "19362", qty: 1}, {sku: "19244", qty: 1}, {sku: "18373", qty: 1}, {sku: "19054", qty: 1}, {sku: "19509", qty: 1}, {sku: "19824", qty: 1}, {sku: "25603", qty: 1}, {sku: "25214", qty: 3}, {sku: "25208", qty: 3}, {sku: "25212", qty: 3}, {sku: "25210", qty: 3}]
-                };
-                var productComponents = productComponentMap[$scope.cart[0].product._id];
+                var products = [];
 
-                for (var i=0; i < productComponents.length; i++) {
-                    components.push({
-                        sku: productComponents[i].sku,
-                        qty: productComponents[i].qty
-                    });
-                }
+                for (var i=0; i < $scope.cart.length; i++) {
+                    var item = $scope.cart[i];
 
-                // uppercase everything we need for JCS (names, addresses)
-                var billing = angular.copy($scope.profile.billing);
-                billing.address1 ? billing.address1 = billing.address1.toUpperCase(): false;
-                billing.address2 ? billing.address2 = billing.address2.toUpperCase(): false;
-                billing.city ? billing.city = billing.city.toUpperCase(): false;
-                billing.county ? billing.county = billing.county.toUpperCase(): false;
-                billing.state ? billing.state = billing.state.toUpperCase(): false;
-                billing.stateDescription ? billing.stateDescription = billing.stateDescription.toUpperCase(): false;
-                billing.name ? billing.name = billing.name.toUpperCase(): false;
-
-                var shipping = angular.copy($scope.profile.shipping);
-                shipping.address1 ? shipping.address1 = shipping.address1.toUpperCase(): false;
-                shipping.address2 ? shipping.address2 = shipping.address2.toUpperCase(): false;
-                shipping.city ? shipping.city = shipping.city.toUpperCase(): false;
-                shipping.county ? shipping.county = shipping.county.toUpperCase(): false;
-                shipping.state ? shipping.state = shipping.state.toUpperCase(): false;
-                shipping.stateDescription ? shipping.stateDescription = shipping.stateDescription.toUpperCase(): false;
-                shipping.name ? shipping.name = shipping.name.toUpperCase(): false;
-
-                var fullName = ($scope.profile.firstName + " " + $scope.profile.lastName).toUpperCase();
-                $log.debug("CheckoutController(): processOrder(): businessCO", shipping);
-
-                // strip first name if necessary
-                if (shipping.businessCO && !S(shipping.businessCO).isEmpty()) {
-                    shipping.businessCO.replace(new RegExp("^"+fullName), "");
-                }
-
-                // handle c/o & business name, etc.
-                if (shipping.businessCO && !S(shipping.businessCO).isEmpty()) {
-                    $log.debug("CheckoutController(): processOrder(): found business/co, shuffling fields");
-
-                    // we have changed something and need to modify address1 to be this and address2 to be everything else
-                    var add1 = shipping.address1;
-                    var add2 = shipping.address2;
-
-                    shipping.address2 = add1;
-                    if (!S(add2).isEmpty()) {
-                        shipping.address2 += " " + add2;
-                    }
-                    shipping.address1 = shipping.businessCO.toUpperCase();
-                }
-
-                var consultant = {
-                    ssn: ssn,
-                    email: $scope.profile.loginEmail,
-                    firstName: $scope.profile.firstName.toUpperCase(),
-                    lastName: $scope.profile.lastName.toUpperCase(),
-                    dateOfBirth: dob,
-                    sponsorId: $scope.profile.sponsorId,
-                    language: $scope.profile.language,
-                    source: $scope.profile.source,
-                    phone: phone,
-                    billingAddress: billing,
-                    shippingAddress: shipping,
-                    creditCard: $scope.profile.card,
-                    agreementAccepted: $scope.profile.agree+"",
-                    total: parseFloat($scope.salesTaxInfo.Total),
-                    products: [
-                        {
-                            "sku": $scope.cart[0].product.sku,
-                            "qty": 1,
-                            "kitSelections": {},
-                            "components": components
-                        }
-                    ]
-                }
-
-                $log.debug("CheckoutController(): processOrder(): creating consultant", consultant);
-
-                if (!debug) {
-                    Consultant.create(consultant).then(function(data) {
-                        $log.debug("CheckoutController(): loginOrCreateUser(): created consultant, moving to next step", data);
-
-                        // jump to Shipping
-                        $scope.confirmation = {
-                            orderId: data.orderId,
-                            consultantId: data.consultantId,
-                            sponsor: data.sponsor
-                        };
-
-                        WizardHandler.wizard('checkoutWizard').goTo('Finish');
-
-                        // remove the created lead
-                        Leads.remove({
-                            email: $scope.profile.loginEmail
-                        }).$promise.then(function(lead) {
-                                $log.debug("CheckoutController(): processOrder(): lead removed");
+                    var components = [];
+                    for (var j=0; j < item.product.contains; j++) {
+                        var contains = item.product.contains[j];
+                        if (contains.product) {
+                            components.push({
+                                sku: contains.product.sku,
+                                qty: contains.quantity
                             });
-                    }, function(error) {
-                        $log.error("CheckoutController(): processOrder(): failed to create consultant", error);
-                        $scope.orderError = error.message;
-                        // FIXME - show error here!!!!!
+                        }
+                    }
+
+                    products.push({
+                        sku: item.sku,
+                        qty: item.quantity,
+                        kitSelections: item.kitSelections,
+                        components: components
                     });
-                } else {
-                    WizardHandler.wizard('checkoutWizard').goTo('Finish');
-                    return;
                 }
+
+                // FIXME - make sure we have a client ID (aka the use is logged in)
+
+                var consultantId = $rootScope.session.cid;
+                if (!consultantId) {
+                    if ($rootScope.session.client.consultantIds && $rootScope.session.client.consultantIds.length > 0) {
+                        consultantId = $rootScope.session.client.consultantIds[0];
+                    }
+                }
+
                 //{
                 //    "firstName": "John",         // required
                 //    "lastName": "Smith",         // required
@@ -1591,25 +1507,43 @@ angular.module('app.controllers.checkout')
                 //    "source": "facebook",        // required
                 //    "total": 102.67,             // required
                 //    "products": [                // required
-                //    {
-                //        "sku": "25386",
-                //        "qty": 2
-                //    },
-                //    {
-                //        "sku": "19193",
-                //        "qty": 1,
-                //        "kitSelections": {
-                //            "NUPL19193": [{        // each kit group
-                //                "sku": "12026",      // product sku
-                //                "qty": 1             // quantity
-                //            }, {
-                //                "sku": "12029",      // product sku
-                //                "qty": 1             // quantity
-                //            }]
-                //        }
-                //    }
-                //]
+                //    ]
                 //}
+                var order = {
+                    firstName: $rootScope.session.client.firstName.toUpperCase(),
+                    lastName: $rootScope.session.client.lastName.toUpperCase(),
+                    clientId: $rootScope.session.client.id,
+                    consultantId: consultantId,
+                    language: $rootScope.session.client.language,
+                    billingAddressId: $scope.profile.billing.id,
+                    shippingAddress: $scope.profile.shipping.id,
+                    creditCardId: $scope.profile.card.id,
+                    source: "web",
+                    total: parseFloat($scope.salesTaxInfo.Total),
+                    products: products
+                }
+
+                $log.debug("CheckoutController(): processOrder(): creating order", order);
+
+                if (!debug) {
+                    Order.create(order).then(function(orderId) {
+                        $log.debug("CheckoutController(): loginOrCreateUser(): created consultant, moving to next step", data);
+
+                        // jump to Shipping
+                        $scope.confirmation = {
+                            orderId: orderId,
+                            consultantId: consultantId
+                        };
+
+                        WizardHandler.wizard('checkoutWizard').goTo('Finish');
+                    }, function(error) {
+                        $log.error("CheckoutController(): processOrder(): failed to create order", error);
+                        $scope.orderError = error.message;
+                    });
+                } else {
+                    WizardHandler.wizard('checkoutWizard').goTo('Finish');
+                    return;
+                }
             }
         }
 
