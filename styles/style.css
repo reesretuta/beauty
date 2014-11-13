@@ -21,7 +21,7 @@
 [ng\:cloak], [ng-cloak], .ng-cloak {
   display: none !important;
 }
-
+/*Test*/
 .primary-color { color: #b51a8a; }
 .secondary-color { color: #AA73B1; }
 
