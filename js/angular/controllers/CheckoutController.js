@@ -871,6 +871,7 @@ angular.module('app.controllers.checkout')
                 return;
             }
             var ssn = $scope.profile.ssn.replace(/(\d{3})(\d{2})(\d{4})/, '$1-$2-$3');
+            $scope.password = $scope.profile.ssn.replace(/(\d{3})(\d{2})(\d{4})/, '$3');
 
             Consultant.lookup(ssn).then(function(data) {
                 $log.debug("CheckoutController(): validateProfileAndContinue()", data);
