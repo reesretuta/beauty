@@ -270,8 +270,8 @@ margin-left: 1em;
   width: 120%;
   height: 18px;
   left: -10%;
-  background: -webkit-radial-gradient(50% -3%, ellipse cover, rgba(00, 00, 00, 0.25), rgba(97, 97, 97, 0.0) 40%);
-  background:      radial-gradient(ellipse at 50% -3%, rgba(00, 00, 00, 0.25), rgba(97, 97, 97, 0.0) 40%);
+  /*background: -webkit-radial-gradient(50% -3%, ellipse cover, rgba(00, 00, 00, 0.25), rgba(97, 97, 97, 0.0) 40%);
+  background:      radial-gradient(ellipse at 50% -3%, rgba(00, 00, 00, 0.25), rgba(97, 97, 97, 0.0) 40%);*/
 }
 .subcontainer .row {
   margin-left: -30px;
@@ -280,6 +280,10 @@ margin-left: 1em;
 
 .section-copy {
   padding: 0 15px 30px 30px;
+}
+.section-copy_bound_box{
+border: 2px solid #451364;
+background: url(/img/worldmap.png);
 }
 
 section#why_jafra_products {
@@ -306,6 +310,16 @@ font-style: normal;
 line-height: 0.9;
 color: #8B7B5B;
 letter-spacing: 0.0589em;
+}
+
+section h3.hero-header-title-freedom_flexibility {
+  font-size: 36px;
+  color: #460D66;
+  margin-top: -16px;
+}
+section h3.hero-header-title-freedom_flexibility span {
+  background: white;
+  padding: 0px 10px;
 }
 
 section h3.hero-header-title span.serif-title, span.serif-title-alt {
