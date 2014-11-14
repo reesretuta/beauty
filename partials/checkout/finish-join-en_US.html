@@ -28,6 +28,61 @@
         </div>
       </div>
     </div>
+    
+    <hr>
+
+    <div class="row">
+      <h2 class="">Confirmation Number: <label style="color:black;">{{confirmation.orderId}}</label></h2>
+      <form class="form order-details" role="form">
+        <div class="form-group">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Qty</th>
+                <th>Description</th>
+                <th align="right">Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="item in items">
+                <td>{{item.quantity}}</td>
+                <td>
+                  <p class="confirmation-description">
+                    {{item.name}}
+                  </p>
+                </td>
+                <td align="right">
+                  <span ng-repeat="detailprice in item.product.prices[0]">
+                    <span ng-if="detailprice.typeId==2" class="item-price-sale">
+                      {{detailprice.price | currency}}
+                    </span>
+                    <span ng-if="detailprice.typeId==1" class="item-price-strike">
+                      {{detailprice.price | currency}}
+                    </span>
+                  </span>
+                  <span ng-if="item.product.prices[0].price">
+                    <span class="item-price">
+                      {{item.product.prices[0].price | currency}}
+                    </span>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+              <td colspan="3">
+                <p>Subtotal: {{salesTaxInfo.SubTotal | currency}}</p>
+                <p>Shipping: {{salesTaxInfo.SH | currency}}</p>
+                <p>Tax: {{salesTaxInfo.TaxRate}}%</p>
+                <p class="lead"><b class="text-success"><i class="fa fa-check"></i> Successfully Charged: {{salesTaxInfo.Total | currency}}</b></p>
+              </td>
+            </tr>
+            </tfoot>
+          </table>
+        </div>
+      </form>
+    </div>
+
     <hr>
     <p>To get started on your new and successful career, please take the following important steps:</p>
     <h3>1. Get paid quickly by selecting your JAFRA payment option:</h3>
@@ -54,59 +109,9 @@
     • Call CRT (Consultant Relationships Team) at 1-800-852-372 <br />
     • Email JAFRA at <a href="mailto:jafracares@jafra.com" target="_blank">jafracares@jafra.com</a> <br /> 
     </p>
-    <h2 class="">Confirmation Number: <label style="color:black;">{{confirmation.orderId}}</label></h2>
-    <form class="form order-details" role="form">
-      <div class="form-group">
-        <table class="table">
-          <thead>
-          <tr>
-            <th>Qty</th>
-            <th>Description</th>
-            <th align="right">Price</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr ng-repeat="item in items">
-            <td>{{item.quantity}}</td>
-            <td>
-              <p class="confirmation-description">
-                {{item.name}}
-              </p>
-            </td>
-            <td align="right">
-              
-                            <span ng-repeat="detailprice in item.product.prices[0]">
-                              <span ng-if="detailprice.typeId==2" class="item-price-sale">
-                                {{detailprice.price | currency}}
-                              </span>
-                              <span ng-if="detailprice.typeId==1" class="item-price-strike">
-                                {{detailprice.price | currency}}
-                              </span>
-                            </span>
-                            <span ng-if="item.product.prices[0].price">
-                              <span class="item-price">
-                                {{item.product.prices[0].price | currency}}
-                              </span>
-                            </span>
-            </td>
-          </tr>
-          </tbody>
-          <tfoot>
-          <tr>
-            <td colspan="3">
-              <p>Subtotal: {{salesTaxInfo.SubTotal | currency}}</p>
-              <p>Shipping: {{salesTaxInfo.SH | currency}}</p>
-              <p>Tax: {{salesTaxInfo.TaxRate}}%</p>
-              <p class="lead"><b class="text-success"><i class="fa fa-check"></i> Successfully Charged: {{salesTaxInfo.Total | currency}}</b></p>
-            </td>
-          </tr>
-          </tfoot>
-        </table>
-      </div>
-
-    </form>
-    <h2 class="">How to track your order</h2>
+    
     <hr>
+    <h2 class="">How to track your order</h2>
     <p>Information will be sent after your order has been shipped.</p>
     <hr>
             <h4 id="myModalLabel" class="modal-title text-center"><span ng-bind-html="'CONSULTANT-AGREEMENT-TITLE' | translate | unsafe"></span></h4>
