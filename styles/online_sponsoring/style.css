@@ -286,6 +286,17 @@ border: 2px solid #451364;
 background: url(/img/worldmap.png);
 }
 
+.freedom_flexibility_description{
+  color: #787878;
+}
+
+.freedom_flexibility_description b{
+  color: #000000;
+}
+
+section#freedom_flexibility{
+  padding: 15px;
+}
 section#why_jafra_products {
   background: #e0dbcf;
 }
@@ -485,7 +496,9 @@ line-height: 2em; /*0.8em;*/
 .join_nav  > li > a:hover , .join_nav  > li > a:focus
 {
 	background-color:#c52033 !important; 
-	color:#fff !important;
+	color:#fff !important;  
+  border-top: 1px solid #D96783;
+  border-bottom: 1px solid #312626;
 } 
 .navbar-language > li > a
 {
