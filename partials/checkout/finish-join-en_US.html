@@ -8,26 +8,26 @@
   </div>
 
   <div id="final" class="col-lg-offset-1 col-lg-10">
-          <div class="row text-center">
-            <div class="col-md-offset-2 col-md-8">
-    <h3 class="">Your Consultant I.D. #</h3>
-    <h3 class="h3"><label style="color:black;">{{confirmation.consultantId}}</label></h3>
-    <p ng-if="confirmation.sponsor">Your sponsor is: #{{confirmation.sponsor.id}} <b>{{confirmation.sponsor.firstName}} {{confirmation.sponsor.lastName}}</b></p>
-    <p ng-if="!confirmation.sponsor">A Sponsor will be assigned by JAFRA within the next 1-3 days.</p>
-  </div>
-</div>
+    <div class="row text-center">
+      <div class="col-md-offset-2 col-md-8">
+        <h3 class="">Your Consultant I.D. #</h3>
+        <h3 class="h3"><label style="color:black;">{{confirmation.consultantId}}</label></h3>
+        <p ng-if="confirmation.sponsor">Your sponsor is: #{{confirmation.sponsor.id}} <b>{{confirmation.sponsor.firstName}} {{confirmation.sponsor.lastName}}</b></p>
+        <p ng-if="!confirmation.sponsor">A Sponsor will be assigned by JAFRA within the next 1-3 days.</p>
+      </div>
+    </div>
 
-          <div class="row">
-            <div class="col-md-offset-4 col-md-4">
-              <div class="thanks-well text-center">
-                <p class="h4"><a href="http://jafrabiz.com" target="_blank"><b><i class="fa fa-external-link"></i> jafrabiz.com</b></a></p>
-                <small>username:</small>
-                <p><b ng-bind="profile.loginEmail"></b></p>
-                <small>password:</small>
-                <p><b>{{password}}</b></p>
-              </div>
-            </div>
-          </div>
+    <div class="row">
+      <div class="col-md-offset-4 col-md-4">
+        <div class="thanks-well text-center">
+          <p class="h4"><a href="http://jafrabiz.com" target="_blank"><b><i class="fa fa-external-link"></i> jafrabiz.com</b></a></p>
+          <small>username:</small>
+          <p><b ng-bind="profile.loginEmail"></b></p>
+          <small>password:</small>
+          <p><b>{{password}}</b></p>
+        </div>
+      </div>
+    </div>
     <hr>
     <p>To get started on your new and successful career, please take the following important steps:</p>
     <h3>1. Get paid quickly by selecting your JAFRA payment option:</h3>
@@ -54,14 +54,6 @@
     • Call CRT (Consultant Relationships Team) at 1-800-852-372 <br />
     • Email JAFRA at <a href="mailto:jafracares@jafra.com" target="_blank">jafracares@jafra.com</a> <br /> 
     </p>
-    <p>
-NOTE to website developers:<br />
-Provide the following links for next steps/ call to action:<br />
-	<del>a. jafrabiz.com<br />
-	b. Download Consultant Agreement</del>
-
-    </p>
-
     <h2 class="">Confirmation Number: <label style="color:black;">{{confirmation.orderId}}</label></h2>
     <form class="form order-details" role="form">
       <div class="form-group">
