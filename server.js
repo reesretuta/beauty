@@ -528,9 +528,16 @@ router.route('/authenticate')// authenticate a user (accessed at POST http://loc
 router.route('/logout')
     .post(function (req, res) {
         console.log("logout", req.session);
-        res.status(200);
-        req.session.destroy(function() {
-            console.log('Session deleted');
+        req.session.destroy(function(err) {
+            if (err) {
+                console.log('failed to delete session', error);
+                res.status(500);
+                res.end();
+                return;
+            }
+            console.log('session deleted');
+            res.status(200);
+            res.json(req.session);
             res.end();
         });
     });
@@ -550,6 +557,10 @@ router.route('/session')
         }
         if (req.session.checkout == null) {
             req.session.checkout = {};
+            updated = true;
+        }
+        if (req.session.source == null) {
+            req.session.source = "web";
             updated = true;
         }
 
@@ -1043,8 +1054,16 @@ router.route('/clients/:client_id/creditCards/:creditCardId')// get a client cre
 // ----------------------------------------------------
 router.route('/orders')// create an order
     .post(function (req, res) {
-        res.json({
-            orderId: 1234
+        console.log("create order: got data", req.body);
+
+        jafraClient.createOrder(req.body).then(function(r) {
+            console.log("success", r)
+            res.status(r.status);
+            res.json(r.result);
+        }, function(r) {
+            console.error("failure", r)
+            res.status(r.status);
+            res.json(r.result);
         });
     });
 

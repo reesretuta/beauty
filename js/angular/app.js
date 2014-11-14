@@ -130,9 +130,40 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
 //
 //            return $delegate;
 //        });
-    }]).run(function ($rootScope, $animate, BASE_URL) {
+    }]).run(function ($rootScope, $animate, $log, $location, Session, $translate, BASE_URL) {
         $rootScope.BASE_URL = BASE_URL;
         $rootScope.STORE_BASE_URL = BASE_URL + "/shop";
         $rootScope.JOIN_BASE_URL = BASE_URL + "/join";
         $animate.enabled(true);
+
+        var search = $location.search();
+        $log.debug("app(): got query params", search);
+        
+        var cid = parseInt(search["cid"]);
+        if (isNaN(cid)) {
+            cid = null;
+        }
+        var source = search["source"];
+        var language = S(search["language"]).isEmpty() ? "en_US" : search["language"];
+        $log.debug("app(): consultantId", cid, "source", source, "language", language);
+
+        var sess = {};
+        if (!S(language).isEmpty()) {
+            sess["language"] = language;
+            $translate.use(language);
+        }
+        if (!S(source).isEmpty()) {
+            sess["source"] = (source == "facebook" || source == "pws") ? source : "web";
+        }
+        if (!S(cid).isEmpty()) {
+            sess["consultantId"] = cid;
+        }
+
+        if (Object.keys(sess).length > 0) {
+            Session.set(sess).then(function(session) {
+                $log.debug("app(): save to session", session);
+            }, function(err) {
+                $log.debug("app(): failed to save to session sponsorId", cid, "source", source, "language", language);
+            });
+        }
     });

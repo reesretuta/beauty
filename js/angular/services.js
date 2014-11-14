@@ -86,7 +86,6 @@ angular.module('app.services', ['ngResource'])
 
         function deleteLocalSession() {
             if ($rootScope.session != null) {
-
                 $rootScope.session = {
                     language: 'en_US',
                     cart: [],
@@ -143,19 +142,6 @@ angular.module('app.services', ['ngResource'])
                     }
                 }
 
-                //// check the server session cookie against the local cookie ID & reset cart if not matching
-                //if ($rootScope.session.cid != $cookies["connect.sid"] || $rootScope.session == null) {
-                //    $log.debug("sessionService(): initialize(): creating new local storage session", $cookies["connect.sid"]);
-                //    $rootScope.session = {
-                //        cid: $cookies["connect.sid"],
-                //        language: 'en_US',
-                //        cart: [],
-                //        checkout: {}
-                //    };
-                //} else {
-                //    $log.debug("sessionService(): initialize(): using existing local storage session", $cookies["connect.sid"]);
-                //}
-
                 $log.debug("sessionService(): initialize(): local session is", $rootScope.session);
                 initialized.resolve($rootScope.session);
             }, function(error) {
@@ -195,9 +181,10 @@ angular.module('app.services', ['ngResource'])
         function saveToServer() {
             var d = $q.defer();
 
-            initialized.promise.then(function(session) {
-                $log.debug("Session(): saveToServer(): saving session", session);
+            initialized.promise.then(function() {
+                $log.debug("Session(): saveToServer(): saving session");
 
+                var session = getLocalSession();
                 $http.put(API_URL + '/session', session).success(function(s, status, headers, config) {
                     $log.debug("sessionService(): saveToServer(): saved", s);
 
@@ -226,7 +213,8 @@ angular.module('app.services', ['ngResource'])
             var d = $q.defer();
 
             // once we're initialized
-            initialized.promise.then(function(session) {
+            initialized.promise.then(function() {
+                var session = getLocalSession;
                 d.resolve(session);
             }, function(err) {
                 $log.error("sessionService(): save(): initialization failed");
@@ -283,10 +271,10 @@ angular.module('app.services', ['ngResource'])
         sessionService.createClient = function(client) {
             var d = $q.defer();
 
-            initialized.promise.then(function(session) {
+            initialized.promise.then(function() {
                 $log.debug("Session(): createClient(): attempting to create user username=", client.email);
 
-                var session = $http.post(API_URL + '/clients', {
+                $http.post(API_URL + '/clients', {
                     email: client.email,
                     password: client.password,
                     firstName: client.firstName,
@@ -316,9 +304,9 @@ angular.module('app.services', ['ngResource'])
             $rootScope.loginError = '';
             var d = $q.defer();
 
-            initialized.promise.then(function(session) {
+            initialized.promise.then(function() {
                 //$log.debug("Session(): login(): attempting to login with username=", username, "password=", password);
-                var session = $http.post(API_URL + '/authenticate', {username: username, password: password}, {}).success(function(session, status, headers, config) {
+                $http.post(API_URL + '/authenticate', {username: username, password: password}, {}).success(function(session, status, headers, config) {
                     $log.debug("sessionService(): login()", session, status);
 
                     // update the session with client
@@ -350,8 +338,7 @@ angular.module('app.services', ['ngResource'])
         }
 
         sessionService.setLanguage = function(language) {
-            initialized.promise.then(function(session) {
-                sessionService.set('language', language);
+            sessionService.set('language', language).then(function() {
                 $log.debug("sessionService(): setLanguage(): language set");
             });
         }
@@ -379,9 +366,11 @@ angular.module('app.services', ['ngResource'])
             initialized.promise.then(function() {
                 $log.debug("sessionService(): logout(): attempting to logout");
                 $http.post(API_URL + '/logout', {}, {}).success(function(data, status, headers, config) {
-                    $log.debug("sessionService(): logout()");
-
                     deleteLocalSession();
+
+                    $log.debug("sessionService(): logout(): successful", getLocalSession());
+
+                    initialize();
                 }).error(function(data, status, headers, config) {
                     //failure(data, status, headers, config);
                     $log.error(data, status, headers, config);
@@ -458,7 +447,7 @@ angular.module('app.services', ['ngResource'])
         cartService.get = function(noLoadProducts) {
             var d = $q.defer();
 
-            Session.waitForInitialization().then(function(session) {
+            Session.get().then(function(session) {
                 //$log.debug("cartService(): getCart()", session.cart);
 
                 if (noLoadProducts == null || noLoadProducts == false) {
@@ -835,7 +824,7 @@ angular.module('app.services', ['ngResource'])
         consultantService.lookup = function(ssn) {
             var d = $q.defer();
 
-            Session.waitForInitialization().then(function(session) {
+            Session.waitForInitialization().then(function() {
                 $log.debug("consultantService(): lookup(): attempting to lookup consultant", ssn);
 
                 // do PGP encryption here
@@ -878,7 +867,7 @@ angular.module('app.services', ['ngResource'])
         consultantService.create = function(consultant) {
             var d = $q.defer();
 
-            Session.waitForInitialization().then(function(session) {
+            Session.waitForInitialization().then(function() {
                 $log.debug("Session(): create(): attempting to create consultant=", consultant.email);
 
                 // do PGP encryption here
@@ -894,12 +883,12 @@ angular.module('app.services', ['ngResource'])
                         consultantService.save({}, {
                             encrypted: encrypted
                         }).$promise.then(function(c) {
-                            $log.debug("sessionService(): create(): created consultant");
-                            d.resolve(c);
-                        }, function(response) {
-                            $log.error("sessionService(): create(): failed to create consultant", response.data);
-                            d.reject(response.data);
-                        });
+                                $log.debug("sessionService(): create(): created consultant");
+                                d.resolve(c);
+                            }, function(response) {
+                                $log.error("sessionService(): create(): failed to create consultant", response.data);
+                                d.reject(response.data);
+                            });
                     } catch (ex) {
                         d.reject({
                             errorCode: 500,
@@ -915,6 +904,36 @@ angular.module('app.services', ['ngResource'])
         }
 
         return consultantService;
+    })
+    .factory('Order', function ($resource, $http, $log, $q, Session, PGP, API_URL) {
+        var orderService = $resource(API_URL + '/orders/:orderId', {orderId: '@_id'});
+
+        var key = PGP.getKey();
+
+        orderService.create = function(order) {
+            var d = $q.defer();
+
+            $log.debug("Session(): create(): attempting to create order=", order);
+
+            try{
+                orderService.save({}, order).$promise.then(function(c) {
+                    $log.debug("sessionService(): create(): created order");
+                    d.resolve(c);
+                }, function(response) {
+                    $log.error("sessionService(): create(): failed to create order", response.data);
+                    d.reject(response.data);
+                });
+            } catch (ex) {
+                d.reject({
+                    errorCode: 500,
+                    message: "Failed to create order"
+                });
+            }
+
+            return d.promise;
+        }
+
+        return orderService;
     })
     .factory('Addresses', function ($resource, $http, $log, $q, Session, API_URL) {
         var addressService = $resource(API_URL + '/clients/:clientId/addresses/:addressId', {addressId: '@_id'});

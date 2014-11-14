@@ -4,26 +4,6 @@ angular.module('app.controllers.onlineSponsor')
 
     $rootScope.inCheckout = false;
 
-    var cid = $routeParams.cid; // force to a string
-    var source = $routeParams.source;
-    var language = S($routeParams.language).isEmpty() ? "en_US" : $routeParams.language;
-    $log.debug("OnlineSponsorLandingController(): sponsorId", cid, "source", source, "language", language);
-
-    if (!S(language).isEmpty()) {
-        Session.setLanguage(language);
-        $translate.use(language);
-    }
-
-    Session.set({
-        "consultantId": cid,
-        "source": source,
-        "language": language
-    }).then(function(session) {
-        $log.debug("OnlineSponsorLandingController(): save to session", session);
-    }, function(err) {
-        $log.debug("OnlineSponsorLandingController(): failed to save to session sponsorId", cid, "source", source, "language", language);
-    });
-
     $scope.getSessionLanguage = function() {
         var lang = Session.getLanguage();
         $log.debug("OnlineSponsorLandingController(): get session language", lang);
