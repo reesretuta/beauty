@@ -1204,6 +1204,41 @@ angular.module('app.controllers.checkout')
             return d.promise;
         }
 
+        $scope.editCreditCard = function(card) {
+            var dd = $q.defer();
+
+            $log.debug("CheckoutController(): editCreditCard()", card);
+
+            var d = $modal.open({
+                backdrop: true,
+                keyboard: true, // we will handle ESC in the modal for cleanup
+                windowClass: "editCreditCardModal",
+                templateUrl: '/partials/checkout/card-edit-modal.html',
+                controller: 'EditCreditCardModalController',
+                resolve: {
+                    creditCard: function() {
+                        return card;
+                    }
+                }
+            });
+
+            var body = $document.find('html, body');
+
+            d.result.then(function(result) {
+                $log.debug("CheckoutController(): editCreditCard(): edit card modal closed");
+
+                // re-enable scrolling on body
+                body.css("overflow-y", "auto");
+
+                dd.resolve(result);
+            });
+
+            // prevent page content from scrolling while modal is up
+            $("html, body").css("overflow-y", "hidden");
+
+            return dd.promise;
+        }
+
         // FIXME - only supports Online Sponsoring currently
         $scope.updatePaymentMethod = function() {
             if (debug) {

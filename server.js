@@ -707,7 +707,6 @@ router.route('/leads')// create a lead
 router.route('/clients') // get current client
     // create a client
     .post(function (req, res) {
-        // TODO - create the client
 
         // validate the email address first, then create the client if it's valid
         jafraClient.validateEmail(req.body.email).then(function(r) {
@@ -747,9 +746,20 @@ router.route('/clients') // get current client
 
     });
 
-router.route('/clients/:client_id')// get a consultant
+router.route('/clients/:client_id')// get a client
     .get(function (req, res) {
         var clientId = req.params.client_id;
+
+        // must be authenticated
+        if (req.session.client == null) {
+            res.status(401);
+            res.end();
+            return;
+        } else if (req.session.client.id != clientId) {
+            res.status(403);
+            res.end();
+            return;
+        }
 
         // fetch the client information & return
         jafraClient.getClient(clientId).then(function(r) {
@@ -764,7 +774,7 @@ router.route('/clients/:client_id')// get a consultant
 
     // update a client
     .put(function (req, res) {
-        res.json({ consultantId: 1000 });
+        res.json({});
     });
 
 // CONSULTANTS
@@ -830,6 +840,17 @@ router.route('/clients/:client_id/addresses')// get a client's addresses
         var clientId = req.params.client_id;
         console.log("create address", req.body);
 
+        // must be authenticated
+        if (req.session.client == null) {
+            res.status(401);
+            res.end();
+            return;
+        } else if (req.session.client.id != clientId) {
+            res.status(403);
+            res.end();
+            return;
+        }
+
         jafraClient.getAddresses(clientId).then(function(r) {
             console.error("got addresses", r.status, r.result);
 
@@ -851,8 +872,20 @@ router.route('/clients/:client_id/addresses')// get a client's addresses
 
     // create an address
     .post(function (req, res) {
-        console.log("create address", req.body);
         var clientId = req.params.client_id;
+
+        // must be authenticated
+        if (req.session.client == null) {
+            res.status(401);
+            res.end();
+            return;
+        } else if (req.session.client.id != clientId) {
+            res.status(403);
+            res.end();
+            return;
+        }
+
+        console.log("creating address", clientId, req.body);
 
         jafraClient.createAddress(clientId, {
             "name": req.body.name,
@@ -889,17 +922,64 @@ router.route('/clients/:client_id/addresses/:address_id')// get a client address
         var clientId = req.params.client_id;
         var addressId = req.params.address_id;
 
+        // NOT USED ATM (managed in the session as retrieved from login)
     })
 
     // update a client address
     .put(function (req, res) {
-        res.status(204);
+        var clientId = req.params.client_id;
+        var addressId = req.params.addressId;
+
+        // must be authenticated
+        if (req.session.client == null) {
+            res.status(401);
+            res.end();
+            return;
+        } else if (req.session.client.id != clientId) {
+            res.status(403);
+            res.end();
+            return;
+        }
+
+        console.log("updating address", req.body);
+
+        jafraClient.updateAddress(clientId, addressId, req.body).then(function(r) {
+            console.error("updated address", r.status, r.result);
+
+            // update this address in the session
+            if (req.session.checkout && req.session.checkout.shipping && req.session.checkout.shipping.id == addressId) {
+                req.session.checkout.shipping = req.body;
+            }
+            if (req.session.checkout && req.session.checkout.billing && req.session.checkout.billing.id == addressId) {
+                req.session.checkout.billing = req.body;
+            }
+
+            res.json(r.status);
+            res.json(r.result);
+        }, function(r) {
+            console.error("failed to create cc", r.status, r.result);
+            res.status(r.status);
+            res.json(r.result);
+        });
     })
 
     // delete a client address
     .delete(function (req, res) {
         var clientId = req.params.client_id;
         var addressId = req.params.address_id;
+
+        // must be authenticated
+        if (req.session.client == null) {
+            res.status(401);
+            res.end();
+            return;
+        } else if (req.session.client.id != clientId) {
+            res.status(403);
+            res.end();
+            return;
+        }
+
+        console.log("deleting", clientId, addressId);
 
         jafraClient.deleteAddress(clientId, addressId).then(function(r) {
             console.log("deleted address", clientId, addressId);
@@ -935,17 +1015,8 @@ router.route('/clients/:client_id/addresses/:address_id')// get a client address
 router.route('/clients/:client_id/creditCards')// get a client's creditCards
     .get(function (req, res) {
         var clientId = req.params.client_id;
-
-        return [
-            {
-                "id": 111,
-                "name": "Joe Smith",
-                "lastFour": "1111",
-                "cardType": "visa",
-                "expMonth": "12",
-                "expYear": "1978"
-            }
-        ];
+        // NOT USED ATM (managed in the session as retrieved from login)
+        return [];
     })
 
     // create a credit card
@@ -994,6 +1065,8 @@ router.route('/clients/:client_id/creditCards/:creditCardId')// get a client cre
             return;
         }
 
+        console.log("got cc get", clientId, creditCardId);
+
         jafraClient.getCreditCard(clientId, creditCardId).then(function(r) {
             console.log("got credit card", r.status, "result", r.result);
             // return response
@@ -1011,16 +1084,51 @@ router.route('/clients/:client_id/creditCards/:creditCardId')// get a client cre
         var clientId = req.params.client_id;
         var creditCardId = req.params.creditCardId;
 
-        console.log("got data", req.body.encrypted);
+        // must be authenticated
+        if (req.session.client == null) {
+            res.status(401);
+            res.end();
+            return;
+        } else if (req.session.client.id != clientId) {
+            res.status(403);
+            res.end();
+            return;
+        }
+
+        console.log("got cc update", clientId, creditCardId, req.body.encrypted);
 
         jafraClient.updateCreditCard(clientId, creditCardId, req.body.encrypted).then(function(r) {
-            console.error("created credit card", r.status, r.result);
+            console.error("updated credit card", r.status, r.result);
 
-            // update this CC in the session
-            //req.session.client.creditCards.push(creditCard);
+            // remove the cc from the req.session data
+            for (var i=0; i < req.session.client.creditCards.length; i++) {
+                if (req.session.client.creditCards[i].id == creditCardId) {
+                    req.session.client.creditCards[i] = r.result;
+                    console.log("updated credit card in session");
+                    break;
+                }
+            }
 
-            res.json(r.status);
+            res.status(200);
             res.json(r.result);
+            res.end();
+
+            //// fetch credit cards now to place in the session
+            //jafraClient.getCreditCards(clientId).then(function(r) {
+            //    console.error("setting credit cards in session to", r.status, r.result);
+            //    req.session.client.creditCards = r.result;
+            //    res.status(204);
+            //    res.end();
+            //}, function(r) {
+            //    console.error("failed to create cc", r.status, r.result);
+            //    res.status(500);
+            //    res.json({
+            //        statusCode: 500,
+            //        errorCode: "creditCardUpdateFailure",
+            //        message: "Failed to update credit card in session"
+            //    });
+            //    res.end();
+            //});
         }, function(r) {
             console.error("failed to create cc", r.status, r.result);
             res.status(r.status);
@@ -1033,7 +1141,18 @@ router.route('/clients/:client_id/creditCards/:creditCardId')// get a client cre
         var clientId = req.params.client_id;
         var creditCardId = req.params.creditCardId;
 
-        console.log("got id, cc", clientId, creditCardId);
+        // must be authenticated
+        if (req.session.client == null) {
+            res.status(401);
+            res.end();
+            return;
+        } else if (req.session.client.id != clientId) {
+            res.status(403);
+            res.end();
+            return;
+        }
+
+        console.log("got cc delete", clientId, creditCardId);
 
         jafraClient.deleteCreditCard(clientId, creditCardId).then(function(r) {
             console.log("deleted credit card", r.status, r.result);

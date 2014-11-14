@@ -1,0 +1,88 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="close()">&times;</button>
+  <h4 class="modal-title"><span ng-bind-html="'CREDITCARD_EDIT_TITLE' | translate | unsafe"></span> <span class="text-muted italic" ng-bind-html="'CREDITCARD_EDIT_TITLE_DESC' | translate | unsafe"></span></h4>
+</div>
+
+<div class="modal-body queue-modal-body">
+
+  <div ng-if="saveError" ng-class="has-error">{{saveError}}</div>
+
+  <!--valid={{editCardForm.$valid}}-->
+  <form name="editCardForm" class="form-horizontal" role="form" novalidate>
+
+  <!-- CARD INFO -->
+  <div class="form-group" ng-class="{ 'has-error' : editCardForm.cardName.$invalid && !editCardForm.cardName.$pristine }">
+    <label for=" " class="col-md-3 control-label"><span ng-bind-html="'IN_NAME_CARD' | translate |unsafe"></span></label>
+
+    <div class="col-sm-5 col-lg-5">
+      <input ng-model="creditCard.name" ng-minlength="3" name="cardName" type="text" class="form-control" placeholder=" " required>
+      <span ng-show="editCardForm.cardName.$error.minlength" class="help-block" ng-class="{ 'text-danger' : editCardForm.cardName.$invalid && !editCardForm.cardName.$pristine }" ng-bind-html="'NAME_ON_CARD_ERR' | translate | unsafe"></span>
+      <!--valid={{editCardForm.cardName.$valid}}-->
+    </div>
+  </div>
+
+  <div class="form-group" ng-class="{ 'has-error' : editCardForm.number.$invalid && !editCardForm.number.$pristine }">
+    <label for=" " class="col-md-3 control-label"><span ng-bind-html="'IN_CARD_NUMBER' | translate |unsafe"></span></label>
+
+    <div class="col-sm-5 col-lg-5">
+      <input ng-model="creditCard.card" data-ng-blur="visited=true" ng-minlength="13" ng-maxlength="16" maxlength="16" name="number" type="text" class="form-control" id=" " placeholder="XXXX XXXX XXXX {{creditCard.lastFour}}" data-ui-validate=" 'isValidCard($value)' " required>
+      <span ng-show="visited && (editCardForm.number.$error.minlength || editCardForm.number.$error.validator)" class="help-block" ng-class="{ 'text-danger' : editCardForm.number.$invalid && !editCardForm.number.$pristine }">Invalid credit card number</span>
+      <!--valid={{editCardForm.number.$valid}}-->
+    </div>
+    <div class="col-sm-4 col-lg-4" ng-model="cardType" ng-show="!editCardForm.number.$error.minlength && !editCardForm.number.$error.validator">
+      <img class="img-responsive cardImg" src="/img/visa.png" ng-show="creditCard.cardType=='Visa'">
+      <img class="img-responsive cardImg" src="/img/mastercard.png" ng-show="creditCard.cardType=='MasterCard'">
+      <img class="img-responsive cardImg" src="/img/discover.png" ng-show="creditCard.cardType=='Discover Card'">
+      <img class="img-responsive cardImg" src="/img/americanexpress.png" ng-show="creditCard.cardType=='American Express'">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for=" " class="col-md-3 control-label"><span ng-bind-html="'IN_EXPIRATION' | translate | unsafe"></span></label>
+
+    <div class="col-sm-6" ng-class="{ 'has-error' : (invalidExpiration || editCardForm.expMonth.$invalid || editCardForm.expYear.$invalid) && !editCardForm.expMonth.$pristine && !editCardForm.expYear.$pristine }">
+      <div class="row">
+        <div class="col-xs-4 col-sm-4 col-med-4">
+          <input ng-model="creditCard.expMonth" name="expMonth" type="text" class="form-control col-sm-1" ui-mask="99" placeholder="MM" required>
+          <!--valid={{editCardForm.expMonth.$valid}}-->
+        </div>
+        <div class="col-xs-1">
+          <label class="control-label">/</label>
+        </div>
+        <div class="col-xs-5 col-sm-5 col-med-5">
+          <input ng-model="creditCard.expYear" name="expYear" type="text" class="form-control col-sm-3" ui-mask="9999" placeholder="YYYY" required>
+          <!--valid={{editCardForm.expYear.$valid}}-->
+        </div>
+      </div>
+      <span ng-show="(invalidExpiration || editCardForm.expMonth.$invalid || editCardForm.expYear.$invalid) && !editCardForm.expMonth.$pristine && !editCardForm.expYear.$pristine" class="help-block text-danger" ng-bind-html="'INVALID_CC_EXPIRATION' | translate | unsafe"></span>
+    </div>
+  </div>
+  <div class="form-group" ng-class="{ 'has-error' : editCardForm.cvv.$invalid && !editCardForm.cvv.$pristine }">
+    <label for=" " class="col-md-3 control-label"><span ng-bind-html="'IN_SECURITY_CODE' | translate | unsafe"></span></label>
+
+    <div class="col-sm-6">
+      <div class="row">
+        <div class="col-xs-4 col-sm-4 col-med-2">
+          <input ng-model="creditCard.cvv" ng-minlength="3" ng-maxlength="4" maxlength="4" name="cvv" type="number" class="form-control col-sm-1" placeholder="&bull;&bull;&bull;" required>
+          <!--valid={{editCardForm.cvv.$valid}}-->
+        </div>
+        <div class="col-xs-8 col-sm-8 col-med-8">
+          <a popover="3-4 digit number located on your credit card" popover-title="Security Code/CVV2" href="" tabindex="-1"><i class="fa fa-info-circle"></i>
+            What's this?</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  </form>
+
+</div>
+
+<div class="modal-footer">
+  <div class="col-lg-6 col-md-6 col-sm-6">
+    <span class="text-muted pull-left"></span>
+  </div>
+  <div class="col-lg-6 col-md-6 col-sm-6">
+    <button ng-click="close()" class="btn btn-link">Cancel</button>
+    <button ng-click="save()" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> Save</button>
+  </div>
+</div>

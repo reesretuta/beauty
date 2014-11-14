@@ -13,7 +13,11 @@
 
     <div class="col-xs-6 col-lg-4" ng-repeat="ccData in session.client.creditCards">
       <div class="checkout-card clearfix" ng-class="{active: $first}">
-        <img src="/img/46x30" class="pull-right">
+        <span class="pull-left">{{ccData.name}}</span>
+        <img class="pull-right img-responsive cardImg" src="/img/visa.png" ng-show="ccData.cardType=='Visa'">
+        <img class="pull-right img-responsive cardImg" src="/img/mastercard.png" ng-show="ccData.cardType=='MasterCard'">
+        <img class="pull-right img-responsive cardImg" src="/img/discover.png" ng-show="ccData.cardType=='Discover Card'">
+        <img class="pull-right img-responsive cardImg" src="/img/americanexpress.png" ng-show="ccData.cardType=='American Express'">
         <p class="card-number">
           <span>&bull;&bull;&bull;&bull;</span>
           <span>&bull;&bull;&bull;&bull;</span>
@@ -27,7 +31,7 @@
         <button class="btn btn-primary pull-right card-use-btn" ng-click="selectCardAndContinue(ccData)">Use this Option <i class="fa fa-caret-right"></i></button>
       </div>
       <div class="card-actions">
-        <a href=""><i class="fa fa-pencil-square-o"></i> Edit</a>
+        <a ng-click="editCreditCard(ccData)" class="card-use-btn"><i class="fa fa-pencil-square-o"></i> Edit</a>
         &nbsp;&nbsp;
         <a ng-click="removeCreditCard(ccData.id)"><i class="fa fa-times-circle"></i> Remove</a>
       </div>

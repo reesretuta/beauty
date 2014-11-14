@@ -1075,7 +1075,9 @@ angular.module('app.services', ['ngResource'])
         return pgpService;
     })
     .factory('CreditCards', function ($resource, $http, $log, $q, Session, PGP, API_URL) {
-        var creditCardService = $resource(API_URL + '/clients/:clientId/creditCards/:creditCardId', {creditCardId: '@_id'});
+        var creditCardService = $resource(API_URL + '/clients/:clientId/creditCards/:creditCardId', {creditCardId: '@_id'}, {
+            'update': { method:'PUT' }
+        });
 
         var key = PGP.getKey();
 
@@ -1142,6 +1144,53 @@ angular.module('app.services', ['ngResource'])
             }, function(error) {
                 $log.error("creditCardService(): removeCreditCard(): failed to removed creditCard from client creditCards", error);
                 d.reject('Failed to remove creditCard');
+            });
+
+            return d.promise;
+        }
+
+        creditCardService.saveCreditCard = function(creditCard) {
+            $log.debug("CreditCards(): saveCreditCard(): saving", creditCard);
+            var d = $q.defer();
+
+            Session.get().then(function(session) {
+
+                // do PGP encryption here
+                require(["/lib/openpgp.min.js"], function(openpgp) {
+                    var publicKey = openpgp.key.readArmored(key.join("\n"));
+                    var cardData = JSON.stringify(creditCard);
+                    var encrypted = openpgp.encryptMessage(publicKey.keys, cardData);
+                    encrypted = encrypted.trim();
+                    console.log("credit card data", cardData);
+                    console.log("encrypted credit card data", encrypted);
+
+                    creditCardService.update({
+                        clientId: session.client.id, creditCardId: creditCard.id
+                    }, {
+                        encrypted: encrypted
+                    }).$promise.then(function (cc) {
+                        $log.debug("CreditCards(): saveCreditCard(): saved credit card");
+
+                        // update the creditCard in the client data
+                        for (var i=0; i < session.client.creditCards.length; i++) {
+                            if (session.client.creditCards[i].id == cc.id) {
+                                $log.debug("CreditCards(): removeCreditCard(): updating credit card in browser session");
+                                session.client.creditCards[i] = cc;
+                                break;
+                            }
+                        }
+
+                        $log.debug("creditCardService(): saveCreditCard(): saved creditCard from client creditCards", session.client.creditCards);
+                        d.resolve(cc);
+
+                    }, function (response) {
+                        $log.error("creditCardService(): saveCreditCard(): failed to saved creditCard from client creditCards", response.data);
+                        d.reject('Failed to save creditCard');
+                    });
+                });
+            }, function(error) {
+                $log.error("creditCardService(): saveCreditCard(): failed to saved creditCard from client creditCards", error);
+                d.reject('Failed to save creditCard');
             });
 
             return d.promise;

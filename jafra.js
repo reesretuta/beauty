@@ -1238,9 +1238,13 @@ function getCreditCards(clientId) {
         if (error || response.statusCode != 200) {
             console.error("getCreditCards(): error", error, response ? response.statusCode: null, body);
             deferred.reject({error: error, response: response, body: body});
+            return;
         }
         //console.log("getCreditCards(): success", body);
-        deferred.resolve({response: response, body: body});
+        deferred.resolve({
+            status: response.statusCode,
+            result: body
+        });
     });
 
     return deferred.promise;
@@ -1391,7 +1395,7 @@ function updateCreditCard(clientId, creditCardId, data) {
             return;
         }
 
-        if (body == null || body.creditCardId == null) {
+        if (body == null || body.id == null) {
             console.log("updateCreditCard(): invalid return data", body, typeof body, "creditCardId", body.creditCardId);
             deferred.reject({
                 status: 500,
@@ -1406,8 +1410,8 @@ function updateCreditCard(clientId, creditCardId, data) {
 
         // we should get creditCardId back
         deferred.resolve({
-            status: 204,
-            result: body.creditCardId
+            status: 200,
+            result: body
         });
     });
 
