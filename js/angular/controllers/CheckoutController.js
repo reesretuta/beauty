@@ -1589,12 +1589,12 @@ angular.module('app.controllers.checkout')
                 $log.debug("CheckoutController(): processOrder(): creating order", order);
 
                 if (!debug) {
-                    Order.create(order).then(function(orderId) {
-                        $log.debug("CheckoutController(): loginOrCreateUser(): created order, moving to next step", orderId);
+                    Order.create(order).then(function(result) {
+                        $log.debug("CheckoutController(): loginOrCreateUser(): created order, moving to next step", result);
 
                         // jump to Shipping
                         $scope.confirmation = {
-                            orderId: orderId,
+                            orderId: result.orderId,
                             consultantId: consultantId
                         };
 
