@@ -559,6 +559,10 @@ router.route('/session')
             req.session.checkout = {};
             updated = true;
         }
+        if (req.session.source == null) {
+            req.session.source = "web";
+            updated = true;
+        }
 
         if (updated) {
             req.session.save(function(err) {
