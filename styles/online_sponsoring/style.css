@@ -286,6 +286,17 @@ border: 2px solid #451364;
 background: url(/img/worldmap.png);
 }
 
+.freedom_flexibility_description{
+  color: #787878;
+}
+
+.freedom_flexibility_description b{
+  color: #000000;
+}
+
+section#freedom_flexibility{
+  padding: 15px;
+}
 section#why_jafra_products {
   background: #e0dbcf;
 }
