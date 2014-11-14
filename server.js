@@ -528,13 +528,16 @@ router.route('/authenticate')// authenticate a user (accessed at POST http://loc
 router.route('/logout')
     .post(function (req, res) {
         console.log("logout", req.session);
-        req.session.destroy(function() {
-            console.log('Session deleted');
+        req.session.destroy(function(err) {
+            if (err) {
+                console.log('failed to delete session', error);
+                res.status(500);
+                res.end();
+                return;
+            }
+            console.log('session deleted');
             res.status(200);
-            res.end();
-        }, function(error) {
-            console.log('failed to delete session', error);
-            res.status(500);
+            res.json(req.session);
             res.end();
         });
     });
