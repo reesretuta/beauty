@@ -1,0 +1,67 @@
+<div class="col-lg-offset-1 col-lg-10">
+  <a href="" class="pull-right print-link" onClick="printDiv('final');"><i class="fa fa-print"></i>
+    Print this page
+  </a>
+
+  <h1>Order Confirmation
+        <span class="store-heading-description">
+          You will receive a confirmation email for this order.
+        </span>
+  </h1>
+
+  <h2 class="">Order Number: <label style="color:black;">{{confirmation.orderId}}</label></h2>
+
+  <form class="form order-details" role="form">
+    <div class="form-group">
+      <table class="table">
+        <thead>
+        <tr>
+          <th>Qty</th>
+          <th>Description</th>
+          <th align="right">Price</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="item in cart">
+          <td>{{item.quantity}}</td>
+          <td>
+            <p class="confirmation-description">
+              <span ng-bind-html="session.language=='en_US' ? item.product.name : item.product.name_es_US | unsafe"></span>
+            </p>
+          </td>
+          <td align="right">
+              <span ng-repeat="detailprice in item.product.currentPrice">
+                <span ng-if="detailprice.typeId==2" class="item-price-sale">
+                  {{detailprice.price | currency}}
+                </span>
+                <span ng-if="detailprice.typeId==1" class="item-price-strike">
+                  {{detailprice.price | currency}}
+                </span>
+              </span>
+              <span ng-if="item.product.currentPrice.price">
+                <span class="item-price">
+                  {{item.product.currentPrice.price | currency}}
+                </span>
+              </span>
+          </td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+          <td colspan="3">
+            <p>Subtotal: {{salesTaxInfo.SubTotal | currency}}</p>
+            <p>Shipping: {{salesTaxInfo.SH | currency}}</p>
+            <p>Tax: {{salesTaxInfo.TaxRate}}%</p>
+            <p class="lead"><b>Total Charges: {{salesTaxInfo.Total | currency}}</b></p>
+          </td>
+        </tr>
+        </tfoot>
+      </table>
+
+    </div>
+
+  </form>
+  <h2 class="">How to track your order</h2>
+  <hr>
+  <p>Information will be sent after your order has been shipped.</p>
+</div>

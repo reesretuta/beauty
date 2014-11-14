@@ -178,7 +178,9 @@ angular.module('app.controllers.checkout')
 
                 populateDebugData();
 
-                WizardHandler.wizard('checkoutWizard').goTo(urlStep);
+                $timeout(function() {
+                    WizardHandler.wizard('checkoutWizard').goTo(urlStep);
+                }, 0);
                 return;
             }
 
@@ -1588,7 +1590,7 @@ angular.module('app.controllers.checkout')
 
                 if (!debug) {
                     Order.create(order).then(function(orderId) {
-                        $log.debug("CheckoutController(): loginOrCreateUser(): created consultant, moving to next step", data);
+                        $log.debug("CheckoutController(): loginOrCreateUser(): created order, moving to next step", orderId);
 
                         // jump to Shipping
                         $scope.confirmation = {
@@ -2083,6 +2085,7 @@ angular.module('app.controllers.checkout')
                     components: []
                 }).then(function(cart) {
                     $log.debug("CheckoutController(): populateDebugData(): online sponsoring SKU loaded & added to cart", cart);
+                    $scope.cart = cart;
                 }, function(error) {
                     $log.error("CheckoutController(): populateDebugData(): failed to update cart");
                 });

@@ -1,5 +1,6 @@
 <div class="col-sm-12">
 
-  <div ng-if="session.language" ng-include="'/partials/finish-'+session.language+'.html'"></div>
+  <div ng-if="session.language && isOnlineSponsoring" ng-include="'/partials/checkout/finish-join-'+session.language+'.html'"></div>
+  <div ng-if="session.language && !isOnlineSponsoring" ng-include="'/partials/checkout/finish-shop-'+session.language+'.html'"></div>
 
 </div><!--/span-->
