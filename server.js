@@ -1210,6 +1210,23 @@ app.get('/js/pgp_key.js', function(req, res) {
     }
 });
 
+// serve up proper PGP dynamically for dev/prod
+app.get('/js/debug.js', function(req, res) {
+    try {
+        res.contentType("text/javascript");
+        if (env === 'test' || env === 'development') {
+            res.send("DEBUG=true;");
+        } else {
+            res.send("DEBUG=false;");
+        }
+        res.end();
+    } catch (ex) {
+        console.error("Failed to open debug script", ex);
+        res.status(404);
+        res.end();
+    }
+});
+
 // Web application
 app.use('/img', express.static(basepath + '/img'));
 app.use('/video', express.static(basepath + '/video'));

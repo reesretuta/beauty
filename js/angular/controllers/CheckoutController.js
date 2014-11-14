@@ -195,7 +195,7 @@ angular.module('app.controllers.checkout')
                 if (S(sku).isEmpty()) {
                     if ($scope.isOnlineSponsoring) {
                         $log.debug("CheckoutController(): no SKU, redirecting back to join page");
-                        $location.path(JOIN_BASE_URL).search('');
+                        $scope.alert("There was an error selecting a starter kit");
                     }
                 }
 
@@ -216,8 +216,7 @@ angular.module('app.controllers.checkout')
                         }
                     }
                 }, function() {
-                    $log.error("CheckoutController(): online sponsoring: failed to select product, redirecting user");
-                    $location.path($scope.isOnlineSponsoring ? JOIN_BASE_URL : STORE_BASE_URL).search('');
+                    $log.error("CheckoutController(): online sponsoring: failed to select product");
                 });
 
                 $scope.$watch(Cart.getFirstProductSku(), function(newVal, oldVal) {
@@ -234,7 +233,7 @@ angular.module('app.controllers.checkout')
                     return;
                 } else if (sku == null) {
                     $log.error("CheckoutController(): online sponsoring: failed to load sku for online sponsoring");
-                    $location.path(JOIN_BASE_URL).search('');
+                    $scope.alert("There was an error selecting a starter kit");
                     return;
                 } else {
                     if (WizardHandler.wizard('checkoutWizard') != null) {
@@ -256,7 +255,7 @@ angular.module('app.controllers.checkout')
                 // check for items in the cart, if there are none redirect
                 if (session.cart == null || session.cart.length == 0) {
                     $log.debug("CheckoutController(): no items in cart, redirecting");
-                    $location.path($scope.isOnlineSponsoring ? JOIN_BASE_URL : STORE_BASE_URL).search('');
+                    $scope.alert("No items in cart, redirecting");
                     return;
                 }
 
@@ -356,11 +355,7 @@ angular.module('app.controllers.checkout')
                         $scope.orderError = "Failed to add product to cart";
                         $scope.salesTaxInfo = null;
 
-                        if ($scope.isOnlineSponsoring) {
-                            $location.path(JOIN_BASE_URL).search('');
-                        } else {
-                            $location.path(STORE_BASE_URL).search('');
-                        }
+                        $scope.alert("ERR101: Error loading products in cart");
                         d.reject(error);
                     });
                 }, function(error) {
@@ -368,11 +363,7 @@ angular.module('app.controllers.checkout')
                     $scope.orderError = "Failed to clear cart";
                     $scope.salesTaxInfo = null;
 
-                    if ($scope.isOnlineSponsoring) {
-                        $location.path(JOIN_BASE_URL).search('');
-                    } else {
-                        $location.path(STORE_BASE_URL).search('');
-                    }
+                    $scope.alert("ERR102: Error loading products in cart");
                     d.reject(error);
                 });
             }, function(error) {
@@ -380,11 +371,7 @@ angular.module('app.controllers.checkout')
                 $scope.orderError = "Failed to load product";
                 $scope.salesTaxInfo = null;
 
-                if ($scope.isOnlineSponsoring) {
-                    $location.path(JOIN_BASE_URL).search('');
-                } else {
-                    $location.path(STORE_BASE_URL).search('');
-                }
+                $scope.alert("ERR103: Error loading products in cart");
                 d.reject(error);
             });
 
@@ -410,7 +397,7 @@ angular.module('app.controllers.checkout')
                     // redirect if cart is empty
                     if (cart == null || cart.length == 0) {
                         $log.debug("CheckoutController(): loadCheckout(): no items, redirecting");
-                        $location.path($scope.isOnlineSponsoring ? JOIN_BASE_URL : STORE_BASE_URL).search('');
+                        $scope.alert("Failed to load cart for checkout");
                         return;
                     }
 
@@ -1052,7 +1039,7 @@ angular.module('app.controllers.checkout')
         }
 
         $scope.confirmAlert = function(message) {
-            var confirmAction = confirm(message);   
+            var confirmAction = confirm(message);
 
             if (confirmAction && $scope.isOnlineSponsoring) {
                 $log.debug("CheckoutController(): confirmAlert(): redirecting back to join page");
@@ -1060,6 +1047,19 @@ angular.module('app.controllers.checkout')
             }
             else if (confirmAction && !$scope.isOnlineSponsoring) {
                 $log.debug("CheckoutController(): confirmAlert(): redirecting back to store page");
+                $location.path(STORE_BASE_URL).search('');
+            }
+        }
+
+        $scope.alert = function(message) {
+            alert(message);
+
+            if ($scope.isOnlineSponsoring) {
+                $log.debug("CheckoutController(): alert(): redirecting back to join page");
+                $location.path(JOIN_BASE_URL).search('');
+            }
+            else if (!$scope.isOnlineSponsoring) {
+                $log.debug("CheckoutController(): alert(): redirecting back to store page");
                 $location.path(STORE_BASE_URL).search('');
             }
         }
@@ -1180,6 +1180,30 @@ angular.module('app.controllers.checkout')
                     });
                 }
             }
+        }
+
+        $scope.removePaymentMethod = function(creditCardId) {
+            var d = $q.defer();
+
+            $log.debug('CheckoutController(): removePaymentMethod(): cc data', addressId);
+
+            CreditCards.remove(creditCardId).then(function() {
+                $log.debug("CheckoutController(): removePaymentMethod(): cc removed", creditCardId);
+                if ($scope.profile.shipping != null && $scope.profile.shipping.id == addressId) {
+                    $scope.profile.shipping = null;
+                }
+                if ($scope.profile.billing != null && $scope.profile.billing.id == addressId) {
+                    $scope.profile.billing = null;
+                }
+
+                d.resolve();
+                $scope.checkoutUpdated();
+            }, function(err) {
+                $log.error("CheckoutController(): removePaymentMethod()", err);
+                d.reject(err);
+            });
+
+            return d.promise;
         }
 
         // FIXME - only supports Online Sponsoring currently
