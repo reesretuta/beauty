@@ -1182,18 +1182,16 @@ angular.module('app.controllers.checkout')
             }
         }
 
-        $scope.removePaymentMethod = function(creditCardId) {
+        $scope.removeCreditCard = function(creditCardId) {
             var d = $q.defer();
 
-            $log.debug('CheckoutController(): removePaymentMethod(): cc data', addressId);
+            $log.debug('CheckoutController(): removePaymentMethod(): cc data', creditCardId);
 
-            CreditCards.remove(creditCardId).then(function() {
+            CreditCards.removeCreditCard(creditCardId).then(function() {
                 $log.debug("CheckoutController(): removePaymentMethod(): cc removed", creditCardId);
-                if ($scope.profile.shipping != null && $scope.profile.shipping.id == addressId) {
-                    $scope.profile.shipping = null;
-                }
-                if ($scope.profile.billing != null && $scope.profile.billing.id == addressId) {
-                    $scope.profile.billing = null;
+
+                if ($scope.profile.card && $scope.profile.card.id == creditCardId) {
+                    $scope.profile.card = {};
                 }
 
                 d.resolve();

@@ -1254,7 +1254,7 @@ function getCreditCard(clientId, creditCardId) {
         url: GET_CREDIT_CARD_URL,
         qs: {
             clientId: clientId,
-            creditCardId: creditCardId
+            cardId: creditCardId
         },
         headers: {
             'Accept': 'application/json, text/json',
@@ -1352,7 +1352,7 @@ function updateCreditCard(clientId, creditCardId, data) {
         url: UPDATE_CREDIT_CARD_URL,
         qs: {
             clientId: clientId,
-            creditCardId: creditCardId
+            cardId: creditCardId
         },
         form: {
             "valToDecrypt": data
@@ -1422,7 +1422,7 @@ function deleteCreditCard(clientId, creditCardId) {
         url: DELETE_CREDIT_CARD_URL,
         qs: {
             clientId: clientId,
-            creditCardId: creditCardId
+            cardId: creditCardId
         },
         headers: {
             'Accept': 'application/json, text/json',

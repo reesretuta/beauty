@@ -907,7 +907,7 @@ router.route('/clients/:client_id/addresses/:address_id')// get a client address
             // remove the address from the req.session data
             for (var i=0; i < req.session.client.addresses.length; i++) {
                 if (req.session.client.addresses[i].id == addressId) {
-                    req.session.client.addresses = req.session.client.addresses.splice(i, 1);
+                    req.session.client.addresses.splice(i, 1);
                     break;
                 }
             }
@@ -1036,15 +1036,31 @@ router.route('/clients/:client_id/creditCards/:creditCardId')// get a client cre
         console.log("got id, cc", clientId, creditCardId);
 
         jafraClient.deleteCreditCard(clientId, creditCardId).then(function(r) {
-            console.error("deleted credit card", r.status, r.result);
+            console.log("deleted credit card", r.status, r.result);
 
-            // remove this CC from the session
-            //req.session.client.creditCards.push(creditCard);
+            // remove the cc from the req.session data
+            for (var i=0; i < req.session.client.creditCards.length; i++) {
+                if (req.session.client.creditCards[i].id == creditCardId) {
+                    req.session.client.creditCards.splice(i, 1);
+                    console.log("removing deleted credit card from session");
+                    break;
+                }
+            }
 
             res.json(r.status);
             res.json(r.result);
         }, function(r) {
             console.error("failed to delete cc", r.status, r.result);
+
+            // remove the cc from the req.session data
+            for (var i=0; i < req.session.client.creditCards.length; i++) {
+                if (req.session.client.creditCards[i].id == creditCardId) {
+                    req.session.client.creditCards.splice(i, 1);
+                    console.log("removing deleted credit card from session");
+                    break;
+                }
+            }
+
             res.status(r.status);
             res.json(r.result);
         });

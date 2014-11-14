@@ -1121,19 +1121,15 @@ angular.module('app.services', ['ngResource'])
 
             Session.get().then(function(session) {
                 creditCardService.remove({clientId: session.client.id, creditCardId: creditCardId}).$promise.then(function(response) {
+                    $log.debug("CreditCards(): removeCreditCard(): removed credit card");
+
                     // remove the creditCard from the client data
                     for (var i=0; i < session.client.creditCards.length; i++) {
                         if (session.client.creditCards[i].id == creditCardId) {
+                            $log.debug("CreditCards(): removeCreditCard(): removing credit card from browser session");
                             session.client.creditCards.splice(i, 1);
                             break;
                         }
-                    }
-
-                    if (session.checkout && session.checkout.shipping && session.checkout.shipping.id == creditCardId) {
-                        session.checkout.shipping = null;
-                    }
-                    if (session.checkout && session.checkout.billing && session.checkout.billing.id == creditCardId) {
-                        session.checkout.billing = null;
                     }
 
                     $log.debug("creditCardService(): removeCreditCard(): removed creditCard from client creditCards", session.client.creditCards);
