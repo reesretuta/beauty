@@ -8,23 +8,19 @@
   </div>
 
   <div id="final" class="col-lg-offset-1 col-lg-10">
-    <div class="row text-center">
-      <div class="col-md-offset-2 col-md-8">
-        <h3 class="">Your Consultant I.D. #</h3>
-        <h3 class="h3"><label style="color:black;">{{confirmation.consultantId}}</label></h3>
+    <div class="row text-left">
+      <div class="col-md-8">
+        <h3 class="color-red">Your Consultant I.D. # is: <label class="color-purple">{{confirmation.consultantId}}</label></h3>
+        <p>username: <b ng-bind="profile.loginEmail"></b></p>
+        <p>password: <b>(last 4 digits of SSN)</b></p>
         <p ng-if="confirmation.sponsor">Your sponsor is: #{{confirmation.sponsor.id}} <b>{{confirmation.sponsor.firstName}} {{confirmation.sponsor.lastName}}</b></p>
         <p ng-if="!confirmation.sponsor">A Sponsor will be assigned by JAFRA within the next 1-3 days.</p>
       </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-offset-4 col-md-4">
+      <div class="col-md-4">
         <div class="thanks-well text-center">
-          <p class="h4"><a href="http://jafrabiz.com" target="_blank"><b><i class="fa fa-external-link"></i> jafrabiz.com</b></a></p>
-          <small>username:</small>
-          <p><b ng-bind="profile.loginEmail"></b></p>
-          <small>password:</small>
-          <p><b>{{password}}</b></p>
+          <p>JAFRA Business Portal</p>
+          <p class="h4">jafrabiz</p>
+          <a class="btn btn-primary HelveticaNeueLTStd-BdCn btn-med" role="button" href="http://jafrabiz.com" data-toggle="modal" data-target=".bs-example-modal-lg">SIGN IN</a>
         </div>
       </div>
     </div>
