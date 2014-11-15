@@ -9,22 +9,20 @@
     </div>
     <div class="col-md-4 text-right print-link">
       <a href="" onClick="printDiv('final');"><i class="fa fa-print"></i> Print this page</a>
-      <p ng-if="confirmation.sponsor">Your sponsor is:<br />#{{confirmation.sponsor.id}} <b>{{confirmation.sponsor.firstName}} {{confirmation.sponsor.lastName}}</b></p>
-      <p ng-if="!confirmation.sponsor">A Sponsor will be assigned by JAFRA within the next 1-3 days.</p>
     </div>
   </div>
   <hr>
   <div class="row">
     <div class="col-md-8 text-left">
       <h3 class="color-red">Your Consultant I.D. # is: <label class="color-purple HelveticaNeueLTStd-BdCn">{{confirmation.consultantId}}</label></h3>
+      <p>business portal: <a class="biggify color-red HelveticaNeueLTStd-BdCn">jafrabiz.com</a></p>
       <p>username: <b ng-bind="profile.loginEmail"></b></p>
       <p>password: (last 4 digits of SSN)</p>
     </div>
     <div class="col-md-4">
       <div class="jafrabiz-well text-center">
-        <p>JAFRA Business Portal</p>
-        <p class="biggify HelveticaNeueLTStd-BdCn">jafrabiz</p>
-        <a class="btn btn-primary HelveticaNeueLTStd-BdCn btn-med" role="button" href="http://jafrabiz.com" data-toggle="modal" data-target=".bs-example-modal-lg">SIGN IN</a>
+        <p ng-if="confirmation.sponsor">Your JAFRA Sponsor is:<br />#{{confirmation.sponsor.id}} <b class="biggify color-purple HelveticaNeueLTStd-BdCn">{{confirmation.sponsor.firstName}} {{confirmation.sponsor.lastName}}</b></p>
+        <p ng-if="!confirmation.sponsor">A Sponsor will be assigned by JAFRA within the next 1-3 days.</p>
       </div>
     </div>
   </div>
@@ -97,7 +95,7 @@
       <div class="text-center">
         <h3>2. Grow Your Business</h3>
         <p>Go to <a href="http://jafrabiz.com" target="_blank">jafrabiz.com</a> where you can place orders, make payments, view reports, monitor activity and more!</p>
-        <p>Visit the Consultant Connection on <a href="http://jafrabiz.com" target="_blank">jafrabiz.com</a> to access all the sales and training tools you'll need, as well as news and important updates!</p>
+        <p>Visit the <b>Consultant Connection</b> on <a href="http://jafrabiz.com" target="_blank">jafrabiz.com</a> to access all the sales and training tools you'll need, as well as news and important updates!</p>
         <a class="btn btn-primary HelveticaNeueLTStd-BdCn btn-med" role="button" href="http://jafrabiz.com">GO TO JAFRABIZ.COM</a>
       </div>
     </div>
@@ -105,7 +103,7 @@
       <div class="text-center">
         <h3>3. Get Help</h3>
         <p>Call your Sponsor and Leader at any time or get support from our Consultant Relations Team (CRT)</p>
-        <p><a href="tel:1800852372" class="biggify color-red HelveticaNeueLTStd-BdCn"><i class="fa fa-phone"></i> 1-800-852-372</a></p>
+        <p><a href="tel:1800852372" class="biggify color-red HelveticaNeueLTStd-BdCn"><i class="fa fa-phone"></i> 1-800-852-372???</a></p>
         <p>or</p>
         <p><a href="mailto:jafracares@jafra.com" class="biggify color-red HelveticaNeueLTStd-BdCn"><i class="fa fa-envelope-o"></i> jafracares@jafra.com</a></p>
       </div>
@@ -115,26 +113,28 @@
   <div class="row">
     <div class="col-md-5 col-md-offset-1">
       <div class="text-left">
-        <img src="/img/november-brochure.jpg" class="pull-left" style="padding: 10px;" width="130px"/>
-        <h3>Virtual Brochures</h3>
-        <p>A digital version of our seasonal brochures is now available</p>
-        <a class="btn btn-primary HelveticaNeueLTStd-BdCn btn-med" role="button" href="">OPEN NOW</a>
+        <img src="/img/november-brochure.jpg" class="pull-left" style="padding: 10px;" width="135px"/>
+        <h3>Seasonal Brochures</h3>
+        <p>A digital version of our seasonal brochures is new available</p>
+        <a class="btn btn-primary HelveticaNeueLTStd-BdCn btn-med" role="button" href="">VIEW BROCHURE</a>
       </div>
     </div>
     <div class="col-md-5 col-md-offset-1">
       <div class="text-left">
-        <img src="/img/jafrausaonline-brochure.png" class="pull-left" style="padding: 10px;" width="130px"/>
+        <img src="/img/productcatalog-brochure.jpg" class="pull-left" style="padding: 10px;" width="135px"/>
         <h3>JAFRA USA Online</h3>
         <p>More sales tools including our product catalog online!</p>
-        <a class="btn btn-primary HelveticaNeueLTStd-BdCn btn-med" role="button" href="">VISIT WEBSITE</a>
+        <a class="btn btn-primary HelveticaNeueLTStd-BdCn btn-med" role="button" href="">VIEW CATALOG<a>
       </div>
     </div>
   </div>
   <hr>
-  <a class="pull-right" href="" onclick="printDiv('agreement-content');"><i class="fa fa-print"></i> &nbsp;Print</a>
-  <h4 id="myModalLabel" class="modal-title text-center"><span ng-bind-html="'CONSULTANT-AGREEMENT-TITLE' | translate | unsafe"></span></h4>
-  <div class="agreement-content" id="agreement-content">
-      <!--consultant agreement goes here-->
-      <div ng-if="session.language" ng-include="'/partials/consultant-agreement-'+session.language+'.html'"></div>
+  <div class="row">
+    <a class="pull-right" href="" onclick="printDiv('agreement-content');"><i class="fa fa-print"></i> &nbsp;Print</a>
+    <h4 id="myModalLabel" class="modal-title text-center"><span ng-bind-html="'CONSULTANT-AGREEMENT-TITLE' | translate | unsafe"></span></h4>
+    <div class="agreement-content" id="agreement-content">
+        <!--consultant agreement goes here-->
+        <div ng-if="session.language" ng-include="'/partials/consultant-agreement-'+session.language+'.html'"></div>
+    </div>
   </div>
 </div>
