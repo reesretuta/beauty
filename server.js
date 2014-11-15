@@ -179,10 +179,21 @@ function getCategoryAndChildren(category) {
 router.route('/categories')// get all the categories
     .get(function (req, res) {
         console.log("getting category list");
-        models.Category.find({parent: { $exists: false }, onHold: false, showInMenu: true }).sort('rank').limit(100)
+        var now = new Date();
+
+        models.Category.find({$and:[
+            {parent: { $exists: false }, onHold: false, showInMenu: true},
+            {$or: [{"startDate":{$lte: now}}, {startDate: {$exists: false}}]},
+            {$or: [{"endDate":{$gte: now}}, {endDate: {$exists: false}}]}
+        ]})
+        .sort('rank').limit(100)
         .populate({
             path: 'children',
-            match: {onHold: false, showInMenu: true}
+            match: { $and: [
+                {onHold: false, showInMenu: true},
+                {$or: [{"startDate":{$lte: now}}, {startDate: {$exists: false}}]},
+                {$or: [{"endDate":{$gte: now}}, {endDate: {$exists: false}}]}
+            ]}
         }).exec(function (err, categories) {
             if (err) {
                 res.send(err);
@@ -191,7 +202,11 @@ router.route('/categories')// get all the categories
             var opts = {
                 path: 'children.children',
                 model: 'Category',
-                match: { onHold: false, showInMenu: true }
+                match: { $and: [
+                    {onHold: false, showInMenu: true},
+                    {$or: [{"startDate":{$lte: now}}, {startDate: {$exists: false}}]},
+                    {$or: [{"endDate":{$gte: now}}, {endDate: {$exists: false}}]}
+                ]}
             }
 
             // populate all levels
@@ -199,7 +214,11 @@ router.route('/categories')// get all the categories
                 opts = {
                     path: 'children.children.children',
                     model: 'Category',
-                    match: { onHold: false, showInMenu: true }
+                    match: { $and: [
+                        {onHold: false, showInMenu: true},
+                        {$or: [{"startDate":{$lte: now}}, {startDate: {$exists: false}}]},
+                        {$or: [{"endDate":{$gte: now}}, {endDate: {$exists: false}}]}
+                    ]}
                 }
 
                 console.log("returning", categories.length, "categories");
@@ -263,14 +282,20 @@ router.route('/products')
                 .and([
                     {masterStatus: "A", onHold: false, searchable: true},
                     {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
-                    {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
+                    {$or: [
+                        {$and: [{type: "group"}, {prices: {$exists: false}}]},
+                        {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
+                    ]}
                 ]).sort('name').limit(20).populate({
                     path: 'upsellItems.product youMayAlsoLike.product',
                     model: 'Product',
                     match: { $and: [
                         {masterStatus: "A", onHold: false},
                         {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
-                        {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
+                        {$or: [
+                            {$and: [{type: "group"}, {prices: {$exists: false}}]},
+                            {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
+                        ]}
                     ]}
                 }).populate({
                     path: 'contains.product',
@@ -302,7 +327,10 @@ router.route('/products')
                 $and: [
                     {categories: {$in: categoryToChildren[categoryId]}, masterStatus: "A", onHold: false},
                     {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
-                    {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
+                    {$or: [
+                        {$and: [{type: "group"}, {prices: {$exists: false}}]},
+                        {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
+                    ]}
                 ]
             }).sort('name')
             .limit(20)
@@ -312,7 +340,10 @@ router.route('/products')
                 match: { $and: [
                     {masterStatus: "A", onHold: false},
                     {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
-                    {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
+                    {$or: [
+                        {$and: [{type: "group"}, {prices: {$exists: false}}]},
+                        {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
+                    ]}
                 ]}
             }).populate({
                 path: 'contains.product',
@@ -349,7 +380,10 @@ router.route('/products')
                 $and: [
                     {_id: { $in: productIds }, masterStatus: "A", onHold: false},
                     {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
-                    {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
+                    {$or: [
+                        {$and: [{type: "group"}, {prices: {$exists: false}}]},
+                        {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
+                    ]}
                 ]
             }).sort('name').limit(20).populate({
                 path: 'upsellItems.product youMayAlsoLike.product',
@@ -357,7 +391,10 @@ router.route('/products')
                 match: { $and: [
                     {masterStatus: "A", onHold: false},
                     {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
-                    {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
+                    {$or: [
+                        {$and: [{type: "group"}, {prices: {$exists: false}}]},
+                        {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
+                    ]}
                 ]}
             }).populate({
                 path: 'contains.product',
@@ -388,7 +425,10 @@ router.route('/products')
                 $and: [
                     {masterStatus: "A", onHold: false},
                     {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
-                    {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
+                    {$or: [
+                        {$and: [{type: "group"}, {prices: {$exists: false}}]},
+                        {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
+                    ]}
                 ]
             }).sort('name').limit(20).populate({
                 path: 'upsellItems.product youMayAlsoLike.product',
@@ -396,7 +436,10 @@ router.route('/products')
                 match: { $and: [
                     {masterStatus: "A", onHold: false},
                     {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
-                    {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
+                    {$or: [
+                        {$and: [{type: "group"}, {prices: {$exists: false}}]},
+                        {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
+                    ]}
                 ]}
             }).populate({
                 path: 'contains.product',
@@ -437,7 +480,10 @@ router.route('/products/:productId')
             $and: [
                 {_id: req.params.productId, masterStatus: "A", onHold: false},
                 {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
-                {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
+                {$or: [
+                    {$and: [{type: "group"}, {prices: {$exists: false}}]},
+                    {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
+                ]}
             ]
         })
         .populate({
@@ -446,7 +492,10 @@ router.route('/products/:productId')
             match: { $and: [
                 {masterStatus: "A", onHold: false},
                 {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
-                {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
+                {$or: [
+                    {$and: [{type: "group"}, {prices: {$exists: false}}]},
+                    {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
+                ]}
             ]}
         }).populate({
             path: 'contains.product',
