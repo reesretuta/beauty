@@ -22,7 +22,9 @@ var imageSchema = Schema({
 var categorySchema = Schema({
     "_id" : Number,
     "name" : String,
+    "name_es_US" : String,
     "description" : String,
+    "description_es_US" : String,
     "rank" : Number,
     "onHold" : Boolean,
     "showInMenu" : Boolean,
@@ -165,17 +167,22 @@ var productSchema = Schema({
         "rank" : Number
     }],
     "usage" : String,
+    "usage_es_US" : String,
     "images" : [imageSchema],
     "name" : String,
+    "name_es_US" : String,
     "quantity" : String,
     "categories" : [{type: Number, ref: 'Category'}],
     "description" : String,
+    "description_es_US" : String,
     "searchable" : Boolean,
     "hazmatClass" : Number,
     "ingredients" : String,
+    "ingredients_es_US" : String,
     "masterType" : String,
     "prices" : [productPriceSchema],
     "valueMessaging" : String,
+    "valueMessaging_es_US" : String,
     "launchId" : String,
     // product, group, kit, kitGroup
     "type" : String,
@@ -204,10 +211,15 @@ var productSchema = Schema({
 productSchema.index({
     _id: "text",
     name: "text",
+    name_es_US: "text",
     description: "text",
+    description_es_US: "text",
     usage: "text",
+    usage_es_US: "text",
     ingredients: "text",
-    valueMessaging: "text"
+    ingredients_es_US: "text",
+    valueMessaging: "text",
+    valueMessaging_es_US: "text"
 });
 
 // Duplicate the ID field.

@@ -43,6 +43,7 @@ models.onReady(function() {
     var BASE_SITE_URL = process.env.BASE_SITE_URL || "https://stageadmin.jafra.com";
     var USERNAME = process.env.USERNAME || "jafra_test";
     var PASSWORD = process.env.PASSWORD || "lavisual1";
+    var LANGUAGE = process.env.LANGUAGE || options["language"] || "en_US";
 
     console.log("base url", BASE_SITE_URL);
     console.log("username", USERNAME);
@@ -68,7 +69,7 @@ models.onReady(function() {
 
     var spooky = new Spooky({
         child: {
-            transport: 'http',
+            transport: 'stdio',
             "ignore-ssl-errors": true,
             "ssl-protocol": 'tlsv1'
             //proxy: 'localhost:8889',
@@ -95,7 +96,9 @@ models.onReady(function() {
             throw e;
         }
 
+        console.log("starting spooky");
         spooky.start();
+        console.log("done starting spooky");
 
         // LOGIN
         spooky.then([{
@@ -103,7 +106,8 @@ models.onReady(function() {
             AVAILABLE_ONLY: AVAILABLE_ONLY,
             BASE_SITE_URL: BASE_SITE_URL,
             USERNAME: USERNAME,
-            PASSWORD: PASSWORD
+            PASSWORD: PASSWORD,
+            LANGUAGE: LANGUAGE
         }, function () {
             console.log("== LOGIN ==");
 
@@ -137,7 +141,7 @@ models.onReady(function() {
             });
 
             // MANAGE SKUS
-            var manage_skus_url = BASE_SITE_URL + '/csr-admin-4/productcatalog/product.listing?adminUserId=86&language=en_US';
+            var manage_skus_url = BASE_SITE_URL + '/csr-admin-4/productcatalog/product.listing?adminUserId=86&language=' + LANGUAGE;
 
             casper.thenOpen(manage_skus_url, function (response) {
                 if (response.status !== 200) {
@@ -149,12 +153,13 @@ models.onReady(function() {
             });
         }]);
 
+        // CATEGORIES
         if (!options["skipCategories"] && !options["products"]) {
-            // CATEGORIES
             spooky.then([{
                 existingProducts: existingProducts,
                 AVAILABLE_ONLY: AVAILABLE_ONLY,
-                BASE_SITE_URL: BASE_SITE_URL
+                BASE_SITE_URL: BASE_SITE_URL,
+                LANGUAGE: LANGUAGE
             }, function () {
                 console.log("== CATEGORIES ==");
 
@@ -234,7 +239,7 @@ models.onReady(function() {
                                 console.log("processing categories");
 
                                 // get all the categories
-                                categories = casper.evaluate(function () {
+                                categories = casper.evaluate(function (LANGUAGE) {
                                     /**
                                      * @param {string=} rows
                                      * @param {number=} level
@@ -277,12 +282,18 @@ models.onReady(function() {
 
                                                     category = {
                                                         _id: id,
-                                                        name: name,
                                                         rank: rank,
                                                         onHold: onHold,
                                                         showInMenu: showInMenu,
                                                         searchable: searchable
                                                     };
+
+                                                    if (LANGUAGE == "en_US") {
+                                                        category["name"]= name;
+                                                    } else {
+                                                        category["name_es_US"]= name;
+                                                    }
+
                                                     categories.push(category);
                                                     console.log(indent, "getCategories(" + level + "): category found:", name, id, rank, onHold, showInMenu, searchable);
                                                 } else if (isSubCategory && category != null) {
@@ -308,7 +319,7 @@ models.onReady(function() {
                                         }
                                     }
                                     return getCategories();
-                                });
+                                }, LANGUAGE);
 
                                 console.log("got categories");
                                 for (var i = 0; i < categories.length; i++) {
@@ -334,10 +345,13 @@ models.onReady(function() {
                             } else {
                                 console.log('Got category detail page');
 
-                                var detail = casper.evaluate(function () {
+                                var detail = casper.evaluate(function (LANGUAGE) {
                                     var detail = {};
                                     detail.startDate = new Date(moment($('input[name="category.startDate"]').val(), 'MM/DD/YYYY').unix() * 1000);
                                     detail.endDate = new Date(moment($('input[name="category.endDate"]').val(), 'MM/DD/YYYY').unix() * 1000);
+
+                                    // description
+                                    detail.description = $('textarea[name="categoryLocale.'+LANGUAGE+'.description"]').html();
 
                                     // images
                                     var images = [];
@@ -382,11 +396,17 @@ models.onReady(function() {
                                         detail.customerTypes.push("Department");
                                     }
                                     return detail;
-                                });
+                                }, LANGUAGE);
                                 category.startDate = detail.startDate;
                                 category.endDate = detail.endDate;
                                 category.images = detail.images;
                                 category.customerTypes = detail.customerTypes;
+
+                                if (LANGUAGE == "en_US") {
+                                    category.description = detail.description;
+                                } else {
+                                    category.description_es_US = detail.description;
+                                }
                             }
                         });
                     }
@@ -429,6 +449,7 @@ models.onReady(function() {
             existingProducts: existingProducts,
             AVAILABLE_ONLY: AVAILABLE_ONLY,
             BASE_SITE_URL: BASE_SITE_URL,
+            LANGUAGE: LANGUAGE,
             options: options
         }, function () {
             console.log("== PRODUCTS ==");
@@ -642,18 +663,22 @@ models.onReady(function() {
                         console.log("queueing up product for processing", JSON.stringify(item));
 
                         fetchProductDetail(productId, sku, isKit);
-                        fetchProductImages(productId, isKit);
                         fetchProductIngredients(productId, isKit);
                         fetchProductUsage(productId, isKit);
-                        fetchProductPrices(productId, isKit);
-                        fetchProductCategories(productId, isKit);
-                        fetchProductUpsellItems(productId, isKit);
-                        fetchProductYouMayAlsoLike(productId, isKit);
-                        fetchProductSharedAssets(productId, isKit);
 
-                        // only for kits
-                        if (isKit) {
-                            fetchProductComponents(productId);
+                        // we only do this for english, spanish is just for fetching the text
+                        if (LANGUAGE == "en_US") {
+                            fetchProductImages(productId, isKit);
+                            fetchProductPrices(productId, isKit);
+                            fetchProductCategories(productId, isKit);
+                            fetchProductUpsellItems(productId, isKit);
+                            fetchProductYouMayAlsoLike(productId, isKit);
+                            fetchProductSharedAssets(productId, isKit);
+
+                            // only for kits
+                            if (isKit) {
+                                fetchProductComponents(productId);
+                            }
                         }
 
                         saveProduct(productId);
@@ -696,11 +721,17 @@ models.onReady(function() {
                             console.log('Got product detail page', productId, sku, isKit);
                             casper.waitUntilVisible('input[name=formalName_en_US]', function() {
                                 console.log("DOM available");
-                                var product = casper.evaluate(function() {
+                                var product = casper.evaluate(function(LANGUAGE) {
                                     try {
                                         var product = {};
-                                        product.name = $('input[name=formalName_en_US]').val();
-                                        product.description = $('iframe[name=ext-gen49]').contents().find("body").html();
+                                        var description = $('iframe[name=ext-gen49]').contents().find("body").html();
+                                        if (LANGUAGE == "en_US") {
+                                            product.name = $('input[name=formalName_en_US]').val();
+                                            product.description = description;
+                                        } else {
+                                            product.name_es_US = $('input[name=formalName_es_US]').val();
+                                            product.description_es_US = description;
+                                        }
                                         product.quantity = parseInt($('input[name="sellingQty_en_US"]').val());
                                         if (product.quantity == null || isNaN(product.quantity)) {
                                             product.quantity = 1;
@@ -717,7 +748,7 @@ models.onReady(function() {
                                     } catch (ex) {
                                         console.error("error parsing product", JSON.stringify(ex));
                                     }
-                                });
+                                }, LANGUAGE);
                                 product.type = isKit ? "kit" : "product";
                                 product._id = sku;
 
@@ -805,14 +836,19 @@ models.onReady(function() {
                         casper.waitUntilVisible('iframe', function() {
                             var product = products[productId];
 
-                            product.ingredients = casper.evaluate(function() {
+                            var ingredients = casper.evaluate(function() {
                                 try {
                                     return $('iframe').contents().find("body").html();
                                 } catch (ex) {
                                     console.error("error while parsing product ingredients", JSON.stringify(ex));
                                 }
                             });
-                            console.log("Ingredients:", product.ingredients);
+                            if (LANGUAGE == "en_US") {
+                                product.ingredients = ingredients;
+                            } else {
+                                product.ingredients_es_US = ingredients;
+                            }
+                            console.log("Ingredients:", ingredients);
                         }, function() {
                             console.error("timed out waiting to get product ingredients");
                             //this.exit();
@@ -840,14 +876,19 @@ models.onReady(function() {
                         casper.waitUntilVisible('iframe', function() {
                             var product = products[productId];
 
-                            product.usage = casper.evaluate(function() {
+                            var usage = casper.evaluate(function() {
                                 try {
                                     return $('iframe').contents().find("body").html();
                                 } catch (ex) {
                                     console.error("error while parsing product usage", JSON.stringify(ex));
                                 }
                             });
-                            console.log("Usage:", product.usage);
+                            if (LANGUAGE == "en_US") {
+                                product.usage = usage;
+                            } else {
+                                product.usage_es_US = usage;
+                            }
+                            console.log("Usage:", usage);
                         }, function() {
                             console.error("timed out waiting to get product usage");
                             //this.exit();
@@ -1261,13 +1302,13 @@ models.onReady(function() {
             });
         }]);
 
-
         // PRODUCT GROUPS
         if (!options["skipGroups"] && !options["products"]) {
             spooky.then([{
                 existingProducts: existingProducts,
                 AVAILABLE_ONLY: AVAILABLE_ONLY,
                 BASE_SITE_URL: BASE_SITE_URL,
+                LANGUAGE: LANGUAGE,
                 options: options
             }, function () {
                 console.log("== PRODUCT GROUPS ==");
@@ -1307,76 +1348,109 @@ models.onReady(function() {
                             try {
                                 console.log('Got product group listing page', pageNum);
 
-                                var content = casper.evaluate(function () {
-                                    return document.all[0].outerHTML;
-                                });
+                                casper.waitUntilVisible('div.x-grid3-cell-inner.x-grid3-col-3', function () {
+                                    console.log("DOM available");
 
-                                console.log('Evaluating product group listing page', pageNum);
-                                var productRe = /<a href="group\.detail\.baseInfo\?groupId=([^"]+)">([^<]+)<\/a>/g;
-                                var match;
+                                    var result = casper.evaluate(function (pageNum) {
+                                        console.log('Evaluating product group listing page', pageNum);
+                                        var productRe = /<a href="group\.detail\.baseInfo\?groupId=([^"]+)">([^<]+)<\/a>/;
+                                        var match;
+                                        var productGroups = [];
 
-                                $("#grid-example .x-grid3-scroller table tbody tr").each(function (index, row) {
-                                    //console.log("processing product group row");
-                                    var productGroupId, systemRef;
-                                    var c = $(this).find("div.x-grid3-cell-inner.x-grid3-col-4").html();
+                                        $("#grid-example .x-grid3-scroller table tbody tr").each(function (index, row) {
+                                            try {
+                                                //console.log("processing product group row");
+                                                var productGroupId, systemRef;
+                                                var c = $(this).find("div.x-grid3-cell-inner.x-grid3-col-4").html();
 
-                                    var available = false;
-                                    if (c.match(/\/available.gif/)) {
-                                        //console.log("available");
-                                        available = true;
-                                    }
+                                                var available = false;
+                                                if (c.match(/\/available.gif/)) {
+                                                    console.log("available");
+                                                    available = true;
+                                                }
 
-                                    var c2 = $(this).find("div.x-grid3-col.x-grid3-cell.x-grid3-td-3").html();
-                                    if (match = productRe.exec(c2)) {
-                                        console.log("found product group page", JSON.stringify(match));
+                                                var c2 = $(this).find("div.x-grid3-cell-inner.x-grid3-col-3").html();
+                                                if (match = productRe.exec(c2)) {
+                                                    console.log("found product group page", JSON.stringify(match));
 
-                                        // load product group detail
-                                        productGroupId = match[1];
-                                        systemRef = match[2];
-                                    } else {
-                                        console.error("failed to parse product group line", c2);
-                                        return;
-                                    }
+                                                    // load product group detail
+                                                    productGroupId = match[1];
+                                                    systemRef = match[2];
+                                                    productGroups.push({
+                                                        available: available,
+                                                        id: productGroupId,
+                                                        systemRef: systemRef
+                                                    });
+                                                } else {
+                                                    console.error("failed to parse product group line", c2);
+                                                    return;
+                                                }
+                                            } catch (ex) {
+                                                console.error("error parsing product group listing item", JSON.stringify(ex));
+                                            }
+                                        });
 
-                                    if (AVAILABLE_ONLY == false || available) {
-                                        console.log("processing product group", productGroupId, systemRef);
-
-                                        try {
-                                            // NOTE: save the base level information first, so we could load any group system refs later
-                                            fetchProductGroupDetail(productGroupId, systemRef);
-                                            saveProductGroup(productGroupId);
-
-                                            fetchProductGroupImages(productGroupId);
-                                            fetchProductGroupIngredients(productGroupId);
-                                            fetchProductGroupUsage(productGroupId);
-                                            fetchProductGroupCategories(productGroupId);
-                                            fetchProductGroupUpsellItems(productGroupId);
-                                            fetchProductGroupYouMayAlsoLike(productGroupId);
-                                            fetchProductGroupSKUs(productGroupId);
-
-                                            saveProductGroup(productGroupId);
-                                        } catch (ex) {
-                                            console.error("error while processing product group", productGroupId, JSON.stringify(ex));
+                                        var hasNext = false;
+                                        if (document.all[0].outerHTML.match(/<a class="linkActive" href="javascript:pageChange\(\d+, true\)">Next &gt;&gt;<\/a>/)) {
+                                            hasNext = true;
                                         }
-                                    } else {
-                                        console.log("skipping unavailable product group", productGroupId, systemRef);
-                                        if (existingProducts[productGroupId]) {
-                                            // mark all unavailable products as unvailable
-                                            this.emit('product.markUnavailable', productGroupId);
-                                            this.emit('productGroup.skip', productGroupId);
+
+                                        console.log("returning from group listing page", "groups", productGroups.length, "hasNext", hasNext);
+                                        return {
+                                            hasNext: hasNext,
+                                            productGroups: productGroups
+                                        };
+                                    }, pageNum);
+
+                                    var productGroups = result.productGroups;
+                                    var hasNext = result.hasNext;
+
+                                    for (var i=0; i < productGroups.length; i++) {
+                                        var productGroup = productGroups[i];
+
+                                        if (AVAILABLE_ONLY == false || productGroup.available) {
+                                            console.log("processing product group", productGroup.id, productGroup.systemRef);
+
+                                            try {
+                                                // NOTE: save the base level information first, so we could load any group system refs later
+                                                fetchProductGroupDetail(productGroup.id, productGroup.systemRef);
+                                                saveProductGroup(productGroup.id);
+
+                                                fetchProductGroupIngredients(productGroup.id);
+                                                fetchProductGroupUsage(productGroup.id);
+
+                                                if (LANGUAGE == "en_US") {
+                                                    fetchProductGroupImages(productGroup.id);
+                                                    fetchProductGroupCategories(productGroup.id);
+                                                    fetchProductGroupUpsellItems(productGroup.id);
+                                                    fetchProductGroupYouMayAlsoLike(productGroup.id);
+                                                    fetchProductGroupSKUs(productGroup.id);
+                                                }
+
+                                                saveProductGroup(productGroup.id);
+                                            } catch (ex) {
+                                                console.error("error while processing product group", productGroup.id, JSON.stringify(ex));
+                                            }
+                                        } else {
+                                            console.log("skipping unproductGroup.available product group", productGroup.id, productGroup.systemRef);
+                                            if (existingProducts[productGroup.id]) {
+                                                // mark all unproductGroup.available products as unvailable
+                                                this.emit('product.markUnproductGroup.available', productGroup.id);
+                                                this.emit('productGroup.skip', productGroup.id);
+                                            }
                                         }
                                     }
-                                });
 
-                                // continue if we have more pages, else we're done
-                                if (content.match(/<a class="linkActive" href="javascript:pageChange\(\d+, true\)">Next &gt;&gt;<\/a>/)) {
-                                    // uncomment to enable multiple product group page scraping
-                                    // we have another page
-                                    console.log("have more group listings");
-                                    getProductGroupListing(pageNum + 1);
-                                } else {
-                                    console.log("no more group listings");
-                                }
+                                    // continue if we have more pages, else we're done
+                                    if (hasNext) {
+                                        // uncomment to enable multiple product group page scraping
+                                        // we have another page
+                                        console.log("have more group listings");
+                                        getProductGroupListing(pageNum + 1);
+                                    } else {
+                                        console.log("no more group listings");
+                                    }
+                                });
                             } catch (ex) {
                                 console.error("error while parsing product group listing page", JSON.stringify(ex));
                             }
@@ -1414,12 +1488,19 @@ models.onReady(function() {
                             console.log('Got product group detail page', productGroupId);
                             casper.waitUntilVisible('input[name="groupLocale.name"]', function () {
                                 console.log("DOM available");
-                                var product = casper.evaluate(function () {
+                                var product = casper.evaluate(function (LANGUAGE) {
                                     try {
                                         var product = {};
                                         product.type = "group";
-                                        product.name = $('input[name="groupLocale.name"]').val();
-                                        product.description = $('iframe').contents().find("body").html();
+                                        var name = $('input[name="groupLocale.name"]').val();
+                                        var description = $('iframe').contents().find("body").html();
+                                        if (LANGUAGE == "en_US") {
+                                            product.description = description;
+                                            product.name = name;
+                                        } else {
+                                            product.description_es_US = description;
+                                            product.name_es_US = name;
+                                        }
                                         product.onHold = $('input[name="group.onHold"]').attr('checked') || false;
                                         product.searchable = $('input[name="group.searchable"]').attr('checked') || false;
                                         product.masterStatus = $('select[name="group.status"] > option:selected').val();
@@ -1430,7 +1511,7 @@ models.onReady(function() {
                                     } catch (ex) {
                                         console.error("error parsing product group detail", JSON.stringify(ex));
                                     }
-                                });
+                                }, LANGUAGE);
                                 // set the group systemRef as the ID
                                 product._id = systemRef;
 
@@ -1513,10 +1594,15 @@ models.onReady(function() {
                             casper.waitUntilVisible('iframe', function () {
                                 var productGroup = productGroups[productGroupId];
 
-                                productGroup.ingredients = casper.evaluate(function () {
+                                var ingredients = casper.evaluate(function () {
                                     return $('iframe').contents().find("body").html();
                                 });
-                                console.log("Product Group Ingredients:", productGroup.ingredients);
+                                if (LANGUAGE == "en_US") {
+                                    productGroup.ingredients = ingredients;
+                                } else {
+                                    productGroup.ingredients_es_US = ingredients;
+                                }
+                                console.log("Product Group Ingredients:", ingredients);
                             }, function () {
                                 console.error("timed out waiting to get product group ingredients");
                                 //this.exit();
@@ -1545,10 +1631,16 @@ models.onReady(function() {
                             casper.waitUntilVisible('iframe', function () {
                                 var productGroup = productGroups[productGroupId];
 
-                                productGroup.usage = casper.evaluate(function () {
+                                var usage = casper.evaluate(function () {
                                     return $('iframe').contents().find("body").html();
                                 });
-                                console.log("Usage:", productGroup.usage);
+
+                                if (LANGUAGE == "en_US") {
+                                    productGroup.usage = usage;
+                                } else {
+                                    productGroup.usage_es_US = usage;
+                                }
+                                console.log("Usage:", usage);
                             }, function () {
                                 console.error("timed out waiting to get product group usage");
                                 //this.exit();
