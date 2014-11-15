@@ -78,6 +78,10 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   font-weight: 400;
   color: #482365;
 }
+.biggify{
+  font-size: 18px;
+  font-weight: 400;
+}
 #content {
   background-color: #ededed;
   width: 100%;
@@ -91,7 +95,9 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   color: #333;
   white-space: nowrap;
 }
-
+.color-black{color:#000000;}
+.color-purple{color: #533A6D;}
+.color-red{color: #C83B53;}
 .footer-links{
   background-color: rgb(131,104,137);;
   padding: 2em;
@@ -157,6 +163,16 @@ border-radius: 0px;
   background:none;
   border:none;
   box-shadow:none;
+}
+
+.jafrabiz-well {min-height: 20px;
+padding: 19px;
+margin-bottom: 20px;
+background-color: #E5E2E9;
+border: 1px solid #e3e3e3;
+border-radius: 4px;
+-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
+box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
 }
 
 .thanks-well {min-height: 20px;

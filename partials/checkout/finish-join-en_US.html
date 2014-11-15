@@ -1,103 +1,68 @@
-<div class="col-lg-offset-1 col-lg-10">
-    <a href="" class="pull-right print-link" onClick="printDiv('final');"><i class="fa fa-print"></i> Print this page</a>
-    <h1>Congratulations! 
+<div id="final" class="col-lg-offset-1 col-lg-10">
+  <div class="row">
+    <div class="col-md-8 text-left">
+      <h1>Congratulations! 
         <span class="store-heading-description">
           You are now a JAFRA Consultant and on your way to living the life you imagine! 
         </span>
-    </h1>
+      </h1>
+    </div>
+    <div class="col-md-4 text-right print-link">
+      <a href="" onClick="printDiv('final');"><i class="fa fa-print"></i> Print this page</a>
+    </div>
   </div>
-
-  <div id="final" class="col-lg-offset-1 col-lg-10">
-          <div class="row text-center">
-            <div class="col-md-offset-2 col-md-8">
-    <h3 class="">Your Consultant I.D. #</h3>
-    <h3 class="h3"><label style="color:black;">{{confirmation.consultantId}}</label></h3>
-    <p ng-if="confirmation.sponsor">Your sponsor is: #{{confirmation.sponsor.id}} <b>{{confirmation.sponsor.firstName}} {{confirmation.sponsor.lastName}}</b></p>
-    <p ng-if="!confirmation.sponsor">A Sponsor will be assigned by JAFRA within the next 1-3 days.</p>
+  <hr>
+  <div class="row">
+    <div class="col-md-8 text-left">
+      <h3 class="color-red">Your Consultant I.D. # is: <label class="color-purple HelveticaNeueLTStd-BdCn">{{confirmation.consultantId}}</label></h3>
+      <p>business portal: <a class="biggify color-red HelveticaNeueLTStd-BdCn">jafrabiz.com</a></p>
+      <p>username: <b ng-bind="profile.loginEmail"></b></p>
+      <p>password: (last 4 digits of SSN)</p>
+    </div>
+    <div class="col-md-4">
+      <div class="jafrabiz-well text-center">
+        <p ng-if="confirmation.sponsor">Your JAFRA Sponsor is:<br />#{{confirmation.sponsor.id}} <b class="biggify color-purple HelveticaNeueLTStd-BdCn">{{confirmation.sponsor.firstName}} {{confirmation.sponsor.lastName}}</b></p>
+        <p ng-if="!confirmation.sponsor">A Sponsor will be assigned by JAFRA within the next 1-3 days.</p>
+      </div>
+    </div>
   </div>
-</div>
-
-          <div class="row">
-            <div class="col-md-offset-4 col-md-4">
-              <div class="thanks-well text-center">
-                <p class="h4"><a href="http://jafrabiz.com" target="_blank"><b><i class="fa fa-external-link"></i> jafrabiz.com</b></a></p>
-                <small>username:</small>
-                <p><b ng-bind="profile.loginEmail"></b></p>
-                <small>password:</small>
-                <p><b>{{password}}</b></p>
-              </div>
-            </div>
-          </div>
-    <hr>
-    <p>To get started on your new and successful career, please take the following important steps:</p>
-    <h3>1. Get paid quickly by selecting your JAFRA payment option:</h3>
-    <p>
-      • <a href="">JAFRA Debit MasterCard</a> – [links to site] – <a href="">See FAQs</a> [links to FAQ PDF]<br />
-      • <a href="">Direct Deposit</a> – [links to PDF, send to JAFRA] – <a href="">See FAQs</a> [links to FAQ PDF]<br />
-    </p>
-    <h3>2. Go to jafrabiz.com to access JAFRA’s Consultant website. Enter your Consultant ID and use the last four digits of your SSN for the password. </h3>
-    <p>
-      Then you can:<br />
-    • Place orders<br />
-    • Make payments<br />
-    • View your reports<br />
-    • Monitor your activity and more!
-    </p>
-    <h3>3. Visit Consultant Connection on jafrabiz.com to:</h3>
-    <p>
-    • Access all the sales and training tools you’ll need<br />
-    • Receive alerts and news for up dates on important JAFRA business<br />
-    </p>
-    <h3>4. Have questions or concerns? Be sure to note this valuable info on your Contact List:</h3>
-    <p>
-    • Call your Sponsor and Leader at anytime <br /> 
-    • Call CRT (Consultant Relationships Team) at 1-800-852-372 <br />
-    • Email JAFRA at <a href="mailto:jafracares@jafra.com" target="_blank">jafracares@jafra.com</a> <br /> 
-    </p>
-    <p>
-NOTE to website developers:<br />
-Provide the following links for next steps/ call to action:<br />
-	<del>a. jafrabiz.com<br />
-	b. Download Consultant Agreement</del>
-
-    </p>
-
-    <h2 class="">Confirmation Number: <label style="color:black;">{{confirmation.orderId}}</label></h2>
+  <hr>
+  <div class="row">
+    <h2 class="">Confirmation Number: <label class="color-black">{{confirmation.orderId}}</label></h2>
     <form class="form order-details" role="form">
       <div class="form-group">
         <table class="table">
           <thead>
-          <tr>
-            <th>Qty</th>
-            <th>Description</th>
-            <th align="right">Price</th>
-          </tr>
+            <tr>
+              <th>Qty</th>
+              <th>Description</th>
+              <th align="right">Price</th>
+            </tr>
           </thead>
           <tbody>
-          <tr ng-repeat="item in items">
-            <td>{{item.quantity}}</td>
-            <td>
-              <p class="confirmation-description">
-                {{item.name}}
-              </p>
-            </td>
-            <td align="right">
-              
-                            <span ng-repeat="detailprice in item.product.prices[0]">
-                              <span ng-if="detailprice.typeId==2" class="item-price-sale">
-                                {{detailprice.price | currency}}
-                              </span>
-                              <span ng-if="detailprice.typeId==1" class="item-price-strike">
-                                {{detailprice.price | currency}}
-                              </span>
-                            </span>
-                            <span ng-if="item.product.prices[0].price">
-                              <span class="item-price">
-                                {{item.product.prices[0].price | currency}}
-                              </span>
-                            </span>
-            </td>
-          </tr>
+            <tr ng-repeat="item in items">
+              <td>{{item.quantity}}</td>
+              <td>
+                <p class="confirmation-description">
+                  {{item.name}}
+                </p>
+              </td>
+              <td align="right">
+                <span ng-repeat="detailprice in item.product.prices[0]">
+                  <span ng-if="detailprice.typeId==2" class="item-price-sale">
+                    {{detailprice.price | currency}}
+                  </span>
+                  <span ng-if="detailprice.typeId==1" class="item-price-strike">
+                    {{detailprice.price | currency}}
+                  </span>
+                </span>
+                <span ng-if="item.product.prices[0].price">
+                  <span class="item-price">
+                    {{item.product.prices[0].price | currency}}
+                  </span>
+                </span>
+              </td>
+            </tr>
           </tbody>
           <tfoot>
           <tr>
@@ -111,16 +76,65 @@ Provide the following links for next steps/ call to action:<br />
           </tfoot>
         </table>
       </div>
-
     </form>
-    <h2 class="">How to track your order</h2>
-    <hr>
-    <p>Information will be sent after your order has been shipped.</p>
-    <hr>
-            <h4 id="myModalLabel" class="modal-title text-center"><span ng-bind-html="'CONSULTANT-AGREEMENT-TITLE' | translate | unsafe"></span></h4>
-            <div class="agreement-content" id="agreement-content">
-              
-                <!--consultant agreement goes here-->
-                <div ng-if="session.language" ng-include="'/partials/consultant-agreement-'+session.language+'.html'"></div>
-            </div>
   </div>
+  <hr>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="text-center">
+        <h3>1. Set up Payments</h3>
+        <p>Get paid quickly by selecting your JAFRA payment option</p>
+        <p><a href="" class="biggify color-red HelveticaNeueLTStd-BdCn"><i class="fa fa-credit-card"></i> JAFRA DEBIT MASTER CARD</a><br />
+          <a href="">Download FAQs</a></p>
+        <p>or</p>
+        <p><a href="" class="biggify color-red HelveticaNeueLTStd-BdCn"><i class="fa fa-usd"></i> DIRECT DEPOSIT</a><br />
+          <a href="">Download FAQs</a></p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="text-center">
+        <h3>2. Grow Your Business</h3>
+        <p>Go to <a href="http://jafrabiz.com" target="_blank">jafrabiz.com</a> where you can place orders, make payments, view reports, monitor activity and more!</p>
+        <p>Visit the <b>Consultant Connection</b> on <a href="http://jafrabiz.com" target="_blank">jafrabiz.com</a> to access all the sales and training tools you'll need, as well as news and important updates!</p>
+        <a class="btn btn-primary HelveticaNeueLTStd-BdCn btn-med" role="button" href="http://jafrabiz.com">GO TO JAFRABIZ.COM</a>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="text-center">
+        <h3>3. Get Help</h3>
+        <p>Call your Sponsor and Leader at any time or get support from our Consultant Relations Team (CRT)</p>
+        <p><a href="tel:1800852372" class="biggify color-red HelveticaNeueLTStd-BdCn"><i class="fa fa-phone"></i> 1-800-852-372???</a></p>
+        <p>or</p>
+        <p><a href="mailto:jafracares@jafra.com" class="biggify color-red HelveticaNeueLTStd-BdCn"><i class="fa fa-envelope-o"></i> jafracares@jafra.com</a></p>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-md-5 col-md-offset-1">
+      <div class="text-left">
+        <img src="/img/november-brochure.jpg" class="pull-left" style="padding: 10px;" width="135px"/>
+        <h3>Seasonal Brochures</h3>
+        <p>A digital version of our seasonal brochures is new available</p>
+        <a class="btn btn-primary HelveticaNeueLTStd-BdCn btn-med" role="button" href="">VIEW BROCHURE</a>
+      </div>
+    </div>
+    <div class="col-md-5 col-md-offset-1">
+      <div class="text-left">
+        <img src="/img/productcatalog-brochure.jpg" class="pull-left" style="padding: 10px;" width="135px"/>
+        <h3>JAFRA USA Online</h3>
+        <p>More sales tools including our product catalog online!</p>
+        <a class="btn btn-primary HelveticaNeueLTStd-BdCn btn-med" role="button" href="">VIEW CATALOG<a>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <a class="pull-right" href="" onclick="printDiv('agreement-content');"><i class="fa fa-print"></i> &nbsp;Print</a>
+    <h4 id="myModalLabel" class="modal-title text-center"><span ng-bind-html="'CONSULTANT-AGREEMENT-TITLE' | translate | unsafe"></span></h4>
+    <div class="agreement-content" id="agreement-content">
+        <!--consultant agreement goes here-->
+        <div ng-if="session.language" ng-include="'/partials/consultant-agreement-'+session.language+'.html'"></div>
+    </div>
+  </div>
+</div>
