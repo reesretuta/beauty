@@ -303,5 +303,6 @@
     "OS-ADDRESS_CORRECTION_TITLE":"Address Found",
     "OS-ADDRESS_CORRECTION_TITLE_DESC":"Is this address correct?",
     "CREDITCARD_EDIT_TITLE":"Edit Credit Card",
-    "CREDITCARD_EDIT_TITLE_DESC":"Make changes to this payment method"
+    "CREDITCARD_EDIT_TITLE_DESC":"Make changes to this payment method",
+    "SHIPPING-CARRIER":"Carrier"
 }

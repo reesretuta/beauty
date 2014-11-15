@@ -901,43 +901,6 @@ angular.module('app.controllers.checkout')
 
             return 0;
         }
-        
-        $scope.shippingSpeed = function() {
-            $log.debug('CheckoutController(): shippingSpeed');
-
-            var d = $modal.open({
-                backdrop: true,
-                keyboard: true, // we will handle ESC in the modal for cleanup
-                windowClass: "shippingSpeedModal",
-                templateUrl: '/partials/checkout/shipping-speed-modal.html',
-                controller: 'ShippingSpeedModalController',
-                resolve: {
-                    checkout: function() {
-                        return $scope.checkout;
-                    }
-                }
-            });
-
-            var body = $document.find('html, body');
-
-            d.result.then(function(shippingSpeed) {
-                if (shippingSpeed) {
-                    $log.debug("shipping speed selected");
-                    $scope.shippingSpeed = shippingSpeed;
-                    WizardHandler.wizard('checkoutWizard').goTo('Payment');
-
-                    $scope.checkoutUpdated();
-                } else {
-                    $log.error("shipping speed not selected!!!");
-                }
-
-                // re-enable scrolling on body
-                body.css("overflow-y", "auto");
-            });
-
-            // prevent page content from scrolling while modal is up
-            $("html, body").css("overflow-y", "hidden");
-        }
 
         $scope.validateEmailAndContinue = function(email) {
             $scope.emailError = false;

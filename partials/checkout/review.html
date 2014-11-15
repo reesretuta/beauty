@@ -168,7 +168,7 @@
         <span class="address-street">{{profile.shipping.address2}}</span>
         <span class="address-region">{{profile.shipping.city}}, {{profile.shipping.state}} {{profile.shipping.zip}}</span>
         <span class="phone-number">{{profile.shipping.phone}}</span>
-        <span ng-if="!isOnlineSponsoring">Speed: {{shippingSpeed}}</span>
+        <span ng-if="!isOnlineSponsoring"><span ng-bind-html="'SHIPPING-CARRIER' | translate | unsafe"></span>: {{salesTaxInfo.shippingCarrier}}</span>
         <div class="address-actions">
           <a href="" data-toggle="modal" data-target=".bs-example-modal-lg-shipping"><i class="fa fa-pencil-square-o"></i> Change Address</a>
         </div>
