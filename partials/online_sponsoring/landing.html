@@ -1,6 +1,6 @@
 <section id="top">
-      <!-- Main jumbotron for a primary marketing message or call to action -->
-      <div class="jumbotron">
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
         <div class="container">
           <div class="row">
             <div class="col-md-12">
@@ -22,14 +22,13 @@
           </div>
         </div>
       </div>
-    </section>
-
-    <!-- Modal box that pops up when user clicks on WatchVideo >
+    </div>
+</section><!-- Modal box that pops up when user clicks on WatchVideo >
     <div class="modal fade bs-video-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="row text-center">
-            <video class="img-responsive" controls poster="video/polina.jpg" id="ctavid">
+            <video class="img-responsive" controls poster="video/polina.jpg" id="ctavid2">
                 <source src="/video/polina.webm" type="video/webm">
                 <source src="/video/polina.mp4" type="video/mp4">
               </video>  
@@ -37,246 +36,171 @@
         </div>
       </div>
     </div-->
-      
-    <!-- Modal box that pops up when user clicks on CTA [Call To Action] -->
-    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg">
+<!-- Modal box that pops up when user clicks on CTA [Call To Action] -->
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
-        	
-          <div class="row text-center" style="padding: 1em;">
-            <div class="col-md-12">
-              <h2><span ng-bind-html="'OS-KIT-MODAL-TITLE' | translate | unsafe"></span>  <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button></h2>
-            </div>
-            <div class="col-md-6" style="border-right: 1px solid #ededed;">
-
-              
-              <h3 class="hero-header-title starter_kits-title"><span class="serif-title h1"><span ng-bind-html="'OS-KIT-PRODUCT1-TITLE1' | translate | unsafe"></span></span><br />
-                <span ng-bind-html="'OS-KIT-PRODUCT1-TITLE2' | translate | unsafe"></span>
-
-              </h3>
-
-              <h3 class="h1 starter_kits-price modal_starter_kits-price"><span ng-bind-html="'OS-KIT-PRODUCT1-PRICE' | translate | unsafe"></span></h3>
-              <p class="starter_kits-label_title"><span ng-bind-html="'OS-KIT-PRODUCT1-NAME' | translate | unsafe"></span></p>
-              <p class="starter_kits-retail_value"><span ng-bind-html="'OS-KIT-PRODUCT1-VALUE' | translate | unsafe"></span></p>
-
-              <div class="product-action">
-                <!-- Split button -->
-                <div class="btn-group">
-                  <button type="button" class="btn btn-primary btn-lg HelveticaNeueLTStd-BdCn" ng-click="join('19634')"><span ng-bind-html="'BUY-ENGLISH' | translate | unsafe"></span></button>
-                  <button type="button" class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown">
-                    <span class="caret"></span>
-                    <span class="sr-only">Toggle Dropdown</span>
-                  </button>
-
-                  <ul class="dropdown-menu kit-select" role="menu">
-                    <li><a href="#" ng-click="join('19634')"><span ng-bind-html="'BUY-ENGLISH' | translate | unsafe"></span></a></li>
-                    <li><a href="#" ng-click="join('19635')"><span ng-bind-html="'BUY-SPANISH' | translate | unsafe"></span></a></li>
-
-                  </ul>
+            <div class="row text-center" style="padding: 1em;">
+                <div class="col-md-12">
+                    <h2>
+                        <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                    </h2>
                 </div>
-              </div>
-              <p class="text-right"><a href="#royal_starter_info" data-toggle="collapse" data class="more-link collapsed"><span ng-bind-html="'KIT-DETAILS-TOGGLE' | translate | unsafe"></span></a></p>
-              <!-- collapsed section content (default collapsed) -->
-              <div id="royal_starter_info" class="collapse">
-                <hr>
-
-                <img class="img-responsive" src="/img/99_kit.jpg">
-                <div ng-if="session.language" ng-include="'/partials/product1-'+session.language+'.html'"></div>
-                  <img src="/img/99_kit_bags.jpg" class="img-responsive"/>
-                
-              </div>
-            </div>
-            <div class="col-md-6" style="border-left: 1px solid #ededed;">
-
-              <h3 class="hero-header-title starter_kits-title"><span class="serif-title h1"><span ng-bind-html="'OS-KIT-PRODUCT2-TITLE1' | translate | unsafe"></span></span><br />
-                <span ng-bind-html="'OS-KIT-PRODUCT2-TITLE2' | translate | unsafe"></span>
-
-              </h3>
-              <h3 class="h1 starter_kits-price modal_starter_kits-price"><span ng-bind-html="'OS-KIT-PRODUCT2-PRICE' | translate | unsafe"></span></h3>
-                <p class="starter_kits-label_title"><span ng-bind-html="'OS-KIT-PRODUCT2-NAME' | translate | unsafe"></span></p>
-                <p class="starter_kits-retail_value"><span ng-bind-html="'OS-KIT-PRODUCT2-VALUE' | translate | unsafe"></span></p>
-
-              <div class="product-action">
-                <!-- Split button -->
-                <div class="btn-group">
-                  <button type="button" class="btn btn-primary btn-lg HelveticaNeueLTStd-BdCn" ng-click="join('19822')"><span ng-bind-html="'BUY-ENGLISH' | translate | unsafe"></span></button>
-                  <button type="button" class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown">
-                    <span class="caret"></span>
-                    <span class="sr-only">Toggle Dropdown</span>
-                  </button>
-
-                  <ul class="dropdown-menu kit-select" role="menu">
-                    <li><a href="#" ng-click="join('19822')"><span ng-bind-html="'BUY-ENGLISH' | translate | unsafe"></span></a></li>
-                    <li><a href="#" ng-click="join('19823')"><span ng-bind-html="'BUY-SPANISH' | translate | unsafe"></span></a></li>
-
-                  </ul>
+                <div class="col-md-6" style="border-right: 1px solid #ededed;">
+                    <h3 class="hero-header-title starter_kits-title">
+                        <br>
+                    </h3>
+                    <h3 class="h1 starter_kits-price modal_starter_kits-price"></h3>
+                    <p class="starter_kits-label_title"></p>
+                    <p class="starter_kits-retail_value"></p>
+                    <div class="product-action">
+                        <!-- Split button -->
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown"><span class="sr-only">Toggle Dropdown</span></button>
+                            <ul class="dropdown-menu kit-select" role="menu">
+                                <li>
+                                    <a href="#" ng-click="join('19634')"></a>
+                                </li>
+                                <li>
+                                    <a href="#" ng-click="join('19635')"></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <p class="text-right">
+                        <a href="#royal_starter_info" data-toggle="collapse" data="" class="more-link collapsed"></a>
+                    </p><!-- collapsed section content (default collapsed) -->
+                    <div id="royal_starter_info" class="collapse">
+                        <hr>
+                        <img class="img-responsive" src="/img/99_kit.jpg">
+                        <div ng-if="session.language" ng-include="'/partials/product1-'+session.language+'.html'"></div><img src="/img/99_kit_bags.jpg" class="img-responsive">
+                    </div>
                 </div>
-              </div>
-                <p class="text-right"><a href="#skincare_starter_info" data-toggle="collapse" data class="more-link collapsed"><span ng-bind-html="'KIT-DETAILS-TOGGLE' | translate | unsafe"></span></a></p>
-              <!-- collapsed section content (default collapsed) -->
-              <div id="skincare_starter_info" class="collapse">
-                <hr>
-
-                <img class="img-responsive" src="/img/39_kit.jpg">
-                
-                  <!--<p ng-bind-html="'OS-KIT-PRODUCT2-DESCRIPTION' | translate | unsafe"></p>-->
-                  
-                  <div ng-if="session.language" ng-include="'/partials/product2-'+session.language+'.html'"></div>
-
-                  <img src="/img/39_kit_bag.jpg" class="img-responsive"/>
-                	  
-              </div>
+                <div class="col-md-6" style="border-left: 1px solid #ededed;">
+                    <h3 class="hero-header-title starter_kits-title">
+                        <br>
+                    </h3>
+                    <h3 class="h1 starter_kits-price modal_starter_kits-price"></h3>
+                    <p class="starter_kits-label_title"></p>
+                    <p class="starter_kits-retail_value"></p>
+                    <div class="product-action">
+                        <!-- Split button -->
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown"><span class="sr-only">Toggle Dropdown</span></button>
+                            <ul class="dropdown-menu kit-select" role="menu">
+                                <li>
+                                    <a href="#" ng-click="join('19822')"></a>
+                                </li>
+                                <li>
+                                    <a href="#" ng-click="join('19823')"></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <p class="text-right">
+                        <a href="#skincare_starter_info" data-toggle="collapse" data="" class="more-link collapsed"></a>
+                    </p><!-- collapsed section content (default collapsed) -->
+                    <div id="skincare_starter_info" class="collapse">
+                        <hr>
+                        <img class="img-responsive" src="/img/39_kit.jpg"> <!--<p ng-bind-html="'OS-KIT-PRODUCT2-DESCRIPTION' | translate | unsafe"></p>-->
+                        <div ng-if="session.language" ng-include="'/partials/product2-'+session.language+'.html'"></div><img src="/img/39_kit_bag.jpg" class="img-responsive">
+                    </div>
+                </div>
             </div>
-           
-           
-          </div>
         </div>
-      </div>
     </div>
-
-
-
-    <!-- WHY JAFRA - Features & Highlights -->
-
-    <section id="why_jafra">
-
-      <!--div class="container">
+</div>
+<!-- WHY JAFRA - Features & Highlights -->
+<section id="why_jafra">
+    <!--div class="container">
         <h2 class="h1 section-title"><span ng-bind-html="'OS-LANDING-H1' | translate | unsafe"></span></h2>
-      </div--> <!-- /.container -->
-
-      <section class="subsection" id="freedom_flexibility">
-
+      </div--><!-- /.container -->
+    <section class="subsection" id="freedom_flexibility">
         <div class="container subcontainer">
-      
-          <div class="row">
-            
-            <div class="col-md-12">
-
-              <div class="section-copy_bound_box">
-
-                <h3 class="hero-header-title-freedom_flexibility text-center">
-                  <span ng-bind-html="'OS-LANDING-H1' | translate | unsafe"></span>
-                </h3>
-                <p class="freedom_flexibility_description text-center">Earn money in a fun & rewarding way, set your own hours, and help empower women everywhere. Join over <b>500,000 consultants</b> in <b>18 countries</b> who live fulfilled, happy lives.
-                </p>
-                <p class="text-center"><a href="#more_freedom" data-toggle="collapse" class="more-link collapsed"><span>LIFE WITH JAFRA</span></a></p>
-                <div id="more_freedom" class="collapse">
-                  <span class="serif-title">
-                    join the <span class="sans-serif-title">LEGACY</span>
-                  </span>
-                  <p>It began over 58 years ago in 1956 in Malibu, California, when Jan and Frank Day launched JAFRA so a woman could own her own business. Since then, hundreds of thousands of women just like you have successfully realized their entrepreneurial dreams, first by joining as a Consultant, then becoming a JAFRA Leader with their own JAFRA Team.</p>
-                  <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin dignissim, nibh at pulvinar ornare, nisl mauris maximus nulla, at bibendum metus arcu sed orci. Morbi convallis eu dolor vitae ultricies. Mauris a porttitor tortor, id pellentesque enim. Sed odio sem, placerat eu lorem a, auctor porta enim. Vestibulum egestas, felis a dictum elementum, arcu purus elementum tellus, vel auctor elit diam ac orci. Suspendisse sollicitudin ipsum quis eros rutrum, vel gravida sapien pulvinar. Duis mattis ultricies hendrerit. Phasellus augue libero, tincidunt sit amet tortor non, mollis euismod urna. Cras erat sapien, malesuada eu enim et, bibendum luctus neque. Pellentesque eget euismod sapien. Pellentesque malesuada mauris viverra, placerat ligula id, condimentum nibh. Mauris sed rhoncus lacus, et lacinia erat. Phasellus ultricies ut felis rutrum elementum. Nulla nec ultrices quam. Donec quis congue nisi, quis placerat quam.
-                  </p>
-                  <span class="serif-title">
-                    Make today the day you begin the life you deserve!
-                  </span>
-                </div>
-              </div> <!-- /.section-copy -->
-
-            </div> <!-- /.col -->
-          
-          </div> <!-- /.row -->
-
-        </div> <!-- /.container -->
-
-      </section>
-
-      <section class="subsection" id="why_jafra_products">
-
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="section-copy_bound_box">
+                        <h3 class="hero-header-title-freedom_flexibility text-center"></h3>
+                        <p class="freedom_flexibility_description text-center">
+                            Earn money in a fun &amp; rewarding way, set your own hours, and help empower women everywhere. Join over <b>500,000 consultants</b> in <b>18 countries</b> who live fulfilled, happy lives.
+                        </p>
+                        <p class="text-center">
+                            <a href="#more_freedom" data-toggle="collapse" class="more-link collapsed"><span>LIFE WITH JAFRA</span></a>
+                        </p>
+                        <div id="more_freedom" class="collapse">
+                            <span class="serif-title">join the <span class="sans-serif-title">LEGACY</span></span>
+                            <p>
+                                It began over 58 years ago in 1956 in Malibu, California, when Jan and Frank Day launched JAFRA so a woman could own her own business. Since then, hundreds of thousands of women just like you have successfully realized their entrepreneurial dreams, first by joining as a Consultant, then becoming a JAFRA Leader with their own JAFRA Team.
+                            </p>
+                            <p>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin dignissim, nibh at pulvinar ornare, nisl mauris maximus nulla, at bibendum metus arcu sed orci. Morbi convallis eu dolor vitae ultricies. Mauris a porttitor tortor, id pellentesque enim. Sed odio sem, placerat eu lorem a, auctor porta enim. Vestibulum egestas, felis a dictum elementum, arcu purus elementum tellus, vel auctor elit diam ac orci. Suspendisse sollicitudin ipsum quis eros rutrum, vel gravida sapien pulvinar. Duis mattis ultricies hendrerit. Phasellus augue libero, tincidunt sit amet tortor non, mollis euismod urna. Cras erat sapien, malesuada eu enim et, bibendum luctus neque. Pellentesque eget euismod sapien. Pellentesque malesuada mauris viverra, placerat ligula id, condimentum nibh. Mauris sed rhoncus lacus, et lacinia erat. Phasellus ultricies ut felis rutrum elementum. Nulla nec ultrices quam. Donec quis congue nisi, quis placerat quam.
+                            </p><span class="serif-title">Make today the day you begin the life you deserve!</span>
+                        </div>
+                    </div><!-- /.section-copy -->
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container -->
+    </section>
+    <section class="subsection" id="why_jafra_products">
         <div class="container subcontainer">
-      
-          <div class="row">
-            
-            <div class="col-md-6">
-
-              <div class="section-copy">
-
-                <h3 class="hero-header-title"><span class="serif-title"><span ng-bind-html="'OS-SECTION2-TITLE1' | translate | unsafe"></span></span><br /><span ng-bind-html="'OS-SECTION2-TITLE2' | translate | unsafe"></span></h3>
-                <p><span ng-bind-html="'OS-SECTION2-BODY' | translate | unsafe"></span></p>
-
-                <!-- collapsed section toggle (default collapsed) -->
-<!--                <p class="text-right prod_more_link"><a class="more-link collapsed" data-toggle="collapse" href="#more_products"><span>MORE</span></a></p>-->
- 
-<!--                <div id="more_products" class="collapse">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="section-copy">
+                        <h3 class="hero-header-title">
+                            <br>
+                        </h3><!-- collapsed section toggle (default collapsed) -->
+                        <!--                <p class="text-right prod_more_link"><a class="more-link collapsed" data-toggle="collapse" href="#more_products"><span>MORE</span></a></p>-->
+                        <!--                <div id="more_products" class="collapse">
                   <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis tincidunt turpis et varius. Donec sapien arcu, facilisis vitae nunc sit amet, venenatis consequat felis. Curabitur varius pretium metus. Phasellus ut tellus tempus ipsum malesuada sodales et porttitor diam.</p>
                   <p><br><p>
                 </div>-->
-
-              </div> <!-- /.section-copy -->
-
-            </div> <!-- /.col -->
-
-            <div class="col-md-6">
-
-                <div class="carousel">
-
-                  <div id="carousel-product-generic" class="slide" data-ride="carousel">
-
-                    <!-- Wrapper for slides -->
-                    <div class="carousel-inner">
-                      <div class="item active">
-                              <img class="img-responsive" src="/img/products_royalJelly.jpg">
-                      </div>
-                      <div class="item">
-                              <img class="img-responsive" src="/img/products_PRO.jpg">
-                      </div>
-                      <div class="item">
-                              <img class="img-responsive" src="/img/products_marineBotanicals.jpg">
-                      </div>
-                      <div class="item">
-                              <img class="img-responsive" src="/img/products_fragranceWomen.jpg">
-                      </div>
-                      <div class="item">
-                              <img class="img-responsive" src="/img/products_fragranceMen.jpg">
-                      </div>
-                      <div class="item">
-                              <img class="img-responsive" src="/img/products_color.jpg">
-                      </div>
-                    </div>
-
-                    <!-- Controls -->
-                    <a class="left carousel-control" href="#carousel-product-generic" role="button" data-slide="prev">
-                      <span class="glyphicon glyphicon-chevron-left"></span> <!--  ** left control hidden (angular bug) **  -->
-                    </a>
-                    <a class="right carousel-control" href="#carousel-product-generic" role="button" data-slide="next">
-                      <span class="glyphicon glyphicon-chevron-right"></span>
-                    </a>
-
-                  </div>
-
-              </div> <!-- /.carousel -->
-
-            </div> <!-- /.col -->
-          
-          </div> <!-- /.row -->
-
-        </div> <!-- /.container -->
-
-      </section> <!-- /.subsection -->
-
-
-      <section class="subsection" id="why_jafra_lifestyle">
-
+                    </div><!-- /.section-copy -->
+                </div><!-- /.col -->
+                <div class="col-md-6">
+                    <div class="carousel">
+                        <div id="carousel-product-generic" class="slide" data-ride="carousel">
+                            <!-- Wrapper for slides -->
+                            <div class="carousel-inner">
+                                <div class="item active">
+                                    <img class="img-responsive" src="/img/products_royalJelly.jpg">
+                                </div>
+                                <div class="item">
+                                    <img class="img-responsive" src="/img/products_PRO.jpg">
+                                </div>
+                                <div class="item">
+                                    <img class="img-responsive" src="/img/products_marineBotanicals.jpg">
+                                </div>
+                                <div class="item">
+                                    <img class="img-responsive" src="/img/products_fragranceWomen.jpg">
+                                </div>
+                                <div class="item">
+                                    <img class="img-responsive" src="/img/products_fragranceMen.jpg">
+                                </div>
+                                <div class="item">
+                                    <img class="img-responsive" src="/img/products_color.jpg">
+                                </div>
+                            </div><!-- Controls -->
+                             <a class="left carousel-control" href="#carousel-product-generic" role="button" data-slide="prev"> <!--  ** left control hidden (angular bug) **  --></a> <a class="right carousel-control" href="#carousel-product-generic" role="button" data-slide="next"></a>
+                        </div>
+                    </div><!-- /.carousel -->
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container -->
+    </section><!-- /.subsection -->
+    <section class="subsection" id="why_jafra_lifestyle">
         <div class="container subcontainer">
-
-          <img class="hidden-xs hidden-sm" src="/img/liner_black.png" id="liner_black" style="max-width:170px;">
-
-          <div class="row">
-
-            <div class="col-md-6">
-              <img class="img-responsive" src="/img/heroshot2.jpg">
-            </div> <!-- /.col -->
-
-            <div class="col-md-6">
-
-              <div class="section-copy">
-
-                <h3 class="hero-header-title"><span class="serif-title" ng-bind-html="'OS-SECTION3-TITLE1' | translate | unsafe"></span><br /><span class="your_call" ng-bind-html="'OS-SECTION3-TITLE2' | translate | unsafe"></span></h3>
-                <p><span ng-bind-html="'OS-SECTION3-BODY' | translate | unsafe"></span></p>
-                <!--<p class="text-right"><a href="#more_call" data-toggle="collapse" class="more-link collapsed"><span>MORE</span></a></p>-->
-                <!-- collapsed section content (default collapsed) -->
-<!--                <div id="more_call" class="collapse">
+            <img class="hidden-xs hidden-sm" src="/img/liner_black.png" id="liner_black" style="max-width:170px;">
+            <div class="row">
+                <div class="col-md-6">
+                    <img class="img-responsive" src="/img/heroshot2.jpg">
+                </div><!-- /.col -->
+                <div class="col-md-6">
+                    <div class="section-copy">
+                        <h3 class="hero-header-title">
+                            <br>
+                        </h3><!--<p class="text-right"><a href="#more_call" data-toggle="collapse" class="more-link collapsed"><span>MORE</span></a></p>-->
+                        <!-- collapsed section content (default collapsed) -->
+                        <!--                <div id="more_call" class="collapse">
                   <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis tincidunt turpis et varius. Donec sapien arcu, facilisis vitae nunc sit amet, venenatis consequat felis. Curabitur varius pretium metus. Phasellus ut tellus tempus ipsum malesuada sodales et porttitor diam.</p>
                   <p>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin dignissim, nibh at pulvinar ornare, nisl mauris maximus nulla, at bibendum metus arcu sed orci. Morbi convallis eu dolor vitae ultricies. Mauris a porttitor tortor, id pellentesque enim. Sed odio sem, placerat eu lorem a, auctor porta enim. Vestibulum egestas, felis a dictum elementum, arcu purus elementum tellus, vel auctor elit diam ac orci. Suspendisse sollicitudin ipsum quis eros rutrum, vel gravida sapien pulvinar. Duis mattis ultricies hendrerit. Phasellus augue libero, tincidunt sit amet tortor non, mollis euismod urna. Cras erat sapien, malesuada eu enim et, bibendum luctus neque. Pellentesque eget euismod sapien. Pellentesque malesuada mauris viverra, placerat ligula id, condimentum nibh. Mauris sed rhoncus lacus, et lacinia erat. Phasellus ultricies ut felis rutrum elementum. Nulla nec ultrices quam. Donec quis congue nisi, quis placerat quam.
@@ -285,457 +209,338 @@
                   Aliquam condimentum, tortor mollis efficitur rhoncus, elit felis laoreet lectus, sed bibendum mi urna sed dui. Quisque vitae elit id nulla posuere pretium. Integer feugiat, neque vitae vestibulum convallis, quam diam feugiat nisl, a aliquet velit nunc at turpis. Cras euismod molestie scelerisque. Integer vestibulum, mauris sit amet pretium dignissim, ligula lorem mollis felis, posuere lobortis odio mi vitae dolor. Donec tempus magna nec tellus aliquet, ultrices malesuada ante volutpat. Donec imperdiet odio ut erat suscipit, sed ornare felis ultricies. Duis iaculis odio eget eros facilisis, sed cursus arcu viverra. Proin aliquam tempus vulputate.
                   </p>
                 </div>-->
-
-              </div> <!-- /.section-copy -->
-
-            </div> <!-- /.col -->
-
-          </div> <!-- /.row -->
-
-        </div> <!-- /.container -->
-
-      </section> <!-- /.subsection -->
-
-
-      <section class="subsection" id="why_jafra_rewards">
-
+                    </div><!-- /.section-copy -->
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container -->
+    </section><!-- /.subsection -->
+    <section class="subsection" id="why_jafra_rewards">
         <div class="container subcontainer">
-
-          <div class="row">
-
-            <div class="col-md-6">
-
-              <div class="section-copy">
-
-                <h3 class="hero-header-title"><span class="serif-title"><span ng-bind-html="'OS-SECTION4-TITLE1' | translate | unsafe"></span></span><br /><span ng-bind-html="'OS-SECTION4-TITLE2' | translate | unsafe"></span></h3>
-                <p><span ng-bind-html="'OS-SECTION4-BODY' | translate | unsafe"></span></p>
-                <!--<p class="text-right"><a href="#more_rewards" data-toggle="collapse" class="more-link collapsed"><span>MORE</span></a></p>-->
-                <!-- collapsed section content (default collapsed) -->
-<!--                <div id="more_rewards" class="collapse">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="section-copy">
+                        <h3 class="hero-header-title">
+                            <br>
+                        </h3><!--<p class="text-right"><a href="#more_rewards" data-toggle="collapse" class="more-link collapsed"><span>MORE</span></a></p>-->
+                        <!-- collapsed section content (default collapsed) -->
+                        <!--                <div id="more_rewards" class="collapse">
                   <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis tincidunt turpis et varius. Donec sapien arcu, facilisis vitae nunc sit amet, venenatis consequat felis. Curabitur varius pretium metus. Phasellus ut tellus tempus ipsum malesuada sodales et porttitor diam.</p>
                   <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis tincidunt turpis et varius. Donec sapien arcu, facilisis vitae nunc sit amet, venenatis consequat felis. Curabitur varius pretium metus. Phasellus ut tellus tempus ipsum malesuada sodales et porttitor diam.</p>
                 </div>-->
-
-              </div>
-
-            </div>
-
-            <div class="col-md-6">
-
-              <div class="carousel">
-
-                <div id="carousel-rewards-generic" class="slide" data-ride="carousel">
-                  <!-- Indicators -->
-                  <!-- <ol class="carousel-indicators">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="carousel">
+                        <div id="carousel-rewards-generic" class="slide" data-ride="carousel">
+                            <!-- Indicators -->
+                            <!-- <ol class="carousel-indicators">
                     <li data-target="#carousel-rewards-generic" data-slide-to="0" class="active"></li>
                     <li data-target="#carousel-rewards-generic" data-slide-to="1"></li>
                     <li data-target="#carousel-rewards-generic" data-slide-to="2"></li>
                   </ol> -->
-
-                  <!-- Wrapper for slides -->
-                  <div class="carousel-inner">
-                    <div class="item active">
-                            <img class="img-responsive" src="/img/rewards_jewelry.jpg">
+                            <!-- Wrapper for slides -->
+                            <div class="carousel-inner">
+                                <div class="item active">
+                                    <img class="img-responsive" src="/img/rewards_jewelry.jpg">
+                                </div>
+                                <div class="item">
+                                    <img class="img-responsive" src="/img/rewards_iPad_CoachBag.jpg">
+                                </div>
+                                <div class="item">
+                                    <img class="img-responsive" src="/img/rewards_summerTrip.jpg">
+                                </div>
+                            </div><!-- Controls -->
+                             <a class="left carousel-control" href="#carousel-rewards-generic" role="button" data-slide="prev"></a> <a class="right carousel-control" href="#carousel-rewards-generic" role="button" data-slide="next"></a>
+                        </div>
                     </div>
-                    <div class="item">
-                            <img class="img-responsive" src="/img/rewards_iPad_CoachBag.jpg">
-                    </div>
-                    <div class="item">
-                            <img class="img-responsive" src="/img/rewards_summerTrip.jpg">
-                    </div>
-                  </div>
-
-                  <!-- Controls -->
-                  <a class="left carousel-control" href="#carousel-rewards-generic" role="button" data-slide="prev">
-                    <span class="glyphicon glyphicon-chevron-left"></span>
-                  </a>
-                  <a class="right carousel-control" href="#carousel-rewards-generic" role="button" data-slide="next">
-                    <span class="glyphicon glyphicon-chevron-right"></span>
-                  </a>
-
                 </div>
-
-              </div>
-
             </div>
-
-          </div>
-          
         </div>
-
-      </section>
-
-      
-      <section class="subsection" id="why_jafra_testimonials">
-
+    </section>
+    <section class="subsection" id="why_jafra_testimonials">
         <div class="container subcontainer text-center">
-
-          <img class="hidden-xs" style="max-width:340px" src="/img/pastelpatches-3.png"  id="pastelpatches"/>
-
-          <img class="hidden-xs" style="max-width:250px" src="/img/lipsticksmears4.png" id="lipsticksmear" />
-
-          <div class="row">
-
-            <div class="col-md-12">
-              <div class="section-copy text-left">
-                <h3 class="hero-header-title"><span class="serif-title"><span ng-bind-html="'OS-SECTION5-TITLE1' | translate | unsafe"></span></span><br /><span ng-bind-html="'OS-SECTION5-TITLE2' | translate | unsafe"></span><span class="serif-title-alt"><span ng-bind-html="'OS-SECTION5-TITLE3' | translate | unsafe"></span></span></h3>
-              </div>
-            </div>
-
-            <div class="testimonials center-block">
-            
-              <div class="col-md-4 text-center">
-                <div class="testimonial center-block" style="max-width:320px">
-                  <img class="img-responsive" src="/img/lori.png" alt="Lori Duncan Photo">
-                  <i class="fa " style="margin:0 0 0 -13px"></i>
-                  <h4 class="media-heading h3">Lori Duncan</h4>
-                  <p><small></small></p>
-                  <p>&ldquo;<span ng-bind-html="'OS-SECTION5-QUOTE1' | translate | unsafe"></span>&rdquo;</p>
-                </div>
-              </div>
-
-              <div class="col-md-4 text-center">
-                <div class="testimonial center-block" style="max-width:320px">
-                  <img class="img-responsive center-block" src="/img/jennifer.png" alt="Jennifer Knight Photo">
-                  <i class="fa " style="margin:0 0 0 -13px"></i>
-                  <h4 class="media-heading h3">Jennifer Knight</h4>
-                  <p><small></small></p>
-                  <p>&ldquo;<span ng-bind-html="'OS-SECTION5-QUOTE2' | translate | unsafe"></span>&rdquo;</p>
-                </div>
-              </div>
-
-              <div class="col-md-4 text-center">
-                <div class="testimonial center-block" style="max-width:320px">
-                  <img class="img-responsive center-block" src="/img/rossy.png" alt="Rossy Argueta Photo">
-                  <i class="fa " style="margin:0 0 0 -13px"></i>
-                  <h4 class="media-heading h3">Rossy Argueta</h4>
-                  <p><small></small></p>
-                  <p>&ldquo;<span ng-bind-html="'OS-SECTION5-QUOTE3' | translate | unsafe"></span> &rdquo;</p>
-                </div>
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-    </section>
-
-
-
-    <!-- Starter Packages -->
-    <section id="starter_kits">
-
-      <div class="container">
-        <h2 class="h1 section-title"><span ng-bind-html="'OS-LANDING-H1-2' | translate | unsafe"></span></h2>
-      </div>
-
-      <section id="royal_starter_kit" class="subsection">
-        <div class="container subcontainer">
-
-          <div class="row">
-
-            <div class="hidden-md hidden-lg col-md-6">
-              <img class="img-responsive" src="/img/99_kit.jpg" />
-            </div>
-
-            <div class="col-md-6">
-              <div class="section-copy">
-                <h3 class="hero-header-title royal_starter_titles" style="margin-top:10px;"><span class="serif-title h1 product-title1"><span ng-bind-html="'OS-KIT-PRODUCT1-TITLE1' | translate | unsafe"></span></span><br />
-                  <span class="product-title2" ng-bind-html="'OS-KIT-PRODUCT1-TITLE2' | translate | unsafe"></span>
-                </h3>
-                <h3 class="h1 starter_kits-price"><span ng-bind-html="'OS-KIT-PRODUCT1-PRICE' | translate | unsafe"></span></h3>
-                <p class="starter_kits-label_title"><span ng-bind-html="'OS-KIT-PRODUCT1-NAME' | translate | unsafe"></span></p>
-
-                <p class="whats_inside_button"><a href="#more_royal" data-toggle="collapse" class="more-link collapsed"><span ng-bind-html="'KIT-DETAILS-TOGGLE' | translate | unsafe"></span></a></p>
-
-
-                <p class="starter_kits-retail_value precio_al_publico"><span ng-bind-html="'OS-KIT-PRODUCT1-VALUE' | translate | unsafe"></span></p>
-                <div class="product-action">
-                    <!-- Split button -->
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-primary btn-lg HelveticaNeueLTStd-BdCn" ng-click="join('19634')"><span ng-bind-html="'BUY-ENGLISH' | translate | unsafe"></span></button>
-                      <button type="button" class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown">
-                        <span class="caret"></span>
-                        <span class="sr-only">Toggle Dropdown</span>
-                      </button>
-                      <ul class="dropdown-menu kit-select" role="menu">
-                        <li><a href="#" ng-click="join('19634')"><span ng-bind-html="'BUY-ENGLISH' | translate | unsafe"></span></a></li>
-                        <li><a href="#" ng-click="join('19635')"><span ng-bind-html="'BUY-SPANISH' | translate | unsafe"></span></a></li>
-                      </ul>
+            <img class="hidden-xs" style="max-width:340px" src="/img/pastelpatches-3.png" id="pastelpatches"> <img class="hidden-xs" style="max-width:250px" src="/img/lipsticksmears4.png" id="lipsticksmear">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="section-copy text-left">
+                        <h3 class="hero-header-title">
+                            <br>
+                        </h3>
                     </div>
-                  </div>
+                </div>
+                <div class="testimonials center-block">
+                    <div class="col-md-4 text-center">
+                        <div class="testimonial center-block" style="max-width:320px">
+                            <img class="img-responsive" src="/img/lori.png" alt="Lori Duncan Photo">
+                            <h4 class="media-heading h3">
+                                Lori Duncan
+                            </h4>
+                            <p>
+                                “”
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <div class="testimonial center-block" style="max-width:320px">
+                            <img class="img-responsive center-block" src="/img/jennifer.png" alt="Jennifer Knight Photo">
+                            <h4 class="media-heading h3">
+                                Jennifer Knight
+                            </h4>
+                            <p>
+                                “”
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <div class="testimonial center-block" style="max-width:320px">
+                            <img class="img-responsive center-block" src="/img/rossy.png" alt="Rossy Argueta Photo">
+                            <h4 class="media-heading h3">
+                                Rossy Argueta
+                            </h4>
+                            <p>
+                                “ ”
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <div class="hidden-xs hidden-sm col-md-6">
-              <img class="img-responsive" src="/img/99_kit.jpg" />
-            </div>
-
-            <!-- collapsed section content (default collapsed) -->
-            <div id="more_royal" class="col-md-12 collapse">
-              <div class="col-md-6">
-                <img src="/img/99_kit_bags.jpg" class="img-responsive"/>
-              </div>
-              <div class="col-md-6">
-                <div class="section-copy">
-                  <p ng-bind-html="'OS-KIT-PRODUCT1-DESCRIPTION' | translate | unsafe"></p>
-                </div>
-
-              </div>
-            </div>
-
-          </div>
-
         </div>
-      </section>
-
-      <section id="skincare_starter_kit" class="subsection">
-
+    </section>
+</section>
+<!-- Starter Packages -->
+<section id="starter_kits">
+    <div class="container">
+        <h2 class="h1 section-title"></h2>
+    </div>
+    <section id="royal_starter_kit" class="subsection">
         <div class="container subcontainer">
-
-          <div class="row">
-
-            <div class="col-md-6">
-              <img class="img-responsive" src="/img/39_kit.jpg" />
-            </div>
-
-            <div class="col-md-6">
-              <div class="section-copy">
-
-                <h3 class="hero-header-title skincare_header_title"><span class="serif-title h1 product-title1"><span ng-bind-html="'OS-KIT-PRODUCT2-TITLE1' | translate | unsafe"></span></span>
-                  <span class="product-title2" style="display:block; font-size:61px;"><span ng-bind-html="'OS-KIT-PRODUCT2-TITLE2' | translate | unsafe"></span></span>
-                </h3>
-                <h3 class="h1 starter_kits-price skincare_price"><span ng-bind-html="'OS-KIT-PRODUCT2-PRICE' | translate | unsafe"></span></h3>
-                  <p class="starter_kits-label_title"><span ng-bind-html="'OS-KIT-PRODUCT2-NAME' | translate | unsafe"></span></p>
-                  <p class="pull-right"><a href="#more_skincare" data-toggle="collapse" class="more-link collapsed"><span ng-bind-html="'KIT-DETAILS-TOGGLE' | translate | unsafe"></span></a></p>
-                  <p class="starter_kits-retail_value"><span ng-bind-html="'OS-KIT-PRODUCT2-VALUE' | translate | unsafe"></span></p>
-                
-                <div class="product-action">
-                  <!-- Split button -->
-                  <div class="btn-group">
-                    <button type="button" class="btn btn-primary btn-lg HelveticaNeueLTStd-BdCn" ng-click="join('19634')"><span ng-bind-html="'BUY-ENGLISH' | translate | unsafe"></span></button>
-                    <button type="button" class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown">
-                      <span class="caret"></span>
-                      <span class="sr-only">Toggle Dropdown</span>
-                    </button>
-
-                    <ul class="dropdown-menu kit-select" role="menu">
-                      <li><a href="#" ng-click="join('19634')"><span ng-bind-html="'BUY-ENGLISH' | translate | unsafe"></span></a></li>
-                      <li><a href="#" ng-click="join('19635')"><span ng-bind-html="'BUY-SPANISH' | translate | unsafe"></span></a></li>
-
-                    </ul>
-                  </div>
+            <div class="row">
+                <div class="hidden-md hidden-lg col-md-6">
+                    <img class="img-responsive" src="/img/99_kit.jpg">
                 </div>
-
-              </div>
-            </div>
-
-            <!-- collapsed section content (default collapsed) -->
-            <div id="more_skincare" class="col-md-12 collapse">
-              <div class="col-md-6">
-                <div class="section-copy">
-                  <p ng-bind-html="'OS-KIT-PRODUCT2-DESCRIPTION' | translate | unsafe"></p>
+                <div class="col-md-6">
+                    <div class="section-copy">
+                        <h3 class="hero-header-title royal_starter_titles" style="margin-top:10px;">
+                            <br>
+                        </h3>
+                        <h3 class="h1 starter_kits-price"></h3>
+                        <p class="starter_kits-label_title"></p>
+                        <p class="whats_inside_button">
+                            <a href="#more_royal" data-toggle="collapse" class="more-link collapsed"></a>
+                        </p>
+                        <p class="starter_kits-retail_value precio_al_publico"></p>
+                        <div class="product-action">
+                            <!-- Split button -->
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown"><span class="sr-only">Toggle Dropdown</span></button>
+                                <ul class="dropdown-menu kit-select" role="menu">
+                                    <li>
+                                        <a href="#" ng-click="join('19634')"></a>
+                                    </li>
+                                    <li>
+                                        <a href="#" ng-click="join('19635')"></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-              </div>
-              <div class="col-md-6">
-                <img src="/img/39_kit_bag.jpg" class="img-responsive"/>
-              </div>
+                <div class="hidden-xs hidden-sm col-md-6">
+                    <img class="img-responsive" src="/img/99_kit.jpg">
+                </div><!-- collapsed section content (default collapsed) -->
+                <div id="more_royal" class="col-md-12 collapse">
+                    <div class="col-md-6">
+                        <img src="/img/99_kit_bags.jpg" class="img-responsive">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="section-copy">
+                            <p ng-bind-html="'OS-KIT-PRODUCT1-DESCRIPTION' | translate | unsafe"></p>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-          </div>
         </div>
-      </section>  
-
     </section>
-
-
-    <!-- FAQs -->
-    <section id="FAQs">
-
-      <div class="container">
-        <h2 class="h1 section-title"><span ng-bind-html="'OS-FAQ-TITLE' | translate | unsafe"></span></h2>
-      </div>
-
-      <div class="subsection">
-
+    <section id="skincare_starter_kit" class="subsection">
+        <div class="container subcontainer">
+            <div class="row">
+                <div class="col-md-6">
+                    <img class="img-responsive" src="/img/39_kit.jpg">
+                </div>
+                <div class="col-md-6">
+                    <div class="section-copy">
+                        <h3 class="hero-header-title skincare_header_title"></h3>
+                        <h3 class="h1 starter_kits-price skincare_price"></h3>
+                        <p class="starter_kits-label_title"></p>
+                        <p class="pull-right">
+                            <a href="#more_skincare" data-toggle="collapse" class="more-link collapsed"></a>
+                        </p>
+                        <p class="starter_kits-retail_value"></p>
+                        <div class="product-action">
+                            <!-- Split button -->
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown"><span class="sr-only">Toggle Dropdown</span></button>
+                                <ul class="dropdown-menu kit-select" role="menu">
+                                    <li>
+                                        <a href="#" ng-click="join('19634')"></a>
+                                    </li>
+                                    <li>
+                                        <a href="#" ng-click="join('19635')"></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- collapsed section content (default collapsed) -->
+                <div id="more_skincare" class="col-md-12 collapse">
+                    <div class="col-md-6">
+                        <div class="section-copy">
+                            <p ng-bind-html="'OS-KIT-PRODUCT2-DESCRIPTION' | translate | unsafe"></p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <img src="/img/39_kit_bag.jpg" class="img-responsive">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
+<!-- FAQs -->
+<section id="FAQs">
+    <div class="container">
+        <h2 class="h1 section-title"></h2>
+    </div>
+    <div class="subsection">
         <div class="container">
-          
-          <div class="col-md-6">
-            <div class="faqs-item">
-              <div class="faqs-item-question">
-                <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse1">
-                  <span ng-bind-html="'OS-Q1' | translate | unsafe"></span>
-                </a>
-              </div>
-              <div class="faqs-item-answer">
-                <!-- collapsed section content (default collapsed) -->
-                <p id="FAQcollapse1" class="collapse" ng-bind-html="'OS-A1' | translate | unsafe">
-                  
-                </p>
-              </div>
+            <div class="col-md-6">
+                <div class="faqs-item">
+                    <div class="faqs-item-question">
+                        <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse1"></a>
+                    </div>
+                    <div class="faqs-item-answer">
+                        <!-- collapsed section content (default collapsed) -->
+                        <p id="FAQcollapse1" class="collapse" ng-bind-html="'OS-A1' | translate | unsafe"></p>
+                    </div>
+                </div>
+                <hr>
+                <div class="faqs-item">
+                    <div class="faqs-item-question">
+                        <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse2"></a>
+                    </div>
+                    <div class="faqs-item-answer">
+                        <!-- collapsed section content (default collapsed) -->
+                        <p id="FAQcollapse2" class="collapse" ng-bind-html="'OS-A2' | translate | unsafe"></p>
+                    </div>
+                </div>
+                <hr>
+                <div class="faqs-item">
+                    <div class="faqs-item-question">
+                        <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse3"></a>
+                    </div>
+                    <div class="faqs-item-answer">
+                        <!-- collapsed section content (default collapsed) -->
+                        <p id="FAQcollapse3" class="collapse" ng-bind-html="'OS-A3' | translate | unsafe"></p>
+                    </div>
+                </div>
+                <hr>
+                <div class="faqs-item">
+                    <div class="faqs-item-question">
+                        <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse4"></a>
+                    </div>
+                    <div class="faqs-item-answer">
+                        <!-- collapsed section content (default collapsed) -->
+                        <p id="FAQcollapse4" class="collapse" ng-bind-html="'OS-A4' | translate | unsafe"></p>
+                    </div>
+                </div>
+                <hr>
+                <div class="faqs-item">
+                    <div class="faqs-item-question">
+                        <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse5"></a>
+                    </div>
+                    <div class="faqs-item-answer">
+                        <!-- collapsed section content (default collapsed) -->
+                        <p id="FAQcollapse5" class="collapse" ng-bind-html="'OS-A5' | translate | unsafe"></p>
+                    </div>
+                </div>
+                <hr>
+                <div class="faqs-item">
+                    <div class="faqs-item-question">
+                        <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse6"></a>
+                    </div>
+                    <div class="faqs-item-answer">
+                        <!-- collapsed section content (default collapsed) -->
+                        <p id="FAQcollapse6" class="collapse" ng-bind-html="'OS-A6' | translate | unsafe"></p>
+                    </div>
+                </div>
             </div>
-            <hr>
-            <div class="faqs-item">
-              <div class="faqs-item-question">
-                <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse2">
-                  <span ng-bind-html="'OS-Q2' | translate | unsafe"></span>
-                </a>
-              </div>
-              <div class="faqs-item-answer">
-                <!-- collapsed section content (default collapsed) -->
-                <p id="FAQcollapse2" class="collapse" ng-bind-html="'OS-A2' | translate | unsafe">
-                  </p>
-              </div>
+            <div class="col-md-6">
+                <hr class="hidden-md hidden-lg">
+                <div class="faqs-item">
+                    <div class="faqs-item-question">
+                        <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse7"></a>
+                    </div>
+                    <div class="faqs-item-answer">
+                        <!-- collapsed section content (default collapsed) -->
+                        <p id="FAQcollapse7" class="collapse" ng-bind-html="'OS-A7' | translate | unsafe"></p>
+                    </div>
+                </div>
+                <hr>
+                <div class="faqs-item">
+                    <div class="faqs-item-question">
+                        <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse8"></a>
+                    </div>
+                    <div class="faqs-item-answer">
+                        <!-- collapsed section content (default collapsed) -->
+                        <p id="FAQcollapse8" class="collapse" ng-bind-html="'OS-A8' | translate | unsafe"></p>
+                    </div>
+                </div>
+                <hr>
+                <div class="faqs-item">
+                    <div class="faqs-item-question">
+                        <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse9"></a>
+                    </div>
+                    <div class="faqs-item-answer">
+                        <!-- collapsed section content (default collapsed) -->
+                        <p id="FAQcollapse9" class="collapse" ng-bind-html="'OS-A9' | translate | unsafe"></p>
+                    </div>
+                </div>
+                <hr>
+                <div class="faqs-item">
+                    <div class="faqs-item-question">
+                        <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse10"></a>
+                    </div>
+                    <div class="faqs-item-answer">
+                        <!-- collapsed section content (default collapsed) -->
+                        <p id="FAQcollapse10" class="collapse" ng-bind-html="'OS-A10' | translate | unsafe"></p>
+                    </div>
+                </div>
+                <hr>
+                <div class="faqs-item">
+                    <div class="faqs-item-question">
+                        <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse11"></a>
+                    </div>
+                    <div class="faqs-item-answer">
+                        <!-- collapsed section content (default collapsed) -->
+                        <p id="FAQcollapse11" class="collapse" ng-bind-html="'OS-A11' | translate | unsafe"></p>
+                    </div>
+                </div>
             </div>
-            <hr>
-            <div class="faqs-item">
-              <div class="faqs-item-question">
-                <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse3">
-                  <span ng-bind-html="'OS-Q3' | translate | unsafe"></span>
-                </a>
-              </div>
-              <div class="faqs-item-answer">
-                <!-- collapsed section content (default collapsed) -->
-                <p id="FAQcollapse3" class="collapse" ng-bind-html="'OS-A3' | translate | unsafe">
-                  </p>
-              </div>
+            <div class="col-md-12 text-center">
+                <div class="well">
+                    <a class="btn btn-primary btn-lg HelveticaNeueLTStd-BdCn" role="button" href="#" data-toggle="modal" data-target=".bs-example-modal-lg"></a>
+                </div>
             </div>
-            <hr>
-            <div class="faqs-item">
-              <div class="faqs-item-question">
-                <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse4">
-                  <span ng-bind-html="'OS-Q4' | translate | unsafe"></span>
-                </a>
-              </div>
-              <div class="faqs-item-answer">
-                <!-- collapsed section content (default collapsed) -->
-                <p id="FAQcollapse4" class="collapse" ng-bind-html="'OS-A4' | translate | unsafe">
-                  </p>
-              </div>
-            </div>
-            <hr>
-            <div class="faqs-item">
-              <div class="faqs-item-question">
-                <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse5">
-                  <span ng-bind-html="'OS-Q5' | translate | unsafe"></span>
-                </a>
-              </div>
-              <div class="faqs-item-answer">
-                <!-- collapsed section content (default collapsed) -->
-                <p id="FAQcollapse5" class="collapse" ng-bind-html="'OS-A5' | translate | unsafe">
-                  </p>
-              </div>
-            </div>
-            <hr>
-            <div class="faqs-item">
-              <div class="faqs-item-question">
-                <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse6">
-                  <span ng-bind-html="'OS-Q6' | translate | unsafe"></span>
-                </a>
-              </div>
-              <div class="faqs-item-answer">
-                <!-- collapsed section content (default collapsed) -->
-                <p id="FAQcollapse6" class="collapse" ng-bind-html="'OS-A6' | translate | unsafe">
-                  </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-6">
-            <hr class="hidden-md hidden-lg">
-            <div class="faqs-item">
-              <div class="faqs-item-question">
-                <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse7">
-                  <span ng-bind-html="'OS-Q7' | translate | unsafe"></span>
-                </a>
-              </div>
-              <div class="faqs-item-answer">
-                <!-- collapsed section content (default collapsed) -->
-                <p id="FAQcollapse7" class="collapse" ng-bind-html="'OS-A7' | translate | unsafe">
-                  </p>
-              </div>
-            </div>
-            <hr>
-            <div class="faqs-item">
-              <div class="faqs-item-question">
-                <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse8">
-                  <span ng-bind-html="'OS-Q8' | translate | unsafe"></span>
-                </a>
-              </div>
-              <div class="faqs-item-answer">
-                <!-- collapsed section content (default collapsed) -->
-                <p id="FAQcollapse8" class="collapse" ng-bind-html="'OS-A8' | translate | unsafe">
-                  </p>
-              </div>
-            </div>
-            <hr>
-            <div class="faqs-item">
-              <div class="faqs-item-question">
-                <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse9">
-                  <span ng-bind-html="'OS-Q9' | translate | unsafe"></span>
-                </a>
-              </div>
-              <div class="faqs-item-answer">
-                <!-- collapsed section content (default collapsed) -->
-                <p id="FAQcollapse9" class="collapse" ng-bind-html="'OS-A9' | translate | unsafe">
-                  </p>
-              </div>
-            </div>
-            <hr>
-            <div class="faqs-item">
-              <div class="faqs-item-question">
-                <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse10">
-                  <span ng-bind-html="'OS-Q10' | translate | unsafe"></span>
-                </a>
-              </div>
-              <div class="faqs-item-answer">
-                <!-- collapsed section content (default collapsed) -->
-                <p id="FAQcollapse10" class="collapse" ng-bind-html="'OS-A10' | translate | unsafe">
-                  </p>
-              </div>
-            </div>
-            <hr>
-            <div class="faqs-item">
-              <div class="faqs-item-question">
-                <a class="h4 more-link collapsed" data-toggle="collapse" href="#FAQcollapse11">
-                  <span ng-bind-html="'OS-Q11' | translate | unsafe"></span>
-                </a>
-              </div>
-              <div class="faqs-item-answer">
-                <!-- collapsed section content (default collapsed) -->
-                <p id="FAQcollapse11" class="collapse" ng-bind-html="'OS-A11' | translate | unsafe">
-                  </p>
-              </div>
-            </div>
-          </div>
-
-         <div class="col-md-12 text-center">
-
-            <div class="well">
-
-              <a class="btn btn-primary btn-lg HelveticaNeueLTStd-BdCn" role="button" href="#" data-toggle="modal" data-target=".bs-example-modal-lg"><span ng-bind-html="'OS-JOIN-BTN' | translate | unsafe"></span></a>
-
-            </div>
-
-          </div>
-
         </div>
-      </div>
-    </section>
-
-
-    <section id="social">
-      <div class="container">
+    </div>
+</section>
+<section id="social">
+    <div class="container">
         <div class="row text-center">
-          <p class="h4">Share This Page:</p>
-          <!-- addthis sharing tools --> 
-          <div class="addthis_sharing_toolbox"></div>
+            <p class="h4">
+                Share This Page:
+            </p><!-- addthis sharing tools -->
+            <div class="addthis_sharing_toolbox"></div>
         </div>
-      </div>
-    </section>
+    </div>
+</section>
