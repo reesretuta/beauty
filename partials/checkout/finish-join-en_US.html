@@ -112,8 +112,9 @@
     </div>
   </div>
   <hr>
-  <div class="agreement-content" id="agreement-content">
+    <a class="pull-right" href="" onclick="printDiv('agreement-content');"><i class="fa fa-print"></i> &nbsp;Print</a>
     <h4 id="myModalLabel" class="modal-title text-center"><span ng-bind-html="'CONSULTANT-AGREEMENT-TITLE' | translate | unsafe"></span></h4>
+  <div class="agreement-content" id="agreement-content">
       <!--consultant agreement goes here-->
       <div ng-if="session.language" ng-include="'/partials/consultant-agreement-'+session.language+'.html'"></div>
   </div>
