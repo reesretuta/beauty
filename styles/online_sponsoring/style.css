@@ -332,6 +332,11 @@ section#why_jafra_products {
   background: #e0dbcf;
 }
 
+section#why_jafra_products #more_products img.products-offleft {
+  margin-left: -35px;
+  padding-right: 25px;
+}
+
 section#why_jafra_lifestyle {
   background: #cac0d3;
 }
