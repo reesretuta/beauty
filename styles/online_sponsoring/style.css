@@ -87,6 +87,9 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   font-size: 18px;
   font-weight: 400;
 }
+.titlify{
+  font-size: 48px;
+}
 #content {
   background-color: #ededed;
   width: 100%;
@@ -101,6 +104,7 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   white-space: nowrap;
 }
 .color-black{color:#000000;}
+.color-gold{color:#867527;}
 .color-purple{color: #533A6D;}
 .color-red{color: #C83B53;}
 .footer-links{
@@ -327,6 +331,15 @@ background: url(/img/worldmap.png);
 section#freedom_flexibility{
   padding: 15px;
 }
+
+section#freedom_flexibility .legacy_wrapper{
+  background: url(/img/timeline_bg.png);
+}
+
+section#freedom_flexibility .legacy_wrapper br.hidden-xs{
+  padding-bottom: 100px;
+}
+
 section#why_jafra_products {
   background: #e0dbcf;
 }
