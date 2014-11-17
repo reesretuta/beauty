@@ -1,1 +1,113 @@
-kits.html
+<!-- kits.html -->
+<!-- Starter Packages -->
+<section id="starter_kits">
+    <div class="container">
+        <h2 class="h1 section-title"></h2>
+    </div>
+    <section id="royal_starter_kit" class="subsection">
+        <div class="container subcontainer">
+            <div class="row">
+                <div class="hidden-md hidden-lg col-md-6">
+                    <img class="img-responsive" src="/img/99_kit.jpg">
+                </div>
+                <div class="col-md-6">
+                    <div class="section-copy">
+                        <h3 class="hero-header-title royal_starter_titles" style="margin-top:10px;">
+                          ROYAL BUSINESS KIT<br />
+                          GET EVERYTHING YOU NEED<br />
+                          Over $490 retail value
+                        </h3>
+                        <p>Make your holidays bright with the Royal Business Kit. Includes everthing you need to jumpstart your new business.</p>
+                        <h3 class="h1 starter_kits-price"></h3>
+                        <p class="starter_kits-label_title"></p>
+                        <p class="whats_inside_button">
+                            <a href="#more_royal" data-toggle="collapse" class="more-link collapsed">SEE WHAT’S INCLUDED </a>
+                        </p>
+                        <p class="starter_kits-retail_value precio_al_publico"></p>
+                        <div class="product-action">Only $99
+                            <!-- Split button -->
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown"><span class="sr-only">Toggle Dropdown</span>BUY (english)</button>
+                                <ul class="dropdown-menu kit-select" role="menu">
+                                    <li>
+                                        <a href="#" ng-click="join('19634')">BUY  (english)</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" ng-click="join('19635')">Buy $99 Kit in spanish</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="free-limited-offer pull-left">
+                            <span>FREE<br />
+                              FOR A LIMITED TIME</span>
+
+                            <a href="#more_free" data-toggle="collapse" class="more-link collapsed">MORE </a>
+                            <img src="/img/november-promo.png" class="pull-left" />
+                        </div>
+                    </div>
+                </div>
+                <div class="hidden-xs hidden-sm col-md-6">
+                    <img class="img-responsive" src="/img/99kit-2x.jpg">
+                    <a href="" class="pull-right"><img src="/img/icons-video.gif" width="25px" /> <img src="/img/icons-booklets.gif" width="25px" />TRAINING INCLUDED!</a>
+                </div><!-- collapsed section content (default collapsed) -->
+                <div id="more_royal" class="col-md-12 collapse">
+                    <div class="col-md-6">
+                        <img src="/img/99_kit_bags.jpg" class="img-responsive">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="section-copy">
+                            <p ng-bind-html="'OS-KIT-PRODUCT1-DESCRIPTION' | translate | unsafe"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="skincare_starter_kit" class="subsection">
+        <div class="container subcontainer">
+            <div class="row">
+                <div class="col-md-6">
+                    <img class="img-responsive" src="/img/39_kit.jpg">
+                </div>
+                <div class="col-md-6">
+                    <div class="section-copy">
+                        <h3 class="hero-header-title skincare_header_title">SPECIAL BUSINESS KIT</h3>
+                        <h3 class="h1 starter_kits-price skincare_price">GET A QUICK START</h3>
+                        <p class="starter_kits-label_title">$290 retail value</p>
+                        <p class="pull-right">
+                          Start a new season of income with this Special Business Kit. Perfect for consultants on a budget who want to ramp up.
+                            <a href="#more_skincare" data-toggle="collapse" class="more-link collapsed">See Inside</a>
+                            <a href="" class="pull-right"><img src="/img/icons-video.gif" width="25px" /> <img src="/img/icons-booklets.gif" width="25px" />TRAINING INCLUDED!</a>
+                        </p>
+                        <p class="starter_kits-retail_value"></p>
+                        <div class="product-action">
+                            <!-- Split button -->
+                            <div class="btn-group">ONLY $49
+                                <button type="button" class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown"><span class="sr-only">Toggle Dropdown</span> BUY (english</button>
+                                <ul class="dropdown-menu kit-select" role="menu">
+                                    <li>
+                                        <a href="#" ng-click="join('19634')"></a>
+                                    </li>
+                                    <li>
+                                        <a href="#" ng-click="join('19635')"></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- collapsed section content (default collapsed) -->
+                <div id="more_skincare" class="col-md-12 collapse">
+                    <div class="col-md-6">
+                        <div class="section-copy">
+                            <p ng-bind-html="'OS-KIT-PRODUCT2-DESCRIPTION' | translate | unsafe"></p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <img src="/img/49kit-2x.jpg" class="img-responsive">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
