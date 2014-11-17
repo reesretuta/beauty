@@ -210,6 +210,15 @@ angular.module('app.controllers.products')
             Product.get({"productId": $scope.productId}).then(function(product, status, headers, config) {
                 $log.debug("ProductDetailsController(): loadProduct(): got product", product);
 
+                // load the group products current prices if needed
+                if (product.type == "group") {
+                     for (var i=0; i < product.contains.length; i++) {
+                         var p = product.contains[i];
+                         $log.debug("ProductDetailsController(): loadProduct(): getting current price for", p.product);
+                         Product.selectCurrentPrice(p.product);
+                     }
+                }
+
                 $scope.product = product;
 
                 if (product.type == 'group') {

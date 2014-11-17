@@ -87,7 +87,7 @@
           <p>
             <form name="item.product{{item.product.sku}}" role="form" class="form-inline store-item-add">
               <div class="form-group">
-                <input type="number" class="form-control qty-input" ng-model="item.quantity" value="{{item.quantity}}">
+                <input type="number" class="form-control qty-input" ng-model="item.quantity" value="{{item.quantity}}" min="1" max="99">
               </div>
             </form>
           </p>

@@ -185,7 +185,12 @@ angular.module('app.services', ['ngResource'])
                 $log.debug("Session(): saveToServer(): saving session");
 
                 var session = getLocalSession();
-                $http.put(API_URL + '/session', session).success(function(s, status, headers, config) {
+                var trimmedSession = angular.copy(session);
+                for (var i=0; i < trimmedSession.cart; i++) {
+                    delete trimmedSession.cart[i].product;
+                }
+
+                $http.put(API_URL + '/session', trimmedSession).success(function(s, status, headers, config) {
                     $log.debug("sessionService(): saveToServer(): saved", s);
 
                     d.resolve(s);
@@ -554,17 +559,32 @@ angular.module('app.services', ['ngResource'])
 
                 // check the cart for matching items, so we can update instead of add
                 var updated = false;
+                var errors = false;
                 $.each(cart, function(index, cartItem) {
-                    //$log.debug("cartService(): addToCart(): comparing products", p, product);
-                    if (cartItem.sku == item.sku && item.kitSelections == null && cartItem.kitSelections == null) {
+                    $log.debug("cartService(): addToCart(): comparing products", item, cartItem);
+                    if (cartItem.sku == item.sku && (item.kitSelections == null || Object.keys(item.kitSelections).length==0) && (cartItem.kitSelections == null || Object.keys(cartItem.kitSelections).length==0)) {
                         //$log.debug("cartService(): addToCart(): non-kit products are identical");
                         var newQty = item.quantity + cartItem.quantity;
-                        cartItem.quantity = newQty;
-                        $log.debug("cartService(): addToCart(): added one more", item);
-                        updated = true;
-                        return true;
+                        if (newQty <= 20) {
+                            cartItem.quantity = newQty;
+                            $log.debug("cartService(): addToCart(): added one more", item);
+                            updated = true;
+                            return true;
+                        } else {
+                            // show error here
+                            $log.error("cartService(): addToCart(): error adding item, max quantity reached", item);
+                            // growlnotification when adding to cart
+                            growlNotifications.add('<i class="fa fa-shopping-cart"></i> Could not add ' + item.name + ' to cart', 'danger', 4000);
+                            errors = true;
+                            return true;
+                        }
                     }
                 });
+
+                if (errors) {
+                    $rootScope.adding = false;
+                    return;
+                }
 
                 if (!updated) {
                     // we haven't updated the cart, so this is a new item to add
