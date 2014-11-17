@@ -3,7 +3,7 @@
         <!-- Product -->
         <article class="ccol-xs-12 col-sm-6 col-md-4 col-lg-4 store-item" ng-repeat="product in filteredProduct = (products | filter:searchFunction | orderBy:'name')" ng-if="product.productflag.isgroup !=1">
             
-          <div class="store-item-wrapper" ng-if="product.sku!=''">
+          <div class="store-item-wrapper" ng-if="product.sku != '' && product.type != 'group'">
             <a ng-href="{{STORE_BASE_URL}}/products/{{product.sku}}#top">
               <span class="responsive-container img-responsive">
                 <img class="responsive-element img-responsive" ng-src="{{getImagePath(product.images[0].imagePath)}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';">
@@ -38,7 +38,7 @@
                 <input type="integer" class="form-control qty-input" id="qty3" placeholder="1" ng-model="quantities[product.sku]">
               </div>
             </form></p> -->
-            <p ng-if="product.type == 'product' || product.kitGroups.length == 0">
+            <p ng-if="product.type == 'product' || (product.type == 'kit' && product.kitGroups.length == 0)">
               <a class="btn btn-primary primary-cta ladda-button" ui-ladda="adding" data-style="expand-right" ng-click="addToCart(product)">
                 <i class="fa fa-shopping-cart"></i> Add to Cart
               </a>
