@@ -329,6 +329,15 @@ section#freedom_flexibility .legacy_wrapper{
 section#freedom_flexibility .legacy_wrapper br.hidden-xs{
   padding-bottom: 100px;
 }
+section#freedom_flexibility div.subcontainer {
+  background-color: #EDEDED;
+}
+section#freedom_flexibility .section-copy_bound_box{
+  border: 2px solid #7D5B92;
+}
+section#freedom_flexibility #more_freedom {
+  background: url(http://localhost:8090/img/worldmap.png);
+}
 
 section#why_jafra_products {
   background: #e0dbcf;
@@ -365,6 +374,8 @@ section h3.hero-header-title-freedom_flexibility {
   font-size: 36px;
   color: #460D66;
   margin-top: -16px;
+background-color: #EDEDED;
+display: inline-block;
 }
 section h3.hero-header-title-freedom_flexibility span {
   background: white;
