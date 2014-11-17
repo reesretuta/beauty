@@ -185,7 +185,12 @@ angular.module('app.services', ['ngResource'])
                 $log.debug("Session(): saveToServer(): saving session");
 
                 var session = getLocalSession();
-                $http.put(API_URL + '/session', session).success(function(s, status, headers, config) {
+                var trimmedSession = angular.copy(session);
+                for (var i=0; i < trimmedSession.cart; i++) {
+                    delete trimmedSession.cart[i].product;
+                }
+
+                $http.put(API_URL + '/session', trimmedSession).success(function(s, status, headers, config) {
                     $log.debug("sessionService(): saveToServer(): saved", s);
 
                     d.resolve(s);
@@ -557,12 +562,27 @@ angular.module('app.services', ['ngResource'])
                 $.each(cart, function(index, cartItem) {
                     //$log.debug("cartService(): addToCart(): comparing products", p, product);
                     if (cartItem.sku == item.sku && item.kitSelections == null && cartItem.kitSelections == null) {
-                        //$log.debug("cartService(): addToCart(): non-kit products are identical");
-                        var newQty = item.quantity + cartItem.quantity;
-                        cartItem.quantity = newQty;
-                        $log.debug("cartService(): addToCart(): added one more", item);
-                        updated = true;
-                        return true;
+                        if (item.product && item.product.currentPrice) {
+                            //$log.debug("cartService(): addToCart(): non-kit products are identical");
+                            var newQty = item.quantity + cartItem.quantity;
+                            if (newQty <= 20) {
+                                cartItem.quantity = newQty;
+                                $log.debug("cartService(): addToCart(): added one more", item);
+                                updated = true;
+                                return true;
+                            } else {
+                                // show error here
+                                $log.error("cartService(): addToCart(): error adding item, max quantity reached", item);
+                                // growlnotification when adding to cart
+                                growlNotifications.add('<i class="fa fa-shopping-cart"></i> Could not add ' + item.name + ' to cart. Max quantity reached. Please contact support.', 'error', 4000);
+
+                                return true;
+                            }
+                        } else {
+                            $log.error("cartService(): addToCart(): not adding item to cart", item);
+                            growlNotifications.add('<i class="fa fa-shopping-cart"></i> Could not add ' + item.name + ' to cart. Please contact support.', 'error', 4000);
+                            return true;
+                        }
                     }
                 });
 
