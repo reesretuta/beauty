@@ -719,7 +719,7 @@ models.onReady(function() {
                     } else {
                         try {
                             console.log('Got product detail page', productId, sku, isKit);
-                            casper.waitUntilVisible('input[name=formalName_en_US]', function() {
+                            casper.waitUntilVisible('input[name=formalName_'+LANGUAGE+']', function() {
                                 console.log("DOM available");
                                 var product = casper.evaluate(function(LANGUAGE) {
                                     try {
@@ -732,7 +732,7 @@ models.onReady(function() {
                                             product.name_es_US = $('input[name=formalName_es_US]').val();
                                             product.description_es_US = description;
                                         }
-                                        product.quantity = parseInt($('input[name="sellingQty_en_US"]').val());
+                                        product.quantity = parseInt($('input[name="sellingQty_'+LANGUAGE+'"]').val());
                                         if (product.quantity == null || isNaN(product.quantity)) {
                                             product.quantity = 1;
                                         }
