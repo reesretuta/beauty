@@ -70,6 +70,8 @@ angular.module('app.controllers.checkout')
         $scope.invalidDOB = false;
         $scope.invalidSponsorId = false;
 
+        $scope.processingOrder = false;
+
         // initially verify
         verifyAge();
         verifySponsorId();
@@ -1303,6 +1305,7 @@ angular.module('app.controllers.checkout')
             $log.debug("CheckoutController(): processOrder(): profile", $scope.profile);
 
             $scope.orderError = null;
+            $scope.processingOrder = true;
 
             if ($scope.isOnlineSponsoring) {
                 if (debug) {
@@ -1419,20 +1422,23 @@ angular.module('app.controllers.checkout')
                         };
 
                         WizardHandler.wizard('checkoutWizard').goTo('Finish');
-
                         // remove the created lead
-                            Leads.remove({
+                        Leads.remove({
                             email: $scope.profile.loginEmail
                         }).$promise.then(function(lead) {
                             $log.debug("CheckoutController(): processOrder(): lead removed");
                         });
+
+                        $scope.processingOrder = false;
                     }, function(error) {
                         $log.error("CheckoutController(): processOrder(): failed to create consultant", error);
                         $scope.orderError = error.message;
                         // FIXME - show error here!!!!!
+                        $scope.processingOrder = false;
                     });
                 } else {
                     WizardHandler.wizard('checkoutWizard').goTo('Finish');
+                    $scope.processingOrder = false;
                     return;
                 }
 
@@ -1564,12 +1570,15 @@ angular.module('app.controllers.checkout')
                         };
 
                         WizardHandler.wizard('checkoutWizard').goTo('Finish');
+                        $scope.processingOrder = false;
                     }, function(error) {
                         $log.error("CheckoutController(): processOrder(): failed to create order", error);
                         $scope.orderError = error.message;
+                        $scope.processingOrder = false;
                     });
                 } else {
                     WizardHandler.wizard('checkoutWizard').goTo('Finish');
+                    $scope.processingOrder = false;
                     return;
                 }
             }
