@@ -321,7 +321,8 @@ section#freedom_flexibility{
 }
 
 section#freedom_flexibility .legacy_wrapper{
-  background: url(/img/timeline_bg.png);
+  background: url(/img/timeline-bg.png) repeat-x 50% 50%;
+  background-size: ;
 }
 
 section#freedom_flexibility .legacy_wrapper br.hidden-xs{
