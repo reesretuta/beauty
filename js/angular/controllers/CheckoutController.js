@@ -1246,13 +1246,23 @@ angular.module('app.controllers.checkout')
                     });
                 }
 
-                SalesTax.calculate(0, 0, $scope.profile.shipping.geocode, 1414, "P", products).then(function(info) {
-                    $log.debug("CheckoutController(): fetchSalesTax()", info);
-                    defer.resolve(info);
-                }, function(err) {
-                    $log.error("CheckoutController(): fetchSalesTax()", err);
-                    defer.reject(err);
-                });
+                if ($scope.isOnlineSponsoring) {
+                    SalesTax.calculate(0, 0, $scope.profile.shipping.geocode, 1414, "P", products).then(function(info) {
+                        $log.debug("CheckoutController(): fetchSalesTax()", info);
+                        defer.resolve(info);
+                    }, function(err) {
+                        $log.error("CheckoutController(): fetchSalesTax()", err);
+                        defer.reject(err);
+                    });
+                } else {
+                    SalesTax.calculate($rootScope.session.client.id, getConsultantId(), $scope.profile.shipping.geocode, 1510, "Y", products).then(function(info) {
+                        $log.debug("CheckoutController(): fetchSalesTax()", info);
+                        defer.resolve(info);
+                    }, function(err) {
+                        $log.error("CheckoutController(): fetchSalesTax()", err);
+                        defer.reject(err);
+                    });
+                }
             } else {
                 defer.reject('Unable to lookup address');
             }
@@ -1511,15 +1521,7 @@ angular.module('app.controllers.checkout')
 
                 // FIXME - make sure we have a client ID (aka the use is logged in)
 
-                var consultantId = $rootScope.session.consultantId;
-                if (!consultantId) {
-                    // FIXME - handle multiple consultant IDs - dialog?
-                    if ($rootScope.session.client.consultantIds && $rootScope.session.client.consultantIds.length > 0) {
-                        consultantId = $rootScope.session.client.consultantIds[0];
-                    } else {
-                        consultantId = 66556;
-                    }
-                }
+                var consultantId = getConsultantId();
 
                 //{
                 //    "firstName": "John",         // required
@@ -1571,6 +1573,19 @@ angular.module('app.controllers.checkout')
                     return;
                 }
             }
+        }
+
+        function getConsultantId() {
+            var consultantId = $rootScope.session.consultantId;
+            if (!consultantId) {
+                // FIXME - handle multiple consultant IDs - dialog?
+                if ($rootScope.session.client.consultantIds && $rootScope.session.client.consultantIds.length > 0) {
+                    consultantId = $rootScope.session.client.consultantIds[0];
+                } else {
+                    consultantId = 66556;
+                }
+            }
+            return consultantId;
         }
 
         $scope.selectShippingAddressAndContinue = function(address) {
