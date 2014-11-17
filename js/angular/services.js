@@ -559,32 +559,32 @@ angular.module('app.services', ['ngResource'])
 
                 // check the cart for matching items, so we can update instead of add
                 var updated = false;
+                var errors = false;
                 $.each(cart, function(index, cartItem) {
-                    //$log.debug("cartService(): addToCart(): comparing products", p, product);
-                    if (cartItem.sku == item.sku && item.kitSelections == null && cartItem.kitSelections == null) {
-                        if (item.product && item.product.currentPrice) {
-                            //$log.debug("cartService(): addToCart(): non-kit products are identical");
-                            var newQty = item.quantity + cartItem.quantity;
-                            if (newQty <= 20) {
-                                cartItem.quantity = newQty;
-                                $log.debug("cartService(): addToCart(): added one more", item);
-                                updated = true;
-                                return true;
-                            } else {
-                                // show error here
-                                $log.error("cartService(): addToCart(): error adding item, max quantity reached", item);
-                                // growlnotification when adding to cart
-                                growlNotifications.add('<i class="fa fa-shopping-cart"></i> Could not add ' + item.name + ' to cart. Max quantity reached. Please contact support.', 'error', 4000);
-
-                                return true;
-                            }
+                    $log.debug("cartService(): addToCart(): comparing products", item, cartItem);
+                    if (cartItem.sku == item.sku && (item.kitSelections == null || Object.keys(item.kitSelections).length==0) && (cartItem.kitSelections == null || Object.keys(cartItem.kitSelections).length==0)) {
+                        //$log.debug("cartService(): addToCart(): non-kit products are identical");
+                        var newQty = item.quantity + cartItem.quantity;
+                        if (newQty <= 20) {
+                            cartItem.quantity = newQty;
+                            $log.debug("cartService(): addToCart(): added one more", item);
+                            updated = true;
+                            return true;
                         } else {
-                            $log.error("cartService(): addToCart(): not adding item to cart", item);
-                            growlNotifications.add('<i class="fa fa-shopping-cart"></i> Could not add ' + item.name + ' to cart. Please contact support.', 'error', 4000);
+                            // show error here
+                            $log.error("cartService(): addToCart(): error adding item, max quantity reached", item);
+                            // growlnotification when adding to cart
+                            growlNotifications.add('<i class="fa fa-shopping-cart"></i> Could not add ' + item.name + ' to cart', 'danger', 4000);
+                            errors = true;
                             return true;
                         }
                     }
                 });
+
+                if (errors) {
+                    $rootScope.adding = false;
+                    return;
+                }
 
                 if (!updated) {
                     // we haven't updated the cart, so this is a new item to add

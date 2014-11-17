@@ -97,7 +97,7 @@
                 <form role="form" class="form-inline store-item-add">
                   <div class="form-group">
                     <label for="qty1234">qty:</label>
-                    <input type="number" class="form-control qty-input" id="qty1234" placeholder="1" value="1" max="20">
+                    <input type="number" class="form-control qty-input" id="qty1234" placeholder="1" value="1" min="1" max="99">
                     <a class="btn btn-primary">
                       <i class="fa fa-shopping-cart"></i> Add to Cart
                     </a>
@@ -174,8 +174,8 @@
             <p><form role="form" class="form-inline store-item-add">
               <div class="form-group">
                 <label for="qty12345">qty:</label>
-                <input type="number" class="form-control qty-input" id="qty12345" placeholder="1" value="1" max="20" ng-model="quantities[product.sku]" ng-if="product.type != 'group'">
-                <input type="number" class="form-control qty-input" id="qty12345-group" placeholder="1" value="1" max="20" ng-model="quantities[selectedProduct.sku]" ng-if="product.type == 'group'">
+                <input type="number" class="form-control qty-input" id="qty12345" placeholder="1" value="1" min="1" max="99" ng-model="quantities[product.sku]" ng-if="product.type != 'group'">
+                <input type="number" class="form-control qty-input" id="qty12345-group" placeholder="1" value="1" min="1" max="99" ng-model="quantities[selectedProduct.sku]" ng-if="product.type == 'group'">
               </div>
             </form></p>
             <p ng-if="product.type == 'product' || (product.type == 'kit' && product.kitGroups.length == 0)">
