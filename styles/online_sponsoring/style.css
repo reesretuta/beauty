@@ -286,9 +286,9 @@ font-size: 76px;
   margin-left: 0px;
 }*/
 
-.subsection {
+/*.subsection {
   margin-bottom: 55px;
-}
+}*/
 
 .subcontainer {
   background: #fff;
@@ -318,6 +318,7 @@ font-size: 76px;
 
 section#freedom_flexibility{
   padding: 15px;
+  padding-bottom: 0px;
 }
 
 section#freedom_flexibility .legacy_wrapper{
