@@ -104,13 +104,13 @@ angular.module('app.controllers.main')
                     return "/img/product_placeholder.gif";
                 }
                 //$log.debug("MainController(): getImagePath(): getting image path from array");
-                return 'https://stageadmin.jafra.com' + paths[0];
+                return 'https://admin.jafra.com' + paths[0];
             }
             //$log.debug("MainController(): getImagePath(): getting image path from string");
             if (paths == undefined) {
               return "/img/product_placeholder.gif";
             }
-            return 'https://stageadmin.jafra.com' + paths;
+            return 'https://admin.jafra.com' + paths;
         }
 
         // begin navigation

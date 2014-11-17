@@ -43,8 +43,8 @@
 
               <p><label>{{item.product.sku}}</label></p>
 
-              <p ng-if="item.kitSelections != null">This kit includes:</p>
-              <ul ng-if="item.kitSelections != null">
+              <p ng-if="item.product.kitGroups.length > 0"><span ng-bind-html="'KIT_INCLUDE' | translate | unsafe"></span>:</p>
+              <ul ng-if="item.product.kitGroups.length > 0">
                 <li ng-repeat="(kitId, kitProduct) in item.kitSelections">
                   {{kitProduct.name}} #{{kitProduct.sku}}
                 </li>
