@@ -836,7 +836,7 @@ angular.module('app.services', ['ngResource'])
         }
         return productService;
     })
-    .factory('Consultant', function ($resource, $http, $log, $q, Session, PGP, API_URL) {
+    .factory('Consultant', function ($resource, $http, $log, $q, Session, Cart, PGP, API_URL) {
         var consultantService = $resource(API_URL + '/consultants/:consultantId', {consultantId: '@_id'});
 
         var key = PGP.getKey();
@@ -903,12 +903,20 @@ angular.module('app.services', ['ngResource'])
                         consultantService.save({}, {
                             encrypted: encrypted
                         }).$promise.then(function(c) {
-                                $log.debug("sessionService(): create(): created consultant");
+                            $log.debug("sessionService(): create(): created consultant");
+
+                            // remove the items from cart
+                            Cart.clear().then(function() {
+                                $log.debug("sessionService(): create(): cleared cart");
                                 d.resolve(c);
-                            }, function(response) {
-                                $log.error("sessionService(): create(): failed to create consultant", response.data);
-                                d.reject(response.data);
+                            }, function(err) {
+                                $log.error("sessionService(): create(): failed to clear cart");
+                                d.resolve(c);
                             });
+                        }, function(response) {
+                            $log.error("sessionService(): create(): failed to create consultant", response.data);
+                            d.reject(response.data);
+                        });
                     } catch (ex) {
                         d.reject({
                             errorCode: 500,
@@ -925,7 +933,7 @@ angular.module('app.services', ['ngResource'])
 
         return consultantService;
     })
-    .factory('Order', function ($resource, $http, $log, $q, Session, PGP, API_URL) {
+    .factory('Order', function ($resource, $http, $log, $q, Session, Cart, PGP, API_URL) {
         var orderService = $resource(API_URL + '/orders/:orderId', {orderId: '@_id'});
 
         var key = PGP.getKey();
@@ -938,7 +946,15 @@ angular.module('app.services', ['ngResource'])
             try{
                 orderService.save({}, order).$promise.then(function(c) {
                     $log.debug("sessionService(): create(): created order");
-                    d.resolve(c);
+
+                    // remove the items from cart
+                    Cart.clear().then(function() {
+                        $log.debug("sessionService(): create(): cleared cart");
+                        d.resolve(c);
+                    }, function(err) {
+                        $log.error("sessionService(): create(): failed to clear cart");
+                        d.resolve(c);
+                    });
                 }, function(response) {
                     $log.error("sessionService(): create(): failed to create order", response.data);
                     d.reject(response.data);
