@@ -294,6 +294,10 @@ font-size: 76px;
   height: 100%;
 }
 
+#royal_starter_kit .kit-value {
+font-size: 48px;
+}
+
 /*section#why_jafra_products, section#why_jafra_lifestyle, section#why_jafra_rewards, section#why_jafra_testimonials, section#royal_starter_kit, section#skincare_starter_kit, section#faqs{
   background-color: #fff;
   margin-right: 0px;
