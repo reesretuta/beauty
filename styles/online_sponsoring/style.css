@@ -28,6 +28,7 @@
   font-family: HelveticaNeueLTStd-BdCn;
   font-weight: normal;
   font-style: normal;
+  letter-spacing: -0.02em;
 }
 
 /* end custom fonts */
@@ -82,6 +83,7 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   font-family: DidotLTPro-Roman, serif;
   font-weight: 400;
   color: #460d66;
+  letter-spacing: -0.02em;
 }
 .biggify{
   font-size: 18px;
@@ -89,6 +91,11 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
 }
 .titlify{
   font-size: 48px;
+  letter-spacing: -0.02em;
+}
+.enlarge {
+  font-size: 1.5em;
+  line-height: 1em;
 }
 #content {
   background-color: #ededed;
@@ -106,8 +113,8 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
 .color-black{color:#000000;}
 .color-grey{color: #777777;}
 .color-gold{color:#867527;}
-.color-purple{color: #533A6D;}
-.color-red{color: #C83B53;}
+.color-purple{color: #460d66;}
+.color-red{color: #c3002f;}
 .color-violet{color: #9659B7;}
 .footer-links{
   background-color: rgb(131,104,137);;
@@ -449,7 +456,6 @@ font-weight: normal;
 font-style: normal;
 line-height: 0.9;
 color: #8B7B5B;
-letter-spacing: 0.0589em;
 }
 
 section h3.hero-header-title-freedom_flexibility {
@@ -460,7 +466,6 @@ background-color: #EDEDED;
 display: inline-block;
 }
 section h3.hero-header-title-freedom_flexibility span {
-  background: white;
   padding: 0px 10px;
 }
 
@@ -799,7 +804,7 @@ padding-top: 5px;
 }
 #pastelpatches {
   position: absolute;
-  top: -46px;
+  top: 10px;
   right: -106px;
 }
 #liner_black {
