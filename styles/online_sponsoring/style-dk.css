@@ -213,6 +213,12 @@ section#why_jafra_testimonials .btn-lg {
 	background: transparent;
 }
 
+/* your call section */
+#more_call p {
+	line-height: 1.6em;
+	padding-top: 10px;
+}
+
 /* dains helpers */
 .padbottom { padding-bottom: 30px; }
 .padtop { padding-top: 30px; }
