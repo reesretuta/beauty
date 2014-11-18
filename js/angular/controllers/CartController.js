@@ -71,7 +71,7 @@ angular.module('app.controllers.cart')
             }
 
             if (product != null) {
-                if (product.type == 'kit') {
+                if (product.type == 'kit' && product.kitGroups.length > 0) {
                     // configure kit
                     $scope.configureKit({
                         name: product.name,
