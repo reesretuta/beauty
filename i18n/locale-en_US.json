@@ -100,7 +100,7 @@
 
     "OS-PRODUCTS-RESULTS-PART1": "Results are",
     "OS-PRODUCTS-RESULTS-PART2": "guaranteed",
-    "OS-PRODUCTS-RESULTS-PART3": "all you have to do is share!",
+    "OS-PRODUCTS-RESULTS-PART3": "All you have to do is share!",
 
     "OS-PRODUCTS-GET-YOUR-STARTER-KIT": "GET YOUR STARTER KIT",
 
@@ -166,6 +166,9 @@
     "OS-FAQ-QUESTION10-ANSWER": "Of course! It’s a no muss, no fuss guarantee! We want happy Consultants and Customers who are 100% satisfied. So we offer free, no-hassle returns and exchanges within 6 months of a product’s purchase date.",
     "OS-FAQ-QUESTION11": "Q. How is JAFRA different from other direct sales cosmetic companies?",
     "OS-FAQ-QUESTION11-ANSWER": "Founded in 1956 in Malibu, California, by Jan and Frank Day, JAFRA has over 58 years in helping women achieve the life they imagine.  Over 500,000 Consultants sell our products in 20 countries.  Plus, JAFRA is ranked in the top 25 direct sales companies in the United States.",
+
+    "CHECKOUT-FIRST-PLACEHOLDER": "First",
+    "CHECKOUT-LAST-PLACEHOLDER": "Last",
 
     "TIT01":"Our Products",
     "TIT02":"Order Details",
@@ -367,8 +370,17 @@
     "OS-START-TITLE":"Contact Information",
     "OS-START-TAG":"Start by entering your contact information below.",
     "OS-START-PRIVACY-AGREE":"By clicking continue, you agree to JAFRA&rsquo;s <a href=\"\" data-toggle=\"modal\" data-target=\".bs-privacy-modal-lg\">Privacy Policy</a>.",
+
     "CONSULTANT-AGREEMENT-TITLE":"JAFRA Independent Consultant Agreement",
     "CONSULTANT-AGREEMENT-NOTE":"You must read the entire agreement (scroll down) before you can continue.",
+    "CONSULTANT-AGREEMENT-PRINT":"Print",
+    "CONSULTANT-AGREEMENT-DONT-AGREE":"I do not agree",
+    "CONSULTANT-AGREEMENT-AGREE":"I agree",
+
+    "CONSULTANT-PROFILE-ERROR": "Unable to create profile.  Please contact Jafra support for further assistance.",
+    "CONSULTANT-PROFILE-INVALID-SPONSORID": "Must only contain numbers",
+    "CONSULTANT-PROFILE-CONTINUE-TO-SHIPPING": "Continue to Shipping",
+
     "OS-PROFILE-TITLE":"Payee Profile & Sponsor",
     "OS-PROFILE-TAG":"We&rsquo;ll need some information to send your payment checks.",
     "CONTACT-INFO-LABEL":"Contact Info",
