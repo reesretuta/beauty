@@ -16,24 +16,26 @@
                     </div>
                     <div id="more_freedom" class="row collapse">
                         <div class="col-md-10 col-md-offset-1">
-                          <div class="row">
-                            <div class="legacy_wrapper text-center clearfix">
+                          <div class="row text-center">
+                            
                               <span class="titlify color-purple DidotLTPro-Italic">join the <span class="sans-serif-title color-gold HelveticaNeueLTStd-BdCn">LEGACY</span></span>
-                              <br class="hidden-xs" />
-                              <div class="timeline-photo pull-left">
-                                <img src="/img/1956.jpg" class="img-circle img-responsive" /><br />
-                                <span class="biggify color-grey HelveticaNeueLTStd-BdCn">1956</span>
+
+                              <div class="legacy_wrapper text-center clearfix">
+                                <div class="timeline-photo pull-left">
+                                  <img src="/img/1956.jpg" class="img-circle img-responsive" /><br />
+                                  <span class="biggify color-grey HelveticaNeueLTStd-BdCn">1956</span>
+                                </div>
+                                <div class="timeline-photo pull-right">
+                                  <img src="/img/today.jpg" class="img-circle img-responsive" /><br />
+                                  <span class="biggify color-grey HelveticaNeueLTStd-BdCn">TODAY</span>
+                                </div>
                               </div>
-                              <div class="timeline-photo pull-right">
-                                <img src="/img/today.jpg" class="img-circle img-responsive" /><br />
-                                <span class="biggify color-grey HelveticaNeueLTStd-BdCn">TODAY</span>
-                              </div>
+
                               <p class="timeline-description">
                                   It began over 58 years ago in 1956 in Malibu, California, when Jan and Frank Day launched JAFRA so a woman could own her own business. Since then, hundreds of thousands of women have successfully realized their entrepreneurial dreams, first as a Consultant, then as a Leader with their own JAFRA Team.
                               </p>
-                            </div>
                           </div>
-                          <div class="row">
+                          <div class="row padbottom padtop">
                             <div class="col-md-4">
                               <div class="text-center">
                                 <h3 class="titlify DidotLTPro-Italic">share the <span class="color-gold HelveticaNeueLTStd-BdCn">INNOVATION</span></h3>
@@ -55,13 +57,20 @@
                           </div>
                           <div class="row text-center">
                             <span class="titlify color-purple DidotLTPro-Italic">Make <span class="color-red HelveticaNeueLTStd-BdCn">today</span> the day you begin the life you imagine!</span>
+                            <p><a class="btn btn-primary HelveticaNeueLTStd-BdCn btn-lg dropdown-toggle " data-toggle="modal" data-target=".bs-example-modal-lg" role="button" href="">JOIN JAFRA TODAY</a></p>
                           </div>
                         </div>
-                    </div>
-                    <div class="row text-center">
-                      <a class="btn btn-primary HelveticaNeueLTStd-BdCn btn-lg dropdown-toggle " data-toggle="modal" role="button" href="#JOIN_NOW">JOIN JAFRA TODAY</a>
                     </div>
                 </div><!-- /.section-copy --> <!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container -->
     </section>
+    <script>
+      $(function(){ 
+
+        $('a.more-link').on('click', function() {
+          $(this).closest('section').toggleClass('expanded');
+        });
+
+      });
+    </script>

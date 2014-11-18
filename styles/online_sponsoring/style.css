@@ -108,6 +108,7 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
 .color-gold{color:#867527;}
 .color-purple{color: #533A6D;}
 .color-red{color: #C83B53;}
+.color-violet{color: #9659B7;}
 .footer-links{
   background-color: rgb(131,104,137);;
   padding: 2em;
@@ -368,6 +369,55 @@ section#why_jafra_lifestyle {
 section#why_jafra_lifestyle .subcontainer {
   background-color: #460D66;
 }
+section#why_jafra_lifestyle span.you_choose {
+color: #ffffff;
+font-size: 48px;
+text-transform:uppercase
+}
+
+section#why_jafra_lifestyle span.how_to {
+font-family: DidotLTPro-Italic;
+color: #C83B53;
+font-size: 48px;
+position: relative;
+right: -2em;
+}
+
+section#why_jafra_lifestyle span.business {
+font-family: HelveticaNeueLTStd-BdCn;
+color: #867527;
+font-size: 72px;
+text-transform: uppercase;
+position: relative;
+right: -3.5em;
+z-index: 2;
+}
+
+section#why_jafra_lifestyle .subcontainer ul.golden_bullets {
+  font-family: DidotLTPro-Italic;
+  font-size: 30px;
+  list-style: none;
+  color: #ffffff;
+background: #620747;
+padding: 2em 2em 2em 4.2em;
+top: -1.25em;
+left: -4.2em;
+position: relative;
+max-width: 23.6em;
+line-height: 3em;
+z-index: 0;
+}
+
+section#why_jafra_lifestyle .subcontainer ul.golden_bullets li:before { 
+  content: "\25BA";
+  color: #867527;
+  padding-right: 25px;
+}
+
+section#why_jafra_lifestyle .subcontainer .more-link:after {
+  color: #C3002F;
+}
+
 section#why_jafra_rewards {
   background: #faebe6;
 }
@@ -943,11 +993,21 @@ body.incheckout {
     .jumbotron {
         padding-top: 180px;
     }
+
+    section#why_jafra_lifestyle .subcontainer ul.golden_bullets {
+      width: 23.6em;
+    }
+
 }
 @media (min-width:900px) and (max-width:1200px){
 	#lipsticksmear{
 		left:-120px;
 	}
+
+  section#why_jafra_lifestyle .subcontainer ul.golden_bullets {
+    width: 20.6em;
+  }
+
   span.your_call {
     font-size: 65px;
   }
