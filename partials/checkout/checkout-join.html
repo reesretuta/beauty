@@ -5,27 +5,27 @@
   <!--current step: {{checkout.currentStep}}-->
 
     <!-- sign in -->
-    <wz-step title="Start">
+    <wz-step title="Start" display-name="{{'WZ_START' | translate | unsafe}}">
       <ng-include src="'/partials/checkout/start.html'"/>
     </wz-step>
 
-    <wz-step title="Profile">
+    <wz-step title="Profile" display-name="{{'WZ_PROFILE' | translate | unsafe}}">
       <ng-include src="'/partials/checkout/profile.html'"/>
     </wz-step>
 
-    <wz-step title="Shipping">
+    <wz-step title="Shipping" display-name="{{'WZ_SHIPPING' | translate | unsafe}}">
       <ng-include src="'/partials/checkout/shipping.html'"/>
     </wz-step>
 
-    <wz-step title="Payment">
+    <wz-step title="Payment" display-name="{{'WZ_PAYMENT' | translate | unsafe}}">
       <ng-include src="'/partials/checkout/payment.html'"/>
     </wz-step>
 
-    <wz-step title="Review">
+    <wz-step title="Review" display-name="{{'WZ_REVIEW' | translate | unsafe}}">
       <ng-include src="'/partials/checkout/review.html'"/>
     </wz-step>
 
-    <wz-step title="Finish">
+    <wz-step title="Finish" display-name="{{'WZ_FINISH' | translate | unsafe}}">
       <ng-include src="'/partials/checkout/finish.html'"/>
     </wz-step>
   </wizard>
