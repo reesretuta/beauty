@@ -3,6 +3,7 @@
     "JOIN-JAFRA-TODAY": "JOIN JAFRA TODAY",
     "CLOSE": "Close",
     "TERMS_OF_USE": "Terms of Use",
+
     "NAV_HOME": "Home",
     "NAV_ABOUT": "About",
     "NAV_OPPORTUNITY": "Opportunity",
@@ -10,6 +11,13 @@
     "NAV_PARTY": "Party With Us",
     "NAV_MEDIA": "Media",
     "NAV_MYPAGE": "My Page",
+
+    "OS-NAV1":"Why Jafra?",
+    "OS-NAV2":"Starter Packages",
+    "OS-NAV3":"Faqs",
+    "OS-NAV4":"Join Now!",
+    "OS-NAV5":"Contact",
+
     "HEADER_CONSULTANTMSG": "Your JAFRA Beauty Consultant",
     "VIEW_CART": "View Cart",
 
@@ -33,17 +41,20 @@
     "ABOUT-MAKE-TODAY": "today",
     "ABOUT-THE-DAY-YOU-BEGIN": "the day you begin the life you imagine!",
 
+    "BUY-ENGLISH": "Buy English",
+    "BUY-SPANISH": "Buy Spanish",
+    "KIT-DETAILS-TOGGLE": "WHAT&rsquo;S INSIDE?",
+
     "OS-JOIN-BTN": "Join now",
     "OS-KIT-MODAL-TITLE": "SELECT YOUR STARTER KIT",
+
     "OS-KIT-PRODUCT1-TITLE1": "get everything",
     "OS-KIT-PRODUCT1-TITLE2": "YOU NEED",
     "OS-KIT-PRODUCT1-NAME": "Royal Starter Kit",
     "OS-KIT-PRODUCT1-PRICE": "$99",
     "OS-KIT-PRODUCT1-VALUE": "A $490+ Retail Value",
     "OS-KIT-PRODUCT1-DESCRIPTION": "Advanced Dynamics Balancing Cleanser<br />Advanced Dynamics Balancing Toner <br />Advanced Dynamics Balancing Day Moisture<br />Advanced Dynamics Balancing Night Moisture<br />Royal Jelly Milk Balm Advanced<br />Elasticity Recovery Hydrogel + Firmiplex Complex<br />Optimeyes Eye Treatment<br />Royal Almond Rich Body Oil<br />LEGEND EDT<br />Vesen EDT<br />Eau d'Arômes Fragrance Spray<br />Skid EDT<br /><br /><strong>Plus Free products…</strong><br />Royal Jelly Milk Balm Original Formula in a Special Decanter<br />Advanced Dynamics Hydrating Sachet (3)<br />Advanced Dynamics Balancing Sachet (3)<br />Advanced Dynamics Mattifying Sachet (3)<br />Advanced Dynamics Soothing Sachet (3)<br /><br /><strong>Plus you get DYNAMIC Tools!</strong><br />Black JAFRA Tote<br />Clear JAFRA Tote<br />Welcome to JAFRA Literature Set<br />Product Catalogs (5)<br />Seasonal Brochures (10)<br />Hostess Brochure<br />Advanced Dynamic Profiles (10)<br />Skin Care Profiles (10)<br />Women’s Fragrance Profiles (10)<br />Business Cards (50)<br />Client Order Form (10)",
-    "BUY-ENGLISH": "Buy English",
-    "BUY-SPANISH": "Buy Spanish",
-    "KIT-DETAILS-TOGGLE": "WHAT&rsquo;S INSIDE?",
+
     "OS-KIT-PRODUCT2-TITLE1": "get a",
     "OS-KIT-PRODUCT2-TITLE2": "QUICK START",
     "OS-KIT-PRODUCT2-PRICE": "$49",
@@ -114,10 +125,10 @@
     "TIT11":"Objects",
     "TIT12":"Product Details",
     "TIT13":"All Products",
-    
+
     "BTN_LOGOUT":"Logout",
     "ALL_PRODS":"All Products",
-    "OR_BY_ITEM":"Order By Item",
+    "ORDER_BY_ITEM":"Order By Item",
     "TERMS":"Terms",
     "PRIVACY":"Privacy",
     "COPYRIGHT":"JAFRA Cosmetics International - All Rights Reserved",
@@ -321,11 +332,6 @@
     "OS-SHIPPING-TITLE":"Enter a shipping address",
     "OS-BILLING-TITLE":"Enter a billing address",
     "OS-NAME":"Name",
-    "OS-NAV1":"Why Jafra?",
-    "OS-NAV2":"Starter Packages",
-    "OS-NAV3":"Faqs",
-    "OS-NAV4":"Join Now!",
-    "OS-NAV5":"Contact",
     "PRIVACY-TITLE":"JoinJAFRA Website Privacy Policy",
     "INVALID_CC_EXPIRATION":"Invalid expiration date",
     "MULTIPLE_ADDRESSES":"Multiple Addresses Found",

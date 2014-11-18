@@ -3,6 +3,7 @@
     "JOIN-JAFRA-TODAY": "Ingresa a JAFRA Hoy",
     "CLOSE": "Cerrar",
     "TERMS_OF_USE": "Terms of Use",
+
     "NAV_HOME": "INICIO",
     "NAV_ABOUT": "COMPA&Ntilde;&Iacute;A",
     "NAV_OPPORTUNITY": "OPORTUNIDAD",
@@ -10,6 +11,13 @@
     "NAV_PARTY": "DIVIÉRTETE Y GANA",
     "NAV_MEDIA": "PRENSA",
     "NAV_MYPAGE": "MI P&Aacute;GINA",
+
+    "OS-NAV1":"&iquest;Por qu&eacute; JAFRA?",
+    "OS-NAV2":"Paquetes Starter",
+    "OS-NAV3":"Preguntas frecuentes",
+    "OS-NAV4":"&iexcl;&Uacute;nete ahora!",
+    "OS-NAV5":"Contacto",
+
     "HEADER_CONSULTANTMSG": "Consultora de Belleza JAFRA **TRANSLATED FROM FILE (/i18n/locale-es_US.json)**",
     "VIEW_CART": "Ver Pedido",
 
@@ -33,17 +41,20 @@
     "ABOUT-MAKE-TODAY": "la vida",
     "ABOUT-THE-DAY-YOU-BEGIN": "que has so&ntilde;ado!",
 
+    "BUY-ENGLISH": "Buy Ingl&eacute;s",
+    "BUY-SPANISH": "Buy Espa&ntilde;ol",
+    "KIT-DETAILS-TOGGLE": "QUE HAY ADENTRO?",
+
     "OS-JOIN-BTN": "&iexcl;&Uacute;nete ahora!",
     "OS-KIT-MODAL-TITLE": "Selecciona tu Kit de Inicio",
+
     "OS-KIT-PRODUCT1-TITLE1": "Obt&eacute;n todo lo",
     "OS-KIT-PRODUCT1-TITLE2": "QUE NECESITAS",
     "OS-KIT-PRODUCT1-NAME": "Royal Starter Kit",
     "OS-KIT-PRODUCT1-PRICE": "$99",
     "OS-KIT-PRODUCT1-VALUE": "Precio al p&uacute;blico: $490+",
     "OS-KIT-PRODUCT1-DESCRIPTION": "Advanced Dynamics Limpiador Facial Equilibrante<br />Advanced Dynamics Loci&oacute;n Facial Equilibrante<br />Advanced Dynamics Crema Facial Equilibrante de D&iacute;a <br />Advanced Dynamics Crema Facial Humectante Equilibrante de Noche<br />Royal Jelly Milk Balm Advanced<br />Gel Facial Reafirmante + con Complejo Firmiplex<br />Optimeyes Eye Treatment<br />Aceite para el Cuerpo Royal Almond<br />LEGEND EDT<br />Vesen EDT<br />Eau d'Arômes Spray Revitalizante<br />Skid EDT<br /><br /><strong>Adem&aacute;s Productos Gratis…</strong><br />Royal Jelly Milk Balm, F&oacute;rmula Original en Envase Especial<br />Sachet Advanced Dynamics Hydrating (3)<br />Sachet Advanced Dynamics Balancing (3)<br />Sachet Advanced Dynamics Mattifying (3)<br />Sachet Advanced Dynamics Soothing (3)<br /><br /><strong>Adem&aacute;s recibes ¡HERRAMIENTAS DINÁMICAS!</strong><br />Bolso JAFRA Negro<br />Estuche JAFRA Transparente<br />Juego de Material Impreso Bienvenida a JAFRA<br />Cat&aacute;logo de Productos (5)<br />Folleto de Temporada (10)<br />Folleto de la Anfitriona<br />Perfil Advanced Dynamics (10)<br />Perfil del Cuidado del Cutis (10)<br />Perfil de Fragancias (10)<br />Tarjetas de Presentaci&oacute;n (50)<br />Forma de Pedido del Cliente (10)",
-    "BUY-ENGLISH": "Buy Ingl&eacute;s",
-    "BUY-SPANISH": "Buy Espa&ntilde;ol",
-    "KIT-DETAILS-TOGGLE": "WHAT&rsquo;S INSIDE?",
+
     "OS-KIT-PRODUCT2-TITLE1": "Comienza",
     "OS-KIT-PRODUCT2-TITLE2": "RAPIDAMENTE",
     "OS-KIT-PRODUCT2-PRICE": "$49",
@@ -117,7 +128,7 @@
 
     "BTN_LOGOUT":"Salir",
     "ALL_PRODS":"Todos los Productos",
-    "OR_BY_ITEM":"Ordenar por Art&iacute;culo",
+    "ORDER_BY_ITEM":"Ordenar por Art&iacute;culo",
     "TERMS":"T&eacute;rminos",
     "PRIVACY":"Privacidad",
     "COPYRIGHT":"JAFRA Cosmetics International - Todos los Derechos Reservados",
@@ -321,11 +332,6 @@
     "OS-SHIPPING-TITLE":"Enter a shipping address",
     "OS-SHIPPING-TITLE":"Enter a billing address",
     "OS-NAME":"Nombre",
-    "OS-NAV1":"&iquest;Por qu&eacute; JAFRA?",
-    "OS-NAV2":"Paquetes Starter",
-    "OS-NAV3":"Preguntas frecuentes",
-    "OS-NAV4":"&iexcl;&Uacute;nete ahora!",
-    "OS-NAV5":"Contacto",
     "PRIVACY-TITLE":"Pol&iacute;ticas de Privacidad del Sitio de JoinJAFRA en Internet",
     "INVALID_CC_EXPIRATION":"Fecha de caducidad no v&aacute;lido",
     "MULTIPLE_ADDRESSES":"Multiple Addresses Found",
