@@ -362,9 +362,12 @@ section#why_jafra_products #more_products img.products-offleft {
 }
 
 section#why_jafra_lifestyle {
-  background: #cac0d3;
+  background: #460D66;
+  color: #FFFFFF;
 }
-
+section#why_jafra_lifestyle .subcontainer {
+  background-color: #460D66;
+}
 section#why_jafra_rewards {
   background: #faebe6;
 }
