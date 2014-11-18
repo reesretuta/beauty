@@ -887,6 +887,10 @@ padding-top: 5px;
   left: -84px;
   bottom: 70px;
 }
+#testimonials-brush {
+position: absolute;
+left: -70px;
+}
 #pastelpatches {
   position: absolute;
   top: 10px;
