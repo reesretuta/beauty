@@ -24,75 +24,105 @@
       </div>
     </div>
 </section>
-<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal fade bs-example-modal-lg kit-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="row text-center" style="padding: 1em;">
-                <div class="col-md-12">
-                    <h2>
-                        <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only"><span ng-bind-html="'CLOSE' | translate | unsafe"></span></span></button>
-                    </h2>
+        <div class="modal-content clearfix">
+
+          <div class="modal-header tex-center">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"><span ng-bind-html="'CLOSE' | translate | unsafe"></span></span></button>
+            <h4 class="modal-title text-center">SELECT YOUR STARTER KIT</h4>
+          </div>
+
+<!-- kits.html -->
+<!-- Starter Packages -->
+
+    <section class="subsection royal_kit">
+        <div class="subcontainer">
+            <div class="">
+              <div class="clearfix">
+                <div class="hidden-md hidden-lg col-md-6">
+                    <img class="img-responsive" src="/img/99kit-2x.jpg">
                 </div>
-                <div class="col-md-6" style="border-right: 1px solid #ededed;">
-                    <h3 class="hero-header-title starter_kits-title">
-                        <br>
-                    </h3>
-                    <h3 class="h1 starter_kits-price modal_starter_kits-price"></h3>
-                    <p class="starter_kits-label_title"></p>
-                    <p class="starter_kits-retail_value"></p>
-                    <div class="product-action">
-                        <!-- Split button -->
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown"><span class="sr-only">Toggle Dropdown</span></button>
-                            <ul class="dropdown-menu kit-select" role="menu">
-                                <li>
-                                    <a href="#" ng-click="join('19634')"></a>
-                                </li>
-                                <li>
-                                    <a href="#" ng-click="join('19635')"></a>
-                                </li>
-                            </ul>
+                <div class="col-md-6">
+                    <div class="section-copy">
+                        <h3 class="titlify DidotLTPro-Roman kit-title">
+                          <small class="color-purple">ROYAL BUSINESS KIT</small>
+                        </h3>
+
+                        <p class="color-gold HelveticaNeueLTStd-BdCn kit-desc">GET EVERYTHING YOU NEED</p>
+                        <p class="HelveticaNeueLTStd-Th kit-value">Over $490 retail value</p>
+                        <p>Make your holidays bright with the Royal Business Kit. Includes everthing you need to jumpstart your new business.</p>
+
+                        <p>
+                            <a href="#more_royal_2" data-toggle="collapse" class="more-link collapsed"><span>SEE WHAT&rsquo;S INCLUDED</span> </a>
+                        </p>
+                        <div class="product-action pull-right">
+                            <span class="product-price"><small>Only<br></small> $99</span>
+                            <button type="button" class="btn btn-primary btn-lg" ng-click="join('19634')">Buy <small>(english)</small></button>
+                            <a href="#" ng-click="join('19635')" class="color-red text-center" style="display:block; margin-top:15px;">Buy $99 kit in spanish</a>
                         </div>
-                    </div>
-                    <p class="text-right">
-                        <a href="#royal_starter_info" data-toggle="collapse" data="" class="more-link collapsed"></a>
-                    </p><!-- collapsed section content (default collapsed) -->
-                    <div id="royal_starter_info" class="collapse">
-                        <hr>
-                        <img class="img-responsive" src="/img/99_kit.jpg">
-                        <div ng-if="session.language" ng-include="'/partials/product1-'+session.language+'.html'"></div><img src="/img/99_kit_bags.jpg" class="img-responsive">
+
                     </div>
                 </div>
-                <div class="col-md-6" style="border-left: 1px solid #ededed;">
-                    <h3 class="hero-header-title starter_kits-title">
-                        <br>
-                    </h3>
-                    <h3 class="h1 starter_kits-price modal_starter_kits-price"></h3>
-                    <p class="starter_kits-label_title"></p>
-                    <p class="starter_kits-retail_value"></p>
-                    <div class="product-action">
-                        <!-- Split button -->
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown"><span class="sr-only">Toggle Dropdown</span></button>
-                            <ul class="dropdown-menu kit-select" role="menu">
-                                <li>
-                                    <a href="#" ng-click="join('19822')"></a>
-                                </li>
-                                <li>
-                                    <a href="#" ng-click="join('19823')"></a>
-                                </li>
-                            </ul>
+                <div class="hidden-xs hidden-sm col-md-6">
+                    <img class="img-responsive" src="/img/99kit-2x.jpg">
+                    <span class="pull-right color-gold" style="margin-right: 15px;"><span style="text-decoration:none; margin-right: 10px;"><img src="/img/icons-video.gif" width="25px" /> <img src="/img/icons-booklets.gif" width="25px" /></span> TRAINING INCLUDED!</span>
+                </div><!-- collapsed section content (default collapsed) -->
+                <div id="more_royal_2" class="col-md-12 collapse">
+                    <div class="section-copy">
+                        <p ng-bind-html="'OS-KIT-PRODUCT1-DESCRIPTION' | translate | unsafe"></p>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+    </section>
+
+    <hr>
+
+    <section class="subsection skincare_kit">
+        <div class="subcontainer">
+            <div class="">
+                <div class="col-md-5">
+                    <img class="img-responsive" src="/img/49kit-2x.jpg">
+                </div>
+                <div class="col-md-6">
+                    <div class="section-copy">
+                        <h3 class="titlify DidotLTPro-Roman kit-title">
+                          <small class="color-purple">SPECIAL BUSINESS KIT</small>
+                        </h3>
+
+                        <p class="color-gold HelveticaNeueLTStd-BdCn kit-desc">GET A QUICK START</p>
+                        <p class="HelveticaNeueLTStd-Th kit-value">$290 retail value</p>
+
+                        <p>Start a new season of income with this Special Business Kit. Perfect for consultants on a budget who want to ramp up.</p>
+
+                        <span class="pull-right color-gold" style="margin: 30px 15px 0 0;"><span style="text-decoration:none; margin-right: 10px;"><img src="/img/icons-video.gif" width="25px" /> <img src="/img/icons-booklets.gif" width="25px" /></span> TRAINING INCLUDED!</span>
+
+                        <a href="#more_skincare_2" data-toggle="collapse" class="more-link collapsed" style="margin-top: 30px;"><span>SEE INSIDE</span></a>
+
+                            
+                        <p class="starter_kits-retail_value"></p>
+
+                        <div class="product-action">
+                            <span class="product-price"><small>Only<br></small> $49</span>
+                            <button type="button" class="btn btn-primary btn-lg" ng-click="join('19822')">Buy <small>(english)</small></button>
+                            <a href="#" ng-click="join('19823')" class="color-red text-center" style="margin-left: 20px">Buy $49 kit in spanish</a>
                         </div>
+
                     </div>
-                    <p class="text-right">
-                        <a href="#skincare_starter_info" data-toggle="collapse" data="" class="more-link collapsed"></a>
-                    </p><!-- collapsed section content (default collapsed) -->
-                    <div id="skincare_starter_info" class="collapse">
-                        <hr>
-                        <img class="img-responsive" src="/img/39_kit.jpg"> <!--<p ng-bind-html="'OS-KIT-PRODUCT2-DESCRIPTION' | translate | unsafe"></p>-->
-                        <div ng-if="session.language" ng-include="'/partials/product2-'+session.language+'.html'"></div><img src="/img/39_kit_bag.jpg" class="img-responsive">
-                    </div>
+                </div><!-- collapsed section content (default collapsed) -->
+                <div id="more_skincare_2" class="col-md-12 collapse">
+                    
+                        <div class="section-copy">
+                            <p ng-bind-html="'OS-KIT-PRODUCT2-DESCRIPTION' | translate | unsafe"></p>
+                        </div>
+                    
                 </div>
+            </div>
+        </div>
+    </section>
+
             </div>
         </div>
     </div>
