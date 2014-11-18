@@ -440,7 +440,6 @@ font-weight: normal;
 font-style: normal;
 line-height: 0.9;
 color: #8B7B5B;
-letter-spacing: 0.0589em;
 }
 
 section h3.hero-header-title-freedom_flexibility {
@@ -789,7 +788,7 @@ padding-top: 5px;
 }
 #pastelpatches {
   position: absolute;
-  top: -46px;
+  top: 10px;
   right: -106px;
 }
 #liner_black {

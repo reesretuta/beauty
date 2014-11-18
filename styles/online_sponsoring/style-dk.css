@@ -76,6 +76,10 @@ section#why_jafra_products {
 	border: 1px solid #460d66;
 	border-top-color: #ededed;
 	margin-top: -1px;
+	margin-bottom: 50px;
+}
+section#why_jafra_testimonials .btn-lg {
+	margin: 50px 0px -25px;
 }
 
 
