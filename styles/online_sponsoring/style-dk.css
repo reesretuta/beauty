@@ -1,5 +1,7 @@
 /* style-dk.css */
 
+a:link { text-decoration: none; } /* internet explorer is dumb */
+
 /* beauty of jafra section */
 .timeline-photo {
 	max-width: 192px;
@@ -24,12 +26,6 @@
 .hero-header-title-freedom_flexibility {
 	text-transform: uppercase;
 }
-.padbottom {
-	padding-bottom: 30px;
-}
-.padtop {
-	padding-top: 30px;
-}
 section#freedom_flexibility .section-copy_bound_box,
 section#freedom_flexibility div.subcontainer {
 	background: none;
@@ -50,7 +46,6 @@ section#freedom_flexibility div.subcontainer {
 	background-size: 1260px;
 	margin-top: 40px;
 }
-
 #freedom_flexibility .more-link {
 	margin-bottom: 25px
 }
@@ -63,4 +58,19 @@ section#freedom_flexibility div.subcontainer {
 }
 section#freedom_flexibility.expanded div.subcontainer {
 	margin-bottom: 50px;
+}
+
+/* products section */
+section#why_jafra_products #more_products {
+	background-size: 931px;
+	background-position: 254px 60%;
+}
+
+
+/* dains helpers */
+.padbottom {
+	padding-bottom: 30px;
+}
+.padtop {
+	padding-top: 30px;
 }
