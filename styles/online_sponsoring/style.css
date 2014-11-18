@@ -504,7 +504,7 @@ line-height: 0.9;
 color: #8B7B5B;
 }
 
-section h3.hero-header-title-freedom_flexibility {
+section h3.hero-header-title-freedom_flexibility{
   font-size: 36px;
   color: #460D66;
   margin-top: -16px;
@@ -602,6 +602,32 @@ margin: 8px 0 5px;
   transform: rotate(0deg);
 }
 
+/*section#FAQs .section-copy_bound_box,
+section#FAQs div.subsection {
+  background: none;
+  border-color: #460d66;
+}*/
+#FAQs .container h2 {
+margin-bottom: -33px;
+  font-size: 36px;
+  color: #460D66;
+background-color: #EDEDED;
+display: inline-block;
+position: relative;
+bottom: -17px;
+}
+#FAQs .container hr {
+  border-top: 1px solid #D7D7D7;
+}
+#FAQs .subsection .container {
+  background: none;
+  border: 1px solid #460d66;  
+margin-bottom: 50px;
+padding-top: 50px;
+}
+section#FAQs .btn-lg {
+  margin: 50px 0px -55px;
+}
 .faqs-item-question {
   font-family: DidotLTPro-Roman;
   font-size: 24px;
