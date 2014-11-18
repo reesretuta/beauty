@@ -369,6 +369,9 @@ margin: 50px 0px -25px;
 section#why_jafra_products {
   background: #e0dbcf;
 }
+section#why_jafra_products span.to_love{
+  font-size: 72px;
+}
 section#why_jafra_products #more_products {
   background: url(/img/labgirl_bg01.jpg) no-repeat bottom;
   background-size: 97.5%;
@@ -492,6 +495,9 @@ section#why_jafra_lifestyle .subcontainer ul.golden_bullets li:before {
 
 section#why_jafra_lifestyle .subcontainer .more-link:after {
   color: #C3002F;
+}
+section#why_jafra_lifestyle .subcontainer .more-link span {
+  color: #9659B7;
 }
 
 section#why_jafra_rewards {
