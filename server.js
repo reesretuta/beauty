@@ -76,6 +76,7 @@ app.use(function(req, res, next) {
         //res.statusCode = 401;
         //res.setHeader('WWW-Authenticate', 'Basic realm="JafraProto"');
         //res.end('Unauthorized');
+        next();
     } else if (S(req.url).startsWith("/debug")) {
         console.log("CLIENT DEBUG", req.url);
         res.statusCode = 200;
