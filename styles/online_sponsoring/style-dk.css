@@ -1,1 +1,30 @@
 /* style-dk.css */
+.timeline-photo {
+	max-width: 192px;
+	margin-top: -84px;
+}
+.timeline-photo img {
+	border-radius: 50%;
+	border: 4px solid #c2c2c2;
+}
+.timeline-description {
+	width: 50%;
+	margin: 0 auto !important;
+	margin-top: 26px !important;
+}
+.legacy_wrapper {
+	height: 20px;
+	margin-top: 20px;
+}
+#more_freedom {
+	margin-top: 20px;
+}
+.hero-header-title-freedom_flexibility {
+	text-transform: uppercase;
+}
+.padbottom {
+	padding-bottom: 30px;
+}
+.padtop {
+	padding-top: 30px;
+}
