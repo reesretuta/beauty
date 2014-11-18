@@ -378,7 +378,10 @@ section#why_jafra_lifestyle {
   background: #380A52;
   color: #FFFFFF;
 }
-
+section#why_jafra_lifestyle img.fpo-itsyourcall{
+margin-right: -50px;
+margin-top: -92px;
+}
 section#why_jafra_lifestyle .invest-icons-bg{
 background: url(/img/invest-icons.png) no-repeat 50% -4%;
 line-height: 2em;
