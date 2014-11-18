@@ -366,6 +366,22 @@ section#why_jafra_lifestyle {
   background: #460D66;
   color: #FFFFFF;
 }
+
+section#why_jafra_lifestyle .invest-icons-bg{
+background: url(/img/invest-icons.png) no-repeat 50% 50%;
+line-height: 2em;
+}
+section#why_jafra_lifestyle .invest-icons-bg .invest {
+  font-size: 60px;
+  font-family: HelveticaNeueLTStd-BdCn;
+  color: #9659B7;
+  text-transform:uppercase
+}
+section#why_jafra_lifestyle .invest-icons-bg .yourself {
+  font-size: 48px;
+  font-family: DidotLTPro-Italic;
+  color: #A28F40;
+}
 section#why_jafra_lifestyle .subcontainer {
   background-color: #460D66;
 }
