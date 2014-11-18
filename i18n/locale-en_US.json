@@ -14,8 +14,10 @@
     "NAV_MEDIA": "Media",
     "NAV_MYPAGE": "My Page",
 
+    "CONTACT-INFO": "1 (800) 551-2345<br/>Open: M-F 8:30am-5:30pm<br>Pacific",
+
     "OS-NAV1":"Why Jafra?",
-    "OS-NAV2":"Starter Packages",
+    "OS-NAV2":"Starter Kits",
     "OS-NAV3":"Faqs",
     "OS-NAV4":"Join Now!",
     "OS-NAV5":"Contact",
@@ -71,7 +73,7 @@
 
     "OS-ABOUT-ENJOY-THE": "enjoy the",
     "OS-ABOUT-REWARDS": "REWARDS",
-    "OS-ABOUT-ENJOY-THE-REWARDS-DESC": "<b>Earn up to 50% commission</b>, exciting trips and incentive rewards like cash bonuses and jewelry. Plus, as a Leader, you can realize more income potential through team sales.!",
+    "OS-ABOUT-ENJOY-THE-REWARDS-DESC": "<b>Earn up to 50% commission</b>, exciting trips and incentive rewards like cash bonuses and jewelry. Plus, as a Leader, you can realize more income potential through team sales!",
 
     "OS-ABOUT-EXPERIENCE-THE": "experience the",
     "OS-ABOUT-EMPOWERMENT": "EMPOWERMENT",

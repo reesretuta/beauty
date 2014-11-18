@@ -14,6 +14,8 @@
     "NAV_MEDIA": "PRENSA",
     "NAV_MYPAGE": "MI P&Aacute;GINA",
 
+    "CONTACT-INFO": "1 (800) 551-2345<br/>Abierto: L-V 8:30am-5:30pm<br>Hora del Pac&iacute;fico",
+
     "OS-NAV1":"&iquest;Por qu&eacute; JAFRA?",
     "OS-NAV2":"Paquetes Starter",
     "OS-NAV3":"Preguntas frecuentes",
@@ -66,7 +68,7 @@
     "OS-ABOUT-TIMELINE-DESCRIPTION": "Todo comenz&oacute; hace m&aacute;s de 58 a&ntilde;os en 1956 en Malibu, California, cuando Jan y Frank Day abrieron JAFRA para que la mujer pudiera tener su propio negocio. Desde entonces, miles de mujeres han alcanzado con &eacute;xito sus sue&ntilde;os empresariales, primero como Consultoras, y despu&eacute;s como L&iacute;deres con su propio Equipo JAFRA.",
 
     "OS-ABOUT-SHARE-THE": "comparte la",
-    "OS-ABOUT-INNOVATION": "INNOVACI&Oacute;N",
+    "OS-ABOUT-INNOVATION": "INOVACI&Oacute;N",
     "OS-ABOUT-SHARE-THE-INNOVATION-DESC": "Forma parte de una de las 5 familias m&aacute;s importantes de ventas directas a nivel mundial, y vende cuidado del cutis avanzado, colores de moda, lujoso cuidado personal, m&aacute;s exclusivas fragancias para damas y caballeros.",
 
     "OS-ABOUT-ENJOY-THE": "disfruta las",
@@ -99,7 +101,7 @@
     "OS-PRODUCTS-COLOR": "COLOR",
     "OS-PRODUCTS-COLOR-DESC": "Cuando veas los colores de JAFRA, sabr&aacute;s por qu&eacute; nuestros productos est&aacute;n a d&iacute;a con las tendencias e inspirados por la moda. Elige entre bases impecables de maquillaje, labiales de cobertura total en tonos de lujo, sombras y delineadores para ojos a la moda y los indispensables esmaltes para u&ntilde;as.",
 
-    "OS-PRODUCTS-TOILETRIES": "ART&iacute;CULOS DE TOCADOR",
+    "OS-PRODUCTS-TOILETRIES": "ART&Iacute;CULOS DE TOCADOR",
     "OS-PRODUCTS-TOILETRIES-DESC": "Te sentir&aacute;s orgullosa de vender los irresistibles y extraordinarios productos arom&aacute;ticos para el cuidado del cuerpo y cabello. No nos hemos olvidado de nadie, tenemos l&iacute;neas de art&iacute;culos de tocador para toda la familia.",
 
     "OS-PRODUCTS-RESULTS-PART1": "Los resultados son",
