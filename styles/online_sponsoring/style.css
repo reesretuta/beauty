@@ -316,7 +316,9 @@ font-size: 76px;
 .section-copy {
   padding: 0 15px 30px 30px;
 }
-
+section .cta-section {
+  padding: 50px 0px;
+}
 section#freedom_flexibility{
   padding: 15px;
   padding-bottom: 0px;
@@ -338,13 +340,16 @@ section#freedom_flexibility .timeline-description{
   margin-top: 125px;
 }
 section#freedom_flexibility #more_freedom {
-  background: url(http://localhost:8090/img/worldmap.png) no-repeat bottom;
+  background: url(/img/worldmap.jpg) no-repeat bottom;
 }
 
 section#why_jafra_products {
   background: #e0dbcf;
 }
-
+section#why_jafra_products #more_products {
+  background: url(/img/labgirl_bg01.jpg) no-repeat bottom;
+  background-size: 97.5%;
+}
 section#why_jafra_products #more_products img.products-offleft {
   margin-left: -35px;
   padding-right: 25px;
