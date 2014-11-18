@@ -1,4 +1,6 @@
 /* style-dk.css */
+
+/* beauty of jafra section */
 .timeline-photo {
 	max-width: 192px;
 	margin-top: -84px;
@@ -27,4 +29,38 @@
 }
 .padtop {
 	padding-top: 30px;
+}
+section#freedom_flexibility .section-copy_bound_box,
+section#freedom_flexibility div.subcontainer {
+	background: none;
+}
+.freedom_flexibility_description {
+	font-size: 22px;
+	line-height: 1.6em;
+	color: #787878;
+}
+.freedom_flexibility_description b {
+	font-weight: normal;
+	color: #222;
+}
+#freedom_flexibility {
+	background-image: url(/img/worldmap_bg.jpg);
+	background-repeat: no-repeat;
+	background-position: 50% 200px;
+	background-size: 1260px;
+	margin-top: 40px;
+}
+
+#freedom_flexibility .more-link {
+	margin-bottom: 25px
+}
+section#freedom_flexibility.expanded .more-link {
+	margin-bottom: 0px;
+}
+
+section#freedom_flexibility div.subcontainer {
+	margin-bottom: -1px;
+}
+section#freedom_flexibility.expanded div.subcontainer {
+	margin-bottom: 50px;
 }
