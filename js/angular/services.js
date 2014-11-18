@@ -64,7 +64,7 @@ angular.module('app.services', ['ngResource'])
 
         return searchService;
     })
-    .factory('Session', function($rootScope, $resource, $log, $location, $http, $cookieStore, $cookies, $timeout, $q, API_URL, STORE_BASE_URL) {
+    .factory('Session', function($rootScope, $resource, $log, $location, $http, $cookieStore, $cookies, $timeout, $q, $translate, API_URL, STORE_BASE_URL) {
         var sessionService = {};
 
         // promise that everything waits on before resolving
@@ -345,6 +345,7 @@ angular.module('app.services', ['ngResource'])
         sessionService.setLanguage = function(language) {
             sessionService.set('language', language).then(function() {
                 $log.debug("sessionService(): setLanguage(): language set");
+                $translate.use(language);
             });
         }
 
