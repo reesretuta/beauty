@@ -29,6 +29,7 @@ a:link { text-decoration: none; } /* internet explorer is dumb */
 section#freedom_flexibility .section-copy_bound_box,
 section#freedom_flexibility div.subcontainer {
 	background: none;
+	border-color: #460d66;
 }
 .freedom_flexibility_description {
 	font-size: 22px;
@@ -65,12 +66,21 @@ section#why_jafra_products #more_products {
 	background-size: 931px;
 	background-position: 254px 60%;
 }
+section#why_jafra_products {
+	z-index: 1;
+}
+
+/* testimonials section */
+#why_jafra_testimonials .subcontainer {
+	background: none;
+	border: 1px solid #460d66;
+	border-top-color: #ededed;
+	margin-top: -1px;
+}
 
 
 /* dains helpers */
-.padbottom {
-	padding-bottom: 30px;
-}
-.padtop {
-	padding-top: 30px;
-}
+.padbottom { padding-bottom: 30px; }
+.padtop { padding-top: 30px; }
+.padleft { padding-left: 30px; }
+.padright { padding-right: 30px; }
