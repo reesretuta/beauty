@@ -1,127 +1,148 @@
-<div class="col-lg-offset-1 col-lg-10">
-    <a href="" class="pull-right print-link" onClick="printDiv('final');"><i class="fa fa-print"></i> Print this page</a>
-    <h1>FELICITACIONES 
+<div id="final" class="col-lg-offset-1 col-lg-10">
+  <div class="row">
+    <div class="col-md-8 text-left">
+      <h1>¡FELICITACIONES!
         <span class="store-heading-description">
           ¡Ya eres una Consultora de JAFRA y vas en camino a vivir la vida que TÚ imaginas!
         </span>
-    </h1>
+      </h1>
+    </div>
+    <div class="col-md-4 text-right print-link">
+      <a href="" onClick="printDiv('final');"><i class="fa fa-print"></i> Print this page</a>
+    </div>
   </div>
-
-  <div id="final" class="col-lg-offset-1 col-lg-10">
-          <div class="row text-center">
-            <div class="col-md-offset-2 col-md-8">
-    <h3 class="">Tu # de I.D. de Consultora</h3>
-    <h3 class="h3"><label style="color:black;">{{confirmation.consultantId}}</label></h3>
-    
-    <p>
-        Tu patrocinadora es: ________________<br />
-        O se te asignará una Patrocinadora de JAFRA dentro de los próximos _____ días.  
-    </p>
+  <hr>
+  <div class="row">
+    <div class="col-md-8 text-left">
+      <h3 class="color-red">Tu No. (ID) de Consultora es: <label class="color-purple HelveticaNeueLTStd-BdCn">{{confirmation.consultantId}}</label></h3>
+      <p>Portal de la Consultora: <a class="biggify color-red HelveticaNeueLTStd-BdCn">jafrabiz.com</a></p>
+      <p>Consultora ID: <b ng-bind="profile.loginEmail"></b></p>
+      <p>Contraseña: (last 4 digits of SSN)</p>
+    </div>
+    <div class="col-md-4">
+      <div class="jafrabiz-well text-center">
+        <p ng-if="confirmation.sponsor">Tu Patrocinadora JAFRA es:<br />#{{confirmation.sponsor.id}} <b class="biggify color-purple HelveticaNeueLTStd-BdCn">{{confirmation.sponsor.firstName}} {{confirmation.sponsor.lastName}}</b></p>
+        <p ng-if="!confirmation.sponsor">Se te asignará una Patrocinadora de JAFRA dentro de los próximos 2 días hábiles.</p>
+      </div>
+    </div>
   </div>
-</div>
-
-
-          <div class="row">
-            <div class="col-md-offset-4 col-md-4">
-              <div class="thanks-well text-center">
-                <p class="h4"><a href="http://jafrabiz.com" target="_blank"><b><i class="fa fa-external-link"></i> jafrabiz.com</b></a></p>
-                <small>username:</small>
-                <p><b ng-bind="profile.loginEmail"></b></p>
-                <small>password:</small>
-                <p><b>{{password}}</b></p>
-              </div>
-            </div>
-          </div>
-<hr>
-    <p>Para que comiences con tu nueva y exitosa carrera, es importante que sigas estos pasos:</p>
-    
-<h3>1. Para agilizar los trámites de pago, elige una de las opciones que JAFRA te ofrece:</h3>
-    <p>
-    	•	JAFRA Debit MasterCard- (links to site) – Ver FAQs (links to FAQ PDF) <br />
-    	•	Depósito directo-(links to PDF, send to JAFRA) – Ver FAQs (links to FAQ PDF)<br />
-    </p>
-<h3>2. Para tener acceso al sitio Web de las Consultoras de Jafra, visita jafrabiz.com. Anota tu número de I.D. de Consultora y usa los cuatro últimos dígitos  de tu número de Seguro Social como contraseña.</h3>
-    <p>
-    Entonces podrás:<br />
-    	•	Ordenar producto<br />
-    	•	Hacer pagos<br />
-    	•	Ver tus reportes<br />
-    	•	Revisar tu actividad y más<br />
-    </p>
-<h3>3. Visita: Conexión de la Consultora en jafrabiz.com para:</h3>
-    <p>
-    	•	Tener acceso a todas las herramientas de ventas y entrenamiento <br />
-    	•	Recibir alertas y estar al día con noticias importantes sobre JAFRA
-    </p>
-<h3>4. Si tienes preguntas asegúrate de tener esta información en tu lista de contactos:</h3> 
-<p>
-	•	Número Telefónico de tu Patrocinadora y Líder para que puedas llamarla en cualquier momento.<br />
-	•	El Número teléfonico del Equipo de Servicio a la Consultora de Jafra. <br />
-Llama al 1-800-852-372<br />
-</p>
-
-    </p>
-
-    <h2 class="">Número de Confirmación: <label style="color:black;">{{confirmation.orderId}}</label></h2>
+  <hr>
+  <div class="row">
+    <h2 class="">No. de Confirmación del Pedido #: <label class="color-black">{{confirmation.orderId}}</label></h2>
+    <span class="store-heading-description">La información para darle seguimiento a tu pedido te llegará por correo electrónico una vez que el pedido se haya enviado.</span>
     <form class="form order-details" role="form">
       <div class="form-group">
         <table class="table">
           <thead>
-          <tr>
-            <th>Qty</th>
-            <th>Description</th>
-            <th align="right">Price</th>
-          </tr>
+            <tr>
+              <th>Cant</th>
+              <th>Descripción</th>
+              <th align="right">Precio</th>
+            </tr>
           </thead>
           <tbody>
-          <tr ng-repeat="item in items">
-            <td>{{item.quantity}}</td>
-            <td>
-              <p class="confirmation-description">
-                {{item.name}}
-              </p>
-            </td>
-            <td align="right">
-              
-                            <span ng-repeat="detailprice in item.product.prices[0]">
-                              <span ng-if="detailprice.typeId==2" class="item-price-sale">
-                                {{detailprice.price | currency}}
-                              </span>
-                              <span ng-if="detailprice.typeId==1" class="item-price-strike">
-                                {{detailprice.price | currency}}
-                              </span>
-                            </span>
-                            <span ng-if="item.product.prices[0].price">
-                              <span class="item-price">
-                                {{item.product.prices[0].price | currency}}
-                              </span>
-                            </span>
-            </td>
-          </tr>
+            <tr ng-repeat="item in items">
+              <td>{{item.quantity}}</td>
+              <td>
+                <p class="confirmation-description">
+                  {{item.name}}
+                </p>
+              </td>
+              <td align="right">
+                <span ng-repeat="detailprice in item.product.prices[0]">
+                  <span ng-if="detailprice.typeId==2" class="item-price-sale">
+                    {{detailprice.price | currency}}
+                  </span>
+                  <span ng-if="detailprice.typeId==1" class="item-price-strike">
+                    {{detailprice.price | currency}}
+                  </span>
+                </span>
+                <span ng-if="item.product.prices[0].price">
+                  <span class="item-price">
+                    {{item.product.prices[0].price | currency}}
+                  </span>
+                </span>
+              </td>
+            </tr>
           </tbody>
           <tfoot>
           <tr>
             <td colspan="3">
               <p>Subtotal: {{salesTaxInfo.SubTotal | currency}}</p>
-              <p>Shipping: {{salesTaxInfo.SH | currency}}</p>
-              <p>Tax: {{salesTaxInfo.TaxRate}}%</p>
-              <p class="lead"><b class="text-success"><i class="fa fa-check"></i> Successfully Charged: {{salesTaxInfo.Total | currency}}</b></p>
+              <p>Envío: {{salesTaxInfo.SH | currency}}</p>
+              <p>Impuesto: {{salesTaxInfo.TaxRate}}%</p>
+              <p class="lead"><b class="text-success"><i class="fa fa-check"></i> Cargo Aprobado: {{salesTaxInfo.Total | currency}}</b></p>
             </td>
           </tr>
           </tfoot>
         </table>
       </div>
-
     </form>
-    <h2 class="">¿Cómo hacer seguimiento al pedido?</h2>
-    <hr>
-    <p>Recibirás un número de seguimiento una vez sea enviado el pedido.</p>
-    <hr>
-            <h4 id="myModalLabel" class="modal-title text-center"><span ng-bind-html="'CONSULTANT-AGREEMENT-TITLE' | translate | unsafe"></span></h4>
-            <div class="agreement-content" id="agreement-content">
-              
-                <!--consultant agreement goes here-->
-                <div ng-if="session.language" ng-include="'/partials/consultant-agreement-'+session.language+'.html'"></div>
-            </div>
-
   </div>
+  <hr>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="text-center">
+        <h3>1. Edifica tu Negocio</h3>
+        <p>Visita <a href="http://jafrabiz.com" target="_blank">jafrabiz.com</a> y la Conexión de la Consultora</p>
+        <ul>
+            <li>Haz pedidos</li>
+            <li>Haz pagos</li>
+            <li>Administra tu cuenta</li>
+            <li>Obtén Capacitación</li>
+            <li>Recibe Alertas y Noticias de la Compañía</li>
+        </ul>
+        <p><a href="http://pages.exacttarget.com/opt-in-sms-es" target="_blank">Inscríbete para recibir mensajes de Texto de JAFRA</a></p>
+        <a class="btn btn-primary HelveticaNeueLTStd-BdCn btn-med" role="button" href="http://jafrabiz.com">GO TO JAFRABIZ.COM</a>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="text-center">
+        <h3>2. Inscríbete una de las Opciones de Pago</h3>
+        <p>DEBES seleccionar una opción para que puedas recibir tus bonos, comisiones e incentivos.</p>
+        <p><a href="" class="biggify color-red HelveticaNeueLTStd-BdCn"><i class="fa fa-credit-card"></i> JAFRA DEBIT MASTER CARD</a><br />
+          En la página principal de la Conexión de la Consultora, haz clic en Enlaces Rápidos.</p>
+        <p>or</p>
+        <p><a href="http://downloads.jafrausa.com/pdfs/en/2012/news/apr/2012_DirectDepositAgrForm_es.pdf" class="biggify color-red HelveticaNeueLTStd-BdCn"><i class="fa fa-usd"></i> DIRECT DEPOSIT</a><br />
+          en tu cuenta bancaria.</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="text-center">
+        <h3>3. ¿Necesitas Ayuda?</h3>
+        <p>Llame a su Consultura o Líder a cualquier tiempo o reciba ayuda de nuestro equipo de relaciones  de consultantes (CRT)</p>
+        <p><a href="tel:1800852372" class="biggify color-red HelveticaNeueLTStd-BdCn"><i class="fa fa-phone"></i> 1-800-852-372???</a></p>
+        <p>or</p>
+        <p><a href="mailto:crt@jafra.com" class="biggify color-red HelveticaNeueLTStd-BdCn"><i class="fa fa-envelope-o"></i> crt@jafra.com</a></p>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-md-5 col-md-offset-1">
+      <div class="text-left">
+        <img src="/img/november-brochure.jpg" class="pull-left" style="padding: 10px;" width="135px"/>
+        <h3>Folleto de Temporada</h3>
+        <p>Una versión digital de nuestro folleto de la temporada está ya disponible.</p>
+        <a class="btn btn-primary HelveticaNeueLTStd-BdCn btn-med" role="button" href="http://virtualopportunity.jafrausa.com/flipbooks/2014/Nov/2014-s6-brochure-es">Ver Folleto</a>
+      </div>
+    </div>
+    <div class="col-md-5 col-md-offset-1">
+      <div class="text-left">
+        <img src="/img/productcatalog-brochure.jpg" class="pull-left" style="padding: 10px;" width="135px"/>
+        <h3>Catálogo de Productos</h3>
+        <p>Más herramientas de ventas incluyendo nuestro catálogo en línea</p>
+        <a class="btn btn-primary HelveticaNeueLTStd-BdCn btn-med" role="button" href="http://virtualopportunity.jafrausa.com/flipbooks/2014/sep/2014-wf-catalog-es">Ver Folleto</a>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <a class="pull-right" href="" onclick="printDiv('agreement-content');"><i class="fa fa-print"></i> &nbsp;Print</a>
+    <h4 id="myModalLabel" class="modal-title text-center"><span ng-bind-html="'CONSULTANT-AGREEMENT-TITLE' | translate | unsafe"></span></h4>
+    <div class="agreement-content" id="agreement-content">
+        <!--consultant agreement goes here-->
+        <div ng-if="session.language" ng-include="'/partials/consultant-agreement-'+session.language+'.html'"></div>
+    </div>
+  </div>
+</div>
