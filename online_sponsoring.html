@@ -320,6 +320,11 @@
           });
         // }
 
+        $('a.more-link').on('click', function() {
+          console.log($('this'));
+          $('this').parent('section').toggleClass('expanded');
+        });
+
       });
     </script>
     
