@@ -30,7 +30,7 @@
 
           <div class="modal-header tex-center">
             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"><span ng-bind-html="'CLOSE' | translate | unsafe"></span></span></button>
-            <h4 class="modal-title text-center">SELECT YOUR STARTER KIT</h4>
+            <h4 class="modal-title text-center" ng-bind-html="'OS-KIT-MODAL-TITLE' | translate | unsafe">SELECT YOUR STARTER KIT</h4>
           </div>
 
 <!-- kits.html -->
@@ -46,12 +46,12 @@
                 <div class="col-md-6">
                     <div class="section-copy">
                         <h3 class="titlify DidotLTPro-Roman kit-title">
-                          <small class="color-purple">ROYAL BUSINESS KIT</small>
+                          <small class="color-purple" ng-bind-html="'OS-KIT-PRODUCT1-NAME' | translate | unsafe">ROYAL BUSINESS KIT</small>
                         </h3>
 
-                        <p class="color-gold HelveticaNeueLTStd-BdCn kit-desc">GET EVERYTHING YOU NEED</p>
-                        <p class="HelveticaNeueLTStd-Th kit-value">Over $490 retail value</p>
-                        <p>Make your holidays bright with the Royal Business Kit. Includes everthing you need to jumpstart your new business.</p>
+                        <p class="color-gold HelveticaNeueLTStd-BdCn kit-desc"><span ng-bind-html="'OS-KIT-PRODUCT1-TITLE1' | translate | unsafe">GET EVERYTHING</span> <span ng-bind-html="'OS-KIT-PRODUCT1-TITLE2' | translate | unsafe">YOU NEED</span></p>
+                        <p class="HelveticaNeueLTStd-Th kit-value" ng-bind-html="'OS-KIT-PRODUCT1-VALUE' | translate | unsafe">Over $490 retail value</p>
+                        <p ng-bind-html="'OS-KIT-PRODUCT1-TAG' | translate | unsafe">Make your holidays bright with the Royal Business Kit. Includes everthing you need to jumpstart your new business.</p>
 
                         <p>
                             <a href="#more_royal_2" data-toggle="collapse" class="more-link collapsed"><span>SEE WHAT&rsquo;S INCLUDED</span> </a>
@@ -66,7 +66,7 @@
                 </div>
                 <div class="hidden-xs hidden-sm col-md-6">
                     <img class="img-responsive" src="/img/99kit-2x.jpg">
-                    <span class="pull-right color-gold" style="margin-right: 15px;"><span style="text-decoration:none; margin-right: 10px;"><img src="/img/icons-video.gif" width="25px" /> <img src="/img/icons-booklets.gif" width="25px" /></span> TRAINING INCLUDED!</span>
+                    <span class="pull-right color-gold" style="margin-right: 15px;"><span style="text-decoration:none; margin-right: 10px;"><img src="/img/icons-video.gif" width="25px" /> <img src="/img/icons-booklets.gif" width="25px" /></span> <span ng-bind-html="'OS-TRAINING-INCLUDED' | translate | unsafe">TRAINING INCLUDED!</span></span>
                 </div><!-- collapsed section content (default collapsed) -->
                 <div id="more_royal_2" class="col-md-12 collapse">
                     <div class="section-copy">
@@ -89,13 +89,13 @@
                 <div class="col-md-6">
                     <div class="section-copy">
                         <h3 class="titlify DidotLTPro-Roman kit-title">
-                          <small class="color-purple">SPECIAL BUSINESS KIT</small>
+                          <small class="color-purple" ng-bind-html="'OS-KIT-PRODUCT2-NAME' | translate | unsafe">SPECIAL BUSINESS KIT</small>
                         </h3>
 
-                        <p class="color-gold HelveticaNeueLTStd-BdCn kit-desc">GET A QUICK START</p>
+                        <p class="color-gold HelveticaNeueLTStd-BdCn kit-desc"><span ng-bind-html="'OS-KIT-PRODUCT2-TITLE1' | translate | unsafe">GET EVERYTHING</span> <span ng-bind-html="'OS-KIT-PRODUCT2-TITLE2' | translate | unsafe">YOU NEED</span></p>
                         <p class="HelveticaNeueLTStd-Th kit-value">$290 retail value</p>
 
-                        <p>Start a new season of income with this Special Business Kit. Perfect for consultants on a budget who want to ramp up.</p>
+                        <p ng-bind-html="'OS-KIT-PRODUCT2-TAG' | translate | unsafe">Start a new season of income with this Special Business Kit. Perfect for consultants on a budget who want to ramp up.</p>
 
                         <span class="pull-right color-gold" style="margin: 30px 15px 0 0;"><span style="text-decoration:none; margin-right: 10px;"><img src="/img/icons-video.gif" width="25px" /> <img src="/img/icons-booklets.gif" width="25px" /></span> TRAINING INCLUDED!</span>
 
