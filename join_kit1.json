@@ -27,7 +27,7 @@
     "type" : "kit",
     "taxCode" : "P0000000",
     "standardCost" : 0,
-    "searchable" : true,
+    "searchable" : false,
     "quantity" : "each",
     "productClass" : 0,
     "onHold" : false,
