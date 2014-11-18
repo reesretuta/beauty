@@ -19,7 +19,7 @@
           <h3><span ng-bind="profile.firstName"></span> <span ng-bind="profile.lastName"></span></h3>
           <p><b ng-bind="profile.loginEmail"></b></p>
           <p>{{profile.phoneNumber|phone}}</p>
-          <a href="#" wz-prev><i class="fa fa-pencil-square-o"></i> Edit</a>
+          <a href="#" wz-prev><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'BTN_EDIT' | translate | unsafe"></span></a>
         </div>
       </div>
       <div class="col-md-offset-3 col-sm-9">
@@ -28,7 +28,7 @@
       <div class="col-md-offset-3 col-sm-9">
         <div class="row">
           <div class="col-sm-6">
-            <div ng-if="profileSSNError" class="alert alert-danger" role="alert">Unable to create profile.  Please contact Jafra support for further assistance.</div>
+            <div ng-if="profileSSNError" class="alert alert-danger" role="alert"><span ng-bind-html="'CONSULTANT-PROFILE-ERROR' | translate | unsafe"></span></div>
           </div>
         </div>
       </div>
@@ -62,7 +62,7 @@
       <label class="col-md-3 control-label"><span ng-bind-html="'SPONSOR-ID-LABEL' | translate | unsafe"></span></label>
       <div class="col-md-4" ng-class="{ 'has-error' : invalidSponsorId && !profileForm.sponsorId.$pristine }">
         <input name="sponsorId" type="text" class="form-control" ng-model="profile.sponsorId" placeholder="#-digit ID of your JAFRA Consultant Sponsor">
-        <span ng-show="invalidSponsorId" class="help-block" ng-class="{ 'text-danger' : invalidSponsorId }">Must only contain numbers</span>
+        <span ng-show="invalidSponsorId" class="help-block" ng-class="{ 'text-danger' : invalidSponsorId }"><span ng-bind-html="'CONSULTANT-PROFILE-INVALID-SPONSORID' | translate | unsafe"></span></span>
         <span class="help-block"><small><span ng-bind-html="'SPONSOR-ID-NOTE' | translate | unsafe"></span></small></span>
       </div>
       <div class="col-md-offset-3 col-sm-9">
@@ -72,7 +72,7 @@
 
     <div class="form-group">
       <div class="col-md-offset-3 col-sm-9">
-        <a href="" ng-click="validateProfileAndContinue()" ng-disabled="!profileForm.$valid || invalidDOB || invalidSponsorId" class="btn btn-primary btn-lg">Continue to Shipping &nbsp;<i class="fa fa-caret-right"></i></a>
+        <a href="" ng-click="validateProfileAndContinue()" ng-disabled="!profileForm.$valid || invalidDOB || invalidSponsorId" class="btn btn-primary btn-lg"><span ng-bind-html="'CONSULTANT-PROFILE-CONTINUE-TO-SHIPPING' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i></a>
       </div>
     </div>
   </form>
@@ -82,7 +82,7 @@
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <a class="pull-right" href="" onClick="printDiv('agreement-content');" ><i class="fa fa-print"></i> &nbsp;Print</a>
+            <a class="pull-right" href="" onClick="printDiv('agreement-content');" ><i class="fa fa-print"></i> &nbsp;<span ng-bind-html="'CONSULTANT-AGREEMENT-PRINT' | translate | unsafe"></span></a>
             <h4 id="myModalLabel" class="modal-title text-center"><span ng-bind-html="'CONSULTANT-AGREEMENT-TITLE' | translate | unsafe"></span></h4>
           </div>
           <div class="modal-body">
@@ -93,9 +93,9 @@
             </div>
           </div>
           <div class="modal-footer">
-            <a onclick="" href="/join/">I do not agree</a>&nbsp;&nbsp;
+            <a onclick="" href="/join/"><span ng-bind-html="'CONSULTANT-AGREEMENT-DONT-AGREE' | translate | unsafe"></span></a>&nbsp;&nbsp;
             &nbsp;&nbsp;
-            <button ng-click="profile.agree = true" data-dismiss="modal" class="btn btn-primary btn-lg" type="button" id="agreement_agree" disabled="" onclick="$('#agreement_modal').css('display','none;');">I agree &nbsp;<i class="fa fa-caret-right"></i></button>
+            <button ng-click="profile.agree = true" data-dismiss="modal" class="btn btn-primary btn-lg" type="button" id="agreement_agree" disabled="" onclick="$('#agreement_modal').css('display','none;');"><span ng-bind-html="'CONSULTANT-AGREEMENT-AGREE' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i></button>
             <p class="pull-left form-control-static"><small><span ng-bind-html="'CONSULTANT-AGREEMENT-NOTE' | translate | unsafe"></span></small></p>
           </div>
         </div>
