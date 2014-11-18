@@ -380,12 +380,12 @@ section#why_jafra_lifestyle {
 }
 
 section#why_jafra_lifestyle .invest-icons-bg{
-background: url(/img/invest-icons.png) no-repeat 50% 50%;
+background: url(/img/invest-icons.png) no-repeat 50% -4%;
 line-height: 2em;
 }
 
 section#why_jafra_lifestyle .training-icons-bg{
-background: url(/img/training-icons.png) no-repeat 50% 7.5%;
+background:url(/img/training-icons.png) no-repeat 50% -8%;
 line-height: 2em;
 }
 section#why_jafra_lifestyle .invest {
