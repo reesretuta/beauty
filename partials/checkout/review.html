@@ -21,9 +21,9 @@
         <table class="table">
           <thead>
           <tr>
-            <th>Qty</th>
-            <th>Description</th>
-            <th align="right">Price</th>
+            <th ng-bind-html="'CART_QTY' | translate | unsafe">Qty</th>
+            <th ng-bind-html="'CART_DESCRIPTION' | translate | unsafe">Description</th>
+            <th align="right" ng-bind-html="'CART_PRICE' | translate | unsafe">Price</th>
           </tr>
           </thead>
           <tbody>
@@ -78,9 +78,9 @@
           <tfoot>
           <tr>
             <td colspan="3">
-              <p>Subtotal: {{salesTaxInfo.SubTotal | currency}}</p>
-              <p>Shipping: {{salesTaxInfo.SH | currency}}</p>
-              <p>Tax: {{salesTaxInfo.TaxRate}}%</p>
+              <p><span ng-bind-html="'CART_SUBTOTAL' | translate | unsafe"></span>: {{salesTaxInfo.SubTotal | currency}}</p>
+              <p><span ng-bind-html="'CART_SHIPPING' | translate | unsafe"></span>: {{salesTaxInfo.SH | currency}}</p>
+              <p><span ng-bind-html="'CART_TAX' | translate | unsafe"></span>: {{salesTaxInfo.TaxRate}}%</p>
               <p class="lead"><b>Total Charges: {{salesTaxInfo.Total | currency}}</b></p>
             </td>
           </tr>

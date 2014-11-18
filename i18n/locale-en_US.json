@@ -345,7 +345,7 @@
     "CONSULTANT-AGREEMENT-TITLE":"JAFRA Independent Consultant Agreement",
     "CONSULTANT-AGREEMENT-NOTE":"You must read the entire agreement (scroll down) before you can continue.",
     "OS-PROFILE-TITLE":"Payee Profile & Sponsor",
-    "OS-PROFILE-TAG":"We&rsquo;ll need a some information to send your payment checks.",
+    "OS-PROFILE-TAG":"We&rsquo;ll need some information to send your payment checks.",
     "CONTACT-INFO-LABEL":"Contact Info",
     "DOB-LABEL":"Your Date of Birth",
     "SSN-LABEL":"Your SSN",
@@ -365,5 +365,11 @@
     "OS-ADDRESS_CORRECTION_TITLE_DESC":"Is this address correct?",
     "CREDITCARD_EDIT_TITLE":"Edit Credit Card",
     "CREDITCARD_EDIT_TITLE_DESC":"Make changes to this payment method",
-    "SHIPPING-CARRIER":"Carrier"
+    "SHIPPING-CARRIER":"Carrier",
+    "CART_PRICE":"Price",
+    "CART_DESCRIPTION":"Description",
+    "CART_QTY":"Qty",
+    "CART_TAX":"Tax",
+    "CART_SHIPPING":"Shipping",
+    "CART_SUBTOTAL":"Subtotal"
 }
