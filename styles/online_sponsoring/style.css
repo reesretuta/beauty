@@ -110,9 +110,14 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   color: #333;
   white-space: nowrap;
 }
+.bg-color-honeyflower{background-color:#5A376F;}
 .color-black{color:#000000;}
+.color-bostonblue{color:#4E9FAD;}
+.color-cesoir{color:#937BA0;}
+.color-chatelle{color:#AFA8B4;}
 .color-grey{color: #777777;}
 .color-gold{color:#867527;}
+.color-husk{color:#B29F50;}
 .color-purple{color: #460d66;}
 .color-red{color: #c3002f;}
 .color-violet{color: #9659B7;}
@@ -378,13 +383,18 @@ section#why_jafra_lifestyle .invest-icons-bg{
 background: url(/img/invest-icons.png) no-repeat 50% 50%;
 line-height: 2em;
 }
-section#why_jafra_lifestyle .invest-icons-bg .invest {
+
+section#why_jafra_lifestyle .training-icons-bg{
+background: url(/img/training-icons.png) no-repeat 50% 7.5%;
+line-height: 2em;
+}
+section#why_jafra_lifestyle .invest {
   font-size: 60px;
   font-family: HelveticaNeueLTStd-BdCn;
   color: #9659B7;
-  text-transform:uppercase
+  text-transform:uppercase;
 }
-section#why_jafra_lifestyle .invest-icons-bg .yourself {
+section#why_jafra_lifestyle .yourself {
   font-size: 48px;
   font-family: DidotLTPro-Italic;
   color: #A28F40;
@@ -392,6 +402,22 @@ section#why_jafra_lifestyle .invest-icons-bg .yourself {
 section#why_jafra_lifestyle .subcontainer {
   background-color: #460D66;
 }
+section#why_jafra_lifestyle .sales-equation {
+line-height: 1.7em;
+padding: 2em 2em 2em 4.2em;
+height: 150px;
+position: relative;
+margin-bottom: 45px;
+left: 45px;
+width: 677px;
+}
+section#why_jafra_lifestyle .business-right-col{
+  border-left: 1px solid #5A376F;
+}
+section#why_jafra_lifestyle .business-right-col .row{
+  padding-bottom: 20px;
+}
+
 section#why_jafra_lifestyle span.you_choose {
 color: #ffffff;
 font-size: 48px;
@@ -416,17 +442,37 @@ right: -3.5em;
 z-index: 2;
 }
 
+section#why_jafra_lifestyle .percent {
+  font-size: 72px;
+  line-height: 0.8em;
+}
+section#why_jafra_lifestyle .plus {
+  position: relative;
+  top: 30px;
+  right: 20px;
+  font-size: 72px;
+}
+
+section#why_jafra_lifestyle .leaders_col {
+  position: relative;
+  top: 23px;
+} 
+
+section#why_jafra_lifestyle .team_sales {
+  font-size:30px;
+}
+
 section#why_jafra_lifestyle .subcontainer ul.golden_bullets {
   font-family: DidotLTPro-Italic;
   font-size: 30px;
   list-style: none;
   color: #ffffff;
 background: #620747;
-padding: 2em 2em 2em 4.2em;
+padding: 2em 1.2em 2em 4.2em;
 top: -1.25em;
 left: -4.2em;
 position: relative;
-max-width: 23.6em;
+max-width: 23em;
 line-height: 3em;
 z-index: 0;
 }
