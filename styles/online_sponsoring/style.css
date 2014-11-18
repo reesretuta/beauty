@@ -602,6 +602,13 @@ margin: 8px 0 5px;
   transform: rotate(0deg);
 }
 
+.faqs-item-question {
+  font-family: DidotLTPro-Roman;
+  font-size: 24px;
+  color: #460D66;
+width: 475px;
+}
+
 .faqs-item .faqs-item-question a {
   color: #421F5D;
   display: block;
@@ -610,6 +617,9 @@ margin: 8px 0 5px;
   padding: 0 50px 0 0;
   font-size: 24px;
   line-height: 1.4;
+position: relative;
+top: -70px;
+left: 45px;
 }
 .faqs-item .faqs-item-question a:after {
   top: 0;
