@@ -45,7 +45,7 @@
             <div ng-if="productIdToProduct[component.product]" class="col-lg-9 col-md-9 col-xs-6 col-sm-8 modal-addon-item">
               <p class="modal-addon-item-title">{{productIdToProduct[component.product].name}}</p>
               <p class="modal-addon-item-description" ng-bind-html="productIdToProduct[sku].description | unsafe">Product description</p>
-              <p class="modal-addon-item-quantity">{{productIdToProduct[component.product].quantity}}</p>
+              <p class="modal-addon-item-quantity"><span ng-bind-html="'QUANTITY' | translate | unsafe"></span>: {{productIdToProduct[component.product].quantity}}</p>
             </div>
           </div>
         </div>
