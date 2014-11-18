@@ -375,17 +375,17 @@ section#why_jafra_products #more_products img.products-offleft {
 }
 
 section#why_jafra_lifestyle {
-  background: #460D66;
+  background: #380A52;
   color: #FFFFFF;
 }
 
 section#why_jafra_lifestyle .invest-icons-bg{
-background: url(/img/invest-icons.png) no-repeat 50% 50%;
+background: url(/img/invest-icons.png) no-repeat 50% -4%;
 line-height: 2em;
 }
 
 section#why_jafra_lifestyle .training-icons-bg{
-background: url(/img/training-icons.png) no-repeat 50% 7.5%;
+background:url(/img/training-icons.png) no-repeat 50% -8%;
 line-height: 2em;
 }
 section#why_jafra_lifestyle .invest {
@@ -400,7 +400,7 @@ section#why_jafra_lifestyle .yourself {
   color: #A28F40;
 }
 section#why_jafra_lifestyle .subcontainer {
-  background-color: #460D66;
+  background-color: #380A52;
 }
 section#why_jafra_lifestyle .sales-equation {
 line-height: 1.7em;
