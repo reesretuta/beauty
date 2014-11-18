@@ -412,6 +412,11 @@ section#why_jafra_lifestyle .subcontainer ul.golden_bullets li:before {
   color: #867527;
   padding-right: 25px;
 }
+
+section#why_jafra_lifestyle .subcontainer .more-link:after {
+  color: #C3002F;
+}
+
 section#why_jafra_rewards {
   background: #faebe6;
 }
