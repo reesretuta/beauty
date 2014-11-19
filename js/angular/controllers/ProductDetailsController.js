@@ -118,9 +118,9 @@ angular.module('app.controllers.products')
                             kitSelections: cartItem.kitSelections,
                             quantity: 1
                         }).then(function() {
-                            $log.debug("MainController(): kit: addToCart()", product);
+                            $log.debug("MainController(): kit: addToCart()", $scope.product);
                         }, function (error) {
-                            $log.error("MainController(): kit: addToCart(): error", product);
+                            $log.error("MainController(): kit: addToCart(): error", $scope.product);
                         });
                     }
                 }
