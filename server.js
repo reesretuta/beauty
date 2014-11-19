@@ -514,6 +514,10 @@ router.route('/products/:productId').get(function (req, res) {
             console.log("returning", products.length, "products");
             // TMP
             console.log('products:', products);
+            products[0].upsellItems = products[0].upsellItems.filter(function (obj, index) {
+                return (obj.product !== null);
+            });
+            console.log('products (filtered null upsells):', products);
             res.json(products[0]);
             res.end();
             return;
