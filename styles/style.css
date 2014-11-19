@@ -892,6 +892,12 @@ a:focus {
     -o-transform: rotate(180deg);
     transform: rotate(180deg);
 }
+
+#shop_menu li.open .category_children {
+  overflow: auto;
+}
+
+
 .configureKitModal.modal {
     min-width: 640px;
     min-height: 400px;

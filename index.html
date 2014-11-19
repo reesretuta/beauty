@@ -210,7 +210,7 @@
                 </a>
 
                 <!-- loop in children links -->
-                <ul ng-if="category.children">
+                <ul ng-if="category.children" class="category_children">
 
                   <li ng-repeat="category in category.children" ng-class="{'open': categoryInPath(category)}">
 
