@@ -14,8 +14,10 @@
     "NAV_MEDIA": "Media",
     "NAV_MYPAGE": "My Page",
 
+    "CONTACT-INFO": "1 (800) 551-2345<br/>Open: M-F 8:30am-5:30pm<br>Pacific",
+
     "OS-NAV1":"Why Jafra?",
-    "OS-NAV2":"Starter Packages",
+    "OS-NAV2":"Starter Kits",
     "OS-NAV3":"Faqs",
     "OS-NAV4":"Join Now!",
     "OS-NAV5":"Contact",
@@ -65,13 +67,13 @@
 
     "OS-ABOUT-TIMELINE-DESCRIPTION": "It began over 58 years ago in 1956 in Malibu, California, when Jan and Frank Day launched JAFRA so a woman could own her own business. Since then, hundreds of thousands of women have successfully realized their entrepreneurial dreams, first as a Consultant, then as a Leader with their own JAFRA Team.",
 
-    "OS-ABOUT-SHARE-THE": "comparte la",
+    "OS-ABOUT-SHARE-THE": "share the",
     "OS-ABOUT-INNOVATION": "INNOVATION",
     "OS-ABOUT-SHARE-THE-INNOVATION-DESC": "Be a member of one of the top 5 direct selling families worldwide, and sell advanced skin care, on-trend colors, luxurious toiletries, plus exclusive women's and men's fragrances.",
 
     "OS-ABOUT-ENJOY-THE": "enjoy the",
     "OS-ABOUT-REWARDS": "REWARDS",
-    "OS-ABOUT-ENJOY-THE-REWARDS-DESC": "<b>Earn up to 50% commission</b>, exciting trips and incentive rewards like cash bonuses and jewelry. Plus, as a Leader, you can realize more income potential through team sales.!",
+    "OS-ABOUT-ENJOY-THE-REWARDS-DESC": "<b>Earn up to 50% commission</b>, exciting trips and incentive rewards like cash bonuses and jewelry. Plus, as a Leader, you can realize more income potential through team sales!",
 
     "OS-ABOUT-EXPERIENCE-THE": "experience the",
     "OS-ABOUT-EMPOWERMENT": "EMPOWERMENT",
