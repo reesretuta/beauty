@@ -512,6 +512,8 @@ router.route('/products/:productId').get(function (req, res) {
         }
         if (products.length == 1) {
             console.log("returning", products.length, "products");
+            // TMP
+            console.log('products:', products);
             res.json(products[0]);
             res.end();
             return;
