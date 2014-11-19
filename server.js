@@ -72,7 +72,7 @@ app.use(function(req, res, next) {
     var user = auth(req);
 
     //console.log("user", user);
-    if (user === undefined || user['name'] !== 'jafra' || user['pass'] !== 'easypassfordpaxton') {
+    if ((user === undefined || user['name'] !== 'jafra' || user['pass'] !== 'easypassfordpaxton') && env != "development") {
         res.statusCode = 401;
         res.setHeader('WWW-Authenticate', 'Basic realm="JafraProto"');
         res.end('Unauthorized');
