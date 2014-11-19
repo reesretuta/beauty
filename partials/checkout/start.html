@@ -1,3 +1,4 @@
+
 <div id="signin" class="col-sm-12">
 
   <div class="col-md-offset-3">
@@ -42,6 +43,16 @@
       </div>
     </div>
 
+    <div class="form-group">
+      <label for="loginEmailVerify" class="col-md-3 control-label"><span ng-bind-html="'EMAIL_ADD_VERIFY' | translate | unsafe"></span></label>
+      <div class="col-sm-6" ng-class="{ 'has-error' : signInForm.loginEmailVerify.$invalid && !signInForm.loginEmailVerify.$pristine }">
+        <input name="loginEmailVerify" ng-pattern="/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/" ng-model="profile.loginEmailVerify" type="email" class="form-control" id="loginEmailVerify" placeholder="example@gmail.com" data-ui-validate="'$value == profile.loginEmail'" required>
+        <span ng-show="signInForm.loginEmailVerify.$invalid && !signInForm.loginEmailVerify.$pristine" class="help-block" ng-class="{ 'text-danger' : signInForm.loginEmailVerify.$invalid }">Must be a valid email address.</span>
+        <span ng-show="signInForm.loginEmailVerify.$invalid && !signInForm.loginEmailVerify.$pristine && profile.loginEmail !== profile.loginEmailVerify" class="help-block" ng-class="{ 'text-danger' : signInForm.loginEmailVerify.$invalid }">Email addresses must match.</span>
+        <!--valid={{signInForm.loginEmailVerify.$valid}}-->
+      </div>
+    </div>
+
     <div class="form-group" ng-if="isOnlineSponsoring">
       <label for="phoneNumber" class="col-md-3 control-label"><span ng-bind-html="'IN_PHONE' | translate | unsafe"></span></label>
       <div class="col-sm-3">
@@ -51,12 +62,22 @@
     </div>
 
     <div class="form-group" ng-if="!isOnlineSponsoring">
-      <label for="inputPassword3" class="col-md-3 control-label">Password</label>
+      <label for="inputPassword3" class="col-md-3 control-label"><span ng-bind-html="'PASSWORD' | translate | unsafe"></span></label>
       <div class="col-sm-4">
         <input name="loginPassword" ng-model="profile.loginPassword" type="password" class="form-control" id="inputPassword3" placeholder="Password" required>
         <!--valid={{signInForm.loginPassword.$valid}}-->
       </div>
     </div>
+
+    <div class="form-group" ng-if="!isOnlineSponsoring">
+      <label for="inputPassword4" class="col-md-3 control-label"><span ng-bind-html="'PASSWORD_VERIFY' | translate | unsafe"></span></label>
+      <div class="col-sm-4" ng-class="{ 'has-error' : signInForm.loginPasswordVerify.$invalid && !signInForm.loginPasswordVerify.$pristine }">
+        <input name="loginPasswordVerify" ng-model="profile.loginPasswordVerify" type="password" class="form-control" id="inputPassword4" placeholder="Verify Password" data-ui-validate="'$value == profile.loginPassword'" required>
+        <span ng-show="signInForm.loginPasswordVerify.$invalid && !signInForm.loginPasswordVerify.$pristine && profile.loginPassword !== profile.loginPasswordVerify" class="help-block" ng-class="{ 'text-danger' : profile.loginPassword !== profile.loginPasswordVerify }">Passwords must match.</span>
+        <!--valid={{signInForm.loginPassword.$valid}}-->
+      </div>
+    </div>
+
     <!--valid={{signInForm.customerStatus.$valid}}-->
 
     <div class="form-group">
