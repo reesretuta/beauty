@@ -467,72 +467,64 @@ router.route('/products')
         }
     });
 
-// on routes that end in /products/:productId
-router.route('/products/:productId')
-
-    // get the product with that id
-    .get(function (req, res) {
-        console.log("getting product", req.params);
-
-        var now = new Date();
-
-        models.Product.find({
-            $and: [
-                {_id: req.params.productId, masterStatus: "A", onHold: false},
-                {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
-                {$or: [
-                    {$and: [{type: "group"}, {prices: {$exists: false}}]},
-                    {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
-                ]}
-            ]
-        })
-        .populate({
-            path: 'upsellItems.product youMayAlsoLike.product',
-            model: 'Product',
-            match: { $and: [
-                {masterStatus: "A", onHold: false},
-                {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
-                {$or: [
-                    {$and: [{type: "group"}, {prices: {$exists: false}}]},
-                    {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
-                ]}
+// on routes that end in /products/:productId, get the product with that id
+router.route('/products/:productId').get(function (req, res) {
+    console.log('getting product', req.params);
+    var now = new Date();
+    models.Product.find({
+        $and: [
+            { _id: req.params.productId, masterStatus: "A", onHold: false },
+            { $or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group" }]},
+            { $or: [
+                { $and: [{type: "group"}, {prices: {$exists: false }}]},
+                { prices: {$elemMatch: {"effectiveStartDate":{ $lte: now }, "effectiveEndDate":{ $gte: now }}}}
             ]}
-        }).populate({
-            path: 'contains.product',
-            model: 'Product'
-        }).populate({
-            path: 'kitGroups.kitGroup',
-            model: 'KitGroup'
-        }).populate({
-            path: 'kitGroups.kitGroup.components.product',
-            model: 'Product',
-            match: { $and: [
-                {masterStatus: "A", onHold: false},
-                {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
+        ]
+    }).populate({
+        path: 'upsellItems.product youMayAlsoLike.product',
+        model: 'Product',
+        match: { $and: [
+            { masterStatus: "A", onHold: false},
+            { $or: [{masterType: "R"}, { masterType: {$exists: false}, type:"group" }]},
+            { $or: [
+                { $and: [{type: "group"}, {prices: {$exists: false}}]},
+                { prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{ $gte: now }}}}
             ]}
-        }).exec(function (err, products) {
-            if (err) {
-                console.error("error populating product", err);
-                res.send(err);
-                return;
-            }
-
-            if (products.length == 1) {
-                console.log("returning", products.length, "products");
-                res.json(products[0]);
-                res.end();
-                return;
-            }
-
-            res.status(500);
-            res.json({
-                statusCode: 500,
-                errorCode: "productLookupFailed",
-                errorMessage: "Failed to lookup product"
-            });
+        ]}
+    }).populate({
+        path: 'contains.product',
+        model: 'Product'
+    }).populate({
+        path: 'kitGroups.kitGroup',
+        model: 'KitGroup'
+    }).populate({
+        path: 'kitGroups.kitGroup.components.product',
+        model: 'Product',
+        match: { $and: [
+            {masterStatus: "A", onHold: false},
+            {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
+        ]}
+    }).exec(function (err, products) {
+        if (err) {
+            console.error("error populating product", err);
+            res.send(err);
+            return;
+        }
+        if (products.length == 1) {
+            console.log("returning", products.length, "products");
+            res.json(products[0]);
             res.end();
+            return;
+        }
+        res.status(500);
+        res.json({
+            statusCode: 500,
+            errorCode: "productLookupFailed",
+            errorMessage: "Failed to lookup product"
         });
+        res.end();
     });
+});
 
 // AUTHENTICATION
 // ----------------------------------------------------
