@@ -220,6 +220,14 @@ section#why_jafra_testimonials .btn-lg {
 	padding-top: 10px;
 }
 
+/* checkout styles */
+.store-checkout a[data-toggle="modal"] {
+	white-space: nowrap;
+}
+.checkout-address a > span {
+	display: inline-block;
+}
+
 /* dains helpers */
 .padbottom { padding-bottom: 30px; }
 .padtop { padding-top: 30px; }

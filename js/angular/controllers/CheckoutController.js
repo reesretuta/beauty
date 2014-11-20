@@ -2028,14 +2028,16 @@ angular.module('app.controllers.checkout')
                     card: "4111111111111111",
                     expMonth: "12",
                     expYear: "2020",
-                    cvv: 987
+                    cvv: 987,
+                    cardType: "Visa"
                 },
                 card: {
                     name: "Test Name",
                     card: "4111111111111111",
                     expMonth: "12",
                     expYear: "2020",
-                    cvv: 987
+                    cvv: 987,
+                    cardType: "Visa"
                 }
             };
 
@@ -2057,6 +2059,8 @@ angular.module('app.controllers.checkout')
                 "SubTotal": "99.00",
                 "SH": "5.00",
                 "TaxRate": "7.75",
+                "TotalBeforeTax": "104.00",
+                "TaxAmount": "17.00",
                 "Total": "121.00"
             }
 
