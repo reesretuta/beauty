@@ -279,7 +279,7 @@
     "IN_BILL_SHIP_SAME":"Mi direcci&oacute;n de env&iacute;o es la misma que mi direcci&oacute;n",
     "WHATS_THIS_DES2":"Tipo de Direcci&oacute;n (Opcional) - Esto nos ayuda a seleccionar el mejor metodo de env&iacute;o de acuerdo con tu domicilio.",
     "BTN_ADD_CARD":"Agregar Tarjeta",
-    "CHECK_INST_PAY":"Al hacer clic en \"Hacer Pedido\" cambiar, tu opci&oacute;n de pago en la cantaidad que abajo se muestra.",
+    "CHECK_INST_PAY":"Al hacer clic en HACER EL PEDIDO, se cargar&aacute; la tarjeta de cr&eacute;dito por la cantidad que se muestra abajo.",
     "PAY_TIT1":"Cargado a",
     "PAY_TIT2":"Enviado a",
     "PAY_TIT3":"Facturado a",
@@ -418,6 +418,7 @@
     "CART_DESCRIPTION":"Descripci&oacute;n",
     "CART_QTY":"Cant",
     "CART_TAX":"Impuesto",
+    "CART_TAX_PERCENTAGE":"Impuesto",
     "CART_SHIPPING":"Env&iacute;o",
     "CART_SUBTOTAL":"Subtotal"
 }
