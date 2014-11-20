@@ -48,7 +48,7 @@
       <!-- ng-pattern="/^[a-zA-Z0-9\s,'-]*$/" causing api validation to fail. -->
 
         <input id="shippingAddress1" name="address1" ng-model="profile.newShippingAddress.address1" ng-model-onblur type="text" class="form-control" placeholder="{{ 'IN_ADD_LINE1_DES' | translate }} " focus-on="shipping-address1-focus" ng-model-onblur required>
-        <span ng-show="shippingForm.address1.$invalid && !shippingForm.address1.$pristine" class="help-block text-danger">Please Enter a Valid Address.</span>
+        <span ng-show="shippingForm.address1.$invalid && !shippingForm.address1.$pristine" class="help-block text-danger"><span ng-bind-html="'ENTER-VALID-ADDRESS' | translate | unsafe"></span></span>
 
       </div>
     </div>
