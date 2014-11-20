@@ -144,7 +144,7 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
             cid = null;
         }
         var source = search["source"];
-        var language = S(search["language"]).isEmpty() ? "en_US" : search["language"];
+        var language = search["language"];
         $log.debug("app(): consultantId", cid, "source", source, "language", language);
 
         var sess = {};
