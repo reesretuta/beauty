@@ -219,12 +219,15 @@ section#why_jafra_testimonials .btn-lg {
 }
 
 /* your call section */
-#more_call p {
+section#why_jafra_lifestyle #more_call p {
 	line-height: 1.6em;
 	padding-top: 10px;
 }
-.es #more_call .business {
+.es section#why_jafra_lifestyle .business {
 	right: -1em;
+}
+.es section#why_jafra_lifestyle .invest {
+	font-size: 43px;
 }
 section#why_jafra_lifestyle .subcontainer ul.golden_bullets {
 	padding-left: 6em;
@@ -236,6 +239,7 @@ section#why_jafra_lifestyle .subcontainer ul.golden_bullets li {
 section#why_jafra_lifestyle .subcontainer ul.golden_bullets li:before {
 	margin-left: -1.8em;	
 }
+
 /* checkout styles */
 .store-checkout a[data-toggle="modal"] {
 	white-space: nowrap;
