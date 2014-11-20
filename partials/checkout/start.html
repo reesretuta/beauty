@@ -43,16 +43,6 @@
       </div>
     </div>
 
-    <div class="form-group">
-      <label for="loginEmailVerify" class="col-md-3 control-label"><span ng-bind-html="'EMAIL_ADD_VERIFY' | translate | unsafe"></span></label>
-      <div class="col-sm-6" ng-class="{ 'has-error' : signInForm.loginEmailVerify.$invalid && signInForm.loginEmailVerify.$dirty }">
-        <input name="loginEmailVerify" ng-pattern="/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/" ng-model="profile.loginEmailVerify" ng-model-onblur type="email" class="form-control" id="loginEmailVerify" placeholder="example@gmail.com" data-ui-validate="'$value == profile.loginEmail'" required>
-        <span ng-show="signInForm.loginEmailVerify.$invalid && signInForm.loginEmailVerify.$dirty" class="help-block" ng-class="{ 'text-danger' : signInForm.loginEmailVerify.$invalid }">Must be a valid email address.</span>
-        <span ng-show="signInForm.loginEmailVerify.$invalid && signInForm.loginEmailVerify.$dirty && profile.loginEmail !== profile.loginEmailVerify" class="help-block" ng-class="{ 'text-danger' : signInForm.loginEmailVerify.$invalid }">Email addresses must match.</span>
-        <!--valid={{signInForm.loginEmailVerify.$valid}}-->
-      </div>
-    </div>
-
     <div class="form-group" ng-if="isOnlineSponsoring">
       <label for="phoneNumber" class="col-md-3 control-label"><span ng-bind-html="'IN_PHONE' | translate | unsafe"></span></label>
       <div class="col-sm-3">
