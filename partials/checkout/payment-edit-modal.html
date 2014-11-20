@@ -103,8 +103,7 @@
         <!--valid={{paymentForm.cvv.$valid}}-->
       </div>
       <div class="col-xs-6 col-sm-4 col-med-3">
-        <a popover="3-4 digit number located on your credit card" popover-title="Security Code/CVV2" href="" tabindex="-1"><i class="fa fa-info-circle"></i>
-          What's this?</a>
+        <a popover="3-4 digit number located on your credit card" popover-title="Security Code/CVV2" href="" tabindex="-1"><i class="fa fa-info-circle"></i> <span ng-bind-html="'WHATS-THIS' | translate | unsafe"></span></a>
       </div>
     </div>
   </div>
@@ -114,7 +113,7 @@
   <div class="col-md-offset-3 col-sm-9">
     <div class="error" ng-show="billingAddressError && !profile.billSame" ng-bind="billingAddressError"></div>
     <button type="button" ng-click="updatePaymentMethod()" class="btn btn-primary btn-lg" ng-disabled="!paymentForm.$valid || invalidExpiration">
-      Update Payment Information &nbsp;<i class="fa fa-caret-right"></i>
+      <span ng-bind-html="'BTN_SAVE_PAYMENT' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i>
     </button>
   </div>
 </div>
