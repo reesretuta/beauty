@@ -115,6 +115,7 @@ angular.module('app.controllers.main')
 
         // begin navigation
         $rootScope.navStatic = '0';
+        
         $scope.categoryClicked = function(category) {
             $log.debug("MainController(): category clicked", category);
             // set breadcrumbs
@@ -130,7 +131,6 @@ angular.module('app.controllers.main')
 
         $scope.categoryInPath = function(category) {
             //$log.debug("CategoriesController(): categoryInPath(): checking if category", category, "is in breadcrumb path", $rootScope.breadcrumbs);
-
             // loop through current breadcrumbs
             for (var i=0; i < $rootScope.breadcrumbs.length; i++) {
                 var breadcrumb = $rootScope.breadcrumbs[i];
@@ -141,7 +141,6 @@ angular.module('app.controllers.main')
                     return true;
                 }
             }
-
             return false;
         }
         // end navigation

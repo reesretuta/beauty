@@ -1,3 +1,4 @@
+
 angular.module('app.controllers.categories')
     .controller('CategoriesController', function ($scope, $document, $rootScope, $routeParams, $log, Categories) {
         $log.debug("CategoriesController");

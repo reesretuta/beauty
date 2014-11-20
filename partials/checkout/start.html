@@ -22,33 +22,33 @@
 
     <div class="form-group" ng-if="profile.customerStatus == 'new' || isOnlineSponsoring">
       <label for="firstName" class="col-md-3 control-label"><span ng-bind-html="'OS-NAME' | translate | unsafe"></span></label>
-      <div class="col-sm-3" ng-class="{ 'has-error' : signInForm.firstName.$invalid && !signInForm.firstName.$pristine }">
-        <input name="firstName" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model="profile.firstName" class="form-control" id="firstName" placeholder="{{'CHECKOUT-FIRST-PLACEHOLDER' | translate | unsafe}}" required="isOnlineSponsoring" autofocus="" maxlength="40">
-        <span ng-show="signInForm.firstName.$invalid && !signInForm.firstName.$pristine" class="help-block" ng-class="{ 'text-danger' : signInForm.firstName.$invalid }">Must contain 2-40 letters.</span>
+      <div class="col-sm-3" ng-class="{ 'has-error' : signInForm.firstName.$invalid && signInForm.firstName.$dirty }">
+        <input name="firstName" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model="profile.firstName" ng-model-onblur class="form-control" id="firstName" placeholder="{{'CHECKOUT-FIRST-PLACEHOLDER' | translate | unsafe}}" required="isOnlineSponsoring" autofocus="" maxlength="40">
+        <span ng-show="signInForm.firstName.$invalid && signInForm.firstName.$dirty" class="help-block" ng-class="{ 'text-danger' : signInForm.firstName.$invalid }">Must contain 2-40 letters.</span>
         <!--valid={{signInForm.firstName.$valid}}-->
       </div>
-      <div class="col-sm-3" ng-class="{ 'has-error' : signInForm.lastName.$invalid && !signInForm.lastName.$pristine }">
-        <input name="lastName" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model="profile.lastName" class="form-control" id="lastName" placeholder="{{'CHECKOUT-LAST-PLACEHOLDER' | translate | unsafe}}" required="isOnlineSponsoring" maxlength="40">
-        <span ng-show="signInForm.lastName.$invalid && !signInForm.lastName.$pristine" class="help-block" ng-class="{ 'text-danger' : signInForm.lastName.$invalid }">Must contain 2-40 letters.</span>
+      <div class="col-sm-3" ng-class="{ 'has-error' : signInForm.lastName.$invalid && signInForm.lastName.$dirty }">
+        <input name="lastName" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model="profile.lastName" ng-model-onblur class="form-control" id="lastName" placeholder="{{'CHECKOUT-LAST-PLACEHOLDER' | translate | unsafe}}" required="isOnlineSponsoring" maxlength="40">
+        <span ng-show="signInForm.lastName.$invalid && signInForm.lastName.$dirty" class="help-block" ng-class="{ 'text-danger' : signInForm.lastName.$invalid }">Must contain 2-40 letters.</span>
         <!--valid={{signInForm.lastName.$valid}}-->
       </div>
     </div>
 
     <div class="form-group">
       <label for="loginEmail" class="col-md-3 control-label"><span ng-bind-html="'EMAIL_ADD' | translate | unsafe"></span></label>
-      <div class="col-sm-6" ng-class="{ 'has-error' : signInForm.loginEmail.$invalid && !signInForm.loginEmail.$pristine }">
-        <input name="loginEmail" ng-pattern="/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/" ng-model="profile.loginEmail" type="email" class="form-control" id="loginEmail" placeholder="example@gmail.com" required>
-        <span ng-show="signInForm.loginEmail.$invalid && !signInForm.loginEmail.$pristine" class="help-block" ng-class="{ 'text-danger' : signInForm.loginEmail.$invalid }">Must be a valid email address.</span>
+      <div class="col-sm-6" ng-class="{ 'has-error' : signInForm.loginEmail.$invalid && signInForm.loginEmail.$dirty }">
+        <input name="loginEmail" ng-pattern="/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/" ng-model="profile.loginEmail" ng-model-onblur type="email" class="form-control" id="loginEmail" placeholder="example@gmail.com" required>
+        <span ng-show="signInForm.loginEmail.$invalid && signInForm.loginEmail.$dirty" class="help-block" ng-class="{ 'text-danger' : signInForm.loginEmail.$invalid }">Must be a valid email address.</span>
         <!--valid={{signInForm.loginEmail.$valid}}-->
       </div>
     </div>
 
     <div class="form-group">
       <label for="loginEmailVerify" class="col-md-3 control-label"><span ng-bind-html="'EMAIL_ADD_VERIFY' | translate | unsafe"></span></label>
-      <div class="col-sm-6" ng-class="{ 'has-error' : signInForm.loginEmailVerify.$invalid && !signInForm.loginEmailVerify.$pristine }">
-        <input name="loginEmailVerify" ng-pattern="/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/" ng-model="profile.loginEmailVerify" type="email" class="form-control" id="loginEmailVerify" placeholder="example@gmail.com" data-ui-validate="'$value == profile.loginEmail'" required>
-        <span ng-show="signInForm.loginEmailVerify.$invalid && !signInForm.loginEmailVerify.$pristine" class="help-block" ng-class="{ 'text-danger' : signInForm.loginEmailVerify.$invalid }">Must be a valid email address.</span>
-        <span ng-show="signInForm.loginEmailVerify.$invalid && !signInForm.loginEmailVerify.$pristine && profile.loginEmail !== profile.loginEmailVerify" class="help-block" ng-class="{ 'text-danger' : signInForm.loginEmailVerify.$invalid }">Email addresses must match.</span>
+      <div class="col-sm-6" ng-class="{ 'has-error' : signInForm.loginEmailVerify.$invalid && signInForm.loginEmailVerify.$dirty }">
+        <input name="loginEmailVerify" ng-pattern="/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/" ng-model="profile.loginEmailVerify" ng-model-onblur type="email" class="form-control" id="loginEmailVerify" placeholder="example@gmail.com" data-ui-validate="'$value == profile.loginEmail'" required>
+        <span ng-show="signInForm.loginEmailVerify.$invalid && signInForm.loginEmailVerify.$dirty" class="help-block" ng-class="{ 'text-danger' : signInForm.loginEmailVerify.$invalid }">Must be a valid email address.</span>
+        <span ng-show="signInForm.loginEmailVerify.$invalid && signInForm.loginEmailVerify.$dirty && profile.loginEmail !== profile.loginEmailVerify" class="help-block" ng-class="{ 'text-danger' : signInForm.loginEmailVerify.$invalid }">Email addresses must match.</span>
         <!--valid={{signInForm.loginEmailVerify.$valid}}-->
       </div>
     </div>
@@ -56,7 +56,7 @@
     <div class="form-group" ng-if="isOnlineSponsoring">
       <label for="phoneNumber" class="col-md-3 control-label"><span ng-bind-html="'IN_PHONE' | translate | unsafe"></span></label>
       <div class="col-sm-3">
-        <input name="phoneNumber" type="tel" ui-mask="(999) 999-9999" ng-model="profile.phoneNumber" class="form-control" id="phoneNumber" placeholder="(___) ___-____" required>
+        <input name="phoneNumber" type="tel" ui-mask="(999) 999-9999" ng-model="profile.phoneNumber" ng-model-onblur class="form-control" id="phoneNumber" placeholder="(___) ___-____" required>
         <!--valid={{signInForm.phoneNumber.$valid}}-->
       </div>
     </div>
@@ -64,7 +64,7 @@
     <div class="form-group" ng-if="!isOnlineSponsoring">
       <label for="inputPassword3" class="col-md-3 control-label"><span ng-bind-html="'PASSWORD' | translate | unsafe"></span></label>
       <div class="col-sm-4">
-        <input name="loginPassword" ng-model="profile.loginPassword" type="password" class="form-control" id="inputPassword3" placeholder="Password" required>
+        <input name="loginPassword" ng-model="profile.loginPassword" ng-model-onblur type="password" class="form-control" id="inputPassword3" placeholder="Password" required>
         <!--valid={{signInForm.loginPassword.$valid}}-->
       </div>
     </div>
@@ -72,8 +72,8 @@
     <div class="form-group" ng-if="!isOnlineSponsoring">
       <label for="inputPassword4" class="col-md-3 control-label"><span ng-bind-html="'PASSWORD_VERIFY' | translate | unsafe"></span></label>
       <div class="col-sm-4" ng-class="{ 'has-error' : signInForm.loginPasswordVerify.$invalid && !signInForm.loginPasswordVerify.$pristine }">
-        <input name="loginPasswordVerify" ng-model="profile.loginPasswordVerify" type="password" class="form-control" id="inputPassword4" placeholder="Verify Password" data-ui-validate="'$value == profile.loginPassword'" required>
-        <span ng-show="signInForm.loginPasswordVerify.$invalid && !signInForm.loginPasswordVerify.$pristine && profile.loginPassword !== profile.loginPasswordVerify" class="help-block" ng-class="{ 'text-danger' : profile.loginPassword !== profile.loginPasswordVerify }">Passwords must match.</span>
+        <input name="loginPasswordVerify" ng-model="profile.loginPasswordVerify" ng-model-onblur type="password" class="form-control" id="inputPassword4" placeholder="Verify Password" data-ui-validate="'$value == profile.loginPassword'" required>
+        <span ng-show="signInForm.loginPasswordVerify.$invalid && signInForm.loginPasswordVerify.$dirty && profile.loginPassword !== profile.loginPasswordVerify" class="help-block" ng-class="{ 'text-danger' : profile.loginPassword !== profile.loginPasswordVerify }">Passwords must match.</span>
         <!--valid={{signInForm.loginPassword.$valid}}-->
       </div>
     </div>
