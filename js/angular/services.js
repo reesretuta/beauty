@@ -1414,7 +1414,7 @@ angular.module('app.services', ['ngResource'])
         var buildPath = function(category, product, list) {
             if (list == null && product != null) {
                 list = new Array();
-                $log.debug("breadcrumbService.buildPath(): setting path to product name", product.name);
+                //$log.debug("breadcrumbService.buildPath(): setting path to product name", product.name);
                 list.unshift({
                     type: 'product',
                     name: product.name,
@@ -1426,7 +1426,7 @@ angular.module('app.services', ['ngResource'])
                 list = new Array();
             }
             if (category != null) {
-                $log.debug("breadcrumbService.buildPath(): prepending category name", category.name);
+                //$log.debug("breadcrumbService.buildPath(): prepending category name", category.name);
                 list.unshift({
                     type: 'category',
                     name: category.name,
