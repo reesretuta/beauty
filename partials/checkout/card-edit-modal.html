@@ -26,7 +26,7 @@
 
     <div class="col-sm-5 col-lg-5">
       <input ng-model="creditCard.card" data-ng-blur="visited=true" ng-minlength="13" ng-maxlength="16" maxlength="16" name="number" type="text" class="form-control" id=" " placeholder="XXXX XXXX XXXX {{creditCard.lastFour}}" data-ui-validate=" 'isValidCard($value)' " required>
-      <span ng-show="visited && (editCardForm.number.$error.minlength || editCardForm.number.$error.validator)" class="help-block" ng-class="{ 'text-danger' : editCardForm.number.$invalid && !editCardForm.number.$pristine }">Invalid credit card number</span>
+      <span ng-show="visited && (editCardForm.number.$error.minlength || editCardForm.number.$error.validator)" class="help-block" ng-class="{ 'text-danger' : editCardForm.number.$invalid && !editCardForm.number.$pristine }"><span ng-bind-html="'INVALID-CARD-NUMBER' | translate | unsafe"></span></span>
       <!--valid={{editCardForm.number.$valid}}-->
     </div>
     <div class="col-sm-4 col-lg-4" ng-model="cardType" ng-show="!editCardForm.number.$error.minlength && !editCardForm.number.$error.validator">
@@ -67,7 +67,7 @@
         </div>
         <div class="col-xs-8 col-sm-8 col-med-8">
           <a popover="3-4 digit number located on your credit card" popover-title="Security Code/CVV2" href="" tabindex="-1"><i class="fa fa-info-circle"></i>
-            What's this?</a>
+            <span ng-bind-html="'WHATS-THIS' | translate | unsafe"></span></a>
         </div>
       </div>
     </div>
