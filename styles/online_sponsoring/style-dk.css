@@ -225,3 +225,12 @@ section#why_jafra_testimonials .btn-lg {
 .padtop { padding-top: 30px; }
 .padleft { padding-left: 30px; }
 .padright { padding-right: 30px; }
+
+.btn-link {
+  background: transparent;
+  box-shadow: none;
+  color: #ccabd0;
+}
+.btn-link:hover {
+	text-decoration: underline;
+}
