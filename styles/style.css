@@ -52,6 +52,12 @@ h1, .h1, a:hover, a:focus, .btn-link:hover, .btn-link:focus {
 a {
   cursor: pointer;
 }
+a > span {
+  pointer-events: none;
+}
+a.btn {
+  z-index: 1;
+}
 .well h3  {
   margin-top: 0;
 }

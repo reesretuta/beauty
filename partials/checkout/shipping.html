@@ -36,7 +36,7 @@
     <div class="row form-group">
       <label for="shippingBusinessCO" class="col-md-3 control-label"><span ng-bind-html="'IN_BUSINESS_CO' | translate | unsafe"></span></label>
       <div class="col-sm-8 col-lg-6">
-        <input id="shippingBusinessCO" name="name" ng-model="profile.newShippingAddress.businessCO" ng-model-onblur type="text" class="form-control" placeholder="Business Name, care of Someone, etc." autocomplete="off">
+        <input id="shippingBusinessCO" name="name" ng-model="profile.newShippingAddress.businessCO" ng-model-onblur type="text" class="form-control" placeholder="{{ 'IN_BUSINESS_CO_DES' | translate }}" autocomplete="off">
       </div>
     </div>
 
@@ -150,10 +150,10 @@
     </div>
 
     <div class="row form-group">
-      <label for="shippingCountry" class="col-md-3 control-label"><span ng-bind-html="'IN_COUNTY' | translate | unsafe"></span></label>
+      <label for="shippingCountry" class="col-md-3 control-label"><span ng-bind-html="'IN_COUNTRY' | translate | unsafe"></span></label>
       <div class="col-sm-5 col-lg-3">
         <select id="shippingCountry" data-ng-init="profile.newShippingAddress.country='US'" name="country" ng-model="profile.newShippingAddress.country" ng-model-onblur class="form-control">
-          <option ng-selected="true" value="US">United States</option>
+          <option ng-selected="true" value="US" ng-bind-html="'COUNTRY_US' | translate | unsafe"></option>
         </select>
       </div>
     </div>

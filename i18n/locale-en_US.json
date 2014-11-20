@@ -235,6 +235,7 @@
     "KEEP_SIGN_DES":"Placeholder text",
     "IN_FULL_NAME":"Name(s)",
     "IN_BUSINESS_CO":"Business, C/O",
+    "IN_BUSINESS_CO_DES":"Business Name and/or Care of (optional)",
     "IN_ADD_LINE1":"Address Line 1",
     "IN_ADD_LINE1_DES":"Street address, P.O. box",
     "IN_ADD_LINE2":"Address Line 2",

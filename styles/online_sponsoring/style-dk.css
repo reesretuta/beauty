@@ -80,6 +80,7 @@ section#why_jafra_products {
 }
 section#why_jafra_testimonials .btn-lg {
 	margin: 50px 0px -25px;
+	position: relative; /* since parent is relative, so shall you be! */
 }
 
 /* starter kits section */
@@ -224,3 +225,12 @@ section#why_jafra_testimonials .btn-lg {
 .padtop { padding-top: 30px; }
 .padleft { padding-left: 30px; }
 .padright { padding-right: 30px; }
+
+.btn-link {
+  background: transparent;
+  box-shadow: none;
+  color: #ccabd0;
+}
+.btn-link:hover {
+	text-decoration: underline;
+}
