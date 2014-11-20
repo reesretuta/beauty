@@ -73,9 +73,10 @@ app.use(function(req, res, next) {
 
     //console.log("user", user);
     if ((user === undefined || user['name'] !== 'jafra' || user['pass'] !== 'easypassfordpaxton') && env != "development") {
-        res.statusCode = 401;
-        res.setHeader('WWW-Authenticate', 'Basic realm="JafraProto"');
-        res.end('Unauthorized');
+        //res.statusCode = 401;
+        //res.setHeader('WWW-Authenticate', 'Basic realm="JafraProto"');
+        //res.end('Unauthorized');
+        next();
     } else if (S(req.url).startsWith("/debug")) {
         console.log("CLIENT DEBUG", req.url);
         res.statusCode = 200;
