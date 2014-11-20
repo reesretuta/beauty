@@ -1,3 +1,4 @@
+
 <div class="container">
 
   <div class="col-md-offset-1 col-md-10">
@@ -78,10 +79,11 @@
           <tfoot>
           <tr>
             <td colspan="3">
-              <p><span ng-bind-html="'CART_SUBTOTAL' | translate | unsafe"></span>: {{salesTaxInfo.SubTotal | currency}}</p>
-              <p><span ng-bind-html="'CART_SHIPPING' | translate | unsafe"></span>: {{salesTaxInfo.SH | currency}}</p>
-              <p><span ng-bind-html="'CART_TAX' | translate | unsafe"></span>: {{salesTaxInfo.TaxRate}}%</p>
-              <p class="lead"><b>Total Charges: {{salesTaxInfo.Total | currency}}</b></p>
+              <p><span ng-bind-html="'CART_SUBTOTAL' | translate | unsafe"></span>: {{ salesTaxInfo.SubTotal | currency }}</p>
+              <p><span ng-bind-html="'CART_SHIPPING' | translate | unsafe"></span>: {{ salesTaxInfo.SH | currency }}</p>
+              <p><span ng-bind-html="'CART_TAX_PERCENTAGE' | translate | unsafe"></span>: {{ salesTaxInfo.TaxRate }}%</p>
+              <p><span ng-bind-html="'CART_TAX' | translate | unsafe"></span>: {{ salesTaxInfo.TaxAmount | currency }}</p>
+              <p class="lead"><b>Total Charges: {{ salesTaxInfo.Total | currency }}</b></p>
             </td>
           </tr>
           </tfoot>
@@ -89,9 +91,6 @@
 
       </div>
 
-     
-    
- 
 	<hr>
 
   <div class="form-group text-right">

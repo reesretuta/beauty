@@ -415,6 +415,7 @@
     "CART_DESCRIPTION":"Description",
     "CART_QTY":"Qty",
     "CART_TAX":"Tax",
+    "CART_TAX_PERCENTAGE":"Tax Percentage",
     "CART_SHIPPING":"Shipping",
     "CART_SUBTOTAL":"Subtotal"
 }

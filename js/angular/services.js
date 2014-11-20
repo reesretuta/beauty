@@ -54,6 +54,7 @@ angular.module('app.services', ['ngResource'])
                 $location.url(STORE_BASE_URL + "/products");
                 if ($rootScope.search.query != null && $rootScope.search.query !== undefined) {
                     $location.search("search", $rootScope.search.query);
+                    $log.debug("clearing search");
                 }
             }
         };

@@ -96,6 +96,7 @@ angular.module('app.controllers.main')
         $scope.searchProducts = function(query) {
             $log.debug("MainController(): going to products for search", query);
             $location.url(STORE_BASE_URL + "/products?search="+(query != null ? query : ''), 'false');
+            $rootScope.search.queryString = null;
         }
 
         $rootScope.getImagePath = function(paths) {
