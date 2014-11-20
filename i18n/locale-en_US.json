@@ -22,6 +22,7 @@
     "OS-NAV4":"Join Now!",
     "OS-NAV5":"Contact",
 
+    "WHATS-THIS":"Whats this?",
     "HEADER_CONSULTANTMSG": "Your JAFRA Beauty Consultant",
 
     "OS-BUY-ENGLISH": "Buy English",
@@ -355,6 +356,7 @@
     "PROD_DES":"Product description",
     "KIT_MODAL_FOOT":"Choose an option and save",
     "BTN_SAVE_CART":"Save to Cart",
+    "BTN_SAVE_PAYMENT": "Save Payment", 
     "PRODS_NOT_FOUND":"No products matched search",
     "VIDEOS":"Videos",
     "BTN_WATCH_VIDEO":"Watch Video",

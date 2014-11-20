@@ -25,6 +25,8 @@
     "HEADER_CONSULTANTMSG": "Consultora de Belleza JAFRA",
     "VIEW_CART": "Ver Pedido",
 
+    "WHATS-THIS": "&iquest;Qu&eacute; es esto?",
+
     "OS-BUY-ENGLISH": "Buy Ingl&eacute;s",
     "OS-BUY-SPANISH": "Buy Espa&ntilde;ol",
     "KIT-DETAILS-TOGGLE": "Mira lo que Incluye",
@@ -292,7 +294,7 @@
     "IN_CARD_NUMBER":"N&uacute;mero de la Tarjeta",
     "IN_EXPIRATION":"Fecha de Vencimiento",
     "IN_SECURITY_CODE":"C&oacute;digo de Seguridad",
-    "IN_BILL_SHIP_SAME":"Mi direcci&oacute;n de env&iacute;o es la misma que mi direcci&oacute;n",
+    "IN_BILL_SHIP_SAME":"Mi direcci&oacute;n de Pago y Env&iacute;o es la misma.",
     "WHATS_THIS_DES2":"Tipo de Direcci&oacute;n (Opcional) - Esto nos ayuda a seleccionar el mejor metodo de env&iacute;o de acuerdo con tu domicilio.",
     "BTN_ADD_CARD":"Agregar Tarjeta",
     "CHECK_INST_PAY":"Al hacer clic en \"Hacer Pedido\" cambiar, tu opci&oacute;n de pago en la cantaidad que abajo se muestra.",
@@ -355,6 +357,7 @@
     "PROD_DES":"Descripci&oacute;n del Producto",
     "KIT_MODAL_FOOT":"Elegir una opci&oacute;n y guardar",
     "BTN_SAVE_CART":"Guardar a la bolsa de compra",
+    "BTN_SAVE_PAYMENT": "GUARDAR INFORMACI&Oacute;N DE PAGO", 
     "PRODS_NOT_FOUND":"No hay productos correspondientes",
     "VIDEOS":"Videos",
     "BTN_WATCH_VIDEO":"Ver Video",
