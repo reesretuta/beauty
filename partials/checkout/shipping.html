@@ -29,14 +29,14 @@
     <div class="row form-group" ng-if="!isOnlineSponsoring">
       <label for="shippingFullName" class="col-md-3 control-label"><span ng-bind-html="'IN_FULL_NAME' | translate | unsafe"></span></label>
       <div class="col-sm-8 col-lg-6">
-        <input id="shippingFullName" name="name" ng-model="profile.newShippingAddress.name" type="text" class="form-control" placeholder="">
+        <input id="shippingFullName" name="name" ng-model="profile.newShippingAddress.name" ng-model-onblur type="text" class="form-control" placeholder="">
       </div>
     </div>
 
     <div class="row form-group">
       <label for="shippingBusinessCO" class="col-md-3 control-label"><span ng-bind-html="'IN_BUSINESS_CO' | translate | unsafe"></span></label>
       <div class="col-sm-8 col-lg-6">
-        <input id="shippingBusinessCO" name="name" ng-model="profile.newShippingAddress.businessCO" type="text" class="form-control" placeholder="Business Name, care of Someone, etc." autocomplete="off">
+        <input id="shippingBusinessCO" name="name" ng-model="profile.newShippingAddress.businessCO" ng-model-onblur type="text" class="form-control" placeholder="Business Name, care of Someone, etc." autocomplete="off">
       </div>
     </div>
 
@@ -47,7 +47,7 @@
 
       <!-- ng-pattern="/^[a-zA-Z0-9\s,'-]*$/" causing api validation to fail. -->
 
-        <input id="shippingAddress1" name="address1" ng-model="profile.newShippingAddress.address1" type="text" class="form-control" placeholder="{{ 'IN_ADD_LINE1_DES' | translate }} " focus-on="shipping-address1-focus" required>
+        <input id="shippingAddress1" name="address1" ng-model="profile.newShippingAddress.address1" ng-model-onblur type="text" class="form-control" placeholder="{{ 'IN_ADD_LINE1_DES' | translate }} " focus-on="shipping-address1-focus" ng-model-onblur required>
         <span ng-show="shippingForm.address1.$invalid && !shippingForm.address1.$pristine" class="help-block text-danger">Please Enter a Valid Address.</span>
 
       </div>
@@ -60,7 +60,7 @@
 
       <!--  ng-pattern="/^[a-zA-Z0-9\s,'-]*$/" -->
 
-        <input id="shippingAddress2" name="address2" ng-model="profile.newShippingAddress.address2" type="text" class="form-control" placeholder="{{ 'IN_ADD_LINE2_DES' | translate }} ">
+        <input id="shippingAddress2" name="address2" ng-model="profile.newShippingAddress.address2" ng-model-onblur type="text" class="form-control" placeholder="{{ 'IN_ADD_LINE2_DES' | translate }} ">
         <span ng-show="shippingForm.address2.$invalid && !shippingForm.address2.$pristine" class="help-block text-danger">Please enter a valid address.</span>
 
       </div>
@@ -70,7 +70,7 @@
 
       <label for="shippingCity" class="col-md-3 control-label"><span ng-bind-html="'IN_CITY' | translate | unsafe"></span></label>
       <div class="col-sm-7 col-lg-5" ng-class="{ 'has-error' : shippingForm.city.$invalid && !shippingForm.city.$pristine }">
-        <input id="shippingCity" name="city" ng-pattern="/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/" ng-model="profile.newShippingAddress.city" type="text" class="form-control" placeholder="{{ 'IN_CITY' | translate }}" required>
+        <input id="shippingCity" name="city" ng-pattern="/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/" ng-model="profile.newShippingAddress.city" ng-model-onblur type="text" class="form-control" placeholder="{{ 'IN_CITY' | translate }}" required>
         <span ng-show="shippingForm.city.$invalid && !shippingForm.city.$pristine" class="help-block text-danger">Please enter a valid city name.</span>
 
       </div>
@@ -79,7 +79,7 @@
       <label for="shippingStateProvinceRegion" class="col-md-3 control-label"><span ng-bind-html="'IN_STATE' | translate | unsafe"></span></label>
       <!-- TO-DO: Fix CSS width of form control -->
       <div class="col-sm-5 col-lg-3" ng-class="{ 'has-error' : shippingForm.state.$invalid && !shippingForm.state.$pristine }">
-        <select name="state" class="form-control" id="shippingStateProvinceRegion" ng-model="profile.newShippingAddress.state" required>
+        <select name="state" class="form-control" id="shippingStateProvinceRegion" ng-model="profile.newShippingAddress.state" ng-model-onblur required>
             <option value="AL">Alabama</option>
             <option value="AK">Alaska</option>
             <option value="AZ">Arizona</option>
@@ -144,7 +144,7 @@
 
       <label for="shippingZipPostalCode" class="col-md-3 control-label"><span ng-bind-html="'IN_ZIP' | translate | unsafe"></span></label>
       <div class="col-sm-5 col-lg-3" ng-class="{ 'has-error' : shippingForm.zip.$invalid && !shippingForm.zip.$pristine }">
-        <input id="shippingZipPostalCode" ng-maxlength="5" maxlength="5" name="zip" ng-pattern="/^[0-9]{5}$/" ng-model="profile.newShippingAddress.zip" type="text" class="form-control" required>
+        <input id="shippingZipPostalCode" ng-maxlength="5" maxlength="5" name="zip" ng-pattern="/^[0-9]{5}$/" ng-model="profile.newShippingAddress.zip" ng-model-onblur type="text" class="form-control" required>
 
       </div>
     </div>
@@ -152,7 +152,7 @@
     <div class="row form-group">
       <label for="shippingCountry" class="col-md-3 control-label"><span ng-bind-html="'IN_COUNTY' | translate | unsafe"></span></label>
       <div class="col-sm-5 col-lg-3">
-        <select id="shippingCountry" data-ng-init="profile.newShippingAddress.country='US'" name="country" ng-model="profile.newShippingAddress.country" class="form-control">
+        <select id="shippingCountry" data-ng-init="profile.newShippingAddress.country='US'" name="country" ng-model="profile.newShippingAddress.country" ng-model-onblur class="form-control">
           <option ng-selected="true" value="US">United States</option>
         </select>
       </div>
@@ -161,7 +161,7 @@
     <div class="row form-group" ng-if="!isOnlineSponsoring" ng-class="{ 'has-error' : shippingForm.phoneNumber.$invalid && !shippingForm.phoneNumber.$pristine }">
       <label for="shippingPhoneNumber" class="col-md-3 control-label">Phone Number</label>
       <div class="col-sm-6 col-lg-4">
-        <input id="shippingPhoneNumber" name="phoneNumber" ng-model="profile.newShippingAddress.phone" type="text" ui-mask="(999) 999-9999" placeholder="(xxx) xxx-xxxx" class="form-control">
+        <input id="shippingPhoneNumber" name="phoneNumber" ng-model="profile.newShippingAddress.phone" ng-model-onblur type="text" ui-mask="(999) 999-9999" placeholder="(xxx) xxx-xxxx" class="form-control">
         <span ng-show="shippingForm.phoneNumber.$error.pattern" class="help-block" ng-class="{ 'text-danger' : shippingForm.phoneNumber.$invalid && !shippingForm.phoneNumber.$pristine }"><span ng-bind-html="'IN_PHONE_WRONG' | translate | unsafe"></span></span>
       </div>
       <a popover="May be printed on shipping label to assist delivery." popover-title="Phone Number" href="" class="form-info-link"><i class="fa fa-info-circle"></i> More Info</a>
