@@ -2,6 +2,10 @@
 
 a:link { text-decoration: none; } /* internet explorer is dumb */
 
+.nav li a {
+	letter-spacing: normal;
+}
+
 /* beauty of jafra section */
 .timeline-photo {
 	max-width: 192px;
@@ -219,7 +223,19 @@ section#why_jafra_testimonials .btn-lg {
 	line-height: 1.6em;
 	padding-top: 10px;
 }
-
+.es #more_call .business {
+	right: -1em;
+}
+section#why_jafra_lifestyle .subcontainer ul.golden_bullets {
+	padding-left: 6em;
+	line-height: 1.2em;
+}
+section#why_jafra_lifestyle .subcontainer ul.golden_bullets li {
+	padding: 1em 0;
+}
+section#why_jafra_lifestyle .subcontainer ul.golden_bullets li:before {
+	margin-left: -1.8em;	
+}
 /* checkout styles */
 .store-checkout a[data-toggle="modal"] {
 	white-space: nowrap;
