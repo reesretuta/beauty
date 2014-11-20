@@ -12,9 +12,9 @@
         <span class="address-region">{{addressData.city}}, {{addressData.state}} {{addressData.zip}}</span>
         <span class="phone-number">{{addressData.phone}}</span>
         <div class="address-actions">
-          <a ng-click="editAddress(addressData.id)"><i class="fa fa-pencil-square-o"></i> Edit</a>
+          <a ng-click="editAddress(addressData.id)"><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'Edit' | translate | unsafe"></span></a>
           &nbsp;&nbsp;
-          <a ng-click="removeAddress(addressData.id)"><i class="fa fa-times-circle"></i> Remove</a>
+          <a ng-click="removeAddress(addressData.id)"><i class="fa fa-times-circle"></i> <span ng-bind-html="'Remove' | translate | unsafe"></span></a>
         </div>
         <a class="btn btn-primary" ng-click="selectBillingAddress(addressData)"><span ng-bind-html="'BTN_BILL_ADD' | translate | unsafe"></span></a>
       </div><!-- /address -->
@@ -134,7 +134,7 @@
             <option value="WI">Wisconsin</option>
             <option value="WY">Wyoming</option>
           </select>
-        <span ng-show="billingForm.state.$invalid && !billingForm.state.$pristine" class="help-block text-danger">Please select a state.</span>
+        <span ng-show="billingForm.state.$invalid && !billingForm.state.$pristine" class="help-block text-danger"><span ng-bind-html="'SELECT-STATE' | translate | unsafe"></span>.</span>
         <!-- Removed for now to add the Select tag for 50 states -->
         <!--input id="billingStateProvinceRegion" name="stateProvinceRegion" ng-model="profile.newBillingAddress.stateProvinceRegion" type="text" class="form-control" placeholder=" " required-->
       </div>
@@ -153,18 +153,18 @@
       <label for="billingCountry" class="col-md-3 control-label"><span ng-bind-html="'IN_COUNTY' | translate | unsafe"></span></label>
       <div class="col-sm-5 col-lg-3">
         <select id="billingCountry" data-ng-init="profile.newBillingAddress.country='US'" name="country" ng-model="profile.newBillingAddress.country" class="form-control">
-          <option ng-selected="true" value="US">United States</option>
+          <option ng-selected="true" value="US"><span ng-bind-html="'COUNTRY-US' | translate | unsafe"></span></option>
         </select>
       </div>
     </div>
 
     <div class="row form-group" ng-if="!isOnlineSponsoring" ng-class="{ 'has-error' : billingForm.phoneNumber.$invalid && !billingForm.phoneNumber.$pristine }">
-      <label for="billingPhoneNumber" class="col-md-3 control-label">Phone Number</label>
+      <label for="billingPhoneNumber" class="col-md-3 control-label"><span ng-bind-html="'PHONE-NUMBER' | translate | unsafe"></span></label>
       <div class="col-sm-6 col-lg-4">
         <input id="billingPhoneNumber" name="phoneNumber" ng-model="profile.newBillingAddress.phone" type="text" ui-mask="(999) 999-9999" placeholder="(xxx) xxx-xxxx" class="form-control">
-        <span ng-show="billingForm.phoneNumber.$error.pattern" class="help-block" ng-class="{ 'text-danger' : billingForm.phoneNumber.$invalid && !billingForm.phoneNumber.$pristine }"><span ng-bind-html="'IN_PHONE_WRONG' | translate | unsafe"></span></span>
+        <span ng-show="billingForm.phoneNumber.$error.pattern" class="help-block" ng-class="{ 'text-danger' : billingForm.phoneNumber.$invalid && !billingForm.phoneNumber.$pristine }"><span ng-bind-html="'PHONE-NUMBER-WRONG' | translate | unsafe"></span></span>
       </div>
-      <a popover="May be printed on billing label to assist delivery." popover-title="Phone Number" href="" class="form-info-link"><i class="fa fa-info-circle"></i> More Info</a>
+      <a popover="May be printed on billing label to assist delivery." popover-title="{{'PHONE-NUMBER' | translate | unsafe}}" href="" class="form-info-link"><i class="fa fa-info-circle"></i> <span ng-bind-html="'MORE-INFO' | translate | unsafe"></span></a>
     </div>
 
     </form>

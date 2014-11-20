@@ -6,7 +6,7 @@
     <p>
        Choose your shipping speed:<br />
        {{profile.shipping.name}}, {{profile.shipping.address1}} {{profile.shipping.address2}}, {{profile.shipping.city}},
-       {{profile.shipping.stateProvinceRegion}}, {{profile.shipping.zipPostalCode}}, United States
+       {{profile.shipping.stateProvinceRegion}}, {{profile.shipping.zipPostalCode}}, <span ng-bind-html="'COUNTRY-US' | translate | unsafe"></span>
     </p>
     <form role="form" name="shippingSpeed">
     <div class="radio">

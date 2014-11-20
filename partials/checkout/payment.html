@@ -28,12 +28,12 @@
           <small>EXP:</small>
           {{ccData.expMonth}}/{{ccData.expYear|substr:2:2}}
         </p>
-        <button class="btn btn-primary pull-right card-use-btn" ng-click="selectCardAndContinue(ccData)">Use this Option <i class="fa fa-caret-right"></i></button>
+        <button class="btn btn-primary pull-right card-use-btn" ng-click="selectCardAndContinue(ccData)"><span ng-bind-html="'SELECT-OPTION-BUTTON' | translate | unsafe"></span> <i class="fa fa-caret-right"></i></button>
       </div>
       <div class="card-actions">
-        <a ng-click="editCreditCard(ccData)" class="card-use-btn"><i class="fa fa-pencil-square-o"></i> Edit</a>
+        <a ng-click="editCreditCard(ccData)" class="card-use-btn"><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'Edit' | translate | unsafe"></span></a>
         &nbsp;&nbsp;
-        <a ng-click="removeCreditCard(ccData.id)"><i class="fa fa-times-circle"></i> Remove</a>
+        <a ng-click="removeCreditCard(ccData.id)"><i class="fa fa-times-circle"></i> <span ng-bind-html="'Remove' | translate | unsafe"></span></a>
       </div>
     </div><!-- /span -->
 
@@ -43,7 +43,7 @@
 <div class="row" ng-if="profile.customerStatus=='existing'">
   <div class="col-md-offset-3 col-lg-8">
     <hr>
-    <h2 class=" ">Enter Payment Information</h2>
+    <h2 class=" "><span ng-bind-html="'ENTER-PAYMENT-INFORMATION' | translate | unsafe"></span></h2>
   </div>
 </div>
 <!--valid={{paymentForm.$valid}}-->
@@ -63,7 +63,7 @@
   <label for=" " class="col-md-3 control-label"><span ng-bind-html="'IN_CARD_NUMBER' | translate |unsafe"></span></label>
   <div class="col-sm-6 col-lg-4">
     <input ng-model="profile.newCard.card" data-ng-blur="visited=true" ng-minlength="13" ng-maxlength="16" maxlength="16" name="number" type="text" class="form-control" id=" " placeholder=" " data-ui-validate=" 'isValidCard($value)' " required>
-    <span ng-show="visited && (paymentForm.number.$error.minlength || paymentForm.number.$error.validator)" class="help-block" ng-class="{ 'text-danger' : paymentForm.number.$invalid && !paymentForm.number.$pristine }">Invalid credit card number</span>
+    <span ng-show="visited && (paymentForm.number.$error.minlength || paymentForm.number.$error.validator)" class="help-block" ng-class="{ 'text-danger' : paymentForm.number.$invalid && !paymentForm.number.$pristine }"><span ng-bind-html="'INVALID-CARD-NUMBER' | translate | unsafe"></span></span>
     <!--valid={{paymentForm.number.$valid}}-->
   </div>
   <div class="col-sm-4 col-lg-4" ng-model="cardType" ng-show="!paymentForm.number.$error.minlength && !paymentForm.number.$error.validator">
@@ -85,7 +85,7 @@
         <label class="control-label">/</label>
       </div>
       <div class="col-xs-6 col-sm-4 col-med-3">
-        <input ng-model="profile.newCard.expYear" name="expYear" type="text" class="form-control col-sm-3" ui-mask="9999" placeholder="YYYY" required>
+        <input ng-model="profile.newCard.expYear" name="expYear" type="text" class="form-control col-sm-3" ui-mask="9999" placeholder="{{ 'YEAR-PLACEHOLDER' | translate }}" required>
         <!--valid={{paymentForm.expYear.$valid}}-->
       </div>
     </div>
@@ -101,7 +101,7 @@
         <!--valid={{paymentForm.cvv.$valid}}-->
       </div>
       <div class="col-xs-6 col-sm-4 col-med-3">
-            <a popover="3-4 digit number located on your credit card" popover-title="Security Code/CVV2" href="" tabindex="-1"><i class="fa fa-info-circle"></i> What's this?</a>
+            <a popover="3-4 digit number located on your credit card" popover-title="Security Code/CVV2" href="" tabindex="-1"><i class="fa fa-info-circle"></i> <span ng-bind-html="'WHATS-THIS' | translate | unsafe"></span></a>
       </div>
     </div>
   </div>
@@ -239,18 +239,18 @@
     <label for="billingCountry" class="col-md-3 control-label"><span ng-bind-html="'IN_COUNTY' | translate | unsafe"></span></label>
     <div class="col-sm-5 col-lg-3">
       <select id="billingCountry" name="billingCountry" data-ng-init="profile.newBillingAddress.country='US'" ng-model="profile.newBillingAddress.country" class="form-control" >
-        <option ng-selected="true" value="US">United States</option>
+        <option ng-selected="true" value="US"><span ng-bind-html="'COUNTRY-US' | translate | unsafe"></span></option>
       </select>
     </div>
   </div>
 
   <div class="row form-group" ng-if="!isOnlineSponsoring"  ng-class="{ 'has-error' : paymentForm.phoneNumber.$invalid && !paymentForm.phoneNumber.$pristine }">
-    <label for="billingPhoneNumber" class="col-md-3 control-label">Phone Number</label>
+    <label for="billingPhoneNumber" class="col-md-3 control-label"><span ng-bind-html="'PHONE-NUMBER' | translate | unsafe"></span></label>
     <div class="col-sm-6 col-lg-4">
       <input id="billingPhoneNumber" name="phoneNumber" ng-model="profile.newBillingAddress.phone" type="text" ui-mask="(999) 999-9999" placeholder="(xxx) xxx-xxxx" class="form-control">
-      <span ng-show="paymentForm.phoneNumber.$error.pattern" class="help-block" ng-class="{ 'text-danger' : paymentForm.phoneNumber.$invalid && !paymentForm.phoneNumber.$pristine }"><span ng-bind-html="'IN_PHONE_WRONG' | translate | unsafe"></span></span>
+      <span ng-show="paymentForm.phoneNumber.$error.pattern" class="help-block" ng-class="{ 'text-danger' : paymentForm.phoneNumber.$invalid && !paymentForm.phoneNumber.$pristine }"><span ng-bind-html="'PHONE-NUMBER-WRONG' | translate | unsafe"></span></span>
     </div>
-    <a popover="May be printed on billing label to assist delivery." popover-title="Phone Number" href="" class="form-info-link"><i class="fa fa-info-circle"></i> More Info</a>
+    <a popover="{{'PHONE-NUMBER-DES' | translate | unsafe}}" popover-title="{{'PHONE-NUMBER' | translate | unsafe}}" href="" class="form-info-link"><i class="fa fa-info-circle"></i> <span ng-bind-html="'MORE-INFO' | translate | unsafe"></span></a>
   </div>
 
 
@@ -262,7 +262,7 @@
 <div class="form-group">
   <div class="col-md-offset-3 col-sm-9">
     <div class="error" ng-show="billingAddressError && !profile.billSame" ng-bind="billingAddressError"></div>
-      <button type="button" ng-click="addPaymentMethod()" class="btn btn-primary btn-lg" ng-disabled="!paymentForm.$valid || invalidExpiration">Save Payment Information &nbsp;<i class="fa fa-caret-right"></i></button>
+      <button type="button" ng-click="addPaymentMethod()" class="btn btn-primary btn-lg" ng-disabled="!paymentForm.$valid || invalidExpiration"><span ng-bind-html="'BTN_SAVE_PAYMENT' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i></button>
   </div>
 </div>
 
