@@ -168,6 +168,9 @@ angular.module('app.services', ['ngResource'])
             $http.get(API_URL + '/session', {}).success(function(session, status, headers, config) {
                 $log.debug("sessionService(): getFromServer()", session);
 
+                // use whatever is in the session for language, server defaults
+                $translate.use(session.language);
+
                 d.resolve(session);
             }).error(function(data, status, headers, config) {
                 //failure(data, status, headers, config);
