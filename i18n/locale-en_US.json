@@ -393,6 +393,7 @@
     "OS-PROFILE-TAG":"We&rsquo;ll need some information to send your payment checks.",
     "CONTACT-INFO-LABEL":"Contact Info",
     "DOB-PLACEHOLDER": "MM/DD/YYYY",
+    "YEAR-PLACEHOLDER": "YYYY",
     "DOB-LABEL":"Your Date of Birth",
     "SSN-LABEL":"Your SSN",
     "SSN-NOTE":"A U.S. Social Security Number is required to receive payment checks.",
