@@ -1,7 +1,6 @@
 {
     "JOIN_JAFRA_TITLE": "Ingresa a JAFRA",
     "JOIN-JAFRA-TODAY": "Ingresa a JAFRA Hoy",
-    "CLOSE": "Cerrar",
     "TERMS_OF_USE": "T&eacute;rminos de Uso",
     "LAN01":"Ingl&eacute;s",
     "LAN02":"Espa&ntilde;ol",
@@ -21,6 +20,8 @@
     "OS-NAV3":"PREGUNTAS FRECUENTES",
     "OS-NAV4":"&iexcl;INGRESA AHORA!",
     "OS-NAV5":"Contacto",
+
+    "CHANGE-KIT-PARENS":"(CAMBIO KIT)",
 
     "HEADER_CONSULTANTMSG": "Consultora de Belleza JAFRA",
     "VIEW_CART": "Ver Pedido",

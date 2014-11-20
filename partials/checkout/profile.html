@@ -39,7 +39,7 @@
       <div class="col-md-3">
         <div class="input-group">
           <span class="input-group-addon"><i class="fa fa-lock"><!-- lock icon --></i></span>
-          <input name="ssn" type="text" class="form-control" ui-mask="999 - 99 - 9999" placeholder="xxx - xx - xxxx" ng-model="profile.ssn" ng-model-onblur required autofocus>
+          <input name="ssn" type="text" class="form-control" ui-mask="999 - 99 - 9999" placeholder="xxx - xx - xxxx" ng-model="profile.ssn" required autofocus>
         </div>
         <span class="help-block"><small><span ng-bind-html="'SSN-NOTE' | translate | unsafe"></span></small></span>
       </div>
@@ -61,7 +61,7 @@
     <div class="form-group">
       <label class="col-md-3 control-label"><span ng-bind-html="'SPONSOR-ID-LABEL' | translate | unsafe"></span></label>
       <div class="col-md-4" ng-class="{ 'has-error' : invalidSponsorId && !profileForm.sponsorId.$pristine }">
-        <input name="sponsorId" type="text" class="form-control" ng-model="profile.sponsorId" ng-model-onblur placeholder="{{ 'SPONSOR-ID-PLACEHOLDER' | translate }}">
+        <input name="sponsorId" type="text" class="form-control" ng-model="profile.sponsorId" placeholder="{{ 'SPONSOR-ID-PLACEHOLDER' | translate }}">
         <span ng-show="invalidSponsorId" class="help-block" ng-class="{ 'text-danger' : invalidSponsorId }"><span ng-bind-html="'CONSULTANT-PROFILE-INVALID-SPONSORID' | translate | unsafe"></span></span>
         <span class="help-block"><small><span ng-bind-html="'SPONSOR-ID-NOTE' | translate | unsafe"></span></small></span>
       </div>

@@ -58,6 +58,11 @@ a > span {
 a.btn {
   z-index: 1;
 }
+
+.text-underline {
+  text-decoration: underline; 
+}
+
 .well h3  {
   margin-top: 0;
 }
