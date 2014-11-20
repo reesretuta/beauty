@@ -177,10 +177,14 @@
     "CHECKOUT-FIRST-PLACEHOLDER": "First",
     "CHECKOUT-LAST-PLACEHOLDER": "Last",
 
+    "REQUIRE-FIRSTNAME-LENGTH": "Must contain 2-40 letters",
+    "REQUIRE-LASTNAME-LENGTH": "Must contain 2-40 letters",
+
     "VIEW_CART": "View Cart",
     "SIGN-IN": "Sign In",
     "CREATE-ACCOUNT": "Create Account",
     "INVALID-EMAIL-ADDRESS": "Invalid email address",
+    "REQUIRES-VALID-EMAIL-ADDRESS": "Must be a valid email address",
     "PASSWORDS-DONT-MATCH": "Passwords must match",
     "ALREADY-A-CUSTOMER": "Already a customer?",
     "NOT-YET-A-CUSTOMER": "Not yet a customer?",
