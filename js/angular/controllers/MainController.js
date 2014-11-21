@@ -96,6 +96,7 @@ angular.module('app.controllers.main')
         $scope.searchProducts = function(query) {
             $log.debug("MainController(): going to products for search", query);
             $location.url(STORE_BASE_URL + "/products?search="+(query != null ? query : ''), 'false');
+            $rootScope.search.queryString = null;
         }
 
         $rootScope.getImagePath = function(paths) {
@@ -115,6 +116,7 @@ angular.module('app.controllers.main')
 
         // begin navigation
         $rootScope.navStatic = '0';
+        
         $scope.categoryClicked = function(category) {
             $log.debug("MainController(): category clicked", category);
             // set breadcrumbs
@@ -130,7 +132,6 @@ angular.module('app.controllers.main')
 
         $scope.categoryInPath = function(category) {
             //$log.debug("CategoriesController(): categoryInPath(): checking if category", category, "is in breadcrumb path", $rootScope.breadcrumbs);
-
             // loop through current breadcrumbs
             for (var i=0; i < $rootScope.breadcrumbs.length; i++) {
                 var breadcrumb = $rootScope.breadcrumbs[i];
@@ -141,7 +142,6 @@ angular.module('app.controllers.main')
                     return true;
                 }
             }
-
             return false;
         }
         // end navigation

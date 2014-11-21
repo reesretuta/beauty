@@ -5,7 +5,7 @@
                 <div class="col-md-6">
                     <div class="section-copy">
                         <h3 class="titlify color-purple DidotLTPro-Italic">
-                            <span ng-bind-html="'OS-SECTION2-TITLE1' | translate | unsafe"></span><br><span class="color-gold HelveticaNeueLTStd-BdCn"><span ng-bind-html="'OS-SECTION2-TITLE2' | translate | unsafe"></span></span>
+                            <span ng-bind-html="'OS-SECTION2-TITLE1' | translate | unsafe"></span><br><span class="color-gold HelveticaNeueLTStd-BdCn to_love"><span ng-bind-html="'OS-SECTION2-TITLE2' | translate | unsafe"></span></span>
                         </h3>
                         <p>
                             <span ng-bind-html="'OS-SECTION2-BODY' | translate | unsafe"></span>
@@ -15,43 +15,46 @@
                     </div><!-- /.section-copy -->
                 </div><!-- /.col -->
                 <div class="col-md-6">
-                    <div class="carousel">
-                        <div id="carousel-product-generic" class="slide" data-ride="carousel">
-                            <!-- Wrapper for slides -->
-                            <div class="carousel-inner">
-                                <div class="item active">
-                                    <img class="img-responsive" src="/img/products_royalJelly.jpg">
-                                </div>
-                                <div class="item">
-                                    <img class="img-responsive" src="/img/products_PRO.jpg">
-                                </div>
-                                <div class="item">
-                                    <img class="img-responsive" src="/img/products-toiletries.jpg">
-                                </div>
-                                <div class="item">
-                                    <img class="img-responsive" src="/img/products_fragranceWomen.jpg">
-                                </div>
-                                <div class="item">
-                                    <img class="img-responsive" src="/img/products_fragranceMen.jpg">
-                                </div>
-                                <div class="item">
-                                    <img class="img-responsive" src="/img/products_color.jpg">
-                                </div>
-                            </div><!-- Controls -->
-                             <a class="left carousel-control" href="#carousel-product-generic" role="button" data-slide="prev"> <!--  ** left control hidden (angular bug) **  --></a> <a class="right carousel-control" href="#carousel-product-generic" role="button" data-slide="next"></a>
-                        </div>
+                    <div id="carousel-product-generic" class="carousel slide" data-ride="carousel">
+                        <!-- Wrapper for slides -->
+                        <div class="carousel-inner">
+                            <div class="item active">
+                                <img class="img-responsive" src="/img/products_royalJelly.jpg">
+                            </div>
+                            <div class="item">
+                                <img class="img-responsive" src="/img/products_PRO.jpg">
+                            </div>
+                            <div class="item">
+                                <img class="img-responsive" src="/img/products-toiletries.jpg">
+                            </div>
+                            <div class="item">
+                                <img class="img-responsive" src="/img/products_fragranceWomen.jpg">
+                            </div>
+                            <div class="item">
+                                <img class="img-responsive" src="/img/products_fragranceMen.jpg">
+                            </div>
+                            <div class="item">
+                                <img class="img-responsive" src="/img/products_color.jpg">
+                            </div>
+                        </div><!-- Controls -->
+                         <a class="left carousel-control" href="#carousel-product-generic" role="button" data-slide="prev">
+                             <span class="glyphicon glyphicon-chevron-left"></span>
+                         </a>
+                        <a class="right carousel-control" href="#carousel-product-generic" role="button" data-slide="next">
+                            <span class="glyphicon glyphicon-chevron-right"></span>
+                        </a>
                     </div><!-- /.carousel -->
                 </div><!-- /.col -->
             </div><!-- /.row -->
             <div id="more_products" class="row collapse">
                 <div class="col-md-10 col-md-offset-1 padtop">
-                  <h3 class="titlify text-center"><span ng-bind-html="'OS-PRODUCTS-PURITY-PERFORMANCE' | translate | unsafe"></span></h3>
+                  <h3 class="titlify text-center section-title"><span ng-bind-html="'OS-PRODUCTS-PURITY-PERFORMANCE' | translate | unsafe"></span></h3>
                   <p class="freedom_flexibility_description text-center padbottom">
                       <span ng-bind-html="'OS-PRODUCTS-PURITY-PERFORMANCE-DESC' | translate | unsafe"></span>
                   </p>
                 </div>
 
-                <div class="row padtop padbottom">
+                <div class="row padtop padbottom subrow">
                     <div class="col-md-3">
                         <img src="/img/products-skincare.png" class="img-responsive" />
                     </div>
@@ -61,7 +64,7 @@
                     </div>
                 </div>
 
-                <div class="row padbottom">
+                <div class="row padbottom subrow">
                     <div class="col-md-3">
                         <img src="/img/products-fragrance.png" class="img-responsive" />
                     </div>
@@ -71,7 +74,7 @@
                     </div>
                 </div>
 
-                <div class="row padbottom">
+                <div class="row padbottom subrow">
                     <div class="col-md-3">
                         <img src="/img/products-color.png" class="img-responsive" />
                     </div>
@@ -81,7 +84,7 @@
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row subrow">
                     <div class="col-md-3">
                         <img src="/img/products-toiletries.png" class="img-responsive" />
                     </div>
@@ -91,7 +94,7 @@
                     </div>
                 </div>
 
-               <div class="col-md-12 text-center cta-section">
+               <div class="row subrow text-center cta-section">
                     <p class="titlify color-purple DidotLTPro-Italic text-center">
 
                         <span ng-bind-html="'OS-PRODUCTS-RESULTS-PART1' | translate | unsafe"></span> 

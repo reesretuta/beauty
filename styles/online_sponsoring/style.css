@@ -64,6 +64,10 @@ a.watch-video-link span.glyphicon-play {
 color: #460d66;
 }
 
+a:link.text-underline {
+  text-decoration: underline;
+}
+
 .btn {
 /*font-size: 1.2em;
 padding: 0.5em 1.5em;*/
@@ -130,20 +134,28 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   color: #fff;
 }
 /*this is to allow Placeholder text fade to lighter shade of grey text when input box is selected */
+input::-webkit-input-placeholder,
 input:focus::-webkit-input-placeholder {
     color: #e1e1e1;
 }
 /* Firefox < 19 */
+input:-moz-placeholder,
 input:focus:-moz-placeholder {
     color: #e1e1e1;
 }
 /* Firefox > 19 */
+input::-moz-placeholder,
 input:focus::-moz-placeholder {
     color: #e1e1e1;
 }
 /* Internet Explorer 10 */
+input:-ms-input-placeholder,
 input:focus:-ms-input-placeholder {
     color: #e1e1e1;
+}
+
+a {
+  position: relative;
 }
 
 #logo img {
@@ -369,6 +381,9 @@ margin: 50px 0px -25px;
 section#why_jafra_products {
   background: #e0dbcf;
 }
+section#why_jafra_products span.to_love{
+  font-size: 72px;
+}
 section#why_jafra_products #more_products {
   background: url(/img/labgirl_bg01.jpg) no-repeat bottom;
   background-size: 97.5%;
@@ -493,6 +508,9 @@ section#why_jafra_lifestyle .subcontainer ul.golden_bullets li:before {
 section#why_jafra_lifestyle .subcontainer .more-link:after {
   color: #C3002F;
 }
+section#why_jafra_lifestyle .subcontainer .more-link span {
+  color: #9659B7;
+}
 
 section#why_jafra_rewards {
   background: #faebe6;
@@ -546,68 +564,7 @@ span.serif-title-alt {
 .testimonial .media-heading {
 margin: 8px 0 5px;
 }
-/* more links */
-.more-link, .more-link.collapsed {
-  display: inline-block;
-  position: relative;
-  -webkit-transition: all 200ms ease;
-  -moz-transition: all 200ms ease;
-  -ms-transition: all 200ms ease;
-  -o-transition: all 200ms ease;
-  transition: all 200ms ease;
-  margin-top: 50px;
-  margin-right: 50px;
-}
-.more-link span {
-  color: #877650;
-  /*font-family: HelveticaNeueLTStd-Md;
-  font-size: 13px;*/
-}
-.more-link:hover, .more-link:active, a.collapsed  {
-  color: #b51a8a;
-  text-decoration: none;
-}
-.more-link:after {
-  content: "+";
-  font-family: HelveticaNeueLTStd-Th;
-  font-size: 63px;
-  line-height: 20px;
-  display: block;
-  position: absolute;
-  z-index: 99;
-  top: -25px;
-  right: -30px;
-  width: 33px;
-  height: 33px;
-  color: #460d66;
-  /*background: url(/img/plus-icon2x.png);
-  background-size: 100% 100%;*/
-  -webkit-transition: all 200ms ease;
-  -moz-transition: all 200ms ease;
-  -ms-transition: all 200ms ease;
-  -o-transition: all 200ms ease;
-  transition: all 200ms ease;
 
-  -moz-transform-origin: 50% 50%;
-  -webkit-transform-origin: 55% 50%;
-  -o-transform-origin: 50% 50%;
-  -ms-transform-origin: 50% 50%;
-  transform-origin: 55% 50%;
-}
-.more-link:after, .more-link:active:after {
-  -moz-transform: rotate(-135deg);
-  -webkit-transform: rotate(-135deg);
-  -o-transform: rotate(-135deg);
-  -ms-transform: rotate(-135deg);
-  transform: rotate(-135deg);
-}
-.more-link.collapsed:after {
-  -moz-transform: rotate(0deg);
-  -webkit-transform: rotate(0deg);
-  -o-transform: rotate(0deg);
-  -ms-transform: rotate(0deg);
-  transform: rotate(0deg);
-}
 
 /*section#FAQs .section-copy_bound_box,
 section#FAQs div.subsection {
@@ -650,14 +607,87 @@ width: 475px;
   padding: 0 50px 0 0;
   font-size: 24px;
   line-height: 1.4;
-position: relative;
-top: -70px;
-left: 45px;
+  position: relative;
+  top: -70px;
+  left: 45px;
 }
+
+.faqs-item-question span {
+  cursor: pointer;
+}
+
+
 .faqs-item .faqs-item-question a:after {
   top: 0;
   right: 10px;
 }
+
+/* more links */
+.more-link, .more-link.collapsed {
+  display: inline-block;
+  position: relative;
+  -webkit-transition: all 200ms ease;
+  -moz-transition: all 200ms ease;
+  -ms-transition: all 200ms ease;
+  -o-transition: all 200ms ease;
+  transition: all 200ms ease;
+  margin-top: 50px;
+  margin-right: 50px;
+}
+.more-link span {
+  color: #877650;
+  /*font-family: HelveticaNeueLTStd-Md;
+  font-size: 13px;*/
+}
+.more-link:hover, .more-link:active, a.collapsed  {
+  color: #b51a8a;
+  text-decoration: none;
+}
+
+.more-link:after {
+  content: "+";
+  font-family: HelveticaNeueLTStd-Th;
+  font-size: 63px;
+  line-height: 20px;
+  display: block;
+  position: absolute;
+  z-index: 99;
+  top: -25px;
+  right: -30px;
+  width: 33px;
+  height: 33px;
+  color: #460d66;
+  /*background: url(/img/plus-icon2x.png);
+  background-size: 100% 100%;*/
+  -webkit-transition: all 200ms ease;
+  -moz-transition: all 200ms ease;
+  -ms-transition: all 200ms ease;
+  -o-transition: all 200ms ease;
+  transition: all 200ms ease;
+
+  -moz-transform-origin: 50% 50%;
+  -webkit-transform-origin: 55% 50%;
+  -o-transform-origin: 50% 50%;
+  -ms-transform-origin: 50% 50%;
+  transform-origin: 55% 50%;
+}
+
+.faqs-item-question:not(.collapsed) .more-link:after, .more-link:active:after {
+  -moz-transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
+  -o-transform: rotate(-135deg);
+  -ms-transform: rotate(-135deg);
+  transform: rotate(-135deg);
+}
+
+.faqs-item-question .more-link:after {
+  -moz-transform: rotate(0deg);
+  -webkit-transform: rotate(0deg);
+  -o-transform: rotate(0deg);
+  -ms-transform: rotate(0deg);
+  transform: rotate(0deg);
+}
+
 
 .social-media-icons a  i.fa{
   color: #aa73b1;
@@ -851,17 +881,16 @@ padding-top: 5px;
       
 .carousel-control.right
 {
-  background-image:none; 
+  background-image:none;
 }
 
 .carousel .left
 {
-  background: none;
-  pointer-events: none;
+  background-image:none;
 }
 
 .carousel .left .glyphicon {
-  display: none;
+  cursor: pointer;
 }
 .carousel .right {
   cursor: pointer;

@@ -52,6 +52,17 @@ h1, .h1, a:hover, a:focus, .btn-link:hover, .btn-link:focus {
 a {
   cursor: pointer;
 }
+a > span {
+  pointer-events: none;
+}
+a.btn {
+  z-index: 1;
+}
+
+.text-underline {
+  text-decoration: underline; 
+}
+
 .well h3  {
   margin-top: 0;
 }
@@ -147,17 +158,17 @@ h2 {
       
 .carousel-control.right
 {
-  background-image:none; 
+  background-image:none;
 }
 
 .carousel .left
 {
-  background: none;
-  pointer-events: none;
+  background-image:none;
 }
 
 .carousel .left .glyphicon {
-  display: none;
+  /*display: none;*/
+  cursor: pointer;
 }
 .carousel .right {
   cursor: pointer;
@@ -607,7 +618,7 @@ a, .btn {
 }
 .store-checkout h2 {
   font-size: 28px;
-  color: #b51a8a;
+  color: #C3002F;
   text-transform: none;
   border: none;
   margin-bottom: 20px;
@@ -892,6 +903,12 @@ a:focus {
     -o-transform: rotate(180deg);
     transform: rotate(180deg);
 }
+
+#shop_menu li.open .category_children {
+  overflow: auto;
+}
+
+
 .configureKitModal.modal {
     min-width: 640px;
     min-height: 400px;

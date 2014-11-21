@@ -2,6 +2,10 @@
 
 a:link { text-decoration: none; } /* internet explorer is dumb */
 
+.nav li a {
+	letter-spacing: normal;
+}
+
 /* beauty of jafra section */
 .timeline-photo {
 	max-width: 192px;
@@ -80,6 +84,7 @@ section#why_jafra_products {
 }
 section#why_jafra_testimonials .btn-lg {
 	margin: 50px 0px -25px;
+	position: relative; /* since parent is relative, so shall you be! */
 }
 
 /* starter kits section */
@@ -214,13 +219,170 @@ section#why_jafra_testimonials .btn-lg {
 }
 
 /* your call section */
-#more_call p {
+section#why_jafra_lifestyle #more_call p {
 	line-height: 1.6em;
 	padding-top: 10px;
 }
+.es section#why_jafra_lifestyle .business {
+	right: -1em;
+}
+.es section#why_jafra_lifestyle .invest {
+	font-size: 43px;
+}
+section#why_jafra_lifestyle .subcontainer ul.golden_bullets {
+	padding-left: 6em;
+	line-height: 1.2em;
+}
+section#why_jafra_lifestyle .subcontainer ul.golden_bullets li {
+	padding: 1em 0;
+}
+section#why_jafra_lifestyle .subcontainer ul.golden_bullets li:before {
+	margin-left: -1.8em;	
+}
 
-/* dains helpers */
+/* checkout styles */
+.store-checkout a[data-toggle="modal"] {
+	white-space: nowrap;
+}
+.checkout-address a > span {
+	display: inline-block;
+}
+
+/* helpers */
 .padbottom { padding-bottom: 30px; }
 .padtop { padding-top: 30px; }
 .padleft { padding-left: 30px; }
 .padright { padding-right: 30px; }
+
+.btn-link {
+  background: transparent;
+  box-shadow: none;
+  color: #ccabd0;
+}
+.btn-link:hover {
+	text-decoration: underline;
+}
+
+/* responsive overides */
+@media (max-width: 767px) {
+	section h3.hero-header-title-freedom_flexibility {
+		font-size: 23px;
+	}
+	.freedom_flexibility_description {
+		padding: 0 25px;
+		font-size: 15px;
+	}
+	#more_freedom .titlify {
+		display: block;
+		font-size: 35px;
+	}
+	.legacy_wrapper {
+		margin: 90px 0;
+	}
+	.timeline-description {
+		padding-top: 63px;
+		width: 72%;
+		font-size: 13px;
+	}
+	.subrow {
+		margin: 0 20px !important;
+	}
+	section#why_jafra_lifestyle span.you_choose,
+	section#why_jafra_lifestyle span.how_to,
+	section#why_jafra_lifestyle span.business {
+		position: relative;
+		left: 0;
+		font-size: 30px;
+	}
+	section#why_jafra_lifestyle .subcontainer ul.golden_bullets {
+		font-size: 17px;
+		width: 140%;
+	}
+	section#why_jafra_lifestyle .business-right-col {
+		border-left: none;
+	}
+	section#why_jafra_lifestyle .sales-equation {
+		padding: 1em;
+		height: auto;
+		left: 0;
+		width: 100%;
+	}
+	section#why_jafra_lifestyle .plus {
+		display: inline-block;
+		top: -76px;
+		left: 140px;
+	}
+	section#why_jafra_lifestyle .leaders_col {
+		top: -10px;
+	}
+	#why_jafra_testimonials .titlify {
+		font-size: 36px;
+	}
+	#why_jafra_testimonials .titlify span {
+		padding-left: 0px !important;
+		padding-right: 0px !important;
+	}
+	#starter_kits .titlify {
+		font-size: 36px;
+	}
+	.royal_kit .kit-value, #royal_starter_kit .kit-desc, #skincare_starter_kit .kit-desc {
+		white-space: normal;
+		font-size: 38px;
+	}
+	#royal_starter_kit .kit-value, #skincare_starter_kit .kit-value {
+		font-size: 28px;
+	}
+	.royal_kit .product-action, #royal_starter_kit .product-action,
+	#skincare_starter_kit .product-action, .skincare_kit .product-action {
+		margin-top: 20px;
+		float:none !important;
+	}
+	#skincare_starter_kit .product-action a {
+		display: block;
+		margin: 15px 0;
+	}
+	#skincare_starter_kit .product-action button,
+	#royal_starter_kit .product-action button {
+		font-size: 18px;
+	}
+	.faqs-item-question {
+		width: 90%;
+		font-size: 18px;
+	}
+}
+@media (min-width: 767px) and (max-width: 992px) {
+	.subrow {
+		margin: 0 20px !important;
+	}
+	section#why_jafra_lifestyle span.you_choose,
+	section#why_jafra_lifestyle span.how_to,
+	section#why_jafra_lifestyle span.business {
+		font-size: 48px;
+	}
+	section#why_jafra_lifestyle .subcontainer ul.golden_bullets {
+		font-size: 32px;
+	}
+	section#why_jafra_lifestyle .business-right-col {
+		border-left: none;
+	}
+	section#why_jafra_lifestyle .sales-equation {
+		padding: 1em;
+		height: auto;
+		left: 0;
+		width: 100%;
+	}
+	section#why_jafra_lifestyle .plus {
+		display: inline-block;
+		top: -76px;
+		left: 140px;
+	}
+	section#why_jafra_lifestyle .leaders_col {
+		top: -10px;
+	}
+}
+@media (max-width: 1200px) {
+	.faqs-item-question {
+		width: 90%;
+		font-size: 18px;
+	}
+}

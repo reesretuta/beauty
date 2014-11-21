@@ -1,8 +1,9 @@
+
 <div id="signin" class="col-sm-12">
 
   <div class="col-md-offset-3">
-    <h1 class="checkouth1" ng-if="profile.customerStatus == 'existing' && !isOnlineSponsoring">Sign in</h1>
-    <h1 class="checkouth1" ng-if="profile.customerStatus == 'new' && !isOnlineSponsoring">Create an Account</h1>
+    <h1 class="checkouth1" ng-if="profile.customerStatus == 'existing' && !isOnlineSponsoring"><span ng-bind-html="'SIGN-IN' | translate | unsafe"></span></h1>
+    <h1 class="checkouth1" ng-if="profile.customerStatus == 'new' && !isOnlineSponsoring"><span ng-bind-html="'CREATE-ACCOUNT' | translate | unsafe"></span></h1>
     <h1 class="checkouth1" ng-if="isOnlineSponsoring">
       <span ng-bind-html="'OS-START-TITLE' | translate | unsafe"></span>
       <span class="store-heading-description">
@@ -12,7 +13,7 @@
     <div class="row">
       <div class="col-sm-6">
         <div ng-if="loginError" class="alert alert-danger" role="alert" data-ng-bind="loginError"></div>
-        <div ng-if="emailError" class="alert alert-danger" role="alert">Invalid email address.</div>
+        <div ng-if="emailError" class="alert alert-danger" role="alert"><span ng-bind-html="'INVALID-EMAIL-ADDRESS' | translate | unsafe"></span></div>
       </div>
     </div>
   </div>
@@ -21,29 +22,29 @@
 
     <div class="form-group" ng-if="profile.customerStatus == 'new' || isOnlineSponsoring">
       <label for="firstName" class="col-md-3 control-label"><span ng-bind-html="'OS-NAME' | translate | unsafe"></span></label>
-      <div class="col-sm-3" ng-class="{ 'has-error' : signInForm.firstName.$invalid && !signInForm.firstName.$pristine }">
+      <div class="col-sm-3" ng-class="{ 'has-error' : signInForm.firstName.$invalid && signInForm.firstName.$dirty }">
         <input name="firstName" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model="profile.firstName" class="form-control" id="firstName" placeholder="{{'CHECKOUT-FIRST-PLACEHOLDER' | translate | unsafe}}" required="isOnlineSponsoring" autofocus="" maxlength="40">
-        <span ng-show="signInForm.firstName.$invalid && !signInForm.firstName.$pristine" class="help-block" ng-class="{ 'text-danger' : signInForm.firstName.$invalid }">Must contain 2-40 letters.</span>
+        <span ng-show="signInForm.firstName.$invalid && signInForm.firstName.$dirty" class="help-block" ng-class="{ 'text-danger' : signInForm.firstName.$invalid }"><span ng-bind-html="'REQUIRE-FIRSTNAME-LENGTH' | translate | unsafe"></span></span>
         <!--valid={{signInForm.firstName.$valid}}-->
       </div>
-      <div class="col-sm-3" ng-class="{ 'has-error' : signInForm.lastName.$invalid && !signInForm.lastName.$pristine }">
+      <div class="col-sm-3" ng-class="{ 'has-error' : signInForm.lastName.$invalid && signInForm.lastName.$dirty }">
         <input name="lastName" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model="profile.lastName" class="form-control" id="lastName" placeholder="{{'CHECKOUT-LAST-PLACEHOLDER' | translate | unsafe}}" required="isOnlineSponsoring" maxlength="40">
-        <span ng-show="signInForm.lastName.$invalid && !signInForm.lastName.$pristine" class="help-block" ng-class="{ 'text-danger' : signInForm.lastName.$invalid }">Must contain 2-40 letters.</span>
+        <span ng-show="signInForm.lastName.$invalid && signInForm.lastName.$dirty" class="help-block" ng-class="{ 'text-danger' : signInForm.lastName.$invalid }"><span ng-bind-html="'REQUIRE-LASTNAME-LENGTH' | translate | unsafe"></span></span>
         <!--valid={{signInForm.lastName.$valid}}-->
       </div>
     </div>
 
     <div class="form-group">
       <label for="loginEmail" class="col-md-3 control-label"><span ng-bind-html="'EMAIL_ADD' | translate | unsafe"></span></label>
-      <div class="col-sm-6" ng-class="{ 'has-error' : signInForm.loginEmail.$invalid && !signInForm.loginEmail.$pristine }">
+      <div class="col-sm-6" ng-class="{ 'has-error' : signInForm.loginEmail.$invalid && signInForm.loginEmail.$dirty }">
         <input name="loginEmail" ng-pattern="/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/" ng-model="profile.loginEmail" type="email" class="form-control" id="loginEmail" placeholder="example@gmail.com" required>
-        <span ng-show="signInForm.loginEmail.$invalid && !signInForm.loginEmail.$pristine" class="help-block" ng-class="{ 'text-danger' : signInForm.loginEmail.$invalid }">Must be a valid email address.</span>
+        <span ng-show="signInForm.loginEmail.$invalid && signInForm.loginEmail.$dirty" class="help-block" ng-class="{ 'text-danger' : signInForm.loginEmail.$invalid }"><span ng-bind-html="'REQUIRES-VALID-EMAIL-ADDRESS' | translate | unsafe"></span>.</span>
         <!--valid={{signInForm.loginEmail.$valid}}-->
       </div>
     </div>
 
     <div class="form-group" ng-if="isOnlineSponsoring">
-      <label for="phoneNumber" class="col-md-3 control-label"><span ng-bind-html="'IN_PHONE' | translate | unsafe"></span></label>
+      <label for="phoneNumber" class="col-md-3 control-label"><span ng-bind-html="'PHONE-NUMBER' | translate | unsafe"></span></label>
       <div class="col-sm-3">
         <input name="phoneNumber" type="tel" ui-mask="(999) 999-9999" ng-model="profile.phoneNumber" class="form-control" id="phoneNumber" placeholder="(___) ___-____" required>
         <!--valid={{signInForm.phoneNumber.$valid}}-->
@@ -51,12 +52,22 @@
     </div>
 
     <div class="form-group" ng-if="!isOnlineSponsoring">
-      <label for="inputPassword3" class="col-md-3 control-label">Password</label>
+      <label for="inputPassword3" class="col-md-3 control-label"><span ng-bind-html="'PASSWORD' | translate | unsafe"></span></label>
       <div class="col-sm-4">
         <input name="loginPassword" ng-model="profile.loginPassword" type="password" class="form-control" id="inputPassword3" placeholder="Password" required>
         <!--valid={{signInForm.loginPassword.$valid}}-->
       </div>
     </div>
+
+    <div class="form-group" ng-if="!isOnlineSponsoring">
+      <label for="inputPassword4" class="col-md-3 control-label"><span ng-bind-html="'PASSWORD_VERIFY' | translate | unsafe"></span></label>
+      <div class="col-sm-4" ng-class="{ 'has-error' : signInForm.loginPasswordVerify.$invalid && !signInForm.loginPasswordVerify.$pristine }">
+        <input name="loginPasswordVerify" ng-model="profile.loginPasswordVerify" type="password" class="form-control" id="inputPassword4" placeholder="Verify Password" data-ui-validate="'$value == profile.loginPassword'" required>
+        <span ng-show="signInForm.loginPasswordVerify.$invalid && signInForm.loginPasswordVerify.$dirty && profile.loginPassword !== profile.loginPasswordVerify" class="help-block" ng-class="{ 'text-danger' : profile.loginPassword !== profile.loginPasswordVerify }"><span ng-bind-html="'PASSWORDS-DONT-MATCH' | translate | unsafe"></span></span>
+        <!--valid={{signInForm.loginPassword.$valid}}-->
+      </div>
+    </div>
+
     <!--valid={{signInForm.customerStatus.$valid}}-->
 
     <div class="form-group">
@@ -65,8 +76,8 @@
         <p><small ng-bind-html="'OS-START-PRIVACY-AGREE' | translate | unsafe"></small></p>
         <div class="input-group">
           <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-          <button ng-if="profile.customerStatus == 'existing' && !isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" ng-click="loginOrCreateUser()" ng-disabled="!signInForm.$valid">Sign In &nbsp;<i class="fa fa-caret-right"></i></button>
-          <button ng-if="profile.customerStatus == 'new' && !isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" ng-click="loginOrCreateUser()" ng-disabled="!signInForm.$valid">Create Account &nbsp;<i class="fa fa-caret-right"></i></button>
+          <button ng-if="profile.customerStatus == 'existing' && !isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" ng-click="loginOrCreateUser()" ng-disabled="!signInForm.$valid"><span ng-bind-html="'SIGN-IN' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i></button>
+          <button ng-if="profile.customerStatus == 'new' && !isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" ng-click="loginOrCreateUser()" ng-disabled="!signInForm.$valid"><span ng-bind-html="'CREATE-ACCOUNT' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i></button>
           <button ng-if="isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" ng-click="validateEmailAndContinue(profile.loginEmail)" ng-disabled="!signInForm.$valid"><span ng-bind-html="'BTN_CONTINUE' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i></button>
         </div>
       </div>
@@ -77,8 +88,8 @@
         <div class="row"><div class="col-sm-6"><hr></div></div>
         <p ng-if="profile.customerStatus == 'existing'"><a href="" onclick="$('#forgot').css('display','block'); $('#signin').css('display','none');">I forgot my password</a></p>
         <p><br><p>
-        <p ng-if="profile.customerStatus == 'new'">Already a customer? <a href="" ng-click="profile.customerStatus = 'existing'">Sign In</a>.</p>
-        <p ng-if="profile.customerStatus == 'existing'">Not yet a customer? <a href="" ng-click="profile.customerStatus = 'new'">Create Account</a>.</p>
+        <p ng-if="profile.customerStatus == 'new'"><span ng-bind-html="'ALREADY-A-CUSTOMER' | translate | unsafe"></span> <a href="" ng-click="profile.customerStatus = 'existing'"><span ng-bind-html="'SIGN-IN' | translate | unsafe"></span></a>.</p>
+        <p ng-if="profile.customerStatus == 'existing'"><span ng-bind-html="'NOT-YET-A-CUSTOMER' | translate | unsafe"></span> <a href="" ng-click="profile.customerStatus = 'new'"><span ng-bind-html="'CREATE-ACCOUNT' | translate | unsafe"></span></a>.</p>
       </div>
     </div>
   </form>
@@ -87,12 +98,12 @@
 <div id="forgot" class="col-sm-12" style="display: none;" ng-if="!isOnlineSponsoring">
 
   <div class="col-md-offset-3">
-    <h1 class="checkouth1">Forgot Your Password</h1>
+    <h1 class="checkouth1"><span ng-bind-html="'FORGOT-PASSWORD' | translate | unsafe"></span></h1>
   </div>
   <!--valid={{signInForm.$valid}}-->
   <form name="forgotPassword" class="form-horizontal" role="form">
     <div class="form-group">
-      <label for="inputEmail3" class="col-md-3 control-label">Email Address</label>
+      <label for="inputEmail3" class="col-md-3 control-label"><span ng-bind-html="'EMAIL-ADDRESS' | translate | unsafe"></span></label>
       <div class="col-sm-6">
         <input name="loginEmail2" ng-model="loginEmail2" type="email" class="form-control" id="inputEmail3" placeholder="Email" required>
         <!--valid={{signInForm.loginEmail.$valid}}-->
@@ -103,7 +114,7 @@
       <div class="col-md-offset-3 col-sm-9">
         <div class="input-group">
           <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-          <button type="button" class="btn btn-primary btn-lg" onclick="$('#forgot').css('display','none'); $('#thanks').css('display','block')" ng-disabled="!forgotPassword.$valid">Reset Password &nbsp;<i class="fa fa-caret-right"></i></button>
+          <button type="button" class="btn btn-primary btn-lg" onclick="$('#forgot').css('display','none'); $('#thanks').css('display','block')" ng-disabled="!forgotPassword.$valid"><span ng-bind-html="'RESET-PASSWORD' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i></button>
 
         </div>
       </div>
@@ -114,7 +125,7 @@
 <div id="thanks" class="col-sm-12" style="display: none;">
 
   <div class="col-md-offset-3">
-    <h1 class="checkouth1">Thank You!</h1>
+    <h1 class="checkouth1"><span ng-bind-html="'THANK-YOU' | translate | unsafe"></span></h1>
   </div>
   <!--valid={{signInForm.$valid}}-->
   <form name="" class="form-horizontal" role="form">
@@ -129,20 +140,19 @@
 
     <div class="form-group">
       <div class="col-md-offset-3 col-sm-9">
-        <p>Please check your email and click on the link.</p>
+        <p><span ng-bind-html="'RESET-PASSWORD-INSTRUCTIONS' | translate | unsafe"></span></p>
         <div class="row"><div class="col-sm-6"><hr></div></div>
-        <p><a href="">Resend Email</a></p>
+        <p><a href=""><span ng-bind-html="'RESET-PASSWORD-RESEND' | translate | unsafe"></span></a></p>
         <p><a href="" onclick="$('#resetpass').css('display','block'); $('#thanks').css('display','none');">Reset password form (prototype only)</a></p>
-        <p><a ng-href="{{STORE_BASE_URL}}/cart">Back to cart</a></p>
+        <p><a ng-href="{{STORE_BASE_URL}}/cart"><span ng-bind-html="'BACK-TO-CART' | translate | unsafe"></span></a></p>
       </div>
     </div>
   </form>
 </div><!--/span-->
 
 <div id="resetpass" class="col-sm-12" style="display: none;">
-
   <div class="col-md-offset-3">
-    <h1 class="checkouth1">Reset Password</h1>
+    <h1 class="checkouth1"><span ng-bind-html="'RESET-PASSWORD' | translate | unsafe"></span></h1>
   </div>
   <!--valid={{signInForm.$valid}}-->
   <form name="resetPassword" class="form-horizontal" role="form">

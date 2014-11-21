@@ -1,3 +1,4 @@
+
 angular.module('app.controllers.products')
     .controller('ProductDetailsController', function ($sce, WizardHandler, HashKeyCopier, Categories, Product, $q, $scope, $rootScope, $routeParams, $location, $timeout, $window, $log, $modal, $document, Cart, BreadcrumbsHelper, RecentlyViewed) {
         $log.debug("ProductDetailsController()");
@@ -117,9 +118,9 @@ angular.module('app.controllers.products')
                             kitSelections: cartItem.kitSelections,
                             quantity: 1
                         }).then(function() {
-                            $log.debug("MainController(): kit: addToCart()", product);
+                            $log.debug("MainController(): kit: addToCart()", $scope.product);
                         }, function (error) {
-                            $log.error("MainController(): kit: addToCart(): error", product);
+                            $log.error("MainController(): kit: addToCart(): error", $scope.product);
                         });
                     }
                 }

@@ -21,7 +21,6 @@
     <link rel="stylesheet" href="/styles/animate.css">
     <link rel="stylesheet" href="/lib/allmighty-autocomplete/style/autocomplete.css">
 
-
     <!-- Google Font News Cycle (Similar to News Gothic) -->
     <link href="//fonts.googleapis.com/css?family=News+Cycle:400,700" rel="stylesheet">
 
@@ -36,7 +35,7 @@
     <script src="/lib/purl/purl.js"></script>
 
     <!-- AddThis widgets for social media sharing -->
-<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5435adb94c0d228e"></script>
+   <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5435adb94c0d228e"></script>
     <!-- ShareThis Widgets for social media sharing >
     <script type="text/javascript">var switchTo5x=true;</script>
     <script type="text/javascript" src="/js/sharethis/buttons.js"></script>
@@ -192,13 +191,10 @@
         <!-- Sidebar Navigation -->
         <div class="col-xs-8 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation" ng-hide="section == 'admin' || section =='checkout' || section=='cart'">
           <aside id="shop_menu">
-
             <a class="pull-left visible-xs store-nav-toggle" ng-click="isActive = !isActive">
               <i class="fa fa-bars"></i>
             </a>
-
             <ul ng-controller="CategoriesController">
-
               <li ng-repeat="category in categories" ng-class="{'open': categoryInPath(category)}">
                 <!-- don't follow link if has children, just expand -->
                 <a ng-show="category.children" href ng-class="{'active': categoryInPath(category)}" ng-click="categoryClicked(category);">
@@ -208,12 +204,9 @@
                 <a ng-show="category.children == null" ng-href="{{STORE_BASE_URL}}/products?category={{category.id}}" ng-class="{'active': categoryInPath(category)}" ng-click="categoryClicked(category);">
                   <span ng-bind-html="category.name | unsafe"></span> <i ng-if="category.children" class="fa fa-angle-down pull-right"></i>
                 </a>
-
                 <!-- loop in children links -->
-                <ul ng-if="category.children">
-
+                <ul ng-if="category.children" class="category_children">
                   <li ng-repeat="category in category.children" ng-class="{'open': categoryInPath(category)}">
-
                     <!-- don't follow link if has children, just expand -->
                     <a ng-show="category.children != null && category.children.length > 0" href ng-class="{'active': categoryInPath(category)}" ng-click="categoryClicked(category);">
                       <span ng-bind-html="category.name | unsafe"></span> <i ng-if="category.children" class="fa fa-angle-down  pull-right"></i>
@@ -222,43 +215,32 @@
                     <a ng-show="category.children == null || category.children.length == 0" ng-href="{{STORE_BASE_URL}}/products?category={{category.id}}" ng-class="{'active': categoryInPath(category)}" ng-click="categoryClicked(category);">
                       <span ng-bind-html="category.name | unsafe"></span> <i ng-if="category.children" class="fa fa-angle-down  pull-right"></i>
                     </a>
-
                     <!-- loop in children links -->
                     <ul ng-if="category.children">
-
                       <li ng-repeat="category in category.children">
                         <a href="" ng-href="{{STORE_BASE_URL}}/products?category={{category.id}}" ng-class="{'active': categoryInPath(category)}" ng-click="categoryClicked(category);">
                           <span ng-bind-html="category.name | unsafe"></span>
                         </a>
                       </li>
-
                     </ul>
-
                   </li>
-
                 </ul>
-
               </li>
-
             </ul>
             <hr>
             <ul>
               <li><a ng-href="{{STORE_BASE_URL}}/products#top" ng-class="{'active': navStatic == '1'}" ng-click="categoryClicked(null); setNavStatic('1')"><span>All Products</span></a></li>
               <li><a ng-href="{{STORE_BASE_URL}}/cart#additem" ng-class="{'active': navStatic == '2'}" ng-click="categoryClicked(null); setNavStatic('2')"><span>Order By Item</span></a></li>
             </ul>
-
           </aside>
         </div><!--/span-->
         <!-- /Sidebar Navigation -->
 
         <!-- Store Content -->
         <section class="store-content" ng-class="{'col-sm-12': section == 'admin', 'col-xs-12 col-sm-9': section == 'store'}">
-
           <div ng-view class="ngview"></div>
-
         </section><!--/span-->
         <!-- /Store Content -->
-
 
       </div><!--/row.offcanvas-->
 
@@ -376,7 +358,6 @@
     <script src="/js/angular/filters.js"></script>
     <script src="/js/angular/directives.js"></script>
     <script src="/js/angular/app.js"></script>
-
 
     <!-- Google Analytics -->
     <script>

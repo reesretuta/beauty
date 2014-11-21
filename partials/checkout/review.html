@@ -1,7 +1,8 @@
+
 <div class="container">
 
   <div class="col-md-offset-1 col-md-10">
-    <h1><span ng-bind-html="'TIT06' | translate | unsafe"></span>
+    <h1><span ng-bind-html="'REVIEW-CONFIRM-ORDER' | translate | unsafe"></span>
       <span class="store-heading-description" ng-bind-html="'CHECK_INST_PAY' | translate | unsafe">
         
       </span>
@@ -16,7 +17,7 @@
 
   <div class="col-md-offset-1 col-md-10">
   <form class="form order-details" role="form" name="confirmForm">
-      <a ng-href="{{STORE_BASE_URL}}/cart" ng-if="!isOnlineSponsoring" class="pull-right" style="margin-top:10px"><i class="fa fa-pencil-square-o"></i> make changes</a>
+      <a ng-href="{{STORE_BASE_URL}}/cart" ng-if="!isOnlineSponsoring" class="pull-right" style="margin-top:10px"><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'BTN_MAKE_CHANGES' | translate | unsafe"></span></a>
       <div class="form-group">
         <table class="table">
           <thead>
@@ -35,7 +36,7 @@
                   <span ng-bind-html="session.language=='en_US' ? item.product.name : item.product.name_es_US | unsafe"></span>
                 </div>
                 <li class="dropdown" ng-if="isOnlineSponsoring">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span ng-bind-html="session.language=='en_US' ? item.product.name : item.product.name_es_US | unsafe"></span> <span class="caret"></span></a>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span ng-bind-html="session.language=='en_US' ? item.product.name : item.product.name_es_US | unsafe"></span> <span ng-bind-html="'CHANGE-KIT-PARENS' | translate | unsafe"></span></a>
                   <ul class="dropdown-menu" role="menu">
                     <li><a ng-click="selectProduct('19634')"><span ng-bind-html="'OS-KIT-PRODUCT1-NAME' | translate |unsafe"></span> (<span ng-bind-html="'LAN01' | translate |unsafe"></span>)</a></li>
                     <li><a ng-click="selectProduct('19635')"><span ng-bind-html="'OS-KIT-PRODUCT1-NAME' | translate |unsafe"></span> (<span ng-bind-html="'LAN02' | translate |unsafe"></span>)</a></li>
@@ -78,10 +79,11 @@
           <tfoot>
           <tr>
             <td colspan="3">
-              <p><span ng-bind-html="'CART_SUBTOTAL' | translate | unsafe"></span>: {{salesTaxInfo.SubTotal | currency}}</p>
-              <p><span ng-bind-html="'CART_SHIPPING' | translate | unsafe"></span>: {{salesTaxInfo.SH | currency}}</p>
-              <p><span ng-bind-html="'CART_TAX' | translate | unsafe"></span>: {{salesTaxInfo.TaxRate}}%</p>
-              <p class="lead"><b>Total Charges: {{salesTaxInfo.Total | currency}}</b></p>
+              <p><span ng-bind-html="'CART_SUBTOTAL' | translate | unsafe"></span>: {{ salesTaxInfo.SubTotal | currency }}</p>
+              <p><span ng-bind-html="'CART_SHIPPING' | translate | unsafe"></span>: {{ salesTaxInfo.SH | currency }}</p>
+              <p><span ng-bind-html="'CART_TAX' | translate | unsafe"></span> -  {{ salesTaxInfo.TaxRate }}%: {{ salesTaxInfo.TaxAmount | currency }} 
+              </p>
+              <p class="lead"><b><span ng-bind-html="'TOTAL_CHARGES' | translate | unsafe"></span>: {{ salesTaxInfo.Total | currency }}</b></p>
             </td>
           </tr>
           </tfoot>
@@ -89,9 +91,6 @@
 
       </div>
 
-     
-    
- 
 	<hr>
 
   <div class="form-group text-right">
@@ -99,10 +98,10 @@
 
           <input type="checkbox" value="" ng-model="profile.agree" required>
 
-          I agree to the <a href="" data-toggle="modal" data-target=".bs-terms-modal-lg">Terms and Conditions</a>
+          <span ng-bind-html="'IN_AGREE' | translate | unsafe"></span> <a href="" data-toggle="modal" data-target=".bs-terms-modal-lg"><span ng-bind-html="'BTN_IN_AGREE' | translate | unsafe"></span></a>
           &nbsp;&nbsp;&nbsp;&nbsp;
         </label>
-        <button ng-if="!isOnlineSponsoring" type="button" class="btn-link pull-left" ng-click="confirmAlert('Are you sure you\'d like to cancel your order?')">Cancel Order</button>
+        <button ng-if="!isOnlineSponsoring" type="button" class="btn-link pull-left" ng-click="confirmAlert('Are you sure you\'d like to cancel your order?')"><span ng-bind-html="'BTN_CANCEL_ORDER' | translate | unsafe"></span></button>
         <button type="button" class="btn btn-primary btn-lg" ng-click="processOrder()" ng-disabled="!confirmForm.$valid || processingOrder"><span ng-bind-html="'BTN_PLACE_ORDER' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i></button>
       </div>
 
@@ -120,7 +119,10 @@
             <h3><span ng-bind="profile.firstName"></span> <span ng-bind="profile.lastName"></span></h3>
             <p><b ng-bind="profile.loginEmail"></b></p>
             <p>{{profile.phoneNumber|phone}}</p>
-            <a href="#" wz-prev><i class="fa fa-pencil-square-o"></i> Edit</a>
+            <a href=" " ng-click="editContactInfo()" class="pull-left">
+              <i class="fa fa-pencil-square-o"></i>
+              <span ng-bind-html="'EDIT' | translate | unsafe">Edit</span>
+            </a>
           </div>
         </div>
       </div>
@@ -130,7 +132,10 @@
         <h3><span ng-bind-html="'PAY_TIT1' | translate | unsafe"></span></h3>
         <div class="checkout-card clearfix active">
           <span class="pull-left">{{profile.card.name}}</span>
-          <img src="/img/46x30" class="pull-right">
+          <img class="pull-right img-responsive cardImg" src="/img/visa.png" ng-show="profile.card.cardType=='Visa'">
+          <img class="pull-right img-responsive cardImg" src="/img/mastercard.png" ng-show="profile.card.cardType=='MasterCard'">
+          <img class="pull-right img-responsive cardImg" src="/img/discover.png" ng-show="profile.card.cardType=='Discover Card'">
+          <img class="pull-right img-responsive cardImg" src="/img/americanexpress.png" ng-show="profile.card.cardType=='American Express'">
           <p class="card-number">
             <span>&bull;&bull;&bull;&bull;</span>
             <span>&bull;&bull;&bull;&bull;</span>
@@ -141,7 +146,7 @@
             <small>EXP:</small>
             {{profile.card.expMonth}}/{{profile.card.expYear|substr:2:2}}
           </p>
-          <a href="" data-toggle="modal" data-target=".bs-example-modal-charging" ng-click="resetCard()" class="pull-right card-use-btn"><i class="fa fa-pencil-square-o"></i> Change Card</a>
+          <a href=" " data-toggle="modal" data-target=".bs-example-modal-charging" ng-click="resetCard()" class="pull-right card-use-btn"><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'EDIT' | translate | unsafe"></span></a>
         </div>
       </div><!-- /card -->
 
@@ -151,7 +156,7 @@
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-              <h4 class="modal-title" id="myModalLabel">Charging To</h4>
+              <h4 class="modal-title" id="myModalLabel"><span ng-bind-html="'PAY_TIT1' | translate | unsafe"></span></h4>
             </div>
             <div class="modal-body row">
               <ng-include src="'/partials/checkout/payment-edit-modal.html'"/>
@@ -167,10 +172,10 @@
         <span class="address-street">{{profile.shipping.address1}}</span>
         <span class="address-street">{{profile.shipping.address2}}</span>
         <span class="address-region">{{profile.shipping.city}}, {{profile.shipping.state}} {{profile.shipping.zip}}</span>
-        <span class="phone-number">{{profile.shipping.phone}}</span>
+        <span class="phone-number" ng-if="!isOnlineSponsoring">{{profile.shipping.phone}}</span>
         <span ng-if="!isOnlineSponsoring"><span ng-bind-html="'SHIPPING-CARRIER' | translate | unsafe"></span>: {{salesTaxInfo.shippingCarrier}}</span>
         <div class="address-actions">
-          <a href="" data-toggle="modal" data-target=".bs-example-modal-lg-shipping"><i class="fa fa-pencil-square-o"></i> Change Address</a>
+          <a href=" " data-toggle="modal" data-target=".bs-example-modal-lg-shipping" class="pull-left"><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'EDIT' | translate | unsafe"></span></a>
         </div>
       </div><!-- /address -->
 
@@ -179,7 +184,7 @@
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+              <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"><span ng-bind-html="'BTN_CLOSE' | translate | unsafe"></span></span></button>
               <h4 class="modal-title" id="myModalLabel"><span ng-bind-html="'PAY_TIT2' | translate | unsafe"></span></h4>
             </div>
             <div class="modal-body row">
@@ -196,9 +201,9 @@
         <span class="address-street">{{profile.billing.address1}}</span>
         <span class="address-street">{{profile.billing.address2}}</span>
         <span class="address-region">{{profile.billing.city}}, {{profile.billing.state}} {{profile.billing.zip}}</span>
-        <span class="phone-number">{{profile.billing.phone}}</span>
+        <span class="phone-number" ng-if="!isOnlineSponsoring">{{profile.billing.phone}}</span>
         <div class="address-actions">
-          <a href="" data-toggle="modal" data-target=".bs-example-modal-lg-billing"><i class="fa fa-pencil-square-o"></i> Change Address</a>
+          <a href=" " data-toggle="modal" data-target=".bs-example-modal-lg-billing" class="pull-left"><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'EDIT' | translate | unsafe"></span></a>
         </div>
       </div><!-- /address -->
 
@@ -207,7 +212,7 @@
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+              <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"><span ng-bind-html="'BTN_CLOSE' | translate | unsafe"></span></span></button>
               <h4 class="modal-title" id="myModalLabel"><span ng-bind-html="'PAY_TIT3' | translate | unsafe"></span>:</h4>
             </div>
             <div class="modal-body row">

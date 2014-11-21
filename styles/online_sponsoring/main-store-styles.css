@@ -50,6 +50,7 @@ h1, .h1, a:hover, a:focus, .btn-link:hover, .btn-link:focus {
   background-color: #ccabd0;
   border-color: #ccabd0;
 }
+
 a {
   cursor: pointer;
 }

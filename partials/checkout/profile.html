@@ -19,7 +19,7 @@
           <h3><span ng-bind="profile.firstName"></span> <span ng-bind="profile.lastName"></span></h3>
           <p><b ng-bind="profile.loginEmail"></b></p>
           <p>{{profile.phoneNumber|phone}}</p>
-          <a href="#" wz-prev><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'BTN_EDIT' | translate | unsafe"></span></a>
+          <a href="#" wz-prev><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'EDIT' | translate | unsafe"></span></a>
         </div>
       </div>
       <div class="col-md-offset-3 col-sm-9">
@@ -47,8 +47,8 @@
 
     <div class="form-group">
       <label class="col-md-3 control-label"><span ng-bind-html="'DOB-LABEL' | translate | unsafe"></span></label>
-      <div class="col-xs-4 col-md-3" ng-class="{ 'has-error' : invalidDOB && !profileForm.dob.$pristine && profile.dob.length == 8 }">
-        <input type="tel" name="dob" class="form-control" ui-mask="99/99/9999" placeholder="MM/DD/YYYY" ng-model="profile.dob">
+      <div class="col-xs-4 col-md-3" ng-class="{ 'has-error' : invalidDOB && profileForm.dob.$dirty && profile.dob.length == 8 }">
+        <input type="tel" name="dob" class="form-control" ui-mask="99/99/9999" placeholder="{{ 'DOB-PLACEHOLDER' | translate }}" ng-model="profile.dob">
       </div>
       <div class="col-md-offset-3 col-sm-9">
         <span class="help-block"><small ng-class="{ 'text-danger' : invalidDOB && !profileForm.dob.$pristine && profile.dob.length == 8 }"><span ng-bind-html="'DOB-NOTE' | translate | unsafe"></span></small></span>
@@ -61,7 +61,7 @@
     <div class="form-group">
       <label class="col-md-3 control-label"><span ng-bind-html="'SPONSOR-ID-LABEL' | translate | unsafe"></span></label>
       <div class="col-md-4" ng-class="{ 'has-error' : invalidSponsorId && !profileForm.sponsorId.$pristine }">
-        <input name="sponsorId" type="text" class="form-control" ng-model="profile.sponsorId" placeholder="#-digit ID of your JAFRA Consultant Sponsor">
+        <input name="sponsorId" type="text" class="form-control" ng-model="profile.sponsorId" placeholder="{{ 'SPONSOR-ID-PLACEHOLDER' | translate }}">
         <span ng-show="invalidSponsorId" class="help-block" ng-class="{ 'text-danger' : invalidSponsorId }"><span ng-bind-html="'CONSULTANT-PROFILE-INVALID-SPONSORID' | translate | unsafe"></span></span>
         <span class="help-block"><small><span ng-bind-html="'SPONSOR-ID-NOTE' | translate | unsafe"></span></small></span>
       </div>

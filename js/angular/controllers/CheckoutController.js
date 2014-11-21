@@ -1,5 +1,6 @@
+
 angular.module('app.controllers.checkout')
-    .controller('CheckoutController', function ($location, $scope, $document, $timeout, $rootScope, $anchorScroll, $routeParams, $modal, $log, $q, STORE_BASE_URL, JOIN_BASE_URL, focus, Geocodes, Session, Consultant, Addresses, Order, OrderHelper, Checkout, Cart, Product, SalesTax, CreditCards, Leads, HashKeyCopier, WizardHandler) {
+    .controller('CheckoutController', function ($location, $scope, $document, $timeout, $rootScope, $anchorScroll, $routeParams, $modal, $log, $q, $translate, STORE_BASE_URL, JOIN_BASE_URL, focus, Geocodes, Session, Consultant, Addresses, Order, OrderHelper, Checkout, Cart, Product, SalesTax, CreditCards, Leads, HashKeyCopier, WizardHandler) {
 
         $log.debug("CheckoutController()");
 
@@ -16,6 +17,9 @@ angular.module('app.controllers.checkout')
 
         var isGuest = params.guest == 'true' ? true : false;
         $scope.debug = isGuest;
+
+        // tracking review (back button fix)
+        $scope.orderCompleted = false;
 
         var path = $location.path();
         $log.debug("CheckoutController(): path", path);
@@ -95,6 +99,13 @@ angular.module('app.controllers.checkout')
                 $log.debug("CheckoutController(): step changed from", oldVal, "to", newVal, 'profile.customerStatus', $scope.profile.customerStatus);
 
                 urlStep = newVal;
+
+                // check if consultant is on final confirmation, if back redirect to initial
+                if (S(oldVal).trim() == 'Finish') {
+                    $log.debug('CheckoutController(): has already completed purchase, redirect');
+                    $location.path(JOIN_BASE_URL);
+                    return;
+                }
 
                 // do focuses here
                 if (S(urlStep).trim() == "Shipping") {
@@ -721,7 +732,10 @@ angular.module('app.controllers.checkout')
 
                         if (canceled) {
                             $log.error("CheckoutController(): selectGeocodeAndAdd(): geocode selection dialog canceled");
-                            $scope.shippingAddressError = "Must select an address";
+                            $translate('MUST-SELECT-ADDRESS').then(function (message) {
+                                $scope.shippingAddressError = message;
+                            });
+
                             d.reject('Must select an address');
                             return;
                         }
@@ -741,18 +755,24 @@ angular.module('app.controllers.checkout')
                             });
                         } else {
                             $log.error("CheckoutController(): selectGeocodeAndAdd(): empty geocode");
-                            $scope.shippingAddressError = "Unable to verify address";
+                            $translate('UNABLE-TO-VERIFY-ADDRESS').then(function (message) {
+                                $scope.shippingAddressError = message;
+                            });
                             d.reject('Unable to verify address');
                         }
                     }, function(err) {
                         $log.error("CheckoutController(): selectGeocodeAndAdd(): failed to select geocode", err);
-                        $scope.shippingAddressError = "Unable to verify address";
+                        $translate('UNABLE-TO-VERIFY-ADDRESS').then(function (message) {
+                            $scope.shippingAddressError = message;
+                        });
                         d.reject(err);
                     });
                 }
             }, function (r) {
                 $log.error("CheckoutController(): selectGeocodeAndAdd(): error looking up geocode", r);
-                $scope.shippingAddressError = "Unable to verify address";
+                $translate('UNABLE-TO-VERIFY-ADDRESS').then(function (message) {
+                    $scope.shippingAddressError = message;
+                });
                 d.reject(r.errorMessage);
             });
 
@@ -883,6 +903,56 @@ angular.module('app.controllers.checkout')
             });
         }
 
+        $scope.editContactInfo = function() {
+            $log.debug("CheckoutController(): editContactInfo()");
+            var dd = $q.defer();
+
+            var d = $modal.open({
+                backdrop: true,
+                keyboard: true, // we will handle ESC in the modal for cleanup
+                windowClass: "editContactInfoModal",
+                templateUrl: '/partials/checkout/contact-info-edit-modal.html',
+                controller: 'ContactEditModalController',
+                resolve: {
+                    profile: function() {
+                        return {
+                            firstName: $scope.profile.firstName,
+                            lastName: $scope.profile.lastName,
+                            loginEmail: $scope.profile.loginEmail,
+                            phoneNumber: $scope.profile.phoneNumber
+                        }
+                    }
+                }
+            });
+
+            var body = $document.find('html, body');
+
+            d.result.then(function(result) {
+                $log.debug("CheckoutController(): editContactInfo(): edit contact info modal closed", result);
+
+                // save the profile information if not canceled
+                if (!result.canceled) {
+                    // result.profile
+                    $scope.profile.firstName = result.profile.firstName;
+                    $scope.profile.lastName = result.profile.lastName;
+                    $scope.profile.loginEmail = result.profile.loginEmail;
+                    $scope.profile.phoneNumber = result.profile.phoneNumber;
+
+                    dd.resolve();
+                } else {
+                    dd.resolve();
+                }
+
+                // re-enable scrolling on body
+                body.css("overflow-y", "auto");
+            });
+
+            // prevent page content from scrolling while modal is up
+            $("html, body").css("overflow-y", "hidden");
+
+            return dd.promise;
+        }
+
         $scope.verifyExp = function() {
             $log.debug("CheckoutController(): verifyExp(): ", $scope.profile.exp)
             $scope.invalidExp = false;
@@ -938,7 +1008,7 @@ angular.module('app.controllers.checkout')
                     // move to next step
                     WizardHandler.wizard('checkoutWizard').goTo('Profile');
                 }, function(r) {
-                    $log.debug("CheckoutController(): validated email");
+                    $log.error("CheckoutController(): failed validating email", r);
 
                     $scope.emailError = true;
                 })
@@ -973,7 +1043,9 @@ angular.module('app.controllers.checkout')
                     WizardHandler.wizard('checkoutWizard').goTo($scope.isOnlineSponsoring ? 'Profile' : 'Shipping');
                 }, function(error) {
                     $log.error("CheckoutController(): loginOrCreateUser(): failed to create client", error);
-                    $scope.loginError = error.message;
+                    $translate('LOGIN-ERROR').then(function (message) {
+                        $scope.loginError = message;
+                    });
                 });
             } else {
                 $log.debug("CheckoutController(): loginOrCreateUser(): trying to login with username=", $scope.profile.loginEmail);
@@ -987,7 +1059,9 @@ angular.module('app.controllers.checkout')
                     WizardHandler.wizard('checkoutWizard').goTo($scope.isOnlineSponsoring ? 'Profile' : 'Shipping');
                 }, function(error) {
                     $log.error("CheckoutController(): loginOrCreateUser(): failed to authenticate");
-                    $scope.loginError = error.message;
+                    $translate('LOGIN-ERROR').then(function (message) {
+                        $scope.loginError = message;
+                    });
                 });
             }
         }
@@ -1024,8 +1098,7 @@ angular.module('app.controllers.checkout')
             if ($scope.isOnlineSponsoring) {
                 $log.debug("CheckoutController(): alert(): redirecting back to join page");
                 $location.path(JOIN_BASE_URL).search('');
-            }
-            else if (!$scope.isOnlineSponsoring) {
+            } else if (!$scope.isOnlineSponsoring) {
                 $log.debug("CheckoutController(): alert(): redirecting back to store page");
                 $location.path(STORE_BASE_URL).search('');
             }
@@ -1077,9 +1150,6 @@ angular.module('app.controllers.checkout')
                         $scope.checkoutUpdated();
                         WizardHandler.wizard('checkoutWizard').goTo('Review');
                     }
-
-                    $scope.checkoutUpdated();
-                    WizardHandler.wizard('checkoutWizard').goTo('Review');
                 }, function(err) {
                     $log.error("CheckoutController(): addPaymentMethod(): error");
                     alert('error adding card: ' + err);
@@ -1100,18 +1170,6 @@ angular.module('app.controllers.checkout')
                         $log.debug("CheckoutController(): addPaymentMethod(): setting consultant billing address", a);
                         $scope.profile.billing = angular.copy(a);
 
-                        // fetch sales tax information here
-                        fetchSalesTax().then(function(salesTaxInfo) {
-                            $log.debug("CheckoutController(): addPaymentMethod(): got sales tax info", salesTaxInfo);
-
-                            $scope.salesTaxInfo = salesTaxInfo;
-
-                            $scope.checkoutUpdated();
-                            WizardHandler.wizard('checkoutWizard').goTo('Review');
-                        }, function(err) {
-                            $scope.billingAddressError = "Error while processing cart";
-                        });
-
                         $scope.checkoutUpdated();
                         WizardHandler.wizard('checkoutWizard').goTo('Review');
                     }, function(r) {
@@ -1123,28 +1181,8 @@ angular.module('app.controllers.checkout')
                     // copy, in case we need to re-copy from a back button from review page
                     $scope.profile.billing = angular.copy($scope.profile.shipping);
 
-                    // fetch sales tax information here
-                    fetchSalesTax().then(function(salesTaxInfo) {
-                        $log.debug("CheckoutController(): addPaymentMethod(): got sales tax info", salesTaxInfo);
-
-                        /*
-                        {
-                            SH: "12.00",
-                            SubTotal: "99.00",
-                            TaxAmount: "9.71",
-                            TaxRate: "8.75",
-                            Total: "120.71",
-                            TotalBeforeTax: "111.00"
-                        }
-                        */
-
-                        $scope.salesTaxInfo = salesTaxInfo;
-
-                        $scope.checkoutUpdated();
-                        WizardHandler.wizard('checkoutWizard').goTo('Review');
-                    }, function(err) {
-                        $scope.billingAddressError = "Error while processing cart";
-                    });
+                    $scope.checkoutUpdated();
+                    WizardHandler.wizard('checkoutWizard').goTo('Review');
                 }
             }
         }
@@ -1427,13 +1465,32 @@ angular.module('app.controllers.checkout')
                             email: $scope.profile.loginEmail
                         }).$promise.then(function(lead) {
                             $log.debug("CheckoutController(): processOrder(): lead removed");
+                            $log.debug("CheckoutController(): processOrder(): denote order completed");
+                            $scope.orderCompleted = true;
                         });
-
+                        
                         $scope.processingOrder = false;
+                        $log.debug('CheckoutController(): finished creating consultant');
                     }, function(error) {
                         $log.error("CheckoutController(): processOrder(): failed to create consultant", error);
-                        $scope.orderError = error.message;
-                        // FIXME - show error here!!!!!
+
+                        if (error.errorCode == "accountAlreadyExists") {
+                            $translate('EMAIL_EXISTS').then(function (message) {
+                                $scope.orderError = message;
+                            });
+                        } else if (error.errorCode == "invalidEmailAddress") {
+                            $translate('INVALID-EMAIL').then(function (message) {
+                                $scope.orderError = message;
+                            });
+                        } else if (error.errorCode == "invalidPassword") {
+                            $translate('INVALID-PASSWORD').then(function (message) {
+                                $scope.orderError = message;
+                            });
+                        } else {
+                            $translate('ORDER-PROBLEM').then(function (message) {
+                                $scope.orderError = message;
+                            });
+                        }
                         $scope.processingOrder = false;
                     });
                 } else {
@@ -1612,8 +1669,10 @@ angular.module('app.controllers.checkout')
                 WizardHandler.wizard('checkoutWizard').goTo('Payment');
             }, function(err) {
                 $log.error("CheckoutController(): selectShippingAddressAndContinue(): failed to get sales tax info", err);
-                $scope.orderError = "Failed to load sales tax";
-                $scope.salesTaxInfo = null;
+                $translate('SALES-TAX-ERROR').then(function (message) {
+                    $scope.orderError = message;
+                    $scope.salesTaxInfo = null;
+                });
             });
         }
 
@@ -1631,8 +1690,10 @@ angular.module('app.controllers.checkout')
                     WizardHandler.wizard('checkoutWizard').goTo('Payment');
                 }, function(err) {
                     $log.error("CheckoutController(): addShippingAddressAndContinue(): failed to get sales tax info", err);
-                    $scope.orderError = "Failed to load sales tax";
-                    $scope.salesTaxInfo = null;
+                    $translate('SALES-TAX-ERROR').then(function (message) {
+                        $scope.orderError = message;
+                        $scope.salesTaxInfo = null;
+                    });
                 });
             });
         }
@@ -2027,14 +2088,16 @@ angular.module('app.controllers.checkout')
                     card: "4111111111111111",
                     expMonth: "12",
                     expYear: "2020",
-                    cvv: 987
+                    cvv: 987,
+                    cardType: "Visa"
                 },
                 card: {
                     name: "Test Name",
                     card: "4111111111111111",
                     expMonth: "12",
                     expYear: "2020",
-                    cvv: 987
+                    cvv: 987,
+                    cardType: "Visa"
                 }
             };
 
@@ -2056,6 +2119,8 @@ angular.module('app.controllers.checkout')
                 "SubTotal": "99.00",
                 "SH": "5.00",
                 "TaxRate": "7.75",
+                "TotalBeforeTax": "104.00",
+                "TaxAmount": "17.00",
                 "Total": "121.00"
             }
 

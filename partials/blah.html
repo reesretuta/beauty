@@ -1,0 +1,18 @@
+
+
+$scope.step = 1;
+function goto(step) {
+    $scope.step = step;
+}
+
+<div ng-show="step==1">
+  1
+  <button ng-click="goto(2)">Next</button>
+</div>
+<div ng-show="step==2">
+  2
+  <button ng-click="goto(3)">Next</button>
+</div>
+<div ng-show="step==3">
+  3
+</div>
