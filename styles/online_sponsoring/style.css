@@ -154,6 +154,10 @@ input:focus:-ms-input-placeholder {
     color: #e1e1e1;
 }
 
+a {
+  position: relative;
+}
+
 #logo img {
   max-width: 70px;
 }
