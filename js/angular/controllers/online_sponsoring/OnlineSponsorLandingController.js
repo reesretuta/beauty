@@ -15,7 +15,6 @@ angular.module('app.controllers.onlineSponsor')
         $('.modal').modal('hide');
         $('body').removeClass('modal-open');
         $('.modal-backdrop').remove();
-
         $log.debug("joining with sku", sku);
         $log.debug("language", language);
         $location.url(JOIN_BASE_URL + "/checkout?sku=" + sku);
