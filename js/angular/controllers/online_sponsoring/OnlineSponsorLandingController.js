@@ -15,12 +15,9 @@ angular.module('app.controllers.onlineSponsor')
         $('.modal').modal('hide');
         $('body').removeClass('modal-open');
         $('.modal-backdrop').remove();
-
         $log.debug("joining with sku", sku);
         $log.debug("language", language);
-        $location.path(JOIN_BASE_URL + '/checkout').search({
-          'sku' : sku
-        });
+        $location.url(JOIN_BASE_URL + "/checkout?sku=" + sku);
     };
     
     $scope.productMap = [];
