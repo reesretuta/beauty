@@ -70,7 +70,7 @@
             <td colspan="3">
               <p>Subtotal: {{salesTaxInfo.SubTotal | currency}}</p>
               <p>Shipping: {{salesTaxInfo.SH | currency}}</p>
-              <p>Tax: {{salesTaxInfo.TaxRate}}%</p>
+              <p>Tax ({{salesTaxInfo.TaxRate}}%): {{ salesTaxInfo.TaxAmount | currency }}</p>
               <p class="lead"><b class="text-success"><i class="fa fa-check"></i> Successfully Charged: {{salesTaxInfo.Total | currency}}</b></p>
             </td>
           </tr>
