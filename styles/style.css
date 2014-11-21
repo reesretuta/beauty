@@ -105,6 +105,11 @@ h2 {
   text-transform: uppercase;
   color: #fff;
 }
+
+a.checkout-link {
+  font-weight: bold;
+}
+
 .print-link {
     margin-top: 50px;
 }

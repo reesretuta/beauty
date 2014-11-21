@@ -258,6 +258,7 @@
     "EMAIL_ADD_VERIFY":"Confirme Direcci&oacute;n Electr&oacute;nica",
     "EMAIL":"Email",
     "PASSWORD":"Contrase&ntilde;a",
+    "PASSWORD_VERIFY":"Verifique su contrase&#241;a",
     "NEW_CUS":"Soy nuevo cliente",
     "EXIST_CUS":"Soy cliente existente",
     "KEEP_SIGN":"Continuar en la sesion",
