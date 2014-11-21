@@ -98,7 +98,7 @@
   <div class="col-sm-5">
     <div class="row">
       <div class="col-xs-4 col-sm-4 col-med-2">
-        <input ng-model="profile.newCard.cvv" ng-pattern="/^[0-9]+$/" ng-minlength="3" ng-maxlength="4" maxlength="4" name="cvv" type="text" class="form-control col-sm-1" placeholder="&bull;&bull;&bull;" required>
+        <input ng-model="profile.newCard.cvv" ng-pattern="/^[0-9]+$/" ng-minlength="3" ng-maxlength="4" maxlength="4" name="cvv" type="number" limit-to="4" class="form-control col-sm-1" placeholder="&bull;&bull;&bull;" required>
         <!--valid={{paymentForm.cvv.$valid}}-->
       </div>
       <div class="col-xs-6 col-sm-4 col-med-3">

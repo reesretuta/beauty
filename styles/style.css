@@ -22,6 +22,11 @@
   display: none !important;
 }
 
+/* hides ff input[number] jazz */
+input[type=number] { 
+  -moz-appearance: textfield;
+}
+
 .primary-color { color: #b51a8a; }
 .secondary-color { color: #AA73B1; }
 
