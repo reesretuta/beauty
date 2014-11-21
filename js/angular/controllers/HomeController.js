@@ -1,3 +1,4 @@
+
 angular.module('app.controllers.home')
     .controller('HomeController', function ($scope, $document, $rootScope, $routeParams, $log, Categories) {
         $rootScope.title = 'Our Products';

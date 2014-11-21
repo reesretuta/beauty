@@ -1,9 +1,15 @@
+
 angular.module('app.controllers.lang').controller('LanguageSwitcherController', function ($scope, $document, $log, $timeout, $location, $translate, Session, $rootScope, $routeParams, JOIN_BASE_URL) {
 
-    angular.element('.language-dropdown .dropdown-menu input, .language-dropdown .dropdown-menu button').on('click', function(e) {
-        e.stopPropagation()
+    'use strict';
+
+    angular.element('.language-dropdown .dropdown-menu input, .language-dropdown .dropdown-menu button').on('click', function(evt) {
+        evt.stopPropagation();
     });
 
+    $log.debug('LanguageSwitcherController(): instantiate, (%s)', $rootScope.session.language);
+
+    //session.language
     $scope.language = function (language) {
         //$log.debug('current language',Session.getLanguage());
         $scope.$watch($rootScope.session.language, function (newVal, oldVal) {
