@@ -893,6 +893,56 @@ angular.module('app.controllers.checkout')
             });
         }
 
+        $scope.editContactInfo = function() {
+            $log.debug("CheckoutController(): editContactInfo()");
+            var dd = $q.defer();
+
+            var d = $modal.open({
+                backdrop: true,
+                keyboard: true, // we will handle ESC in the modal for cleanup
+                windowClass: "editContactInfoModal",
+                templateUrl: '/partials/checkout/contact-info-edit-modal.html',
+                controller: 'ContactEditModalController',
+                resolve: {
+                    profile: function() {
+                        return {
+                            firstName: $scope.profile.firstName,
+                            lastName: $scope.profile.lastName,
+                            loginEmail: $scope.profile.loginEmail,
+                            phoneNumber: $scope.profile.phoneNumber
+                        }
+                    }
+                }
+            });
+
+            var body = $document.find('html, body');
+
+            d.result.then(function(result) {
+                $log.debug("CheckoutController(): editContactInfo(): edit contact info modal closed", result);
+
+                // save the profile information if not canceled
+                if (!result.canceled) {
+                    // result.profile
+                    $scope.profile.firstName = result.profile.firstName;
+                    $scope.profile.lastName = result.profile.lastName;
+                    $scope.profile.loginEmail = result.profile.loginEmail;
+                    $scope.profile.phoneNumber = result.profile.phoneNumber;
+
+                    dd.resolve();
+                } else {
+                    dd.resolve();
+                }
+
+                // re-enable scrolling on body
+                body.css("overflow-y", "auto");
+            });
+
+            // prevent page content from scrolling while modal is up
+            $("html, body").css("overflow-y", "hidden");
+
+            return dd.promise;
+        }
+
         $scope.verifyExp = function() {
             $log.debug("CheckoutController(): verifyExp(): ", $scope.profile.exp)
             $scope.invalidExp = false;

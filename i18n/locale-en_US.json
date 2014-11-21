@@ -177,8 +177,8 @@
     "CHECKOUT-FIRST-PLACEHOLDER": "First",
     "CHECKOUT-LAST-PLACEHOLDER": "Last",
 
-    "REQUIRE-FIRSTNAME-LENGTH": "Must contain 2-40 letters",
-    "REQUIRE-LASTNAME-LENGTH": "Must contain 2-40 letters",
+    "REQUIRE-FIRSTNAME-LENGTH": "First name must contain 2-40 letters",
+    "REQUIRE-LASTNAME-LENGTH": "Last name must contain 2-40 letters",
 
     "VIEW_CART": "View Cart",
     "SIGN-IN": "Sign In",
@@ -437,6 +437,8 @@
     "SPONSOR-ID-NOTE":"If you shop with a JAFRA Consultant, enter their ID above. Otherwise, leave blank.",
     "OS-SHIPPING-TITLE":"Enter a shipping address",
     "OS-BILLING-TITLE":"Enter a billing address",
+    "OS-BILLING-EDIT-TITLE":"Edit billing address",
+    "OS-EDIT-CONTACT-INFO":"Edit contact info",
     "OS-NAME":"Name",
     "PRIVACY-TITLE":"JoinJAFRA Website Privacy Policy",
     "INVALID_CC_EXPIRATION":"Invalid expiration date",
