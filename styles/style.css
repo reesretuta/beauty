@@ -22,9 +22,14 @@
   display: none !important;
 }
 
-/* hides ff input[number] jazz */
-input[type=number] { 
+/* hides ff/safari input[number] for cvv only */
+input[type=number].hide-arrows { 
   -moz-appearance: textfield;
+  -webkit-appearance: none;
+}
+
+input[type=number].hide-arrows::-webkit-inner-spin-button {
+  -webkit-appearance: none;
 }
 
 .primary-color { color: #b51a8a; }
