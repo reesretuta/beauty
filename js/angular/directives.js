@@ -114,7 +114,8 @@ angular.module('app.directives', [])// directives
                 });
             }
         }
-    }]).directive('greaterThanZero', ['$log', function ($log) {
+    // only allow numbers between 1 & 99. no less than 1, no great than 99.
+    }]).directive('oneToNinetyNine', ['$log','$timeout', function ($log, $timeout) {
         return {
             restrict: 'A',
             require: '?ngModel',
@@ -122,14 +123,28 @@ angular.module('app.directives', [])// directives
                 if (!ngModelCtrl) {
                     return;
                 }
-                angular.element(elem).on('input keydown change', function (evt) {
-                    var key = (evt.keyCode || evt.charCode), val = this.value;
-                    $log.debug('Directives: greaterThanZero: value:', val);
+                // actual number check
+                function runCheck(val) {
+                    var fixed;
                     if (val < 1) {
-                        $scope.$apply(function() {
-                            $log.debug('Directives: greaterThanZero: less than 1!');
-                            ngModelCtrl.$setViewValue(1);
-                        });
+                        fixed = 1;
+                    } else if (val > 99) {
+                        fixed = 99;
+                    } else {
+                        fixed = val;
+                    }
+                    ngModelCtrl.$setViewValue(fixed);
+                    ngModelCtrl.$render();
+                }
+                // watch for changes to number
+                angular.element(elem).on('input keydown change', function (evt) {
+                    var val = this.value;
+                    if (val === '' || val === null) {
+                        $timeout(function() {
+                            runCheck(val);
+                        }, 1000);
+                    } else {
+                        runCheck(val);
                     }
                 });
             }

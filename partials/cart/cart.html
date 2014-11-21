@@ -82,7 +82,7 @@
           <p>
             <form name="item.product{{item.product.sku}}" role="form" class="form-inline store-item-add">
               <div class="form-group">
-                <input type="number" class="form-control qty-input" ng-model="item.quantity" greater-than-zero value="{{ item.quantity }}" />
+                <input type="number" class="form-control qty-input" ng-model="item.quantity" one-to-ninety-nine value="{{ item.quantity }}" />
               </div>
             </form>
           </p>
@@ -118,11 +118,10 @@
 <div class="row store-cart-orderbyid" id="additem">
   <div class="col-xs-12">
     <h2>Order by item # or description</h2>
-
     <form class="form-inline" role="form">
       <div class="form-group">
         <label class="" for="orderByIdQty">Qty:</label>
-        <input type="number" class="form-control qty-input" id="orderByIdQty" ng-model="orderByIdQty" greater-than-zero value="{{ orderByIdQty }}" />
+        <input type="number" class="form-control qty-input" id="orderByIdQty" ng-model="orderByIdQty" one-to-ninety-nine value="{{ orderByIdQty }}" />
       </div>
       <div class="form-group">
         &nbsp;&nbsp;&nbsp;&nbsp;
