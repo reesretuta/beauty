@@ -346,6 +346,47 @@ font-size: 48px;
 .section-copy {
   padding: 0 15px 30px 30px;
 }
+#free-limited-offer {
+width: 260px;
+height: 260px;
+position: absolute;
+left: -13em;
+top: 21em;
+z-index: 2;
+border-radius: 50%;
+padding: 1.75em 8.5em;
+background: url(/img/november-promo.png) no-repeat 70% 70%;
+background-color: #006B77;
+background-size: 150px;
+}
+#free-limited-offer span {
+  color: #fff;
+  font-family: HelveticaNeueLTStd-BdCn;
+  font-size: 18px;
+  display: inline-block;
+line-height: 1;
+  -webkit-transform: rotate(344deg);
+-moz-transform: rotate(344deg);
+-o-transform: rotate(344deg);
+writing-mode: lr-tb;
+width: 105px;
+}
+
+#free-limited-offer span strong{
+  font-size: 32px;
+  font-weight: 400;
+}
+#free-limited-offer .more-link {
+margin-top: 0px;
+right: -3.5em;
+top: 0em;
+color: #A28F40;
+  font-family: HelveticaNeueLTStd-BdCn;
+}
+#free-limited-offer .more-link:after {
+top: 5px;
+}
+
 section .cta-section {
   padding: 50px 0px;
 }
