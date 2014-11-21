@@ -62,7 +62,7 @@
     </style>
   </head>
 
-  <body ng-controller="MainController" ng-cloak id="top" class="shop">
+  <body ng-controller="MainController" id="top" class="shop" ng-cloak translate-cloak>
 
     <header id="shop_header" class="navbar" role="navigation">
       <div class="container">
@@ -126,11 +126,11 @@
                   <a ng-href="{{STORE_BASE_URL}}/cart" ng-cloak><i class="fa fa-shopping-cart"></i> <span ng-bind-html="'VIEW_CART' | translate | unsafe"></span> ({{session.cart.length}})</a>
                 </div>
 
-                <div class="navbar-right navbar-clientdirect_logins">
+                <div class="navbar-right navbar-clientdirect_logins" ng-controller="LanguageSwitcherController">
                   <img src="https://jafrausa.com/regional/images/en_US/template/icons/flag.png">
-                  <select ng-model="session.language">
-                    <option value="en_US">English</option>
-                    <option value="es_US">Espa&ntilde;ol</option>
+                  <select ng-model="language.current">
+                    <option value="en_US" ng-bind-html="'LAN01' | translate | unsafe"></option>
+                    <option value="es_US" ng-bind-html="'LAN02' | translate | unsafe"></option>
                   </select>
                 </div>
               </div>
@@ -338,6 +338,7 @@
 
     <script src="/js/angular/controllers/controllers.js"></script>
     <script src="/js/angular/controllers/TopController.js"></script>
+    <script src="/js/angular/controllers/LanguageSwitcherController.js"></script>
     <script src="/js/angular/controllers/MainController.js"></script>
     <script src="/js/angular/controllers/CategoriesController.js"></script>
     <script src="/js/angular/controllers/HomeController.js"></script>

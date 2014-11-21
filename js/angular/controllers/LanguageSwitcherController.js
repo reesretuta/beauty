@@ -9,12 +9,24 @@ angular.module('app.controllers.lang').controller('LanguageSwitcherController', 
 
     $log.debug('LanguageSwitcherController(): instantiate, (%s)', $rootScope.session.language);
 
-    //session.language
-    $scope.language = function (language) {
-        //$log.debug('current language',Session.getLanguage());
-        $scope.$watch($rootScope.session.language, function (newVal, oldVal) {
-            $translate.use(Session.get().language);
+    //$log.debug('current language',Session.getLanguage());
+
+    $scope.language = {
+        current: 'en_US'
+    };
+
+    Session.get().then(function(session) {
+        $log.debug('LanguageSwitcherController(): loaded language', session.language);
+        $scope.language.current = session.language;
+
+        $scope.$watch('language.current', function (newVal, oldVal) {
+            $log.debug('LanguageSwitcherController(): language changed');
+            Session.setLanguage(newVal);
         });
+    });
+
+    //session.language
+    $scope.setLanguage = function (language) {
         Session.setLanguage(language);
         //$log.debug('current language',Session.getLanguage());
     }
