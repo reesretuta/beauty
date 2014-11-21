@@ -179,8 +179,8 @@
     "CHECKOUT-FIRST-PLACEHOLDER": "Nombre",
     "CHECKOUT-LAST-PLACEHOLDER": "Apellido",
 
-    "REQUIRE-FIRSTNAME-LENGTH": "Debe contener 2-40 letras",
-    "REQUIRE-LASTNAME-LENGTH": "Debe contener 2-40 letras",
+    "REQUIRE-FIRSTNAME-LENGTH": "Nombre debe contener 2-40 letras",
+    "REQUIRE-LASTNAME-LENGTH": "Apellidos debe contener 2-40 letras",
 
     "VIEW_CART": "Ver Carrito",
     "SIGN-IN": "Registrarse",
@@ -440,6 +440,8 @@
     
     "OS-SHIPPING-TITLE":"Direcci&oacute;n de Env&iacute;o",
     "OS-BILLING-TITLE":"Introducir una direcci&oacute;n de facturaci&oacute;n",
+    "OS-BILLING-EDIT-TITLE":"Editar direcci&oacute;n de facturaci&oacute;n",
+    "OS-EDIT-CONTACT-INFO":"Editar la informaci&oacute;n de contacto",
     "OS-NAME":"Nombre",
     "PRIVACY-TITLE":"Pol&iacute;ticas de Privacidad del Sitio de JoinJAFRA en Internet",
     "INVALID_CC_EXPIRATION":"Fecha de vencimiento inv&aacute;lida",
