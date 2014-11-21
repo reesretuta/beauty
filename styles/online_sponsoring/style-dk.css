@@ -30,8 +30,8 @@ a:link { text-decoration: none; } /* internet explorer is dumb */
 .hero-header-title-freedom_flexibility {
 	text-transform: uppercase;
 }
-section#freedom_flexibility .section-copy_bound_box,
-section#freedom_flexibility div.subcontainer {
+section#freedom_flexibility_section .section-copy_bound_box,
+section#freedom_flexibility_section div.subcontainer {
 	background: none;
 	border-color: #460d66;
 }
@@ -44,24 +44,24 @@ section#freedom_flexibility div.subcontainer {
 	font-weight: normal;
 	color: #222;
 }
-#freedom_flexibility {
+#freedom_flexibility_section {
 	background-image: url(/img/worldmap_bg.jpg);
 	background-repeat: no-repeat;
 	background-position: 50% 200px;
 	background-size: 1260px;
 	margin-top: 40px;
 }
-#freedom_flexibility .more-link {
+#freedom_flexibility_section .more-link {
 	margin-bottom: 25px
 }
-section#freedom_flexibility.expanded .more-link {
+section#freedom_flexibility_section.expanded .more-link {
 	margin-bottom: 0px;
 }
 
-section#freedom_flexibility div.subcontainer {
+section#freedom_flexibility_section div.subcontainer {
 	margin-bottom: -1px;
 }
-section#freedom_flexibility.expanded div.subcontainer {
+section#freedom_flexibility_section.expanded div.subcontainer {
 	margin-bottom: 50px;
 }
 
@@ -88,18 +88,18 @@ section#why_jafra_testimonials .btn-lg {
 }
 
 /* starter kits section */
-#starter_kits {
+#starter_kits_section {
 	background: #fff;
 	margin-top: 86px;
 }
-#starter_kits h2, .kit-modal h2 {
+#starter_kits_section h2, .kit-modal h2 {
 	color: #d998fb;
 	border: none;
 }
 .kit-heading-wrapper {
 	background-color: #460d66;
 }
-#starter_kits .subcontainer {
+#starter_kits_section .subcontainer {
 	background: none;
 }
 #royal_starter_kit {
@@ -322,7 +322,7 @@ section#why_jafra_lifestyle .subcontainer ul.golden_bullets li:before {
 		padding-left: 0px !important;
 		padding-right: 0px !important;
 	}
-	#starter_kits .titlify {
+	#starter_kits_section .titlify {
 		font-size: 36px;
 	}
 	.royal_kit .kit-value, #royal_starter_kit .kit-desc, #skincare_starter_kit .kit-desc {
