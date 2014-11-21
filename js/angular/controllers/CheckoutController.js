@@ -104,6 +104,7 @@ angular.module('app.controllers.checkout')
                 if (S(oldVal).trim() == 'Finish') {
                     $log.debug('CheckoutController(): has already completed purchase, redirect');
                     $location.path(JOIN_BASE_URL);
+                    return;
                 }
 
                 // do focuses here
