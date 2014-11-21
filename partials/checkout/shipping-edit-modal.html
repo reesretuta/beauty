@@ -2,7 +2,7 @@
 
   <div class="col-md-offset-3">
 
-    <h1 ng-if="session.client.addresses.length > 0">Edit shipping address</h1>
+    <h1 ng-if="session.client.addresses.length > 0"><span ng-bind-html="'OS-SHIPPING-EDIT-TITLE' | translate | unsafe"></span></h1>
     <h1 ng-if="session.client.addresses == null || session.client.addresses.length == 0"><span ng-bind-html="'OS-SHIPPING-TITLE' | translate | unsafe"></span></h1>
 
     <div class="row" ng-if="!isOnlineSponsoring">
@@ -18,7 +18,6 @@
         </div>
         <a class="btn btn-primary" ng-click="selectShippingAddress(addressData)"><span ng-bind-html="'BTN_SHIP_ADD' | translate | unsafe"></span></a>
       </div><!-- /address -->
-
     </div>
 
     <!--<hr ng-if="profile.customerStatus=='existing'">-->
@@ -153,7 +152,7 @@
       <label for="shippingCountry" class="col-md-3 control-label"><span ng-bind-html="'IN_COUNTY' | translate | unsafe"></span></label>
       <div class="col-sm-5 col-lg-3">
         <select id="shippingCountry" data-ng-init="profile.newShippingAddress.country='US'" name="country" ng-model="profile.newShippingAddress.country" class="form-control">
-          <option ng-selected="true" value="US"><span ng-bind-html="'COUNTRY-US' | translate | unsafe"></span></option>
+          <option ng-selected="true" value="US" ng-bind-html="'COUNTRY-US' | translate | unsafe"></option>
         </select>
       </div>
     </div>
