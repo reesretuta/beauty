@@ -207,6 +207,7 @@
     "PRODUCT-DETAILS":"Detalles sobre los productos",
     "ALL-PRODUCTS":"Todos los productos",
     "ENTER-VALID-ADDRESS": "Por favor introduzca una direcci&oacute;n v&aacute;lida",
+    "ENTER-VALID-SHIPPING-NAME": "Por favor ingrese un nombre de embarque v&#225;lida",
     "ENTER-VALID-CITY": "Por favor, introduzca un nombre de ciudad v&aacute;lida",
     "SELECT-STATE": "Selecciona un estado.",
 

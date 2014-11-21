@@ -205,6 +205,7 @@
     "PRODUCT-DETAILS":"Product Details",
     "ALL-PRODUCTS":"All Products",
     "ENTER-VALID-ADDRESS": "Please enter a valid address",
+    "ENTER-VALID-SHIPPING-NAME": "Please enter a valid shipping name",
     "ENTER-VALID-CITY": "Please enter a valid city name",
     "SELECT-STATE": "Please select a state",
 
