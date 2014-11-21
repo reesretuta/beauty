@@ -169,7 +169,7 @@
         <span class="address-street">{{profile.shipping.address1}}</span>
         <span class="address-street">{{profile.shipping.address2}}</span>
         <span class="address-region">{{profile.shipping.city}}, {{profile.shipping.state}} {{profile.shipping.zip}}</span>
-        <span class="phone-number">{{profile.shipping.phone}}</span>
+        <span class="phone-number" ng-if="!isOnlineSponsoring">{{profile.shipping.phone}}</span>
         <span ng-if="!isOnlineSponsoring"><span ng-bind-html="'SHIPPING-CARRIER' | translate | unsafe"></span>: {{salesTaxInfo.shippingCarrier}}</span>
         <div class="address-actions">
           <a href="" data-toggle="modal" data-target=".bs-example-modal-lg-shipping"><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'EDIT' | translate | unsafe"></span></a>
@@ -198,7 +198,7 @@
         <span class="address-street">{{profile.billing.address1}}</span>
         <span class="address-street">{{profile.billing.address2}}</span>
         <span class="address-region">{{profile.billing.city}}, {{profile.billing.state}} {{profile.billing.zip}}</span>
-        <span class="phone-number">{{profile.billing.phone}}</span>
+        <span class="phone-number" ng-if="!isOnlineSponsoring">{{profile.billing.phone}}</span>
         <div class="address-actions">
           <a href="" data-toggle="modal" data-target=".bs-example-modal-lg-billing"><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'EDIT' | translate | unsafe"></span></a>
         </div>

@@ -328,7 +328,9 @@ angular.module('app.services', ['ngResource'])
                     //failure(data, status, headers, config);
                     $log.error("sessionService(): login(): error", data, status);
                     d.reject(data);
-                    $rootScope.loginError = data.message;
+                    $translate('LOGIN-ERROR').then(function (message) {
+                        $rootScope.loginError = message;
+                    });
                 });
             });
 
@@ -841,7 +843,7 @@ angular.module('app.services', ['ngResource'])
         }
         return productService;
     })
-    .factory('Consultant', function ($resource, $http, $log, $q, Session, Cart, PGP, API_URL) {
+    .factory('Consultant', function ($resource, $http, $log, $q, $translate, Session, Cart, PGP, API_URL) {
         var consultantService = $resource(API_URL + '/consultants/:consultantId', {consultantId: '@_id'});
 
         var key = PGP.getKey();
@@ -876,9 +878,12 @@ angular.module('app.services', ['ngResource'])
                         });
                     } catch (ex) {
                         $log.error("consultantService(): lookup(): failed to lookup consultant", ex);
-                        d.reject({
-                            errorCode: 500,
-                            message: "Failed to lookup consultant"
+
+                        $translate('CONSULTANT-NOT-FOUND').then(function (message) {
+                            d.reject({
+                                errorCode: 500,
+                                message: message
+                            });
                         });
                     }
                 });
@@ -923,9 +928,11 @@ angular.module('app.services', ['ngResource'])
                             d.reject(response.data);
                         });
                     } catch (ex) {
-                        d.reject({
-                            errorCode: 500,
-                            message: "Failed to create order"
+                        $translate('ORDER-PROBLEM').then(function (message) {
+                            d.reject({
+                                errorCode: 500,
+                                message: message
+                            });
                         });
                     }
                 });
@@ -938,7 +945,7 @@ angular.module('app.services', ['ngResource'])
 
         return consultantService;
     })
-    .factory('Order', function ($resource, $http, $log, $q, Session, Cart, PGP, API_URL) {
+    .factory('Order', function ($resource, $http, $log, $q, $translate, Session, Cart, PGP, API_URL) {
         var orderService = $resource(API_URL + '/orders/:orderId', {orderId: '@_id'});
 
         var key = PGP.getKey();
@@ -965,9 +972,11 @@ angular.module('app.services', ['ngResource'])
                     d.reject(response.data);
                 });
             } catch (ex) {
-                d.reject({
-                    errorCode: 500,
-                    message: "Failed to create order"
+                $translate('ORDER-PROBLEM').then(function (message) {
+                    d.reject({
+                        errorCode: 500,
+                        message: message
+                    });
                 });
             }
 
@@ -976,7 +985,7 @@ angular.module('app.services', ['ngResource'])
 
         return orderService;
     })
-    .factory('Addresses', function ($resource, $http, $log, $q, Session, API_URL) {
+    .factory('Addresses', function ($resource, $http, $log, $q, $translate, Session, API_URL) {
         var addressService = $resource(API_URL + '/clients/:clientId/addresses/:addressId', {addressId: '@_id'});
 
         addressService.validateAddress = function(address) {
@@ -1041,11 +1050,15 @@ angular.module('app.services', ['ngResource'])
                     d.resolve(a);
                 }, function(response) {
                     $log.error("adjustedAddressService(): addAddress(): failed to save address", response.data);
-                    d.reject('Failed to save address');
+                    $translate('ERROR-SAVING-ADDRESS').then(function (message) {
+                        d.reject(message);
+                    });
                 });
             }, function(error) {
                 $log.error("adjustedAddressService(): addAddress(): failed to save address", error);
-                d.reject('Failed to save address');
+                $translate('ERROR-SAVING-ADDRESS').then(function (message) {
+                    d.reject(message);
+                });
             });
 
             return d.promise;
@@ -1077,11 +1090,15 @@ angular.module('app.services', ['ngResource'])
 
                 }, function(response) {
                     $log.error("addressService(): removeAddress(): failed to removed address from client addresses", response.data);
-                    d.reject('Failed to remove address');
+                    $translate('ERROR-REMOVING-ADDRESS').then(function (message) {
+                        d.reject(message);
+                    });
                 });
             }, function(error) {
                 $log.error("addressService(): removeAddress(): failed to removed address from client addresses", error);
-                d.reject('Failed to remove address');
+                $translate('ERROR-REMOVING-ADDRESS').then(function (message) {
+                    d.reject(message);
+                });
             });
 
             return d.promise;
