@@ -211,11 +211,20 @@
     "SELECT-STATE": "Por favor seleccione un estado",
 
     "ORDER-PROBLEM": "Hubo un error al procesar la orden",
+    "CONSULTANT-NOT-FOUND": "Incapaz de encontrar consultor",
     "INVALID-PASSWORD": "Contrase&ntilde;a no v&aacute;lida",
     "INVALID-EMAIL": "Direcci&oacute;n de correo electr&oacute;nico no es v&aacute;lido",
+    "SALES-TAX-ERROR": "Error al procesamiento de la informaci&oacute;n del env&iacute;o",
 
     "ENTER-PAYMENT-INFO": "Ingrese Informaci&oacute;n sobre el pago",
     "INVALID-CARD-NUMBER": "N&uacute;mero de tarjeta de cr&eacute;dito no v&aacute;lido",
+
+    "MUST-SELECT-ADDRESS": "Debe seleccionar una direcci&oacute;n",
+    "UNABLE-TO-VERIFY-ADDRESS": "No se puede verificar la direcci&oacute;n",
+    "ERROR-SAVING-ADDRESS": "Error al guardar la direcci&oacute;n",
+    "ERROR-REMOVING-ADDRESS": "Error mientras se quita la direcci&oacute;n",
+
+    "LOGIN-ERROR": "Se ha producido un error al iniciar la sesi&oacute;n",
 
     "BTN_LOGOUT":"Salir",
     "ALL_PRODS":"Todos los Productos",

@@ -209,11 +209,20 @@
     "SELECT-STATE": "Please select a state",
 
     "ORDER-PROBLEM": "There was an error processing the order",
+    "CONSULTANT-NOT-FOUND": "Unable to find consultant",
     "INVALID-PASSWORD": "Invalid password",
     "INVALID-EMAIL": "Invalid email address",
+    "SALES-TAX-ERROR": "Error while processing shipping information",
 
     "ENTER-PAYMENT-INFO": "Enter Payment Information",
     "INVALID-CARD-NUMBER": "Invalid credit card number",
+
+    "MUST-SELECT-ADDRESS": "You must select an address",
+    "UNABLE-TO-VERIFY-ADDRESS": "Unable to verify address",
+    "ERROR-SAVING-ADDRESS": "Error while saving address",
+    "ERROR-REMOVING-ADDRESS": "Error while removing address",
+
+    "LOGIN-ERROR": "There was an error while logging in",
 
     "BTN_LOGOUT":"Logout",
     "ALL_PRODS":"All Products",
