@@ -881,17 +881,16 @@ padding-top: 5px;
       
 .carousel-control.right
 {
-  background-image:none; 
+  background-image:none;
 }
 
 .carousel .left
 {
-  background: none;
-  pointer-events: none;
+  background-image:none;
 }
 
 .carousel .left .glyphicon {
-  display: none;
+  cursor: pointer;
 }
 .carousel .right {
   cursor: pointer;
