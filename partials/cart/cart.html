@@ -1,3 +1,4 @@
+
 <div class="row store-cart">
   <div class="col-xs-12">
     <table class="table">
@@ -75,11 +76,6 @@
               {{item.product.currentPrice.price | currency}}
             </span>
           </span>
-
-          <!--            <p class="cart-item-price">
-                        <b>${{item.product.pricing.detailprice.price}}</b>
-                         <em>50% off</em> TODO: Add logic for sale prices
-                      </p>-->
         </td>
         <td align=right>
           <!-- TODO: Compute each item.product Qty. -->
@@ -90,8 +86,6 @@
               </div>
             </form>
           </p>
-
-          <!--<input ng-model="quantities[item.product.sku]" ng-keyup="addToCart(item.product)" type="integer" class="form-control qty-input" id="qty12345" value="{{item.product.quantity}}">-->
         </td>
       </tr>
       <!--/table row-->
@@ -128,8 +122,7 @@
     <form class="form-inline" role="form">
       <div class="form-group">
         <label class="" for="orderByIdQty">Qty:</label>
-        <input type="number" class="form-control qty-input" id="orderByIdQty" ng-model="orderByIdQty" placeholder="1"
-               value="1">
+        <input type="number" class="form-control qty-input" id="orderByIdQty" ng-model="orderByIdQty" greater-than-zero value="{{ orderByIdQty }}" />
       </div>
       <div class="form-group">
         &nbsp;&nbsp;&nbsp;&nbsp;
@@ -143,9 +136,4 @@
 
 <br>
 
-<!--   <div ng-repeat="product in products">
-    <b>Item #:</b> {{product.sku}}<br>
-    <b>Name:</b> {{product.name}}<br>
-    <b>Qty:</b> {{product.quantity}}<br>
-  </div> -->
 <div class="loader" ng-show="loading"></div>

@@ -116,10 +116,9 @@ angular.module('app.directives', [])// directives
         }
     }]).directive('greaterThanZero', ['$log', function ($log) {
         return {
-            priority: 1,
             restrict: 'A',
-            require: 'ngModel',
-            link: function(scope, elem, attrs, ngModelCtrl) {
+            require: '?ngModel',
+            link: function($scope, elem, attrs, ngModelCtrl) {
                 if (!ngModelCtrl) {
                     return;
                 }
@@ -127,10 +126,10 @@ angular.module('app.directives', [])// directives
                     var key = (evt.keyCode || evt.charCode), val = this.value;
                     $log.debug('Directives: greaterThanZero: value:', val);
                     if (val < 1) {
-                        scope.$apply(function() {
+                        $scope.$apply(function() {
                             $log.debug('Directives: greaterThanZero: less than 1!');
                             ngModelCtrl.$setViewValue(1);
-                        }); 
+                        });
                     }
                 });
             }
