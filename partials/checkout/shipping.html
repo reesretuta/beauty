@@ -62,7 +62,7 @@
       <label for="shippingAddress2" class="col-md-3 control-label"><span ng-bind-html="'IN_ADD_LINE2' | translate | unsafe"></span></label>
       <div class="col-sm-8 col-lg-6" ng-class="{ 'has-error' : shippingForm.address2.$invalid && shippingForm.address2.$dirty }">
 
-      <!--  ng-pattern="/^[a-zA-Z0-9\s,'-]*$/" -->
+      <!-- ng-pattern="/^[a-zA-Z0-9\s,'-]*$/" -->
 
         <input id="shippingAddress2" name="address2" ng-model="profile.newShippingAddress.address2" type="text" class="form-control" placeholder="{{ 'IN_ADD_LINE2_DES' | translate }} ">
         <span ng-show="shippingForm.address2.$invalid && !shippingForm.address2.$pristine" class="help-block text-danger"><span ng-bind-html="'ENTER-VALID-ADDRESS' | translate | unsafe"></span></span>
