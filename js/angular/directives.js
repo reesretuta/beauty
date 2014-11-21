@@ -38,8 +38,7 @@ angular.module('app.directives', [])// directives
                 });
             }
         }
-    }])
-    .directive('scrollListener', function($window, $log) {
+    }]).directive('scrollListener', function($window, $log) {
         $log = $log.getInstance('copybutton');
 
         return {
@@ -111,6 +110,27 @@ angular.module('app.directives', [])// directives
                     var key = (evt.keyCode || evt.charCode);
                     if (this.value.length === limit && key !== 8) {
                         return false;
+                    }
+                });
+            }
+        }
+    }]).directive('greaterThanZero', ['$log', function ($log) {
+        return {
+            priority: 1,
+            restrict: 'A',
+            require: 'ngModel',
+            link: function(scope, elem, attrs, ngModelCtrl) {
+                if (!ngModelCtrl) {
+                    return;
+                }
+                angular.element(elem).on('input keydown change', function (evt) {
+                    var key = (evt.keyCode || evt.charCode), val = this.value;
+                    $log.debug('Directives: greaterThanZero: value:', val);
+                    if (val < 1) {
+                        scope.$apply(function() {
+                            $log.debug('Directives: greaterThanZero: less than 1!');
+                            ngModelCtrl.$setViewValue(1);
+                        }); 
                     }
                 });
             }
