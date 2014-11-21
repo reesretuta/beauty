@@ -18,6 +18,9 @@ angular.module('app.controllers.checkout')
         var isGuest = params.guest == 'true' ? true : false;
         $scope.debug = isGuest;
 
+        // tracking review (back button fix)
+        $scope.orderCompleted = false;
+
         var path = $location.path();
         $log.debug("CheckoutController(): path", path);
 
@@ -96,6 +99,13 @@ angular.module('app.controllers.checkout')
                 $log.debug("CheckoutController(): step changed from", oldVal, "to", newVal, 'profile.customerStatus', $scope.profile.customerStatus);
 
                 urlStep = newVal;
+
+                // check if consultant is on final confirmation, if back redirect to initial
+                if (S(oldVal).trim() == 'Finish') {
+                    $log.debug('CheckoutController(): has already completed purchase, redirect');
+                    $location.path(JOIN_BASE_URL);
+                    return;
+                }
 
                 // do focuses here
                 if (S(urlStep).trim() == "Shipping") {
@@ -1088,8 +1098,7 @@ angular.module('app.controllers.checkout')
             if ($scope.isOnlineSponsoring) {
                 $log.debug("CheckoutController(): alert(): redirecting back to join page");
                 $location.path(JOIN_BASE_URL).search('');
-            }
-            else if (!$scope.isOnlineSponsoring) {
+            } else if (!$scope.isOnlineSponsoring) {
                 $log.debug("CheckoutController(): alert(): redirecting back to store page");
                 $location.path(STORE_BASE_URL).search('');
             }
@@ -1456,9 +1465,12 @@ angular.module('app.controllers.checkout')
                             email: $scope.profile.loginEmail
                         }).$promise.then(function(lead) {
                             $log.debug("CheckoutController(): processOrder(): lead removed");
+                            $log.debug("CheckoutController(): processOrder(): denote order completed");
+                            $scope.orderCompleted = true;
                         });
-
+                        
                         $scope.processingOrder = false;
+                        $log.debug('CheckoutController(): finished creating consultant');
                     }, function(error) {
                         $log.error("CheckoutController(): processOrder(): failed to create consultant", error);
 
@@ -1479,7 +1491,6 @@ angular.module('app.controllers.checkout')
                                 $scope.orderError = message;
                             });
                         }
-
                         $scope.processingOrder = false;
                     });
                 } else {

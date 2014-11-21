@@ -8,7 +8,7 @@
       </h1>
     </div>
     <div class="col-md-4 text-right print-link">
-      <a href="" onClick="printDiv('final');"><i class="fa fa-print"></i> Imprimir</a>
+      <a href="" onClick="window.print();"><i class="fa fa-print"></i> Imprimir</a>
     </div>
   </div>
   <hr>
@@ -16,7 +16,7 @@
     <div class="col-md-8 text-left">
       <h3 class="color-red">Tu No. (ID) de Consultora es: <label class="color-purple HelveticaNeueLTStd-BdCn">{{confirmation.consultantId}}</label></h3>
       <p>Portal de la Consultora: <a class="biggify color-red HelveticaNeueLTStd-BdCn">jafrabiz.com</a></p>
-      <p>Consultora ID: <b ng-bind="profile.loginEmail"></b></p>
+      <p>Consultora ID: <b ng-bind="confirmation.consultantId"></b></p>
       <p>Contraseña: (last 4 digits of SSN)</p>
     </div>
     <div class="col-md-4">
@@ -70,7 +70,7 @@
             <td colspan="3">
               <p>Subtotal: {{salesTaxInfo.SubTotal | currency}}</p>
               <p>Envío: {{salesTaxInfo.SH | currency}}</p>
-              <p>Impuesto: {{salesTaxInfo.TaxRate}}%</p>
+              <p>Impuesto ({{salesTaxInfo.TaxRate}}%): {{ salesTaxInfo.TaxAmount | currency }}</p>
               <p class="lead"><b class="text-success"><i class="fa fa-check"></i> Cargo Aprobado: {{salesTaxInfo.Total | currency}}</b></p>
             </td>
           </tr>
@@ -121,7 +121,7 @@
   <div class="row">
     <div class="col-md-5 col-md-offset-1">
       <div class="text-left">
-        <img src="/img/november-brochure-es.jpg" class="pull-left" style="padding: 10px;" width="135px"/>
+        <img src="/img/november-brochure-es.jpg" class="pull-left" style="padding: 0px 10px;" width="135px"/>
         <h3>Folleto de Temporada</h3>
         <p>Una versión digital de nuestro folleto de la temporada está ya disponible.</p>
         <a class="btn btn-primary HelveticaNeueLTStd-BdCn btn-med" role="button" href="http://virtualopportunity.jafrausa.com/flipbooks/2014/Nov/2014-s6-brochure-es" target="_blank">Ver Folleto</a>
@@ -129,7 +129,7 @@
     </div>
     <div class="col-md-5 col-md-offset-1">
       <div class="text-left">
-        <img src="/img/productcatalog-brochure-es.jpg" class="pull-left" style="padding: 10px;" width="135px"/>
+        <img src="/img/productcatalog-brochure-es.jpg" class="pull-left" style="padding: 0px 10px;" width="135px"/>
         <h3>Catálogo de Productos</h3>
         <p>Más herramientas de ventas incluyendo nuestro catálogo en línea</p>
         <a class="btn btn-primary HelveticaNeueLTStd-BdCn btn-med" role="button" href="http://virtualopportunity.jafrausa.com/flipbooks/2014/sep/2014-wf-catalog-es" target="_blank">Ver Folleto</a>
@@ -137,7 +137,7 @@
     </div>
   </div>
   <hr>
-  <div class="row">
+  <div class="row hidden-print">
     <a class="pull-right" href="" onclick="printDiv('agreement-content');"><i class="fa fa-print"></i> &nbsp;Imprimir</a>
     <h4 id="myModalLabel" class="modal-title text-center"><span ng-bind-html="'CONSULTANT-AGREEMENT-TITLE' | translate | unsafe"></span></h4>
     <div class="agreement-content" id="agreement-content">
