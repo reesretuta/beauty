@@ -52,8 +52,9 @@
   <label for=" " class="col-md-3 control-label"><span ng-bind-html="'IN_NAME_CARD' | translate |unsafe"></span></label>
 
   <div class="col-sm-6 col-lg-4">
-    <input ng-model="profile.newCard.name" ng-minlength="3" name="cardName" type="text" class="form-control" placeholder=" " required>
-    <span ng-show="paymentForm.cardName.$error.minlength" class="help-block" ng-class="{ 'text-danger' : paymentForm.cardName.$invalid && !paymentForm.cardName.$pristine }" ng-bind-html="'NAME_ON_CARD_ERR' | translate | unsafe"></span>
+    <input ng-model="profile.newCard.name" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-minlength="3" name="cardName" type="text" class="form-control" placeholder=" " required>
+    <span ng-show="paymentForm.cardName.$error.minlength && paymentForm.cardName.$dirty" class="help-block" ng-class="{ 'text-danger' : paymentForm.cardName.$invalid }"><span ng-bind-html="'NAME_ON_CARD_ERR' | translate | unsafe"></span></span>
+    <span ng-show="paymentForm.cardName.$error.pattern && paymentForm.cardName.$dirty" class="help-block" ng-class="{ 'text-danger' : paymentForm.cardName.$invalid }"><span ng-bind-html="'NAME_ON_CARD_INVALID_ERR' | translate | unsafe"></span></span>
     <!--valid={{paymentForm.cardName.$valid}}-->
   </div>
 </div>

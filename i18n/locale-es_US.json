@@ -367,6 +367,7 @@
     "PAY_OPTION_DES":"Usted ser&aacute; capaz de revisar el pedido antes de pagar.",
     "SELECT-OPTION-BUTTON":"Utilice esta opci&oacute;n",
     "NAME_ON_CARD_ERR":"El nombre en la tarjeta es muy corto.",
+    "NAME_ON_CARD_INVALID_ERR":"Nombre s&#243;lo puede contener letras.",
     "NUMBER_CARD_ERR":"La tarjeta de cr&eacute;dito tiene que tener al menos 13 n&uacute;meros.",
     "CONF_CANCEL_ORDER":"Seguro que desea cancelar su pedido?",
     "TIT_CONF_OFFER":"configurar orden",

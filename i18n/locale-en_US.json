@@ -366,6 +366,7 @@
     "PAY_OPTION_DES":"You&rsquo;ll be able to review the order before being charged.",
     "SELECT-OPTION-BUTTON":"Use this Option",
     "NAME_ON_CARD_ERR":"Name on card is too short.",
+    "NAME_ON_CARD_INVALID_ERR":"Name may only contain letters.",
     "NUMBER_CARD_ERR":"Credit card needs to be at least 13 numbers.",
     "CONF_CANCEL_ORDER":"Are you sure you'd like to cancel your order?",
     "TIT_CONF_OFFER":"Configure Offer",
