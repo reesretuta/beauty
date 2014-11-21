@@ -210,8 +210,12 @@
     "ENTER-VALID-CITY": "Por favor, introduzca un nombre de ciudad v&aacute;lida",
     "SELECT-STATE": "Por favor seleccione un estado",
 
+    "ORDER-PROBLEM": "Hubo un error al procesar la orden",
+    "INVALID-PASSWORD": "Contrase&ntilde;a no v&aacute;lida",
+    "INVALID-EMAIL": "Direcci&oacute;n de correo electr&oacute;nico no es v&aacute;lido",
+
     "ENTER-PAYMENT-INFO": "Ingrese Informaci&oacute;n sobre el pago",
-    "INVALID-CARD-NUMBER": "Número de tarjeta de cr&eacute;dito no v&aacute;lido",
+    "INVALID-CARD-NUMBER": "N&uacute;mero de tarjeta de cr&eacute;dito no v&aacute;lido",
 
     "BTN_LOGOUT":"Salir",
     "ALL_PRODS":"Todos los Productos",

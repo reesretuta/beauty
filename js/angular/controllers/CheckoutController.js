@@ -1,6 +1,6 @@
 
 angular.module('app.controllers.checkout')
-    .controller('CheckoutController', function ($location, $scope, $document, $timeout, $rootScope, $anchorScroll, $routeParams, $modal, $log, $q, STORE_BASE_URL, JOIN_BASE_URL, focus, Geocodes, Session, Consultant, Addresses, Order, OrderHelper, Checkout, Cart, Product, SalesTax, CreditCards, Leads, HashKeyCopier, WizardHandler) {
+    .controller('CheckoutController', function ($location, $scope, $document, $timeout, $rootScope, $anchorScroll, $routeParams, $modal, $log, $q, $translate, STORE_BASE_URL, JOIN_BASE_URL, focus, Geocodes, Session, Consultant, Addresses, Order, OrderHelper, Checkout, Cart, Product, SalesTax, CreditCards, Leads, HashKeyCopier, WizardHandler) {
 
         $log.debug("CheckoutController()");
 
@@ -939,7 +939,7 @@ angular.module('app.controllers.checkout')
                     // move to next step
                     WizardHandler.wizard('checkoutWizard').goTo('Profile');
                 }, function(r) {
-                    $log.debug("CheckoutController(): validated email");
+                    $log.error("CheckoutController(): failed validating email", r);
 
                     $scope.emailError = true;
                 })
@@ -1433,8 +1433,25 @@ angular.module('app.controllers.checkout')
                         $scope.processingOrder = false;
                     }, function(error) {
                         $log.error("CheckoutController(): processOrder(): failed to create consultant", error);
-                        $scope.orderError = error.message;
-                        // FIXME - show error here!!!!!
+
+                        if (error.errorCode == "accountAlreadyExists") {
+                            $translate('EMAIL_EXISTS').then(function (message) {
+                                $scope.orderError = message;
+                            });
+                        } else if (error.errorCode == "invalidEmailAddress") {
+                            $translate('INVALID-EMAIL').then(function (message) {
+                                $scope.orderError = message;
+                            });
+                        } else if (error.errorCode == "invalidPassword") {
+                            $translate('INVALID-PASSWORD').then(function (message) {
+                                $scope.orderError = message;
+                            });
+                        } else {
+                            $translate('ORDER-PROBLEM').then(function (message) {
+                                $scope.orderError = message;
+                            });
+                        }
+
                         $scope.processingOrder = false;
                     });
                 } else {

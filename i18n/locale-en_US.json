@@ -208,6 +208,10 @@
     "ENTER-VALID-CITY": "Please enter a valid city name",
     "SELECT-STATE": "Please select a state",
 
+    "ORDER-PROBLEM": "There was an error processing the order",
+    "INVALID-PASSWORD": "Invalid password",
+    "INVALID-EMAIL": "Invalid email address",
+
     "ENTER-PAYMENT-INFO": "Enter Payment Information",
     "INVALID-CARD-NUMBER": "Invalid credit card number",
 
@@ -373,7 +377,7 @@
     "LAB_ZIP_CODE":"Zip Code:",
     "TOGGLE_NAV":"Toggle navigation",
     "EMAIL_OK":"",
-    "EMAIL_EXISTS":"Email already exists",
+    "EMAIL_EXISTS":"The email address provided is already being used",
     "PHONE_FAIL":"Phone is not valid",
     "ADDR_FAIL":"Address is not valid",
     "FORM_FAIL":"Errors in the form. Check data",
