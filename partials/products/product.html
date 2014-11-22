@@ -145,7 +145,7 @@
                   </ul>
                 </div><!-- /color dropdown -->
 
-                <p class="itemsleep"><span ng-bind-html="'ITEM' | translate | unsafe"></span> #{{selectedProduct.sku}}</p>
+                <p class="itemsleep"><span ng-bind-html="'ITEM' | translate | unsafe"></span> #{{selectedProduct.sku}} - {{getTranslated(selectedProduct).name}}</p>
                 <p class="pricesleep">${{selectedProduct.currentPrice.price}}</p>
             </div>
             <p class="store-item-sku" ng-if="product.type != 'group'">
