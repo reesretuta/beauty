@@ -62,7 +62,7 @@ var STRIKEIRON_EMAIL_TIMEOUT = 15;
 var STRIKEIRON_ADDRESS_SOAP_URL = 'http://ws.strikeiron.com/NAAddressVerification6?WSDL';
 var STRIKEIRON_ADDRESS_LICENSE = "0DA72EA3199C10ABDE0B";
 
-var PASSWORD_RESET_INTERVAL = 60 * 1000 * 60;
+var PASSWORD_RESET_INTERVAL = 3 * 1000 * 60;
 
 function authenticate(email, password) {
     //console.log("authenticating", email, password);
@@ -608,8 +608,8 @@ function lookupByEmail(email, type) {
         ) {
             //console.log("lookupByEmail(): success", body);
             deferred.resolve({
-                status: 200,
-                result: body
+                status: 204,
+                result: null
             });
         } else {
             deferred.reject({
@@ -1708,10 +1708,10 @@ function requestPasswordReset(email, language) {
     var deferred = Q.defer();
 
     var now = new Date();
-    var olderThan = new Date(now.getTime() - PASSWORD_RESET_INTERVAL);
+    var mustBeOlderThan = new Date(now.getTime() - PASSWORD_RESET_INTERVAL);
 
     // make sure this user hasn't done a password reset in past N minutes
-    models.PasswordResetToken.find({email: email, created: {$lt: olderThan}}, function(err, tokens) {
+    models.PasswordResetToken.find({email: email, created: {$gt: mustBeOlderThan}}, function(err, tokens) {
         if (err) {
             console.error("failed to lookup password reset token", err);
             deferred.reject({
