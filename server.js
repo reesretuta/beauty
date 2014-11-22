@@ -831,48 +831,46 @@ router.route('/clients/passwordReset')
         });
     });
 
-router.route('/clients/:client_id')// get a client
-    .get(function (req, res) {
-        var clientId = req.params.client_id;
-
-        if (clientId.indexOf('@') != -1) {
-            // fetch the consultant information & return
-            jafraClient.lookupClientByEmail(clientId).then(function(r) {
-                res.status(r.status);
-                res.json(r.result);
-            }, function (r) {
-                console.error("server: getClient(): failed to load client", r.result);
-                res.status(r.status);
-                res.json(r.result);
-            });
-        } else {
-            // must be authenticated
-            if (req.session.client == null) {
-                res.status(401);
-                res.end();
-                return;
-            } else if (req.session.client.id != clientId) {
-                res.status(403);
-                res.end();
-                return;
-            }
-
-            // fetch the client information & return
-            jafraClient.getClient(clientId).then(function (r) {
-                res.status(r.status);
-                res.json(r.result);
-            }, function (r) {
-                console.error("server: getClient(): failed to load client", r.result);
-                res.status(500);
-                res.json(r.result);
-            });
+// get a client
+router.route('/clients/:client_id').get(function (req, res) {
+    var clientId = req.params.client_id;
+    if (clientId.indexOf('@') != -1) {
+        // fetch the consultant information & return
+        jafraClient.lookupClientByEmail(clientId).then(function(data) {
+            res.status(data.status);
+            res.json(data.result);
+        }, function (data) {
+            console.error('server: getClient(): failed to load client', data.result);
+            res.status(data.status);
+            res.json(data.result);
+        });
+    } else {
+        // must be authenticated
+        if (req.session.client == null) {
+            res.status(401);
+            res.end();
+            return;
+        } else if (req.session.client.id != clientId) {
+            res.status(403);
+            res.end();
+            return;
         }
-    })
+        // fetch the client information & return
+        jafraClient.getClient(clientId).then(function (r) {
+            res.status(r.status);
+            res.json(r.result);
+        }, function (r) {
+            console.error("server: getClient(): failed to load client", r.result);
+            res.status(500);
+            res.json(r.result);
+        });
+    }
+})
 
-    // update a client
-    .put(function (req, res) {
-        res.json({});
-    });
+// update a client
+.put(function (req, res) {
+    res.json({});
+});
 
 // CONSULTANTS
 // ----------------------------------------------------
