@@ -783,7 +783,7 @@ a, .btn {
     /* -- TODO -- Integrate JS hide/show subnavs */
 }
 #shop_menu li.open > ul {
-    max-height: 600px;
+    max-height: 1000px;
 }
 #shop_menu li.open > ul > li > ul {
   max-height: 0;
