@@ -1435,10 +1435,10 @@ angular.module('app.services', ['ngResource'])
         var buildPath = function(category, product, list) {
             if (list == null && product != null) {
                 list = new Array();
-                //$log.debug("breadcrumbService.buildPath(): setting path to product name", product.name);
+                //$log.debug("breadcrumbService.buildPath(): setting path to product name", product['name_'+$rootScope.session.language]);
                 list.unshift({
                     type: 'product',
-                    name: product.name,
+                    name: product['name_'+$rootScope.session.language],
                     id: product.id,
                     url: '/shop/products/' + product.id,
                     item: product

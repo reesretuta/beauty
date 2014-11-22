@@ -82,7 +82,7 @@ angular.module('app.controllers.main')
             
             $log.debug("MainController(): addToCart()", product, qty);
             Cart.addToCart({
-                name: product.name,
+                name: product['name_'+$rootScope.session.language],
                 sku: product.sku,
                 kitSelections: product.kitSelections,
                 quantity: qty

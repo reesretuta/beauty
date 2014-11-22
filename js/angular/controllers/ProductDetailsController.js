@@ -28,7 +28,7 @@ angular.module('app.controllers.products')
             }
             $log.debug("ProductDetailsController(): adding product", product, qty);
             Cart.addToCart({
-                name: product.name,
+                name: product['name_'+$rootScope.session.language],
                 sku: product.sku,
                 quantity: qty,
                 kitSelections: {}
@@ -47,7 +47,7 @@ angular.module('app.controllers.products')
                     }
 
                     Cart.addToCart({
-                        name: item.product.name,
+                        name: item.product['name_'+$rootScope.session.language],
                         sku: item.product.sku,
                         quantity: qty,
                         kitSelections: {}
@@ -72,7 +72,7 @@ angular.module('app.controllers.products')
                         }
 
                         var item = {
-                            name: $scope.product.name,
+                            name: $scope.product['name_'+$rootScope.session.language],
                             sku: $scope.product.sku,
                             quantity: qty,
                             kitSelections: {},
@@ -232,7 +232,7 @@ angular.module('app.controllers.products')
                 }
 
                 // set the page title
-                $rootScope.title = product.name;
+                $rootScope.title = product['name_'+$rootScope.session.language];
 
                 if ($scope.categoryId == null && $scope.product.categories != null) {
                     // load the first category from this product, we probably landed here from search

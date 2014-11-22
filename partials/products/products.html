@@ -10,8 +10,8 @@
               </span>
             </a>
             <div class="store-item-info">
-              <p class="store-item-sku">Item #{{product.sku}}</p>
-              <p class="store-item-title"><a ng-href="{{STORE_BASE_URL}}/products/{{product.sku}}#top">{{product.name}}</a></p>
+              <p class="store-item-sku"><span ng-bind-html="'ITEM' | translate | unsafe"></span> #{{product.sku}}</p>
+              <p class="store-item-title"><a ng-href="{{STORE_BASE_URL}}/products/{{product.sku}}#top">{{product['name_'+session.language]}}</a></p>
               <p class="store-item-price">
 
               <span ng-repeat="detailprice in product.currentPrice">
@@ -40,29 +40,29 @@
             </form></p> -->
             <p ng-if="product.type == 'product' || (product.type == 'kit' && product.kitGroups.length == 0)">
               <a class="btn btn-primary primary-cta ladda-button" ui-ladda="adding" data-style="expand-right" ng-click="addToCart(product)">
-                <i class="fa fa-shopping-cart"></i> Add to Cart
+                <i class="fa fa-shopping-cart"></i> <span ng-bind-html="'BTN_ADD_CART' | translate | unsafe"></span>
               </a>
             </p>
             <p ng-if="product.type == 'kit' && product.kitGroups.length > 0">
               <a class="btn btn-primary primary-cta" ng-href="{{STORE_BASE_URL}}/products/{{product.sku}}#top">
-                <i class="fa fa-cogs"></i> Configure Offer
+                <i class="fa fa-cogs"></i> <span ng-bind-html="'TIT_CONF_OFFER' | translate | unsafe"></span>
               </a>
             </p>
           </div><!--/store-item-wrapper-->
 
-          
+
           <div class="store-item-wrapper" ng-if="product.type=='group'">
             <a ng-href="{{STORE_BASE_URL}}/products/{{product.sku}}#top"><img class="img-responsive" style="margin: 0 auto;" ng-src="{{getImagePath(product.images[0].imagePath)}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';"></a>
             <div class="store-item-info">
               <p class="store-item-sku">&nbsp; <!-- leave empty for UI --></p>
-              <p class="store-item-title"><a ng-href="{{STORE_BASE_URL}}/products/{{product.sku}}#top">{{product.name}}</a></p>
+              <p class="store-item-title"><a ng-href="{{STORE_BASE_URL}}/products/{{product.sku}}#top">{{product['name_'+session.language]}}</a></p>
               <p class="store-item-price">
                 &nbsp;&nbsp;<span class="item-measure">{{product.quantity}}</span>
               </p>
             </div>
             <p>
               <a class="btn btn-primary primary-cta" ng-href="{{STORE_BASE_URL}}/products/{{product.sku}}#top">
-                <i class="fa fa-th"></i> Browse Colors
+                <i class="fa fa-th"></i> <span ng-bind-html="'BTN_CONFIGURE' | translate | unsafe"></span>
               </a>
             </p>
           </div><!--/store-item-wrapper-->

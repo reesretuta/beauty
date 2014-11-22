@@ -34,7 +34,7 @@ angular.module('app.controllers.products')
             }
             $log.debug("ProductsController(): addToCart(): adding product", product, qty);
             Cart.addToCart({
-                name: product.name,
+                name: product['name_'+$rootScope.session.language],
                 sku: product.sku,
                 quantity: qty,
                 kitSelections: {}
@@ -53,7 +53,7 @@ angular.module('app.controllers.products')
 //            }
 //
 //            if (!S(product.sku).isEmpty() &&
-//                (S(product.name).toLowerCase().indexOf(S($scope.query).toLowerCase())!=-1 ||
+//                (S(product['name_'+$rootScope.session.language]).toLowerCase().indexOf(S($scope.query).toLowerCase())!=-1 ||
 //                 S(product.sku).toLowerCase().indexOf(S($scope.query).toLowerCase())!=-1))
 //            {
 //                //$log.debug("found product");
@@ -73,7 +73,7 @@ angular.module('app.controllers.products')
 //                    product = products[i];
 //                    //$log.debug("searching sub-product", product);
 //                    if (!S(product.sku).isEmpty() &&
-//                        (S(product.name).toLowerCase().indexOf(S($scope.query).toLowerCase())!=-1 ||
+//                        (S(product['name_'+$rootScope.session.language]).toLowerCase().indexOf(S($scope.query).toLowerCase())!=-1 ||
 //                         S(product.sku).toLowerCase().indexOf(S($scope.query).toLowerCase())!=-1))
 //                    {
 //                        return true;

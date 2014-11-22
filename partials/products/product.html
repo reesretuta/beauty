@@ -5,7 +5,7 @@
         <div class="col-xs-12 col-sm-5 col-md-4 col-lg-4">
           <div class="text-center item-image-wrapper">
             <div class="clearfix">
-              <small class="pull-left">Images</small>
+              <small class="pull-left"><span ng-bind-html="'IMAGES' | translate | unsafe"></span></small>
               <small class="pull-right item-image-pager">
                 <a href=""><i class="fa fa-caret-left"></i></a>
                 <span>1 of 1</span>
@@ -16,13 +16,13 @@
               <span class="responsive-container img-responsive">
                 <img class="responsive-element img-responsive" ng-src="{{getImagePath(product.images[0].imagePath)}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';">
               </span>
-              <small><i class="fa fa-search-plus"></i> View Larger</small>
+              <small><i class="fa fa-search-plus"></i> <span ng-bind-html="'BTN_VIEW_LARGER' | translate | unsafe"></span></small>
             </a>
 
             <div ng-if="product.videos.videodetail.imagepath" class="item-videos">
               <hr>
               <div class="clearfix">
-                <small class="pull-left">Videos</small>
+                <small class="pull-left"><span ng-bind-html="'VIDEOS' | translate | unsafe"></span></small>
                 <small class="pull-right item-image-pager">
                   <span>1 of 1</span>
                 </small>
@@ -31,7 +31,7 @@
                 <span class="responsive-container img-responsive">
                   <img class="responsive-element img-responsive" ng-src="/{{product.videos.videodetail.imagepath}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';">
                 </span>
-                <small><i class="fa fa-play"></i> Watch Video</small>
+                <small><i class="fa fa-play"></i> <span ng-bind-html="'BTN_WATCH_VIDEO' | translate | unsafe"></span></small>
               </a>
             </div>
 
@@ -87,19 +87,19 @@
                 <img ng-show="upsellItem.product.images.length > 0" class="img-responsive img-thumbnail" ng-src="{{getImagePath(upsellItem.product.images[0].imagePath)}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';">
               </div><!-- /span -->
               <div class="col-md-9">
-                <h3>Limited Time Offer!</h3>
+                <h3><span ng-bind-html="'LAB_LIM_TIM_OFF' | translate | unsafe"></span>!</h3>
                 <p>
                   <label class="primary-color">{{upsellItem.product.price[0].price | currency}}</label>
                   &nbsp;&nbsp;
-                  <label>Item #{{upsellItem.product.sku}}</label>
-                  &nbsp;&nbsp; {{upsellItem.product.name}}</p>
+                  <label><span ng-bind-html="'ITEM' | translate | unsafe"></span> #{{upsellItem.product.sku}}</label>
+                  &nbsp;&nbsp; {{upsellItem.product['name_'+session.language]}}</p>
 
                 <form role="form" class="form-inline store-item-add">
                   <div class="form-group">
-                    <label for="qty1234">qty:</label>
+                    <label for="qty1234"><span ng-bind-html="'QTY' | translate | unsafe"></span>:</label>
                     <input type="number" class="form-control qty-input" id="qty1234" placeholder="1" value="1" min="1" max="99">
                     <a class="btn btn-primary">
-                      <i class="fa fa-shopping-cart"></i> Add to Cart
+                      <i class="fa fa-shopping-cart"></i> <span ng-bind-html="'BTN_ADD_CART' | translate | unsafe"></span>
                     </a>
                   </div>
                 </form>
@@ -111,13 +111,13 @@
 
           <tabset>
             <tab heading="Summary">
-              <div ng-bind-html="product.description | unsafe">Summary content</div>
+              <div ng-bind-html="product['description_'+session.language] | unsafe"><span ng-bind-html="'SUMMARY_CONTENT' | translate | unsafe"></span></div>
             </tab>
             <tab heading="Ingredients">
-              <div ng-bind-html="product.ingredients | unsafe">Ingredients content</div>
+              <div ng-bind-html="product['ingredients_'+session.language] | unsafe"><span ng-bind-html="'INGREDIENTS_CONT' | translate | unsafe"></span></div>
             </tab>
             <tab heading="Usage">
-              <div ng-bind-html="product.usage | unsafe">Usage content</div>
+              <div ng-bind-html="product['usage_'+session.language] | unsafe"><span ng-bind-html="'USAGE_CONTENT' | translate | unsafe"></span></div>
             </tab>
           </tabset>
 
@@ -133,23 +133,23 @@
                     </a>
                 </span></p>
                 <p class="hidden"><select ng-model="selectedProduct.sku" ng-change="showhide(selectedProduct.sku); categoryClicked(-1)">
-                    <option value='{{productdetail.product.sku}}' ng-repeat="productdetail in product.contains">{{productdetail.product.name}}</option>
+                    <option value='{{productdetail.product.sku}}' ng-repeat="productdetail in product.contains">{{productdetail.product['name_'+session.language]}}</option>
                 </select></p>
 
                 <div class="store-dropdown btn-group" ng-model="selectedProduct.sku" dropdown is-open="status.isopen">
-                  <button type="button" class="btn dropdown-toggle"><img ng-src="{{getImagePath(selectedProduct.images[0].imagePath)}}" width="24" onError="this.onerror=null;this.src='/img/product_placeholder.gif';"> {{selectedProduct.name}} &nbsp;&nbsp;<span class="caret"></span></button>
+                  <button type="button" class="btn dropdown-toggle"><img ng-src="{{getImagePath(selectedProduct.images[0].imagePath)}}" width="24" onError="this.onerror=null;this.src='/img/product_placeholder.gif';"> {{selectedproduct['name_'+session.language]}} &nbsp;&nbsp;<span class="caret"></span></button>
                   <ul class="dropdown-menu" role="menu">
                     <li id="{{productdetail.product.sku}}" ng-repeat="productdetail in product.contains">
-                      <a href="" ng-click="showhide(productdetail.product.sku); categoryClicked(-1)" ng-class="{'active': selectedProduct.sku==productdetail.product.sku}"><img ng-src="{{getImagePath(productdetail.product.images[0].imagePath)}}" width="24" onError="this.onerror=null;this.src='/img/product_placeholder.gif';"> {{productdetail.product.name}}</a>
+                      <a href="" ng-click="showhide(productdetail.product.sku); categoryClicked(-1)" ng-class="{'active': selectedProduct.sku==productdetail.product.sku}"><img ng-src="{{getImagePath(productdetail.product.images[0].imagePath)}}" width="24" onError="this.onerror=null;this.src='/img/product_placeholder.gif';"> {{productdetail.product['name_'+session.language]}}</a>
                     </li>
                   </ul>
                 </div><!-- /color dropdown -->
 
-                <p class="itemsleep">Item #{{selectedProduct.sku}}</p>
+                <p class="itemsleep"><span ng-bind-html="'ITEM' | translate | unsafe"></span> #{{selectedProduct.sku}}</p>
                 <p class="pricesleep">${{selectedProduct.currentPrice.price}}</p>
             </div>
             <p class="store-item-sku" ng-if="product.type != 'group'">
-              Item #{{product.sku}} - {{product.name}}
+              <span ng-bind-html="'ITEM' | translate | unsafe"></span> #{{product.sku}} - {{product['name_'+session.language]}}
             </p>
             <p class="store-item-price">
 
@@ -173,24 +173,24 @@
           <div class="store-item-detail-actions">
             <p><form role="form" class="form-inline store-item-add">
               <div class="form-group">
-                <label for="qty12345">qty:</label>
+                <label for="qty12345"><span ng-bind-html="'QTY' | translate | unsafe"></span>:</label>
                 <input type="number" class="form-control qty-input" id="qty12345" placeholder="1" value="1" min="1" max="99" ng-model="quantities[product.sku]" ng-if="product.type != 'group'">
                 <input type="number" class="form-control qty-input" id="qty12345-group" placeholder="1" value="1" min="1" max="99" ng-model="quantities[selectedProduct.sku]" ng-if="product.type == 'group'">
               </div>
             </form></p>
             <p ng-if="product.type == 'product' || (product.type == 'kit' && product.kitGroups.length == 0)">
               <a class="btn btn-primary btn-lg ladda-button" ui-ladda="adding" data-style="expand-right" ng-click="addToCart(product)">
-                <i class="fa fa-shopping-cart"></i> Add to Cart
+                <i class="fa fa-shopping-cart"></i> <span ng-bind-html="'BTN_ADD_CART' | translate | unsafe"></span>
               </a>
             </p>
             <p ng-if="product.type == 'group'">
               <a class="btn btn-primary btn-lg ladda-button" ui-ladda="adding" data-style="expand-right" ng-click="addToCartGroup(selectedProduct.sku)">
-                <i class="fa fa-shopping-cart"></i> Add to Cart
+                <i class="fa fa-shopping-cart"></i> <span ng-bind-html="'BTN_ADD_CART' | translate | unsafe"></span>
               </a>
             </p>
             <p ng-if="product.type == 'kit' && product.kitGroups.length > 0">
               <a class="btn btn-primary btn-lg ladda-button" ui-ladda="adding" data-style="expand-right" ng-click="configureKit()">
-                <i class="fa fa-cogs"></i> Configure
+                <i class="fa fa-cogs"></i> <span ng-bind-html="'BTN_CONFIGURE' | translate | unsafe"></span>
               </a>
             </p>
           </div>
@@ -203,7 +203,7 @@
       <!-- Related Products Section -->
       <section class="row store-section" ng-if="product.youMayAlsoLike.length > 0">
         <div class="col-lg-12">
-          <h2>You May Also Like</h2>
+          <h2><span ng-bind-html="'TIT_MAY_ALSO_LK' | translate | unsafe"></span></h2>
         </div>
 
         <div ng-repeat="relatedproduct in product.youMayAlsoLike" class="col-xs-6 col-sm-4 col-md-3 col-lg-3 store-item related">
@@ -214,7 +214,7 @@
               </span>
             </a>
             <div class="store-item-info">
-              <p class="store-item-title"><a href="itemdetail.html">{{relatedproduct.product.name}}</a></p>
+              <p class="store-item-title"><a href="itemdetail.html">{{relatedproduct.product['name_'+session.language]}}</a></p>
             </div>
           </div><!--/store-item-wrapper-->
         </div><!--/span-->
@@ -226,7 +226,7 @@
       <section class="row store-section" ng-controller="RecentlyViewedController">
         <div ng-if="recentlyViewedProducts.length > 0 && !(recentlyViewedProducts.length == 1 && recentlyViewedProducts[0].sku == product.sku)">
           <div class="col-lg-12">
-            <h2>Recently Viewed</h2>
+            <h2><span ng-bind-html="'TIT_REC_VIEWED' | translate | unsafe"></span></h2>
           </div>
 
           <div ng-repeat="viewedProduct in recentlyViewedProducts" class="col-xs-6 col-sm-4 col-md-3 col-lg-3 store-item related" ng-show="viewedProduct.sku != product.sku && viewedProduct.sku != product.sku">
@@ -237,13 +237,13 @@
                 </span>
               </a>
               <div class="store-item-info">
-                <p class="store-item-title"><a ng-href="{{STORE_BASE_URL}}/products/{{viewedProduct.sku}}#top">{{viewedProduct.name}}</a></p>
+                <p class="store-item-title"><a ng-href="{{STORE_BASE_URL}}/products/{{viewedProduct.sku}}#top">{{viewedproduct['name_'+session.language]}}</a></p>
               </div>
             </div><!--/store-item-wrapper-->
             <div class="store-item-wrapper" ng-if="viewedProduct.type=='group'">
               <a ng-href="{{STORE_BASE_URL}}/products/{{viewedProduct.sku}}#top"><img class="img-responsive" ng-src="{{getImagePath(viewedProduct.images[0].imagePath)}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';"></a>
               <div class="store-item-info">
-                <p class="store-item-title"><a ng-href="{{STORE_BASE_URL}}/products/{{viewedProduct.sku}}#top">{{viewedProduct.name}}</a></p>
+                <p class="store-item-title"><a ng-href="{{STORE_BASE_URL}}/products/{{viewedProduct.sku}}#top">{{viewedproduct['name_'+session.language]}}</a></p>
               </div>
             </div><!--/store-item-wrapper-->
           </div><!--/span-->

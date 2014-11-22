@@ -17,7 +17,7 @@
             </a>
             <!--{{item.kitSelections[kitGroup.kitGroup.id]}} {{productIdToProduct}}-->
             <span class="modal-addon-item product-image" ng-if="item.kitSelections[kitGroup.kitGroup.id] != null && productIdToProduct != null">
-              <p class="product-name">{{productIdToProduct[item.kitSelections[kitGroup.kitGroup.id].sku].name}}</p>
+              <p class="product-name">{{productIdToProduct[item.kitSelections[kitGroup.kitGroup.id].sku]['name_'+$rootScope.session.language]}}</p>
               <img ng-if="productIdToProduct[item.kitSelections[kitGroup.kitGroup.id]].images > 0" class="img-responsive" ng-src="{{productIdToProduct[item.kitSelections[kitGroup.kitGroup.id]].images[0].imagePath}}">
               <img ng-if="productIdToProduct[item.kitSelections[kitGroup.kitGroup.id]].images == 0" class="img-responsive" ng-src="/img/product_placeholder.gif">
             </span>
@@ -43,7 +43,7 @@
               <i ng-if="item.kitSelections[kitGroup.id].sku == component.product" class="kit-selection-check fa fa-check"></i>
             </div>
             <div ng-if="productIdToProduct[component.product]" class="col-lg-9 col-md-9 col-xs-6 col-sm-8 modal-addon-item">
-              <p class="modal-addon-item-title">{{productIdToProduct[component.product].name}}</p>
+              <p class="modal-addon-item-title">{{productIdToProduct[component.product]['name_'+$rootScope.session.language]}}</p>
               <p class="modal-addon-item-description" ng-bind-html="productIdToProduct[sku].description | unsafe">Product description</p>
               <p class="modal-addon-item-quantity"><span ng-bind-html="'QUANTITY' | translate | unsafe"></span>: {{productIdToProduct[component.product].quantity}}</p>
             </div>
@@ -55,11 +55,11 @@
 </div>
 <div class="modal-footer">
   <div class="col-lg-6 col-md-6 col-sm-6">
-    <span class="text-muted pull-left">Choose an option and save</span>
+    <span class="text-muted pull-left"><span ng-bind-html="'CHOOSE-OPTION-AND-SAVE-TITLE' | translate | unsafe"></span></span>
   </div>
   <div class="col-lg-6 col-md-6 col-sm-6">
-    <button ng-click="close()" class="btn btn-link">Cancel</button>
-    <button ng-click="save()" class="btn btn-primary" ng-show="isKitSelectionComplete()"><i class="fa fa-shopping-cart"></i> Save to Cart</button>
-    <button ng-click="save()" class="btn btn-primary" ng-show="!isKitSelectionComplete()" disabled="disabled"><i class="fa fa-shopping-cart"></i> Save to Cart</button>
+    <button ng-click="close()" class="btn btn-link"><span ng-bind-html="'BTN_CANCEL' | translate | unsafe"></span></button>
+    <button ng-click="save()" class="btn btn-primary" ng-show="isKitSelectionComplete()"><i class="fa fa-shopping-cart"></i> <span ng-bind-html="'BTN_SAVE_CART' | translate | unsafe"></span></button>
+    <button ng-click="save()" class="btn btn-primary" ng-show="!isKitSelectionComplete()" disabled="disabled"><i class="fa fa-shopping-cart"></i> <span ng-bind-html="'BTN_SAVE_CART' | translate | unsafe"></span></button>
   </div>
 </div>

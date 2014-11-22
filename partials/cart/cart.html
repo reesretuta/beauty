@@ -4,8 +4,8 @@
       <thead>
       <tr>
         <th>&nbsp;</th>
-        <th class="text-right">Unit Price</th>
-        <th class="text-right">Qty</th>
+        <th class="text-right"><span ng-bind-html="'UNIT-PRICE' | translate | unsafe"></span></th>
+        <th class="text-right"><span ng-bind-html="'QTY' | translate | unsafe"></span></th>
       </tr>
       </thead>
       <tbody>
@@ -13,14 +13,14 @@
       <tr ng-show="cart == null">
         <td colspan="3">
           <div class="cart-item-info">
-            Loading cart...
+            <span ng-bind-html="'LOADING-CART' | translate | unsafe"></span>
           </div>
         </td>
       </tr>
       <tr ng-show="cart.length == 0">
         <td colspan="3">
           <div class="cart-item-info">
-            There are currently no items in your cart.
+            <span ng-bind-html="'EMPTY_CAR' | translate | unsafe"></span>
           </div>
         </td>
       </tr>
@@ -38,7 +38,7 @@
 
             <div class="col-sm-9 col-md-8 col-lg-8">
               <h3>
-                <a ng-href="{{STORE_BASE_URL}}/products/{{item.product.sku}}#top">{{item.product.name}}</a>
+                <a ng-href="{{STORE_BASE_URL}}/products/{{item.product.sku}}#top">{{item.product['name_'+$rootScope.session.language]}}</a>
               </h3>
 
               <p><label>{{item.product.sku}}</label></p>
@@ -46,15 +46,15 @@
               <p ng-if="item.product.kitGroups.length > 0"><span ng-bind-html="'KIT_INCLUDE' | translate | unsafe"></span>:</p>
               <ul ng-if="item.product.kitGroups.length > 0">
                 <li ng-repeat="(kitId, kitProduct) in item.kitSelections">
-                  {{kitProduct.name}} #{{kitProduct.sku}}
+                  {{kitProduct['name_'+$rootScope.session.language]}} #{{kitProduct.sku}}
                 </li>
               </ul>
               <p class="cart-item-actions">
                 <a ng-if="item.product.type == 'kit' && item.product.kitGroups.length > 0" class="btn btn-primary btn-lg" ng-click="configureKit(item)">
-                  <i class="fa fa-cogs"></i> Configure
+                  <i class="fa fa-cogs"></i> <span ng-bind-html="'BTN_CONFIGURE' | translate | unsafe"></span>
                 </a>
                 &nbsp;&nbsp;
-                <a ng-click="removeFromCart(item.product)"><i class="fa fa-times"></i> remove</a>
+                <a ng-click="removeFromCart(item.product)"><i class="fa fa-times"></i> <span ng-bind-html="'BTN_REMOVE' | translate | unsafe"></span></a>
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 <!-- <a href="#"><i class="fa fa-pencil-square-o"></i> make changes</a> TODO: Load this for kits & groups -->
               </p>
@@ -107,37 +107,37 @@
 <div class="row">
   <div class="col-lg-12">
     <p class="text-right">
-      <label class="cart-subtotal"><span>SUB-TOTAL BEFORE TAX &amp; SHIPPING:</span> {{total() | currency}}</label>
+      <label class="cart-subtotal"><span ng-bind-html="'SUB_BEF_TAX' | translate | unsafe"></span>: {{total() | currency}}</label>
     </p>
   </div>
 </div><!-- /row -->
 
 <div class="row">
   <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-    <a href="javascript:history.go(-1)" class="btn btn-link"><i class="fa fa-angle-left"></i> Continue Shopping</a>
+    <a href="javascript:history.go(-1)" class="btn btn-link"><i class="fa fa-angle-left"></i> <span ng-bind-html="'CONT_SHOP' | translate | unsafe"></span></a>
   </div>
   <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" ng-if="cart.length > 0">
-    <a href="{{STORE_BASE_URL}}/checkout#top" class="btn btn-primary btn-lg pull-right">Checkout Now <i class="fa fa-angle-right"></i></a>
+    <a href="{{STORE_BASE_URL}}/checkout#top" class="btn btn-primary btn-lg pull-right"><span ng-bind-html="'BTN_CHECKOUT' | translate | unsafe"></span> <i class="fa fa-angle-right"></i></a>
   </div>
 </div><!-- /row -->
 
 
 <div class="row store-cart-orderbyid" id="additem">
   <div class="col-xs-12">
-    <h2>Order by item # or description</h2>
+    <h2><span ng-bind-html="'OR_IT_DES' | translate | unsafe"></span></h2>
 
     <form class="form-inline" role="form">
       <div class="form-group">
-        <label class="" for="orderByIdQty">Qty:</label>
+        <label class="" for="orderByIdQty"><span ng-bind-html="'QTY' | translate | unsafe"></span>:</label>
         <input type="number" class="form-control qty-input" id="orderByIdQty" ng-model="orderByIdQty" placeholder="1"
                value="1">
       </div>
       <div class="form-group">
         &nbsp;&nbsp;&nbsp;&nbsp;
-        <label class="" for="orderByIdItem">Item:</label>
+        <label class="" for="orderByIdItem"><span ng-bind-html="'ITEM' | translate | unsafe"></span>:</label>
         <autocomplete ng-model="orderByIdItem" data="searchProductsList" on-type="searchProducts" attr-id="orderByIdItemDiv" attr-input-id="orderByIdItem" attr-input-class="form-control" attr-placeholder="product name"></autocomplete>
       </div>
-      <button type="submit" class="btn btn-default" ng-click="addToCart()">Add to Cart</button>
+      <button type="submit" class="btn btn-default" ng-click="addToCart()"><span ng-bind-html="'BTN_ADD_CART' | translate | unsafe"></span></button>
     </form>
   </div>
 </div><!-- /row -->

@@ -225,7 +225,11 @@
     "ERROR-SAVING-ADDRESS": "Error al guardar la direcci&oacute;n",
     "ERROR-REMOVING-ADDRESS": "Error mientras se quita la direcci&oacute;n",
 
+    "CHOOSE-OPTION-AND-SAVE-TITLE": "Seleccionar opcion y guardar",
+
     "LOGIN-ERROR": "Se ha producido un error al iniciar la sesi&oacute;n",
+
+    "LOADING-CART": "Cargando carrito...",
 
     "BTN_LOGOUT":"Salir",
     "ALL_PRODS":"Todos los Productos",
@@ -240,6 +244,7 @@
     "CONT_SHOP":"Continuar comprando",
     "OR_IT_DES":"Ordenar por No. de art&iacute;culo o descripci&oacute;n",
     "QTY":"Cantidad",
+    "UNIT-PRICE":"Precio Unitario",
     "ITEM":"Art&iacute;culo",
     "PROD_NAME":"Nombre del Producto",
     "BTN_ADD_CART":"Agregar al pedido",
@@ -248,6 +253,7 @@
     "SUB_BEF_TAX":"SUB TOTAL ANTES DE IMPUESTOS Y GASTOS DE ENVIO",
     "REMOVE":"Quitar",
     "BTN_CHECKOUT":"Pagar",
+    "BTN_REMOVE":"quitar",
     "WZ_START":"Empezar",
     "WZ_PROFILE":"Perfil",
     "WZ_SHIPPING":"Envío",
@@ -333,6 +339,7 @@
     "BTN_PLACE_ORDER":"Hacer el Pedido",
     "IN_AGREE":"Estoy de acuerdo con los",
     "BTN_IN_AGREE":"T&eacute;rminos y Condiciones",
+    "TERMS-AND-CONDITIONS":"T&eacute;rminos y Condiciones",
     "BTN_CANCEL_ORDER":"Cancelar Pedido",
     "BTN_PRINT_PAGE":"Imprimir esta pagina",
     "TXT_THANKS_DES":"Hemos recibido su pedido y lo procesaremos a corto plazo.",
@@ -461,5 +468,5 @@
     "CART_TAX":"Impuesto",
     "CART_TAX_PERCENTAGE":"Impuesto",
     "CART_SHIPPING":"Env&iacute;o",
-    "CART_SUBTOTAL":"Subtotal"
+    "CART_SUBTOTAL":"SUB TOTAL ANTES DE IMPUESTOS"
 }

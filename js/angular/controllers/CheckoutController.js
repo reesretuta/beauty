@@ -353,7 +353,7 @@ angular.module('app.controllers.checkout')
                     $log.debug("CheckoutController(): selectProduct(): previous cart cleared");
 
                     Cart.addToCart({
-                        name: product.name,
+                        name: product['name_'+$rootScope.session.language],
                         sku: product.sku,
                         kitSelections: product.kitSelections,
                         quantity: 1

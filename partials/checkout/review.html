@@ -33,7 +33,7 @@
             <td>
               <p class="confirmation-description">
                 <div ng-if="!isOnlineSponsoring">
-                  <span ng-bind-html="session.language=='en_US' ? item.product.name : item.product.name_es_US | unsafe"></span>
+                  <span ng-bind-html="item.product['name_'+session.language] | unsafe"></span>
                 </div>
                 <li class="dropdown" ng-if="isOnlineSponsoring">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span ng-bind-html="session.language=='en_US' ? item.product.name : item.product.name_es_US | unsafe"></span> <span ng-bind-html="'CHANGE-KIT-PARENS' | translate | unsafe"></span></a>
