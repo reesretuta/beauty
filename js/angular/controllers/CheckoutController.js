@@ -1033,24 +1033,29 @@ angular.module('app.controllers.checkout')
                     $scope.profile.newBillingAddress.name = $scope.profile.firstName + " " + $scope.profile.lastName;
 
                     if ($scope.isOnlineSponsoring) {
-                        // generate a lead for this account
-                        Leads.save({
-                            email: email,
-                            firstName: $scope.profile.firstName,
-                            lastName: $scope.profile.lastName,
-                            phone: $scope.profile.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3'),
-                            language: $scope.profile.language
-                        }).$promise.then(function(lead) {
-                            $log.debug("CheckoutController(): validateEmailAndContinue(): lead created");
+                        Session.clientExists(email).then(function(data) {
+                            $log.debug('CheckoutController(): Session: client email does not exist', data);
+                            // generate a lead for this account
+                            Leads.save({
+                                email: email,
+                                firstName: $scope.profile.firstName,
+                                lastName: $scope.profile.lastName,
+                                phone: $scope.profile.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3'),
+                                language: $scope.profile.language
+                            }).$promise.then(function(lead) {
+                                $log.debug("CheckoutController(): validateEmailAndContinue(): lead created");
+                            }, function(error) {
+                                $log.error("CheckoutController(): validateEmailAndContinue(): failed to create lead", error);
+                            });
                         }, function(error) {
-                            $log.error("CheckoutController(): validateEmailAndContinue(): failed to create lead", error);
+                            $log.error('CheckoutController(): Session: client email exists', error);
+                            $scope.emailError = true;
                         });
                     }
                     // move to next step
                     WizardHandler.wizard('checkoutWizard').goTo('Profile');
                 }, function(r) {
                     $log.error("CheckoutController(): failed validating email", r);
-
                     $scope.emailError = true;
                 })
             }

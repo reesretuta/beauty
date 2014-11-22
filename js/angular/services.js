@@ -279,10 +279,8 @@ angular.module('app.services', ['ngResource'])
 
         sessionService.createClient = function(client) {
             var d = $q.defer();
-
             initialized.promise.then(function() {
                 $log.debug("Session(): createClient(): attempting to create user username=", client.email);
-
                 $http.post(API_URL + '/clients', {
                     email: client.email,
                     password: client.password,
@@ -293,10 +291,8 @@ angular.module('app.services', ['ngResource'])
                     language: client.language
                 }, {}).success(function(client, status, headers, config) {
                     $log.debug("sessionService(): createClient()", client);
-
                     var session = getLocalSession();
                     session.client = client;
-
                     d.resolve(session);
                 }).error(function(data, status, headers, config) {
                     //failure(data, status, headers, config);
@@ -304,29 +300,22 @@ angular.module('app.services', ['ngResource'])
                     d.reject(data);
                 });
             });
-
-
             return d.promise;
         }
 
+        // is consultant already registered?
         sessionService.clientExists = function(email) {
             var d = $q.defer();
-
             initialized.promise.then(function() {
-                $log.debug("Session(): lookupClient(): attempting to lookup client by email", email);
-
-                $http.post(API_URL + '/clients/:clientId', {
-                    email: client.email
-                }, {}).success(function(client, status, headers, config) {
-                    $log.debug("sessionService(): lookupClient()", client);
+                $log.debug('Session(): lookupClient(): attempting to lookup client by email', email);
+                $http.get(API_URL + '/clients/' + email, {}).success(function(client, status, headers, config) {
+                    $log.debug('sessionService(): lookupClient()', client);
                     d.resolve(true);
                 }).error(function(data, status, headers, config) {
-                    //failure(data, status, headers, config);
-                    $log.error("sessionService(): lookupClient()", status, data);
+                    $log.error('sessionService(): lookupClient()', status, data);
                     d.reject(false);
                 });
             });
-
             return d.promise;
         }
 
