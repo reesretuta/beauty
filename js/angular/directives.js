@@ -149,5 +149,25 @@ angular.module('app.directives', [])// directives
                 });
             }
         }
+    // strip anything but numbers
+    }]).directive('numbersOnly', ['$log', function ($log) {
+        return {
+            restrict: 'A',
+            require: '?ngModel',
+            link: function($scope, elem, attrs, ngModelCtrl) {
+                if (!ngModelCtrl) {
+                    return;
+                }
+                // watch for changes to number
+                angular.element(elem).on('input keydown change', function (evt) {
+                    var nums, val = this.value;
+                    $log.debug('Directives: numbersOnly: val:', val);
+                    nums = val.replace(/[^0-9]/g, '');
+                    $log.debug('Directives: numbersOnly: fixed:', nums);
+                    ngModelCtrl.$setViewValue(nums);
+                    ngModelCtrl.$render();
+                });
+            }
+        }
     }]);
 

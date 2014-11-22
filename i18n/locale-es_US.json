@@ -430,6 +430,8 @@
     "CONSULTANT-AGREEMENT-DONT-AGREE":"No estoy de acuerdo",
     "CONSULTANT-AGREEMENT-AGREE":"Estoy de acuerdo",
 
+    "NUMBERS-ONLY-SHORT": "s&oacute;lo n&uacute;meros",
+    
     "CONSULTANT-PROFILE-ERROR": "No se puede crear el perfil . Por favor, comuniquese con Jafra para obtener m&aacute;s ayuda .",
     "CONSULTANT-PROFILE-INVALID-SPONSORID": "Debe contener s&oacute;lo n&uacute;meros",
     "CONSULTANT-PROFILE-CONTINUE-TO-SHIPPING": "Seguir el env&iacute;o",

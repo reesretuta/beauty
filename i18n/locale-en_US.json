@@ -432,6 +432,8 @@
     "CONSULTANT-PROFILE-INVALID-SPONSORID": "Must only contain numbers",
     "CONSULTANT-PROFILE-CONTINUE-TO-SHIPPING": "Continue to Shipping",
 
+    "NUMBERS-ONLY-SHORT": "Numbers Only",
+
     "OS-PROFILE-TITLE":"Payee Profile & Sponsor",
     "OS-PROFILE-TAG":"We&rsquo;ll need some information to send your payment checks.",
     "CONTACT-INFO-LABEL":"Contact Info",
