@@ -196,28 +196,28 @@
               <li ng-repeat="category in categories" ng-class="{'open': categoryInPath(category)}">
                 <!-- don't follow link if has children, just expand -->
                 <a ng-show="category.children" href ng-class="{'active': categoryInPath(category)}" ng-click="categoryClicked(category);">
-                  <span ng-bind-html="category['name_'+session.language] | unsafe"></span> <i ng-if="category.children" class="fa fa-angle-down pull-right"></i>
+                  <span ng-bind-html="category[session.language=='en_US'?'name':'name_'+session.language] | unsafe"></span> <i ng-if="category.children" class="fa fa-angle-down pull-right"></i>
                 </a>
                 <!-- follow link if no children -->
                 <a ng-show="category.children == null" ng-href="{{STORE_BASE_URL}}/products?category={{category.id}}" ng-class="{'active': categoryInPath(category)}" ng-click="categoryClicked(category);">
-                  <span ng-bind-html="category['name_'+session.language] | unsafe"></span> <i ng-if="category.children" class="fa fa-angle-down pull-right"></i>
+                  <span ng-bind-html="category[session.language=='en_US'?'name':'name_'+session.language] | unsafe"></span> <i ng-if="category.children" class="fa fa-angle-down pull-right"></i>
                 </a>
                 <!-- loop in children links -->
                 <ul ng-if="category.children" class="category_children">
                   <li ng-repeat="category in category.children" ng-class="{'open': categoryInPath(category)}">
                     <!-- don't follow link if has children, just expand -->
                     <a ng-show="category.children != null && category.children.length > 0" href ng-class="{'active': categoryInPath(category)}" ng-click="categoryClicked(category);">
-                      <span ng-bind-html="category['name_'+session.language] | unsafe"></span> <i ng-if="category.children" class="fa fa-angle-down  pull-right"></i>
+                      <span ng-bind-html="category[session.language=='en_US'?'name':'name_'+session.language] | unsafe"></span> <i ng-if="category.children" class="fa fa-angle-down  pull-right"></i>
                     </a>
                     <!-- follow link if no children -->
                     <a ng-show="category.children == null || category.children.length == 0" ng-href="{{STORE_BASE_URL}}/products?category={{category.id}}" ng-class="{'active': categoryInPath(category)}" ng-click="categoryClicked(category);">
-                      <span ng-bind-html="category['name_'+session.language] | unsafe"></span> <i ng-if="category.children" class="fa fa-angle-down  pull-right"></i>
+                      <span ng-bind-html="category[session.language=='en_US'?'name':'name_'+session.language] | unsafe"></span> <i ng-if="category.children" class="fa fa-angle-down  pull-right"></i>
                     </a>
                     <!-- loop in children links -->
                     <ul ng-if="category.children">
                       <li ng-repeat="category in category.children">
                         <a href="" ng-href="{{STORE_BASE_URL}}/products?category={{category.id}}" ng-class="{'active': categoryInPath(category)}" ng-click="categoryClicked(category);">
-                          <span ng-bind-html="category['name_'+session.language] | unsafe"></span>
+                          <span ng-bind-html="category[session.language=='en_US'?'name':'name_'+session.language] | unsafe"></span>
                         </a>
                       </li>
                     </ul>

@@ -92,7 +92,7 @@
                   <label class="primary-color">{{upsellItem.product.price[0].price | currency}}</label>
                   &nbsp;&nbsp;
                   <label><span ng-bind-html="'ITEM' | translate | unsafe"></span> #{{upsellItem.product.sku}}</label>
-                  &nbsp;&nbsp; {{upsellItem.product['name_'+session.language]}}</p>
+                  &nbsp;&nbsp; {{upsellItem.product[session.language=='en_US'?'name':'name_'+session.language]}}</p>
 
                 <form role="form" class="form-inline store-item-add">
                   <div class="form-group">
@@ -111,13 +111,13 @@
 
           <tabset>
             <tab heading="Summary">
-              <div ng-bind-html="product['description_'+session.language] | unsafe"><span ng-bind-html="'SUMMARY_CONTENT' | translate | unsafe"></span></div>
+              <div ng-bind-html="product[session.language=='en_US'?'description':'description_'+session.language] | unsafe"><span ng-bind-html="'SUMMARY_CONTENT' | translate | unsafe"></span></div>
             </tab>
             <tab heading="Ingredients">
-              <div ng-bind-html="product['ingredients_'+session.language] | unsafe"><span ng-bind-html="'INGREDIENTS_CONT' | translate | unsafe"></span></div>
+              <div ng-bind-html="product[session.language=='en_US'?'ingredients':'ingredients_'+session.language] | unsafe"><span ng-bind-html="'INGREDIENTS_CONT' | translate | unsafe"></span></div>
             </tab>
             <tab heading="Usage">
-              <div ng-bind-html="product['usage_'+session.language] | unsafe"><span ng-bind-html="'USAGE_CONTENT' | translate | unsafe"></span></div>
+              <div ng-bind-html="product[session.language=='en_US'?'usage':'usage_'+session.language] | unsafe"><span ng-bind-html="'USAGE_CONTENT' | translate | unsafe"></span></div>
             </tab>
           </tabset>
 
@@ -133,14 +133,14 @@
                     </a>
                 </span></p>
                 <p class="hidden"><select ng-model="selectedProduct.sku" ng-change="showhide(selectedProduct.sku); categoryClicked(-1)">
-                    <option value='{{productdetail.product.sku}}' ng-repeat="productdetail in product.contains">{{productdetail.product['name_'+session.language]}}</option>
+                    <option value='{{productdetail.product.sku}}' ng-repeat="productdetail in product.contains">{{productdetail.product[session.language=='en_US'?'name':'name_'+session.language]}}</option>
                 </select></p>
 
                 <div class="store-dropdown btn-group" ng-model="selectedProduct.sku" dropdown is-open="status.isopen">
-                  <button type="button" class="btn dropdown-toggle"><img ng-src="{{getImagePath(selectedProduct.images[0].imagePath)}}" width="24" onError="this.onerror=null;this.src='/img/product_placeholder.gif';"> {{selectedproduct['name_'+session.language]}} &nbsp;&nbsp;<span class="caret"></span></button>
+                  <button type="button" class="btn dropdown-toggle"><img ng-src="{{getImagePath(selectedProduct.images[0].imagePath)}}" width="24" onError="this.onerror=null;this.src='/img/product_placeholder.gif';"> {{selectedproduct[session.language=='en_US'?'name':'name_'+session.language]}} &nbsp;&nbsp;<span class="caret"></span></button>
                   <ul class="dropdown-menu" role="menu">
                     <li id="{{productdetail.product.sku}}" ng-repeat="productdetail in product.contains">
-                      <a href="" ng-click="showhide(productdetail.product.sku); categoryClicked(-1)" ng-class="{'active': selectedProduct.sku==productdetail.product.sku}"><img ng-src="{{getImagePath(productdetail.product.images[0].imagePath)}}" width="24" onError="this.onerror=null;this.src='/img/product_placeholder.gif';"> {{productdetail.product['name_'+session.language]}}</a>
+                      <a href="" ng-click="showhide(productdetail.product.sku); categoryClicked(-1)" ng-class="{'active': selectedProduct.sku==productdetail.product.sku}"><img ng-src="{{getImagePath(productdetail.product.images[0].imagePath)}}" width="24" onError="this.onerror=null;this.src='/img/product_placeholder.gif';"> {{productdetail.product[session.language=='en_US'?'name':'name_'+session.language]}}</a>
                     </li>
                   </ul>
                 </div><!-- /color dropdown -->
@@ -149,7 +149,7 @@
                 <p class="pricesleep">${{selectedProduct.currentPrice.price}}</p>
             </div>
             <p class="store-item-sku" ng-if="product.type != 'group'">
-              <span ng-bind-html="'ITEM' | translate | unsafe"></span> #{{product.sku}} - {{product['name_'+session.language]}}
+              <span ng-bind-html="'ITEM' | translate | unsafe"></span> #{{product.sku}} - {{product[session.language=='en_US'?'name':'name_'+session.language]}}
             </p>
             <p class="store-item-price">
 
@@ -214,7 +214,7 @@
               </span>
             </a>
             <div class="store-item-info">
-              <p class="store-item-title"><a href="itemdetail.html">{{relatedproduct.product['name_'+session.language]}}</a></p>
+              <p class="store-item-title"><a href="itemdetail.html">{{relatedproduct.product[session.language=='en_US'?'name':'name_'+session.language]}}</a></p>
             </div>
           </div><!--/store-item-wrapper-->
         </div><!--/span-->
@@ -237,13 +237,13 @@
                 </span>
               </a>
               <div class="store-item-info">
-                <p class="store-item-title"><a ng-href="{{STORE_BASE_URL}}/products/{{viewedProduct.sku}}#top">{{viewedproduct['name_'+session.language]}}</a></p>
+                <p class="store-item-title"><a ng-href="{{STORE_BASE_URL}}/products/{{viewedProduct.sku}}#top">{{viewedproduct[session.language=='en_US'?'name':'name_'+session.language]}}</a></p>
               </div>
             </div><!--/store-item-wrapper-->
             <div class="store-item-wrapper" ng-if="viewedProduct.type=='group'">
               <a ng-href="{{STORE_BASE_URL}}/products/{{viewedProduct.sku}}#top"><img class="img-responsive" ng-src="{{getImagePath(viewedProduct.images[0].imagePath)}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';"></a>
               <div class="store-item-info">
-                <p class="store-item-title"><a ng-href="{{STORE_BASE_URL}}/products/{{viewedProduct.sku}}#top">{{viewedproduct['name_'+session.language]}}</a></p>
+                <p class="store-item-title"><a ng-href="{{STORE_BASE_URL}}/products/{{viewedProduct.sku}}#top">{{viewedproduct[session.language=='en_US'?'name':'name_'+session.language]}}</a></p>
               </div>
             </div><!--/store-item-wrapper-->
           </div><!--/span-->
