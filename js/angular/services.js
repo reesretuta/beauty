@@ -570,6 +570,7 @@ angular.module('app.services', ['ngResource'])
             var d = $q.defer();
 
             $rootScope.adding = true;
+            $rootScope.addingId = item.sku;
 
             cartService.get(true).then(function(cart) {
                 $log.debug("cartService(): addToCart()", cart, item);
@@ -600,6 +601,7 @@ angular.module('app.services', ['ngResource'])
 
                 if (errors) {
                     $rootScope.adding = false;
+                    $rootScope.addingId = null;
                     return;
                 }
 
@@ -643,6 +645,7 @@ angular.module('app.services', ['ngResource'])
                         // wait until we've had 1500ms pass
                         $timeout(function() {
                             $rootScope.adding = false;
+                            $rootScope.addingId = null;
                             // set class
                             //$timeout(function() {
                             //    // remove check
@@ -651,6 +654,7 @@ angular.module('app.services', ['ngResource'])
                     } else {
                         // > 1500 ms has passed, clear
                         $rootScope.adding = false;
+                        $rootScope.addingId = null;
                     }
                 }, function(error) {
                     $log.error("cartService(): get(): failed to save cart to session", error);

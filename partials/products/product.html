@@ -98,7 +98,7 @@
                   <div class="form-group">
                     <label for="qty1234"><span ng-bind-html="'QTY' | translate | unsafe"></span>:</label>
                     <input type="number" class="form-control qty-input" id="qty1234" placeholder="1" value="1" min="1" max="99">
-                    <a class="btn btn-primary">
+                    <a class="btn btn-primary" ng-class="{'disabled': adding}" ui-ladda="adding && addingId == product.sku">
                       <i class="fa fa-shopping-cart"></i> <span ng-bind-html="'BTN_ADD_CART' | translate | unsafe"></span>
                     </a>
                   </div>
@@ -179,17 +179,17 @@
               </div>
             </form></p>
             <p ng-if="product.type == 'product' || (product.type == 'kit' && product.kitGroups.length == 0)">
-              <a class="btn btn-primary btn-lg ladda-button" ui-ladda="adding" data-style="expand-right" ng-click="addToCart(product)">
+              <a class="btn btn-primary btn-lg ladda-button" ng-class="{'disabled': adding}" ui-ladda="adding && addingId == product.sku" data-style="expand-right" ng-click="addToCart(product)">
                 <i class="fa fa-shopping-cart"></i> <span ng-bind-html="'BTN_ADD_CART' | translate | unsafe"></span>
               </a>
             </p>
             <p ng-if="product.type == 'group'">
-              <a class="btn btn-primary btn-lg ladda-button" ui-ladda="adding" data-style="expand-right" ng-click="addToCartGroup(selectedProduct.sku)">
+              <a class="btn btn-primary btn-lg ladda-button" ng-class="{'disabled': adding}" ui-ladda="adding && addingId == product.sku" data-style="expand-right" ng-click="addToCartGroup(selectedProduct.sku)">
                 <i class="fa fa-shopping-cart"></i> <span ng-bind-html="'BTN_ADD_CART' | translate | unsafe"></span>
               </a>
             </p>
             <p ng-if="product.type == 'kit' && product.kitGroups.length > 0">
-              <a class="btn btn-primary btn-lg ladda-button" ui-ladda="adding" data-style="expand-right" ng-click="configureKit()">
+              <a class="btn btn-primary btn-lg ladda-button" ng-class="{'disabled': adding}" ui-ladda="adding && addingId == product.sku" data-style="expand-right" ng-click="configureKit()">
                 <i class="fa fa-cogs"></i> <span ng-bind-html="'BTN_CONFIGURE' | translate | unsafe"></span>
               </a>
             </p>
