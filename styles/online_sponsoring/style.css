@@ -658,7 +658,6 @@ width: 475px;
   cursor: pointer;
 }
 
-
 .faqs-item .faqs-item-question a:after {
   top: 0;
   right: 10px;
@@ -681,7 +680,7 @@ width: 475px;
   /*font-family: HelveticaNeueLTStd-Md;
   font-size: 13px;*/
 }
-.more-link:hover, .more-link:active, a.collapsed  {
+.more-link:hover, .more-link:active, a.collapsed {
   color: #b51a8a;
   text-decoration: none;
 }
@@ -714,7 +713,7 @@ width: 475px;
   transform-origin: 55% 50%;
 }
 
-.faqs-item-question:not(.collapsed) .more-link:after, .more-link:active:after {
+.faqs-item-question:not(.collapsed) .more-link:after, .more-link-alt:after {
   -moz-transform: rotate(-135deg);
   -webkit-transform: rotate(-135deg);
   -o-transform: rotate(-135deg);
@@ -722,14 +721,13 @@ width: 475px;
   transform: rotate(-135deg);
 }
 
-.faqs-item-question .more-link:after {
+.faqs-item-question .more-link:after, .more-link-alt.collapsed:after {
   -moz-transform: rotate(0deg);
   -webkit-transform: rotate(0deg);
   -o-transform: rotate(0deg);
   -ms-transform: rotate(0deg);
   transform: rotate(0deg);
 }
-
 
 .social-media-icons a  i.fa{
   color: #aa73b1;
