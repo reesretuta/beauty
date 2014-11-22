@@ -518,6 +518,9 @@ router.route('/products/:productId').get(function (req, res) {
             products[0].upsellItems = products[0].upsellItems.filter(function (obj, index) {
                 return (obj.product !== null);
             });
+            products[0].youMayAlsoLike = products[0].youMayAlsoLike.filter(function (obj, index) {
+                return (obj.product !== null);
+            });
             console.log('products (filtered null upsells):', products);
             res.json(products[0]);
             res.end();
