@@ -2,7 +2,7 @@
 
 // Declare app level module which depends on filters, and services
 var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 'ngAnimate', 'ngCookies', 'ui.mask', 'ui.keypress', 'ui.jq', 'ui.validate', 'app.filters', 'app.services', 'app.controllers', 'app.directives', 'pasvaz.bindonce', 'jmdobry.angular-cache', 'ui.ladda', 'autocomplete', 'ui.event', 'mgo-angular-wizard', 'pascalprecht.translate', 'LocalStorageModule',
-        'ui.bootstrap.tpls', 'ui.bootstrap.alert', 'ui.bootstrap.dropdown', 'ui.bootstrap.tooltip', 'ui.bootstrap.buttons', 'ui.bootstrap.modal', 'ui.bootstrap.popover'])
+        'ui.bootstrap.tpls', 'ui.bootstrap.alert', 'ui.bootstrap.dropdown', 'ui.bootstrap.tooltip', 'ui.bootstrap.buttons', 'ui.bootstrap.modal', 'ui.bootstrap.popover', 'modelOptions'])
     .config([ '$locationProvider', '$routeProvider', '$rootScopeProvider', '$angularCacheFactoryProvider', '$translateProvider', '$httpProvider', '$provide', 'localStorageServiceProvider', 'BASE_URL', 'STORE_BASE_URL', 'JOIN_BASE_URL', function ($locationProvider, $routeProvider, $rootScopeProvider, $angularCacheFactoryProvider, $translateProvider, $httpProvider, $provide, localStorageServiceProvider, BASE_URL, STORE_BASE_URL, JOIN_BASE_URL) {
         //$locationProvider.html5Mode(true);
         $angularCacheFactoryProvider.setCacheDefaults({
