@@ -238,6 +238,18 @@ productSchema.set('toJSON', {
 var Product = mongoose.model('Product', productSchema);
 exports.Product = Product;
 
+
+// PASSWORD RESET TOKEN
+var passwordResetTokenSchema = Schema({
+    "token" : { type: String, unique: true },
+    "email" : { email: String, unique: false },
+    "language" : { language: String, unique: false },
+    "created" : { type: Date, default: Date.now }
+});
+
+var PasswordResetToken = mongoose.model('PasswordResetToken', passwordResetTokenSchema);
+exports.PasswordResetToken = PasswordResetToken;
+
 //
 //// SESSIONS
 //var sessionSchema = Schema({

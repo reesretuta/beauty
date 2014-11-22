@@ -7,6 +7,9 @@ var soap = require('soap');
 var parseString = require('xml2js').parseString;
 var fs = require('fs');
 var config = require('./config/config');
+var models = require('./common/models.js');
+var mongoose = require('mongoose');
+var randomString = require('random-string');
 
 var BASE_URL = "https://" + (process.env.JCS_API_URL || config.jcs_api_ip) + "/cgidev2";
 var BASE_URL2 = "https://" + (process.env.JCS_API_URL || config.jcs_api_ip) + "/WEBCGIPR";
@@ -47,6 +50,10 @@ var GET_INVENTORY_URL = BASE_URL + "/JCD05021P.pgm"; // productId=<productId>
 var GET_GEOCODES_URL = BASE_URL2 + "/JNS0002R.pgm";
 var GET_SALES_TAX_URL = BASE_URL + "/JCD05022P.pgm";
 
+var LOOKUP_CLIENT_CONSULTANT_URL = BASE_URL + "/JCD05011P.pgm";
+var PASSWORD_RESET_REQUEST_URL = BASE_URL + "/JCD05009P.pgm";
+var PASSWORD_RESET_CHANGE_URL = BASE_URL + "/JCD05010P.pgm";
+
 var STRIKEIRON_EMAIL_URL = 'http://ws.strikeiron.com/StrikeIron/emv6Hygiene/EMV6Hygiene/VerifyEmail';
 var STRIKEIRON_EMAIL_LICENSE = "2086D15410C1B9F9FF89";
 var STRIKEIRON_EMAIL_TIMEOUT = 15;
@@ -54,6 +61,8 @@ var STRIKEIRON_EMAIL_TIMEOUT = 15;
 //var STRIKEIRON_ADDRESS_URL = 'http://ws.strikeiron.com/StrikeIron/NAAddressVerification6/NorthAmericanAddressVerificationService/NorthAmericanAddressVerification';
 var STRIKEIRON_ADDRESS_SOAP_URL = 'http://ws.strikeiron.com/NAAddressVerification6?WSDL';
 var STRIKEIRON_ADDRESS_LICENSE = "0DA72EA3199C10ABDE0B";
+
+var MIN_PASSWORD_RESET_INTERVAL = 5 * 1000 * 60;
 
 function authenticate(email, password) {
     //console.log("authenticating", email, password);
@@ -549,6 +558,70 @@ function createConsultant(encrypted) {
             result: body
         });
     });
+
+    return deferred.promise;
+}
+
+function lookupConsultantByEmail(email) {
+    return lookupByEmail(email, 1);
+}
+
+function lookupClientByEmail(email) {
+    return lookupByEmail(email, 2);
+}
+
+function lookupByEmail(email, type) {
+    //console.log("lookupByEmail()", clientId);
+    var deferred = Q.defer();
+
+    request.get({
+        url: LOOKUP_CLIENT_CONSULTANT_URL,
+        qs: {
+            email: email,
+            type: type
+        },
+        headers: {
+            'Accept': 'application/json, text/json',
+            'Authorization': AUTH_STRING
+        },
+        agentOptions: agentOptions,
+        strictSSL: false,
+        json: true
+    }, function (error, response, body) {
+        console.log("lookupByEmail()", error, response ? response.statusCode: null, body);
+        if (error || response.statusCode != 200) {
+            console.error("lookupByEmail(): error", error, response.statusCode, body);
+            deferred.reject({
+                status: response.statusCode,
+                result: {
+                    statusCode: response.statusCode,
+                    errorCode: body.errorCode,
+                    message: body.message
+                }
+            });
+            return;
+        }
+
+        if (
+            (type == 1 && body.consultantId != null) ||
+            (type == 2 && body.clientId != null)
+        ) {
+            //console.log("lookupByEmail(): success", body);
+            deferred.resolve({
+                status: 200,
+                result: body
+            });
+        } else {
+            deferred.reject({
+                status: 500,
+                result: {
+                    statusCode: 500,
+                    errorCode: "lookupByEmailFailed",
+                    message: "Failed to lookup by email"
+                }
+            });
+        }
+    })
 
     return deferred.promise;
 }
@@ -1630,12 +1703,156 @@ function calculateSalesTax(data) {
     return deferred.promise;
 }
 
+function requestPasswordReset(email, language) {
+    console.log("requestPasswordReset()", email, language);
+    var deferred = Q.defer();
+
+    var now = new Date();
+    var olderThan = new Date(now.getTime() - MIN_PASSWORD_RESET_INTERVAL);
+
+    // make sure this user hasn't done a password reset in past N minutes
+    models.Product.find({email: email, created: {$lt: olderThan}}, function(err, tokens) {
+        if (err) {
+            console.error("failed to lookup password reset token", err);
+            deferred.reject({
+                status: 500,
+                result: {
+                    statusCode: 500,
+                    errorCode: "passwordResetRequestFailed",
+                    message: "Failed to request password reset"
+                }
+            });
+            return;
+        }
+
+        if (tokens && tokens.length > 0) {
+            console.error("password reset requested too soon", tokens);
+            deferred.reject({
+                status: 409,
+                result: {
+                    statusCode: 409,
+                    errorCode: "passwordResetTokenAlreadyCreated",
+                    message: "Password reset request for account too soon (try again later)"
+                }
+            });
+            return;
+        }
+
+        var token = randomString({length: 32});
+
+        mongoose.model('PasswordResetToken').create({
+            email: email,
+            language: language,
+            token: token
+        }, function(error, user) {
+            if (error) {
+                deferred.reject({
+                    status: 500,
+                    result: {
+                        statusCode: 500,
+                        errorCode: "passwordResetRequestFailed",
+                        message: "Failed to request password reset"
+                    }
+                });
+                return;
+            }
+
+            console.log('created password reset token for ' + email);
+
+            request.post({
+                url: PASSWORD_RESET_REQUEST_URL,
+                form: {
+                    email: email,
+                    token: token,
+                    url: config.password_reset_url,
+                    language: language
+                },
+                headers: {
+                    'Content-Type' : 'application/x-www-form-urlencoded',
+                    'Accept': 'application/json, text/json',
+                    'Authorization': AUTH_STRING
+                },
+                agentOptions: agentOptions,
+                strictSSL: false,
+                json: true
+            }, function (error, response, body) {
+                console.log("requestPasswordReset(): body", body);
+
+                if (error || response.statusCode != 204) {
+                    console.error("requestPasswordReset(): error", error, response ? response.statusCode : null, body);
+                    deferred.reject({
+                        status: 500,
+                        result: {
+                            statusCode: 500,
+                            errorCode: "passwordResetRequestFailed",
+                            message: "Failed to request password reset"
+                        }
+                    });
+                    return;
+                }
+
+                deferred.resolve({
+                    status: 204,
+                    result: null
+                });
+            });
+        });
+    });
+
+    return deferred.promise;
+}
+
+function requestPasswordChange(email, password) {
+    console.log("requestPasswordChange()", email);
+    var deferred = Q.defer();
+
+    request.post({
+        url: PASSWORD_RESET_CHANGE_URL,
+        form: {
+            email: email,
+            password: password
+        },
+        headers: {
+            'Content-Type' : 'application/x-www-form-urlencoded',
+            'Accept': 'application/json, text/json',
+            'Authorization': AUTH_STRING
+        },
+        agentOptions: agentOptions,
+        strictSSL: false,
+        json: true
+    }, function (error, response, body) {
+        console.log("requestReset(): body", body);
+
+        if (error || response.statusCode != 204) {
+            console.error("requestReset(): error", error, response ? response.statusCode : null, body);
+            deferred.reject({
+                status: 500,
+                result: {
+                    statusCode: 500,
+                    errorCode: "passwordResetChangeFailed",
+                    message: "Failed to change password"
+                }
+            });
+            return;
+        }
+
+        deferred.resolve({
+            status: 204,
+            result: null
+        });
+    });
+
+    return deferred.promise;
+}
+
 exports.authenticate = authenticate;
 exports.getClient = getClient;
 exports.createClient = createClient;
 exports.createConsultant = createConsultant;
 exports.getConsultant = getConsultant;
 exports.lookupConsultant = lookupConsultant;
+exports.lookupConsultantByEmail = lookupConsultantByEmail;
+exports.lookupClientByEmail = lookupClientByEmail;
 exports.createLead = createLead;
 
 exports.createOrder = createOrder;
@@ -1657,3 +1874,6 @@ exports.deleteCreditCard = deleteCreditCard;
 
 exports.getGeocodes = getGeocodes;
 exports.calculateSalesTax = calculateSalesTax;
+
+exports.requestPasswordReset = requestPasswordReset;
+exports.requestPasswordChange = requestPasswordChange;
