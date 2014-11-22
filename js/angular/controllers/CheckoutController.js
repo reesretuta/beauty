@@ -953,6 +953,47 @@ angular.module('app.controllers.checkout')
             return dd.promise;
         }
 
+        // edit an address via a standard modal
+        $scope.editAddress = function(id) {
+            $log.debug('CheckoutController(): editAddress(%s):', id);
+            var d, body, dd = $q.defer();
+            d = $modal.open({
+                backdrop: true,
+                keyboard: true,
+                windowClass: 'editAddressModal',
+                templateUrl: '/partials/checkout/modals/shipping-edit.html',
+                controller: 'AddressEditModalController',
+                resolve: {
+                    profile: function() {
+                        return {
+                            firstName: $scope.profile.firstName,
+                            lastName: $scope.profile.lastName,
+                            loginEmail: $scope.profile.loginEmail,
+                            phoneNumber: $scope.profile.phoneNumber
+                        }
+                    }
+                }
+            });
+            body = $document.find('html, body');
+            d.result.then(function(result) {
+                $log.debug('CheckoutController(): editAddress(): edit address modal closed', result);
+                // save updated address
+                if (!result.canceled) {
+                    // result.profile
+                    $scope.profile.firstName = result.profile.firstName;
+                    $scope.profile.lastName = result.profile.lastName;
+                    $scope.profile.loginEmail = result.profile.loginEmail;
+                    $scope.profile.phoneNumber = result.profile.phoneNumber;
+                    dd.resolve();
+                } else {
+                    dd.resolve();
+                }
+                body.css("overflow-y", "auto");
+            });
+            $('html, body').css('overflow-y', 'hidden');
+            return dd.promise;
+        };
+
         $scope.verifyExp = function() {
             $log.debug("CheckoutController(): verifyExp(): ", $scope.profile.exp)
             $scope.invalidExp = false;

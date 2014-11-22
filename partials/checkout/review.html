@@ -175,7 +175,7 @@
         <span class="phone-number" ng-if="!isOnlineSponsoring">{{profile.shipping.phone}}</span>
         <span ng-if="!isOnlineSponsoring"><span ng-bind-html="'SHIPPING-CARRIER' | translate | unsafe"></span>: {{salesTaxInfo.shippingCarrier}}</span>
         <div class="address-actions">
-          <a href=" " data-toggle="modal" data-target=".bs-example-modal-lg-shipping" class="pull-left"><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'EDIT' | translate | unsafe"></span></a>
+          <a href ng-click="editAddress(addressData.id)" class="pull-left"><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'EDIT' | translate | unsafe"></span></a>
         </div>
       </div><!-- /address -->
 
@@ -188,7 +188,7 @@
               <h4 class="modal-title" id="myModalLabel"><span ng-bind-html="'PAY_TIT2' | translate | unsafe"></span></h4>
             </div>
             <div class="modal-body row">
-              <ng-include src="'/partials/checkout/shipping-edit-modal.html'"/>
+              <!--<ng-include src="'/partials/checkout/shipping-edit-modal.html'"/>-->
             </div>
           </div>
         </div>
@@ -203,7 +203,7 @@
         <span class="address-region">{{profile.billing.city}}, {{profile.billing.state}} {{profile.billing.zip}}</span>
         <span class="phone-number" ng-if="!isOnlineSponsoring">{{profile.billing.phone}}</span>
         <div class="address-actions">
-          <a href=" " data-toggle="modal" data-target=".bs-example-modal-lg-billing" class="pull-left"><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'EDIT' | translate | unsafe"></span></a>
+          <a href ng-click="editAddress(addressData.id)" class="pull-left"><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'EDIT' | translate | unsafe"></span></a>
         </div>
       </div><!-- /address -->
 

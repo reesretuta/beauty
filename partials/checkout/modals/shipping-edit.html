@@ -1,0 +1,28 @@
+
+<div class="modal-header">
+  <button type="button" class="close" ng-click="close()">&times;</button>
+  <h4 class="modal-title"><span ng-bind-html="'OS-ADDRESS_CORRECTION_TITLE' | translate | unsafe"></span> <span class="text-muted italic" ng-bind-html="'OS-ADDRESS_CORRECTION_TITLE_DESC' | translate | unsafe"></span></h4>
+</div>
+
+<div class="modal-body queue-modal-body">
+  <div class="row">
+    <div class="col-md-offset-3">
+      <h1><span ng-bind-html="'OS-SHIPPING-EDIT-TITLE' | translate | unsafe"></span></h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <ng-include src="'/partials/checkout/shipping-form-include.html'" />
+    </div>
+  </div>
+</div>
+
+<div class="modal-footer">
+  <div class="col-lg-6 col-md-6 col-sm-6">
+    <span class="text-muted pull-left"></span>
+  </div>
+  <div class="col-lg-6 col-md-6 col-sm-6">
+    <button ng-click="close()" class="btn btn-link"><span ng-bind-html="'BTN_CANCEL' | translate | unsafe"></span></button>
+    <button ng-click="save()" class="btn btn-primary" ng-disabled="!shippingForm.$valid"><span ng-bind-html="'BTN_SAVE' | translate | unsafe"></span></button>
+  </div>
+</div>
