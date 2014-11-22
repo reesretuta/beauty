@@ -1584,7 +1584,7 @@ angular.module('app.services', ['ngResource'])
         var total = 0;
         angular.forEach(items, function(item) {
           //$log.debug("calculating price for item", item);
-          if (item.product.prices.length == 0) {
+          if (item.product==null || item.product.currentPrice==null) {
             // there is a problem, we don't have prices
             $log.error("there are no prices listed for this item", item);
           } else {

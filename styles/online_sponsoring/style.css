@@ -69,6 +69,10 @@ a:link.text-underline {
   text-decoration: underline;
 }
 
+a {
+  position: relative;
+}
+
 .btn {
 /*font-size: 1.2em;
 padding: 0.5em 1.5em;*/
@@ -153,10 +157,6 @@ input:focus::-moz-placeholder {
 input:-ms-input-placeholder,
 input:focus:-ms-input-placeholder {
     color: #e1e1e1;
-}
-
-a {
-  position: relative;
 }
 
 #logo img {

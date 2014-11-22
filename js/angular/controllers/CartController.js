@@ -46,7 +46,8 @@ angular.module('app.controllers.cart')
         loadCart();
 
         $scope.total = function() {
-            if ($scope.cart != null || $scope.cart.length == 0) {
+            //$log.debug("CheckoutController(): total(): for items", $scope.cart)
+            if ($scope.cart != null && $scope.cart.length != 0) {
                 //$log.debug("CheckoutController(): total(): for items", $scope.cart)
                 return OrderHelper.getTotal($scope.cart);
             }
