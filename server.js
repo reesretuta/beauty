@@ -523,9 +523,9 @@ router.route('/products/:productId').get(function (req, res) {
             res.end();
             return;
         }
-        res.status(500);
+        res.status(404);
         res.json({
-            statusCode: 500,
+            statusCode: 404,
             errorCode: "productLookupFailed",
             errorMessage: "Failed to lookup product"
         });
