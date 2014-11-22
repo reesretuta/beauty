@@ -53,7 +53,7 @@
 <div class="form-group" ng-class="{ 'has-error' : paymentForm.cardName.$invalid && !paymentForm.cardName.$pristine }">
   <label for=" " class="col-md-3 control-label"><span ng-bind-html="'IN_NAME_CARD' | translate |unsafe"></span></label>
   <div class="col-sm-6 col-lg-4">
-    <input ng-model="profile.newCard.name" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-minlength="3" name="cardName" type="text" class="form-control" placeholder=" " required>
+    <input ng-model="profile.newCard.name" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-minlength="3" name="cardName" type="text" class="form-control" placeholder=" " required>
     <span ng-show="paymentForm.cardName.$error.minlength && paymentForm.cardName.$dirty" class="help-block" ng-class="{ 'text-danger' : paymentForm.cardName.$invalid }"><span ng-bind-html="'NAME_ON_CARD_ERR' | translate | unsafe"></span></span>
     <span ng-show="paymentForm.cardName.$error.pattern && paymentForm.cardName.$dirty" class="help-block" ng-class="{ 'text-danger' : paymentForm.cardName.$invalid }"><span ng-bind-html="'NAME_ON_CARD_INVALID_ERR' | translate | unsafe"></span></span>
     <!--valid={{paymentForm.cardName.$valid}}-->
@@ -63,11 +63,11 @@
 <div class="form-group" ng-class="{ 'has-error' : paymentForm.number.$invalid && !paymentForm.number.$pristine }">
   <label for=" " class="col-md-3 control-label"><span ng-bind-html="'IN_CARD_NUMBER' | translate |unsafe"></span></label>
   <div class="col-sm-6 col-lg-4">
-    <input ng-model="profile.newCard.card" data-ng-blur="visited=true" ng-minlength="13" ng-maxlength="16" maxlength="16" name="number" type="text" class="form-control" id=" " placeholder=" " data-ui-validate=" 'isValidCard($value)' " required>
+    <input ng-model="profile.newCard.card" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" data-ng-blur="visited=true" ng-minlength="13" ng-maxlength="16" maxlength="16" name="number" type="text" class="form-control" id=" " placeholder=" " data-ui-validate=" 'isValidCard($value)' " required>
     <span ng-show="visited && (paymentForm.number.$error.minlength || paymentForm.number.$error.validator)" class="help-block" ng-class="{ 'text-danger' : paymentForm.number.$invalid && !paymentForm.number.$pristine }"><span ng-bind-html="'INVALID-CARD-NUMBER' | translate | unsafe"></span></span>
     <!--valid={{paymentForm.number.$valid}}-->
   </div>
-  <div class="col-sm-4 col-lg-4" ng-model="cardType" ng-show="!paymentForm.number.$error.minlength && !paymentForm.number.$error.validator">
+  <div class="col-sm-4 col-lg-4" ng-model="cardType" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-show="!paymentForm.number.$error.minlength && !paymentForm.number.$error.validator">
     <img class="img-responsive cardImg" src="/img/visa.png" ng-show="profile.newCard.cardType=='Visa'">
     <img class="img-responsive cardImg" src="/img/mastercard.png" ng-show="profile.newCard.cardType=='MasterCard'">
     <img class="img-responsive cardImg" src="/img/discover.png" ng-show="profile.newCard.cardType=='Discover Card'">
@@ -79,14 +79,14 @@
   <div class="col-sm-5" ng-class="{ 'has-error' : (invalidExpiration || paymentForm.expMonth.$invalid || paymentForm.expYear.$invalid) && !paymentForm.expMonth.$pristine && !paymentForm.expYear.$pristine }">
     <div class="row">
       <div class="col-xs-4 col-sm-3 col-med-2">
-        <input ng-model="profile.newCard.expMonth" name="expMonth" type="text" class="form-control col-sm-1" ui-mask="99" placeholder="MM" required>
+        <input ng-model="profile.newCard.expMonth" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" name="expMonth" type="text" class="form-control col-sm-1" ui-mask="99" placeholder="MM" required>
         <!--valid={{paymentForm.expMonth.$valid}}-->
       </div>
       <div class="col-xs-1">
         <label class="control-label">/</label>
       </div>
       <div class="col-xs-6 col-sm-4 col-med-3">
-        <input ng-model="profile.newCard.expYear" name="expYear" type="text" class="form-control col-sm-3" ui-mask="9999" placeholder="{{ 'YEAR-PLACEHOLDER' | translate }}" required>
+        <input ng-model="profile.newCard.expYear" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" name="expYear" type="text" class="form-control col-sm-3" ui-mask="9999" placeholder="{{ 'YEAR-PLACEHOLDER' | translate }}" required>
         <!--valid={{paymentForm.expYear.$valid}}-->
       </div>
     </div>
@@ -98,7 +98,7 @@
   <div class="col-sm-5">
     <div class="row">
       <div class="col-xs-4 col-sm-4 col-med-2">
-        <input ng-model="profile.newCard.cvv" ng-pattern="/^[0-9]+$/" ng-minlength="3" ng-maxlength="4" maxlength="4" name="cvv" type="number" limit-to="4" class="form-control col-sm-1 hide-arrows" placeholder="&bull;&bull;&bull;" required />
+        <input ng-model="profile.newCard.cvv" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-pattern="/^[0-9]+$/" ng-minlength="3" ng-maxlength="4" maxlength="4" name="cvv" type="number" limit-to="4" class="form-control col-sm-1 hide-arrows" placeholder="&bull;&bull;&bull;" required />
         <span ng-show="paymentForm.cvv.$invalid && paymentForm.cvv.$dirty" class="help-block" ng-class="{ 'text-danger' : paymentForm.cvv.$invalid }"><span ng-bind-html="'NUMBERS-ONLY-SHORT' | translate | unsafe"></span></span>
         <!--valid={{paymentForm.cvv.$valid}}-->
       </div>
@@ -130,35 +130,35 @@
   <div class="row form-group" ng-if="!isOnlineSponsoring">
     <label for="billingFullName" class="col-md-3 control-label"><span ng-bind-html="'IN_FULL_NAME' | translate | unsafe"></span></label>
     <div class="col-sm-8 col-lg-6">
-      <input id="billingFullName" name="name" ng-model="profile.newBillingAddress.name" type="text" class="form-control" placeholder="" required>
+      <input id="billingFullName" name="name" ng-model="profile.newBillingAddress.name" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" type="text" class="form-control" placeholder="" required>
     </div>
   </div>
 
   <div class="row form-group">
     <label for="billingBusinessCO" class="col-md-3 control-label"><span ng-bind-html="'IN_BUSINESS_CO' | translate | unsafe"></span></label>
     <div class="col-sm-8 col-lg-6">
-      <input id="billingBusinessCO" name="name" ng-model="profile.newBillingAddress.businessCO" type="text" class="form-control" placeholder="Business Name, c/o Someone, etc." autocomplete="off">
+      <input id="billingBusinessCO" name="name" ng-model="profile.newBillingAddress.businessCO" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" type="text" class="form-control" placeholder="Business Name, c/o Someone, etc." autocomplete="off">
     </div>
   </div>
 
   <div class="row form-group">
     <label for="billingAddress1" class="col-md-3 control-label"><span ng-bind-html="'IN_ADD_LINE1' | translate | unsafe"></span></label>
     <div class="col-sm-8 col-lg-6">
-      <input name="address1" ng-model="profile.newBillingAddress.address1" type="text" class="form-control" id="billingAddress1" placeholder="{{ 'IN_ADD_LINE1_DES' | translate }} " required>
+      <input name="address1" ng-model="profile.newBillingAddress.address1" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" type="text" class="form-control" id="billingAddress1" placeholder="{{ 'IN_ADD_LINE1_DES' | translate }} " required>
     </div>
   </div>
 
   <div class="row form-group">
     <label for="billingAddress2" class="col-md-3 control-label"><span ng-bind-html="'IN_ADD_LINE2' | translate | unsafe"></span></label>
     <div class="col-sm-8 col-lg-6">
-      <input name="address2" ng-model="profile.newBillingAddress.address2" type="text" class="form-control" id="billingAddress2" placeholder="{{ 'IN_ADD_LINE2_DES' | translate }} " >
+      <input name="address2" ng-model="profile.newBillingAddress.address2" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" type="text" class="form-control" id="billingAddress2" placeholder="{{ 'IN_ADD_LINE2_DES' | translate }} " >
     </div>
   </div>
 
   <div class="row form-group">
     <label for="billingCity" class="col-md-3 control-label"><span ng-bind-html="'IN_CITY' | translate | unsafe"></span></label>
     <div class="col-sm-7 col-lg-5">
-      <input name="city" ng-model="profile.newBillingAddress.city" type="text" class="form-control" id="billingCity" placeholder=" " required>
+      <input name="city" ng-model="profile.newBillingAddress.city" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" type="text" class="form-control" id="billingCity" placeholder=" " required>
     </div>
   </div>
 
@@ -167,7 +167,7 @@
     <!-- TO-DO: Fix CSS width of form control -->
     <div class="col-sm-5 col-lg-3">
         <div class="">
-          <select id="billingStateProvinceRegion" name="state" ng-model="profile.newBillingAddress.state" class="form-control" >
+          <select id="billingStateProvinceRegion" name="state" ng-model="profile.newBillingAddress.state" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" class="form-control" >
             <option value="AL">Alabama</option>
             <option value="AK">Alaska</option>
             <option value="AZ">Arizona</option>
@@ -235,14 +235,14 @@
   <div class="row form-group">
     <label for="billingZipPostalCode" class="col-md-3 control-label"><span ng-bind-html="'IN_ZIP' | translate | unsafe"></span></label>
     <div class="col-sm-5 col-lg-3">
-      <input name="billingzipPostalCode" ng-model="profile.newBillingAddress.zip" type="text" class="form-control" id="billingZipPostalCode" placeholder=" " required>
+      <input name="billingzipPostalCode" ng-model="profile.newBillingAddress.zip" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" type="text" class="form-control" id="billingZipPostalCode" placeholder=" " required>
     </div>
   </div>
 
   <div class="row form-group">
     <label for="billingCountry" class="col-md-3 control-label"><span ng-bind-html="'IN_COUNTRY' | translate | unsafe"></span></label>
     <div class="col-sm-5 col-lg-3">
-      <select id="billingCountry" name="billingCountry" data-ng-init="profile.newBillingAddress.country='US'" ng-model="profile.newBillingAddress.country" class="form-control" >
+      <select id="billingCountry" name="billingCountry" data-ng-init="profile.newBillingAddress.country='US'" ng-model="profile.newBillingAddress.country" class="form-control">
         <option ng-selected="true" value="US" ng-bind-html="'COUNTRY-US' | translate | unsafe"></option>
       </select>
     </div>
@@ -251,7 +251,7 @@
   <div class="row form-group" ng-if="!isOnlineSponsoring"  ng-class="{ 'has-error' : paymentForm.phoneNumber.$invalid && !paymentForm.phoneNumber.$pristine }">
     <label for="billingPhoneNumber" class="col-md-3 control-label"><span ng-bind-html="'PHONE-NUMBER' | translate | unsafe"></span></label>
     <div class="col-sm-6 col-lg-4">
-      <input id="billingPhoneNumber" name="phoneNumber" ng-model="profile.newBillingAddress.phone" type="text" ui-mask="(999) 999-9999" placeholder="(xxx) xxx-xxxx" class="form-control">
+      <input id="billingPhoneNumber" name="phoneNumber" ng-model="profile.newBillingAddress.phone" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" type="text" ui-mask="(999) 999-9999" placeholder="(xxx) xxx-xxxx" class="form-control">
       <span ng-show="paymentForm.phoneNumber.$error.pattern" class="help-block" ng-class="{ 'text-danger' : paymentForm.phoneNumber.$invalid && !paymentForm.phoneNumber.$pristine }"><span ng-bind-html="'PHONE-NUMBER-WRONG' | translate | unsafe"></span></span>
     </div>
     <a popover="{{'PHONE-NUMBER-DES' | translate | unsafe}}" popover-title="{{'PHONE-NUMBER' | translate | unsafe}}" href="" class="form-info-link"><i class="fa fa-info-circle"></i> <span ng-bind-html="'MORE-INFO' | translate | unsafe"></span></a>
