@@ -103,7 +103,7 @@
         <!--valid={{paymentForm.cvv.$valid}}-->
       </div>
       <div class="col-xs-6 col-sm-4 col-med-3">
-        <a popover="{{ 'CVV-POPOVER-CONTENT' | translate | unsafe }}" popover-title="{{ 'CVV-POPOVER-TITLE' | translate | unsafe }}" href="" tabindex="-1" popover-trigger="hover"><i class="fa fa-info-circle"></i>
+        <a popover-html-unsafe="{{ 'CVV-POPOVER-CONTENT' | translate | unsafe }}" popover-title-html-unsafe="{{ 'CVV-POPOVER-TITLE' | translate | unsafe }}" href="" tabindex="-1" popover-trigger="hover"><i class="fa fa-info-circle"></i>
           <span ng-bind-html="'WHATS-THIS' | translate | unsafe"></span>
         </a>
       </div>

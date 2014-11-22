@@ -124,7 +124,7 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
 //
 //            return $delegate;
 //        });
-    }]).run(function ($rootScope, $animate, $log, $location, Session, $translate, BASE_URL) {
+    }]).run(function ($rootScope, $animate, $log, $location, Session, $translate, $templateCache, BASE_URL) {
         $rootScope.BASE_URL = BASE_URL;
         $rootScope.STORE_BASE_URL = BASE_URL + "/shop";
         $rootScope.JOIN_BASE_URL = BASE_URL + "/join";
@@ -160,4 +160,15 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
                 $log.debug("app(): failed to save to session sponsorId", cid, "source", source, "language", language);
             });
         }
+
+        $templateCache.put("template/popover/popover-html-unsafe-popup.html",
+            "<div class=\"popover {{placement}}\" ng-class=\"{ in: isOpen(), fade: animation() }\">\n" +
+            "  <div class=\"arrow\"></div>\n" +
+            "\n" +
+            "  <div class=\"popover-inner\">\n" +
+            "      <h3 class=\"popover-title\" ng-bind-html=\"title | unsafe\" ng-show=\"title\"></h3>\n" +
+            "      <div class=\"popover-content\" ng-bind-html=\"content | unsafe\"></div>\n" +
+            "  </div>\n" +
+            "</div>\n" +
+            "");
     });
