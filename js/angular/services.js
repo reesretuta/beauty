@@ -1559,6 +1559,30 @@ angular.module('app.services', ['ngResource'])
 
       return orderHelper;
     })
+    .factory('PasswordResetHelper', function ($log, $q, API_URL) {
+        var resetHelper = {};
+
+        // get the total for a list of products
+        resetHelper.reset = function(token, email, password) {
+            var d = $q.defer();
+
+            $http.post(API_URL + '/clients/passwordReset', {
+                email: email,
+                token: token,
+                password: password
+            }, {}).success(function(data, status, headers, config) {
+                $log.debug("PasswordResetHelper(): reset()");
+
+                d.resolve();
+            }).error(function(data, status, headers, config) {
+                //failure(data, status, headers, config);
+                $log.error("PasswordResetHelper(): reset(): error resetting password", status, data);
+                d.reject(data);
+            });
+        }
+
+        return resetHelper;
+    })
     .factory('focus', function ($rootScope, $timeout) {
         return function(name) {
             $timeout(function (){

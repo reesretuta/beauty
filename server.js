@@ -797,30 +797,75 @@ router.route('/clients') // get current client
 
     });
 
+router.route('/clients/passwordReset')
+    .get(function (req, res) {
+        console.log("password reset: got data", req.query);
+        var email = req.query.email;
+        var language = req.query.language;
+
+        jafraClient.requestPasswordReset(email, language).then(function(r) {
+            console.log("success", r)
+            res.status(r.status);
+            res.json(r.result);
+        }, function(r) {
+            console.error("failure", r)
+            res.status(r.status);
+            res.json(r.result);
+        });
+    })
+
+    .post(function (req, res) {
+        console.log("password change: got data", req.body);
+        var email = req.body.email;
+        var password = req.body.password;
+
+        jafraClient.requestPasswordChange(email, password).then(function(r) {
+            console.log("success", r)
+            res.status(r.status);
+            res.json(r.result);
+        }, function(r) {
+            console.error("failure", r)
+            res.status(r.status);
+            res.json(r.result);
+        });
+    });
+
 router.route('/clients/:client_id')// get a client
     .get(function (req, res) {
         var clientId = req.params.client_id;
 
-        // must be authenticated
-        if (req.session.client == null) {
-            res.status(401);
-            res.end();
-            return;
-        } else if (req.session.client.id != clientId) {
-            res.status(403);
-            res.end();
-            return;
-        }
+        if (clientId.indexOf('@') != -1) {
+            // fetch the consultant information & return
+            jafraClient.lookupClientByEmail(clientId).then(function(r) {
+                res.status(r.status);
+                res.json(r.result);
+            }, function (r) {
+                console.error("server: getClient(): failed to load client", r.result);
+                res.status(r.status);
+                res.json(r.result);
+            });
+        } else {
+            // must be authenticated
+            if (req.session.client == null) {
+                res.status(401);
+                res.end();
+                return;
+            } else if (req.session.client.id != clientId) {
+                res.status(403);
+                res.end();
+                return;
+            }
 
-        // fetch the client information & return
-        jafraClient.getClient(clientId).then(function(r) {
-            res.status(r.status);
-            res.json(r.result);
-        }, function (r) {
-            console.error("server: getClient(): failed to load client", r.result);
-            res.status(500);
-            res.json(r.result);
-        });
+            // fetch the client information & return
+            jafraClient.getClient(clientId).then(function (r) {
+                res.status(r.status);
+                res.json(r.result);
+            }, function (r) {
+                console.error("server: getClient(): failed to load client", r.result);
+                res.status(500);
+                res.json(r.result);
+            });
+        }
     })
 
     // update a client
@@ -871,15 +916,27 @@ router.route('/consultants/:consultant_id')// get a consultant
     .get(function (req, res) {
         var consultant_id = req.params.consultant_id;
 
-        // fetch the consultant information & return
-        jafraClient.getConsultant(consultant_id).then(function(r) {
-            res.status(r.status);
-            res.json(r.result);
-        }, function (r) {
-            console.error("server: getClient(): failed to load consultant", r.result);
-            res.status(500);
-            res.json(r.result);
-        });
+        if (consultant_id.indexOf('@') != -1) {
+            // fetch the consultant information & return
+            jafraClient.lookupConsultantByEmail(consultant_id).then(function(r) {
+                res.status(r.status);
+                res.json(r.result);
+            }, function (r) {
+                console.error("server: getConsultant(): failed to load consultant", r.result);
+                res.status(r.status);
+                res.json(r.result);
+            });
+        } else {
+            // fetch the consultant information & return
+            jafraClient.getConsultant(consultant_id).then(function(r) {
+                res.status(r.status);
+                res.json(r.result);
+            }, function (r) {
+                console.error("server: getConsultant(): failed to load consultant", r.result);
+                res.status(500);
+                res.json(r.result);
+            });
+        }
 
     });
 
@@ -1478,7 +1535,7 @@ app.get('/encrypt_test.html$', function (req, res) {
 models.onReady(function () {
     console.log('Connected to database');
 
-    if (env === 'test') {
+    if (env === 'mock') {
         http.createServer(mockserver('./mocks')).listen(mock_port);
         console.log('Mock API server on port ' + mock_port);
     }
