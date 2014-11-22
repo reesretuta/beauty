@@ -353,7 +353,8 @@ angular.module('app.controllers.checkout')
                     $log.debug("CheckoutController(): selectProduct(): previous cart cleared");
 
                     Cart.addToCart({
-                        name: Product.getTranslated(product).name,
+                        name: product.name,
+                        name_es_US: product.name_es_US,
                         sku: product.sku,
                         kitSelections: product.kitSelections,
                         quantity: 1
@@ -1017,6 +1018,7 @@ angular.module('app.controllers.checkout')
 
         $scope.validateEmailAndContinue = function(email) {
             $scope.emailError = false;
+            $scope.waiting = true;
             $log.debug("CheckoutController(): validateEmailAndContinue()");
 
             if (debug) {
@@ -1024,6 +1026,7 @@ angular.module('app.controllers.checkout')
 
                 // move to next step
                 WizardHandler.wizard('checkoutWizard').goTo('Profile');
+                $scope.waiting = false;
             } else {
                 Addresses.validateEmail(email).then(function(r) {
                     $log.debug("CheckoutController(): validated email");
@@ -1047,16 +1050,22 @@ angular.module('app.controllers.checkout')
                             }, function(error) {
                                 $log.error("CheckoutController(): validateEmailAndContinue(): failed to create lead", error);
                             });
+                            WizardHandler.wizard('checkoutWizard').goTo('Profile');
+                            $scope.waiting = false;
                         }, function(error) {
                             $log.error('CheckoutController(): Session: client email exists', error);
                             $scope.emailError = true;
+                            $scope.waiting = false;
                         });
+                    } else {
+                        // move to next step
+                        WizardHandler.wizard('checkoutWizard').goTo('Profile');
+                        $scope.waiting = false;
                     }
-                    // move to next step
-                    WizardHandler.wizard('checkoutWizard').goTo('Profile');
                 }, function(r) {
                     $log.error("CheckoutController(): failed validating email", r);
                     $scope.emailError = true;
+                    $scope.waiting = false;
                 })
             }
         }
@@ -1065,6 +1074,7 @@ angular.module('app.controllers.checkout')
             $log.debug("CheckoutController(): loginOrCreateUser()");
 
             $scope.loginError = null;
+            $scope.waiting = true;
 
             if ($scope.profile.customerStatus == 'new') {
                 $log.debug("CheckoutController(): loginOrCreateUser(): trying to create client with username=", $scope.profile.loginEmail);
@@ -1086,12 +1096,14 @@ angular.module('app.controllers.checkout')
                     $scope.profile.customerStatus = 'existing';
                     $scope.checkoutUpdated();
                     // jump to Shipping
+                    $scope.waiting = false;
                     WizardHandler.wizard('checkoutWizard').goTo($scope.isOnlineSponsoring ? 'Profile' : 'Shipping');
                 }, function(error) {
                     $log.error("CheckoutController(): loginOrCreateUser(): failed to create client", error);
                     $translate('LOGIN-ERROR').then(function (message) {
                         $scope.loginError = message;
                     });
+                    $scope.waiting = false;
                 });
             } else {
                 $log.debug("CheckoutController(): loginOrCreateUser(): trying to login with username=", $scope.profile.loginEmail);
@@ -1102,12 +1114,14 @@ angular.module('app.controllers.checkout')
                     $scope.profile.customerStatus = 'existing';
                     $scope.checkoutUpdated();
                     // jump to Shipping
+                    $scope.waiting = false;
                     WizardHandler.wizard('checkoutWizard').goTo($scope.isOnlineSponsoring ? 'Profile' : 'Shipping');
                 }, function(error) {
                     $log.error("CheckoutController(): loginOrCreateUser(): failed to authenticate");
                     $translate('LOGIN-ERROR').then(function (message) {
                         $scope.loginError = message;
                     });
+                    $scope.waiting = false;
                 });
             }
         }

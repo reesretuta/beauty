@@ -28,7 +28,8 @@ angular.module('app.controllers.products')
             }
             $log.debug("ProductDetailsController(): adding product", product, qty);
             Cart.addToCart({
-                name: Product.getTranslated(product).name,
+                name: product.name,
+                name_es_US: product.name_es_US,
                 sku: product.sku,
                 quantity: qty,
                 kitSelections: {}
@@ -47,7 +48,8 @@ angular.module('app.controllers.products')
                     }
 
                     Cart.addToCart({
-                        name: item.Product.getTranslated(product).name,
+                        name: item.product.name,
+                        name_es_US: item.product.name_es_US,
                         sku: item.product.sku,
                         quantity: qty,
                         kitSelections: {}
@@ -114,6 +116,7 @@ angular.module('app.controllers.products')
                     for (var i=0; i < n; i++) {
                         Cart.addToCart({
                             name: cartItem.name,
+                            name_es_US: cartItem.name_es_US,
                             sku: cartItem.sku,
                             kitSelections: cartItem.kitSelections,
                             quantity: 1

@@ -34,7 +34,8 @@ angular.module('app.controllers.products')
             }
             $log.debug("ProductsController(): addToCart(): adding product", product, qty);
             Cart.addToCart({
-                name: Product.getTranslated(product).name,
+                name: product.name,
+                name_es_US: product.name_es_US,
                 sku: product.sku,
                 quantity: qty,
                 kitSelections: {}

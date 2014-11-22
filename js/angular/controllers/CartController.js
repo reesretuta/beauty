@@ -75,7 +75,8 @@ angular.module('app.controllers.cart')
                 if (product.type == 'kit' && product.kitGroups.length > 0) {
                     // configure kit
                     $scope.configureKit({
-                        name: Product.getTranslated(product).name,
+                        name: product.name,
+                        name_es_US: product.name_es_US,
                         sku: product.sku,
                         product: product,
                         kitSelections: product.kitSelections,
@@ -84,7 +85,8 @@ angular.module('app.controllers.cart')
                 } else {
                     $log.debug("CartController(): addToCart(): adding product", product);
                     Cart.addToCart({
-                        name: Product.getTranslated(product).name,
+                        name: product.name,
+                        name_es_US: product.name_es_US,
                         sku: product.sku,
                         kitSelections: product.kitSelections,
                         quantity: $scope.orderByIdQty
@@ -149,6 +151,7 @@ angular.module('app.controllers.cart')
                     for (var i=0; i < $scope.orderByIdQty; i++) {
                         Cart.addToCart({
                             name: cartItem.name,
+                            name_es_US: cartItem.name_es_US,
                             sku: cartItem.sku,
                             kitSelections: cartItem.kitSelections,
                             quantity: 1
