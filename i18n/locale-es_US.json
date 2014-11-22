@@ -222,7 +222,7 @@
     "SALES-TAX-ERROR": "Error al procesamiento de la informaci&oacute;n del env&iacute;o",
 
     "ENTER-PAYMENT-INFO": "Ingrese Informaci&oacute;n sobre el pago",
-    "INVALID-CARD-NUMBER": "N&usacute;mero de tarjeta inv&aacute;lido",
+    "INVALID-CARD-NUMBER": "N&aacute;mero de tarjeta inv&aacute;lido",
 
     "MUST-SELECT-ADDRESS": "Debe seleccionar una direcci&oacute;n",
     "UNABLE-TO-VERIFY-ADDRESS": "No se puede verificar la direcci&oacute;n",
