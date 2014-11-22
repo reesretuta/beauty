@@ -1,5 +1,5 @@
 angular.module('app.controllers.top')
-    .controller('PasswordResetController', function ($scope, $document, $timeout, $log, $location, $rootScope, $translate, $routeParams, PasswordResetHelper, SHOP_BASE_URL) {
+    .controller('PasswordResetController', function ($scope, $document, $timeout, $log, $location, $rootScope, $translate, $routeParams, PasswordResetHelper, STORE_BASE_URL) {
 
         $log.debug('PasswordResetController()');
 
@@ -7,18 +7,20 @@ angular.module('app.controllers.top')
         var email = $routeParams.email;
         $scope.resetData = {
             token: token,
-            email: email
+            email: email,
+            password: null,
+            confirmPassword: null
         };
 
-        $scope.resetPassword = function() {
+        $rootScope.section = "passwordReset";
+
+        $scope.reset = function() {
+            $log.debug('PasswordResetController()', $scope.resetData.email, $scope.resetData.password, $scope.resetData.token);
+
             $scope.resetError = "";
 
-            PasswordResetHelper.reset({
-                email: $scope.resetData.email,
-                password: $scope.resetData.password,
-                token: $scope.resetData.token
-            }).then(function() {
-                $location.url(SHOP_BASE_URL);
+            PasswordResetHelper.reset($scope.resetData.email, $scope.resetData.password, $scope.resetData.token).then(function() {
+                $location.url(STORE_BASE_URL);
             }, function(error) {
                 $log.error('PasswordResetController()', error);
                 $translate('PASSWORD-RESET-ERROR').then(function (message) {

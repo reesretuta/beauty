@@ -242,7 +242,7 @@ exports.Product = Product;
 // PASSWORD RESET TOKEN
 var passwordResetTokenSchema = Schema({
     "token" : { type: String, unique: true },
-    "email" : { email: String, unique: false },
+    "email" : { type: String, unique: false },
     "language" : { language: String, unique: false },
     "created" : { type: Date, default: Date.now }
 });

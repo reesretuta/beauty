@@ -732,10 +732,7 @@ models.onReady(function() {
                                             product.name_es_US = $('input[name=formalName_es_US]').val();
                                             product.description_es_US = description;
                                         }
-                                        product.quantity = parseInt($('input[name="sellingQty_'+LANGUAGE+'"]').val());
-                                        if (product.quantity == null || isNaN(product.quantity)) {
-                                            product.quantity = 1;
-                                        }
+                                        product.quantity = $('input[name="sellingQty_'+LANGUAGE+'"]').val();
                                         product.onHold = $('input[name="onHold"]').attr('checked') || false;
                                         product.searchable = $('input[name="searchable"]').attr('checked') || false;
                                         product.masterStatus = $('select[name="status"] > option:selected').val();

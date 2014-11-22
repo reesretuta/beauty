@@ -816,10 +816,11 @@ router.route('/clients/passwordReset')
 
     .post(function (req, res) {
         console.log("password change: got data", req.body);
+        var token = req.body.token;
         var email = req.body.email;
         var password = req.body.password;
 
-        jafraClient.requestPasswordChange(email, password).then(function(r) {
+        jafraClient.requestPasswordChange(email, password, token).then(function(r) {
             console.log("success", r)
             res.status(r.status);
             res.json(r.result);
