@@ -81,14 +81,13 @@
             <td colspan="3">
               <p><span ng-bind-html="'CART_SUBTOTAL' | translate | unsafe"></span>: {{ salesTaxInfo.SubTotal | currency }}</p>
               <p><span ng-bind-html="'CART_SHIPPING' | translate | unsafe"></span>: {{ salesTaxInfo.SH | currency }}</p>
-              <p><span ng-bind-html="'CART_TAX' | translate | unsafe"></span> -  {{ salesTaxInfo.TaxRate }}%: {{ salesTaxInfo.TaxAmount | currency }} 
+              <p><span ng-bind-html="'CART_TAX' | translate | unsafe"></span>: ({{ salesTaxInfo.TaxRate}}%): {{ salesTaxInfo.TaxAmount | currency }}</p>
               </p>
               <p class="lead"><b><span ng-bind-html="'TOTAL_CHARGES' | translate | unsafe"></span>: {{ salesTaxInfo.Total | currency }}</b></p>
             </td>
           </tr>
           </tfoot>
         </table>
-
       </div>
 
 	<hr>
