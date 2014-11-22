@@ -15,6 +15,9 @@
 
     "CONTACT-INFO": "1 (800) 551-2345<br/>Abierto: L-V 8:30am-5:30pm<br>Hora del Pac&iacute;fico",
 
+    "CVV-POPOVER-TITLE": "C&oacute;digo de Seguridad/CVV2",
+    "CVV-POPOVER-CONTENT": "3-4 d&iacute;gitos localizados atr&aacute;s de tu tarjeta de cr&eacute;dito",
+    
     "OS-NAV1":"&iquest;Por qu&eacute; JAFRA?",
     "OS-NAV2":"KITS DE INICIO",
     "OS-NAV3":"PREGUNTAS FRECUENTES",

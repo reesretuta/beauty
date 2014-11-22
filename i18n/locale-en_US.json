@@ -15,6 +15,9 @@
 
     "CONTACT-INFO": "1 (800) 551-2345<br/>Open: M-F 8:30am-5:30pm<br>Pacific",
 
+    "CVV-POPOVER-TITLE": "Security Code/CVV2",
+    "CVV-POPOVER-CONTENT": "3-4 digit number located on your credit card",
+
     "OS-NAV1":"Why Jafra?",
     "OS-NAV2":"Starter Kits",
     "OS-NAV3":"Faqs",

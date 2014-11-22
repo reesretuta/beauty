@@ -67,8 +67,9 @@
           <!--valid={{editCardForm.cvv.$valid}}-->
         </div>
         <div class="col-xs-8 col-sm-8 col-med-8">
-          <a popover="3-4 digit number located on your credit card" popover-title="Security Code/CVV2" href="" tabindex="-1"><i class="fa fa-info-circle"></i>
-            <span ng-bind-html="'WHATS-THIS' | translate | unsafe"></span></a>
+          <a popover="{{ 'CVV-POPOVER-CONTENT' | translate | unsafe }}" popover-title="{{ 'CVV-POPOVER-TITLE' | translate | unsafe }}" href="" tabindex="-1" popover-trigger="hover"><i class="fa fa-info-circle"></i>
+            <span ng-bind-html="'WHATS-THIS' | translate | unsafe"></span>
+          </a>
         </div>
       </div>
     </div>

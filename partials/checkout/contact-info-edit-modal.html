@@ -50,9 +50,9 @@
 
     <div class="form-group">
       <label for="phoneNumber" class="col-md-3 control-label"><span ng-bind-html="'PHONE-NUMBER' | translate | unsafe"></span></label>
-      <div class="col-sm-4">
-        <input name="phoneNumber" type="tel" ui-mask="(999) 999-9999" ng-model="profile.phoneNumber" class="form-control" id="phoneNumber" placeholder="(___) ___-____" required>
-        <!--valid={{contactForm.phoneNumber.$valid}}-->
+      <div class="col-sm-4" ng-class="{ 'has-error' : signInForm.phoneNumber.$dirty && signInForm.phoneNumber.$invalid }">
+        <input name="phoneNumber" type="tel" ui-mask="(999) 999-9999" ng-model="profile.phoneNumber" mask-override ng-minlength="13" class="form-control" id="phoneNumber" placeholder="(___) ___-____" required>
+        <span ng-show="signInForm.phoneNumber.$dirty && signInForm.phoneNumber.$invalid" class="help-block" ng-class="{ 'text-danger' : signInForm.phoneNumber.$dirty && signInForm.phoneNumber.$invalid }"><span ng-bind-html="'INVALID-TELEPHONE-NUMBER' | translate | unsafe"></span>.</span>
       </div>
     </div>
 
