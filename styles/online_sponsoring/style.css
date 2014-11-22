@@ -1221,3 +1221,8 @@ body.incheckout {
   }
 }
 
+/* addthis cutoff fix */
+.at-share-btn {
+  display: inline-block;
+}
+
