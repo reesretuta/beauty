@@ -82,24 +82,32 @@ angular.module('app.directives', [])// directives
                 }
             });
         };
-    }).directive('ngModelOnblur', function() {
+    }).directive('modelOnBlur', ['$log', function($log) {
         return {
             priority: 1,
             restrict: 'A',
             require: 'ngModel',
-            link: function(scope, elm, attr, ngModelCtrl) {
+            link: function($scope, elem, attr, modelCtrl) {
                 if (attr.type === 'radio' || attr.type === 'checkbox') {
                     return;
                 }
-                elm.off('input keydown change');
-                elm.on('blur', function() {
-                    scope.$apply(function() {
-                        ngModelCtrl.$setViewValue(elm.val());
-                    });         
+                function applyText() {
+                    $scope.$apply(function() {
+                        modelCtrl.$setViewValue(elem.val());
+                    }); 
+                }
+                elem.off('input keydown change');
+                elem.on('blur', function(evt) {
+                    applyText();    
                 });
+                if (attr.modelOnBlur) {
+                    elem.on('mouseleave', function (evt) {
+                        applyText(elem.val());
+                    });
+                }
             }
         };
-    }).directive('limitTo', [function () {
+    }]).directive('limitTo', [function () {
         return {
             restrict: 'A',
             link: function(scope, elem, attrs) {
