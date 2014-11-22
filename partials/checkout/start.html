@@ -45,8 +45,8 @@
 
     <div class="form-group" ng-if="isOnlineSponsoring">
       <label for="phoneNumber" class="col-md-3 control-label"><span ng-bind-html="'PHONE-NUMBER' | translate | unsafe"></span></label>
-      <div class="col-sm-3">
-        <input name="phoneNumber" type="tel" ui-mask="(999) 999-9999" ng-model="profile.phoneNumber" class="form-control" id="phoneNumber" placeholder="(___) ___-____" required>
+      <div class="col-sm-3" ng-class="{ 'has-error' : signInForm.phoneNumber.$dirty && signInForm.phoneNumber.$invalid }">
+        <input name="phoneNumber" type="tel" ui-mask="(999) 999-9999" ng-model="profile.phoneNumber" mask-override ng-minlength="13" class="form-control" id="phoneNumber" placeholder="(___) ___-____" required>
         <!--valid={{signInForm.phoneNumber.$valid}}-->
       </div>
     </div>
