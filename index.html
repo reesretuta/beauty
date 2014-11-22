@@ -163,7 +163,7 @@
         </div>
       </div><!-- /row -->
 
-      <div class="row store-heading-nav" ng-hide="section == 'admin' || section =='checkout' || section=='cart'">
+      <div class="row store-heading-nav" ng-show="!(section == 'admin' || section =='checkout' || section=='cart' || section=='passwordReset')">
         <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8">
 
           <ol class="ab-nav breadcrumb">
@@ -187,7 +187,7 @@
       <div ng-class="{'': !isActive, 'active': isActive}" ng-init="isActive = false" class="row row-offcanvas row-offcanvas-left">
 
         <!-- Sidebar Navigation -->
-        <div class="col-xs-8 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation" ng-hide="section == 'admin' || section =='checkout' || section=='cart'">
+        <div class="col-xs-8 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation" ng-if="!(section == 'admin' || section =='checkout' || section=='cart' || section=='passwordReset')">
           <aside id="shop_menu">
             <a class="pull-left visible-xs store-nav-toggle" ng-click="isActive = !isActive">
               <i class="fa fa-bars"></i>
@@ -336,6 +336,7 @@
     <script src="/js/angular/controllers/TopController.js"></script>
     <script src="/js/angular/controllers/LanguageSwitcherController.js"></script>
     <script src="/js/angular/controllers/MainController.js"></script>
+    <script src="/js/angular/controllers/PasswordResetController.js"></script>
     <script src="/js/angular/controllers/CategoriesController.js"></script>
     <script src="/js/angular/controllers/HomeController.js"></script>
     <script src="/js/angular/controllers/ObjectsController.js"></script>

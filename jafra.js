@@ -62,7 +62,7 @@ var STRIKEIRON_EMAIL_TIMEOUT = 15;
 var STRIKEIRON_ADDRESS_SOAP_URL = 'http://ws.strikeiron.com/NAAddressVerification6?WSDL';
 var STRIKEIRON_ADDRESS_LICENSE = "0DA72EA3199C10ABDE0B";
 
-var MIN_PASSWORD_RESET_INTERVAL = 5 * 1000 * 60;
+var PASSWORD_RESET_INTERVAL = 60 * 1000 * 60;
 
 function authenticate(email, password) {
     //console.log("authenticating", email, password);
@@ -1708,10 +1708,10 @@ function requestPasswordReset(email, language) {
     var deferred = Q.defer();
 
     var now = new Date();
-    var olderThan = new Date(now.getTime() - MIN_PASSWORD_RESET_INTERVAL);
+    var olderThan = new Date(now.getTime() - PASSWORD_RESET_INTERVAL);
 
     // make sure this user hasn't done a password reset in past N minutes
-    models.Product.find({email: email, created: {$lt: olderThan}}, function(err, tokens) {
+    models.PasswordResetToken.find({email: email, created: {$lt: olderThan}}, function(err, tokens) {
         if (err) {
             console.error("failed to lookup password reset token", err);
             deferred.reject({
@@ -1757,7 +1757,7 @@ function requestPasswordReset(email, language) {
                 return;
             }
 
-            console.log('created password reset token for ' + email);
+            console.log('requestPasswordReset(): created password reset token for ' + email);
 
             request.post({
                 url: PASSWORD_RESET_REQUEST_URL,
@@ -1802,44 +1802,68 @@ function requestPasswordReset(email, language) {
     return deferred.promise;
 }
 
-function requestPasswordChange(email, password) {
-    console.log("requestPasswordChange()", email);
+function requestPasswordChange(email, password, token) {
+    console.log("requestPasswordChange()", email, token);
     var deferred = Q.defer();
 
-    request.post({
-        url: PASSWORD_RESET_CHANGE_URL,
-        form: {
-            email: email,
-            password: password
-        },
-        headers: {
-            'Content-Type' : 'application/x-www-form-urlencoded',
-            'Accept': 'application/json, text/json',
-            'Authorization': AUTH_STRING
-        },
-        agentOptions: agentOptions,
-        strictSSL: false,
-        json: true
-    }, function (error, response, body) {
-        console.log("requestReset(): body", body);
+    var now = new Date();
+    var cantBeOlderThan = new Date(now.getTime() - PASSWORD_RESET_INTERVAL);
 
-        if (error || response.statusCode != 204) {
-            console.error("requestReset(): error", error, response ? response.statusCode : null, body);
+    models.PasswordResetToken.find({email: email, token: token, created: {$gt: cantBeOlderThan}}, function(err, tokens) {
+        if (err) {
+            console.error("requestPasswordChange(): failed to lookup password reset token", err);
             deferred.reject({
-                status: 500,
-                result: {
+                status: 500, result: {
                     statusCode: 500,
-                    errorCode: "passwordResetChangeFailed",
-                    message: "Failed to change password"
+                    errorCode: "passwordResetRequestFailed",
+                    message: "Failed to request password reset"
                 }
             });
             return;
         }
 
-        deferred.resolve({
-            status: 204,
-            result: null
-        });
+        if (tokens && tokens.length > 0) {
+            console.log("requestPasswordChange(): found token", token);
+            request.post({
+                url: PASSWORD_RESET_CHANGE_URL,
+                form: {
+                    email: email,
+                    password: password
+                }, headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Accept': 'application/json, text/json',
+                    'Authorization': AUTH_STRING
+                }, agentOptions: agentOptions, strictSSL: false, json: true
+            }, function (error, response, body) {
+                console.log("requestPasswordChange(): body", body);
+
+                if (error || response.statusCode != 204) {
+                    console.error("requestPasswordChange(): error", error, response ? response.statusCode : null, body);
+                    deferred.reject({
+                        status: 500, result: {
+                            statusCode: 500,
+                            errorCode: "passwordResetChangeFailed",
+                            message: "Failed to change password"
+                        }
+                    });
+                    return;
+                }
+
+                deferred.resolve({
+                    status: 204, result: null
+                });
+            });
+        } else {
+            console.error("requestPasswordChange(): no token found");
+
+            deferred.reject({
+                status: 500, result: {
+                    statusCode: 500,
+                    errorCode: "passwordResetChangeFailed",
+                    message: "Failed to change password"
+                }
+            });
+        }
     });
 
     return deferred.promise;

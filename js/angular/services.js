@@ -1559,11 +1559,11 @@ angular.module('app.services', ['ngResource'])
 
       return orderHelper;
     })
-    .factory('PasswordResetHelper', function ($log, $q, API_URL) {
+    .factory('PasswordResetHelper', function ($log, $http, $q, API_URL) {
         var resetHelper = {};
 
         // get the total for a list of products
-        resetHelper.reset = function(token, email, password) {
+        resetHelper.reset = function(email, password, token) {
             var d = $q.defer();
 
             $http.post(API_URL + '/clients/passwordReset', {
@@ -1579,6 +1579,8 @@ angular.module('app.services', ['ngResource'])
                 $log.error("PasswordResetHelper(): reset(): error resetting password", status, data);
                 d.reject(data);
             });
+
+            return d.promise;
         }
 
         return resetHelper;
