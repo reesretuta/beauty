@@ -39,7 +39,7 @@
 
             <div class="col-sm-9 col-md-8 col-lg-8">
               <h3>
-                <a ng-href="{{STORE_BASE_URL}}/products/{{item.product.sku}}#top">{{item.product['name_'+$rootScope.session.language]}}</a>
+                <a ng-href="{{STORE_BASE_URL}}/products/{{item.product.sku}}#top">{{getTranslated(item.product).name}}</a>
               </h3>
 
               <p><label>{{item.product.sku}}</label></p>
@@ -47,7 +47,7 @@
               <p ng-if="item.product.kitGroups.length > 0"><span ng-bind-html="'KIT_INCLUDE' | translate | unsafe"></span>:</p>
               <ul ng-if="item.product.kitGroups.length > 0">
                 <li ng-repeat="(kitId, kitProduct) in item.kitSelections">
-                  {{kitProduct['name_'+$rootScope.session.language]}} #{{kitProduct.sku}}
+                  {{getTranslated(kitProduct).name}} #{{kitProduct.sku}}
                 </li>
               </ul>
               <p class="cart-item-actions">

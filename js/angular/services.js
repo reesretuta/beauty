@@ -309,6 +309,27 @@ angular.module('app.services', ['ngResource'])
             return d.promise;
         }
 
+        sessionService.clientExists = function(email) {
+            var d = $q.defer();
+
+            initialized.promise.then(function() {
+                $log.debug("Session(): lookupClient(): attempting to lookup client by email", email);
+
+                $http.post(API_URL + '/clients/:clientId', {
+                    email: client.email
+                }, {}).success(function(client, status, headers, config) {
+                    $log.debug("sessionService(): lookupClient()", client);
+                    d.resolve(true);
+                }).error(function(data, status, headers, config) {
+                    //failure(data, status, headers, config);
+                    $log.error("sessionService(): lookupClient()", status, data);
+                    d.reject(false);
+                });
+            });
+
+            return d.promise;
+        }
+
         sessionService.login = function(username, password) {
             $rootScope.loginError = '';
             var d = $q.defer();
@@ -759,7 +780,7 @@ angular.module('app.services', ['ngResource'])
 
         return salesTaxService;
     })
-    .factory('Product', function ($resource, $http, $log, $q, Categories, API_URL) {
+    .factory('Product', function ($rootScope, $resource, $http, $log, $q, Categories, API_URL) {
         var productService = $resource(API_URL + '/products/:productId', {productId: '@_id'});
         var origQuery = productService.query;
         var origGet = productService.get;
@@ -841,6 +862,24 @@ angular.module('app.services', ['ngResource'])
 
             $log.debug("cartService(): loadProducts(): priceSelected?", priceSelected, product.prices);
         }
+
+        productService.getTranslated = function(product) {
+            if (product == null) {
+                return {
+                    name: null,
+                    description: null,
+                    usage: null,
+                    ingredients: null
+                };
+            }
+            return {
+                name: product[$rootScope.session.language=='en_US'?'name':'name_'+$rootScope.session.language],
+                description: product[$rootScope.session.language=='en_US'?'description':'description_'+$rootScope.session.language],
+                usage: product[$rootScope.session.language=='en_US'?'usage':'usage_'+$rootScope.session.language],
+                ingredients: product[$rootScope.session.language=='en_US'?'ingredients':'ingredients_'+$rootScope.session.language]
+            };
+        }
+
         return productService;
     })
     .factory('Consultant', function ($resource, $http, $log, $q, $translate, Session, Cart, PGP, API_URL) {
@@ -1435,10 +1474,10 @@ angular.module('app.services', ['ngResource'])
         var buildPath = function(category, product, list) {
             if (list == null && product != null) {
                 list = new Array();
-                //$log.debug("breadcrumbService.buildPath(): setting path to product name", product['name_'+$rootScope.session.language]);
+                //$log.debug("breadcrumbService.buildPath(): setting path to product name", Product.getTranslated(product).name);
                 list.unshift({
                     type: 'product',
-                    name: product['name_'+$rootScope.session.language],
+                    name: Product.getTranslated(product).name,
                     id: product.id,
                     url: '/shop/products/' + product.id,
                     item: product
@@ -1559,8 +1598,29 @@ angular.module('app.services', ['ngResource'])
 
       return orderHelper;
     })
-    .factory('PasswordResetHelper', function ($log, $http, $q, API_URL) {
+    .factory('PasswordResetHelper', function ($rootScope, $log, $http, $q, API_URL) {
         var resetHelper = {};
+
+        // get the total for a list of products
+        resetHelper.requestReset = function(email) {
+            $log.debug("PasswordResetHelper(): requestReset()", email);
+            var d = $q.defer();
+
+            $http.get(API_URL + '/clients/passwordReset', { query : {
+                email: email,
+                language: $rootScope.session.language
+            }}, {}).success(function(data, status, headers, config) {
+                $log.debug("PasswordResetHelper(): requestReset()");
+
+                d.resolve();
+            }).error(function(data, status, headers, config) {
+                //failure(data, status, headers, config);
+                $log.error("PasswordResetHelper(): requestReset(): error resetting password", status, data);
+                d.reject(data);
+            });
+
+            return d.promise;
+        }
 
         // get the total for a list of products
         resetHelper.reset = function(email, password, token) {

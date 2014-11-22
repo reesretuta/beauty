@@ -1,5 +1,5 @@
 angular.module('app.controllers.main')
-    .controller('MainController', function ($scope, $document, $timeout, $location, $rootScope, $routeParams, $log, $translate, $q, STORE_BASE_URL, Session, Categories, Cart, Search, BreadcrumbsHelper, RecentlyViewed) {
+    .controller('MainController', function ($scope, $document, $timeout, $location, $rootScope, $routeParams, $log, $translate, $q, STORE_BASE_URL, Session, Categories, Product, Cart, Search, BreadcrumbsHelper, RecentlyViewed) {
 
         $rootScope.adding = false;
 
@@ -73,6 +73,10 @@ angular.module('app.controllers.main')
         
         $scope.quantities = {};
 
+        $rootScope.getTranslated = function(product) {
+            return Product.getTranslated(product);
+        }
+
         $scope.addToCart = function(product) {
             $log.debug("MainController(): adding product", product);
             var qty = $scope.quantities[product.sku];
@@ -82,7 +86,7 @@ angular.module('app.controllers.main')
             
             $log.debug("MainController(): addToCart()", product, qty);
             Cart.addToCart({
-                name: product['name_'+$rootScope.session.language],
+                name: Product.getTranslated(product).name,
                 sku: product.sku,
                 kitSelections: product.kitSelections,
                 quantity: qty

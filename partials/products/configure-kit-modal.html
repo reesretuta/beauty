@@ -17,7 +17,7 @@
             </a>
             <!--{{item.kitSelections[kitGroup.kitGroup.id]}} {{productIdToProduct}}-->
             <span class="modal-addon-item product-image" ng-if="item.kitSelections[kitGroup.kitGroup.id] != null && productIdToProduct != null">
-              <p class="product-name">{{productIdToProduct[item.kitSelections[kitGroup.kitGroup.id].sku]['name_'+$rootScope.session.language]}}</p>
+              <p class="product-name">{{productIdToProduct[item.kitSelections[kitGroup.kitGroup.id].sku][session.language=='en_US'?'name':'name_'+session.language]}}</p>
               <img ng-if="productIdToProduct[item.kitSelections[kitGroup.kitGroup.id]].images > 0" class="img-responsive" ng-src="{{productIdToProduct[item.kitSelections[kitGroup.kitGroup.id]].images[0].imagePath}}">
               <img ng-if="productIdToProduct[item.kitSelections[kitGroup.kitGroup.id]].images == 0" class="img-responsive" ng-src="/img/product_placeholder.gif">
             </span>
@@ -43,7 +43,7 @@
               <i ng-if="item.kitSelections[kitGroup.id].sku == component.product" class="kit-selection-check fa fa-check"></i>
             </div>
             <div ng-if="productIdToProduct[component.product]" class="col-lg-9 col-md-9 col-xs-6 col-sm-8 modal-addon-item">
-              <p class="modal-addon-item-title">{{productIdToProduct[component.product]['name_'+$rootScope.session.language]}}</p>
+              <p class="modal-addon-item-title">{{productIdToProduct[component.product][session.language=='en_US'?'name':'name_'+session.language]}}</p>
               <p class="modal-addon-item-description" ng-bind-html="productIdToProduct[sku].description | unsafe">Product description</p>
               <p class="modal-addon-item-quantity"><span ng-bind-html="'QUANTITY' | translate | unsafe"></span>: {{productIdToProduct[component.product].quantity}}</p>
             </div>

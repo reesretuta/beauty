@@ -74,7 +74,7 @@ angular.module('app.controllers.cart')
                 if (product.type == 'kit' && product.kitGroups.length > 0) {
                     // configure kit
                     $scope.configureKit({
-                        name: product['name_'+$rootScope.session.language],
+                        name: Product.getTranslated(product).name,
                         sku: product.sku,
                         product: product,
                         kitSelections: product.kitSelections,
@@ -83,7 +83,7 @@ angular.module('app.controllers.cart')
                 } else {
                     $log.debug("CartController(): addToCart(): adding product", product);
                     Cart.addToCart({
-                        name: product['name_'+$rootScope.session.language],
+                        name: Product.getTranslated(product).name,
                         sku: product.sku,
                         kitSelections: product.kitSelections,
                         quantity: $scope.orderByIdQty
@@ -174,8 +174,8 @@ angular.module('app.controllers.cart')
                     $scope.searchProductsList = new Array();
                     angular.forEach(products, function(product) {
                         $scope.searchProducts[product.sku] = product;
-                        $scope.searchProductsByName[product.sku + ' - ' + product['name_'+$rootScope.session.language]] = product;
-                        $scope.searchProductsList.push(product.sku + ' - ' + product['name_'+$rootScope.session.language]);
+                        $scope.searchProductsByName[product.sku + ' - ' + Product.getTranslated(product).name] = product;
+                        $scope.searchProductsList.push(product.sku + ' - ' + Product.getTranslated(product).name);
                     });
 
                     if (!products.length) {

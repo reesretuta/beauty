@@ -1,7 +1,7 @@
         <div class="ccol-xs-12 col-sm-12 col-md-12 col-lg-12" ng-cloak ng-if="(products | filter:searchFunction).length == 0">No products matched search:&nbsp;&nbsp;<b><i>{{query}}</i></b></div>
           
         <!-- Product -->
-        <article class="ccol-xs-12 col-sm-6 col-md-4 col-lg-4 store-item" ng-repeat="product in filteredProduct = (products | filter:searchFunction | orderBy:'name')" ng-if="product.productflag.isgroup !=1">
+        <article class="ccol-xs-12 col-sm-6 col-md-4 col-lg-4 store-item" ng-repeat="product in filteredProduct = (products | filter:searchFunction | orderBy:(session.language=='en_US'?'name':'name_es_US'))" ng-if="product.productflag.isgroup !=1">
             
           <div class="store-item-wrapper" ng-if="product.sku != '' && product.type != 'group'">
             <a ng-href="{{STORE_BASE_URL}}/products/{{product.sku}}#top">
@@ -11,7 +11,7 @@
             </a>
             <div class="store-item-info">
               <p class="store-item-sku"><span ng-bind-html="'ITEM' | translate | unsafe"></span> #{{product.sku}}</p>
-              <p class="store-item-title"><a ng-href="{{STORE_BASE_URL}}/products/{{product.sku}}#top">{{product[session.language=='en_US'?'name':'name_'+session.language]}}</a></p>
+              <p class="store-item-title"><a ng-href="{{STORE_BASE_URL}}/products/{{product.sku}}#top">{{getTranslated(product).name}}</a></p>
               <p class="store-item-price">
 
               <span ng-repeat="detailprice in product.currentPrice">
@@ -55,7 +55,7 @@
             <a ng-href="{{STORE_BASE_URL}}/products/{{product.sku}}#top"><img class="img-responsive" style="margin: 0 auto;" ng-src="{{getImagePath(product.images[0].imagePath)}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';"></a>
             <div class="store-item-info">
               <p class="store-item-sku">&nbsp; <!-- leave empty for UI --></p>
-              <p class="store-item-title"><a ng-href="{{STORE_BASE_URL}}/products/{{product.sku}}#top">{{product[session.language=='en_US'?'name':'name_'+session.language]}}</a></p>
+              <p class="store-item-title"><a ng-href="{{STORE_BASE_URL}}/products/{{product.sku}}#top">{{getTranslated(product).name}}</a></p>
               <p class="store-item-price">
                 &nbsp;&nbsp;<span class="item-measure">{{product.quantity}}</span>
               </p>

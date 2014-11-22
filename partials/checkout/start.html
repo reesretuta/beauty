@@ -101,6 +101,9 @@
   <div class="col-md-offset-3">
     <h1 class="checkouth1"><span ng-bind-html="'FORGOT-PASSWORD' | translate | unsafe"></span></h1>
   </div>
+
+  <div ng-if="passwordResetError" class="alert alert-danger" role="alert"><span ng-bind-html="passwordResetError"></span></div>
+
   <!--valid={{signInForm.$valid}}-->
   <form name="forgotPassword" class="form-horizontal" role="form">
     <div class="form-group">
@@ -115,7 +118,7 @@
       <div class="col-md-offset-3 col-sm-9">
         <div class="input-group">
           <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-          <button type="button" class="btn btn-primary btn-lg" onclick="$('#forgot').css('display','none'); $('#thanks').css('display','block')" ng-disabled="!forgotPassword.$valid"><span ng-bind-html="'RESET-PASSWORD' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i></button>
+          <button type="button" class="btn btn-primary btn-lg" ng-click="resetPassword(loginEmail2)" ng-disabled="!forgotPassword.$valid"><span ng-bind-html="'RESET-PASSWORD' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i></button>
 
         </div>
       </div>
@@ -124,61 +127,16 @@
 </div><!--/span-->
 
 <div id="thanks" class="col-sm-12" style="display: none;">
-
   <div class="col-md-offset-3">
     <h1 class="checkouth1"><span ng-bind-html="'THANK-YOU' | translate | unsafe"></span></h1>
   </div>
-  <!--valid={{signInForm.$valid}}-->
   <form name="" class="form-horizontal" role="form">
-
-
-    <!--            <div class="form-group">
-                  <label for="inputPassword3" class="col-md-3 control-label">Password</label>
-                  <div class="col-sm-4">
-                    <input name="loginPassword" ng-model="loginPassword" type="password" class="form-control" id="inputPassword3" placeholder="Password" required>
-                  </div>
-                </div>-->
-
     <div class="form-group">
       <div class="col-md-offset-3 col-sm-9">
         <p><span ng-bind-html="'RESET-PASSWORD-INSTRUCTIONS' | translate | unsafe"></span></p>
         <div class="row"><div class="col-sm-6"><hr></div></div>
-        <p><a href=""><span ng-bind-html="'RESET-PASSWORD-RESEND' | translate | unsafe"></span></a></p>
-        <p><a href="" onclick="$('#resetpass').css('display','block'); $('#thanks').css('display','none');">Reset password form (prototype only)</a></p>
+        <!--<p><a href=""><span ng-bind-html="'RESET-PASSWORD-RESEND' | translate | unsafe"></span></a></p>-->
         <p><a ng-href="{{STORE_BASE_URL}}/cart"><span ng-bind-html="'BACK-TO-CART' | translate | unsafe"></span></a></p>
-      </div>
-    </div>
-  </form>
-</div><!--/span-->
-
-<div id="resetpass" class="col-sm-12" style="display: none;">
-  <div class="col-md-offset-3">
-    <h1 class="checkouth1"><span ng-bind-html="'RESET-PASSWORD' | translate | unsafe"></span></h1>
-  </div>
-  <!--valid={{signInForm.$valid}}-->
-  <form name="resetPassword" class="form-horizontal" role="form">
-    <div class="form-group">
-      <label for="newPassword" class="col-md-3 control-label">New Password</label>
-      <div class="col-sm-4">
-        <input name="newPassword" ng-model="newPassword" pw-check="newpassword2" type="password" class="form-control" id="newPassword" placeholder="Password" required>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="newPassword2" class="col-md-3 control-label">Confirm New Password</label>
-      <div class="col-sm-4">
-        <input name="newPassword2" ng-model="newPassword2" ng-change="checkoutUpdated();" type="password" class="form-control" id="newPassword2" placeholder="Confirm Password" required>
-      </div>
-      <span class="error" ng-show="resetPassword.password.$error.pwmatch"> Passwords don't match. </span>
-    </div>
-
-    <div class="form-group">
-      <div class="col-md-offset-3 col-sm-9">
-        <div class="input-group">
-          <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-          <button type="button" class="btn btn-primary btn-lg" onclick="$('#resetpass').css('display','none');$('#signin').css('display','block')" ng-disabled="!resetPassword.$valid">Reset Password &nbsp;<i class="fa fa-caret-right"></i></button>
-
-        </div>
       </div>
     </div>
   </form>

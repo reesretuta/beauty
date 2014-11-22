@@ -1,6 +1,6 @@
 
 angular.module('app.controllers.checkout')
-    .controller('CheckoutController', function ($location, $scope, $document, $timeout, $rootScope, $anchorScroll, $routeParams, $modal, $log, $q, $translate, STORE_BASE_URL, JOIN_BASE_URL, focus, Geocodes, Session, Consultant, Addresses, Order, OrderHelper, Checkout, Cart, Product, SalesTax, CreditCards, Leads, HashKeyCopier, WizardHandler) {
+    .controller('CheckoutController', function ($location, $scope, $document, $timeout, $rootScope, $anchorScroll, $routeParams, $modal, $log, $q, $translate, STORE_BASE_URL, JOIN_BASE_URL, focus, Geocodes, Session, Consultant, Addresses, Order, OrderHelper, Checkout, Cart, Product, SalesTax, CreditCards, Leads, PasswordResetHelper, HashKeyCopier, WizardHandler) {
 
         $log.debug("CheckoutController()");
 
@@ -353,7 +353,7 @@ angular.module('app.controllers.checkout')
                     $log.debug("CheckoutController(): selectProduct(): previous cart cleared");
 
                     Cart.addToCart({
-                        name: product['name_'+$rootScope.session.language],
+                        name: Product.getTranslated(product).name,
                         sku: product.sku,
                         kitSelections: product.kitSelections,
                         quantity: 1
@@ -2038,6 +2038,22 @@ angular.module('app.controllers.checkout')
                 $location.path(STORE_BASE_URL).search('');
                 $location.replace();
             }
+        }
+
+        $scope.resetPassword = function(email) {
+            $scope.passwordResetError = null;
+            $log.debug("CheckoutController(): resetPassword()", email);
+
+            PasswordResetHelper.requestReset(email).then(function(){
+                $log.debug("CheckoutController(): resetPassword(): password reset");
+                $('#forgot').css('display','none');
+                $('#thanks').css('display','block')
+            }, function(error) {
+                $log.error("CheckoutController(): resetPassword(): password reset failed", error);
+                $translate('PASSWORD-RESET-ERROR').then(function (message) {
+                    $scope.passwordResetError = message;
+                });
+            });
         }
 
         /*==== CLEANUP ====*/
