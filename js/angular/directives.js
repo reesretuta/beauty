@@ -1,7 +1,5 @@
 'use strict';
 
-/* Directives */
-
 angular.module('app.directives', [])// directives
     // this directive is a helper for browsers that can't seem to get % height correct.  this will watch for page
     .directive('resizeHandler', ['$window', '$log', function ($window, $log) {
@@ -191,5 +189,13 @@ angular.module('app.directives', [])// directives
                 });
             }
         }
+    }]).directive("popoverHtmlUnsafePopup", function () {
+        return {
+            restrict: "EA",
+            replace: true,
+            scope: { title: "@", content: "@", placement: "@", animation: "&", isOpen: "&" },
+            templateUrl: "template/popover/popover-html-unsafe-popup.html"
+        };
+    }).directive("popoverHtmlUnsafe", [ "$tooltip", function ($tooltip) {
+        return $tooltip("popoverHtmlUnsafe", "popover", "click");
     }]);
-
