@@ -12,7 +12,7 @@
     </h1>
     <div class="row">
       <div class="col-sm-6">
-        <div ng-if="loginError" class="alert alert-danger" role="alert" data-ng-bind="loginError"></div>
+        <div ng-if="loginError" class="alert alert-danger" role="alert" data-ng-bind-html="loginError"></div>
         <div ng-if="emailError" class="alert alert-danger" role="alert"><span ng-bind-html="'INVALID-EMAIL-ADDRESS' | translate | unsafe"></span></div>
       </div>
     </div>
@@ -77,9 +77,9 @@
         <p><small ng-bind-html="'OS-START-PRIVACY-AGREE' | translate | unsafe"></small></p>
         <div class="input-group">
           <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-          <button ng-if="profile.customerStatus == 'existing' && !isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" ng-click="loginOrCreateUser()" ng-disabled="!signInForm.$valid"><span ng-bind-html="'SIGN-IN' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i></button>
-          <button ng-if="profile.customerStatus == 'new' && !isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" ng-click="loginOrCreateUser()" ng-disabled="!signInForm.$valid"><span ng-bind-html="'CREATE-ACCOUNT' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i></button>
-          <button ng-if="isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" ng-click="validateEmailAndContinue(profile.loginEmail)" ng-disabled="!signInForm.$valid"><span ng-bind-html="'BTN_CONTINUE' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i></button>
+          <button ng-if="profile.customerStatus == 'existing' && !isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" ng-class="{'disabled': waiting}" ui-ladda="waiting" ng-click="loginOrCreateUser()" ng-disabled="!signInForm.$valid"><span ng-bind-html="'SIGN-IN' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i></button>
+          <button ng-if="profile.customerStatus == 'new' && !isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" ng-class="{'disabled': waiting}" ui-ladda="waiting" ng-click="loginOrCreateUser()" ng-disabled="!signInForm.$valid"><span ng-bind-html="'CREATE-ACCOUNT' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i></button>
+          <button ng-if="isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" ng-class="{'disabled': waiting}" ui-ladda="waiting" ng-click="validateEmailAndContinue(profile.loginEmail)" ng-disabled="!signInForm.$valid"><span ng-bind-html="'BTN_CONTINUE' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i></button>
         </div>
       </div>
     </div>

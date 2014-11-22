@@ -304,16 +304,25 @@ angular.module('app.services', ['ngResource'])
         }
 
         // is consultant already registered?
-        sessionService.clientExists = function(email) {
+        sessionService.clientEmailAvailable = function(email, ignoreExists) {
             var d = $q.defer();
             initialized.promise.then(function() {
+                if (ignoreExists) {
+                    d.resolve(true);
+                    return;
+                }
                 $log.debug('Session(): lookupClient(): attempting to lookup client by email', email);
                 $http.get(API_URL + '/clients/' + email, {}).success(function(client, status, headers, config) {
-                    $log.debug('sessionService(): lookupClient()', client);
-                    d.resolve(true);
+                    $log.debug('sessionService(): lookupClient(): client exists, not available');
+                    d.resolve(false);
                 }).error(function(data, status, headers, config) {
-                    $log.error('sessionService(): lookupClient()', status, data);
-                    d.reject(false);
+                    if (status == 404) {
+                        $log.debug('sessionService(): lookupClient(): client not found, available');
+                        d.reject(true);
+                    } else {
+                        $log.error('sessionService(): lookupClient(): error, not available', status, data);
+                        d.reject(false);
+                    }
                 });
             });
             return d.promise;
