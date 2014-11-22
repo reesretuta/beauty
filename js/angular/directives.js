@@ -38,8 +38,7 @@ angular.module('app.directives', [])// directives
                 });
             }
         }
-    }])
-    .directive('scrollListener', function($window, $log) {
+    }]).directive('scrollListener', function($window, $log) {
         $log = $log.getInstance('copybutton');
 
         return {
@@ -111,6 +110,41 @@ angular.module('app.directives', [])// directives
                     var key = (evt.keyCode || evt.charCode);
                     if (this.value.length === limit && key !== 8) {
                         return false;
+                    }
+                });
+            }
+        }
+    // only allow numbers between 1 & 99. no less than 1, no great than 99.
+    }]).directive('oneToNinetyNine', ['$log','$timeout', function ($log, $timeout) {
+        return {
+            restrict: 'A',
+            require: '?ngModel',
+            link: function($scope, elem, attrs, ngModelCtrl) {
+                if (!ngModelCtrl) {
+                    return;
+                }
+                // actual number check
+                function runCheck(val) {
+                    var fixed;
+                    if (val < 1) {
+                        fixed = 1;
+                    } else if (val > 99) {
+                        fixed = 99;
+                    } else {
+                        fixed = val;
+                    }
+                    ngModelCtrl.$setViewValue(fixed);
+                    ngModelCtrl.$render();
+                }
+                // watch for changes to number
+                angular.element(elem).on('input keydown change', function (evt) {
+                    var val = this.value;
+                    if (val === '' || val === null) {
+                        $timeout(function() {
+                            runCheck(val);
+                        }, 1000);
+                    } else {
+                        runCheck(val);
                     }
                 });
             }
