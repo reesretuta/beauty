@@ -184,6 +184,7 @@
     "SIGN-IN": "Sign In",
     "CREATE-ACCOUNT": "Create Account",
     "INVALID-EMAIL-ADDRESS": "Invalid email address",
+    "INVALID-TELEPHONE-NUMBER": "Invalid telephone number",
     "REQUIRES-VALID-EMAIL-ADDRESS": "Must be a valid email address",
     "PASSWORDS-DONT-MATCH": "Passwords must match",
     "ALREADY-A-CUSTOMER": "Already a customer?",

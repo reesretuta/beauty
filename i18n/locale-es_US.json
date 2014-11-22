@@ -187,6 +187,7 @@
     "CREATE-ACCOUNT": "Crear una Cuenta",
     "INVALID-EMAIL-ADDRESS": "Direcci&oacute;n de correo electr&oacute;nico no es v&aacute;lido",
     "REQUIRES-VALID-EMAIL-ADDRESS": "Debe ser una direcci&oacute;n v&aacute;lida de correo electr&oacute;nico",
+    "INVALID-TELEPHONE-NUMBER": "N&uacute;mero de tel&eacute;fono no es v&aacute;lido",
     "PASSWORDS-DONT-MATCH": "Las contrase&ntilde;as deben coincidir",
     "ALREADY-A-CUSTOMER": "&iquest;Ya es cliente?",
     "NOT-YET-A-CUSTOMER": "&iquest;Todav&iacute;a no es cliente?",
