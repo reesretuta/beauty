@@ -18,6 +18,9 @@ angular.module('app.controllers.checkout')
         var isGuest = params.guest == 'true' ? true : false;
         $scope.debug = isGuest;
 
+        var ignoreExists = params.ignoreExists == 'true' ? true : false;
+        $scope.ignoreExists = ignoreExists;
+
         // tracking review (back button fix)
         $scope.orderCompleted = false;
 
@@ -1036,22 +1039,27 @@ angular.module('app.controllers.checkout')
                     $scope.profile.newBillingAddress.name = $scope.profile.firstName + " " + $scope.profile.lastName;
 
                     if ($scope.isOnlineSponsoring) {
-                        Session.clientExists(email).then(function(data) {
-                            $log.debug('CheckoutController(): Session: client email does not exist', data);
-                            // generate a lead for this account
-                            Leads.save({
-                                email: email,
-                                firstName: $scope.profile.firstName,
-                                lastName: $scope.profile.lastName,
-                                phone: $scope.profile.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3'),
-                                language: $scope.profile.language
-                            }).$promise.then(function(lead) {
-                                $log.debug("CheckoutController(): validateEmailAndContinue(): lead created");
-                            }, function(error) {
-                                $log.error("CheckoutController(): validateEmailAndContinue(): failed to create lead", error);
-                            });
-                            WizardHandler.wizard('checkoutWizard').goTo('Profile');
-                            $scope.waiting = false;
+                        Session.clientEmailAvailable(email, $scope.ignoreExists).then(function(available) {
+                            if (available) {
+                                $log.debug('CheckoutController(): Session: client available', available);
+                                // generate a lead for this account
+                                Leads.save({
+                                    email: email,
+                                    firstName: $scope.profile.firstName,
+                                    lastName: $scope.profile.lastName,
+                                    phone: $scope.profile.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3'),
+                                    language: $scope.profile.language
+                                }).$promise.then(function(lead) {
+                                        $log.debug("CheckoutController(): validateEmailAndContinue(): lead created");
+                                    }, function(error) {
+                                        $log.error("CheckoutController(): validateEmailAndContinue(): failed to create lead", error);
+                                    });
+                                WizardHandler.wizard('checkoutWizard').goTo('Profile');
+                                $scope.waiting = false;
+                            } else {
+                                $scope.emailError = true;
+                                $scope.waiting = false;
+                            }
                         }, function(error) {
                             $log.error('CheckoutController(): Session: client email exists', error);
                             $scope.emailError = true;
