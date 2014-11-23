@@ -16,8 +16,7 @@
     <div class="col-md-8 text-left">
       <h3 class="color-red">Tu No. (ID) de Consultora es: <label class="color-purple HelveticaNeueLTStd-BdCn">{{confirmation.consultantId}}</label></h3>
       <p>Portal de la Consultora: <a class="biggify color-red HelveticaNeueLTStd-BdCn">jafrabiz.com</a></p>
-      <p>Consultora ID: <b ng-bind="confirmation.consultantId"></b></p>
-      <p>Contraseña: (last 4 digits of SSN)</p>
+      <p>Contraseña: (Últimos 4 dígitos de tu seguro seguro social)</p>
     </div>
     <div class="col-md-4">
       <div class="jafrabiz-well text-center">
@@ -28,7 +27,7 @@
   </div>
   <hr>
   <div class="row">
-    <h2 class="">No. de Confirmación del Pedido #: <label class="color-black">{{confirmation.orderId}}</label></h2>
+    <h2 class="">No. de Confirmación del Pedido: <label class="color-black">{{confirmation.orderId}}</label></h2>
     <span class="store-heading-description">La información para darle seguimiento a tu pedido te llegará por correo electrónico una vez que el pedido se haya enviado.</span>
     <form class="form order-details" role="form">
       <div class="form-group">
@@ -42,7 +41,7 @@
           </thead>
           <tbody>
             <tr ng-repeat="item in items">
-              <td>{{item.quantity}}</td>
+              <td>{{item.quantity}} {{- item }}</td>
               <td>
                 <p class="confirmation-description">
                   {{item.name}}
