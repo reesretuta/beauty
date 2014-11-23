@@ -71,7 +71,11 @@
 
     <div class="form-group">
       <div class="col-md-offset-3 col-sm-9">
-        <a href="" ng-click="validateProfileAndContinue()" ng-disabled="!profileForm.$valid || invalidDOB || invalidSponsorId" class="btn btn-primary btn-lg"><span ng-bind-html="'CONSULTANT-PROFILE-CONTINUE-TO-SHIPPING' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i></a>
+        <div class="input-group">
+          <button class="btn btn-primary btn-lg ladda-button" type="button" ng-click="validateProfileAndContinue()" ng-disabled="!profileForm.$valid || invalidDOB || invalidSponsorId || processing" ui-ladda="processing">
+            <span class="ladda-label"><span ng-bind-html="'CONSULTANT-PROFILE-CONTINUE-TO-SHIPPING' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i></span>
+          </button>
+        </div>
       </div>
     </div>
   </form>

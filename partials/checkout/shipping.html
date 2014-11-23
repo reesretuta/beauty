@@ -16,7 +16,7 @@
           &nbsp;&nbsp;
           <a ng-click="removeAddress(addressData.id)"><i class="fa fa-times-circle"></i> <span ng-bind-html="'REMOVE' | translate | unsafe"></span></a>
         </div>
-        <a class="btn btn-primary" ng-click="selectShippingAddressAndContinue(addressData)"><span ng-bind-html="'BTN_SHIP_ADD' | translate | unsafe"></span></a>
+        <button type="button" class="btn btn-primary ladda-button" ng-disabled="processing" ui-ladda="processing" ng-click="selectShippingAddressAndContinue(addressData)"><span class="ladda-label" ng-bind-html="'BTN_SHIP_ADD' | translate | unsafe"></span></button>
       </div><!-- /address -->
 
     </div>
