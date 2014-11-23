@@ -77,6 +77,7 @@ angular.module('app.controllers.cart')
                         kitSelections: product.kitSelections,
                         quantity: $scope.orderByIdQty
                     }, false);
+                    //$scope.orderByIdQty = 1;
                 } else {
                     $log.debug("CartController(): addToCart(): adding product", product);
                     Cart.addToCart({
@@ -85,10 +86,12 @@ angular.module('app.controllers.cart')
                         sku: product.sku,
                         kitSelections: product.kitSelections,
                         quantity: $scope.orderByIdQty
+                    }).then(function () {
+                        $log.debug('CartController(): addToCart: cart loaded, clearing quantity');
+                        $scope.orderByIdQty = 1;
                     });
                     // clear search
                     $scope.orderByIdItem = '';
-
                     $scope.cartLoaded = false;
                     loadCart();
                 }
@@ -146,6 +149,9 @@ angular.module('app.controllers.cart')
                         sku: cartItem.sku,
                         kitSelections: cartItem.kitSelections,
                         quantity: $scope.orderByIdQty
+                    }).then(function () {
+                        $scope.orderByIdQty = 1;
+                        $scope.orderByIdItem = null;
                     });
                     $scope.cartLoaded = false;
                     loadCart();

@@ -1,3 +1,4 @@
+
 angular.module('app.controllers.products')
     .controller('ConfigureKitModalController', function ($sce, $timeout, $document, HashKeyCopier, Cart, Categories, Product, $modalInstance, $q, $scope, $rootScope, $routeParams, $location, $timeout, $window, $log, item, inCart, whizFunc) {
         $log.debug("ConfigureKitModalController");
@@ -23,35 +24,25 @@ angular.module('app.controllers.products')
                 name: $scope.productIdToProduct[productId].name
             };
             $scope.item.kitGroupSelected = kitId;
-
-            $timeout(function() {
-                // scroll the header into view
-                //var el = $document[0].querySelector("#kitGroupNav"+kitId);
-                //if (el) {
-                //    el.scrollIntoView(true);
-                //}
-            }, 0);
-        }
+        };
 
         $scope.kitGroupSelected = null;
+
         $scope.isKitGroupSelected = function(kitGroup) {
             if (kitGroup.id == $scope.kitGroupSelected) {
                 return true;
             }
             return false;
-        }
+        };
 
         $scope.kitGroupClicked = function(kitGroup) {
             $scope.kitGroupSelected = kitGroup.id;
-
             $log.debug("ConfigureKitModalController(): selected kit group", kitGroup);
-
-            // scroll the header into view
-            var el = $document[0].querySelector("#kitGroup"+kitGroup.id);
+            var el = $document[0].querySelector("#kitGroup" + kitGroup.id);
             if (el) {
                 el.scrollIntoView(true);
             }
-        }
+        };
 
         var kitgroups = new Array();
         if (Array.isArray(item.product.kitGroups)) {
@@ -152,14 +143,10 @@ angular.module('app.controllers.products')
             }
         };
 
-        function cleanup() {
-            $log.debug("ConfigureKitModalController(): cleaning up");
-            var body = $document.find('html, body');
-            body.css("overflow-y", "auto");
-        }
-
-        /*==== CLEANUP ====*/
         $scope.$on('$destroy', function() {
-            cleanup();
+            $log.debug('ConfigureKitModalController(): cleaning up');
+            var body = $document.find('html, body');
+            body.css('overflow-y', 'auto');
         });
+
     });

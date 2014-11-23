@@ -34,6 +34,9 @@ angular.module('app.controllers.products')
                 sku: product.sku,
                 quantity: qty,
                 kitSelections: {}
+            }).then(function() {
+                $log.debug('ProductDetailsController(): addToCart: complete (clearing qty)');
+                $scope.quantities[product.sku] = 1;
             });
         }
 
@@ -116,7 +119,9 @@ angular.module('app.controllers.products')
                         kitSelections: cartItem.kitSelections,
                         quantity: cartItem.quantity
                     }).then(function() {
-                        $log.debug("MainController(): kit: addToCart()", $scope.product);
+                        $log.debug('MainController(): kit: addToCart()', $scope.product);
+                        $scope.quantities[$scope.product.sku] = 1;
+                        $log.debug('MainController(): kid: addToCart().then() -> clear qty.', $scope.quantities[$scope.product.sku]);
                     }, function (error) {
                         $log.error("MainController(): kit: addToCart(): error", $scope.product);
                     });
