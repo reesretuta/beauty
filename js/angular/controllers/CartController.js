@@ -136,29 +136,21 @@ angular.module('app.controllers.cart')
 
             d.result.then(function(cartItem) {
                 $log.debug("CartController(): configureKit(): configure kit dialog closed");
-
                 // re-enable scrolling on body
                 body.css("overflow-y", "auto");
-
                 if (cartItem != null) {
                     $log.debug("CartController(): configureKit(): add", $scope.orderByIdQty, "kits to cart", cartItem);
-
-                    // commented loop to close TRP-29
-                    //for (var i=0; i < $scope.orderByIdQty; i++) {
-                        Cart.addToCart({
-                            name: cartItem.name,
-                            name_es_US: cartItem.name_es_US,
-                            sku: cartItem.sku,
-                            kitSelections: cartItem.kitSelections,
-                            quantity: 1
-                        });
-                    //}
-
+                    Cart.addToCart({
+                        name: cartItem.name,
+                        name_es_US: cartItem.name_es_US,
+                        sku: cartItem.sku,
+                        kitSelections: cartItem.kitSelections,
+                        quantity: $scope.orderByIdQty
+                    });
                     $scope.cartLoaded = false;
                     loadCart();
                 }
             });
-
             // prevent page content from scrolling while modal is up
             $("html, body").css("overflow-y", "hidden");
         }
