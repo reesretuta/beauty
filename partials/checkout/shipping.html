@@ -12,7 +12,7 @@
         <span class="address-region block">{{addressData.city}}, {{addressData.state}} {{addressData.zip}}</span>
         <span class="phone-number block">{{addressData.phone}}</span>
         <div class="address-actions">
-          <a ng-click="editAddress(addressData.id)"><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'EDIT' | translate | unsafe"></span></a>
+          <a ng-click="editAddress(addressData)"><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'EDIT' | translate | unsafe"></span></a>
           &nbsp;&nbsp;
           <a ng-click="removeAddress(addressData.id)"><i class="fa fa-times-circle"></i> <span ng-bind-html="'REMOVE' | translate | unsafe"></span></a>
         </div>

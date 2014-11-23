@@ -176,7 +176,7 @@
         <span class="phone-number" ng-if="!isOnlineSponsoring">{{profile.shipping.phone}}</span>
         <span ng-if="!isOnlineSponsoring"><span ng-bind-html="'SHIPPING-CARRIER' | translate | unsafe"></span>: {{salesTaxInfo.shippingCarrier}}</span>
         <div class="address-actions">
-          <a href ng-click="editAddress(addressData.id)" class="pull-left"><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'EDIT' | translate | unsafe"></span></a>
+          <a href ng-click="editAddress(profile.shipping)" class="pull-left"><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'EDIT' | translate | unsafe"></span></a>
         </div>
       </div><!-- /address -->
 
@@ -204,7 +204,7 @@
         <span class="address-region">{{profile.billing.city}}, {{profile.billing.state}} {{profile.billing.zip}}</span>
         <span class="phone-number" ng-if="!isOnlineSponsoring">{{profile.billing.phone}}</span>
         <div class="address-actions">
-          <a href ng-click="editAddress(addressData.id)" class="pull-left"><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'EDIT' | translate | unsafe"></span></a>
+          <a href ng-click="editAddress(profile.billing)" class="pull-left"><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'EDIT' | translate | unsafe"></span></a>
         </div>
       </div><!-- /address -->
 
