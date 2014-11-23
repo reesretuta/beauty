@@ -1985,6 +1985,7 @@ angular.module('app.controllers.checkout')
                     showAddressCorrectionModal(a).then(function(result) {
 
                         var address = result.address;
+                        address.zipCode = address.zip;
                         var canceled = result.canceled;
 
                         $log.debug("CheckoutController(): addAddress(): address correction modal closed", address);
