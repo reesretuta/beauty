@@ -680,6 +680,9 @@ a, .btn {
   display: inline-block;
   padding-top: 7px;
 }
+.checkout-address span.block {
+  display: block;
+}
 .checkout-address span {
   display: inline-block;
   line-height: 1.6em;
