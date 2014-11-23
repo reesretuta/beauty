@@ -318,7 +318,7 @@ angular.module('app.services', ['ngResource'])
                 }).error(function(data, status, headers, config) {
                     if (status == 404) {
                         $log.debug('sessionService(): lookupClient(): client not found, available');
-                        d.reject(true);
+                        d.resolve(true);
                     } else {
                         $log.error('sessionService(): lookupClient(): error, not available', status, data);
                         d.reject(false);
