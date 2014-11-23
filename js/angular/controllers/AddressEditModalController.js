@@ -17,7 +17,7 @@ angular.module('app.controllers.checkout').controller('AddressEditModalControlle
     $scope.save = function () {
         $log.debug('AddressEditModalController(): save(): saving...');
         addAddress($scope.address).then(function (data) {
-            $log.debug('AddressEditModalController(): editAddress(): addAddress success:', data);
+            $log.debug('AddressEditModalController(): editAddress() [strikeiron]: addAddress success:', data);
             $modalInstance.close({
                 address  : $scope.address,
                 canceled : false
