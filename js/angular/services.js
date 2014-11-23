@@ -1131,7 +1131,7 @@ angular.module('app.services', ['ngResource'])
                     }
 
                     $log.debug("adjustedAddressService(): updateAddress(): updated address to client address", session.client.addresses);
-                    d.resolve(a);
+                    d.resolve(address);
                 }, function(response) {
                     $log.error("adjustedAddressService(): updateAddress(): failed to update address", response.data);
                     $translate('ERROR-SAVING-ADDRESS').then(function (message) {
