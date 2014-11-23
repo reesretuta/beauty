@@ -20,12 +20,12 @@ angular.module('app.controllers', [
 
 angular.module('app.controllers.top', []);
 angular.module('app.controllers.lang', []);
-angular.module('app.controllers.main', ["hashKeyCopier"]);
+angular.module('app.controllers.main', ["hashKeyCopier",'app.controllers.carousel']);
 angular.module('app.controllers.categories', ["hashKeyCopier"]);
 angular.module('app.controllers.objects', ["hashKeyCopier"]);
 angular.module('app.controllers.products', ["hashKeyCopier"]);
 angular.module('app.controllers.recentlyViewed', ["hashKeyCopier"]);
-angular.module('app.controllers.home', []);
+angular.module('app.controllers.home', ['app.controllers.carousel']);
 angular.module('app.controllers.cart', []);
 angular.module('app.controllers.checkout', []);
 
