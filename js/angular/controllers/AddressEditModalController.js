@@ -24,6 +24,7 @@ angular.module('app.controllers.checkout').controller('AddressEditModalControlle
             });
         }, function(error) {
             $log.error('AddressEditModalController(): save(): error!', error);
+            $scope.addressError = error;
         });
     };
 

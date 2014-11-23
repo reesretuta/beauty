@@ -1985,7 +1985,9 @@ angular.module('app.controllers.checkout')
                     showAddressCorrectionModal(a).then(function(result) {
 
                         var address = result.address;
-                        address.zipCode = address.zip;
+                        if (address && address.zip) {
+                            address.zipCode = address.zip;
+                        }
                         var canceled = result.canceled;
 
                         $log.debug("CheckoutController(): addAddress(): address correction modal closed", address);
@@ -2002,6 +2004,7 @@ angular.module('app.controllers.checkout')
                         }, function(error) {
                             $log.error("CheckoutController(): addAddress(): select geocode and add failed", error);
                             $scope.shippingAddressError = error;
+                            $scope.addressError = error;
                             d.reject(error);
                         });
                     }, function(error) {
