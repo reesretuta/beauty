@@ -985,8 +985,8 @@ angular.module('app.controllers.checkout')
             d.result.then(function(result) {
                 $log.debug('CheckoutController(): editAddress(): edit address modal closed');
                 if (!result.canceled) {
-                    // #TODO save updated address
-                    var updatedAddress = angular.copy(result.address);
+                    var updatedAddress = result.address;
+                    //address = updatedAddress;
                     Addresses.addAddress(updatedAddress).then(function (data) {
                         $log.debug('CheckoutController(): editAddress(): addAddress success:', data);
                         return true;
