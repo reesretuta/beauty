@@ -796,16 +796,29 @@ angular.module('app.controllers.checkout')
                 $log.debug("CheckoutController(): addAddressToBackend(): adding address", a);
 
                 // client direct, we add it
-                Addresses.addAddress(a).then(function(a) {
-                    $log.debug("CheckoutController(): addAddressToBackend(): address added", a);
-                    $scope.profile.shipping = angular.copy(a);
-                    $scope.profile.billing = angular.copy(a);
-                    d.resolve(a);
-                }, function(error) {
-                    $log.error("CheckoutController(): addAddressToBackend(): failed to add address", error);
-                    $scope.shippingAddressError = error;
-                    d.reject(error);
-                });
+                if (a.id) {
+                    Addresses.updateAddress(a).then(function(a) {
+                        $log.debug("CheckoutController(): addAddressToBackend(): address updated", a);
+                        $scope.profile.shipping = angular.copy(a);
+                        $scope.profile.billing = angular.copy(a);
+                        d.resolve(a);
+                    }, function(error) {
+                        $log.error("CheckoutController(): addAddressToBackend(): failed to update address", error);
+                        $scope.shippingAddressError = error;
+                        d.reject(error);
+                    });
+                } else {
+                    Addresses.addAddress(a).then(function(a) {
+                        $log.debug("CheckoutController(): addAddressToBackend(): address added", a);
+                        $scope.profile.shipping = angular.copy(a);
+                        $scope.profile.billing = angular.copy(a);
+                        d.resolve(a);
+                    }, function(error) {
+                        $log.error("CheckoutController(): addAddressToBackend(): failed to add address", error);
+                        $scope.shippingAddressError = error;
+                        d.reject(error);
+                    });
+                }
             }
 
             return d.promise;
@@ -866,8 +879,6 @@ angular.module('app.controllers.checkout')
                         d.reject(error);
                     });
                 }
-
-
             }, function(r) {
                 $log.error("CheckoutController(): addAddress(): error validating address", r);
                 // FIXME - failed to add, show error
@@ -986,8 +997,9 @@ angular.module('app.controllers.checkout')
                 $log.debug('CheckoutController(): editAddress(): edit address modal closed');
                 if (!result.canceled) {
                     var updatedAddress = result.address;
-                    //address = updatedAddress;
-                    Addresses.addAddress(updatedAddress).then(function (data) {
+                    $log.debug('CheckoutController(): editAddress(): got edited address', updatedAddress);
+
+                    addAddress(updatedAddress).then(function (data) {
                         $log.debug('CheckoutController(): editAddress(): addAddress success:', data);
                         return true;
                     }, function(error) {

@@ -1035,7 +1035,7 @@ router.route('/clients/:client_id/addresses/:address_id')// get a client address
     // update a client address
     .put(function (req, res) {
         var clientId = req.params.client_id;
-        var addressId = req.params.addressId;
+        var addressId = req.params.address_id;
 
         // must be authenticated
         if (req.session.client == null) {

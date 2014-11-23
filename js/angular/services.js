@@ -1021,7 +1021,9 @@ angular.module('app.services', ['ngResource'])
         return orderService;
     })
     .factory('Addresses', function ($resource, $http, $log, $q, $translate, Session, API_URL) {
-        var addressService = $resource(API_URL + '/clients/:clientId/addresses/:addressId', {addressId: '@_id'});
+        var addressService = $resource(API_URL + '/clients/:clientId/addresses/:addressId', {addressId: '@id'}, {
+            'update': { method:'PUT' }
+        });
 
         addressService.validateAddress = function(address) {
             var d = $q.defer();
@@ -1035,13 +1037,14 @@ angular.module('app.services', ['ngResource'])
                     address2: address.address2,
                     city: address.city,
                     state: address.state,
-                    zip: address.zip,
+                    zip: address.zipCode,
                     country: address.country,
                     phone: address.phone
                 }, {}).success(function(a, status, headers, config) {
                     $log.debug("Address(): validateAddress(): validated, saving", a);
 
                     // preserve this
+                    a.id = address.id;
                     a.businessCO = address.businessCO;
 
                     d.resolve(a);
@@ -1091,6 +1094,52 @@ angular.module('app.services', ['ngResource'])
                 });
             }, function(error) {
                 $log.error("adjustedAddressService(): addAddress(): failed to save address", error);
+                $translate('ERROR-SAVING-ADDRESS').then(function (message) {
+                    d.reject(message);
+                });
+            });
+
+            return d.promise;
+        }
+
+        addressService.updateAddress = function(address) {
+            $log.debug("Address(): updateAddress(): saving", address);
+            var d = $q.defer();
+
+            Session.get().then(function(session) {
+                if (session.client == null) {
+                    d.reject("Can't update address, client not authenticated");
+                    return;
+                }
+
+                var clientId = session.client.id;
+
+                // save the address
+                addressService.update({clientId: clientId, addressId: address.id}, address).$promise.then(function() {
+                    $log.debug("adjustedAddressService(): updateAddress(): updated address");
+
+                    if (session.client.addresses == null) {
+                        session.client.addresses = [];
+                    }
+
+                    // update the session address
+                    for (var i=0; i < session.client.addresses.length; i++) {
+                        if (session.client.addresses[i].id == address.id) {
+                            session.client.addresses[i] = address;
+                            break;
+                        }
+                    }
+
+                    $log.debug("adjustedAddressService(): updateAddress(): updated address to client address", session.client.addresses);
+                    d.resolve(a);
+                }, function(response) {
+                    $log.error("adjustedAddressService(): updateAddress(): failed to update address", response.data);
+                    $translate('ERROR-SAVING-ADDRESS').then(function (message) {
+                        d.reject(message);
+                    });
+                });
+            }, function(error) {
+                $log.error("adjustedAddressService(): updateAddress(): failed to update address", error);
                 $translate('ERROR-SAVING-ADDRESS').then(function (message) {
                     d.reject(message);
                 });
