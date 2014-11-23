@@ -3,7 +3,7 @@ angular.module('app.controllers.checkout').controller('AddressEditModalControlle
 
     $log.debug('AddressEditModalController()');
 
-    $scope.address = address;
+    $scope.address = angular.copy(address);
     $scope.addressError = false;
 
     $scope.close = function () {
@@ -16,6 +16,8 @@ angular.module('app.controllers.checkout').controller('AddressEditModalControlle
 
     $scope.save = function () {
         $log.debug('AddressEditModalController(): save()');
+        // update local model
+        address = $scope.address;
         $modalInstance.close({
             address  : $scope.address,
             canceled : false
