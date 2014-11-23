@@ -989,28 +989,16 @@ angular.module('app.controllers.checkout')
                 resolve: {
                     address: function() {
                         return address;
+                    },
+                    addAddress: function() {
+                        return addAddress;
                     }
                 }
             });
             body = $document.find('html, body');
             d.result.then(function(result) {
-                $log.debug('CheckoutController(): editAddress(): edit address modal closed');
-                if (!result.canceled) {
-                    var updatedAddress = result.address;
-                    $log.debug('CheckoutController(): editAddress(): got edited address', updatedAddress);
-
-                    addAddress(updatedAddress).then(function (data) {
-                        $log.debug('CheckoutController(): editAddress(): addAddress success:', data);
-                        return true;
-                    }, function(error) {
-                        $log.error('CheckoutController(): editAddress(): error:', error);
-                        return false;
-                    });
-                    $log.debug('CheckoutController(): editAddress(): updating/saving address:', updatedAddress);
-                    dd.resolve();
-                } else {
-                    dd.resolve();
-                }
+                $log.debug('CheckoutController(): editAddress(): edit address modal: saved');
+                dd.resolve();
                 body.css('overflow-y', 'auto');
             });
             $('html, body').css('overflow-y', 'hidden');
