@@ -681,7 +681,7 @@ a, .btn {
   padding-top: 7px;
 }
 .checkout-address span {
-  display: block;
+  display: inline-block;
   line-height: 1.6em;
 }
 .checkout-address .address-name {
