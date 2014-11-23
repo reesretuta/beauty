@@ -1,18 +1,150 @@
 
 <div class="modal-header">
   <button type="button" class="close" ng-click="close()">&times;</button>
-  <h4 class="modal-title"><span ng-bind-html="'OS-ADDRESS_CORRECTION_TITLE' | translate | unsafe"></span> <span class="text-muted italic" ng-bind-html="'OS-ADDRESS_CORRECTION_TITLE_DESC' | translate | unsafe"></span></h4>
+  <h4 class="modal-title"><span ng-bind-html="'OS-ADDRESS_EDIT' | translate | unsafe"></span> <span class="text-muted italic" ng-bind-html="'OS-ADDRESS_CORRECTION_TITLE_DESC' | translate | unsafe"></span></h4>
 </div>
 
 <div class="modal-body queue-modal-body">
   <div class="row">
     <div class="col-md-offset-3">
-      <h1><span ng-bind-html="'OS-SHIPPING-EDIT-TITLE' | translate | unsafe"></span></h1>
+      <h1><span ng-bind-html="'OS-ADDRESS_EDIT' | translate | unsafe"></span></h1>
     </div>
   </div>
   <div class="row">
     <div class="col-sm-12">
-      <ng-include src="'/partials/checkout/shipping-form-include.html'" />
+
+      <form name="addressForm" class="form-horizontal" role="form" novalidate>
+
+        <div class="row form-group" ng-if="!isOnlineSponsoring">
+          <label for="name" class="col-md-3 control-label"><span ng-bind-html="'IN_FULL_NAME' | translate | unsafe"></span></label>
+          <div class="col-sm-8 col-lg-6">
+            <input id="shippingFullName" name="name" ng-model="address.name" ng-pattern="/^[a-zA-Z0-9\s,'-\/]*$/" type="text" class="form-control" placeholder="">
+            <span ng-show="addressForm.name.$invalid && addressForm.name.$dirty" class="help-block text-danger"><span ng-bind-html="'ENTER-VALID-SHIPPING-NAME' | translate | unsafe"></span></span>
+          </div>
+        </div>
+
+        <div class="row form-group">
+          <label for="businessCo" class="col-md-3 control-label"><span ng-bind-html="'IN_BUSINESS_CO' | translate | unsafe"></span></label>
+          <div class="col-sm-8 col-lg-6">
+            <input id="shippingBusinessCO" name="businessCO" ng-model="address.businessCO" ng-pattern="/^[a-zA-Z0-9\s,'-\/]+$/" type="text" class="form-control" placeholder="{{ 'IN_BUSINESS_CO_DES' | translate }}" autocomplete="off">
+            <span ng-show="addressForm.businessCO.$invalid && addressForm.businessCO.$dirty" class="text-danger">
+              <span ng-bind-html="'ENTER-VALID-SHIPPING-NAME' | translate | unsafe"></span>
+            </span>
+          </div>
+        </div>
+
+        <div class="row form-group">
+          <label for="address1" class="col-md-3 control-label"><span ng-bind-html="'IN_ADD_LINE1' | translate | unsafe"></span></label>
+          <div class="col-sm-8 col-lg-6" ng-class="{ 'has-error' : addressForm.address1.$invalid && addressForm.address1.$dirty }">
+            <input id="address1" name="address1" ng-model="address.address1" type="text" class="form-control" placeholder="{{ 'IN_ADD_LINE1_DES' | translate }} " focus-on="address1-focus" required>
+            <span ng-show="addressForm.address1.$invalid && addressForm.address1.$dirty" class="help-block text-danger"><span ng-bind-html="'ENTER-VALID-ADDRESS' | translate | unsafe"></span></span>
+          </div>
+        </div>
+
+        <div class="row form-group">
+          <label for="address2" class="col-md-3 control-label"><span ng-bind-html="'IN_ADD_LINE2' | translate | unsafe"></span></label>
+          <div class="col-sm-8 col-lg-6" ng-class="{ 'has-error' : addressForm.address2.$invalid && addressForm.address2.$dirty }">
+            <input id="shippingAddress2" name="address2" ng-model="address.address2" type="text" class="form-control" placeholder="{{ 'IN_ADD_LINE2_DES' | translate }} ">
+            <span ng-show="addressForm.address2.$invalid && !addressForm.address2.$pristine" class="help-block text-danger"><span ng-bind-html="'ENTER-VALID-ADDRESS' | translate | unsafe"></span></span>
+          </div>
+        </div>
+
+        <div class="row form-group">
+          <label for="city" class="col-md-3 control-label"><span ng-bind-html="'IN_CITY' | translate | unsafe"></span></label>
+          <div class="col-sm-7 col-lg-5" ng-class="{ 'has-error' : addressForm.city.$invalid && !addressForm.city.$pristine }">
+            <input id="city" name="city" ng-pattern="/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/" ng-model="address.city" type="text" class="form-control" placeholder="{{ 'IN_CITY' | translate }}" required>
+            <span ng-show="addressForm.city.$invalid && !addressForm.city.$pristine" class="help-block text-danger"><span ng-bind-html="'ENTER-VALID-CITY' | translate | unsafe"></span></span>
+          </div>
+        </div>
+        <div class="row form-group">
+          <label for="state" class="col-md-3 control-label"><span ng-bind-html="'IN_STATE' | translate | unsafe"></span></label>
+          <div class="col-sm-5 col-lg-3" ng-class="{ 'has-error' : addressForm.state.$invalid && !addressForm.state.$pristine }">
+            <select name="state" class="form-control" id="state" ng-model="address.state" required>
+                <option value="AL">Alabama</option>
+                <option value="AK">Alaska</option>
+                <option value="AZ">Arizona</option>
+                <option value="AR">Arkansas</option>
+                <option value="CA">California</option>
+                <option value="CO">Colorado</option>
+                <option value="CT">Connecticut</option>
+                <option value="DE">Delaware</option>
+                <option value="DC">District Of Columbia</option>
+                <option value="FL">Florida</option>
+                <option value="GA">Georgia</option>
+                <option value="HI">Hawaii</option>
+                <option value="ID">Idaho</option>
+                <option value="IL">Illinois</option>
+                <option value="IN">Indiana</option>
+                <option value="IA">Iowa</option>
+                <option value="KS">Kansas</option>
+                <option value="KY">Kentucky</option>
+                <option value="LA">Louisiana</option>
+                <option value="ME">Maine</option>
+                <option value="MD">Maryland</option>
+                <option value="MA">Massachusetts</option>
+                <option value="MI">Michigan</option>
+                <option value="MN">Minnesota</option>
+                <option value="MS">Mississippi</option>
+                <option value="MO">Missouri</option>
+                <option value="MT">Montana</option>
+                <option value="NE">Nebraska</option>
+                <option value="NV">Nevada</option>
+                <option value="NH">New Hampshire</option>
+                <option value="NJ">New Jersey</option>
+                <option value="NM">New Mexico</option>
+                <option value="NY">New York</option>
+                <option value="NC">North Carolina</option>
+                <option value="ND">North Dakota</option>
+                <option value="OH">Ohio</option>
+                <option value="OK">Oklahoma</option>
+                <option value="OR">Oregon</option>
+                <option value="PA">Pennsylvania</option>
+                <option value="PR">Puerto Rico</option>
+                <option value="RI">Rhode Island</option>
+                <option value="SC">South Carolina</option>
+                <option value="SD">South Dakota</option>
+                <option value="TN">Tennessee</option>
+                <option value="TX">Texas</option>
+                <option value="UT">Utah</option>
+                <option value="VT">Vermont</option>
+                <option value="VI">Virgin Islands</option>
+                <option value="VA">Virginia</option>
+                <option value="WA">Washington</option>
+                <option value="WV">West Virginia</option>
+                <option value="WI">Wisconsin</option>
+                <option value="WY">Wyoming</option>
+              </select>
+            <span ng-show="addressForm.state.$invalid && !addressForm.state.$pristine" class="help-block text-danger"><span ng-bind-html="'SELECT-STATE' | translate | unsafe"></span></span>
+          </div>
+        </div>
+
+        <div class="row form-group">
+          <label for="zipCode" class="col-md-3 control-label"><span ng-bind-html="'IN_ZIP' | translate | unsafe"></span></label>
+          <div class="col-sm-5 col-lg-3" ng-class="{ 'has-error' : addressForm.zipCode.$invalid && !addressForm.zipCode.$pristine }">
+            <input id="zipCode" ng-maxlength="5" maxlength="5" name="zipCode" ng-pattern="/^[0-9]{5}$/" ng-model="address.zipCode" type="text" class="form-control" required>
+          </div>
+        </div>
+
+        <div class="row form-group">
+          <label for="country" class="col-md-3 control-label"><span ng-bind-html="'IN_COUNTRY' | translate | unsafe"></span></label>
+          <div class="col-sm-5 col-lg-3">
+            <select id="country" data-ng-init="profile.newShippingAddress.country='US'" name="country" ng-model="address.country" class="form-control">
+              <option ng-selected="true" value="US" ng-bind-html="'COUNTRY-US' | translate | unsafe"></option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row form-group" ng-if="!isOnlineSponsoring" ng-class="{ 'has-error' : addressForm.phoneNumber.$invalid && !addressForm.phoneNumber.$pristine }">
+          <label for="phoneNumber" class="col-md-3 control-label"><span ng-bind-html="'PHONE-NUMBER' | translate | unsafe"></span></label>
+          <div class="col-sm-6 col-lg-4">
+            <input id="phoneNumber" name="phoneNumber" ng-model="address.phone" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" type="text" ui-mask="(999) 999-9999" mask-override placeholder="(xxx) xxx-xxxx" class="form-control">
+            <span ng-show="addressForm.phoneNumber.$error.pattern" class="help-block" ng-class="{ 'text-danger' : addressForm.phoneNumber.$invalid && !addressForm.phoneNumber.$pristine }"><span ng-bind-html="'PHONE-NUMBER-WRONG' | translate | unsafe"></span></span>
+          </div>
+          <a popover="{{'PHONE-NUMBER-DES' | translate | unsafe}}" popover-title="{{'PHONE-NUMBER' | translate | unsafe}}" href="" tabindex="-1" popover-trigger="hover" class="form-info-link"><i class="fa fa-info-circle"></i> <span ng-bind-html="'MORE-INFO' | translate | unsafe"></span></a>
+        </div>
+
+      </form>
+
     </div>
   </div>
 </div>
@@ -23,6 +155,6 @@
   </div>
   <div class="col-lg-6 col-md-6 col-sm-6">
     <button ng-click="close()" class="btn btn-link"><span ng-bind-html="'BTN_CANCEL' | translate | unsafe"></span></button>
-    <button ng-click="save()" class="btn btn-primary" ng-disabled="!shippingForm.$valid"><span ng-bind-html="'BTN_SAVE' | translate | unsafe"></span></button>
+    <button ng-click="save()" class="btn btn-primary" ng-disabled="!addressForm.$valid"><span ng-bind-html="'BTN_UPDATE_ADDRESS' | translate | unsafe"></span></button>
   </div>
 </div>
