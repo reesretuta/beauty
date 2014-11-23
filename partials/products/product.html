@@ -146,7 +146,7 @@
                 </div><!-- /color dropdown -->
 
                 <p class="itemsleep"><span ng-bind-html="'ITEM' | translate | unsafe"></span> #{{selectedProduct.sku}} - {{getTranslated(selectedProduct).name}}</p>
-                <p class="pricesleep">${{selectedProduct.currentPrice.price}}</p>
+                <p class="pricesleep">{{ selectedProduct.currentPrice.price | currency }}</p>
             </div>
             <p class="store-item-sku" ng-if="product.type != 'group'">
               <span ng-bind-html="'ITEM' | translate | unsafe"></span> #{{product.sku}} - {{getTranslated(product).name}}
@@ -155,15 +155,15 @@
 
               <span ng-repeat="detailprice in product.currentPrice">
                 <span ng-if="detailprice.type==2" class="item-price-sale">
-                  ${{detailprice.price}}
+                  {{ detailprice.price | currency }}
                 </span>
                 <span ng-if="detailprice.type==1" class="item-price-strike">
-                  ${{detailprice.price}}
+                  {{ detailprice.price | currency }}
                 </span>
               </span>
               <span ng-if="product.currentPrice.price">
                 <span class="item-price">
-                  ${{product.currentPrice.price}}
+                  {{ product.currentPrice.price | currency }}
                 </span>
               </span>
 

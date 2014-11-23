@@ -80,10 +80,9 @@ angular.module('app.controllers.main')
         $scope.addToCart = function(product) {
             $log.debug("MainController(): adding product", product);
             var qty = $scope.quantities[product.sku];
-            if (qty == null) {
+            if (qty === null) {
                 qty = 1;
             }
-            
             $log.debug("MainController(): addToCart()", product, qty);
             Cart.addToCart({
                 name: product.name,
@@ -154,11 +153,11 @@ angular.module('app.controllers.main')
         $scope.logout = function() {
             Session.logout();
             $location.path(STORE_BASE_URL);
-        }
+        };
 
         $scope.loggedIn = function() {
             return Session.isLoggedIn();
-        }
+        };
 
         $scope.getUserEmail = function() {
             var user = Session.getUser();
@@ -170,7 +169,15 @@ angular.module('app.controllers.main')
                 }
             }
             return "";
-        }
+        };
+
+        $scope.countCartItems = function (cart) {
+            var count = 0;
+            angular.forEach(cart, function(product) {
+                count += product.quantity;
+            });
+            return count;
+        };
 
         function cleanup() {
             if (cancelChangeListener) {

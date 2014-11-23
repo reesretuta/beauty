@@ -474,36 +474,32 @@ angular.module('app.services', ['ngResource'])
     })
     .factory('Cart', function ($rootScope, $log, $timeout, $q, STORE_BASE_URL, Session, Product, growlNotifications) {
         var cartService = {};
-
+        // fetch cart
         cartService.get = function(noLoadProducts) {
             var d = $q.defer();
-
             Session.get().then(function(session) {
-                //$log.debug("cartService(): getCart()", session.cart);
-
+                $log.debug('cartService(): getCart()', session.cart);
                 if (noLoadProducts == null || noLoadProducts == false) {
-                    $log.debug("cartService(): get(): loading products for cart", session.cart);
-
+                    $log.debug('cartService(): get(): loading products for cart', session.cart);
                     // load the project for the cart items
                     cartService.loadProducts(session.cart).then(function(products) {
-                        $log.debug("cartService(): get(): loaded items from cart & populated products", products);
-
+                        $log.debug('cartService(): get(): loaded items from cart & populated products', products);
                         d.resolve(session.cart);
                     }, function(error) {
-                        $log.error("cartService(): get(): failed to populate products", error);
+                        $log.error('cartService(): get(): failed to populate products', error);
                         d.reject(error);
                     })
                 } else {
                     d.resolve(session.cart);
                 }
             }, function(error) {
-                $log.error("cartService(): get(): error", error);
+                $log.error('cartService(): get(): error', error);
                 d.reject(error);
             });
-
             return d.promise;
-        }
+        };
 
+        // set cart obj
         cartService.set = function(cart) {
             $log.debug("cartService(): setCart()", cart);
             var d = $q.defer();
@@ -539,21 +535,19 @@ angular.module('app.services', ['ngResource'])
         
         cartService.getItemCount = function() {
             var d = $q.defer();
-
+            $log.debug('Services: Cart: getItemCount init');
             // load cart without product fetching to get count
             var cart = cartService.get(true).then(function(cart) {
                 var count = 0;
                 angular.forEach(cart, function(cartItem) {
                     count += parseInt(cartItem.quantity);
                 });
-
-                //$log.debug("cartService(): getItemCount()", count);
+                $log.debug("cartService(): getItemCount()", count);
                 d.resolve(count);
             }, function(error) {
                 $log.error("cartService(): getItemCount(): error", error);
                 d.reject(error);
             });
-
             return d.promise;
         };
 

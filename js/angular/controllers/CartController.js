@@ -1,3 +1,4 @@
+
 angular.module('app.controllers.cart')
     .controller('CartController', function ($scope, $document, $rootScope, $compile, $routeParams, $modal, $log, $q, $location, SalesTax, Cart, Product, OrderHelper, HashKeyCopier, STORE_BASE_URL) {
         $log.debug("CartController");
@@ -22,24 +23,18 @@ angular.module('app.controllers.cart')
 
         function loadCart() {
             var d = $q.defer();
-
             $scope.orderError = null;
-
             $log.debug("CartController(): loadCart(): loading products");
-
             Cart.get().then(function(cart) {
                 $log.debug("CartController(): loadCart(): SKU loaded & added to cart", cart);
-
                 $scope.cart = cart;
             }, function(error) {
                 $log.error("CartController(): loadCart(): failed to add to cart, redirecting", error);
                 $scope.orderError = "Failed to add product to cart";
                 $scope.salesTaxInfo = null;
-
                 $location.path(STORE_BASE_URL);
                 d.reject(error);
             });
-
             return d.promise;
         }
 
