@@ -1,6 +1,7 @@
 
 angular.module('app.controllers.products')
     .controller('ProductDetailsController', function ($sce, WizardHandler, HashKeyCopier, Categories, Product, $q, $scope, $rootScope, $routeParams, $location, $timeout, $window, $log, $modal, $document, Cart, BreadcrumbsHelper, RecentlyViewed) {
+        
         $log.debug("ProductDetailsController()");
 
         $scope.productId = $routeParams.productId;
@@ -74,7 +75,7 @@ angular.module('app.controllers.products')
                         }
 
                         var item = {
-                            name: $scope.Product.getTranslated(product).name,
+                            name: Product.getTranslated($scope.product).name,
                             sku: $scope.product.sku,
                             quantity: qty,
                             kitSelections: {},

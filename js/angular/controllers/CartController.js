@@ -143,6 +143,7 @@ angular.module('app.controllers.cart')
                 if (cartItem != null) {
                     $log.debug("CartController(): configureKit(): add", $scope.orderByIdQty, "kits to cart", cartItem);
 
+                    // commented loop to close TRP-29
                     //for (var i=0; i < $scope.orderByIdQty; i++) {
                         Cart.addToCart({
                             name: cartItem.name,
