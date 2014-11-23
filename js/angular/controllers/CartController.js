@@ -143,7 +143,7 @@ angular.module('app.controllers.cart')
                 if (cartItem != null) {
                     $log.debug("CartController(): configureKit(): add", $scope.orderByIdQty, "kits to cart", cartItem);
 
-                    for (var i=0; i < $scope.orderByIdQty; i++) {
+                    //for (var i=0; i < $scope.orderByIdQty; i++) {
                         Cart.addToCart({
                             name: cartItem.name,
                             name_es_US: cartItem.name_es_US,
@@ -151,7 +151,7 @@ angular.module('app.controllers.cart')
                             kitSelections: cartItem.kitSelections,
                             quantity: 1
                         });
-                    }
+                    //}
 
                     $scope.cartLoaded = false;
                     loadCart();
