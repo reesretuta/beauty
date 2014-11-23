@@ -106,30 +106,22 @@ angular.module('app.controllers.products')
 
             d.result.then(function(cartItem) {
                 $log.debug("configure kit dialog closed");
-
-                // re-enable scrolling on body
                 body.css("overflow-y", "auto");
-
-                if (cartItem != null) {
+                if (cartItem !== null) {
                     $log.debug("add kit to cart", cartItem);
-
-                    var n = cartItem.quantity;
-                    for (var i=0; i < n; i++) {
-                        Cart.addToCart({
-                            name: cartItem.name,
-                            name_es_US: cartItem.name_es_US,
-                            sku: cartItem.sku,
-                            kitSelections: cartItem.kitSelections,
-                            quantity: 1
-                        }).then(function() {
-                            $log.debug("MainController(): kit: addToCart()", $scope.product);
-                        }, function (error) {
-                            $log.error("MainController(): kit: addToCart(): error", $scope.product);
-                        });
-                    }
+                    Cart.addToCart({
+                        name: cartItem.name,
+                        name_es_US: cartItem.name_es_US,
+                        sku: cartItem.sku,
+                        kitSelections: cartItem.kitSelections,
+                        quantity: cartItem.quantity
+                    }).then(function() {
+                        $log.debug("MainController(): kit: addToCart()", $scope.product);
+                    }, function (error) {
+                        $log.error("MainController(): kit: addToCart(): error", $scope.product);
+                    });
                 }
             });
-
             // prevent page content from scrolling while modal is up
             $("html, body").css("overflow-y", "hidden");
         }
