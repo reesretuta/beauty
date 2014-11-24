@@ -905,8 +905,8 @@ angular.module('app.controllers.checkout')
         }
 
         // edit an address via a standard modal
-        $scope.editAddress = function(address) {
-            $log.debug('CheckoutController(): editAddress: got address:', address);
+        $scope.editAddress = function(address, addressType) {
+            $log.debug('CheckoutController(): editAddress: got address:', address, addressType);
             var d, body, dd = $q.defer();
             d = $modal.open({
                 backdrop: true,
@@ -926,6 +926,11 @@ angular.module('app.controllers.checkout')
             body = $document.find('html, body');
             d.result.then(function(result) {
                 $log.debug('CheckoutController(): editAddress(): edit address modal: saved');
+                $log.debug('CheckoutController(): editAddress(): checking for addressType: (%s)', addressType);
+                if (addressType) {
+                    $log.debug('CheckoutController(): editAddress(): set $scope.profile.%s', addressType);
+                    $scope.profile[addressType] = angular.copy(result.address);
+                }
                 dd.resolve();
                 body.css('overflow-y', 'auto');
             });
