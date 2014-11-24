@@ -140,14 +140,12 @@ angular.module('app.directives', [])// directives
                         fixed = val;
                     }
                     fixed = parseInt(fixed);
-                    $log.debug('Directives: oneToNinetyNine: SETTING val:', val, typeof(fixed));
                     ngModelCtrl.$setViewValue(fixed);
                     ngModelCtrl.$render();
                 }
                 // watch for changes to number
                 angular.element(elem).on('input keydown change', function (evt) {
                     var val = this.value.replace(/[^\d\.]/g, '');
-                    $log.debug('Directives: oneToNinetyNine: GETTING val:', val, typeof(val));
                     if (val === '' || val === null) {
                         $timeout(function() {
                             runCheck(val);
