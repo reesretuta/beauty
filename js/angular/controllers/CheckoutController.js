@@ -788,13 +788,11 @@ angular.module('app.controllers.checkout')
         function addAddressToBackend(a) {
             $log.debug("CheckoutController(): addAddressToBackend()", a);
             var d = $q.defer();
-
             if ($scope.isOnlineSponsoring || isGuest) {
                 // online sponsoring, we have it in mem
                 d.resolve(a);
             } else {
                 $log.debug("CheckoutController(): addAddressToBackend(): adding address", a);
-
                 // client direct, we add it
                 if (a.id) {
                     Addresses.updateAddress(a).then(function(a) {
@@ -820,72 +818,6 @@ angular.module('app.controllers.checkout')
                     });
                 }
             }
-
-            return d.promise;
-        }
-
-        function addAddress(address) {
-            var d = $q.defer();
-
-            $log.debug("CheckoutController(): addAddress()", address);
-            $scope.shippingAddressError = "";
-
-            if (debug) {
-                populateDebugShippingData(address);
-                WizardHandler.wizard('checkoutWizard').goTo('Payment');
-                d.resolve();
-                return d.promise;
-            }
-
-            $log.debug("CheckoutController(): addAddress(): validating address", address);
-
-            Addresses.validateAddress(address).then(function(a) {
-                $log.debug("CheckoutController(): addAddress(): validated address", a);
-
-                // if this address was validated and corrected, then we need to inform the user
-                if (!addressesEqual(address, a)) {
-                    showAddressCorrectionModal(a).then(function(result) {
-                        $log.debug("CheckoutController(): addAddress(): address correction modal closed");
-
-                        var address = result.address;
-                        var canceled = result.canceled;
-
-                        if (canceled) {
-                            $log.debug("CheckoutController(): addAddress(): address correction canceled");
-                            d.reject("Address correction canceled");
-                            return;
-                        }
-
-                        selectGeocodeAndAdd(a).then(function(a) {
-                            $log.debug("CheckoutController(): addAddress(): selected geocode and added address", a);
-                            d.resolve(a);
-                        }, function(error) {
-                            $log.error("CheckoutController(): addAddress(): select geocode and add failed", error);
-                            $scope.shippingAddressError = error;
-                            d.reject(error);
-                        });
-                    }, function(error) {
-                        $log.error("CheckoutController(): addAddress(): address not corrected");
-                        $scope.shippingAddressError = error;
-                        d.reject(error);
-                    });
-                } else {
-                    selectGeocodeAndAdd(a).then(function(a) {
-                        $log.debug("CheckoutController(): addAddress(): selected geocode and added address", a);
-                        d.resolve(a);
-                    }, function(error) {
-                        $log.debug("CheckoutController(): addAddress(): select geocode and add failed", error);
-                        $scope.shippingAddressError = error;
-                        d.reject(error);
-                    });
-                }
-            }, function(r) {
-                $log.error("CheckoutController(): addAddress(): error validating address", r);
-                // FIXME - failed to add, show error
-                $scope.shippingAddressError = r.message;
-                d.reject(r.errorMessage);
-            });
-
             return d.promise;
         }
 
@@ -1964,40 +1896,32 @@ angular.module('app.controllers.checkout')
 
         function addAddress(address) {
             var d = $q.defer();
-
             $log.debug("CheckoutController(): addAddress()", address);
             $scope.shippingAddressError = "";
-
             if (debug) {
                 populateDebugShippingData(address);
                 WizardHandler.wizard('checkoutWizard').goTo('Payment');
                 d.resolve();
                 return d.promise;
             }
-
             $log.debug("CheckoutController(): addAddress(): validating address", address);
 
             Addresses.validateAddress(address).then(function(a) {
                 $log.debug("CheckoutController(): addAddress(): validated address", a);
-
                 // if this address was validated and corrected, then we need to inform the user
                 if (!addressesEqual(address, a)) {
                     showAddressCorrectionModal(a).then(function(result) {
-
                         var address = result.address;
                         if (address && address.zip) {
                             address.zipCode = address.zip;
                         }
                         var canceled = result.canceled;
-
                         $log.debug("CheckoutController(): addAddress(): address correction modal closed", address);
-
                         if (canceled) {
                             $log.debug("CheckoutController(): addAddress(): address correction canceled");
                             d.reject("Address correction canceled");
                             return;
                         }
-
                         selectGeocodeAndAdd(address).then(function(aa) {
                             $log.debug("CheckoutController(): addAddress(): selected geocode and added address", aa);
                             if (aa && aa.zip) {
@@ -2025,15 +1949,11 @@ angular.module('app.controllers.checkout')
                         d.reject(error);
                     });
                 }
-
-
             }, function(r) {
                 $log.error("CheckoutController(): addAddress(): error validating address", r);
-                // FIXME - failed to add, show error
                 $scope.shippingAddressError = r.message;
                 d.reject(r.errorMessage);
             });
-
             return d.promise;
         }
 
