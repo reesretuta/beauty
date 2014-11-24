@@ -130,7 +130,7 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
 //
 //            return $delegate;
 //        });
-    }]).run(function ($rootScope, $animate, $log, $location, Session, $translate, $templateCache, BASE_URL) {
+    }]).run(function ($rootScope, $animate, $log, $location, Session, Consultant, $translate, $templateCache, BASE_URL) {
         $rootScope.BASE_URL = BASE_URL;
         $rootScope.STORE_BASE_URL = BASE_URL + "/shop";
         $rootScope.JOIN_BASE_URL = BASE_URL + "/join";
@@ -157,6 +157,10 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
         }
         if (!S(cid).isEmpty()) {
             sess["consultantId"] = cid;
+            Consultant.get({consultantId: cid}).$promise.then(function(consultant) {
+                $log.debug("app(): loaded consultant", consultant);
+                $rootScope.consultant = consultant;
+            });
         }
 
         if (Object.keys(sess).length > 0) {

@@ -1579,12 +1579,17 @@ angular.module('app.controllers.checkout')
                         }
                     }
 
-                    products.push({
+                    var d = {
                         sku: item.sku,
-                        qty: item.quantity,
-                        kitSelections: item.kitSelections,
-                        components: components
-                    });
+                        qty: item.quantity
+                    };
+
+                    if (item.type == 'kit') {
+                        d["kitSelections"] = item.kitSelections;
+                        d["components"] = components;
+                    }
+
+                    products.push(d);
                 }
 
                 // FIXME - make sure we have a client ID (aka the use is logged in)
