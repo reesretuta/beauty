@@ -1,3 +1,4 @@
+
 <div class="modal-header">
   <button type="button" class="close" ng-click="close()">&times;</button>
   <h4 class="modal-title"><span ng-bind-html="'OS-ADDRESS_CORRECTION_TITLE' | translate | unsafe"></span> <span class="text-muted italic" ng-bind-html="'OS-ADDRESS_CORRECTION_TITLE_DESC' | translate | unsafe"></span></h4>
@@ -5,14 +6,12 @@
 
 <div class="modal-body queue-modal-body">
   <div class="col-md-offset-3">
-
     <h1><span ng-bind-html="'OS-EDIT-CONTACT-INFO' | translate | unsafe"></span></h1>
-
-    <!--<hr ng-if="profile.customerStatus=='existing'">-->
-  </div><!-- /offset -->
+  </div>
 
   <div class="row">
-    <div class="col-sm-6">
+    <div class="col-sm-3 col-md-3"></div>
+    <div class="col-sm-6 col-md-6">
       <div ng-if="emailError" class="alert alert-danger" role="alert"><span ng-bind-html="'INVALID-EMAIL-ADDRESS' | translate | unsafe"></span></div>
     </div>
   </div>
@@ -23,11 +22,9 @@
       <label for="firstName" class="col-md-3 control-label"><span ng-bind-html="'OS-NAME' | translate | unsafe"></span></label>
       <div class="col-sm-3" ng-class="{ 'has-error' : contactForm.firstName.$invalid && contactForm.firstName.$dirty }">
         <input name="firstName" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model="profile.firstName" class="form-control" id="firstName" placeholder="{{'CHECKOUT-FIRST-PLACEHOLDER' | translate | unsafe}}" required autofocus min="2" max="40">
-        <!--valid={{contactForm.firstName.$valid}}-->
       </div>
       <div class="col-sm-3" ng-class="{ 'has-error' : contactForm.lastName.$invalid && contactForm.lastName.$dirty }">
         <input name="lastName" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model="profile.lastName" class="form-control" id="lastName" placeholder="{{'CHECKOUT-LAST-PLACEHOLDER' | translate | unsafe}}" required min="2" max="40">
-        <!--valid={{contactForm.lastName.$valid}}-->
       </div>
     </div>
 
@@ -44,7 +41,6 @@
       <div class="col-sm-6" ng-class="{ 'has-error' : contactForm.loginEmail.$invalid && contactForm.loginEmail.$dirty }">
         <input name="loginEmail" ng-pattern="/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/" ng-model="profile.loginEmail" type="email" class="form-control" id="loginEmail" placeholder="example@gmail.com" required>
         <span ng-show="contactForm.loginEmail.$invalid && contactForm.loginEmail.$dirty" class="help-block" ng-class="{ 'text-danger' : contactForm.loginEmail.$invalid }"><span ng-bind-html="'REQUIRES-VALID-EMAIL-ADDRESS' | translate | unsafe"></span>.</span>
-        <!--valid={{contactForm.loginEmail.$valid}}-->
       </div>
     </div>
 

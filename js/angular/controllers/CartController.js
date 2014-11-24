@@ -186,5 +186,6 @@ angular.module('app.controllers.cart')
             } else {
                 $scope.searchProductsList = new Array();
             }
-        }
+        };
+        
     });
