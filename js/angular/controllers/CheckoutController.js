@@ -2036,7 +2036,7 @@ angular.module('app.controllers.checkout')
                 $scope.processing = false;
             }, function(error) {
                 $log.error("CheckoutController(): resetPassword(): password reset failed", error);
-                $translate('PASSWORD-RESET-ERROR').then(function (message) {
+                $translate('FORGOT-PASSWORD-ERROR').then(function (message) {
                     $scope.passwordResetError = message;
                     $scope.processing = false;
                 });
