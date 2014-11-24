@@ -4,9 +4,9 @@ angular.module('app.controllers.checkout').controller('AddressEditModalControlle
     $log.debug('AddressEditModalController()');
 
     $scope.address = angular.copy(address);
-    //TODO fix this?
-    $scope.address.zipCode = $scope.address.zip;
     $scope.addressError = false;
+
+    $log.debug('AddressEditModalController(): open(): $scope.address:', $scope.address);
 
     $scope.close = function () {
         $log.debug('AddressEditModalController()');

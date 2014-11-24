@@ -4,10 +4,8 @@
   <div class="col-md-offset-1 col-md-10">
     <h1><span ng-bind-html="'REVIEW-CONFIRM-ORDER' | translate | unsafe"></span>
       <span class="store-heading-description" ng-bind-html="'CHECK_INST_PAY' | translate | unsafe">
-        
       </span>
     </h1>
-    
     <div class="row">
       <div class="col-sm-6">
         <div ng-if="orderError" class="alert alert-danger" role="alert" ng-bind="orderError"></div>
@@ -159,7 +157,7 @@
         <span ng-if="isOnlineSponsoring" class="address-businessCO">{{ profile.shipping.businessCO }}</span>
         <span class="address-street">{{profile.shipping.address1}}</span>
         <span class="address-street">{{profile.shipping.address2}}</span>
-        <span class="address-region">{{profile.shipping.city}}, {{profile.shipping.state}} {{profile.shipping.zip}}</span>
+        <span class="address-region">{{profile.shipping.city}}, {{profile.shipping.state}} {{ profile.shipping.zipCode }}</span>
         <span class="phone-number" ng-if="!isOnlineSponsoring">{{profile.shipping.phone}}</span>
         <span ng-if="!isOnlineSponsoring"><span ng-bind-html="'SHIPPING-CARRIER' | translate | unsafe"></span>: {{salesTaxInfo.shippingCarrier || 'UPS' }}</span>
         <div class="address-actions">
@@ -188,7 +186,7 @@
         <span class="address-businessCO">{{profile.billing.businessCO}}</span>
         <span class="address-street">{{profile.billing.address1}}</span>
         <span class="address-street">{{profile.billing.address2}}</span>
-        <span class="address-region">{{profile.billing.city}}, {{profile.billing.state}} {{profile.billing.zip}}</span>
+        <span class="address-region">{{profile.billing.city}}, {{profile.billing.state}} {{profile.billing.zipCode }}</span>
         <span class="phone-number" ng-if="!isOnlineSponsoring">{{profile.billing.phone}}</span>
         <div class="address-actions">
           <a href ng-click="editAddress(profile.billing, 'billing')" class="pull-left"><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'EDIT' | translate | unsafe"></span></a>

@@ -915,8 +915,9 @@ angular.module('app.controllers.checkout')
                 $log.debug('CheckoutController(): editAddress(): edit address modal: saved');
                 $log.debug('CheckoutController(): editAddress(): checking for addressType: (%s)', addressType);
                 if (addressType) {
-                    $log.debug('CheckoutController(): editAddress(): set $scope.profile.%s', addressType);
+                    $log.debug('CheckoutController(): editAddress(): set $scope.profile:', addressType, $scope.profile);
                     $scope.profile[addressType] = angular.copy(result.address);
+                    $log.debug('CheckoutController(): editAddress(): FINISHED setting $scope.profile:', $scope.profile);
                 }
                 dd.resolve();
                 body.css('overflow-y', 'auto');
