@@ -94,7 +94,9 @@
                   <form>
                   <!--<a ng-show="!loggedIn()" href="" ng-click="login()" ng-cloak>Sign In</a>-->
                   <div class="login-dropdown" ng-show="!loggedIn()" class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" style="white-space: nowrap"><span ng-bind-html="'LOGIN' | translate | unsafe"></span></a>
+                    <a class="dropdown-toggle" data-toggle="dropdown" style="white-space: nowrap">
+                      <span ng-bind-html="'LOGIN' | translate | unsafe"></span>
+                    </a>
                     <ul class="dropdown-menu" role="menu">
                       <li ngif="loginError">
                         <div class="login-error" ng-bind="loginError"></div>
@@ -157,7 +159,7 @@
 
       <div ng-show="section != 'checkout'" class="row store-heading" ng-cloak>
         <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8">
-          <h1 ng-bind-html="title | unsafe"></h1>
+          <h1 ng-bind-html="'OS-PRODUCTS-OUR-PRODUCTS' | translate | unsafe"></h1>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
           <p>&nbsp;</p>
@@ -177,7 +179,7 @@
         </div>
         <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
           <div class="input-group">
-            <input class="form-control" type="search" placeholder="Search Products" ng-model="search.queryString" ui-keypress="{13:'searchProducts(search.queryString)'}">
+            <input class="form-control" type="search" placeholder="{{ 'SEARCH_PROD' | translate }}" ng-model="search.queryString" ui-keypress="{13:'searchProducts(search.queryString)'}">
               <span class="input-group-btn">
                 <button class="btn btn-primary" type="button" ng-click="searchProducts(search.queryString)"><i class="fa fa-search fa-fw"></i></button>
               </span>
