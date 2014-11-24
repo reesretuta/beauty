@@ -232,6 +232,8 @@
 
     "LOGIN":"Login",
     "LOGIN-ERROR": "There was an error while logging in",
+    "PASSWORD-RESET-ERROR": "There was an error resetting your password",
+    "FORGOT-PASSWORD-ERROR": "There was an error requesting a password reset",
 
     "LOADING-CART": "Loading cart...",
 

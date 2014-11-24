@@ -234,6 +234,8 @@
 
     "LOGIN":"Login",
     "LOGIN-ERROR": "Se ha producido un error al iniciar la sesi&oacute;n",
+    "PASSWORD-RESET-ERROR": "Hubo un error al restablecer su contrase&ntilde;a",
+    "FORGOT-PASSWORD-ERROR": "Hubo un error al solicitar un restablecimiento de contrase&ntilde;a",
 
     "LOADING-CART": "Cargando carrito...",
 

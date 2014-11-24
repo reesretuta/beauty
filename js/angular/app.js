@@ -47,6 +47,9 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
         }).when(STORE_BASE_URL + '/passwordReset', {
           templateUrl: BASE_URL + '/partials/password-reset.html',
           controller: 'PasswordResetController'
+        }).when(STORE_BASE_URL + '/forgotPassword', {
+          templateUrl: BASE_URL + '/partials/forgot-password.html',
+          controller: 'PasswordResetController'
         }).otherwise({
           templateUrl: BASE_URL + '/partials/page-not-found.html',
           controller: 'MainController'
