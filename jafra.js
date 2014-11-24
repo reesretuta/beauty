@@ -385,7 +385,11 @@ function getConsultant(consultantId) {
             //console.log("getConsultant(): success", body);
             deferred.resolve({
                 status: 200,
-                result: body
+                result: {
+                    firstName: body.firstName,
+                    lastName: body.lastName,
+                    email: body.email
+                }
             });
         } else {
             deferred.reject({

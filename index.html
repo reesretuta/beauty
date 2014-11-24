@@ -85,7 +85,7 @@
                 <a href="">
                   <img src="/img/40x40" alt="profile photo" class="img-circle pull-left consultant-photo">
                 </a>
-                <a href=""><span class="consultant-name">Denise Paxton</span></a>
+                <a ng-href="http://myjafra.com/sites/{{consultant.firstName|substr:0:1|lowercase}}{{consultant.lastName|lowercase}}" ng-if="consultant"><span class="consultant-name">{{consultant.firstName}} {{consultant.lastName}}</span></a>
                 <p><span ng-bind-html="'HEADER_CONSULTANTMSG' | translate | unsafe"></span></p>
 
               </div>
