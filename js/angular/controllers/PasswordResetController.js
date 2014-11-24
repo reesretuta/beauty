@@ -14,6 +14,25 @@ angular.module('app.controllers.top')
 
         $rootScope.section = "passwordReset";
 
+        $scope.resetPasswordRequest = function(email) {
+            $scope.processing = true;
+            $scope.passwordResetError = null;
+            $log.debug("CheckoutController(): resetPasswordRequest()", email);
+
+            PasswordResetHelper.requestReset(email).then(function(){
+                $log.debug("CheckoutController(): resetPasswordRequest(): password reset");
+                $('#forgot').css('display','none');
+                $('#thanks').css('display','block')
+                $scope.processing = false;
+            }, function(error) {
+                $log.error("CheckoutController(): resetPasswordRequest(): password reset failed", error);
+                $translate('FORGOT-PASSWORD-ERROR').then(function (message) {
+                    $scope.passwordResetError = message;
+                    $scope.processing = false;
+                });
+            });
+        }
+
         $scope.reset = function() {
             $log.debug('PasswordResetController()', $scope.resetData.email, $scope.resetData.password, $scope.resetData.token);
 

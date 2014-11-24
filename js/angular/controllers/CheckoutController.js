@@ -2024,23 +2024,8 @@ angular.module('app.controllers.checkout')
             }
         }
 
-        $scope.resetPassword = function(email) {
-            $scope.processing = true;
-            $scope.passwordResetError = null;
-            $log.debug("CheckoutController(): resetPassword()", email);
-
-            PasswordResetHelper.requestReset(email).then(function(){
-                $log.debug("CheckoutController(): resetPassword(): password reset");
-                $('#forgot').css('display','none');
-                $('#thanks').css('display','block')
-                $scope.processing = false;
-            }, function(error) {
-                $log.error("CheckoutController(): resetPassword(): password reset failed", error);
-                $translate('FORGOT-PASSWORD-ERROR').then(function (message) {
-                    $scope.passwordResetError = message;
-                    $scope.processing = false;
-                });
-            });
+        $scope.forgotPassword = function() {
+            $location.url(STORE_BASE_URL + "/forgotPassword");
         }
 
         /*==== CLEANUP ====*/
