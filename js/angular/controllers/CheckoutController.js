@@ -797,8 +797,6 @@ angular.module('app.controllers.checkout')
                 if (a.id) {
                     Addresses.updateAddress(a).then(function(a) {
                         $log.debug("CheckoutController(): addAddressToBackend(): address updated", a);
-                        $scope.profile.shipping = angular.copy(a);
-                        $scope.profile.billing = angular.copy(a);
                         d.resolve(a);
                     }, function(error) {
                         $log.error("CheckoutController(): addAddressToBackend(): failed to update address", error);
@@ -808,8 +806,6 @@ angular.module('app.controllers.checkout')
                 } else {
                     Addresses.addAddress(a).then(function(a) {
                         $log.debug("CheckoutController(): addAddressToBackend(): address added", a);
-                        $scope.profile.shipping = angular.copy(a);
-                        $scope.profile.billing = angular.copy(a);
                         d.resolve(a);
                     }, function(error) {
                         $log.error("CheckoutController(): addAddressToBackend(): failed to add address", error);
