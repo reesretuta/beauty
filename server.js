@@ -279,7 +279,7 @@ router.route('/products')
         if (searchString != null && !S(searchString).isEmpty()) {
             console.log("searching for product by string", searchString);
             //var re = new RegExp(searchString);
-            models.Product.find({ $text: { $search: "" + searchString } })//.or([{ 'name': { $regex: re }}, { 'description': { $regex: re }}, { 'usage': { $regex: re }}, { 'ingredients': { $regex: re }}])
+            models.Product.find({ $text: { $search: "" + searchString } }, {score: { $meta: "textScore" }})
                 .and([
                     {masterStatus: "A", onHold: false, searchable: true},
                     {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
@@ -287,7 +287,9 @@ router.route('/products')
                         {$and: [{type: "group"}, {prices: {$exists: false}}]},
                         {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
                     ]}
-                ]).sort('name').limit(20).populate({
+                ])
+                .sort({ score: { $meta: "textScore" } })
+                .limit(20).populate({
                     path: 'upsellItems.product youMayAlsoLike.product',
                     model: 'Product',
                     match: { $and: [
@@ -333,7 +335,8 @@ router.route('/products')
                         {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
                     ]}
                 ]
-            }).sort('name')
+            }, {score: { $meta: "textScore" }})
+            .sort({ score: { $meta: "textScore" } })
             .limit(20)
             .populate({
                 path: 'upsellItems.product youMayAlsoLike.product',
@@ -386,7 +389,10 @@ router.route('/products')
                         {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
                     ]}
                 ]
-            }).sort('name').limit(20).populate({
+            }, { score: { $meta: "textScore" } })
+            .sort({ score: { $meta: "textScore" } })
+            .limit(20)
+            .populate({
                 path: 'upsellItems.product youMayAlsoLike.product',
                 model: 'Product',
                 match: { $and: [
@@ -431,7 +437,10 @@ router.route('/products')
                         {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
                     ]}
                 ]
-            }).sort('name').limit(20).populate({
+            }, { score: { $meta: "textScore" } })
+            .sort({ score: { $meta: "textScore" } })
+            .limit(20)
+            .populate({
                 path: 'upsellItems.product youMayAlsoLike.product',
                 model: 'Product',
                 match: { $and: [
