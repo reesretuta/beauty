@@ -95,9 +95,8 @@
 
     </form>
 
-       <hr>
+    <hr />
 
-    
     <div class="row">
 
       <div class="col-sm-3 col-lg-3" ng-if="isOnlineSponsoring">
@@ -107,7 +106,7 @@
             <h3><span ng-bind="profile.firstName"></span> <span ng-bind="profile.lastName"></span></h3>
             <p><b ng-bind="profile.loginEmail"></b></p>
             <p>{{profile.phoneNumber|phone}}</p>
-            <a href=" " ng-click="editContactInfo()" class="pull-left">
+            <a ng-if="isOnlineSponsoring" href ng-click="editContactInfo()" class="pull-left">
               <i class="fa fa-pencil-square-o"></i>
               <span ng-bind-html="'EDIT' | translate | unsafe">Edit</span>
             </a>
