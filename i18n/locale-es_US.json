@@ -194,6 +194,7 @@
     "PASSWORDS-DONT-MATCH": "Las contrase&ntilde;as deben coincidir",
     "ALREADY-A-CUSTOMER": "&iquest;Ya es cliente?",
     "NOT-YET-A-CUSTOMER": "&iquest;Todav&iacute;a no es cliente?",
+    "I-FORGOT-MY-PASSWORD": "Olvid&eacute; mi contrase&ntilde;a",
     "FORGOT-PASSWORD": "&iquest;Olvid&oacute; su contrase&ntilde;a",
     "EMAIL-ADDRESS": "Direcci&oacute;n de correo Electr&oacute;nico",
     "RESET-PASSWORD": "Restablecer la contrase&ntilde;a",
@@ -238,6 +239,7 @@
 
     "LOADING-CART": "Cargando carrito...",
 
+    "BTN_LOGIN":"Login",
     "BTN_LOGOUT":"Salir",
     "ALL_PRODS":"Todos los Productos",
     "ORDER_BY_ITEM":"Ordenar por Art&iacute;culo",

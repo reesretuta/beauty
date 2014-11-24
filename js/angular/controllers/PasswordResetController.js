@@ -1,6 +1,8 @@
 angular.module('app.controllers.top')
     .controller('PasswordResetController', function ($scope, $document, $timeout, $log, $location, $rootScope, $translate, $routeParams, PasswordResetHelper, STORE_BASE_URL) {
 
+        $rootScope.title = "";
+
         $log.debug('PasswordResetController()');
 
         var token = $routeParams.token;

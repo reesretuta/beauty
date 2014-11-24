@@ -672,6 +672,10 @@ a, .btn {
   padding-top: 5px;
   font-size: 18px;
 }
+.forgot-password-link {
+  color: #b51a8a;
+  text-transform: none;
+}
 .form-info-link {
   margin-left: 15px;
   white-space: nowrap;

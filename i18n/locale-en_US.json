@@ -192,6 +192,7 @@
     "PASSWORDS-DONT-MATCH": "Passwords must match",
     "ALREADY-A-CUSTOMER": "Already a customer?",
     "NOT-YET-A-CUSTOMER": "Not yet a customer?",
+    "I-FORGOT-MY-PASSWORD": "I forgot my password",
     "FORGOT-PASSWORD": "Forgot Your Password",
     "EMAIL-ADDRESS": "Email Address",
     "RESET-PASSWORD": "Reset Password",
@@ -236,6 +237,7 @@
 
     "LOADING-CART": "Loading cart...",
 
+    "BTN_LOGIN":"Login",
     "BTN_LOGOUT":"Logout",
     "ALL_PRODS":"All Products",
     "ORDER_BY_ITEM":"Order By Item",
