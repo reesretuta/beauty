@@ -116,7 +116,7 @@ angular.module('app.controllers.checkout')
                 if (S(urlStep).trim() == "Shipping") {
                     $("#shippingAddress1").onAvailable(function () {
                         if (!$scope.isOnlineSponsoring) {
-                            var accountName = ($scope.profile.firstName + ' ' + $scope.profile.lastName);
+                            var accountName = ($rootScope.session.client.firstName + ' ' + $rootScope.session.client.lastName);
                             $log.debug('CheckoutController(): NOT Online Sponsoring: setting shipping name (default):', accountName);
                             $scope.profile.newShippingAddress.name = accountName;
                         }
