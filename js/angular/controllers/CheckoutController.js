@@ -1209,12 +1209,15 @@ angular.module('app.controllers.checkout')
                     $scope.profile.newCard = null;
 
                     if (!$scope.profile.billSame) {
-                        $log.debug("CheckoutController(): addPaymentMethod(): setting billing address", $scope.profile.newBillingAddress);
+                        $log.debug("CheckoutController(): addPaymentMethod(): setting DIFFERENT billing address", $scope.profile.newBillingAddress);
                         // we need to create an address to add to the account for client direct
                         $scope.addBillingAddress($scope.profile.newBillingAddress).then(function(a) {
                             // only do the clear
+                            $log.debug('CheckoutController(): addPaymentMethod(): profile:', $scope.profile);
+                            $scope.profile.billing = angular.copy(a);
                             $scope.profile.newBillingAddress = null;
                             $scope.checkoutUpdated();
+                            $log.debug('CheckoutController(): addPaymentMethod(): profile:', $scope.profile);
                             WizardHandler.wizard('checkoutWizard').goTo('Review');
                             $scope.processing = false;
                         }, function(err) {
