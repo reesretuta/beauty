@@ -114,7 +114,12 @@ angular.module('app.controllers.checkout')
 
                 // do focuses here
                 if (S(urlStep).trim() == "Shipping") {
-                    $("#shippingAddress1").onAvailable(function(){
+                    $("#shippingAddress1").onAvailable(function () {
+                        if (!$scope.isOnlineSponsoring) {
+                            var accountName = ($scope.profile.firstName + ' ' + $scope.profile.lastName);
+                            $log.debug('CheckoutController(): NOT Online Sponsoring: setting shipping name (default):', accountName);
+                            $scope.profile.newShippingAddress.name = accountName;
+                        }
                         $log.debug("CheckoutController(): focusing address1 field");
                         focus('shipping-address1-focus');
                     });
