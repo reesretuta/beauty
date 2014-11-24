@@ -194,7 +194,7 @@
         <!-- Sidebar Navigation -->
         <div class="col-xs-8 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation" ng-if="!(section == 'admin' || section =='checkout' || section=='cart' || section=='passwordReset')">
           <aside id="shop_menu">
-            <a class="pull-left visible-xs store-nav-toggle" ng-click="isActive = !isActive">
+            <a class="pull-left visible-xs store-nav-toggle" ng-click="isActive = !isActive" data-toggle="offcanvas">
               <i class="fa fa-bars"></i>
             </a>
             <ul ng-controller="CategoriesController">
@@ -361,7 +361,8 @@
     <script src="/js/angular/filters.js"></script>
     <script src="/js/angular/directives.js"></script>
     <script src="/js/angular/app.js"></script>
-
+    <script src="/js/offcanvas.js"></script>
+    
     <!-- AddThis widgets for social media sharing -->
     <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5435adb94c0d228e"></script>
 
