@@ -1,10 +1,13 @@
 
-angular.module('app.controllers.home').controller('HomeController', function ($scope, $document, $rootScope, $log, Categories) {
+angular.module('app.controllers.home').controller('HomeController', function ($scope, $document, $rootScope, $log, Categories, $translate) {
    
-    $rootScope.title = 'Our Products';
-    $rootScope.section = "store";
+    /*$translate('OS-PRODUCTS-OUR-PRODUCTS').then(function (message) {
+        $rootScope.title = message;
+    });*/
 
-    console.log('HomeController');
+    $rootScope.title = 'Our Products';
+
+    $rootScope.section = "store";
 
     $scope.objects = [];
 
