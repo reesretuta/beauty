@@ -1,3 +1,4 @@
+      
       <!-- Hero Section -->
 
         <section class="row store-section">
@@ -22,15 +23,19 @@
                 </a>
               </div>
               <p>&nbsp;</p>
-            </div><!--/span-->
+            </div>
             <div class="col-xs-12 col-sm-4 col-lg-4 pull-right">
                 <a ng-href="{{STORE_BASE_URL}}/products?category=310"><img class="img-responsive" src="/img/jafra-color.jpg"></a>
                 <br><br>
                 <a href="http://www.jafra.com/corporate/products/skin-care-test" target="_blank"><img class="img-responsive" src="/img/skincare_profile.jpg"></a>
             </div>
             <div class="col-xs-12 col-sm-8 col-lg-8">
-              <p class="lead">The science of beauty, naturally.</p>
-              <p>JAFRA® blends cutting edge science with the best nature has to offer. The results are highly effective, wonderfully luxurious and irresistibly aromatic skin & body care formulas. Products that help women look their best.</p>
+              <p class="lead">
+                <span ng-bind-html="'HOME-BOTTOM-TAGLINE' | translate | unsafe"></span>
+              </p>
+              <p>
+                <span ng-bind-html="'HOME-BOTTOM-TAGLINE-BODY' | translate | unsafe"></span>
+              </p>
             </div><!--/span-->
         </section><!--/row-->
 

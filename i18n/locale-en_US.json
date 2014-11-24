@@ -481,5 +481,8 @@
     "CART_TAX":"Tax",
     "CART_TAX_PERCENTAGE":"Tax Percentage",
     "CART_SHIPPING":"Shipping",
-    "CART_SUBTOTAL":"SUB-TOTAL BEFORE TAX"
+    "CART_SUBTOTAL":"SUB-TOTAL BEFORE TAX",
+
+    "HOME-BOTTOM-TAGLINE":"The science of beauty, naturally",
+    "HOME-BOTTOM-TAGLINE-BODY":"JAFRA&reg; blends cutting edge science with the best nature has to offer. The results are highly effective, wonderfully luxurious and irresistibly aromatic skin & body care formulas. Products that help women look their best"
 }
