@@ -78,11 +78,10 @@
           </span>
         </td>
         <td align=right>
-          <!-- TODO: Compute each item.product Qty. -->
           <p>
             <form name="item.product{{item.product.sku}}" role="form" class="form-inline store-item-add">
               <div class="form-group">
-                <input type="number" class="form-control qty-input" ng-model="item.quantity" one-to-ninety-nine value="{{ item.quantity }}" />
+                <input type="number" class="form-control qty-input" ng-model="item.quantity" one-to-ninety-nine value="{{ item.quantity }}" ng-change="recalculateSalesTax()" />
               </div>
             </form>
           </p>

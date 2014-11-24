@@ -1311,9 +1311,8 @@ angular.module('app.controllers.checkout')
             } else {
                 defer.reject('Unable to lookup address');
             }
-
             return defer.promise;
-        }
+        };
 
         $scope.isValidCard = function(card) {
             if (card == null || S(card).isEmpty()) {
