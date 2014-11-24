@@ -1661,7 +1661,7 @@ angular.module('app.services', ['ngResource'])
             $log.debug("PasswordResetHelper(): requestReset()", email);
             var d = $q.defer();
 
-            $http.get(API_URL + '/clients/passwordReset', { query : {
+            $http.get(API_URL + '/clients/passwordReset', { params : {
                 email: email,
                 language: $rootScope.session.language
             }}, {}).success(function(data, status, headers, config) {
