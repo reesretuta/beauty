@@ -93,14 +93,13 @@
     <span ng-show="(invalidExpiration || paymentForm.expMonth.$invalid || paymentForm.expYear.$invalid) && !paymentForm.expMonth.$pristine && !paymentForm.expYear.$pristine" class="help-block text-danger" ng-bind-html="'INVALID_CC_EXPIRATION' | translate | unsafe"></span>
   </div>
 </div>
-<div class="form-group" ng-class="{ 'has-error' : paymentForm.cvv.$invalid && paymentForm.cvv.$dirty }">
+<div class="form-group">
   <label for=" " class="col-md-3 control-label"><span ng-bind-html="'IN_SECURITY_CODE' | translate | unsafe"></span></label>
   <div class="col-sm-5">
     <div class="row">
-      <div class="col-xs-4 col-sm-4 col-med-2">
-        <input ng-model="profile.newCard.cvv" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-pattern="/^[0-9]+$/" ng-minlength="3" ng-maxlength="4" maxlength="4" name="cvv" type="number" limit-to="4" class="form-control col-sm-1 hide-arrows" placeholder="&bull;&bull;&bull;" required />
-        <span ng-show="paymentForm.cvv.$invalid && paymentForm.cvv.$dirty" class="help-block" ng-class="{ 'text-danger' : paymentForm.cvv.$invalid }"><span ng-bind-html="'NUMBERS-ONLY-SHORT' | translate | unsafe"></span></span>
-        <!--valid={{paymentForm.cvv.$valid}}-->
+      <div class="col-xs-4 col-sm-4 col-med-2" ng-class="{ 'has-error' : paymentForm.cvv.$invalid && paymentForm.cvv.$dirty }">
+        <input type="number" ng-model="profile.newCard.cvv" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-pattern="/^[0-9]{3,4}$/" ng-minlength="3" ng-maxlength="4" maxlength="4" name="cvv" type="number" limit-to="4" class="form-control col-sm-1 hide-arrows" placeholder="&bull;&bull;&bull;" required />
+        <span ng-show="paymentForm.cvv.$invalid && paymentForm.cvv.$dirty" class="help-block" ng-class="{ 'text-danger' : paymentForm.cvv.$invalid && paymentForm.cvv.$dirty }" ng-bind-html="'CVV-INVALID' | translate | unsafe"></span>
       </div>
       <div class="col-xs-6 col-sm-4 col-med-3">
         <a popover-html-unsafe="{{ 'CVV-POPOVER-CONTENT' | translate | unsafe }}" popover-title-html-unsafe="{{ 'CVV-POPOVER-TITLE' | translate | unsafe }}" href="" tabindex="-1" popover-trigger="hover"><i class="fa fa-info-circle"></i>

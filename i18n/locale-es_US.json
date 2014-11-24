@@ -487,5 +487,7 @@
     "CART_SUBTOTAL":"SUB TOTAL ANTES DE IMPUESTOS",
 
     "HOME-BOTTOM-TAGLINE":"La ciencia de la belleza natural",
-    "HOME-BOTTOM-TAGLINE-BODY":"JAFRA&reg; combina lo más avanzado de la ciencia con lo mejor que la naturaleza ofrece. El resultado son productos para el cuidado del cutis y del cuerpo, con fórmulas altamente efectivas, lujosas e irresistibles. Productos que ayudan a las mujeres a lucir naturalmente bellas."
+    "HOME-BOTTOM-TAGLINE-BODY":"JAFRA&reg; combina lo más avanzado de la ciencia con lo mejor que la naturaleza ofrece. El resultado son productos para el cuidado del cutis y del cuerpo, con fórmulas altamente efectivas, lujosas e irresistibles. Productos que ayudan a las mujeres a lucir naturalmente bellas.",
+
+    "CVV-INVALID": "Inválido Código CVV"
 }

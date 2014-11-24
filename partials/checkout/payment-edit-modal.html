@@ -99,10 +99,9 @@
 
   <div class="col-sm-5">
     <div class="row">
-      <div class="col-xs-4 col-sm-4 col-med-2">
+      <div class="col-xs-4 col-sm-4 col-med-2" ng-class="{ 'has-error' : paymentForm.cvv.$invalid && paymentForm.cvv.$dirty }">
         <input ng-model="profile.newCard.cvv" ng-minlength="3" ng-maxlength="4" maxlength="4" name="cvv" type="number" class="form-control col-sm-1 hide-arrows" limit-to="4" placeholder="&bull;&bull;&bull;" required>
-        <span ng-show="paymentForm.cvv.$invalid && paymentForm.cvv.$dirty" class="help-block" ng-class="{ 'text-danger' : paymentForm.cvv.$invalid }"><span ng-bind-html="'NUMBERS-ONLY-SHORT' | translate | unsafe"></span></span>
-        <!--valid={{paymentForm.cvv.$valid}}-->
+        <span ng-show="paymentForm.cvv.$invalid && paymentForm.cvv.$dirty" class="help-block" ng-class="{ 'text-danger' : paymentForm.cvv.$invalid && paymentForm.cvv.$dirty }"><span ng-bind-html="'CVV-INVALID' | translate | unsafe"></span></span>
       </div>
       <div class="col-xs-6 col-sm-4 col-med-3">
         <a popover="{{ 'CVV-POPOVER-CONTENT' | translate | unsafe }}" popover-title="{{ 'CVV-POPOVER-TITLE' | translate | unsafe }}" href="" tabindex="-1" popover-trigger="hover"><i class="fa fa-info-circle"></i>
