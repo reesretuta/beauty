@@ -62,7 +62,7 @@ var STRIKEIRON_EMAIL_TIMEOUT = 15;
 var STRIKEIRON_ADDRESS_SOAP_URL = 'http://ws.strikeiron.com/NAAddressVerification6?WSDL';
 var STRIKEIRON_ADDRESS_LICENSE = "0DA72EA3199C10ABDE0B";
 
-var PASSWORD_RESET_INTERVAL = 3 * 1000 * 60;
+var PASSWORD_RESET_INTERVAL = 15 * 1000 * 60;
 
 function authenticate(email, password) {
     //console.log("authenticating", email, password);
@@ -1707,6 +1707,18 @@ function requestPasswordReset(email, language) {
     console.log("requestPasswordReset()", email, language);
     var deferred = Q.defer();
 
+    if (!email || !language) {
+        deferred.reject({
+            status: 500,
+            result: {
+                statusCode: 500,
+                errorCode: "passwordResetRequestFailed",
+                message: "Failed to request password reset"
+            }
+        });
+        return;
+    }
+
     var now = new Date();
     var mustBeOlderThan = new Date(now.getTime() - PASSWORD_RESET_INTERVAL);
 
@@ -1859,8 +1871,8 @@ function requestPasswordChange(email, password, token) {
             deferred.reject({
                 status: 500, result: {
                     statusCode: 500,
-                    errorCode: "passwordResetChangeFailed",
-                    message: "Failed to change password"
+                    errorCode: "passwordResetTokenExpired",
+                    message: "Password Reset token expired"
                 }
             });
         }

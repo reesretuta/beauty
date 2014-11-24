@@ -100,7 +100,7 @@ exports.SharedAttribute = SharedAttribute;
 
 // KIT GROUP
 var kitGroupSchema = Schema({
-    "_id" : { type: String, unique: true },
+    "_id" : { type: String },
     // kits groups have products they contain
     // NOTE: to reduce complexity, kit groups cannot currently contain other kit groups
     "components" : [{
@@ -151,7 +151,7 @@ var productPriceSchema = Schema({
 });
 
 var productSchema = Schema({
-    "_id" : { type: String, unique: true },
+    "_id" : { type: String },
     "onHold" : Boolean,
     "standardCost" : Number,
     "productClass" : Number,
@@ -221,6 +221,14 @@ productSchema.index({
     ingredients_es_US: "text",
     valueMessaging: "text",
     valueMessaging_es_US: "text"
+}, {
+    name: "text_search_index",
+    weights: {
+        "name": 3,
+        "name_es_US": 3,
+        "description": 2,
+        "description_es_US": 2
+    }
 });
 
 // Duplicate the ID field.

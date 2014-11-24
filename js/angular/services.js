@@ -717,7 +717,9 @@ angular.module('app.services', ['ngResource'])
 
                 $.each(products, function(index, product) {
                     // find the right current price
-                    Product.selectCurrentPrice(product);
+                    if (product.type != 'group') {
+                        Product.selectCurrentPrice(product);
+                    }
 
                     // merge back in
                     $.each(items, function(index, item) {
@@ -790,7 +792,9 @@ angular.module('app.services', ['ngResource'])
             ret.$promise.then(function(products) {
                 $log.debug("productService(): query(): result", products);
                 $.each(products, function(index, product) {
-                    productService.selectCurrentPrice(product);
+                    if (product.type != 'group') {
+                        productService.selectCurrentPrice(product);
+                    }
                 });
                 d.resolve(products);
             }, function(error) {
@@ -809,7 +813,9 @@ angular.module('app.services', ['ngResource'])
 
             ret.$promise.then(function(product) {
                 $log.debug("productService(): get(): result", product);
-                productService.selectCurrentPrice(product);
+                if (product.type != 'group') {
+                    productService.selectCurrentPrice(product);
+                }
                 d.resolve(product);
             }, function(response) {
                 $log.error("productService(): get(): failure", response.data);
@@ -842,21 +848,25 @@ angular.module('app.services', ['ngResource'])
              */
             var priceSelected = false;
 
-            $.each(product.prices, function (index2, price) {
-                $log.debug("cartService(): loadProducts(): processing price", price);
-                var now = new Date().getTime();
-                var start = S(price.effectiveStartDate).isEmpty() ? null : moment(price.effectiveStartDate, 'YYYY-MM-DDTHH:mm:ss.SSSZ').unix()*1000;
-                var end = S(price.effectiveEndDate).isEmpty() ? null : moment(price.effectiveEndDate, 'YYYY-MM-DDTHH:mm:ss.SSSZ').unix()*1000;
-                if ((now >= start || start == null) && (now <= end || end == null)) {
-                    // this is our current price
-                    $log.debug("cartService(): selectCurrentPrice(): setting price", price, "now", now, "start", start, "end", end);
-                    product.currentPrice = price;
-                    priceSelected = true;
-                    return;
-                }
-            });
+            if (Array.isArray(product.prices)) {
+                $.each(product.prices, function (index2, price) {
+                    $log.debug("cartService(): loadProducts(): processing price", price);
+                    var now = new Date().getTime();
+                    var start = S(price.effectiveStartDate).isEmpty() ? null : moment(price.effectiveStartDate, 'YYYY-MM-DDTHH:mm:ss.SSSZ').unix()*1000;
+                    var end = S(price.effectiveEndDate).isEmpty() ? null : moment(price.effectiveEndDate, 'YYYY-MM-DDTHH:mm:ss.SSSZ').unix()*1000;
+                    if ((now >= start || start == null) && (now <= end || end == null)) {
+                        // this is our current price
+                        $log.debug("cartService(): selectCurrentPrice(): setting price", price, "now", now, "start", start, "end", end);
+                        product.currentPrice = price;
+                        priceSelected = true;
+                        return;
+                    }
+                });
 
-            $log.debug("cartService(): loadProducts(): priceSelected?", priceSelected, product.prices);
+                $log.debug("cartService(): loadProducts(): priceSelected?", priceSelected, product.prices);
+            } else {
+                $log.warn("cartService(): loadProducts(): priceSelected? no prices found");
+            }
         }
 
         productService.getTranslated = function(product) {
@@ -1651,7 +1661,7 @@ angular.module('app.services', ['ngResource'])
             $log.debug("PasswordResetHelper(): requestReset()", email);
             var d = $q.defer();
 
-            $http.get(API_URL + '/clients/passwordReset', { query : {
+            $http.get(API_URL + '/clients/passwordReset', { params : {
                 email: email,
                 language: $rootScope.session.language
             }}, {}).success(function(data, status, headers, config) {
