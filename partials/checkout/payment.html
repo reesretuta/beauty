@@ -134,7 +134,7 @@
     </div>
   </div>
 
-  <div class="row form-group">
+  <div class="row form-group" ng-if="isOnlineSponsoring">
     <label for="billingBusinessCO" class="col-md-3 control-label"><span ng-bind-html="'IN_BUSINESS_CO' | translate | unsafe"></span></label>
     <div class="col-sm-8 col-lg-6">
       <input id="billingBusinessCO" name="name" ng-model="profile.newBillingAddress.businessCO" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" type="text" class="form-control" placeholder="Business Name, c/o Someone, etc." autocomplete="off">

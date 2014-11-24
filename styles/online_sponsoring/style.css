@@ -332,7 +332,7 @@ font-size: 48px;
   display: block;
   position: absolute;
   bottom: -18px;
-  width: 120%;
+  width: 120%; /*changed from 120% to 100% due to broken width in tablet layout */
   height: 18px;
   left: -10%;
   /*background: -webkit-radial-gradient(50% -3%, ellipse cover, rgba(00, 00, 00, 0.25), rgba(97, 97, 97, 0.0) 40%);
@@ -1142,6 +1142,12 @@ body.incheckout {
 	footer .navbar-nav .open .dropdown-menu{
 		background-color:#460d66!important;
 	}
+    .subcontainer:before {
+    width: 100%; /*changed from 120% to 100% due to broken width in tablet layout */
+  }
+  .subcontainer .row {
+    width: 100%;
+  }
 }
 
 /* Small screens like netbooks and tablets (iPad/iPad mini/etc) */
@@ -1159,6 +1165,7 @@ body.incheckout {
     p.jumbo-description br {
       display: none;
     }
+
 }
 
 /* Medium screens like laptops and smaller desktop monitors */
