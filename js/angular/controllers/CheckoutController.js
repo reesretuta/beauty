@@ -2000,6 +2000,9 @@ angular.module('app.controllers.checkout')
 
                         selectGeocodeAndAdd(address).then(function(aa) {
                             $log.debug("CheckoutController(): addAddress(): selected geocode and added address", aa);
+                            if (aa && aa.zip) {
+                                aa.zipCode = aa.zip;
+                            }
                             d.resolve(aa);
                         }, function(error) {
                             $log.error("CheckoutController(): addAddress(): select geocode and add failed", error);
