@@ -77,9 +77,21 @@
         <p><small ng-bind-html="'OS-START-PRIVACY-AGREE' | translate | unsafe"></small></p>
         <div class="input-group">
           <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-          <button ng-if="profile.customerStatus == 'existing' && !isOnlineSponsoring" type="button" data-style="expand-right" class="btn btn-primary btn-lg ladda-button" ui-ladda="processing" ng-click="loginOrCreateUser()" ng-disabled="!signInForm.$valid || processing"><span class="ladda-label"><span ng-bind-html="'SIGN-IN' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i></span></button>
-          <button ng-if="profile.customerStatus == 'new' && !isOnlineSponsoring" type="button" data-style="expand-right" class="btn btn-primary btn-lg ladda-button" ui-ladda="processing" ng-click="loginOrCreateUser()" ng-disabled="!signInForm.$valid || processing"><span class="ladda-label"><span ng-bind-html="'CREATE-ACCOUNT' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i></span></button>
-          <button ng-if="isOnlineSponsoring" type="button" data-style="expand-right" class="btn btn-primary btn-lg ladda-button" ui-ladda="processing" ng-click="validateEmailAndContinue(profile.loginEmail)" ng-disabled="!signInForm.$valid || processing"><span class="ladda-label"><span ng-bind-html="'BTN_CONTINUE' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i></span></button>
+          <button ng-if="profile.customerStatus == 'existing' && !isOnlineSponsoring" type="button" data-style="expand-right" class="btn btn-primary btn-lg ladda-button" ui-ladda="processing" ng-click="loginOrCreateUser()" ng-disabled="!signInForm.$valid || processing">
+            <span class="ladda-label">
+              <span ng-bind-html="'SIGN-IN' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i>
+            </span>
+          </button>
+          <button ng-if="profile.customerStatus == 'new' && !isOnlineSponsoring" type="button" data-style="expand-right" class="btn btn-primary btn-lg ladda-button" ui-ladda="processing" ng-click="loginOrCreateUser()" ng-disabled="!signInForm.$valid || processing">
+            <span class="ladda-label">
+              <span ng-bind-html="'CREATE-ACCOUNT' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i>
+            </span>
+          </button>
+          <button ng-if="isOnlineSponsoring" type="button" data-style="expand-right" class="btn btn-primary btn-lg ladda-button" ui-ladda="processing" ng-click="validateEmailAndContinue(profile.loginEmail)" ng-disabled="!signInForm.$valid || processing">
+            <span class="ladda-label">
+              <span ng-bind-html="'BTN_CONTINUE' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i>
+            </span>
+          </button>
         </div>
       </div>
     </div>

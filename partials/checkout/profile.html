@@ -1,3 +1,4 @@
+
 <div id="profile" class="col-sm-12">
 
   <div class="col-md-offset-3">
@@ -18,7 +19,9 @@
           <h3><span ng-bind="profile.firstName"></span> <span ng-bind="profile.lastName"></span></h3>
           <p><b ng-bind="profile.loginEmail"></b></p>
           <p>{{profile.phoneNumber|phone}}</p>
-          <a href ng-click="editContactInfo()"><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'EDIT' | translate | unsafe"></span></a>
+          <a ng-if="isOnlineSponsoring" href ng-click="editContactInfo()">
+            <i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'EDIT' | translate | unsafe"></span>
+          </a>
         </div>
       </div>
       <div class="col-md-offset-3 col-sm-9">
@@ -72,7 +75,7 @@
     <div class="form-group">
       <div class="col-md-offset-3 col-sm-9">
         <div class="input-group">
-          <button class="btn btn-primary btn-lg ladda-button" type="button" ng-click="validateProfileAndContinue()" ng-disabled="!profileForm.$valid || invalidDOB || invalidSponsorId || processing" ui-ladda="processing">
+          <button class="btn btn-primary btn-lg ladda-button" type="button" ng-click="validateProfileAndContinue()" ng-disabled="profileForm.$valid || invalidDOB || invalidSponsorId || processing" data-style="expand-right" ui-ladda="processing">
             <span class="ladda-label"><span ng-bind-html="'CONSULTANT-PROFILE-CONTINUE-TO-SHIPPING' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i></span>
           </button>
         </div>
@@ -90,9 +93,7 @@
           </div>
           <div class="modal-body">
             <div class="agreement-content" id="agreement-content">
-
-                <!--consultant agreement goes here-->
-                <div ng-if="session.language" ng-include="'/partials/consultant-agreement-'+session.language+'.html'"></div>
+              <div ng-if="session.language" ng-include="'/partials/consultant-agreement-'+session.language+'.html'"></div>
             </div>
           </div>
           <div class="modal-footer">

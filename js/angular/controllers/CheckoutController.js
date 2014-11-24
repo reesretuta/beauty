@@ -460,7 +460,6 @@ angular.module('app.controllers.checkout')
             }, function(error) {
                 $log.error("CheckoutController(): loadCheckout(): checkout error", error);
             });
-
             return d.promise;
         }
 
@@ -471,15 +470,11 @@ angular.module('app.controllers.checkout')
                 var url = $location.url(),
                     path = $location.path(),
                     params = $location.search();
-
                 //$log.debug("CheckoutController(): changeListener(): location change event in checkout page", url, params);
-
                 var urlStep = S(params.step != null ? params.step : "").toString();
                 var localStep = $scope.currentStep;
-
                 $scope.checkoutUpdated();
-
-                //$log.debug("CheckoutController(): changeListener(): url search", urlStep, "local step", localStep);
+                $log.debug("CheckoutController(): changeListener(): url search", urlStep, "local step", localStep);
 
                 // if we have a composition and run, and the current scope doesn't already have the same run
                 if (path == STORE_BASE_URL + "/checkout" || path == JOIN_BASE_URL + "/checkout" && (urlStep != localStep)) {
@@ -655,7 +650,7 @@ angular.module('app.controllers.checkout')
             return dd.promise;
         }
 
-        function addressFieldsEqual(field1, field2) {
+        function addressFieldsEqual (field1, field2) {
             var f1 = field1 == null ? "" : field1.trim().toUpperCase();
             var f2 = field2 == null ? "" : field2.trim().toUpperCase();
 
@@ -698,10 +693,8 @@ angular.module('app.controllers.checkout')
             // check the zip for geocode for taxes
             Geocodes.query({zipCode: a.zip}).$promise.then(function(geocodes) {
                 $log.debug("CheckoutController(): selectGeocodeAndAdd(): got geocodes", geocodes);
-
                 // close any previous modals (e.g. address edit from review page)
                 angular.element('.modal').modal('hide');
-
                 // see if we have any exact matches
                 var matchedGeocode = null;
                 for (var i=0; i < geocodes.length; i++) {
@@ -712,7 +705,6 @@ angular.module('app.controllers.checkout')
                         matchedGeocode = geocodes[i];
                     }
                 }
-
                 if (geocodes.length == 1) {
                     $log.debug("CheckoutController(): selectGeocodeAndAdd(): selecting only geocode returned");
                     a.geocode = geocodes[0].GEOCODE;
@@ -825,9 +817,7 @@ angular.module('app.controllers.checkout')
         $scope.validateProfileAndContinue = function() {
             $log.debug("CheckoutController(): validateProfileAndContinue()", $scope.profile);
             $scope.profileSSNError = false;
-
             $scope.processing = true;
-
             if (debug) {
                 $log.debug("CheckoutController(): validateProfileAndContinue(): in debug, skipping to shipping");
                 WizardHandler.wizard('checkoutWizard').goTo('Shipping');
@@ -836,7 +826,6 @@ angular.module('app.controllers.checkout')
             }
             var ssn = $scope.profile.ssn.replace(/(\d{3})(\d{2})(\d{4})/, '$1-$2-$3');
             $scope.password = $scope.profile.ssn.replace(/(\d{3})(\d{2})(\d{4})/, '$3');
-
             Consultant.lookup(ssn).then(function(data) {
                 $log.debug("CheckoutController(): validateProfileAndContinue()", data);
                 if (!data.exists) {
@@ -857,35 +846,31 @@ angular.module('app.controllers.checkout')
                 $scope.processing = false;
                $scope.profileSSNError = true;
             });
-        }
+        };
 
         $scope.editContactInfo = function() {
-            $log.debug("CheckoutController(): editContactInfo()");
+            $log.debug('CheckoutController(): editContactInfo()');
             var dd = $q.defer();
-
             var d = $modal.open({
                 backdrop: true,
-                keyboard: true, // we will handle ESC in the modal for cleanup
-                windowClass: "editContactInfoModal",
+                keyboard: true,
+                windowClass: 'editContactInfoModal',
                 templateUrl: '/partials/checkout/contact-info-edit-modal.html',
-                controller: 'ContactEditModalController',
+                controller:  'ContactEditModalController',
                 resolve: {
                     profile: function() {
                         return {
-                            firstName: $scope.profile.firstName,
-                            lastName: $scope.profile.lastName,
-                            loginEmail: $scope.profile.loginEmail,
-                            phoneNumber: $scope.profile.phoneNumber
+                            firstName   : $scope.profile.firstName,
+                            lastName    : $scope.profile.lastName,
+                            loginEmail  : $scope.profile.loginEmail,
+                            phoneNumber : $scope.profile.phoneNumber
                         }
                     }
                 }
             });
-
             var body = $document.find('html, body');
-
             d.result.then(function(result) {
                 $log.debug("CheckoutController(): editContactInfo(): edit contact info modal closed", result);
-
                 // save the profile information if not canceled
                 if (!result.canceled) {
                     // result.profile
@@ -898,16 +883,13 @@ angular.module('app.controllers.checkout')
                 } else {
                     dd.resolve();
                 }
-
                 // re-enable scrolling on body
                 body.css("overflow-y", "auto");
             });
-
             // prevent page content from scrolling while modal is up
             $("html, body").css("overflow-y", "hidden");
-
             return dd.promise;
-        }
+        };
 
         // edit an address via a standard modal
         $scope.editAddress = function(address, addressType) {
@@ -960,9 +942,8 @@ angular.module('app.controllers.checkout')
                 //$log.debug("CheckoutController(): total(): for items", $scope.cart)
                 return OrderHelper.getTotal($scope.cart);
             }
-
             return 0;
-        }
+        };
 
         $scope.validateEmailAndContinue = function(email) {
             $scope.emailError = false;
