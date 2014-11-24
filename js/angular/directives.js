@@ -144,7 +144,7 @@ angular.module('app.directives', [])// directives
                 }
                 // watch for changes to number
                 angular.element(elem).on('input keydown change', function (evt) {
-                    var val = this.value;
+                    var val = parseInt(this.value);
                     if (val === '' || val === null) {
                         $timeout(function() {
                             runCheck(val);
