@@ -82,11 +82,13 @@
             <div class="row">
               <div class="col-xs-12 col-sm-6 consultant-info">
 
-                <a href="">
-                  <img src="/img/40x40" alt="profile photo" class="img-circle pull-left consultant-photo">
-                </a>
-                <a ng-href="http://myjafra.com/sites/{{consultant.firstName|substr:0:1|lowercase}}{{consultant.lastName|lowercase}}" ng-if="consultant"><span class="consultant-name">{{consultant.firstName}} {{consultant.lastName}}</span></a>
-                <p><span ng-bind-html="'HEADER_CONSULTANTMSG' | translate | unsafe"></span></p>
+                <span ng-if="consultant">
+                  <a ng-href="http://myjafra.com/sites/{{consultant.firstName|substr:0:1|lowercase}}{{consultant.lastName|lowercase}}">
+                    <img src="/img/40x40" alt="profile photo" class="img-circle pull-left consultant-photo">
+                  </a>
+                  <a ng-href="http://myjafra.com/sites/{{consultant.firstName|substr:0:1|lowercase}}{{consultant.lastName|lowercase}}"><span class="consultant-name">{{consultant.firstName}} {{consultant.lastName}}</span></a>
+                  <p><span ng-bind-html="'HEADER_CONSULTANTMSG' | translate | unsafe"></span></p>
+                </span>
 
               </div>
               <div class="col-xs-12 col-sm-6 login-info">
