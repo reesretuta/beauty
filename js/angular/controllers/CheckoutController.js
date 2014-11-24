@@ -965,7 +965,7 @@ angular.module('app.controllers.checkout')
                     $scope.profile.newBillingAddress.name = $scope.profile.firstName + " " + $scope.profile.lastName;
 
                     if ($scope.isOnlineSponsoring) {
-                        Session.clientEmailAvailable(email, $scope.ignoreExists).then(function(available) {
+                        Session.consultantEmailAvailable(email, $scope.ignoreExists).then(function(available) {
                             if (available) {
                                 $log.debug('CheckoutController(): Session: client available', available);
                                 // generate a lead for this account

@@ -303,7 +303,7 @@ angular.module('app.services', ['ngResource'])
             return d.promise;
         }
 
-        // is consultant already registered?
+        // is client already registered?
         sessionService.clientEmailAvailable = function(email, ignoreExists) {
             var d = $q.defer();
             initialized.promise.then(function() {
@@ -311,16 +311,41 @@ angular.module('app.services', ['ngResource'])
                     d.resolve(true);
                     return;
                 }
-                $log.debug('Session(): lookupClient(): attempting to lookup client by email', email);
+                $log.debug('Session(): clientEmailAvailable(): attempting to lookup client by email', email);
                 $http.get(API_URL + '/clients/' + email, {}).success(function(client, status, headers, config) {
+                    $log.debug('sessionService(): clientEmailAvailable(): client exists, not available');
+                    d.resolve(false);
+                }).error(function(data, status, headers, config) {
+                    if (status == 404) {
+                        $log.debug('sessionService(): clientEmailAvailable(): client not found, available');
+                        d.resolve(true);
+                    } else {
+                        $log.error('sessionService(): clientEmailAvailable(): error, not available', status, data);
+                        d.reject(false);
+                    }
+                });
+            });
+            return d.promise;
+        }
+
+        // is consultant already registered?
+        sessionService.consultantEmailAvailable = function(email, ignoreExists) {
+            var d = $q.defer();
+            initialized.promise.then(function() {
+                if (ignoreExists) {
+                    d.resolve(true);
+                    return;
+                }
+                $log.debug('Session(): consultantEmailAvailable(): attempting to lookup client by email', email);
+                $http.get(API_URL + '/consultants/' + email, {}).success(function(client, status, headers, config) {
                     $log.debug('sessionService(): lookupClient(): client exists, not available');
                     d.resolve(false);
                 }).error(function(data, status, headers, config) {
                     if (status == 404) {
-                        $log.debug('sessionService(): lookupClient(): client not found, available');
+                        $log.debug('sessionService(): consultantEmailAvailable(): client not found, available');
                         d.resolve(true);
                     } else {
-                        $log.error('sessionService(): lookupClient(): error, not available', status, data);
+                        $log.error('sessionService(): consultantEmailAvailable(): error, not available', status, data);
                         d.reject(false);
                     }
                 });
