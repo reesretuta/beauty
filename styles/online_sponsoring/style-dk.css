@@ -201,18 +201,16 @@ section#why_jafra_testimonials .btn-lg {
 #more_royal_2, #more_skincare_2 {
 	margin-top: 20px;
 }
-#more_royal .section-copy p, #more_skincare .section-copy p,
-#more_royal_2 .section-copy p, #more_skincare_2 .section-copy p  {
-	-webkit-column-count: 3;
-     -moz-column-count: 3;
-          column-count: 3;
+#more_royal .section-copy p li, #more_skincare .section-copy p li,
+#more_royal_2 .section-copy p li, #more_skincare_2 .section-copy p li  {
+	float: left;
+	width: 33%;
 }
-#more_royal .section-copy p strong, #more_skincare .section-copy p strong,
-#more_royal_2 .section-copy p strong, #more_skincare_2 .section-copy p strong {
+#more_royal .section-copy li h4, #more_skincare .section-copy p h4,
+#more_royal_2 .section-copy li h4, #more_skincare_2 .section-copy p h4 {
+	clear: both;
 	display: block;
 	padding-top: 30px;
--webkit-column-span: all; 
-          column-span: all;
 }
 .modal .subcontainer {
 	background: transparent;
