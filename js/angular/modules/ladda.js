@@ -16,20 +16,15 @@
  *          <span class="ladda-label">Submit</span>
  *      </button>
  */
-angular.module('ui.ladda', []).directive('uiLadda', [/*'$translate',*/ function (/*$translate*/) {
-    return {
-        //TODO- testing scope inherit
-        scope: true,
-        link: function postLink(scope, element, attrs) {
-            // we need to create the Ladda object afterwards or the spinner will be small
-            var ladda = null;
 
+angular.module('ui.ladda', []).directive('uiLadda', ['$translate','$rootScope', function ($translate, $rootScope) {
+    return {
+        link: function postLink(scope, element, attrs) {
+            var ladda = null;
             scope.$watch(attrs.uiLadda, function(newVal, oldVal){
-                // create now the Ladda object
                 if (ladda == null) {
                     ladda = Ladda.create(element[0]);
                 }
-
                 if (angular.isNumber(oldVal)) {
                     if (angular.isNumber(newVal)) {
                         ladda.setProgress(newVal);
