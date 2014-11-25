@@ -1511,9 +1511,9 @@ app.get('*', function (req, res, next) {
     next();
 });
 
-app.get('/*', function (req, res) {
-    console.log('root');
+app.get('/*', function (req, res, next) {
     if (req.headers['user-agent'].indexOf("MSIE") >= 0) {
+        console.log('IE <= 9 detected, showing upgrade page');
         var myNav = req.headers['user-agent'];
         var IEbrowser = parseInt(myNav.split('MSIE')[1])
         if (IEbrowser <= 9) {
@@ -1521,6 +1521,11 @@ app.get('/*', function (req, res) {
             return;
         }
     }
+    next();
+});
+
+app.get('/$', function (req, res) {
+    console.log('root');
     res.redirect("http://www.jafra.com/");
 });
 
