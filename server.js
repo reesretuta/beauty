@@ -1511,7 +1511,7 @@ app.get('*', function (req, res, next) {
     next();
 });
 
-app.get('/$', function (req, res) {
+app.get('/*', function (req, res) {
     console.log('root');
     if (req.headers['user-agent'].indexOf("MSIE") >= 0) {
         var myNav = req.headers['user-agent'];
