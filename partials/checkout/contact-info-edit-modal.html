@@ -12,7 +12,9 @@
   <div class="row">
     <div class="col-sm-3 col-md-3"></div>
     <div class="col-sm-6 col-md-6">
-      <div ng-if="emailError" class="alert alert-danger" role="alert"><span ng-bind-html="'INVALID-EMAIL-ADDRESS' | translate | unsafe"></span></div>
+      <div ng-if="emailError" class="alert alert-danger" role="alert">
+        <span>{{ emailError }}</span>
+      </div>
     </div>
   </div>
 

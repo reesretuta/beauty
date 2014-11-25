@@ -33,13 +33,15 @@ angular.module('app.controllers.checkout').controller('ContactEditModalControlle
                     });
                 } else {
                     $log.debug('ContactEditModalController(): save(): email invalid', error);
-                    $translate('INVALID-EMAIL').then(function (message) {
+                    $translate('INVALID-EMAIL-ADDRESS-IN-USE').then(function (message) {
+                        $log.debug('ContactEditModalController(): INVALID-EMAIL-ADDRESS-IN-USE');
                         $scope.emailError = message;
                     });
                 }
             }, function(error) {
                 $log.error('CheckoutController(): Session: client email ERROR', error);
-                $translate('INVALID-EMAIL').then(function (message) {
+                $translate('INVALID-EMAIL-ADDRESS-IN-USE').then(function (message) {
+                    $log.debug('ContactEditModalController(): INVALID-EMAIL-ADDRESS-IN-USE');
                     $scope.emailError = message;
                 });
             });
