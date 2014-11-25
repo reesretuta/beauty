@@ -33,7 +33,7 @@
               </p>
             </div>
             <p ng-if="product.type == 'product' || (product.type == 'kit' && product.kitGroups.length == 0)">
-              <a class="btn btn-primary primary-cta ladda-button" ng-class="{'disabled': adding}" ui-ladda="adding && addingId == product.sku" data-style="expand-right" ng-click="addToCart(product)">
+              <a class="btn btn-primary primary-cta" ng-class="{ 'disabled' : adding, 'add-to-cart' : (adding && addingId == product.sku) }" ng-click="addToCart(product)">
                 <i class="fa fa-shopping-cart"></i> <span ng-bind-html="'BTN_ADD_CART' | translate | unsafe"></span>
               </a>
             </p>
