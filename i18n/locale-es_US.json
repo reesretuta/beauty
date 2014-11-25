@@ -324,6 +324,7 @@
     "GEO_CITY":"Ciudad",
     "GEO_DES":"Seleccionar opcion y guardar",
     "BTN_CLOSE":"Cerrar",
+    "CLOSE":"Cerrar",
     "BTN_SAVE":"Guardar",
     "BTN_UPDATE_ADDRESS":"Actualizar dirección",
     "BTN_CANCEL":"Cancelar",
