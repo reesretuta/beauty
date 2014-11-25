@@ -1521,6 +1521,9 @@ app.get('/*', function (req, res) {
             return;
         }
     }
+});
+
+app.get('/$', function (req, res) {
     res.redirect("http://www.jafra.com/");
 });
 
