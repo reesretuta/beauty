@@ -1511,7 +1511,7 @@ app.get('*', function (req, res, next) {
     next();
 });
 
-app.get('/*', function (req, res) {
+app.get('/*', function (req, res, next) {
     if (req.headers['user-agent'].indexOf("MSIE") >= 0) {
         console.log('IE <= 9 detected, showing upgrade page');
         var myNav = req.headers['user-agent'];
@@ -1521,6 +1521,7 @@ app.get('/*', function (req, res) {
             return;
         }
     }
+    next();
 });
 
 app.get('/$', function (req, res) {
