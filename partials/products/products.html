@@ -1,5 +1,5 @@
         <div class="ccol-xs-12 col-sm-12 col-md-12 col-lg-12" ng-cloak ng-if="(products | filter:searchFunction).length == 0">No products matched search:&nbsp;&nbsp;<b><i>{{query}}</i></b></div>
-          
+
         <!-- Product -->
         <article class="ccol-xs-12 col-sm-6 col-md-4 col-lg-4 store-item" ng-repeat="product in filteredProduct = (products | filter:searchFunction | orderBy:(session.language=='en_US'?'name':'name_es_US'))" ng-if="product.productflag.isgroup !=1">
             
@@ -28,17 +28,16 @@
                   {{ product.currentPrice.price | currency }}
                 </span>
               </span>
-
                 &nbsp;&nbsp;<span class="item-measure">{{product.quantity}}</span>
               </p>
             </div>
             <p ng-if="product.type == 'product' || (product.type == 'kit' && product.kitGroups.length == 0)">
-              <a class="btn btn-primary primary-cta" ng-class="{ 'disabled' : adding, 'add-to-cart' : (adding && addingId == product.sku) }" ng-click="addToCart(product)">
+              <a class="btn btn-primary primary-cta" ng-class="{ 'add-to-cart' : (adding && addingId == product.sku) }" ng-click="addToCart(product)">
                 <i class="fa fa-shopping-cart"></i> <span ng-bind-html="'BTN_ADD_CART' | translate | unsafe"></span>
               </a>
             </p>
             <p ng-if="product.type == 'kit' && product.kitGroups.length > 0">
-              <a class="btn btn-primary primary-cta" ng-class="{'disabled': adding}" ng-href="{{STORE_BASE_URL}}/products/{{product.sku}}#top">
+              <a class="btn btn-primary primary-cta" ng-class="{ 'add-to-cart' : adding }" ng-href="{{STORE_BASE_URL}}/products/{{product.sku}}#top">
                 <i class="fa fa-cogs"></i> <span ng-bind-html="'TIT_CONF_OFFER' | translate | unsafe"></span>
               </a>
             </p>
