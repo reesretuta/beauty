@@ -349,9 +349,8 @@ font-size: 48px;
 #free-limited-offer {
 width: 260px;
 height: 260px;
-position: absolute;
-left: -13em;
-top: 21em;
+margin-top: -4em;
+margin-left: -12em;
 z-index: 2;
 border-radius: 50%;
 padding: 1.75em 8.5em;
