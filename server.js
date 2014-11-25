@@ -1401,6 +1401,16 @@ setInterval(function() {
     //console.log("now", now, "olderThan", olderThan);
 
     models.Lead.find({created: {$lte: olderThan}, sent: false, completed: false}, function(err, leads) {
+        if (err) {
+            console.error("failed looking up leads from server", err);
+            return;
+        }
+
+        if (leads == null) {
+            console.log("no leads to send to server");
+            return;
+        }
+
         console.log("found old leads to send to server", leads);
         for (var i=0; i < leads.length; i++) {
             var lead = leads[i];
