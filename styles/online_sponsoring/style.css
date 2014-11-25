@@ -1082,6 +1082,13 @@ body.incheckout {
 	.whats_inside_button{
 		float:none;
 	}
+  .timeline-photo {
+    max-width: 150px;
+  }
+
+  #freedom_flexibility_section .subrow {
+    margin: 0em !important;
+  }
 
 }
 @media (min-width:400px) and (max-width:767px) {
@@ -1112,6 +1119,9 @@ body.incheckout {
 		font-size:30px;
 		text-align:center;
 	}
+  .timeline-photo {
+    max-width: 150px !important;
+  }
 	.contact-header .social_dropdown{
 		width:100%;
 		max-width: 100%;
@@ -1119,6 +1129,10 @@ body.incheckout {
 	footer .nav .open>a{
 		background-color:#460d66!important;
 	}
+
+  #freedom_flexibility_section .subrow {
+    margin: 0em !important;
+  }
 }
 @media (max-width: 767px) {
     .navbar-fixed-top, #pagenav.affix {
@@ -1149,6 +1163,12 @@ body.incheckout {
   #free-limited-offer{
     margin-left: -5em;
   }
+  .freedom_flexibility_description {
+    margin: 0em 3em;
+  }
+  #freedom_flexibility_section .subcontainer .row {
+    margin: 0em;
+  }
 }
 
 /* Small screens like netbooks and tablets (iPad/iPad mini/etc) */
@@ -1174,6 +1194,12 @@ body.incheckout {
 @media (min-width: 768px) and (max-width: 991px) {
   #pastelpatches {
   right: -90px;
+  }
+  .freedom_flexibility_description {
+    margin: 0em 3em;
+  }
+  #freedom_flexibility_section .subcontainer .row {
+    margin: 0em;
   }
 }
 
@@ -1202,6 +1228,9 @@ body.incheckout {
 
 }
 @media (min-width:900px) and (max-width:1200px){
+  #pastelpatches {
+  right: -90px;
+  }
 	#lipsticksmear{
 		left:-120px;
 	}
@@ -1235,6 +1264,9 @@ body.incheckout {
   }
   body.es p.precio_al_publico{
     font-size: 1.9em;
+  }
+  section#why_jafra_lifestyle .sales-equation {
+    width: 546px;
   }
 }
 
