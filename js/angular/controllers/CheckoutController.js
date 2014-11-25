@@ -968,12 +968,15 @@ angular.module('app.controllers.checkout')
                                 WizardHandler.wizard('checkoutWizard').goTo('Profile');
                                 $scope.processing = false;
                             } else {
-                                $scope.emailError = true;
+                                $translate('INVALID-EMAIL-ADDRESS-IN-USE').then(function (message) {
+                                    $scope.emailError = message;
+                                });
                                 $scope.processing = false;
                             }
                         }, function(error) {
-                            $log.error('CheckoutController(): Session: client email exists', error);
-                            $scope.emailError = true;
+                            $translate('INVALID-EMAIL-ADDRESS-IN-USE').then(function (message) {
+                                $scope.emailError = message;
+                            });
                             $scope.processing = false;
                         });
                     } else {
