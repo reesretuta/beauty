@@ -1165,3 +1165,19 @@ a:focus {
 :-ms-input-placeholder {  
    color: #999!important;  
 }
+
+
+/*** fixes for angular-wizard ****/
+
+.steps-indicator li {
+  padding-top: 7px;
+}
+
+.steps-indicator li a {
+  padding-top: 5px;
+  padding-left: 8px;
+}
+
+
+
+
