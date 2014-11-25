@@ -74,6 +74,7 @@ angular.module('app.controllers.main')
         $scope.quantities = {};
 
         $rootScope.getTranslated = function(product) {
+            console.log(product.name, product.name_es_US);
             return Product.getTranslated(product);
         }
 
