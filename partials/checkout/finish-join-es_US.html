@@ -20,8 +20,8 @@
     </div>
     <div class="col-md-4">
       <div class="jafrabiz-well text-center">
-        <p ng-if="confirmation.sponsor">Tu Patrocinadora JAFRA es:<br />#{{confirmation.sponsor.id}} <b class="biggify color-purple HelveticaNeueLTStd-BdCn">{{confirmation.sponsor.firstName}} {{confirmation.sponsor.lastName}}</b></p>
-        <p ng-if="!confirmation.sponsor">Se te asignará una Patrocinadora de JAFRA dentro de los próximos 2 días hábiles.</p>
+        <p ng-if="confirmation.sponsor.id">Tu Patrocinadora JAFRA es:<br />#{{confirmation.sponsor.id}} <b class="biggify color-purple HelveticaNeueLTStd-BdCn">{{confirmation.sponsor.firstName}} {{confirmation.sponsor.lastName}}</b></p>
+        <p ng-if="!confirmation.sponsor.id">Se te asignará una Patrocinadora de JAFRA dentro de los próximos 2 días hábiles.</p>
       </div>
     </div>
   </div>
@@ -40,17 +40,17 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="item in items">
-              <td>{{item.quantity}} {{- item }}</td>
+            <tr ng-repeat="item in cart">
+              <td>{{ item.quantity }}</td>
               <td>
                 <p class="confirmation-description">
-                  {{item.name}}
+                  {{ item.product.name }}
                 </p>
               </td>
               <td align="right">
                 <span ng-repeat="detailprice in item.product.prices[0]">
                   <span ng-if="detailprice.typeId==2" class="item-price-sale">
-                    {{detailprice.price | currency}}
+                    {{ detailprice.price | currency}}
                   </span>
                   <span ng-if="detailprice.typeId==1" class="item-price-strike">
                     {{detailprice.price | currency}}
@@ -83,7 +83,7 @@
     <div class="col-md-4">
       <div class="text-center">
         <h3>1. Edifica tu Negocio</h3>
-        <p>Visita <a href="http://jafrabiz.com" target="_blank">jafrabiz.com</a> y la Conexión de la Consultora</p>
+        <p>Visita <a href="http://jafrabiz.com" target="_blank">jafrabiz.com</a> y la Conexión de la Consultora.</p>
         <ul class="text-left">
             <li>Haz pedidos</li>
             <li>Haz pagos</li>

@@ -1,3 +1,4 @@
+
 <div id="final" class="col-lg-offset-1 col-lg-10">
   <div class="row">
     <div class="col-md-8 text-left">
@@ -21,8 +22,8 @@
     </div>
     <div class="col-md-4">
       <div class="jafrabiz-well text-center">
-        <p ng-if="confirmation.sponsor">Your JAFRA Sponsor is:<br />#{{confirmation.sponsor.id}} <b class="biggify color-purple HelveticaNeueLTStd-BdCn">{{confirmation.sponsor.firstName}} {{confirmation.sponsor.lastName}}</b></p>
-        <p ng-if="!confirmation.sponsor">A Sponsor will be assigned by JAFRA within the next 2 days.</p>
+        <p ng-if="confirmation.sponsor.id">Your JAFRA Sponsor is:<br />#{{confirmation.sponsor.id}} <b class="biggify color-purple HelveticaNeueLTStd-BdCn">{{confirmation.sponsor.firstName}} {{confirmation.sponsor.lastName}}</b></p>
+        <p ng-if="!confirmation.sponsor.id">A Sponsor will be assigned by JAFRA within the next 2 days.</p>
       </div>
     </div>
   </div>
@@ -41,17 +42,17 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="item in items">
-              <td>{{item.quantity}}</td>
+            <tr ng-repeat="item in cart">
+              <td>{{ item.quantity }}</td>
               <td>
                 <p class="confirmation-description">
-                  {{item.name}}
+                  {{ item.product.name }}
                 </p>
               </td>
               <td align="right">
                 <span ng-repeat="detailprice in item.product.prices[0]">
                   <span ng-if="detailprice.typeId==2" class="item-price-sale">
-                    {{detailprice.price | currency}}
+                    {{ detailprice.price | currency}}
                   </span>
                   <span ng-if="detailprice.typeId==1" class="item-price-strike">
                     {{detailprice.price | currency}}
@@ -84,7 +85,7 @@
     <div class="col-md-4">
       <div class="text-center">
         <h3>1. Grow Your Business</h3>
-        <p>Visit <a href="http://jafrabiz.com" target="_blank">jafrabiz.com</a> and Consultant Connection</p>
+        <p>Visit <a href="http://jafrabiz.com" target="_blank">jafrabiz.com</a> and Consultant Connection.</p>
         <ul class="text-left">
             <li>Place orders</li>
             <li>Make payments</li>
