@@ -83,18 +83,11 @@ angular.module('app.controllers.checkout')
 
         // initially verify
         verifyAge();
-        verifySponsorId();
 
         $scope.$watch('profile.dob', function(newVal, oldVal) {
             if (newVal != oldVal) {
                 // verify age when dob is exactly 8 characters long
                 verifyAge();
-            }
-        });
-
-        $scope.$watch('profile.sponsorId', function(newVal, oldVal) {
-            if (newVal != oldVal) {
-                verifySponsorId();
             }
         });
 
@@ -528,15 +521,6 @@ angular.module('app.controllers.checkout')
             
             if (!dob.isValid() || now.diff(dob,'years') < 18) {
                 $scope.invalidDOB = true;
-            }
-        }
-
-        function verifySponsorId() {
-            $log.debug("CheckoutController(): verifySponsorId(): ", $scope.profile.sponsorId)
-            if ($scope.profile.sponsorId == '' || $scope.profile.sponsorId == null) {
-                $scope.invalidSponsorId = false;
-            } else if (!$scope.profile.sponsorId.match(/^[0-9]+$/)) {
-                $scope.invalidSponsorId = true;
             }
         }
 

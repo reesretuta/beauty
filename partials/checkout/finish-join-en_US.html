@@ -21,8 +21,8 @@
     </div>
     <div class="col-md-4">
       <div class="jafrabiz-well text-center">
-        <p ng-if="confirmation.sponsor">Your JAFRA Sponsor is:<br />#{{confirmation.sponsor.id}} <b class="biggify color-purple HelveticaNeueLTStd-BdCn">{{confirmation.sponsor.firstName}} {{confirmation.sponsor.lastName}}</b></p>
-        <p ng-if="!confirmation.sponsor">A Sponsor will be assigned by JAFRA within the next 2 days.</p>
+        <p ng-if="confirmation.sponsor.id">Your JAFRA Sponsor is:<br />#{{confirmation.sponsor.id}} <b class="biggify color-purple HelveticaNeueLTStd-BdCn">{{confirmation.sponsor.firstName}} {{confirmation.sponsor.lastName}}</b></p>
+        <p ng-if="!confirmation.sponsor.id">A Sponsor will be assigned by JAFRA within the next 2 days.</p>
       </div>
     </div>
   </div>

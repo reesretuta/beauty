@@ -62,9 +62,9 @@
 
     <div class="form-group">
       <label class="col-md-3 control-label"><span ng-bind-html="'SPONSOR-ID-LABEL' | translate | unsafe"></span></label>
-      <div class="col-md-4" ng-class="{ 'has-error' : invalidSponsorId && !profileForm.sponsorId.$pristine }">
-        <input name="sponsorId" type="text" class="form-control" ng-model="profile.sponsorId" placeholder="{{ 'SPONSOR-ID-PLACEHOLDER' | translate }}">
-        <span ng-show="invalidSponsorId" class="help-block" ng-class="{ 'text-danger' : invalidSponsorId }"><span ng-bind-html="'CONSULTANT-PROFILE-INVALID-SPONSORID' | translate | unsafe"></span></span>
+      <div class="col-md-4" ng-class="{ 'has-error' : profileForm.sponsorId.$invalid && profileForm.sponsorId.$dirty }">
+        <input name="sponsorId" type="text" class="form-control" ng-model="profile.sponsorId" ng-pattern="/^[0-9]+$/" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" placeholder="{{ 'SPONSOR-ID-PLACEHOLDER' | translate }}">
+        <span ng-show="profileForm.sponsorId.$invalid && profileForm.sponsorId.$dirty" class="help-block" ng-class="{ 'text-danger' : profileForm.sponsorId.$invalid && profileForm.sponsorId.$dirty }"><span ng-bind-html="'CONSULTANT-PROFILE-INVALID-SPONSORID' | translate | unsafe"></span></span>
         <span class="help-block"><small><span ng-bind-html="'SPONSOR-ID-NOTE' | translate | unsafe"></span></small></span>
       </div>
       <div class="col-md-offset-3 col-sm-9">
@@ -75,7 +75,7 @@
     <div class="form-group">
       <div class="col-md-offset-3 col-sm-9">
         <div class="input-group">
-          <button class="btn btn-primary btn-lg ladda-button" type="button" ng-click="validateProfileAndContinue()" ng-disabled="profileForm.$valid || invalidDOB || invalidSponsorId || processing" data-style="expand-right" ui-ladda="processing">
+          <button class="btn btn-primary btn-lg ladda-button" type="button" ng-click="validateProfileAndContinue()" ng-disabled="!profileForm.$valid || processing" data-style="expand-right" ui-ladda="processing">
             <span class="ladda-label"><span ng-bind-html="'CONSULTANT-PROFILE-CONTINUE-TO-SHIPPING' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i></span>
           </button>
         </div>
@@ -83,7 +83,6 @@
     </div>
   </form>
 
-  
   <div aria-hidden="false" aria-labelledby="myModalLabel" role="dialog" id="agreement_modal" class="modal fade in" style="display: block;">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">

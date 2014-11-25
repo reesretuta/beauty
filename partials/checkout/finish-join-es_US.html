@@ -20,8 +20,8 @@
     </div>
     <div class="col-md-4">
       <div class="jafrabiz-well text-center">
-        <p ng-if="confirmation.sponsor">Tu Patrocinadora JAFRA es:<br />#{{confirmation.sponsor.id}} <b class="biggify color-purple HelveticaNeueLTStd-BdCn">{{confirmation.sponsor.firstName}} {{confirmation.sponsor.lastName}}</b></p>
-        <p ng-if="!confirmation.sponsor">Se te asignará una Patrocinadora de JAFRA dentro de los próximos 2 días hábiles.</p>
+        <p ng-if="confirmation.sponsor.id">Tu Patrocinadora JAFRA es:<br />#{{confirmation.sponsor.id}} <b class="biggify color-purple HelveticaNeueLTStd-BdCn">{{confirmation.sponsor.firstName}} {{confirmation.sponsor.lastName}}</b></p>
+        <p ng-if="confirmation.sponsor.id">Se te asignará una Patrocinadora de JAFRA dentro de los próximos 2 días hábiles.</p>
       </div>
     </div>
   </div>
