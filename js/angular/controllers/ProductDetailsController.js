@@ -1,6 +1,6 @@
 
 angular.module('app.controllers.products')
-    .controller('ProductDetailsController', function ($sce, WizardHandler, HashKeyCopier, Categories, Product, $q, $scope, $rootScope, $routeParams, $location, $timeout, $window, $log, $modal, $document, Cart, BreadcrumbsHelper, RecentlyViewed) {
+    .controller('ProductDetailsController', function ($sce, WizardHandler, HashKeyCopier, Categories, Product, $q, $scope, $rootScope, $routeParams, $location, $timeout, $window, $log, $modal, $document, Cart, BreadcrumbsHelper, RecentlyViewed, $translate) {
         
         $log.debug("ProductDetailsController()");
 

@@ -20,7 +20,7 @@ angular.module('app.controllers.lang').controller('LanguageSwitcherController', 
         $scope.language.current = session.language;
 
         $scope.$watch('language.current', function (newVal, oldVal) {
-            $log.debug('LanguageSwitcherController(): language changed');
+            $log.debug('LanguageSwitcherController(): language changed to:', newVal);
             Session.setLanguage(newVal);
         });
     });
@@ -28,7 +28,7 @@ angular.module('app.controllers.lang').controller('LanguageSwitcherController', 
     //session.language
     $scope.setLanguage = function (language) {
         Session.setLanguage(language);
-        //$log.debug('current language',Session.getLanguage());
+        $log.debug('current language', Session.getLanguage());
     }
 
     $scope.getCurrentLanguage = function() {

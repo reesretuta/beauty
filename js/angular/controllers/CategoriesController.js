@@ -1,6 +1,6 @@
 
 angular.module('app.controllers.categories')
-    .controller('CategoriesController', function ($scope, $document, $rootScope, $routeParams, $log, Categories) {
+    .controller('CategoriesController', function ($scope, $document, $rootScope, $routeParams, $log, Categories, $translate) {
         $log.debug("CategoriesController");
         $scope.categories = [];
         
