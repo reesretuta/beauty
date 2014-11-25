@@ -558,8 +558,15 @@ section#why_jafra_rewards {
 
 section#why_jafra_testimonials {
   background: transparent;  /* -- body background color -- */
+  padding: 0px 15px; /* responsive padding */
 }
 
+section#royal_starter_kit {
+  padding: 0px 15px; /* responsive padding */
+}
+section#FAQs_section {
+padding: 0px 15px;
+}
 section h3.hero-header-title {
 font-size: 81px;
 font-family: HelveticaNeueLTStd-BdCn;
