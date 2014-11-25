@@ -139,16 +139,17 @@ angular.module('app.directives', [])// directives
                     } else {
                         fixed = val;
                     }
+                    fixed = parseInt(fixed);
                     ngModelCtrl.$setViewValue(fixed);
                     ngModelCtrl.$render();
                 }
                 // watch for changes to number
                 angular.element(elem).on('input keydown change', function (evt) {
-                    var val = this.value;
+                    var val = this.value.replace(/[^\d\.]/g, '');
                     if (val === '' || val === null) {
                         $timeout(function() {
                             runCheck(val);
-                        }, 1000);
+                        }, 250);
                     } else {
                         runCheck(val);
                     }
