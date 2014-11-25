@@ -1,6 +1,6 @@
 
 angular.module('app.controllers.products')
-    .controller('ConfigureKitModalController', function ($sce, $timeout, $document, HashKeyCopier, Cart, Categories, Product, $modalInstance, $q, $scope, $rootScope, $routeParams, $location, $timeout, $window, $log, item, inCart, whizFunc) {
+    .controller('ConfigureKitModalController', function ($sce, $timeout, $document, HashKeyCopier, Cart, Categories, Product, $modalInstance, $q, $scope, $rootScope, $routeParams, $location, $timeout, $window, $log, item, inCart, whizFunc, $translate) {
         $log.debug("ConfigureKitModalController");
 
         $log.debug("ConfigureKitModalController(): the funk", whizFunc);

@@ -5,7 +5,7 @@ angular.module('app.controllers.checkout')
         $log.debug("CheckoutController()");
 
         $rootScope.inCheckout = true;
-
+        
         var params = $location.search();
         $log.debug("CheckoutController(): params", params);
 
