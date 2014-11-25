@@ -1164,7 +1164,9 @@ body.incheckout {
     p.jumbo-description br {
       display: none;
     }
-
+    #free-limited-offer {
+      margin-left: -8em;
+    }
 }
 
 /* Medium screens like laptops and smaller desktop monitors */
