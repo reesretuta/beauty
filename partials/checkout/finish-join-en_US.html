@@ -42,11 +42,11 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>{{ cart[0].product.quantity }}</td>
+            <tr ng-repeat="item in cart">
+              <td>{{ item.quantity }}</td>
               <td>
                 <p class="confirmation-description">
-                  {{ cart[0].product.name }}
+                  {{ item.product.name }}
                 </p>
               </td>
               <td align="right">
