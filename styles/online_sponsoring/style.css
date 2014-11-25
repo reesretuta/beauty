@@ -350,7 +350,6 @@ font-size: 48px;
 width: 260px;
 height: 260px;
 margin-top: -4em;
-margin-left: -12em;
 z-index: 2;
 border-radius: 50%;
 padding: 1.75em 8.5em;
@@ -1147,6 +1146,9 @@ body.incheckout {
   .subcontainer .row {
     width: 100%;
   }
+  #free-limited-offer{
+    margin-left: -5em;
+  }
 }
 
 /* Small screens like netbooks and tablets (iPad/iPad mini/etc) */
@@ -1164,7 +1166,15 @@ body.incheckout {
     p.jumbo-description br {
       display: none;
     }
+    #free-limited-offer {
+      margin-left: -8em;
+    }
+}
 
+@media (min-width: 768px) and (max-width: 991px) {
+  #pastelpatches {
+  right: -90px;
+  }
 }
 
 /* Medium screens like laptops and smaller desktop monitors */
@@ -1174,6 +1184,9 @@ body.incheckout {
     }
     p.jumbo-description br {
       display: inline;
+    }
+    #free-limited-offer {
+      margin-left: -12em;
     }
 }
 
