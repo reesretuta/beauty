@@ -42,11 +42,11 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>{{ cart[0].product.quantity }}</td>
+            <tr ng-repeat="item in cart">
+              <td>{{ item.quantity }}</td>
               <td>
                 <p class="confirmation-description">
-                  {{ cart[0].product.name }}
+                  {{ item.product.name }}
                 </p>
               </td>
               <td align="right">
@@ -85,7 +85,7 @@
     <div class="col-md-4">
       <div class="text-center">
         <h3>1. Grow Your Business</h3>
-        <p>Visit <a href="http://jafrabiz.com" target="_blank">jafrabiz.com</a> and Consultant Connection</p>
+        <p>Visit <a href="http://jafrabiz.com" target="_blank">jafrabiz.com</a> and Consultant Connection.</p>
         <ul class="text-left">
             <li>Place orders</li>
             <li>Make payments</li>
@@ -105,7 +105,7 @@
           On the Consultant Connection home page, click on the icon under Links.</p>
         <p>or</p>
         <p><a href="http://downloads.jafrausa.com/pdfs/en/2012/news/apr/2012_DirectDepositAgrForm_en.pdf" class="biggify color-red HelveticaNeueLTStd-BdCn" target="_blank"><i class="fa fa-usd"></i> DIRECT DEPOSIT</a><br />
-          to your bank account.<br />If no payment option is selected, checks will be sent by mail.</p>
+          to your bank account.<br /><br />If no payment option is selected, checks will be sent by mail.</p>
       </div>
     </div>
     <div class="col-md-4">

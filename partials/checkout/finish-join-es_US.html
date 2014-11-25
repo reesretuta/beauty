@@ -40,21 +40,20 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>{{ cart[0].product.quantity }}</td>
+            <tr ng-repeat="item in cart">
+              <td>{{ item.quantity }}</td>
               <td>
                 <p class="confirmation-description">
-                  {{ cart[0].product.name }}
+                  {{ item.product.name }}
                 </p>
               </td>
               <td align="right">
-                {{ item.product.currentPrice.price | currency }}
                 <span ng-repeat="detailprice in item.product.prices[0]">
                   <span ng-if="detailprice.typeId==2" class="item-price-sale">
-                    {{ item.product.currentPrice | currency }}
+                    {{ detailprice.price | currency}}
                   </span>
                   <span ng-if="detailprice.typeId==1" class="item-price-strike">
-                    {{ item.product.currentPrice | currency }}
+                    {{detailprice.price | currency}}
                   </span>
                 </span>
                 <span ng-if="item.product.prices[0].price">
@@ -84,7 +83,7 @@
     <div class="col-md-4">
       <div class="text-center">
         <h3>1. Edifica tu Negocio</h3>
-        <p>Visita <a href="http://jafrabiz.com" target="_blank">jafrabiz.com</a> y la Conexión de la Consultora</p>
+        <p>Visita <a href="http://jafrabiz.com" target="_blank">jafrabiz.com</a> y la Conexión de la Consultora.</p>
         <ul class="text-left">
             <li>Haz pedidos</li>
             <li>Haz pagos</li>
@@ -104,13 +103,13 @@
           En la página principal de la Conexión de la Consultora, haz clic en Enlaces Rápidos.</p>
         <p>o</p>
         <p><a href="http://downloads.jafrausa.com/pdfs/es/2012/news/apr/2012_DirectDepositAgrForm_es.pdf" class="biggify color-red HelveticaNeueLTStd-BdCn"><i class="fa fa-usd"></i> DEPÓSITO DIRECTO</a><br />
-          en tu cuenta bancaria.<br />Si no seleccionas una opcíon de pago, se enviarán cheques por correo.</p>
+          en tu cuenta bancaria.<br /><br />Si no seleccionas una opcíon de pago, se enviarán cheques por correo.</p>
       </div>
     </div>
     <div class="col-md-4">
       <div class="text-center">
         <h3>3. ¿Necesitas Ayuda?</h3>
-        <p>Llame a tu Consultura o Líder cualquier duda o reciba ayuda del equipo de Relaciones con Consultantes (CRT)</p>
+        <p>Llama a tu Consultora o Líder con cualquier duda o recibe ayuda del equipo de Relaciones con Consultoras (CRT)</p>
         <p><a href="tel:1800852372" class="biggify color-red HelveticaNeueLTStd-BdCn"><i class="fa fa-phone"></i> 1-800-852-3728</a></p>
         <p>o email a</p>
         <p><a href="mailto:crt@jafra.com" class="biggify color-red HelveticaNeueLTStd-BdCn"><i class="fa fa-envelope-o"></i> crt@jafra.com</a></p>

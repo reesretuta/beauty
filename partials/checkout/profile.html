@@ -50,7 +50,7 @@
     <div class="form-group">
       <label class="col-md-3 control-label"><span ng-bind-html="'DOB-LABEL' | translate | unsafe"></span></label>
       <div class="col-xs-4 col-md-3" ng-class="{ 'has-error' : invalidDOB && profileForm.dob.$dirty && profile.dob.length == 8 }">
-        <input type="tel" name="dob" class="form-control" ui-mask="99/99/9999" mask-override placeholder="{{ 'DOB-PLACEHOLDER' | translate }}" ng-model="profile.dob">
+        <input type="tel" name="dob" class="form-control" ui-mask="99/99/9999" mask-override placeholder="{{ 'DOB-PLACEHOLDER' | translate }}" ng-model="profile.dob" required>
       </div>
       <div class="col-md-offset-3 col-sm-9">
         <span class="help-block"><small ng-class="{ 'text-danger' : invalidDOB && !profileForm.dob.$pristine && profile.dob.length == 8 }"><span ng-bind-html="'DOB-NOTE' | translate | unsafe"></span></small></span>
@@ -75,7 +75,7 @@
     <div class="form-group">
       <div class="col-md-offset-3 col-sm-9">
         <div class="input-group">
-          <button class="btn btn-primary btn-lg ladda-button" type="button" ng-click="validateProfileAndContinue()" ng-disabled="!profileForm.$valid || processing" data-style="expand-right" ui-ladda="processing">
+          <button class="btn btn-primary btn-lg" type="button" ng-click="validateProfileAndContinue()" ng-disabled="!profileForm.$valid || processing || invalidDOB || invalidSSN">
             <span class="ladda-label"><span ng-bind-html="'CONSULTANT-PROFILE-CONTINUE-TO-SHIPPING' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i></span>
           </button>
         </div>

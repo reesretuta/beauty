@@ -201,18 +201,19 @@ section#why_jafra_testimonials .btn-lg {
 #more_royal_2, #more_skincare_2 {
 	margin-top: 20px;
 }
-#more_royal .section-copy p, #more_skincare .section-copy p,
-#more_royal_2 .section-copy p, #more_skincare_2 .section-copy p  {
-	-webkit-column-count: 3;
-     -moz-column-count: 3;
-          column-count: 3;
+#more_royal .section-copy p li, #more_skincare .section-copy p li,
+#more_royal_2 .section-copy p li, #more_skincare_2 .section-copy p li  {
+	float: left;
+	width: 33%;
+	min-height: 2em;
+	padding: 0 1em .5em 0;
 }
-#more_royal .section-copy p strong, #more_skincare .section-copy p strong,
-#more_royal_2 .section-copy p strong, #more_skincare_2 .section-copy p strong {
+#more_royal .section-copy p h4, #more_skincare .section-copy p h4,
+#more_royal_2 .section-copy p h4, #more_skincare_2 .section-copy p h4 {
+	clear: both;
 	display: block;
-	padding-top: 30px;
--webkit-column-span: all; 
-          column-span: all;
+	padding: 30px 30px 10px;
+	text-transform: uppercase;
 }
 .modal .subcontainer {
 	background: transparent;
@@ -349,6 +350,11 @@ section#why_jafra_lifestyle .subcontainer ul.golden_bullets li:before {
 		width: 90%;
 		font-size: 18px;
 	}
+	#more_royal .section-copy p li, #more_skincare .section-copy p li,
+	#more_royal_2 .section-copy p li, #more_skincare_2 .section-copy p li  {
+		float: none;
+		width: 100%;
+	}
 }
 @media (min-width: 767px) and (max-width: 992px) {
 	.subrow {
@@ -378,6 +384,10 @@ section#why_jafra_lifestyle .subcontainer ul.golden_bullets li:before {
 	}
 	section#why_jafra_lifestyle .leaders_col {
 		top: -10px;
+	}
+	#more_royal .section-copy p li, #more_skincare .section-copy p li,
+	#more_royal_2 .section-copy p li, #more_skincare_2 .section-copy p li  {
+		width: 50%;
 	}
 }
 @media (max-width: 1200px) {
