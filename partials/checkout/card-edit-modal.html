@@ -44,28 +44,24 @@
       <div class="row">
         <div class="col-xs-4 col-sm-4 col-med-4">
           <input ng-model="creditCard.expMonth" name="expMonth" type="text" class="form-control col-sm-1" ui-mask="99" mask-override placeholder="MM" required>
-          <!--valid={{editCardForm.expMonth.$valid}}-->
         </div>
         <div class="col-xs-1">
           <label class="control-label">/</label>
         </div>
         <div class="col-xs-5 col-sm-5 col-med-5">
           <input ng-model="creditCard.expYear" name="expYear" type="text" class="form-control col-sm-3" ui-mask="9999" mask-override placeholder="YYYY" required>
-          <!--valid={{editCardForm.expYear.$valid}}-->
         </div>
       </div>
       <span ng-show="(invalidExpiration || editCardForm.expMonth.$invalid || editCardForm.expYear.$invalid) && !editCardForm.expMonth.$pristine && !editCardForm.expYear.$pristine" class="help-block text-danger" ng-bind-html="'INVALID_CC_EXPIRATION' | translate | unsafe"></span>
     </div>
   </div>
-  <div class="form-group" ng-class="{ 'has-error' : editCardForm.cvv.$invalid && !editCardForm.cvv.$pristine }">
+  <div class="form-group">
     <label for=" " class="col-md-3 control-label"><span ng-bind-html="'IN_SECURITY_CODE' | translate | unsafe"></span></label>
-
     <div class="col-sm-6">
       <div class="row">
-        <div class="col-xs-4 col-sm-4 col-med-2">
-          <input ng-model="creditCard.cvv" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-pattern="/^[0-9]{3,4}$/" ng-minlength="3" name="cvv" type="text" class="form-control col-sm-1 hide-arrows" placeholder="&bull;&bull;&bull;" required>
-          <span ng-show="paymentForm.cvv.$invalid && paymentForm.cvv.$dirty" class="help-block" ng-class="{ 'text-danger' : paymentForm.cvv.$invalid }"><span ng-bind-html="'NUMBERS-ONLY-SHORT' | translate | unsafe"></span></span>
-          <!--valid={{editCardForm.cvv.$valid}}-->
+        <div class="col-xs-4 col-sm-4 col-med-2" ng-class="{ 'has-error' : editCardForm.cvv.$invalid && editCardForm.cvv.$dirty }">
+          <input ng-model="creditCard.cvv" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-pattern="/^[0-9]{3,4}$/" ng-minlength="3" ng-maxlength="4" maxlength="4" name="cvv" type="text" class="form-control col-sm-1 hide-arrows" placeholder="&bull;&bull;&bull;" required />
+          <span ng-show="editCardForm.cvv.$invalid && editCardForm.cvv.$dirty" class="help-block" ng-class="{ 'text-danger' : editCardForm.cvv.$invalid && editCardForm.cvv.$dirty }" ng-bind-html="'CVV-INVALID' | translate | unsafe"></span>
         </div>
         <div class="col-xs-8 col-sm-8 col-med-8">
           <a popover="{{ 'CVV-POPOVER-CONTENT' | translate | unsafe }}" popover-title="{{ 'CVV-POPOVER-TITLE' | translate | unsafe }}" href="" tabindex="-1" popover-trigger="hover"><i class="fa fa-info-circle"></i>
