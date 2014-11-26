@@ -31,7 +31,7 @@ models.Product.find({
         for (var i=0; i < products.length; i++) {
             var product = products[i];
             var id = product._id;
-            //console.log("checking images for product", product._id);
+            console.log("checking images for product", product._id);
             if (product.images && product.images.length > 0) {
                 //console.log("has", product.images.length, "images");
                 for (var j=0; j < product.images.length; j++) {
@@ -61,7 +61,7 @@ function checkImage(id, j, imagePath) {
     var d = Q.defer();
 
     try {
-        var fileName = "img/products/" + id + "_" + j + ".jpg";
+        var fileName = "/img/products/" + id + "_" + j + ".jpg";
 
         GridFS.exist({filename: fileName}, function (err, found) {
             if (err) return;

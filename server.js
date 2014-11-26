@@ -1415,8 +1415,22 @@ assetRouter.get('*', function (req, res) {
         console.log("getting asset", asset);
 
         try {
-            var readstream = GridFS.createReadStream({filename: asset});
-            readstream.pipe(res);
+            GridFS.exist({filename: asset}, function (err, found) {
+                if (err) {
+                    console.error(err);
+                    res.status(404);
+                    res.end();
+                    return;
+                }
+
+                if (found) {
+                    var readstream = GridFS.createReadStream({filename: asset});
+                    readstream.pipe(res);
+                } else {
+                    res.status(404);
+                    res.end();
+                }
+            });
         } catch (err) {
             log.error(err);
             res.status(404);
