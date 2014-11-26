@@ -317,7 +317,7 @@ a.checkout-link {
 .store-item-wrapper {
   max-width: 210px;
   margin: 0 auto 30px;
-  min-height: 350px;
+  min-height: 380px;
 }
 .related .store-item-wrapper {
   min-height: 230px;
@@ -338,9 +338,9 @@ a.checkout-link {
   -o-transition: -o-transform 200ms ease;
   /*transition: transform 200ms ease;*/
 }
-.store-item-wrapper img:hover,
-.image-zoom img:hover,
-.cart-item-image:hover {
+.store-item-wrapper a:hover img,
+.image-zoom:hover img,
+a:hover cart-item-image {
   /*-moz-transform: scale(1);*/
   -webkit-transform: scale(1);
   -o-transform: scale(1);
