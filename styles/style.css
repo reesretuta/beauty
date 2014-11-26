@@ -1101,6 +1101,15 @@ button.processing:before {
   -webkit-font-smoothing: antialiased;
   -webkit-animation: spin 1s infinite linear;
 }
+.loading-products a.processing {
+  display: block;
+  text-align: center;
+  font-size: 22px;
+  background: none;
+}
+.loading-products a.processing:before {
+  margin: 30px auto;
+}
 
 /* checkout steps color and typography */
 .steps-indicator li a {
