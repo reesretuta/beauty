@@ -80,7 +80,7 @@
           <button ng-if="profile.customerStatus == 'new' && !isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" ng-class="{ 'processing' : processing }" ng-click="loginOrCreateUser()">
             <span ng-bind-html="'CREATE-ACCOUNT' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i>
           </button>
-          <button ng-if="isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" ng-class="{ 'processing' : processing }" ng-click="validateEmailAndContinue(profile.loginEmail)">
+          <button ng-if="isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" ng-class="{ 'processing' : processing }" ng-click="validateEmailAndContinue(profile.loginEmail, signInForm)">
             <span ng-bind-html="'BTN_CONTINUE' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i>
           </button>
         </div>

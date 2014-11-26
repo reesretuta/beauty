@@ -930,7 +930,11 @@ angular.module('app.controllers.checkout')
             return 0;
         };
 
-        $scope.validateEmailAndContinue = function(email) {
+        $scope.validateEmailAndContinue = function(email, formObj) {
+            $log.debug('validateEmailAndContinue(): formObj:', formObj);
+            if (formObj.$invalid) {
+                return false;
+            }
             $scope.emailError = false;
             $scope.processing = true;
             $log.debug("CheckoutController(): validateEmailAndContinue()");
