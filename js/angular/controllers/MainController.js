@@ -108,7 +108,7 @@ angular.module('app.controllers.main')
                 return "/img/product_placeholder.gif";
             }
             //console.log("CDN", CDN_URL, "image path", image.localPath);
-            return CDN_URL + "/assets/" + image.localPath;
+            return CDN_URL + "/assets" + image.localPath;
         }
 
         // begin navigation
