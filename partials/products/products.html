@@ -1,47 +1,84 @@
-    <div class="ccol-xs-12 col-sm-12 col-md-12 col-lg-12" ng-cloak ng-if="((products | filter:searchFunction).length == 0) && search != null && search.query != null && search.query != ''">No products matched search:&nbsp;&nbsp;<b><i>{{search.query}}</i></b></div>
+    <div class="ccol-xs-12 col-sm-12 col-md-12 col-lg-12" ng-cloak ng-if="((products | filter:searchFunction).length == 0) && search != null && search.query != null && search.query != ''">No products matched search:&nbsp;&nbsp;<b><i>{{query}}</i></b></div>
 
-    <div infinite-scroll="loadMoreProducts()" infinite-scroll-distance="0" infinite-scroll-disabled="loading">
+    <div infinite-scroll="loadMoreProducts()" infinite-scroll-distance="0" infinite-scroll-disabled="loading" class="clearfix">
 
-      <!-- Product -->
-      <article class="ccol-xs-12 col-sm-6 col-md-4 col-lg-4 store-item" ng-repeat="product in filteredProduct = (products | filter:searchFunction | orderBy:(session.language=='en_US'?'name':'name_es_US'))" ng-if="product.productflag.isgroup !=1">
-
-        <div class="store-item-wrapper" ng-if="product.sku != '' && product.type != 'group'">
-          <a ng-href="{{STORE_BASE_URL}}/products/{{product.sku}}#top">
-            <span class="responsive-container img-responsive">
-              <img class="responsive-element img-responsive" ng-src="{{getImagePath(product.images[0].imagePath)}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';">
-            </span>
-          </a>
-          <div class="store-item-info">
-            <p class="store-item-sku"><span ng-bind-html="'ITEM' | translate | unsafe"></span> #{{product.sku}}</p>
-            <p class="store-item-title"><a ng-href="{{STORE_BASE_URL}}/products/{{product.sku}}#top">{{getTranslated(product).name}}</a></p>
-            <p class="store-item-price">
-              &nbsp;&nbsp;<span class="item-measure">{{product.quantity}}</span>
-            </p>
-          </div>
-          <p>
-            <a class="btn btn-primary primary-cta" ng-class="{'disabled': adding}" ng-href="{{STORE_BASE_URL}}/products/{{product.sku}}#top">
-              <i class="fa fa-th"></i> <span ng-bind-html="'BTN_CONFIGURE' | translate | unsafe"></span>
+        <!-- Product -->
+        <article class="ccol-xs-12 col-sm-6 col-md-4 col-lg-4 store-item" ng-repeat="product in filteredProduct = (products | filter:searchFunction | orderBy:(session.language=='en_US'?'name':'name_es_US'))" ng-if="product.productflag.isgroup !=1">
+            
+          <div class="store-item-wrapper" ng-if="product.sku != '' && product.type != 'group'">
+            <a ng-href="{{STORE_BASE_URL}}/products/{{product.sku}}#top">
+              <span class="responsive-container img-responsive">
+                <img class="responsive-element img-responsive" ng-src="{{getImagePath(product.images[0].imagePath)}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';">
+              </span>
             </a>
-          </p>
-        </div><!--/store-item-wrapper-->
+            <div class="store-item-info">
+              <p class="store-item-sku"><span ng-bind-html="'ITEM' | translate | unsafe"></span> #{{product.sku}}</p>
+              <p class="store-item-title"><a ng-href="{{STORE_BASE_URL}}/products/{{product.sku}}#top">{{getTranslated(product).name}}</a></p>
+              <p class="store-item-price">
 
-      </article>
+              <span ng-repeat="detailprice in product.currentPrice">
+                <span ng-if="detailprice.type==2" class="item-price-sale">
+                  {{ detailprice.price | currency }}
+                  <span class="brand-font saleflag">On Sale!</span>
+                </span>
+                <span ng-if="detailprice.type==1" class="item-price-strike">
+                  {{ detailprice.price | currency }}
+                </span>
+              </span>
+              <span ng-if="product.currentPrice.price">
+                <span class="item-price">
+                  {{ product.currentPrice.price | currency }}
+                </span>
+              </span>
+                &nbsp;&nbsp;<span class="item-measure">{{product.quantity}}</span>
+              </p>
+            </div>
+            <p ng-if="product.type == 'product' || (product.type == 'kit' && product.kitGroups.length == 0)">
+              <a class="btn btn-primary primary-cta add-to-cart" ng-class="{ 'processing' : (adding && addingId == product.sku) }" ng-click="addToCart(product)">
+                <span ng-bind-html="'BTN_ADD_CART' | translate | unsafe"></span>
+              </a>
+            </p>
+            <p ng-if="product.type == 'kit' && product.kitGroups.length > 0">
+              <a class="btn btn-primary primary-cta" ng-href="{{STORE_BASE_URL}}/products/{{product.sku}}#top">
+                <i class="fa fa-cogs"></i> <span ng-bind-html="'TIT_CONF_OFFER' | translate | unsafe"></span>
+              </a>
+            </p>
+          </div><!--/store-item-wrapper-->
+
+          <div class="store-item-wrapper" ng-if="product.type=='group'">
+            <a ng-href="{{STORE_BASE_URL}}/products/{{product.sku}}#top"><img class="img-responsive" style="margin: 0 auto;" ng-src="{{getImagePath(product.images[0].imagePath)}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';"></a>
+            <div class="store-item-info">
+              <p class="store-item-sku">&nbsp; <!-- leave empty for UI --></p>
+              <p class="store-item-title"><a ng-href="{{STORE_BASE_URL}}/products/{{product.sku}}#top">{{getTranslated(product).name}}</a></p>
+              <p class="store-item-price">
+                &nbsp;&nbsp;<span class="item-measure">{{product.quantity}}</span>
+              </p>
+            </div>
+            <p>
+              <a class="btn btn-primary primary-cta" ng-class="{'disabled': adding}" ng-href="{{STORE_BASE_URL}}/products/{{product.sku}}#top">
+                <i class="fa fa-th"></i> <span ng-bind-html="'BTN_CONFIGURE' | translate | unsafe"></span>
+              </a>
+            </p>
+          </div><!--/store-item-wrapper-->
+
+        </article>
         <!-- /Product -->
 
-      <!-- Product -->
-      <article ng-if="loading" class="ccol-xs-12 col-sm-6 col-md-4 col-lg-4 store-item">
+        <!-- LOADING -->
+        <article ng-if="loading" class="ccol-xs-12 col-sm-6 col-md-4 col-lg-4 store-item">
 
-        <div class="store-item-wrapper loading-products" ng-if="product.sku != '' && product.type != 'group'">
-          <a class="processing">
-              &nbsp;
-          </a>
-          <div class="store-item-info">
-            Loading...
-          </div>
-        </div><!--/store-item-wrapper-->
+          <div class="store-item-wrapper loading-products">
+            <a class="processing">
+                &nbsp;
+            </a>
+            <div class="store-item-info">
+              Loading...
+            </div>
+          </div><!--/store-item-wrapper-->
 
-      </article>
+        </article>
 
-      <div style='clear: both;'></div>
+    </div> <!-- /infinite scroll -->
 
-    </div>
+
+
