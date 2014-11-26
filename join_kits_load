@@ -1,5 +1,0 @@
-mongoimport -d jafra -c products --jsonArray --upsert --file join_kit1.json
-mongoimport -d jafra -c products --jsonArray --upsert --file join_kit2.json
-mongoimport -d jafra -c products --jsonArray --upsert --file join_kit1_es.json
-mongoimport -d jafra -c products --jsonArray --upsert --file join_kit2_es.json
-
