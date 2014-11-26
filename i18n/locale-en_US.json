@@ -187,7 +187,7 @@
     "SIGN-IN": "Sign In",
     "CREATE-ACCOUNT": "Create Account",
     "INVALID-EMAIL-ADDRESS": "Invalid email address",
-    "INVALID-EMAIL-ADDRESS-IN-USE": "That account already exists",
+    "INVALID-EMAIL-ADDRESS-IN-USE": "The email address provided is already being used",
     "INVALID-TELEPHONE-NUMBER": "Invalid telephone number",
     "REQUIRES-VALID-EMAIL-ADDRESS": "Must be a valid email address",
     "PASSWORDS-DONT-MATCH": "Passwords must match",
