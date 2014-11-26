@@ -1424,19 +1424,21 @@ angular.module('app.controllers.checkout')
                     shipping.address1 = shipping.businessCO.toUpperCase();
                 }
 
+                var sponsorId = $scope.profile.sponsorId ? $scope.profile.sponsorId : 66556;
+
                 var consultant = {
                     ssn: ssn,
                     email: $scope.profile.loginEmail,
                     firstName: $scope.profile.firstName.toUpperCase(),
                     lastName: $scope.profile.lastName.toUpperCase(),
                     dateOfBirth: dob,
-                    sponsorId: $scope.profile.sponsorId,
+                    sponsorId: sponsorId,
                     language: $scope.profile.language,
                     source: $scope.profile.source,
                     phone: phone,
                     billingAddress: billing,
                     shippingAddress: shipping,
-                    creditCard: $scope.profile.card,
+                    creditCard: angular.copy($scope.profile.card),
                     agreementAccepted: $scope.profile.agree+"",
                     total: parseFloat($scope.salesTaxInfo.Total),
                     products: [
@@ -1448,6 +1450,8 @@ angular.module('app.controllers.checkout')
                         }
                     ]
                 }
+
+                consultant.creditCard.cvv = parseInt(consultant.creditCard.cvv);
 
                 $log.debug("CheckoutController(): processOrder(): creating consultant", consultant);
 
@@ -1655,8 +1659,6 @@ angular.module('app.controllers.checkout')
                 // FIXME - handle multiple consultant IDs - dialog?
                 if ($rootScope.session.client.consultantIds && $rootScope.session.client.consultantIds.length > 0) {
                     consultantId = $rootScope.session.client.consultantIds[0];
-                } else {
-                    consultantId = 66556;
                 }
             }
             return consultantId;
@@ -2120,7 +2122,7 @@ angular.module('app.controllers.checkout')
                     card: "4111111111111111",
                     expMonth: "12",
                     expYear: "2020",
-                    cvv: 987,
+                    cvv: "987",
                     cardType: "Visa"
                 },
                 card: {
@@ -2128,7 +2130,7 @@ angular.module('app.controllers.checkout')
                     card: "4111111111111111",
                     expMonth: "12",
                     expYear: "2020",
-                    cvv: 987,
+                    cvv: "987",
                     cardType: "Visa"
                 }
             };
