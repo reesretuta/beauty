@@ -3,7 +3,6 @@ angular.module('app.controllers.checkout')
     .controller('CheckoutController', function ($location, $scope, $document, $timeout, $rootScope, $anchorScroll, $routeParams, $modal, $log, $q, $translate, STORE_BASE_URL, JOIN_BASE_URL, focus, Geocodes, Session, Consultant, Addresses, Order, OrderHelper, Checkout, Cart, Product, SalesTax, CreditCards, Leads, PasswordResetHelper, HashKeyCopier, WizardHandler) {
 
         $log.debug("CheckoutController()");
-
         $rootScope.inCheckout = true;
         
         var params = $location.search();
@@ -930,11 +929,16 @@ angular.module('app.controllers.checkout')
             return 0;
         };
 
-        $scope.validateEmailAndContinue = function(email, formObj) {
-            $log.debug('validateEmailAndContinue(): formObj:', formObj);
-            if (formObj.$invalid) {
-                return false;
-            }
+        //TODO
+        $scope.forceValidation = function(formObj) {
+            angular.forEach(formObj, function(val, key) {
+                if (!/\$/.test(key)) {
+                    $('input[name=' + key + ']').trigger('blur');
+                }
+            });
+        };
+
+        $scope.validateEmailAndContinue = function(email) {
             $scope.emailError = false;
             $scope.processing = true;
             $log.debug("CheckoutController(): validateEmailAndContinue()");

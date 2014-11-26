@@ -25,11 +25,11 @@
     <div class="form-group" ng-if="profile.customerStatus == 'new' || isOnlineSponsoring">
       <label for="firstName" class="col-md-3 control-label"><span ng-bind-html="'OS-NAME' | translate | unsafe"></span></label>
       <div class="col-sm-3" ng-class="{ 'has-error' : signInForm.firstName.$invalid && signInForm.firstName.$dirty }">
-        <input name="firstName" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model="profile.firstName" ng-model-options="{ updateOn: 'blur', debounce: { 'blur' : 0 } }" class="form-control" id="firstName" placeholder="{{'CHECKOUT-FIRST-PLACEHOLDER' | translate | unsafe}}" required="isOnlineSponsoring" autofocus="" maxlength="40">
+        <input name="firstName" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model="profile.firstName" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" class="form-control" id="firstName" placeholder="{{'CHECKOUT-FIRST-PLACEHOLDER' | translate | unsafe}}" required="isOnlineSponsoring" autofocus="" maxlength="40">
         <span ng-show="signInForm.firstName.$invalid && signInForm.firstName.$dirty" class="help-block" ng-class="{ 'text-danger' : signInForm.firstName.$invalid }"><span ng-bind-html="'REQUIRE-FIRSTNAME-LENGTH' | translate | unsafe"></span></span>
       </div>
       <div class="col-sm-3" ng-class="{ 'has-error' : signInForm.lastName.$invalid && signInForm.lastName.$dirty }">
-        <input name="lastName" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model="profile.lastName" ng-model-options="{ updateOn: 'blur', debounce: { 'blur' : 0 } }" class="form-control" id="lastName" placeholder="{{'CHECKOUT-LAST-PLACEHOLDER' | translate | unsafe}}" required="isOnlineSponsoring" maxlength="40">
+        <input name="lastName" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model="profile.lastName" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" class="form-control" id="lastName" placeholder="{{'CHECKOUT-LAST-PLACEHOLDER' | translate | unsafe}}" required="isOnlineSponsoring" maxlength="40">
         <span ng-show="signInForm.lastName.$invalid && signInForm.lastName.$dirty" class="help-block" ng-class="{ 'text-danger' : signInForm.lastName.$invalid }"><span ng-bind-html="'REQUIRE-LASTNAME-LENGTH' | translate | unsafe"></span></span>
       </div>
     </div>
@@ -37,7 +37,7 @@
     <div class="form-group">
       <label for="loginEmail" class="col-md-3 control-label"><span ng-bind-html="'EMAIL_ADD' | translate | unsafe"></span></label>
       <div class="col-sm-6" ng-class="{ 'has-error' : signInForm.loginEmail.$invalid && signInForm.loginEmail.$dirty }">
-        <input name="loginEmail" ng-pattern="/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/" ng-model="profile.loginEmail" ng-model-options="{ updateOn: 'blur', debounce: { 'blur' : 0 } }" type="email" class="form-control" id="loginEmail" placeholder="example@gmail.com" required>
+        <input name="loginEmail" ng-pattern="/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/" ng-model="profile.loginEmail" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" type="email" class="form-control" id="loginEmail" placeholder="example@gmail.com" required>
         <span ng-show="signInForm.loginEmail.$invalid && signInForm.loginEmail.$dirty" class="help-block" ng-class="{ 'text-danger' : signInForm.loginEmail.$invalid }"><span ng-bind-html="'REQUIRES-VALID-EMAIL-ADDRESS' | translate | unsafe"></span>.</span>
       </div>
     </div>
@@ -45,7 +45,7 @@
     <div class="form-group" ng-if="isOnlineSponsoring">
       <label for="phoneNumber" class="col-md-3 control-label"><span ng-bind-html="'PHONE-NUMBER' | translate | unsafe"></span></label>
       <div class="col-sm-3" ng-class="{ 'has-error' : signInForm.phoneNumber.$dirty && signInForm.phoneNumber.$invalid }">
-        <input name="phoneNumber" type="tel" ui-mask="(999) 999-9999" ng-model="profile.phoneNumber" ng-model-options="{ updateOn: 'blur', debounce: { 'blur' : 0 } }" mask-override ng-minlength="13" class="form-control" id="phoneNumber" placeholder="(___) ___-____" required>
+        <input name="phoneNumber" type="tel" ui-mask="(999) 999-9999" ng-model="profile.phoneNumber" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" mask-override ng-minlength="13" class="form-control" id="phoneNumber" placeholder="(___) ___-____" required>
         <span ng-show="signInForm.phoneNumber.$dirty && signInForm.phoneNumber.$invalid" class="help-block" ng-class="{ 'text-danger' : signInForm.phoneNumber.$dirty && signInForm.phoneNumber.$invalid }"><span ng-bind-html="'INVALID-TELEPHONE-NUMBER' | translate | unsafe"></span>.</span>
       </div>
     </div>
@@ -74,13 +74,13 @@
         <p><small ng-bind-html="'OS-START-PRIVACY-AGREE' | translate | unsafe"></small></p>
         <div class="input-group">
           <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-          <button ng-if="profile.customerStatus == 'existing' && !isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" ng-class="{ 'processing' : processing }" ng-click="loginOrCreateUser()">
+          <button ng-if="profile.customerStatus == 'existing' && !isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" ng-class="{ 'processing' : processing }" ng-click="loginOrCreateUser()" ng-disabled="!signInForm.$valid || processing">
             <span ng-bind-html="'SIGN-IN' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i>
           </button>
-          <button ng-if="profile.customerStatus == 'new' && !isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" ng-class="{ 'processing' : processing }" ng-click="loginOrCreateUser()">
+          <button ng-if="profile.customerStatus == 'new' && !isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" ng-class="{ 'processing' : processing }" ng-click="loginOrCreateUser()" ng-disabled="!signInForm.$valid || processing">
             <span ng-bind-html="'CREATE-ACCOUNT' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i>
           </button>
-          <button ng-if="isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" ng-class="{ 'processing' : processing }" ng-click="validateEmailAndContinue(profile.loginEmail, signInForm)">
+          <button ng-if="isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" ng-class="{ 'processing' : processing }" ng-click="validateEmailAndContinue(profile.loginEmail)" ng-disabled="!signInForm.$valid || processing">
             <span ng-bind-html="'BTN_CONTINUE' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i>
           </button>
         </div>
