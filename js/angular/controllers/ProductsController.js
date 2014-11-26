@@ -26,6 +26,10 @@ angular.module('app.controllers.products')
 
         $scope.quantities = {};
 
+        $scope.products = [];
+        $scope.loadedProductCount = 0;
+        $scope.noMoreToLoad = false;
+
         $scope.addToCart = function(product) {
             $log.debug("ProductsController(): addToCart(): adding product", product);
             var qty = $scope.quantities[product.sku];
@@ -109,24 +113,34 @@ angular.module('app.controllers.products')
             loadCategory();
         }
 
+        $scope.loadMoreProducts = function() {
+            if ($scope.noMoreToLoad == true) {
+                return;
+            }
+            $log.debug("ProductsController(): loadMoreProducts(): loading more products");
+            loadProducts();
+        };
+
         var loadProducts = function () {
+            $log.debug("ProductsController(): loadProducts(): loading products");
+
+            $scope.loading = true;
+
             //var start = new Date().getTime();
-            Product.query({"categoryId": $scope.categoryId, "search": $scope.query}).then(function(products, responseHeaders) {
+            Product.query({"categoryId": $scope.categoryId, "search": $scope.query, "skip": $scope.loadedProductCount}).then(function(products, responseHeaders) {
                 $log.debug("ProductsController(): got products", products);
                 // We do this here to eliminate the flickering.  When Product.query returns initially,
                 // it returns an empty array, which is then populated after the response is obtained from the server.
                 // This causes the table to first be emptied, then re-updated with the new data.
-                if(products.length>0) {
-                    if ($scope.products) {
-                        // update the objects, not just replace, else we'll yoink the whole DOM
-                        $scope.products = HashKeyCopier.copyHashKeys($scope.products, products, ["id"]);
-                        //$log.debug("ProductsController(): updating objects", $scope.objects);
-                    } else {
-                        $scope.products = products;
-                        //$log.debug("ProductsController(): initializing objects");
+                if (products.length > 0) {
+                    $scope.products = $scope.products.concat(products);
+                    $log.debug("ProductsController(): now have", $scope.products.length, "products");
+                    $scope.loadedProductCount += products.length;
+                    if (products.length < 20) {
+                        $scope.noMoreToLoad = true;
                     }
                 } else {
-                    $scope.products = '';
+                    $scope.noMoreToLoad = true;
                 }
 
                 var path = BreadcrumbsHelper.setPath($scope.category, null, null);
