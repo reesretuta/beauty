@@ -1040,7 +1040,6 @@ angular.module('app.controllers.checkout')
                 });
             } else {
                 $log.debug("CheckoutController(): loginOrCreateUser(): trying to login with username=", $scope.profile.loginEmail);
-
                 // do the auth check and store the session id in the root scope
                 Session.login($scope.profile.loginEmail, $scope.profile.loginPassword).then(function(session) {
                     $log.debug("CheckoutController(): loginOrCreateUser(): authenticated, moving to next step", session.client);

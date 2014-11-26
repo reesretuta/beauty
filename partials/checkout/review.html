@@ -133,7 +133,7 @@
             <small>EXP:</small>
             {{profile.card.expMonth}}/{{profile.card.expYear|substr:2:2}}
           </p>
-          <a href=" " data-toggle="modal" data-target=".bs-example-modal-charging" ng-click="resetCard()" class="pull-right card-use-btn"><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'EDIT' | translate | unsafe"></span></a>
+          <a ng-click="editCreditCard(profile.card)" class="pull-right card-use-btn"><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'EDIT' | translate | unsafe"></span></a>
         </div>
       </div><!-- /card -->
 
