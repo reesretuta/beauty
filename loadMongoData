@@ -1,0 +1,3 @@
+#!/bin/sh
+
+mongorestore -d jafra --drop ./mongo_dump/jafra/
