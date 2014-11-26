@@ -3,9 +3,11 @@ angular.module('app.controllers.checkout').controller('ContactEditModalControlle
 
     $log.debug('ContactEditModalController()');
 
-    var originalEmail = profile.loginEmail;
+    var originalProfile = profile;
 
     $scope.profile = angular.copy(profile);
+
+    $log.debug(originalProfile, $scope.profile);
 
     $scope.close = function () {
         $log.debug('ContactEditModalController()');
@@ -16,15 +18,15 @@ angular.module('app.controllers.checkout').controller('ContactEditModalControlle
     };
 
     $scope.save = function () {
-        $log.debug('ContactEditModalController(): save()');
-        if ($scope.profile.loginEmail === originalEmail) {
+        $log.debug('ContactEditModalController(): save(): trying email:', $scope.profile.loginEmail);
+        if (JSON.stringify($scope.profile) === JSON.stringify(originalProfile)) {
             return $modalInstance.close({
                 profile  : $scope.profile,
                 canceled : false
             });
         }
-        Addresses.validateEmail(profile.loginEmail).then(function (email) {
-            Session.consultantEmailAvailable(email, false).then(function(available) {
+        Addresses.validateEmail($scope.profile.loginEmail).then(function (email) {
+            Session.consultantEmailAvailable($scope.profile.loginEmail, false).then(function(available) {
                 if (available) {
                     $log.debug('CheckoutController(): Session: client available', available);
                     $modalInstance.close({
