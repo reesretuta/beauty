@@ -37,6 +37,8 @@
     "nodetime": "^0.8.15",
     "minimist": "^1.1.0",
     "spooky": "^0.2.5",
-    "random-string": "^0.1.1"
+    "random-string": "^0.1.1",
+    "fs": "0.0.2",
+    "gridfs-stream": "^0.5.3"
   }
 }

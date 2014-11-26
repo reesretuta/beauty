@@ -28,6 +28,7 @@ var Types = require("mongoose").Types;
 var S = require("string");
 var http = require('http');
 var mockserver = require('mockserver');
+var Grid = require('gridfs-stream');
 
 // configure app
 //app.use(bodyParser());
@@ -39,6 +40,7 @@ var LEAD_MAX_AGE = process.env.LEAD_MAX_AGE || 60 * 60 * 1000; // default: 1 hou
 
 //var morgan = require('morgan')
 var models = require('./common/models.js');
+var GridFS = Grid(models.mongoose.connection.db, models.mongoose.mongo);
 
 // SESSION CONFIG
 var hour = 3600000;
@@ -1404,6 +1406,22 @@ router.route('/calculateTax')
             res.status(r.status);
             res.json(r.result);
         });
+    });
+
+router.route('/products/images/:image')
+    .get(function (req, res) {
+        var path = req.params.image;
+        console.log("getting image", path);
+
+        try {
+            var readstream = GridFS.createReadStream({filename: "img/products/" + path});
+            readstream.pipe(res);
+        } catch (err) {
+            log.error(err);
+            res.status(404);
+            res.end();
+            return;
+        }
     });
 
 // Configure Lead Cleanup Interval

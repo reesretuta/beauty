@@ -9,6 +9,7 @@ mongoose.set('debug', config.debug);
 
 var db = mongoose.connection;
 exports.db = db;
+exports.mongoose = mongoose;
 
 // IMAGES
 var imageSchema = Schema({
@@ -258,6 +259,7 @@ var passwordResetTokenSchema = Schema({
 
 var PasswordResetToken = mongoose.model('PasswordResetToken', passwordResetTokenSchema);
 exports.PasswordResetToken = PasswordResetToken;
+
 
 //
 //// SESSIONS
