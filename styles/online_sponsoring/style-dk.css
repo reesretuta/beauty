@@ -356,7 +356,7 @@ section#why_jafra_lifestyle .subcontainer ul.golden_bullets li:before {
 		width: 100%;
 	}
 }
-@media (min-width: 767px) and (max-width: 992px) {
+@media (min-width: 768px) and (max-width: 992px) {
 	.subrow {
 		margin: 0 20px !important;
 	}
@@ -389,10 +389,30 @@ section#why_jafra_lifestyle .subcontainer ul.golden_bullets li:before {
 	#more_royal_2 .section-copy p li, #more_skincare_2 .section-copy p li  {
 		width: 50%;
 	}
+	.promo {
+		bottom: -190px;
+		left: 89px;
+		background-position: 54% 65%;
+	}
 }
 @media (max-width: 1200px) {
 	.faqs-item-question {
 		width: 90%;
 		font-size: 18px;
+	}
+	.promo {
+		bottom: -150px;
+		background-position: 54% 65%;
+	}
+	.promo span {
+	  top: 12px;
+	  right: 13px;
+	}
+	.promo a.more-link {
+	  right: 56px;
+	  top: 90px;
+	}
+	.promo .more-link:after {
+	  top: 5px;
 	}
 }

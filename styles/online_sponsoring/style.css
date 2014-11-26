@@ -346,43 +346,51 @@ font-size: 48px;
 .section-copy {
   padding: 0 15px 30px 30px;
 }
-#free-limited-offer {
-width: 260px;
-height: 260px;
-margin-top: -4em;
-z-index: 2;
-border-radius: 50%;
-padding: 1.75em 8.5em;
-background: url(/img/november-promo.png) no-repeat 70% 70%;
-background-color: #006B77;
-background-size: 150px;
+.promo {
+  width: 260px;
+  height: 260px;
+  z-index: 2;
+  border-radius: 50%;
+  padding: 1.75em 8.5em;
+  background: url(/img/november-promo.png) no-repeat 42% 70%;
+  background-color: #006B77;
+  background-size: 150px;
+  position: absolute;
+  bottom: -110px;
+  left: -168px;
+  box-shadow: 4px 4px 0 0 rgba(0,0,0,.2);
 }
-#free-limited-offer span {
+.promo span {
+  position: absolute;
+  top: 22px;
+  right: 25px;
+  display: block;
   color: #fff;
   font-family: HelveticaNeueLTStd-BdCn;
   font-size: 18px;
   display: inline-block;
-line-height: 1;
-  -webkit-transform: rotate(344deg);
--moz-transform: rotate(344deg);
--o-transform: rotate(344deg);
-writing-mode: lr-tb;
-width: 105px;
+  line-height: 1;
+  -webkit-transform: rotate(-15deg);
+  -moz-transform: rotate(-15deg);
+  -o-transform: rotate(-15deg);
+  writing-mode: lr-tb;
+  width: 140px;
 }
 
-#free-limited-offer span strong{
+.promo span strong{
   font-size: 32px;
   font-weight: 400;
 }
-#free-limited-offer .more-link {
-margin-top: 0px;
-right: -3.5em;
-top: 0em;
-color: #A28F40;
+.promo a.more-link {
+  margin: 0;
+  position: absolute;
+  right: 61px;
+  top: 98px;
+  color: #A28F40;
   font-family: HelveticaNeueLTStd-BdCn;
 }
-#free-limited-offer .more-link:after {
-top: 5px;
+.promo .more-link:after {
+  top: 5px;
 }
 
 section .cta-section {
@@ -1179,9 +1187,6 @@ body.incheckout {
   .subcontainer .row {
     width: 100%;
   }
-  #free-limited-offer{
-    margin-left: -5em;
-  }
   #freedom_flexibility_section .subcontainer .row {
     margin: 0em;
   }
@@ -1201,9 +1206,6 @@ body.incheckout {
     }
     p.jumbo-description br {
       display: none;
-    }
-    #free-limited-offer {
-      margin-left: -8em;
     }
 }
 
@@ -1226,9 +1228,6 @@ body.incheckout {
     }
     p.jumbo-description br {
       display: inline;
-    }
-    #free-limited-offer {
-      margin-left: -12em;
     }
 }
 
