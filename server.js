@@ -273,6 +273,14 @@ router.route('/products')
         var searchString = req.query.search;
         var categoryId = req.query.categoryId;
         var productIds = req.query.productIds;
+        var limit = parseInt(req.query.limit);
+        if (!limit || isNaN(limit)) {
+            limit = 20;
+        }
+        var skip = parseInt(req.query.skip);
+        if (!skip || isNaN(skip)) {
+            skip = 0;
+        }
 
         var now = new Date();
 
@@ -289,7 +297,9 @@ router.route('/products')
                     ]}
                 ])
                 .sort({ score: { $meta: "textScore" } })
-                .limit(20).populate({
+                .skip(skip)
+                .limit(limit)
+                .populate({
                     path: 'upsellItems.product youMayAlsoLike.product',
                     model: 'Product',
                     match: { $and: [
@@ -337,7 +347,8 @@ router.route('/products')
                 ]
             }, {score: { $meta: "textScore" }})
             .sort({ score: { $meta: "textScore" } })
-            .limit(20)
+            .skip(skip)
+            .limit(limit)
             .populate({
                 path: 'upsellItems.product youMayAlsoLike.product',
                 model: 'Product',
@@ -391,7 +402,8 @@ router.route('/products')
                 ]
             }, { score: { $meta: "textScore" } })
             .sort({ score: { $meta: "textScore" } })
-            .limit(20)
+            .skip(skip)
+            .limit(limit)
             .populate({
                 path: 'upsellItems.product youMayAlsoLike.product',
                 model: 'Product',
@@ -439,7 +451,8 @@ router.route('/products')
                 ]
             }, { score: { $meta: "textScore" } })
             .sort({ score: { $meta: "textScore" } })
-            .limit(20)
+            .skip(skip)
+            .limit(limit)
             .populate({
                 path: 'upsellItems.product youMayAlsoLike.product',
                 model: 'Product',
