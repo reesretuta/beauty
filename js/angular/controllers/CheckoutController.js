@@ -1613,7 +1613,7 @@ angular.module('app.controllers.checkout')
                     billingAddressId: $scope.profile.billing.id,
                     shippingAddressId: $scope.profile.shipping.id,
                     creditCardId: $scope.profile.card.id,
-                    source: $rootScope.session.source,
+                    source: $scope.profile.source,
                     total: parseFloat($scope.salesTaxInfo.Total),
                     products: products
                 }
