@@ -10,7 +10,7 @@
       <div class="col-xs-6 col-lg-4 checkout-address" ng-repeat="addressData in session.client.addresses">
         <span class="address-name block">{{addressData.name}}</span>
         <span class="address-street block">{{addressData.address1}} {{addressData.address2}}</span>
-        <span class="address-region block">{{addressData.city}}, {{addressData.state}} {{ addressData.zip || addressData.zipCode }}</span>
+        <span class="address-region block">{{addressData.city}}, {{addressData.state}} {{ addressData.zip }}</span>
         <span class="phone-number block">{{addressData.phone}}</span>
         <div class="address-actions">
           <a ng-click="editAddress(addressData)"><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'EDIT' | translate | unsafe"></span></a>

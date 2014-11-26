@@ -3,6 +3,8 @@ angular.module('app.controllers.checkout').controller('AddressEditModalControlle
 
     $log.debug('AddressEditModalController()');
 
+    console.log(address);
+    
     $scope.address = angular.copy(address);
     $scope.addressError = false;
 
