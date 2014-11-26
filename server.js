@@ -340,7 +340,7 @@ router.route('/products')
             var id = parseInt(categoryId);
             models.Product.find({
                 $and: [
-                    {categories: {$in: categoryToChildren[categoryId]}, masterStatus: "A", onHold: false},
+                    {categories: {$in: categoryToChildren[categoryId]}, masterStatus: "A", onHold: false, searchable: true},
                     {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
                     {$or: [
                         {$and: [{type: "group"}, {prices: {$exists: false}}]},
@@ -444,7 +444,7 @@ router.route('/products')
             console.log("getting product list");
             models.Product.find({
                 $and: [
-                    {masterStatus: "A", onHold: false},
+                    {masterStatus: "A", onHold: false, searchable: true},
                     {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
                     {$or: [
                         {$and: [{type: "group"}, {prices: {$exists: false}}]},
