@@ -35,6 +35,8 @@ angular.module('app.controllers.checkout')
         $rootScope.section = "checkout";
 
         $scope.processing = false;
+        $scope.removingAddress = false;
+        $scope.removingAddressId = null;
 
         // persisted to session
         $scope.checkout = {
@@ -1953,10 +1955,10 @@ angular.module('app.controllers.checkout')
 
         $scope.removeAddress = function(addressId) {
             var d = $q.defer();
-
             $log.debug('CheckoutController(): removeAddress(): address data', addressId);
             $scope.processing = true;
-
+            $scope.removingAddress = true;
+            $scope.removingAddressId = addressId;
             Addresses.removeAddress(addressId).then(function() {
                 $log.debug("CheckoutController(): removeAddress(): address removed", addressId);
                 if ($scope.profile.shipping != null && $scope.profile.shipping.id == addressId) {
@@ -1965,18 +1967,20 @@ angular.module('app.controllers.checkout')
                 if ($scope.profile.billing != null && $scope.profile.billing.id == addressId) {
                     $scope.profile.billing = null;
                 }
-
                 $scope.processing = false;
+                $scope.removingAddress = false;
+                $scope.removingAddressId = null;
                 d.resolve();
                 $scope.checkoutUpdated();
             }, function(err) {
                 $log.error("CheckoutController(): removeAddress()", err);
                 $scope.processing = false;
+                $scope.removingAddress = false;
+                $scope.removingAddressId = null;
                 d.reject(err);
             });
-
             return d.promise;
-        }
+        };
 
         $scope.setBillingAddress = function(address, isNew) {
             var d = $q.defer();

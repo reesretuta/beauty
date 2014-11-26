@@ -17,7 +17,7 @@
           &nbsp;&nbsp;
           <a ng-click="removeAddress(addressData.id)"><i class="fa fa-times-circle"></i> <span ng-bind-html="'REMOVE' | translate | unsafe"></span></a>
         </div>
-        <button type="button" class="btn btn-primary" ng-disabled="processing" ng-class="{ 'processing' : processing }" ng-click="selectShippingAddressAndContinue(addressData)">
+        <button type="button" class="btn btn-primary" ng-disabled="processing" ng-class="{ 'processing' : (processing  && !removingAddress) }" ng-click="selectShippingAddressAndContinue(addressData)">
           <span ng-bind-html="'BTN_SHIP_ADD' | translate | unsafe"></span>
         </button>
       </div><!-- /address -->
