@@ -28,7 +28,7 @@
           <small>EXP:</small>
           {{ccData.expMonth}}/{{ccData.expYear|substr:2:2}}
         </p>
-        <button class="btn btn-primary pull-right card-use-btn" ng-disabled="processing" ng-class="{ 'processing' : processing }" ng-click="selectCardAndContinue(ccData)">
+        <button class="btn btn-primary pull-right card-use-btn" ng-disabled="processing" ng-click="selectCardAndContinue(ccData)">
           <span ng-bind-html="'SELECT-OPTION-BUTTON' | translate | unsafe"></span> <i class="fa fa-caret-right"></i>
         </button>
       </div>
@@ -257,7 +257,6 @@
     </div>
     <a popover="{{'PHONE-NUMBER-DES' | translate | unsafe}}" popover-title="{{'PHONE-NUMBER' | translate | unsafe}}" href="" class="form-info-link"><i class="fa fa-info-circle"></i> <span ng-bind-html="'MORE-INFO' | translate | unsafe"></span></a>
   </div>
-
 
   <div class="col-md-offset-3">
     <hr>
