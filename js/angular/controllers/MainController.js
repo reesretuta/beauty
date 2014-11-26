@@ -107,7 +107,7 @@ angular.module('app.controllers.main')
             if (image == null || image.localPath == null) {
                 return "/img/product_placeholder.gif";
             }
-            console.log("CDN", CDN_URL, "image path", image.localPath);
+            //console.log("CDN", CDN_URL, "image path", image.localPath);
             return CDN_URL + "/assets/" + image.localPath;
         }
 
