@@ -85,7 +85,7 @@
           <span ng-bind-html="'IN_AGREE' | translate | unsafe"></span> <a href="" data-toggle="modal" data-target=".bs-terms-modal-lg"><span ng-bind-html="'BTN_IN_AGREE' | translate | unsafe"></span></a>
           &nbsp;&nbsp;&nbsp;&nbsp;
         </label>
-        <button ng-if="!isOnlineSponsoring" type="button" class="btn-link pull-left" ng-disabled="processing" ng-class="{ 'processing' : processing }" ng-click="confirmAlert('Are you sure you\'d like to cancel your order?')">
+        <button ng-if="!isOnlineSponsoring" type="button" class="btn-link pull-left" ng-disabled="processing" ng-click="confirmAlert('Are you sure you\'d like to cancel your order?')">
           <span ng-bind-html="'BTN_CANCEL_ORDER' | translate | unsafe"></span>
         </button>
         <button type="button" class="btn btn-primary btn-lg" ng-class="{ 'processing' : processing }" ng-click="processOrder()" ng-disabled="!confirmForm.$valid || processingOrder || processing">
