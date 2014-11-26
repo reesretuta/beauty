@@ -149,8 +149,8 @@
     <div ng-show="shippingAddressError" class="alert alert-danger" role="alert">
       <div class="error" ng-show="shippingAddressError" ng-bind="shippingAddressError"></div>
     </div>
-    <button type="button" class="btn btn-primary btn-lg ladda-button" ng-disabled="!shippingForm.$valid || processing" ng-click="addShippingAddressAndContinue(profile.newShippingAddress)">
-      <span class="ladda-label"><span ng-bind-html="'BTN_SHIP_ADD' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i></span>
+    <button type="button" class="btn btn-primary btn-lg" ng-disabled="!shippingForm.$valid || processing" ng-click="addShippingAddressAndContinue(profile.newShippingAddress)" ng-class="{ 'processing' : processing }">
+      <span ng-bind-html="'BTN_SHIP_ADD' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i>
     </button>
   </div>
 </div>
