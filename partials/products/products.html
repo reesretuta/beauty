@@ -31,11 +31,9 @@
       <!-- Product -->
       <article ng-if="loading" class="ccol-xs-12 col-sm-6 col-md-4 col-lg-4 store-item">
 
-        <div class="store-item-wrapper" ng-if="product.sku != '' && product.type != 'group'">
-          <a ng-href="{{STORE_BASE_URL}}/products/{{product.sku}}#top">
-            <span class="responsive-container img-responsive">
-              <img class="responsive-element img-responsive" ng-src="/img/product_placeholder.gif">
-            </span>
+        <div class="store-item-wrapper loading-products" ng-if="product.sku != '' && product.type != 'group'">
+          <a class="processing">
+              &nbsp;
           </a>
           <div class="store-item-info">
             Loading...
