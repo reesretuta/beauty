@@ -8,7 +8,7 @@
           <div class="store-item-wrapper" ng-if="product.sku != '' && product.type != 'group'">
             <a ng-href="{{STORE_BASE_URL}}/products/{{product.sku}}#top">
               <span class="responsive-container img-responsive">
-                <img class="responsive-element img-responsive" ng-src="{{getImagePath(product.images[0].imagePath)}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';">
+                <img class="responsive-element img-responsive" ng-src="{{getImagePath(product.images[0])}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';">
               </span>
             </a>
             <div class="store-item-info">
@@ -46,7 +46,7 @@
           </div><!--/store-item-wrapper-->
 
           <div class="store-item-wrapper" ng-if="product.type=='group'">
-            <a ng-href="{{STORE_BASE_URL}}/products/{{product.sku}}#top"><img class="img-responsive" style="margin: 0 auto;" ng-src="{{getImagePath(product.images[0].imagePath)}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';"></a>
+            <a ng-href="{{STORE_BASE_URL}}/products/{{product.sku}}#top"><img class="img-responsive" style="margin: 0 auto;" ng-src="{{getImagePath(product.images[0])}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';"></a>
             <div class="store-item-info">
               <p class="store-item-sku">&nbsp; <!-- leave empty for UI --></p>
               <p class="store-item-title"><a ng-href="{{STORE_BASE_URL}}/products/{{product.sku}}#top">{{getTranslated(product).name}}</a></p>

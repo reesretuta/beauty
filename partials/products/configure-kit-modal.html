@@ -18,7 +18,7 @@
             <!--{{item.kitSelections[kitGroup.kitGroup.id]}} {{productIdToProduct}}-->
             <span class="modal-addon-item product-image" ng-if="item.kitSelections[kitGroup.kitGroup.id] != null && productIdToProduct != null">
               <p class="product-name">{{productIdToProduct[item.kitSelections[kitGroup.kitGroup.id].sku][session.language=='en_US'?'name':'name_'+session.language]}}</p>
-              <img ng-if="productIdToProduct[item.kitSelections[kitGroup.kitGroup.id]].images > 0" class="img-responsive" ng-src="{{productIdToProduct[item.kitSelections[kitGroup.kitGroup.id]].images[0].imagePath}}">
+              <img ng-if="productIdToProduct[item.kitSelections[kitGroup.kitGroup.id]].images > 0" class="img-responsive" ng-src="{{productIdToProduct[item.kitSelections[kitGroup.kitGroup.id]].images[0]}}">
               <img ng-if="productIdToProduct[item.kitSelections[kitGroup.kitGroup.id]].images == 0" class="img-responsive" ng-src="/img/product_placeholder.gif">
             </span>
           </li>
@@ -37,7 +37,7 @@
           <!-- products in kitgroup -->
           <div class="row" ng-repeat="component in kitGroup.kitGroup.components">
             <div ng-if="productIdToProduct[component.product]" class="col-lg-3 col-md-3 col-xs-6 col-sm-4 modal-addon-item product-image" ng-class="{'selected': item.kitSelections[kitGroup.kitGroup.id].sku == component.product}">
-              <img ng-if="productIdToProduct[component.product].images.length > 0" class="img-responsive" ng-src="{{getImagePath(productIdToProduct[component.product].images[0].imagePath)}}" ng-click="selectProduct(kitGroup.kitGroup.id, component.product)">
+              <img ng-if="productIdToProduct[component.product].images.length > 0" class="img-responsive" ng-src="{{getImagePath(productIdToProduct[component.product].images[0])}}" ng-click="selectProduct(kitGroup.kitGroup.id, component.product)">
               <img ng-if="productIdToProduct[component.product].images.length == 0" class="img-responsive" ng-src="/img/product_placeholder.gif" ng-click="selectProduct(kitGroup.kitGroup.id, component.product)">
               <span ng-if="item.kitSelections[kitGroup.id].sku != component.product" class="kit-selection-plus">+</span>
               <i ng-if="item.kitSelections[kitGroup.id].sku == component.product" class="kit-selection-check fa fa-check"></i>

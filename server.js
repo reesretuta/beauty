@@ -1408,13 +1408,14 @@ router.route('/calculateTax')
         });
     });
 
-router.route('/products/images/:image')
-    .get(function (req, res) {
-        var path = req.params.image;
-        console.log("getting image", path);
+
+var assetRouter = express.Router();
+assetRouter.get('*', function (req, res) {
+        var asset = req.params[0];
+        console.log("getting asset", asset);
 
         try {
-            var readstream = GridFS.createReadStream({filename: "img/products/" + path});
+            var readstream = GridFS.createReadStream({filename: asset});
             readstream.pipe(res);
         } catch (err) {
             log.error(err);
@@ -1502,14 +1503,14 @@ app.get('/js/pgp_key.js', function(req, res) {
     }
 });
 
-// serve up proper PGP dynamically for dev/prod
-app.get('/js/debug.js', function(req, res) {
+// serve up proper config.js
+app.get('/js/config.js', function(req, res) {
     try {
         res.contentType("text/javascript");
         if (env === 'test' || env === 'development') {
-            res.send("DEBUG=true;");
+            res.send("DEBUG=true;CDN_URL='"+config.cdn_base_url+"';");
         } else {
-            res.send("DEBUG=false;");
+            res.send("DEBUG=false;CDN_URL='"+config.cdn_base_url+"';");
         }
         res.end();
     } catch (ex) {
@@ -1532,6 +1533,8 @@ app.use('/i18n', express.static(basepath + '/i18n'));
 // API route
 //app.use('/api', express.static(__dirname + '/api')); // old used for serving static XML files
 app.use('/api', router);
+
+app.use('/assets', assetRouter);
 
 //app.get('/$', function (req, res) {
 //    console.log('root', req);

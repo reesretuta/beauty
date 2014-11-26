@@ -1,5 +1,5 @@
 angular.module('app.controllers.main')
-    .controller('MainController', function ($scope, $document, $timeout, $location, $rootScope, $routeParams, $log, $translate, $q, STORE_BASE_URL, Session, Categories, Product, Cart, Search, BreadcrumbsHelper, RecentlyViewed) {
+    .controller('MainController', function ($scope, $document, $timeout, $location, $rootScope, $routeParams, $log, $translate, $q, STORE_BASE_URL, Session, Categories, Product, Cart, Search, BreadcrumbsHelper, RecentlyViewed, CDN_URL) {
 
         $rootScope.adding = false;
 
@@ -103,19 +103,12 @@ angular.module('app.controllers.main')
             $rootScope.search.queryString = null;
         }
 
-        $rootScope.getImagePath = function(paths) {
-            if (Array.isArray(paths)) {
-                if (paths[0] == undefined) {
-                    return "/img/product_placeholder.gif";
-                }
-                //$log.debug("MainController(): getImagePath(): getting image path from array");
-                return 'https://admin.jafra.com' + paths[0];
+        $rootScope.getImagePath = function(image) {
+            if (image == null || image.localPath == null) {
+                return "/img/product_placeholder.gif";
             }
-            //$log.debug("MainController(): getImagePath(): getting image path from string");
-            if (paths == undefined) {
-              return "/img/product_placeholder.gif";
-            }
-            return 'https://admin.jafra.com' + paths;
+            console.log("CDN", CDN_URL, "image path", image.localPath);
+            return CDN_URL + "/assets/" + image.localPath;
         }
 
         // begin navigation

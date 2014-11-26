@@ -1736,4 +1736,5 @@ angular.module('app.services', ['ngResource'])
     .constant('BASE_URL', '')
     .constant('STORE_BASE_URL', '/shop')
     .constant('JOIN_BASE_URL', '/join')
-    .constant('API_URL', '/api');
+    .constant('API_URL', '/api')
+    .constant('CDN_URL', CDN_URL); // pulled dynamically from config.js, served by node

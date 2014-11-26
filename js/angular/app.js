@@ -130,8 +130,9 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
 //
 //            return $delegate;
 //        });
-    }]).run(function ($rootScope, $animate, $log, $location, Session, Consultant, $translate, $templateCache, BASE_URL) {
+    }]).run(function ($rootScope, $animate, $log, $location, Session, Consultant, $translate, $templateCache, BASE_URL, CDN_URL) {
         $rootScope.BASE_URL = BASE_URL;
+        $rootScope.CDN_URL = CDN_URL;
         $rootScope.STORE_BASE_URL = BASE_URL + "/shop";
         $rootScope.JOIN_BASE_URL = BASE_URL + "/join";
         $animate.enabled(true);
