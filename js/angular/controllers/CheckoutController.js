@@ -987,7 +987,9 @@ angular.module('app.controllers.checkout')
                     }
                 }, function(r) {
                     $log.error("CheckoutController(): failed validating email", r);
-                    $scope.emailError = true;
+                    $translate('INVALID-EMAIL').then(function (message) {
+                        $scope.emailError = message;
+                    });
                     $scope.processing = false;
                 })
             }

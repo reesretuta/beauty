@@ -34,7 +34,7 @@ angular.module('app.controllers.checkout').controller('ContactEditModalControlle
                         canceled : false
                     });
                 } else {
-                    $log.debug('ContactEditModalController(): save(): email invalid', error);
+                    $log.debug('ContactEditModalController(): save(): email invalid');
                     $translate('INVALID-EMAIL-ADDRESS-IN-USE').then(function (message) {
                         $log.debug('ContactEditModalController(): INVALID-EMAIL-ADDRESS-IN-USE');
                         $scope.emailError = message;
