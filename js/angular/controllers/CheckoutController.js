@@ -1033,7 +1033,7 @@ angular.module('app.controllers.checkout')
                     $scope.processing = false;
                 }, function(error) {
                     $log.error("CheckoutController(): loginOrCreateUser(): failed to create client", error);
-                    $translate('LOGIN-ERROR').then(function (message) {
+                    $translate('INVALID-EMAIL-ADDRESS-IN-USE').then(function (message) {
                         $scope.loginError = message;
                     });
                     $scope.processing = false;
