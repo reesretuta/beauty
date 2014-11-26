@@ -60,6 +60,63 @@
       </table>
     </div>
   </form>
+
+  <hr />
+
+  <!-- order details -->
+  <div class="row">
+    <!-- card -->
+    <div class="col-sm-3 col-lg-3" ng-if="profile.card">
+      <h3><span ng-bind-html="'PAY_TIT1' | translate | unsafe"></span></h3>
+      <div class="checkout-card clearfix active">
+        <span class="pull-left">{{profile.card.name}}</span>
+        <img class="pull-right img-responsive cardImg" src="/img/visa.png" ng-show="profile.card.cardType=='Visa'">
+        <img class="pull-right img-responsive cardImg" src="/img/mastercard.png" ng-show="profile.card.cardType=='MasterCard'">
+        <img class="pull-right img-responsive cardImg" src="/img/discover.png" ng-show="profile.card.cardType=='Discover Card'">
+        <img class="pull-right img-responsive cardImg" src="/img/americanexpress.png" ng-show="profile.card.cardType=='American Express'">
+        <p class="card-number">
+          <span>&bull;&bull;&bull;&bull;</span>
+          <span>&bull;&bull;&bull;&bull;</span>
+          <span>&bull;&bull;&bull;&bull;</span>
+          <span>{{profile.card.lastFour}}</span>
+        </p>
+        <p class="card-expiry pull-left">
+          <small>EXP:</small>
+          {{profile.card.expMonth}}/{{profile.card.expYear|substr:2:2}}
+        </p>
+        <a ng-click="editCreditCard(profile.card)" class="pull-right card-use-btn"><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'EDIT' | translate | unsafe"></span></a>
+      </div>
+    </div><!-- /card -->
+    <!-- shipping card -->
+    <div class="col-sm-3 col-lg-3 checkout-address" ng-if="profile.shipping">
+      <h3><span ng-bind-html="'PAY_TIT2' | translate | unsafe"></span></h3>
+      <span ng-if="!isOnlineSponsoring">{{ profile.shipping.name }}</span>
+      <span ng-if="isOnlineSponsoring" class="address-businessCO">{{ profile.shipping.businessCO }}</span>
+      <span class="address-street">{{profile.shipping.address1}}</span>
+      <span class="address-street">{{profile.shipping.address2}}</span>
+      <span class="address-region">{{profile.shipping.city}}, {{profile.shipping.state}} {{ profile.shipping.zipCode }}</span>
+      <span class="phone-number" ng-if="!isOnlineSponsoring">{{profile.shipping.phone}}</span>
+      <span ng-if="!isOnlineSponsoring"><span ng-bind-html="'SHIPPING-CARRIER' | translate | unsafe"></span>: {{ salesTaxInfo.Carrier || 'UPS' }}</span>
+      <div class="address-actions">
+        <a href ng-click="editAddress(profile.shipping, 'shipping')" class="pull-left"><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'EDIT' | translate | unsafe"></span></a>
+      </div>
+    </div><!-- /address -->
+    <!-- billing card -->
+    <div class="col-xs-3 col-lg-3 checkout-address">
+      <h3><span ng-bind-html="'PAY_TIT3' | translate | unsafe"></span></h3>
+      <span class="address-businessCO">{{profile.billing.businessCO}}</span>
+      <span class="address-street">{{profile.billing.address1}}</span>
+      <span class="address-street">{{profile.billing.address2}}</span>
+      <span class="address-region">{{profile.billing.city}}, {{profile.billing.state}} {{profile.billing.zipCode }}</span>
+      <span class="phone-number" ng-if="!isOnlineSponsoring">{{profile.billing.phone}}</span>
+      <div class="address-actions">
+        <a href ng-click="editAddress(profile.billing, 'billing')" class="pull-left"><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'EDIT' | translate | unsafe"></span></a>
+      </div>
+    </div><!-- /address -->
+  </div><!-- /row / end review info -->
+
+  <hr />
+
   <h2 class="">How to track your order</h2>
   <hr>
   <p>Information will be sent after your order has been shipped.</p>
