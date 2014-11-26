@@ -28,7 +28,9 @@
           <small>EXP:</small>
           {{ccData.expMonth}}/{{ccData.expYear|substr:2:2}}
         </p>
-        <button class="btn btn-primary pull-right card-use-btn" ng-disabled="processing" ui-ladda="processing" ng-click="selectCardAndContinue(ccData)"><span ng-bind-html="'SELECT-OPTION-BUTTON' | translate | unsafe"></span> <i class="fa fa-caret-right"></i></button>
+        <button class="btn btn-primary pull-right card-use-btn" ng-disabled="processing" ng-class="{ 'processing' : processing }" ng-click="selectCardAndContinue(ccData)">
+          <span ng-bind-html="'SELECT-OPTION-BUTTON' | translate | unsafe"></span> <i class="fa fa-caret-right"></i>
+        </button>
       </div>
       <div class="card-actions">
         <a ng-click="editCreditCard(ccData)" class="card-use-btn"><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'Edit' | translate | unsafe"></span></a>
@@ -265,8 +267,8 @@
 <div class="form-group">
   <div class="col-md-offset-3 col-sm-9">
     <div class="error" ng-show="billingAddressError && !profile.billSame" ng-bind="billingAddressError"></div>
-      <button type="button" ng-click="addPaymentMethod()" class="btn btn-primary btn-lg ladda-button" ui-ladda="processing" ng-disabled="!paymentForm.$valid || invalidExpiration || processing">
-        <span class="ladda-label"><span ng-bind-html="'BTN_SAVE_PAYMENT' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i></span>
+      <button type="button" ng-click="addPaymentMethod()" class="btn btn-primary btn-lg" ng-class="{ 'processing' : processing }" ng-disabled="!paymentForm.$valid || invalidExpiration || processing">
+        <span ng-bind-html="'BTN_SAVE_PAYMENT' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i>
       </button>
   </div>
 </div>

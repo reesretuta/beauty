@@ -950,7 +950,8 @@ angular.module('app.controllers.checkout')
                     $scope.profile.newBillingAddress.name = $scope.profile.firstName + " " + $scope.profile.lastName;
 
                     if ($scope.isOnlineSponsoring) {
-                        Session.consultantEmailAvailable(email, $scope.ignoreExists).then(function(available) {
+                        Session.consultantEmailAvailable(email, $scope.ignoreExists).then(function (available) {
+                            $log.debug('CheckoutController(): Session: $scope.ignoreExists:?????', $scope.ignoreExists);
                             if (available) {
                                 $log.debug('CheckoutController(): Session: client available', available);
                                 // generate a lead for this account
@@ -986,7 +987,9 @@ angular.module('app.controllers.checkout')
                     }
                 }, function(r) {
                     $log.error("CheckoutController(): failed validating email", r);
-                    $scope.emailError = true;
+                    $translate('INVALID-EMAIL').then(function (message) {
+                        $scope.emailError = message;
+                    });
                     $scope.processing = false;
                 })
             }

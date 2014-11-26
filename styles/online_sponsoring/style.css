@@ -558,8 +558,15 @@ section#why_jafra_rewards {
 
 section#why_jafra_testimonials {
   background: transparent;  /* -- body background color -- */
+  padding: 0px 15px; /* responsive padding */
 }
 
+section#royal_starter_kit {
+  padding: 0px 15px; /* responsive padding */
+}
+section#FAQs_section {
+padding: 0px 15px;
+}
 section h3.hero-header-title {
 font-size: 81px;
 font-family: HelveticaNeueLTStd-BdCn;
@@ -1052,6 +1059,12 @@ body.incheckout {
     {
       font-size:8px; 
     }
+    .mobile_tablet_centerfix {
+      margin:0px !important;
+    }
+    section#royal_starter_kit .kit-encapsulate, section#skincare_starter_kit .kit-encapsulate {
+    margin: 0px -45px 0px 15px; /* margin fix to center kit in mobile; TODO refactor this later */
+    }
     span.serif-title {
       font-size: 28px;
     }
@@ -1083,7 +1096,7 @@ body.incheckout {
 		float:none;
 	}
   .timeline-photo {
-    max-width: 150px;
+    max-width: 80px !important;
   }
 
   #freedom_flexibility_section .subrow {
@@ -1115,6 +1128,12 @@ body.incheckout {
     ul.menu_language li a {
       color: #fff;
     }
+    .mobile_tablet_centerfix {
+      margin:0px !important;
+    }
+  section#royal_starter_kit .kit-encapsulate, section#skincare_starter_kit .kit-encapsulate {
+  margin: 0px -45px 0px 15px; /* margin fix to center kit in mobile; TODO refactor this later */
+  }
 	.social-media-icons .fa{
 		font-size:30px;
 		text-align:center;
@@ -1162,9 +1181,6 @@ body.incheckout {
   }
   #free-limited-offer{
     margin-left: -5em;
-  }
-  .freedom_flexibility_description {
-    margin: 0em 3em;
   }
   #freedom_flexibility_section .subcontainer .row {
     margin: 0em;
