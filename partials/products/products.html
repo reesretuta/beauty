@@ -37,7 +37,7 @@
               </a>
             </p>
             <p ng-if="product.type == 'kit' && product.kitGroups.length > 0">
-              <a class="btn btn-primary primary-cta" ng-class="{ 'add-to-cart' : adding }" ng-href="{{STORE_BASE_URL}}/products/{{product.sku}}#top">
+              <a class="btn btn-primary primary-cta" ng-href="{{STORE_BASE_URL}}/products/{{product.sku}}#top">
                 <i class="fa fa-cogs"></i> <span ng-bind-html="'TIT_CONF_OFFER' | translate | unsafe"></span>
               </a>
             </p>

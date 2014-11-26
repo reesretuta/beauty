@@ -177,17 +177,17 @@
               </div>
             </form></p>
             <p ng-if="product.type == 'product' || (product.type == 'kit' && product.kitGroups.length == 0)">
-              <a class="btn btn-primary btn-lg" ng-class="{ 'add-to-cart' : (adding && addingId == product.sku) }" ng-click="addToCart(product)">
-                <i class="fa fa-shopping-cart"></i> <span ng-bind-html="'BTN_ADD_CART' | translate | unsafe"></span>
+              <a class="btn btn-primary btn-lg add-to-cart" ng-class="{ 'processing' : (adding && addingId == product.sku) }" ng-click="addToCart(product)">
+                 <span ng-bind-html="'BTN_ADD_CART' | translate | unsafe"></span>
               </a>
             </p>
             <p ng-if="product.type == 'group'">
-              <a class="btn btn-primary btn-lg" ng-class="{ 'add-to-cart' : (adding && addingId == product.sku) }" ng-click="addToCartGroup(selectedProduct.sku)">
-                <i class="fa fa-shopping-cart"></i> <span ng-bind-html="'BTN_ADD_CART' | translate | unsafe"></span>
+              <a class="btn btn-primary btn-lg add-to-cart" ng-class="{ 'processing' : (adding && addingId == product.sku) }" ng-click="addToCartGroup(selectedProduct.sku)">
+                 <span ng-bind-html="'BTN_ADD_CART' | translate | unsafe"></span>
               </a>
             </p>
             <p ng-if="product.type == 'kit' && product.kitGroups.length > 0">
-              <a class="btn btn-primary btn-lg" ng-class="{ 'add-to-cart' : (adding) }" ng-click="configureKit()">
+              <a class="btn btn-primary btn-lg" ng-click="configureKit()">
                 <i class="fa fa-cogs"></i> <span ng-bind-html="'BTN_CONFIGURE' | translate | unsafe"></span>
               </a>
             </p>
