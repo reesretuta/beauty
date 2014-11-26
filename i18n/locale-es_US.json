@@ -387,7 +387,7 @@
     "COUNTRY-US":"Estados Unidos",
     "PHONE-NUMBER-WRONG":"N&uacute;mero de tel&eacute;fono debe ser al menos 10 números.",
     "TIT_PAY_OPTION":"Informaci&oacute;n de Pago",
-    "PAY_OPTION_DES":"Usted ser&aacute; capaz de revisar el pedido antes de pagar.",
+    "PAY_OPTION_DES":"Podrás revisar el pedido antes de que te sea cargado.",
     "SELECT-OPTION-BUTTON":"Utilice esta opci&oacute;n",
     "NAME_ON_CARD_ERR":"El nombre en la tarjeta es muy corto.",
     "NAME_ON_CARD_INVALID_ERR":"Nombre s&#243;lo puede contener letras.",
