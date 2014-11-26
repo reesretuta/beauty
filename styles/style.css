@@ -1066,6 +1066,42 @@ a:focus {
     font-family: "News Cycle", sans-serif !important;
 }
 
+/* add to cart and step buttons anims */
+.add-to-cart:before {
+  content: "\f07a";
+  display: inline-block;
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  width: 1em;
+  margin-right: .5em;
+  -webkit-font-smoothing: antialiased;
+}
+a.processing,
+a.processing:hover,
+a.processing:active,
+button.processing,
+button.processing:hover,
+button.processing:active {
+  background: #8c146a;
+  border-color: #8c146a;
+  pointer-events: none;
+}
+a.processing:before,
+button.processing:before {
+  content: "\f021";
+  display: inline-block;
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  width: 1em;
+  margin-right: .5em;
+  -webkit-font-smoothing: antialiased;
+  -webkit-animation: spin 1s infinite linear;
+}
+
 /* checkout steps color and typography */
 .steps-indicator li a {
   font-size: 12px;
@@ -1178,6 +1214,18 @@ a:focus {
   padding-left: 8px;
 }
 
-
+/* spin animation */
+@-moz-keyframes spin {
+    from { -moz-transform: rotate(0deg); }
+    to { -moz-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+    from { -webkit-transform: rotate(0deg); }
+    to { -webkit-transform: rotate(360deg); }
+}
+@keyframes spin {
+    from {transform:rotate(0deg);}
+    to {transform:rotate(360deg);}
+}
 
 
