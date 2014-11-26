@@ -19,8 +19,11 @@ var now = new Date();
 models.Product.find({
     $and: [
         {masterStatus: "A", onHold: false},
-        {masterType: "R"},
-        {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
+        {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
+        {$or: [
+            {$and: [{type: "group"}, {prices: {$exists: false}}]},
+            {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
+        ]}
     ]
 }, '_id images', function(err, products) {
     if (err) return console.error("error loading products", err);
@@ -58,55 +61,86 @@ function checkImage(id, j, imagePath) {
     var d = Q.defer();
 
     try {
-        var url = "https://admin.jafra.com" + imagePath;
-        //console.log("fetching image", url);
-
         var fileName = "img/products/" + id + "_" + j + ".jpg";
 
-        var writestream = GridFS.createWriteStream({
-            filename: fileName
-        });
-        //writestream.on('close', function (file) {
-        //    callback(null, file);
-        //});
+        GridFS.exist({filename: fileName}, function (err, found) {
+            if (err) return;
 
-        request.get({
-            url: url
-        }, function (error, response, body) {
-            if (error || response.statusCode != 200) {
-                console.log("error!", response.statusCode);
-                d.resolve({
-                    id: id, j: j, exists: false
+            if (found) {
+                console.log("removing old file", fileName);
+                GridFS.remove({filename: fileName}, function (err) {
+                    if (err) {
+                        console.error("error removing old file", fileName);
+                    }
+
+                    createFile(id, j, imagePath, fileName).then(function(val) {
+                        d.resolve(val);
+                    }, function(error) {
+                        d.reject(error);
+                    });
                 });
-                return;
+            } else {
+                createFile(id, j, imagePath, fileName).then(function(val) {
+                    d.resolve(val);
+                }, function(error) {
+                    d.reject(error);
+                });
             }
-
-            console.log("got product");
-
-            var update = {};
-            update["images." + j + ".localPath"] = fileName;
-
-
-            console.log("updating product");
-
-            models.Product.update({_id: id}, update, {upsert: true}, function (err, numAffected, rawResponse) {
-                if (err) {
-                    console.error("error updating product image path");
-                    return;
-                }
-
-                console.log("updated", update);
-            });
-
-            console.log("success");
-            d.resolve({
-                id: id, j: j, exists: true
-            });
-        }).pipe(writestream);
+        });
     } catch (ex) {
         console.error("failed to fetch file", ex);
         d.reject();
     }
+
+    return d.promise;
+}
+
+function createFile(id, j, imagePath, fileName) {
+    var d = Q.defer();
+
+    var url = "https://admin.jafra.com" + imagePath;
+    //console.log("fetching image", url);
+
+    var writestream = GridFS.createWriteStream({
+        filename: fileName
+    });
+    //writestream.on('close', function (file) {
+    //    callback(null, file);
+    //});
+
+    request.get({
+        url: url
+    }, function (error, response, body) {
+        if (error || response.statusCode != 200) {
+            console.log("error!", response.statusCode);
+            d.resolve({
+                id: id, j: j, exists: false
+            });
+            return;
+        }
+
+        console.log("got product");
+
+        var update = {};
+        update["images." + j + ".localPath"] = fileName;
+
+
+        console.log("updating product");
+
+        models.Product.update({_id: id}, update, {upsert: true}, function (err, numAffected, rawResponse) {
+            if (err) {
+                console.error("error updating product image path");
+                return;
+            }
+
+            console.log("updated", update);
+        });
+
+        console.log("success");
+        d.resolve({
+            id: id, j: j, exists: true
+        });
+    }).pipe(writestream);
 
     return d.promise;
 }
