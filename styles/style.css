@@ -1100,6 +1100,9 @@ button.processing:before {
   margin-right: .5em;
   -webkit-font-smoothing: antialiased;
   -webkit-animation: spin 1s infinite linear;
+  -moz-animation: spin 1s infinite linear;
+  -ms-animation: spin 1s infinite linear;
+  animation: spin 1s infinite linear;
 }
 .loading-products a.processing {
   display: block;

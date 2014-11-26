@@ -182,7 +182,7 @@
               </a>
             </p>
             <p ng-if="product.type == 'group'">
-              <a class="btn btn-primary btn-lg add-to-cart" ng-class="{ 'processing' : (adding && addingId == product.sku) }" ng-click="addToCartGroup(selectedProduct.sku)">
+              <a class="btn btn-primary btn-lg add-to-cart" ng-class="{ 'processing' : (adding) }" ng-click="addToCartGroup(selectedProduct.sku)">
                  <span ng-bind-html="'BTN_ADD_CART' | translate | unsafe"></span>
               </a>
             </p>
