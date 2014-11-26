@@ -1262,6 +1262,7 @@ angular.module('app.services', ['ngResource'])
             $log.debug("addressService(): addCreditCard()");
             var d = $q.defer();
 
+            creditCard = angular.copy(creditCard);
             $log.debug('CREDIT CARD:', creditCard.cvv, typeof(creditCard.cvv));
             creditCard.cvv = parseInt(creditCard.cvv);
             $log.debug('CREDIT CARD:', creditCard.cvv, typeof(creditCard.cvv));
@@ -1334,6 +1335,7 @@ angular.module('app.services', ['ngResource'])
             $log.debug("CreditCards(): saveCreditCard(): saving", creditCard);
             var d = $q.defer();
 
+            creditCard = angular.copy(creditCard);
             $log.debug('CREDIT CARD:', creditCard.cvv, typeof(creditCard.cvv));
             creditCard.cvv = parseInt(creditCard.cvv);
             $log.debug('CREDIT CARD:', creditCard.cvv, typeof(creditCard.cvv));
