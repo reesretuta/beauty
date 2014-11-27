@@ -6,7 +6,7 @@
 <div class="modal-body queue-modal-body">
 
   <div class="row">
-    <div class="col-lg-3 col-md-3 col-sm-3 kitSelections">
+    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 kitSelections">
       <aside id="shop_menu">
         <ul>
           <li id="kitGroupNav{{kitGroup.kitGroup.id}}" ng-repeat="kitGroup in item.product.kitGroups" ng-click="kitGroupClicked(kitGroup)">
@@ -27,11 +27,11 @@
       <!--<img class="img-responsive" ng-src="/{{getImagePath(product.images[0].imagePath)}}">-->
       <!--<p class="modal-addon-item-title">{{product.name}}</p>-->
     </div>
-    <div class="col-lg-9 col-md-9 col-sm-9 kitSelectionList">
+    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 kitSelectionList">
       <form name="kitSelectionForm" role="form" class="form-inline clearfix">
         <div ng-repeat="kitGroup in item.product.kitGroups">
           <div id="kitGroup{{kitGroup.kitGroup.id}}" class="ng-binding kitnameWrapper">
-            <span class="kitname">{{kitGroup.kitGroup.id}}</span>
+            <h2 class="kitname">Choose one from group ({{kitGroup.kitGroup.id}})</h2>
             <span ng-if="$index > 0" class="pull-right"><a href="" ng-click="kitGroupClicked(item.product.kitGroups[$index-1].kitGroup)">Back to {{item.product.kitGroups[$index-1].kitGroup.id}}</a></span>
           </div>
           <!-- products in kitgroup -->
