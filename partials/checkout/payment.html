@@ -52,7 +52,7 @@
 <form name="paymentForm" class="form-horizontal" role="form" novalidate>
 
 <!-- CARD INFO -->
-<div class="form-group" ng-class="{ 'has-error' : paymentForm.cardName.$invalid && !paymentForm.cardName.$pristine }">
+<div class="form-group" ng-class="{ 'has-error' : paymentForm.cardName.$invalid && (paymentForm.cardName.$touched || paymentForm.cardName.$dirty) }">
   <label for=" " class="col-md-3 control-label"><span ng-bind-html="'IN_NAME_CARD' | translate |unsafe"></span></label>
   <div class="col-sm-6 col-lg-4">
     <input ng-model="profile.newCard.name" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-minlength="3" name="cardName" type="text" class="form-control" placeholder=" " required>
