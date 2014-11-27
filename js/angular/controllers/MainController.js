@@ -1,5 +1,5 @@
 angular.module('app.controllers.main')
-    .controller('MainController', function ($scope, $document, $timeout, $location, $rootScope, $routeParams, $log, $translate, $q, STORE_BASE_URL, Session, Categories, Product, Cart, Search, BreadcrumbsHelper, RecentlyViewed, CDN_URL) {
+    .controller('MainController', function ($scope, $document, $timeout, $location, $rootScope, $routeParams, $log, $translate, $q, STORE_BASE_URL, Session, Categories, Product, Cart, Search, BreadcrumbsHelper, RecentlyViewed, CDN_URL, $route) {
 
         $rootScope.adding = false;
 
@@ -98,10 +98,13 @@ angular.module('app.controllers.main')
         }
 
         $scope.searchProducts = function(query) {
-            $log.debug("MainController(): going to products for search", query);
+            $log.debug("MainController(): going to products for search", query, $routeParams.search);
+            if ($routeParams.search === query) {
+                $route.reload();
+            }
             $location.url(STORE_BASE_URL + "/products?search="+(query != null ? query : ''), 'false');
             $rootScope.search.queryString = null;
-        }
+        };
 
         $rootScope.getImagePath = function(image) {
             if (image == null || image.localPath == null) {
