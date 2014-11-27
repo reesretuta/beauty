@@ -186,12 +186,12 @@ angular.module('app.directives', [])// directives
                 if (!ngModelCtrl) {
                     return;
                 }
+                $log.debug('Directives: MASK OVERRIDE!!!!!!!!!!!!!');
                 // catch blur event (higher priority) before ui-mask
                 angular.element(elem).on('blur', function (evt) {
                     var val = this.value;
-                    $log.debug('Directives: numbersOnly: blur', val);
-                    $timeout(function() {
-                        $log.debug('Directives: numbersOnly: setting value:', val);
+                    $timeout(function () {
+                        $log.debug('Directives: numbersOnly: blur', val);
                         ngModelCtrl.$setViewValue(val);
                         ngModelCtrl.$render();
                     }, 1);
