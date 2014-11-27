@@ -16,11 +16,10 @@ angular.module('app.controllers.top')
 
         $rootScope.section = "passwordReset";
 
-        $scope.resetPasswordRequest = function(email) {
+        $scope.resetPasswordRequest = function (email) {
             $scope.processing = true;
             $scope.passwordResetError = null;
             $log.debug("PasswordResetController(): resetPasswordRequest()", email);
-
             PasswordResetHelper.requestReset(email).then(function(){
                 $log.debug("PasswordResetController(): resetPasswordRequest(): password reset");
                 $('#forgot').css('display','none');
@@ -35,18 +34,19 @@ angular.module('app.controllers.top')
             });
         }
 
-        $scope.reset = function() {
+        $scope.reset = function () {
             $log.debug('PasswordResetController()', $scope.resetData.email, $scope.resetData.password, $scope.resetData.token);
-
-            $scope.resetError = "";
-
-            PasswordResetHelper.reset($scope.resetData.email, $scope.resetData.password, $scope.resetData.token).then(function() {
+            $scope.processing = true;
+            $scope.resetError = '';
+            PasswordResetHelper.reset($scope.resetData.email, $scope.resetData.password, $scope.resetData.token).then(function () {
                 $location.url(STORE_BASE_URL);
+                $scope.processing = false;
             }, function(error) {
                 $log.error('PasswordResetController()', error);
                 $translate('PASSWORD-RESET-ERROR').then(function (message) {
                     $scope.resetError = message;
                 });
+                $scope.processing = false;
             });
         }
     });
