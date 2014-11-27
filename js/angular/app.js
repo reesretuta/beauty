@@ -4,6 +4,26 @@
 var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 'ngAnimate', 'ngCookies', 'ui.mask', 'ui.keypress', 'ui.jq', 'ui.validate', 'app.filters', 'app.services', 'app.controllers', 'app.directives', 'pasvaz.bindonce', 'jmdobry.angular-cache', 'autocomplete', 'ui.event', 'mgo-angular-wizard', 'pascalprecht.translate', 'LocalStorageModule',
         'ui.bootstrap.tpls', 'ui.bootstrap.alert', 'ui.bootstrap.dropdown', 'ui.bootstrap.tooltip', 'ui.bootstrap.buttons', 'ui.bootstrap.modal', 'ui.bootstrap.popover', 'ui.bootstrap.tabs', 'modelOptions', 'infinite-scroll'])
     .config([ '$locationProvider', '$routeProvider', '$rootScopeProvider', '$angularCacheFactoryProvider', '$translateProvider', '$httpProvider', '$provide', 'localStorageServiceProvider', 'BASE_URL', 'STORE_BASE_URL', 'JOIN_BASE_URL', function ($locationProvider, $routeProvider, $rootScopeProvider, $angularCacheFactoryProvider, $translateProvider, $httpProvider, $provide, localStorageServiceProvider, BASE_URL, STORE_BASE_URL, JOIN_BASE_URL) {
+        
+        $provide.decorator('$sniffer', [
+        '$delegate', function($sniffer) {
+          var msie, userAgent, _hasEvent, _ref, _ref2;
+          userAgent = navigator.userAgent.toLowerCase();
+          msie = parseInt(((_ref = /msie (\d+)/.exec(userAgent)) != null ? _ref : [])[1], 10);
+          if (isNaN(msie)) {
+            msie = parseInt(((_ref2 = /trident\/.*; rv:(\d+)/.exec(userAgent)) != null ? _ref2 : [])[1], 10);
+          }
+          _hasEvent = $sniffer.hasEvent;
+          $sniffer.hasEvent = function(event) {
+            if (event === 'input' && msie >= 10) {
+              return false;
+            }
+            return _hasEvent.call(this, event);
+          };
+          return $sniffer;
+        }
+      ]);
+
         //$locationProvider.html5Mode(true);
         $angularCacheFactoryProvider.setCacheDefaults({
             maxAge: 300000, // default to 5 minute caching
@@ -132,27 +152,6 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
 //            return $delegate;
 //        });
     }])
-
-    .config(function($provide) {
-      return $provide.decorator('$sniffer', [
-        '$delegate', function($sniffer) {
-          var msie, userAgent, _hasEvent, _ref, _ref2;
-          userAgent = navigator.userAgent.toLowerCase();
-          msie = parseInt(((_ref = /msie (\d+)/.exec(userAgent)) != null ? _ref : [])[1], 10);
-          if (isNaN(msie)) {
-            msie = parseInt(((_ref2 = /trident\/.*; rv:(\d+)/.exec(userAgent)) != null ? _ref2 : [])[1], 10);
-          }
-          _hasEvent = $sniffer.hasEvent;
-          $sniffer.hasEvent = function(event) {
-            if (event === 'input' && msie >= 10) {
-              return false;
-            }
-            return _hasEvent.call(this, event);
-          };
-          return $sniffer;
-        }
-      ]);
-    })
 
     .run(function ($rootScope, $animate, $log, $location, Session, Consultant, $translate, $templateCache, BASE_URL, CDN_URL) {
         $rootScope.BASE_URL = BASE_URL;
