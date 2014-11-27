@@ -1,3 +1,4 @@
+
 angular.module('app.controllers.main')
     .controller('MainController', function ($scope, $document, $timeout, $location, $rootScope, $routeParams, $log, $translate, $q, STORE_BASE_URL, Session, Categories, Product, Cart, Search, BreadcrumbsHelper, RecentlyViewed, CDN_URL, $route) {
 
@@ -183,7 +184,27 @@ angular.module('app.controllers.main')
         }
 
         /*==== CLEANUP ====*/
-        $scope.$on('$destroy', function() {
+        $scope.$on('$destroy', function () {
             cleanup();
         });
+
+        // carousel
+        $log.debug('MainController(): .carousel()');
+
+        $('#carousel-product-generic').carousel();
+
+        $scope.carouselPrev = function () {
+            $log.debug('MainController(): .carousel("prev")');
+            $scope.$evalAsync(function() {
+                $('#carousel-product-generic').carousel('prev');
+            });
+        };
+
+        $scope.carouselNext = function () {
+            $log.debug('MainController(): .carousel("next")');
+            $scope.$evalAsync(function() {
+                $('#carousel-product-generic').carousel('next');
+            });
+        };
+
     });
