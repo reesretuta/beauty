@@ -1572,7 +1572,11 @@ app.get('/*', function (req, res, next) {
         var myNav = req.headers['user-agent'];
         var IEbrowser = parseInt(myNav.split('MSIE')[1])
         if (IEbrowser <= 9) {
-            res.sendfile(basepath + '/redirect.html');
+            if (req.originalUrl != null && req.originalUrl.match("/join")) {
+                res.sendfile(basepath + '/browser_unsupported.join.html');
+            } else {
+                res.sendfile(basepath + '/browser_unsupported.shop.html');
+            }
             return;
         }
     }
