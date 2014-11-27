@@ -207,4 +207,12 @@ angular.module('app.directives', [])// directives
         };
     }).directive("popoverHtmlUnsafe", [ "$tooltip", function ($tooltip) {
         return $tooltip("popoverHtmlUnsafe", "popover", "click");
+    }]).directive('addThis', ['$log', function($log) {
+        return {
+            scope: true,
+            restrict: 'A',
+            link: function ($scope, element, attrs) {
+                addthis.counter();
+            }
+        }
     }]);

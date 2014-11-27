@@ -10,6 +10,7 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
             deleteOnExpire: 'aggressive'
         });
 
+
         $locationProvider.html5Mode(true).hashPrefix('!');
         $rootScopeProvider.digestTtl(30);
 
@@ -130,7 +131,30 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
 //
 //            return $delegate;
 //        });
-    }]).run(function ($rootScope, $animate, $log, $location, Session, Consultant, $translate, $templateCache, BASE_URL, CDN_URL) {
+    }])
+
+    .config(function($provide) {
+      return $provide.decorator('$sniffer', [
+        '$delegate', function($sniffer) {
+          var msie, userAgent, _hasEvent, _ref, _ref2;
+          userAgent = navigator.userAgent.toLowerCase();
+          msie = parseInt(((_ref = /msie (\d+)/.exec(userAgent)) != null ? _ref : [])[1], 10);
+          if (isNaN(msie)) {
+            msie = parseInt(((_ref2 = /trident\/.*; rv:(\d+)/.exec(userAgent)) != null ? _ref2 : [])[1], 10);
+          }
+          _hasEvent = $sniffer.hasEvent;
+          $sniffer.hasEvent = function(event) {
+            if (event === 'input' && msie >= 10) {
+              return false;
+            }
+            return _hasEvent.call(this, event);
+          };
+          return $sniffer;
+        }
+      ]);
+    })
+
+    .run(function ($rootScope, $animate, $log, $location, Session, Consultant, $translate, $templateCache, BASE_URL, CDN_URL) {
         $rootScope.BASE_URL = BASE_URL;
         $rootScope.CDN_URL = CDN_URL;
         $rootScope.STORE_BASE_URL = BASE_URL + "/shop";
