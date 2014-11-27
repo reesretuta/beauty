@@ -64,7 +64,7 @@
 
     <div class="form-group" ng-if="!isOnlineSponsoring && profile.customerStatus !== 'existing'">
       <label for="inputPassword4" class="col-md-3 control-label"><span ng-bind-html="'PASSWORD_VERIFY' | translate | unsafe"></span></label>
-      (<div class="col-sm-4" ng-class="{ 'has-error' : signInForm.loginPasswordVerify.$invalid && (signInForm.loginPasswordVerify.$touched || signInForm.loginPasswordVerify.$dirty) }">
+      <div class="col-sm-4" ng-class="{ 'has-error' : signInForm.loginPasswordVerify.$invalid && (signInForm.loginPasswordVerify.$touched || signInForm.loginPasswordVerify.$dirty) }">
         <input name="loginPasswordVerify" ng-model="profile.loginPasswordVerify" type="password" class="form-control" id="inputPassword4" placeholder="Verify Password" data-ui-validate="'$value == profile.loginPassword'" required>
         <span ng-show="signInForm.loginPasswordVerify.$invalid && (signInForm.loginPasswordVerify.$touched || signInForm.loginPasswordVerify.$dirty) && profile.loginPassword !== profile.loginPasswordVerify" class="help-block" ng-class="{ 'text-danger' : profile.loginPassword !== profile.loginPasswordVerify }">
           <span ng-bind-html="'PASSWORDS-DONT-MATCH' | translate | unsafe"></span>
