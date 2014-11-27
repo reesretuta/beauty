@@ -43,13 +43,13 @@
     <div class="col-sm-6" ng-class="{ 'has-error' : (invalidExpiration || editCardForm.expMonth.$invalid || editCardForm.expYear.$invalid) && !editCardForm.expMonth.$pristine && !editCardForm.expYear.$pristine }">
       <div class="row">
         <div class="col-xs-4 col-sm-4 col-med-4">
-          <input ng-model="creditCard.expMonth" name="expMonth" type="text" class="form-control col-sm-1" ui-mask="99" mask-override placeholder="MM" required>
+          <input ng-model="creditCard.expMonth" name="expMonth" type="text" class="form-control col-sm-1" ui-mask="99" placeholder="MM" required>
         </div>
         <div class="col-xs-1">
           <label class="control-label">/</label>
         </div>
         <div class="col-xs-5 col-sm-5 col-med-5">
-          <input ng-model="creditCard.expYear" name="expYear" type="text" class="form-control col-sm-3" ui-mask="9999" mask-override placeholder="YYYY" required>
+          <input ng-model="creditCard.expYear" name="expYear" type="text" class="form-control col-sm-3" ui-mask="9999" placeholder="YYYY" required>
         </div>
       </div>
       <span ng-show="(invalidExpiration || editCardForm.expMonth.$invalid || editCardForm.expYear.$invalid) && !editCardForm.expMonth.$pristine && !editCardForm.expYear.$pristine" class="help-block text-danger" ng-bind-html="'INVALID_CC_EXPIRATION' | translate | unsafe"></span>

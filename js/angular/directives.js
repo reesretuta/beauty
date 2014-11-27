@@ -177,27 +177,6 @@ angular.module('app.directives', [])// directives
             }
         }
     // override ui-mask on blur event
-    }]).directive('maskOverride', ['$timeout','$log', function ($timeout, $log) {
-        return {
-            priority: 101,
-            restrict: 'A',
-            require: '?ngModel',
-            link: function($scope, elem, attrs, ngModelCtrl) {
-                if (!ngModelCtrl) {
-                    return;
-                }
-                $log.debug('Directives: MASK OVERRIDE!!!!!!!!!!!!!');
-                // catch blur event (higher priority) before ui-mask
-                angular.element(elem).on('blur', function (evt) {
-                    var val = this.value;
-                    $timeout(function () {
-                        $log.debug('Directives: numbersOnly: blur', val);
-                        ngModelCtrl.$setViewValue(val);
-                        ngModelCtrl.$render();
-                    }, 1);
-                });
-            }
-        }
     }]).directive("popoverHtmlUnsafePopup", function () {
         return {
             restrict: "EA",

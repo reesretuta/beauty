@@ -80,14 +80,14 @@
   <div class="col-sm-5" ng-class="{ 'has-error' : (invalidExpiration || paymentForm.expMonth.$invalid || paymentForm.expYear.$invalid) && !paymentForm.expMonth.$pristine && !paymentForm.expYear.$pristine }">
     <div class="row">
       <div class="col-xs-4 col-sm-3 col-med-2">
-        <input ng-model="profile.newCard.expMonth" name="expMonth" type="text" class="form-control col-sm-1" ui-mask="99" mask-override placeholder="MM" required>
+        <input ng-model="profile.newCard.expMonth" name="expMonth" type="text" class="form-control col-sm-1" ui-mask="99" placeholder="MM" required>
         <!--valid={{paymentForm.expMonth.$valid}}-->
       </div>
       <div class="col-xs-1">
         <label class="control-label">/</label>
       </div>
       <div class="col-xs-6 col-sm-4 col-med-3">
-        <input ng-model="profile.newCard.expYear" name="expYear" type="text" class="form-control col-sm-3" ui-mask="9999" mask-override placeholder="{{ 'YEAR-PLACEHOLDER' | translate }}" required>
+        <input ng-model="profile.newCard.expYear" name="expYear" type="text" class="form-control col-sm-3" ui-mask="9999" placeholder="{{ 'YEAR-PLACEHOLDER' | translate }}" required>
         <!--valid={{paymentForm.expYear.$valid}}-->
       </div>
     </div>
