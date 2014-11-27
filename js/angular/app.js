@@ -101,7 +101,11 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
         var path = window.location.pathname;
         if (path && path.match(STORE_BASE_URL)) {
             console.log("setting up session expiration listener");
-            $httpProvider.responseInterceptors.push(interceptor);
+            $httpProvider.interceptors.push(function() {
+                return {
+                    response: interceptor
+                }
+            });
         } else {
             console.log("NOT setting up session expiration listener");
         }
