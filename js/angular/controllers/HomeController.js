@@ -1,11 +1,7 @@
 
 angular.module('app.controllers.home').controller('HomeController', function ($scope, $document, $rootScope, $log, Categories, $translate) {
-   
-    /*$translate('OS-PRODUCTS-OUR-PRODUCTS').then(function (message) {
-        $rootScope.title = message;
-    });*/
 
-    $rootScope.title = 'Our Products';
+    $rootScope.title = 'ALL-PRODUCTS';
 
     $rootScope.section = "store";
 
