@@ -5,5 +5,5 @@ module.exports = {
 	app: {
 		title: 'Jafra - Test Environment'
 	},
-	password_reset_url: "https://usa.jafra.com/shop/passwordReset"
+	password_reset_url: "https://jafra-stage.herokuapp.com/shop/passwordReset"
 };
