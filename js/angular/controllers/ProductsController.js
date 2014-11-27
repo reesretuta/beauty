@@ -2,7 +2,7 @@ angular.module('app.controllers.products')
     .controller('ProductsController', function ($sce, HashKeyCopier, Cart, Categories, Product, Search, $scope, $rootScope, $routeParams, $q, $location, $timeout, $window, $log, $modal, $document, BreadcrumbsHelper, $translate) {
         $log.debug("ProductsController");
 
-        $rootScope.title = "All Products";
+        $rootScope.title = 'ALL-PRODUCTS';
         $rootScope.section = "store";
 
         $scope.errorMessage = '';

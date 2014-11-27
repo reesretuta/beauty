@@ -1,7 +1,8 @@
 
 angular.module('app.controllers.onlineSponsor')
 .controller('OnlineSponsorLandingController', function ($scope, $document, $location, $translate, $rootScope, $routeParams, $log, Session, JOIN_BASE_URL, Categories, Product) {
-    $rootScope.title = 'Join';
+    
+    $rootScope.title = 'JOIN_JAFRA_TITLE';
 
     $rootScope.inCheckout = false;
 
