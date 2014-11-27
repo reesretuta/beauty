@@ -347,8 +347,7 @@ router.route('/products')
                         {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
                     ]}
                 ]
-            }, {score: { $meta: "textScore" }})
-            .sort({ score: { $meta: "textScore" } })
+            })
             .skip(skip)
             .limit(limit)
             .populate({
@@ -402,8 +401,7 @@ router.route('/products')
                         {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
                     ]}
                 ]
-            }, { score: { $meta: "textScore" } })
-            .sort({ score: { $meta: "textScore" } })
+            })
             .skip(skip)
             .limit(limit)
             .populate({
@@ -451,8 +449,7 @@ router.route('/products')
                         {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
                     ]}
                 ]
-            }, { score: { $meta: "textScore" } })
-            .sort({ score: { $meta: "textScore" } })
+            })
             .skip(skip)
             .limit(limit)
             .populate({

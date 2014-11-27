@@ -110,7 +110,7 @@ angular.module('app.controllers.products')
             d.result.then(function(cartItem) {
                 $log.debug("configure kit dialog closed");
                 body.css("overflow-y", "auto");
-                if (cartItem !== null) {
+                if (cartItem != null) {
                     $log.debug("add kit to cart", cartItem);
                     Cart.addToCart({
                         name: cartItem.name,

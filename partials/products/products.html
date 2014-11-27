@@ -1,9 +1,8 @@
-    <div class="ccol-xs-12 col-sm-12 col-md-12 col-lg-12" ng-cloak ng-if="((products | filter:searchFunction).length == 0) && search != null && search.query != null && search.query != ''">No products matched search:&nbsp;&nbsp;<b><i>{{query}}</i></b></div>
+    <div class="ccol-xs-12 col-sm-12 col-md-12 col-lg-12" ng-cloak ng-if="((products | filter:searchFunction).length == 0) && loading != true && search != null && search.query != null && search.query != ''">No products matched search:&nbsp;&nbsp;<b><i>{{query}}</i></b></div>
 
     <div infinite-scroll="loadMoreProducts()" infinite-scroll-distance="0" infinite-scroll-disabled="loading" class="clearfix">
-
         <!-- Product -->
-        <article class="ccol-xs-12 col-sm-6 col-md-4 col-lg-4 store-item" ng-repeat="product in filteredProduct = (products | filter:searchFunction | orderBy:(session.language=='en_US'?'name':'name_es_US'))" ng-if="product.productflag.isgroup !=1">
+        <article class="ccol-xs-12 col-sm-6 col-md-4 col-lg-4 store-item" ng-repeat="product in filteredProduct = (products | filter:searchFunction | orderBy:(search.query != '' ? '-score' : (session.language=='en_US'?'name':'name_es_US')))" ng-if="product.productflag.isgroup !=1">
             
           <div class="store-item-wrapper" ng-if="product.sku != '' && product.type != 'group'">
             <a ng-href="{{STORE_BASE_URL}}/products/{{product.sku}}#top">

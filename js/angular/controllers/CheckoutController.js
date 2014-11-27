@@ -1568,6 +1568,8 @@ angular.module('app.controllers.checkout')
                 // generate the components
                 var products = [];
 
+                $log.debug("CheckoutController(): processOrder(): creating order from cart", $scope.cart);
+
                 for (var i=0; i < $scope.cart.length; i++) {
                     var item = $scope.cart[i];
 
@@ -1587,7 +1589,7 @@ angular.module('app.controllers.checkout')
                         qty: item.quantity
                     };
 
-                    if (item.type == 'kit') {
+                    if (item.product.type == 'kit') {
                         d["kitSelections"] = item.kitSelections;
                         d["components"] = components;
                     }
