@@ -56,7 +56,7 @@
   <div class="col-sm-6 col-lg-4">
     <input ng-model="profile.newCard.name" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-minlength="3" name="cardName" type="text" class="form-control" placeholder=" " required>
     <span ng-show="paymentForm.cardName.$error.minlength && (paymentForm.cardName.$touched || paymentForm.cardName.$dirty)" class="help-block" ng-class="{ 'text-danger' : paymentForm.cardName.$invalid }"><span ng-bind-html="'NAME_ON_CARD_ERR' | translate | unsafe"></span></span>
-    <span ng-show="paymentForm.cardName.$error.pattern && (paymentForm.cardName.$touched || paymentForm.cardName.$dirty)" class="help-block" ng-class="{ 'text-danger' : paymentForm.cardName.$invalid }"><span ng-bind-html="'NAME_ON_CARD_INVALID_ERR' | translate | unsafe"></span></span>
+    <span ng-show="paymentForm.cardName.$invalid && (paymentForm.cardName.$touched || paymentForm.cardName.$dirty)" class="help-block" ng-class="{ 'text-danger' : paymentForm.cardName.$invalid }"><span ng-bind-html="'NAME_ON_CARD_INVALID_ERR' | translate | unsafe"></span></span>
   </div>
 </div>
 
