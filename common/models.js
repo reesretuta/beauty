@@ -174,6 +174,7 @@ var productSchema = Schema({
     "name" : String,
     "name_es_US" : String,
     "quantity" : String,
+    "quantity_es_US" : String,
     "categories" : [{type: Number, ref: 'Category'}],
     "description" : String,
     "description_es_US" : String,

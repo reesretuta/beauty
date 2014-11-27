@@ -40,6 +40,7 @@ models.onReady(function() {
 
     var existingProducts = {};
     var AVAILABLE_ONLY = process.env.AVAILABLE_ONLY || options["only-available"] || false;
+    var BASIC_ONLY = process.env.BASIC_ONLY || options["only-basic"] || false;
     var BASE_SITE_URL = process.env.BASE_SITE_URL || "https://stageadmin.jafra.com";
     var USERNAME = process.env.USERNAME || "jafra_test";
     var PASSWORD = process.env.PASSWORD || "lavisual1";
@@ -450,6 +451,7 @@ models.onReady(function() {
             AVAILABLE_ONLY: AVAILABLE_ONLY,
             BASE_SITE_URL: BASE_SITE_URL,
             LANGUAGE: LANGUAGE,
+            BASIC_ONLY: BASIC_ONLY,
             options: options
         }, function () {
             console.log("== PRODUCTS ==");
@@ -667,7 +669,7 @@ models.onReady(function() {
                         fetchProductUsage(productId, isKit);
 
                         // we only do this for english, spanish is just for fetching the text
-                        if (LANGUAGE == "en_US") {
+                        if (LANGUAGE == "en_US" && !BASIC_ONLY) {
                             fetchProductImages(productId, isKit);
                             fetchProductPrices(productId, isKit);
                             fetchProductCategories(productId, isKit);
@@ -727,12 +729,13 @@ models.onReady(function() {
                                         var description = $('iframe[name=ext-gen49]').contents().find("body").html();
                                         if (LANGUAGE == "en_US") {
                                             product.name = $('input[name=formalName_en_US]').val();
+                                            product.quantity = $('input[name=sellingQty_en_US]').val();
                                             product.description = description;
                                         } else {
                                             product.name_es_US = $('input[name=formalName_es_US]').val();
+                                            product.quantity_es_US = $('input[name=sellingQty_es_US]').val();
                                             product.description_es_US = description;
                                         }
-                                        product.quantity = $('input[name="sellingQty_'+LANGUAGE+'"]').val();
                                         product.onHold = $('input[name="onHold"]').attr('checked') || false;
                                         product.searchable = $('input[name="searchable"]').attr('checked') || false;
                                         product.masterStatus = $('select[name="status"] > option:selected').val();
