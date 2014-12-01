@@ -143,8 +143,9 @@ angular.module('app.controllers.products')
                     $scope.noMoreToLoad = true;
                 }
 
-                var path = BreadcrumbsHelper.setPath($scope.category, null, null);
-                $log.debug("ProductsController(): path", path);
+                BreadcrumbsHelper.setPath($scope.category, null, null).then(function(path) {
+                    $log.debug("ProductsController(): path", path);
+                });
 
                 $scope.loading = false;
             }, function (data) {
