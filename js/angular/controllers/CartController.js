@@ -4,7 +4,7 @@ angular.module('app.controllers.cart')
         $log.debug("CartController");
 
         //change page title
-        $rootScope.title = "Order Details";
+        $rootScope.title = 'CHECKOUT';
 
         //this is a back-end page, use to hide category nav & stuff
         $rootScope.section = "cart";

@@ -8,7 +8,7 @@ angular.module('app.controllers.products')
         $scope.categoryId = $routeParams.category;
         $log.debug("ProductDetailsController(): productId", $scope.productId, "categoryId", $scope.categoryId);
 
-        $rootScope.title = "Product Details";
+        $rootScope.title = 'PRODUCT-DETAILS';
         $rootScope.section = "store";
 
         $scope.errorMessage = '';

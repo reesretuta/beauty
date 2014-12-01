@@ -1,7 +1,7 @@
 
 angular.module('app.controllers.home').controller('HomeController', function ($scope, $document, $rootScope, $log, Categories, $translate) {
 
-    $rootScope.title = 'ALL-PRODUCTS';
+    $rootScope.title = 'OS-PRODUCTS-OUR-PRODUCTS';
 
     $rootScope.section = "store";
 

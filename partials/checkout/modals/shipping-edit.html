@@ -19,7 +19,7 @@
           <label for="name" class="col-md-3 control-label"><span ng-bind-html="'IN_FULL_NAME' | translate | unsafe"></span></label>
           <div class="col-sm-8 col-lg-6">
             <input id="shippingFullName" name="name" ng-model="address.name" ng-pattern="/^[a-zA-Z0-9\s,'-\/]*$/" type="text" class="form-control" placeholder="">
-            <span ng-show="addressForm.name.$invalid && addressForm.name.$dirty" class="help-block text-danger"><span ng-bind-html="'ENTER-VALID-SHIPPING-NAME' | translate | unsafe"></span></span>
+            <span ng-show="addressForm.name.$invalid && (addressForm.name.$touched || addressForm.name.$dirty)" class="help-block text-danger"><span ng-bind-html="'ENTER-VALID-SHIPPING-NAME' | translate | unsafe"></span></span>
           </div>
         </div>
 
@@ -27,7 +27,7 @@
           <label for="businessCo" class="col-md-3 control-label"><span ng-bind-html="'IN_BUSINESS_CO' | translate | unsafe"></span></label>
           <div class="col-sm-8 col-lg-6">
             <input id="shippingBusinessCO" name="businessCO" ng-model="address.businessCO" ng-pattern="/^[a-zA-Z0-9\s,'-\/]+$/" type="text" class="form-control" placeholder="{{ 'IN_BUSINESS_CO_DES' | translate }}" autocomplete="off">
-            <span ng-show="addressForm.businessCO.$invalid && addressForm.businessCO.$dirty" class="text-danger">
+            <span ng-show="addressForm.businessCO.$invalid && (addressForm.businessCO.$touched || addressForm.businessCO.$dirty)" class="text-danger">
               <span ng-bind-html="'ENTER-VALID-SHIPPING-NAME' | translate | unsafe"></span>
             </span>
           </div>
@@ -35,30 +35,36 @@
 
         <div class="row form-group">
           <label for="address1" class="col-md-3 control-label"><span ng-bind-html="'IN_ADD_LINE1' | translate | unsafe"></span></label>
-          <div class="col-sm-8 col-lg-6" ng-class="{ 'has-error' : addressForm.address1.$invalid && addressForm.address1.$dirty }">
+          <div class="col-sm-8 col-lg-6" ng-class="{ 'has-error' : addressForm.address1.$invalid && (addressForm.address1.$touched || addressForm.address1.$dirty }">
             <input id="address1" name="address1" ng-model="address.address1" type="text" class="form-control" placeholder="{{ 'IN_ADD_LINE1_DES' | translate }} " focus-on="address1-focus" required>
-            <span ng-show="addressForm.address1.$invalid && addressForm.address1.$dirty" class="help-block text-danger"><span ng-bind-html="'ENTER-VALID-ADDRESS' | translate | unsafe"></span></span>
+            <span ng-show="addressForm.address1.$invalid && (addressForm.address1.$touched || addressForm.address1.$dirty)" class="help-block text-danger">
+              <span ng-bind-html="'ENTER-VALID-ADDRESS' | translate | unsafe"></span>
+            </span>
           </div>
         </div>
 
         <div class="row form-group">
           <label for="address2" class="col-md-3 control-label"><span ng-bind-html="'IN_ADD_LINE2' | translate | unsafe"></span></label>
-          <div class="col-sm-8 col-lg-6" ng-class="{ 'has-error' : addressForm.address2.$invalid && addressForm.address2.$dirty }">
+          <div class="col-sm-8 col-lg-6" ng-class="{ 'has-error' : addressForm.address2.$invalid && (addressForm.address2.$touched || addressForm.address2.$dirty) }">
             <input id="shippingAddress2" name="address2" ng-model="address.address2" type="text" class="form-control" placeholder="{{ 'IN_ADD_LINE2_DES' | translate }} ">
-            <span ng-show="addressForm.address2.$invalid && !addressForm.address2.$pristine" class="help-block text-danger"><span ng-bind-html="'ENTER-VALID-ADDRESS' | translate | unsafe"></span></span>
+            <span ng-show="addressForm.address2.$invalid && (addressForm.address2.$touched || addressForm.address2.$dirty)" class="help-block text-danger">
+              <span ng-bind-html="'ENTER-VALID-ADDRESS' | translate | unsafe"></span>
+            </span>
           </div>
         </div>
 
         <div class="row form-group">
           <label for="city" class="col-md-3 control-label"><span ng-bind-html="'IN_CITY' | translate | unsafe"></span></label>
-          <div class="col-sm-7 col-lg-5" ng-class="{ 'has-error' : addressForm.city.$invalid && !addressForm.city.$pristine }">
+          <div class="col-sm-7 col-lg-5" ng-class="{ 'has-error' : addressForm.city.$invalid && (addressForm.city.$touched || addressForm.city.$dirty) }">
             <input id="city" name="city" ng-pattern="/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/" ng-model="address.city" type="text" class="form-control" placeholder="{{ 'IN_CITY' | translate }}" required>
-            <span ng-show="addressForm.city.$invalid && !addressForm.city.$pristine" class="help-block text-danger"><span ng-bind-html="'ENTER-VALID-CITY' | translate | unsafe"></span></span>
+            <span ng-show="addressForm.city.$invalid && (addressForm.city.$touched || addressForm.city.$dirty)" class="help-block text-danger">
+              <span ng-bind-html="'ENTER-VALID-CITY' | translate | unsafe"></span>
+            </span>
           </div>
         </div>
         <div class="row form-group">
           <label for="state" class="col-md-3 control-label"><span ng-bind-html="'IN_STATE' | translate | unsafe"></span></label>
-          <div class="col-sm-5 col-lg-3" ng-class="{ 'has-error' : addressForm.state.$invalid && !addressForm.state.$pristine }">
+          <div class="col-sm-5 col-lg-3" ng-class="{ 'has-error' : addressForm.state.$invalid && (addressForm.state.$touched || addressForm.state.$dirty) }">
             <select name="state" class="form-control" id="state" ng-model="address.state" required>
                 <option value="AL">Alabama</option>
                 <option value="AK">Alaska</option>
@@ -114,13 +120,13 @@
                 <option value="WI">Wisconsin</option>
                 <option value="WY">Wyoming</option>
               </select>
-            <span ng-show="addressForm.state.$invalid && !addressForm.state.$pristine" class="help-block text-danger"><span ng-bind-html="'SELECT-STATE' | translate | unsafe"></span></span>
+            <span ng-show="addressForm.state.$invalid && (addressForm.state.$touched || addressForm.state.$dirty)" class="help-block text-danger"><span ng-bind-html="'SELECT-STATE' | translate | unsafe"></span></span>
           </div>
         </div>
 
         <div class="row form-group">
           <label for="zip" class="col-md-3 control-label"><span ng-bind-html="'IN_ZIP' | translate | unsafe"></span></label>
-          <div class="col-sm-5 col-lg-3" ng-class="{ 'has-error' : addressForm.zip.$invalid && !addressForm.zip.$pristine }">
+          <div class="col-sm-5 col-lg-3" ng-class="{ 'has-error' : addressForm.zip.$invalid && (addressForm.zip.$touched || addressForm.zip.$dirty) }">
             <input id="zip" ng-maxlength="5" maxlength="5" name="zip" ng-pattern="/^[0-9]{5}$/" ng-model="address.zip" type="text" class="form-control" required>
           </div>
         </div>
@@ -134,15 +140,16 @@
           </div>
         </div>
 
-        <div class="row form-group" ng-if="!isOnlineSponsoring" ng-class="{ 'has-error' : addressForm.phoneNumber.$invalid && !addressForm.phoneNumber.$pristine }">
+        <div class="row form-group" ng-if="!isOnlineSponsoring" ng-class="{ 'has-error' : addressForm.phoneNumber.$invalid && (addressForm.phoneNumber.$touched || addressForm.phoneNumber.$dirty) }">
           <label for="phoneNumber" class="col-md-3 control-label"><span ng-bind-html="'PHONE-NUMBER' | translate | unsafe"></span></label>
           <div class="col-sm-6 col-lg-4">
             <input id="phoneNumber" name="phoneNumber" ng-model="address.phone" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" type="text" ui-mask="(999) 999-9999" placeholder="(xxx) xxx-xxxx" class="form-control">
-            <span ng-show="addressForm.phoneNumber.$error.pattern" class="help-block" ng-class="{ 'text-danger' : addressForm.phoneNumber.$invalid && !addressForm.phoneNumber.$pristine }"><span ng-bind-html="'PHONE-NUMBER-WRONG' | translate | unsafe"></span></span>
+            <span ng-show="addressForm.phoneNumber.$error.pattern" class="help-block" ng-class="{ 'text-danger' : addressForm.phoneNumber.$invalid && (addressForm.phoneNumber.$touched || addressForm.phoneNumber.$dirty) }">
+              <span ng-bind-html="'PHONE-NUMBER-WRONG' | translate | unsafe"></span>
+            </span>
           </div>
-          <a popover="{{'PHONE-NUMBER-DES' | translate | unsafe}}" popover-title="{{'PHONE-NUMBER' | translate | unsafe}}" href="" tabindex="-1" popover-trigger="hover" class="form-info-link"><i class="fa fa-info-circle"></i> <span ng-bind-html="'MORE-INFO' | translate | unsafe"></span></a>
+          <a popover="{{ 'PHONE-NUMBER-DES' | translate | unsafe }}" popover-title="{{ 'PHONE-NUMBER' | translate | unsafe }}" href="" tabindex="-1" popover-trigger="hover" class="form-info-link"><i class="fa fa-info-circle"></i> <span ng-bind-html="'MORE-INFO' | translate | unsafe"></span></a>
         </div>
-
         <div class="row" ng-show="addressError">
           <div class="col-sm-6 col-lg-6 alert alert-danger" role="alert">
             <span ng-bind="addressError"></span>
