@@ -1694,16 +1694,11 @@ angular.module('app.controllers.checkout')
 
         $scope.addShippingAddressAndContinue = function(address) {
             $log.debug("CheckoutController(): addShippingAddressAndContinue()", address);
-
             $scope.processing = true;
-
             $scope.addShippingAddress(address).then(function() {
-                // fetch sales tax information here
                 fetchSalesTax().then(function(salesTaxInfo) {
                     $log.debug("CheckoutController(): addShippingAddressAndContinue(): got sales tax info", salesTaxInfo);
-
                     $scope.salesTaxInfo = salesTaxInfo;
-
                     $scope.checkoutUpdated();
                     WizardHandler.wizard('checkoutWizard').goTo('Payment');
                     $scope.processing = false;
@@ -1802,7 +1797,6 @@ angular.module('app.controllers.checkout')
 
         function showAddressCorrectionModal(address) {
             var dd = $q.defer();
-
             var d = $modal.open({
                 backdrop: true,
                 keyboard: true, // we will handle ESC in the modal for cleanup
@@ -1811,25 +1805,17 @@ angular.module('app.controllers.checkout')
                 controller: 'AddressCorrectionModalController',
                 resolve: {
                     address: function() {
-                        return address;
+                        return angular.copy(address);
                     }
                 }
             });
-
             var body = $document.find('html, body');
-
             d.result.then(function(result) {
                 $log.debug("CheckoutController(): showAddressCorrectionModal(): address correction modal closed");
-
-                // re-enable scrolling on body
                 body.css("overflow-y", "auto");
-
                 dd.resolve(result);
             });
-
-            // prevent page content from scrolling while modal is up
             $("html, body").css("overflow-y", "hidden");
-
             return dd.promise;
         }
 
