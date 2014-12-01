@@ -1173,6 +1173,16 @@ button.processing:before {
   .store-heading-nav {
     padding-bottom: 15px;
   }
+  .store-nav-toggle {
+    top: 25px; /* lowers the off-canvas nav toggle so that it does not cover the "images" text */
+  }
+  .navbar-nav {
+    text-align: center;
+    margin: 5px 0 0 0px;
+  }
+  .navbar-right {
+    margin-right: -15px; /* to compensate for padding in responsive layout */
+  }
   .nav-tabs>li>a {
     margin-right: -1px;
   }
