@@ -178,7 +178,7 @@
         <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8">
 
           <ol class="ab-nav breadcrumb">
-            <li ng-repeat="breadcrumb in breadcrumbs track by breadcrumb.path" ng-class="{ active: $last }">
+            <li ng-repeat="breadcrumb in getBreadCrumbs() track by breadcrumb.path" ng-class="{ active: $last }">
               <a ng-if="!$last" ng-href="{{ breadcrumb.path }}" ng-bind="breadcrumb.label" class="margin-right-xs"></a>
               <span ng-if="$last" ng-bind-html="breadcrumb.label | unsafe"></span>
             </li>

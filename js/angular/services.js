@@ -4,10 +4,20 @@
 
 angular.module('app.services', ['ngResource'])
     .factory('Page', function($rootScope, $log) {
+        var titleData = {
+            title: null,
+            product: null
+        }
         return {
             setTitle : function(title) {
                 $log.debug("setting title to", title);
-                $rootScope.title = title;
+                titleData.staticTitle = title;
+            },
+            setProductTitle : function(product) {
+
+            },
+            getTitle : function() {
+                return $rootScope.title;
             }
         };
     })
@@ -1454,7 +1464,7 @@ angular.module('app.services', ['ngResource'])
 
         return creditCardService;
     })
-    .factory('Categories', function ($resource, $http, $log, API_URL) {
+    .factory('Categories', function ($rootScope, $resource, $http, $log, API_URL) {
         var categoriesService = {};
 
         function generateCategoryMap(categories) {
@@ -1500,6 +1510,19 @@ angular.module('app.services', ['ngResource'])
             }
         }
 
+        categoriesService.getTranslated = function(category) {
+            if (category == null) {
+                return {
+                    name: null,
+                    description: null
+                };
+            }
+            return {
+                name: category[$rootScope.session.language=='en_US'?'name':'name_'+$rootScope.session.language],
+                description: category[$rootScope.session.language=='en_US'?'description':'description_'+$rootScope.session.language],
+            };
+        }
+        
         categoriesService.get = function(query, success, failure) {
             return $http.get(API_URL + '/categories/' + query.categoryId).success(function(data, status, headers, config) {
                 $log.debug("categoriesService(): searching for category");
@@ -1554,8 +1577,12 @@ angular.module('app.services', ['ngResource'])
 
         return categoriesService;
     })
-    .factory('BreadcrumbsHelper', function($rootScope, $log) {
+    .factory('BreadcrumbsHelper', function($rootScope, $log, Product, Categories) {
         var breadcrumbService       = {};
+
+        var currentCategory = null;
+        var currentProduct = null;
+        var lastLanguage = $rootScope.session.language;
 
         if ($rootScope.breadcrumbs == null) {
             $rootScope.breadcrumbs = [];
@@ -1564,7 +1591,7 @@ angular.module('app.services', ['ngResource'])
         var buildPath = function(category, product, list) {
             if (list == null && product != null) {
                 list = new Array();
-                //$log.debug("breadcrumbService.buildPath(): setting path to product name", Product.getTranslated(product).name);
+                $log.debug("breadcrumbService.buildPath(): setting path to product name", Product.getTranslated(product).name);
                 list.unshift({
                     type: 'product',
                     name: Product.getTranslated(product).name,
@@ -1576,10 +1603,10 @@ angular.module('app.services', ['ngResource'])
                 list = new Array();
             }
             if (category != null) {
-                //$log.debug("breadcrumbService.buildPath(): prepending category name", category.name);
+                $log.debug("breadcrumbService.buildPath(): prepending category name", category.name);
                 list.unshift({
                     type: 'category',
-                    name: category.name,
+                    name: Categories.getTranslated(category).name,
                     id: category.id,
                     url: '/shop/products?category=' + category.id,
                     item: category
@@ -1592,7 +1619,13 @@ angular.module('app.services', ['ngResource'])
         }
 
         breadcrumbService.setPath = function(category, product) {
-            $log.debug("breadcrumbService.setPath()", category, product);
+            $log.debug("breadcrumbService.setPath()", category, product, $rootScope.session.language);
+
+            // set last language, so we can see if we have to recalculate
+            lastLanguage = $rootScope.session.language;
+            currentCategory = category;
+            currentProduct = product;
+
             if (category == null) {
                 $log.debug("breadcrumbService.setPath(): removing breadcrumbs");
                 $rootScope.breadcrumbs = new Array();
@@ -1628,6 +1661,16 @@ angular.module('app.services', ['ngResource'])
             $log.debug("breadcrumbService.setPath(): setting new breadcrumbs", newCrumbs);
             $rootScope.breadcrumbs = newCrumbs;
             return newCrumbs;
+        }
+
+        breadcrumbService.getBreadCrumbs = function() {
+            //$log.debug("breadcrumbService().getBreadCrumbs(): getting breadcrumbs");
+            if (lastLanguage !== $rootScope.session.language) {
+                //$log.debug("breadcrumbService().getBreadCrumbs(): language change, re-calculating");
+                breadcrumbService.setPath(currentCategory, currentProduct);
+            }
+            //$log.debug("breadcrumbService().getBreadCrumbs(): got breadcrumbs", $rootScope.breadcrumbs);
+            return $rootScope.breadcrumbs;
         }
 
         return breadcrumbService;

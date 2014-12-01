@@ -115,6 +115,10 @@ angular.module('app.controllers.main')
             return CDN_URL + "/assets" + image.localPath;
         }
 
+        $rootScope.getBreadCrumbs = function() {
+            return BreadcrumbsHelper.getBreadCrumbs();
+        }
+
         // begin navigation
         $rootScope.navStatic = '0';
         
