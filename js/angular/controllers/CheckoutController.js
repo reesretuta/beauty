@@ -1669,16 +1669,11 @@ angular.module('app.controllers.checkout')
 
         $scope.selectShippingAddressAndContinue = function(address) {
             $log.debug("CheckoutController(): selectShippingAddressAndContinue(): setting shipping to", address);
-
             $scope.processing = true;
             $scope.selectShippingAddress(address);
-
-            // fetch sales tax information here
             fetchSalesTax().then(function(salesTaxInfo) {
                 $log.debug("CheckoutController(): selectShippingAddressAndContinue(): got sales tax info", salesTaxInfo);
-
-                $scope.salesTaxInfo = salesTaxInfo;
-
+                $scope.salesTaxInfo = salesTaxInfo; 
                 $scope.checkoutUpdated();
                 WizardHandler.wizard('checkoutWizard').goTo('Payment');
                 $scope.processing = false;
@@ -1690,7 +1685,7 @@ angular.module('app.controllers.checkout')
                     $scope.salesTaxInfo = null;
                 });
             });
-        }
+        };
 
         $scope.addShippingAddressAndContinue = function(address) {
             $log.debug("CheckoutController(): addShippingAddressAndContinue()", address);
@@ -1711,38 +1706,27 @@ angular.module('app.controllers.checkout')
                     });
                 });
             });
-        }
+        };
 
         $scope.addShippingAddress = function(address) {
             $log.debug("CheckoutController(): addShippingAddress()", address);
             var d = $q.defer();
-
             $scope.processing = true;
-
             addAddress(address).then(function(a) {
                 if ($scope.isOnlineSponsoring) {
                     $log.debug("CheckoutController(): addShippingAddress(): setting consultant shipping address", a);
-
                     $scope.profile.shipping = angular.copy(a);
-                    // set the addresses
                     $scope.profile.newShippingAddress = angular.copy(a);
-
                     if ($scope.profile.billSame) {
                         $log.debug("CheckoutController(): addShippingAddress(): setting consultant billing address", a);
                         $scope.profile.billing = angular.copy(a);
                         $scope.profile.newBillingAddress = angular.copy(a);
                     }
-
                     $scope.processing = false;
                     d.resolve(a);
                 } else {
                     $log.debug("CheckoutController(): addShippingAddress(): setting client shipping address", a);
-
-                    // add the shipping address
                     $scope.profile.shipping = angular.copy(a);
-                    // clear the form versions
-                    $scope.profile.newShippingAddress = null;
-
                     if ($scope.profile.billSame) {
                         $log.debug("CheckoutController(): addShippingAddress(): setting client billing address", a);
                         $scope.profile.billing = angular.copy(a);
