@@ -188,8 +188,9 @@ angular.module('app.controllers.products')
 
                 $log.debug("ProductDetailsController(): loaded category", category);
 
-                var path = BreadcrumbsHelper.setPath($scope.category, $scope.product);
-                $log.debug("ProductDetailsController(): after category loaded path", path);
+                BreadcrumbsHelper.setPath($scope.category, $scope.product).then(function(path) {
+                    $log.debug("ProductDetailsController(): after category loaded path", path);
+                });
 
                 categoryLoaded.resolve(category);
             }, function(data, status, headers) {
@@ -251,8 +252,9 @@ angular.module('app.controllers.products')
                 }
 
                 categoryLoaded.promise.then(function() {
-                    var path = BreadcrumbsHelper.setPath($scope.category, $scope.product);
-                    $log.debug("ProductDetailsController(): loadProduct(): after category & project loaded, path", path);
+                    BreadcrumbsHelper.setPath($scope.category, $scope.product).then(function(path) {
+                        $log.debug("ProductDetailsController(): loadProduct(): after category & project loaded, path", path);
+                    });
                 });
 
                 // add product to recently view products
