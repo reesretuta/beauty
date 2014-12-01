@@ -1577,7 +1577,7 @@ angular.module('app.services', ['ngResource'])
 
         return categoriesService;
     })
-    .factory('BreadcrumbsHelper', function($rootScope, $log, Product, Categories) {
+    .factory('BreadcrumbsHelper', function($rootScope, $log, $q, $translate, Product, Categories) {
         var breadcrumbService       = {};
 
         var currentCategory = null;
@@ -1618,7 +1618,15 @@ angular.module('app.services', ['ngResource'])
             return list;
         }
 
+        // make sure to update the breadcrumbs on language change
+        $rootScope.$on('$translateChangeSuccess', function () {
+            //$log.debug("language changed", $rootScope.session.language);
+            breadcrumbService.setPath(currentCategory, currentProduct);
+        });
+
         breadcrumbService.setPath = function(category, product) {
+            var d = $q.defer();
+
             $log.debug("breadcrumbService.setPath()", category, product, $rootScope.session.language);
 
             // set last language, so we can see if we have to recalculate
@@ -1638,37 +1646,38 @@ angular.module('app.services', ['ngResource'])
 
             var newCrumbs = new Array();
             // always push home first
-            newCrumbs.push({
-                label: 'Our Products',
+            var rootCrumb = {
                 type: 'none',
                 path: '/'
+            };
+            $translate('OUR-PRODUCTS').then(function (message) {
+                $log.debug("breadcrumbService.setPath(): translated first breadcrumb", message, $rootScope.session.language);
+                rootCrumb["label"] = message;
+                newCrumbs.push(rootCrumb);
+
+                angular.forEach(list, function(crumb) {
+                    var newCrumb = {
+                        id: crumb.id,
+                        type: crumb.type
+                    };
+                    newCrumb.label = crumb.name;
+                    if (crumb.type == 'category') {
+                        newCrumb.path = '/shop/products?category=' + crumb.id;
+                    } else if (crumb.type == 'product') {
+                        newCrumb.path = '/shop/products/' + crumb.id;
+                    }
+                    newCrumbs.push(newCrumb);
+                });
+                $log.debug("breadcrumbService.setPath(): setting new breadcrumbs", newCrumbs);
+                $rootScope.breadcrumbs = newCrumbs;
+
+                d.resolve(newCrumbs);
             });
 
-            angular.forEach(list, function(crumb) {
-                var newCrumb = {
-                    id: crumb.id,
-                    type: crumb.type
-                };
-                newCrumb.label = crumb.name;
-                if (crumb.type == 'category') {
-                    newCrumb.path = '/shop/products?category=' + crumb.id;
-                } else if (crumb.type == 'product') {
-                    newCrumb.path = '/shop/products/' + crumb.id;
-                }
-                newCrumbs.push(newCrumb);
-            });
-
-            $log.debug("breadcrumbService.setPath(): setting new breadcrumbs", newCrumbs);
-            $rootScope.breadcrumbs = newCrumbs;
-            return newCrumbs;
+            return d.promise;
         }
 
         breadcrumbService.getBreadCrumbs = function() {
-            //$log.debug("breadcrumbService().getBreadCrumbs(): getting breadcrumbs");
-            if (lastLanguage !== $rootScope.session.language) {
-                //$log.debug("breadcrumbService().getBreadCrumbs(): language change, re-calculating");
-                breadcrumbService.setPath(currentCategory, currentProduct);
-            }
             //$log.debug("breadcrumbService().getBreadCrumbs(): got breadcrumbs", $rootScope.breadcrumbs);
             return $rootScope.breadcrumbs;
         }
