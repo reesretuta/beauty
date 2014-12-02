@@ -975,7 +975,6 @@ a:focus {
     overflow-y: auto;
 }
 .configureKitModal .modal-body .row {
-    height: 100%;
     overflow: hidden;
 }
 .configureKitModal .modal-footer {
@@ -984,8 +983,6 @@ a:focus {
     padding: 5px;
 }
 .configureKitModal .modal-body .kitSelections {
-    height: 100%;
-    border-right: 1px solid #dddddd;
     overflow-y: auto;
 }
 .configureKitModal .modal-body .kitSelections .product-name {
@@ -1151,6 +1148,9 @@ button.processing:before {
  * --------------------------------------------------
  */
 @media screen and (max-width: 767px) {
+  .configureKitModal .modal-body .kitSelections {
+    border-bottom: 1px solid #dddddd;
+  }
   .img-responsive {
     margin: auto;
   }
@@ -1197,10 +1197,21 @@ button.processing:before {
   .configureKitModal.modal {
     max-width: 80%;
   }
+
+  .configureKitModal .modal-body .row {
+    height: 100%;
+  }
+  .configureKitModal .modal-body .kitSelections {
+    border-right: 1px solid #dddddd;
+    height: 100%;
+  }
 }
 @media (min-width: 1024px) {
   .configureKitModal.modal {
     max-width: 70%;
+  }
+  #more_skincare_2 {
+    margin-bottom: 30px;
   }
 }
 
