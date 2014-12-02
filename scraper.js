@@ -5,6 +5,11 @@
  */
 var Spooky = require('spooky');
 var S = require('string');
+var request = require('request');
+var Q = require('Q');
+var models = require('./common/models.js');
+var Grid = require('gridfs-stream');
+var GridFS = Grid(models.mongoose.connection.db, models.mongoose.mongo);
 
 var options = require('minimist')(process.argv.slice(2));
 if (options["products"]) {
@@ -12,8 +17,6 @@ if (options["products"]) {
     options["products"] = options["products"].split(/,/);
 }
 console.log("options", options);
-
-var models = require('./common/models.js');
 
 models.onError(function(err) {
     console.error("error connecting to the database", err);
@@ -39,8 +42,10 @@ models.onReady(function() {
     var skippedProductGroups = 0
 
     var existingProducts = {};
-    var AVAILABLE_ONLY = process.env.AVAILABLE_ONLY || options["only-available"] || false;
-    var BASIC_ONLY = process.env.BASIC_ONLY || options["only-basic"] || false;
+    var VERBOSE = process.env.VERBOSE || options["verbose"] || false;
+    var AVAILABLE_ONLY = process.env.AVAILABLE_ONLY || options["available-only"] || false;
+    var BASIC = process.env.BASIC || options["basic"] || false;
+    var IMAGES = process.env.IMAGES || options["images"] || false;
     var BASE_SITE_URL = process.env.BASE_SITE_URL || "https://stageadmin.jafra.com";
     var USERNAME = process.env.USERNAME || "jafra_test";
     var PASSWORD = process.env.PASSWORD || "lavisual1";
@@ -49,6 +54,12 @@ models.onReady(function() {
     console.log("base url", BASE_SITE_URL);
     console.log("username", USERNAME);
     console.log("password", PASSWORD);
+    console.log("================================");
+    console.log("available only", AVAILABLE_ONLY);
+    console.log("basic", BASIC);
+    console.log("images", IMAGES);
+    console.log("language", LANGUAGE);
+    console.log("================================");
 
     // load up the known products / product groups, so we can prioritize loading new ones
     models.Product.find({}, '_id type', function(err, products) {
@@ -451,10 +462,11 @@ models.onReady(function() {
             AVAILABLE_ONLY: AVAILABLE_ONLY,
             BASE_SITE_URL: BASE_SITE_URL,
             LANGUAGE: LANGUAGE,
-            BASIC_ONLY: BASIC_ONLY,
+            BASIC: BASIC,
+            IMAGES: IMAGES,
             options: options
         }, function () {
-            console.log("== PRODUCTS ==");
+            console.log("[summary] == PRODUCTS ==");
 
             // casperjs context here
             var casper = this;
@@ -561,11 +573,11 @@ models.onReady(function() {
                                     if (AVAILABLE_ONLY == false || product.available == true) {
                                         // add to the list to be fetched if new
                                         if (existingProducts[product.sku]) {
-                                            console.log("found updated product"+(kits?' kit':''), product.sku);
+                                            console.log("[summary] found updated product"+(kits?' kit':''), product.sku);
                                             updateProducts.push({id: product.id, sku: product.sku, isKit: kits});
                                             // else add to the list to be updated later
                                         } else {
-                                            console.log("found new product"+(kits?' kit':''), product.sku);
+                                            console.log("[summary] found new product"+(kits?' kit':''), product.sku);
                                             newProducts.push({id: product.id, sku: product.sku, isKit: kits});
                                         }
                                     } else {
@@ -669,7 +681,7 @@ models.onReady(function() {
                         fetchProductUsage(productId, isKit);
 
                         // we only do this for english, spanish is just for fetching the text
-                        if (LANGUAGE == "en_US" && !BASIC_ONLY) {
+                        if (LANGUAGE == "en_US" && !BASIC) {
                             fetchProductImages(productId, isKit);
                             fetchProductPrices(productId, isKit);
                             fetchProductCategories(productId, isKit);
@@ -681,6 +693,8 @@ models.onReady(function() {
                             if (isKit) {
                                 fetchProductComponents(productId);
                             }
+                        } else if (LANGUAGE == "en_US" && IMAGES) {
+                            fetchProductImages(productId, isKit);
                         }
 
                         saveProduct(productId);
@@ -712,7 +726,7 @@ models.onReady(function() {
                 //casper.wait(Math.floor(Math.random() * 2000) + 500);
 
                 casper.then(function() {
-                    console.log('Getting product detail', productId, 'sku', sku, 'isKit', isKit);
+                    console.log('[summary] Getting product detail', productId, 'sku', sku, 'isKit', isKit);
                 });
 
                 casper.thenOpen(u, function (response) {
@@ -772,7 +786,7 @@ models.onReady(function() {
                 //casper.wait(Math.floor(Math.random() * 2000) + 500);
 
                 casper.then(function() {
-                    console.log('Getting product images', productId);
+                    console.log('[summary] Getting product images', productId);
                 });
 
                 casper.thenOpen(u, function (response) {
@@ -824,7 +838,7 @@ models.onReady(function() {
                 //casper.wait(Math.floor(Math.random() * 2000) + 500);
 
                 casper.then(function() {
-                    console.log('Getting product ingredients', productId);
+                    console.log('[summary] Getting product ingredients', productId);
                 });
 
                 casper.thenOpen(u, function (response) {
@@ -864,7 +878,7 @@ models.onReady(function() {
                 //casper.wait(Math.floor(Math.random() * 2000) + 500);
 
                 casper.then(function() {
-                    console.log('Getting product usage', productId);
+                    console.log('[summary] Getting product usage', productId);
                 });
 
                 casper.thenOpen(u, function (response) {
@@ -904,7 +918,7 @@ models.onReady(function() {
                 //casper.wait(Math.floor(Math.random() * 2000) + 500);
 
                 casper.then(function() {
-                    console.log('Getting product prices', productId);
+                    console.log('[summary] Getting product prices', productId);
                 });
 
                 casper.thenOpen(u, function (response) {
@@ -1036,7 +1050,7 @@ models.onReady(function() {
                 //casper.wait(Math.floor(Math.random() * 2000) + 500);
 
                 casper.then(function() {
-                    console.log('Getting product categories', productId);
+                    console.log('[summary] Getting product categories', productId);
                 });
 
                 casper.thenOpen(u, function (response) {
@@ -1079,7 +1093,7 @@ models.onReady(function() {
                 //casper.wait(Math.floor(Math.random() * 2000) + 500);
 
                 casper.then(function() {
-                    console.log('Getting product upsellItems', productId);
+                    console.log('[summary] Getting product upsellItems', productId);
                 });
 
                 casper.thenOpen(u, function (response) {
@@ -1124,7 +1138,7 @@ models.onReady(function() {
                 //casper.wait(Math.floor(Math.random() * 2000) + 500);
 
                 casper.then(function() {
-                    console.log('Getting product youMayAlsoLike', productId);
+                    console.log('[summary] Getting product youMayAlsoLike', productId);
                 });
 
                 casper.thenOpen(u, function (response) {
@@ -1173,7 +1187,7 @@ models.onReady(function() {
                 //casper.wait(Math.floor(Math.random() * 2000) + 500);
 
                 casper.then(function() {
-                    console.log('Getting product sharedAssets', productId);
+                    console.log('[summary] Getting product sharedAssets', productId);
                 });
 
                 casper.thenOpen(u, function (response) {
@@ -1226,7 +1240,7 @@ models.onReady(function() {
                 //casper.wait(Math.floor(Math.random() * 2000) + 500);
 
                 casper.then(function() {
-                    console.log('Getting product components', productId);
+                    console.log('[summary] Getting product components', productId);
                 });
 
                 casper.thenOpen(u, function (response) {
@@ -1311,7 +1325,7 @@ models.onReady(function() {
                 LANGUAGE: LANGUAGE,
                 options: options
             }, function () {
-                console.log("== PRODUCT GROUPS ==");
+                console.log("[summary] == PRODUCT GROUPS ==");
 
                 // casperjs context here
                 var casper = this;
@@ -1371,11 +1385,12 @@ models.onReady(function() {
 
                                                 var c2 = $(this).find("div.x-grid3-cell-inner.x-grid3-col-3").html();
                                                 if (match = productRe.exec(c2)) {
-                                                    console.log("found product group page", JSON.stringify(match));
+                                                    console.log("found product group", JSON.stringify(match));
 
                                                     // load product group detail
                                                     productGroupId = match[1];
                                                     systemRef = match[2];
+                                                    console.log("[summary] Found product group", productGroupId, systemRef);
                                                     productGroups.push({
                                                         available: available,
                                                         id: productGroupId,
@@ -1478,7 +1493,7 @@ models.onReady(function() {
                     //casper.wait(Math.floor(Math.random() * 2000) + 500);
 
                     casper.then(function () {
-                        console.log('Getting product group detail', productGroupId);
+                        console.log('[summary] Getting product group detail', productGroupId);
                     });
 
                     casper.thenOpen(u, function (response) {
@@ -1533,7 +1548,7 @@ models.onReady(function() {
                     //casper.wait(Math.floor(Math.random() * 2000) + 500);
 
                     casper.then(function () {
-                        console.log('Getting product group images', productGroupId);
+                        console.log('[summary] Getting product group images', productGroupId);
                     });
 
                     casper.thenOpen(u, function (response) {
@@ -1582,7 +1597,7 @@ models.onReady(function() {
                     //casper.wait(Math.floor(Math.random() * 2000) + 500);
 
                     casper.then(function () {
-                        console.log('Getting product group ingredients', productGroupId);
+                        console.log('[summary] Getting product group ingredients', productGroupId);
                     });
 
                     casper.thenOpen(u, function (response) {
@@ -1619,7 +1634,7 @@ models.onReady(function() {
                     //casper.wait(Math.floor(Math.random() * 2000) + 500);
 
                     casper.then(function () {
-                        console.log('Getting product group usage', productGroupId);
+                        console.log('[summary] Getting product group usage', productGroupId);
                     });
 
                     casper.thenOpen(u, function (response) {
@@ -1657,7 +1672,7 @@ models.onReady(function() {
                     //casper.wait(Math.floor(Math.random() * 2000) + 500);
 
                     casper.then(function () {
-                        console.log('Getting product group categories', productGroupId);
+                        console.log('[summary] Getting product group categories', productGroupId);
                     });
 
                     casper.thenOpen(u, function (response) {
@@ -1697,7 +1712,7 @@ models.onReady(function() {
                     //casper.wait(Math.floor(Math.random() * 2000) + 500);
 
                     casper.then(function () {
-                        console.log('Getting product group upsellItems', productGroupId);
+                        console.log('[summary] Getting product group upsellItems', productGroupId);
                     });
 
                     casper.thenOpen(u, function (response) {
@@ -1740,7 +1755,7 @@ models.onReady(function() {
                     //casper.wait(Math.floor(Math.random() * 2000) + 500);
 
                     casper.then(function () {
-                        console.log('Getting product group youMayAlsoLike', productGroupId);
+                        console.log('[summary] Getting product group youMayAlsoLike', productGroupId);
                     });
 
                     casper.thenOpen(u, function (response) {
@@ -1787,7 +1802,7 @@ models.onReady(function() {
                     //casper.wait(Math.floor(Math.random() * 2000) + 500);
 
                     casper.then(function () {
-                        console.log('Getting product group SKUs', productGroupId);
+                        console.log('[summary] Getting product group SKUs', productGroupId);
                     });
 
                     casper.thenOpen(u, function (response) {
@@ -1837,7 +1852,7 @@ models.onReady(function() {
                 AVAILABLE_ONLY: AVAILABLE_ONLY,
                 BASE_SITE_URL: BASE_SITE_URL
             }, function () {
-                console.log("== KIT GROUPS ==");
+                console.log("[summary] == KIT GROUPS ==");
 
                 // casperjs context here
                 var casper = this;
@@ -1888,6 +1903,7 @@ models.onReady(function() {
                                     // load product group detail
                                     var kitGroupId = match[1];
                                     var systemRef = match[2];
+                                    console.log("[summary] Found kit group", kitGroupId, systemRef);
 
                                     try {
                                         // NOTE: save the base level information first, so we could load any group system refs later
@@ -1934,7 +1950,7 @@ models.onReady(function() {
                     ////casper.wait(Math.floor(Math.random() * 2000) + 500);
 
                     casper.then(function () {
-                        console.log('Getting kit group detail', kitGroupId);
+                        console.log('[summary] Getting kit group detail', kitGroupId);
                     });
 
                     casper.thenOpen(u, function (response) {
@@ -1995,34 +2011,36 @@ models.onReady(function() {
     spooky.on('category.save', function(json) {
         //console.log('saving category', json);
         try {
-            var p = JSON.parse(json);
-            var id = p._id;
-            delete p._id;
+            var c = JSON.parse(json);
+            var id = c._id;
+            delete c._id;
 
             var isUpdate = false;
 
             // do a lookip on id, so we can detect how many are actually updates & if there are any type overwrites
-            models.Category.findById(id, '_id', function(err, c) {
+            models.Category.findById(id, '_id', function(err, cc) {
                 try {
                     if (err) return console.error("error loading category", err);
-                    if (c != null) {
-                        //console.log("found category", JSON.stringify(c));
+                    if (cc != null) {
+                        console.log("found category", JSON.stringify(c));
                         isUpdate = true;
                     } else {
                         console.log("didn't find existing category", id);
                     }
 
                     // do a save
-                    models.Category.update({_id: id}, p, {upsert: true}, function (err, numAffected, rawResponse) {
+                    models.Category.update({_id: id}, c, {upsert: true}, function (err, numAffected, rawResponse) {
                         try {
-                            if (err) return console.error("error saving category", err, JSON.stringify(p));
+                            if (err) return console.error("error saving category", err);
                             if (isUpdate) {
                                 updatedCategories++;
-                                console.log("updated category", updatedCategories, numAffected, rawResponse);
+                                console.log("[summary] updated category", id, updatedCategories, numAffected, rawResponse);
                             } else {
                                 savedCategories++;
-                                console.log("saved category", savedCategories, numAffected, rawResponse);
+                                console.log("[summary] saved category", id, savedCategories, numAffected, rawResponse);
                             }
+
+                            saveImages(id, c, "categories");
                         } catch (ex) {
                             console.error("error saving/updating category", id, JSON.stringify(ex));
                         }
@@ -2091,28 +2109,30 @@ models.onReady(function() {
                     if (p.type == "kit") {
                         if (isUpdate) {
                             updatedProductKits++;
-                            console.log("updated product kit", id, updatedProductKits, numAffected, rawResponse);
+                            console.log("[summary] updated product kit", id, updatedProductKits, numAffected, rawResponse);
                         } else {
                             savedProductKits++;
-                            console.log("saved product kit", id, savedProductKits, numAffected, rawResponse);
+                            console.log("[summary] saved product kit", id, savedProductKits, numAffected, rawResponse);
                         }
                     } else if (p.type == "group") {
                         if (isUpdate) {
                             updatedProductGroups++;
-                            console.log("updated product group", id, updatedProductGroups, numAffected, rawResponse);
+                            console.log("[summary] updated product group", id, updatedProductGroups, numAffected, rawResponse);
                         } else {
                             savedProductGroups++;
-                            console.log("saved product group", id, savedProductGroups, numAffected, rawResponse);
+                            console.log("[summary] saved product group", id, savedProductGroups, numAffected, rawResponse);
                         }
                     } else {
                         if (isUpdate) {
                             updatedProducts++;
-                            console.log("updated product", id, updatedProducts, numAffected, rawResponse);
+                            console.log("[summary] updated product", id, updatedProducts, numAffected, rawResponse);
                         } else {
                             savedProducts++;
-                            console.log("saved product", id, savedProducts, numAffected, rawResponse);
+                            console.log("[summary] saved product", id, savedProducts, numAffected, rawResponse);
                         }
                     }
+
+                    saveImages(id, p, "products");
                 } catch (ex) {
                     console.error("error saving/updating product", id, JSON.stringify(ex));
                 }
@@ -2165,22 +2185,136 @@ models.onReady(function() {
         }
     });
 
+    function saveImages(id, item, type) {
+        try {
+            console.log("saveImages()", type, id);
+            if (item && item.images && item.images.length > 0) {
+                console.log("saveImages():", type, "has", item.images.length, "images");
+                for (var j=0; j < item.images.length; j++) {
+                    console.log("saveImages(): checking image", j, "for", type);
+                    checkAndReplaceImage(id, j, item.images[j].imagePath, type).then(function(ret) {
+                        if (ret.exists) {
+                            //console.log(ret.id, ret.j, "image found");
+                        } else {
+                            console.log(ret.id, ret.j, type, "image NOT found");
+                        }
+                    }, function(error) {
+                        console.error("saveImages(): failed to save/replace image", error);
+                    });
+                }
+            } else {
+                console.error("saveImages(): product has no images", id);
+            }
+        } catch (ex) {
+            console.error("saveImages(): error", ex);
+        }
+    }
+
+    function checkAndReplaceImage(id, j, imagePath, type) {
+        var d = Q.defer();
+
+        try {
+            var fileName = "/img/" + type + "/" + id + "_" + j + ".jpg";
+            console.log("checkAndReplaceImage(): checking image", fileName);
+
+            GridFS.exist({filename: fileName}, function (err, found) {
+                if (err) return;
+
+                if (found) {
+                    console.log("checkAndReplaceImage(): removing old file", fileName);
+                    GridFS.remove({filename: fileName}, function (err) {
+                        if (err) {
+                            console.error("error removing old file", fileName);
+                        }
+
+                        createFile(id, j, imagePath, fileName).then(function(val) {
+                            d.resolve(val);
+                        }, function(error) {
+                            d.reject(error);
+                        });
+                    });
+                } else {
+                    createFile(id, j, imagePath, fileName).then(function(val) {
+                        d.resolve(val);
+                    }, function(error) {
+                        d.reject(error);
+                    });
+                }
+            });
+        } catch (ex) {
+            console.error("checkAndReplaceImage(): failed to fetch file", ex);
+            d.reject();
+        }
+
+        return d.promise;
+    }
+
+    function createFile(id, j, imagePath, fileName) {
+        var d = Q.defer();
+
+        try {
+            var url = "https://admin.jafra.com" + imagePath;
+            console.log("createFile(): fetching image", url);
+
+            var writestream = GridFS.createWriteStream({
+                filename: fileName
+            });
+
+            request.get({
+                url: url
+            }, function (error, response, body) {
+                if (error || response.statusCode != 200) {
+                    console.log("createFile(): error!", response.statusCode);
+                    d.resolve({
+                        id: id, j: j, exists: false
+                    });
+                    return;
+                }
+
+                console.log("createFile(): got product image");
+
+                var update = {};
+                update["images." + j + ".localPath"] = fileName;
+
+                console.log("createFile(): updating product image");
+
+                models.Product.update({_id: id}, update, {upsert: true}, function (err, numAffected, rawResponse) {
+                    if (err) {
+                        console.error("createFile(): error updating product image path");
+                        return;
+                    }
+
+                    console.log("createFile(): updated", update);
+                });
+
+                console.log("createFile(): success");
+                d.resolve({
+                    id: id, j: j, exists: true
+                });
+            }).pipe(writestream);
+        } catch (ex) {
+            console.error("createFile(): failed to write gridfs file", ex);
+        }
+
+        return d.promise;
+    }
+    
     spooky.on('done', function() {
-        console.log("Saved", savedCategories, "categories");
-        console.log("Saved", savedProductGroups, "product groups");
-        console.log("Saved", savedProducts, "products");
-        console.log("Saved", savedProductKits, "product kits");
-        console.log("Saved", savedKitGroups, "kit groups");
+        console.log("[summary] Saved", savedCategories, "categories");
+        console.log("[summary] Saved", savedProductGroups, "product groups");
+        console.log("[summary] Saved", savedProducts, "products");
+        console.log("[summary] Saved", savedProductKits, "product kits");
+        console.log("[summary] Saved", savedKitGroups, "kit groups");
 
-        console.log("Updated", updatedCategories, "categories");
-        console.log("Updated", updatedProductGroups, "product groups");
-        console.log("Updated", updatedProducts, "products");
-        console.log("Updated", updatedProductKits, "product kits");
-        console.log("Updated", updatedKitGroups, "kit groups");
+        console.log("[summary] Updated", updatedCategories, "categories");
+        console.log("[summary] Updated", updatedProductGroups, "product groups");
+        console.log("[summary] Updated", updatedProducts, "products");
+        console.log("[summary] Updated", updatedProductKits, "product kits");
+        console.log("[summary] Updated", updatedKitGroups, "kit groups");
 
-        console.log("Skipped", skippedProductGroups, "product groups");
-        console.log("Skipped", skippedProducts, "products");
-        console.log("Skipped", skippedProductKits, "product kits");
+        console.log("[summary] Skipped", skippedProductGroups, "product groups");
+        console.log("[summary] Skipped", skippedProducts, "products");
+        console.log("[summary] Skipped", skippedProductKits, "product kits");
 
         process.exit(0);
     });
@@ -2197,7 +2331,9 @@ models.onReady(function() {
     // There are a lot.
     // He has opinions.
     spooky.on('console', function (line) {
-        console.log("console", line);
+        if (VERBOSE || (line != null && (line.indexOf("[summary]") > -1 || line.indexOf("[error]") > -1))) {
+            console.log("console", line);
+        }
     });
 
     spooky.on('log', function (log, level) {
