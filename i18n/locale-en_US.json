@@ -488,6 +488,8 @@
     "HOME-BOTTOM-TAGLINE":"The science of beauty, naturally",
     "HOME-BOTTOM-TAGLINE-BODY":"JAFRA&reg; blends cutting edge science with the best nature has to offer. The results are highly effective, wonderfully luxurious and irresistibly aromatic skin & body care formulas. Products that help women look their best",
 
-    "CVV-INVALID": "Invalid CVV Code"
+    "CVV-INVALID": "Invalid CVV Code",
+
+    "PASSWORD-RESET-ERROR-TOO-SOON": "Password reset request for account too soon (try again later)"
 
 }

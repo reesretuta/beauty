@@ -27,10 +27,19 @@ angular.module('app.controllers.top')
                 $scope.processing = false;
             }, function(error) {
                 $log.error("PasswordResetController(): resetPasswordRequest(): password reset failed", error);
-                $translate('FORGOT-PASSWORD-ERROR').then(function (message) {
-                    $scope.passwordResetError = message;
-                    $scope.processing = false;
-                });
+                if (error.statusCode && error.statusCode === 409) {
+                    $log.error("PasswordResetController(): resetPasswordRequest(): password reset failed: reset too soon");
+                    $translate('PASSWORD-RESET-ERROR-TOO-SOON').then(function (message) {
+                        $scope.passwordResetError = message;
+                        $scope.processing = false;
+                    });
+                } else {
+                    $log.error("PasswordResetController(): resetPasswordRequest(): password reset failed: unknown error");
+                    $translate('FORGOT-PASSWORD-ERROR').then(function (message) {
+                        $scope.passwordResetError = message;
+                        $scope.processing = false;
+                    });
+                }
             });
         }
 

@@ -491,5 +491,7 @@
     "HOME-BOTTOM-TAGLINE":"La ciencia de la belleza natural",
     "HOME-BOTTOM-TAGLINE-BODY":"JAFRA&reg; combina lo más avanzado de la ciencia con lo mejor que la naturaleza ofrece. El resultado son productos para el cuidado del cutis y del cuerpo, con fórmulas altamente efectivas, lujosas e irresistibles. Productos que ayudan a las mujeres a lucir naturalmente bellas.",
 
-    "CVV-INVALID": "Inválido Código CVV"
+    "CVV-INVALID": "Inválido Código CVV",
+
+    "PASSWORD-RESET-ERROR-TOO-SOON": "Solicitud de restablecimiento de contraseña para la cuenta demasiado pronto (a intentarlo más tarde)"
 }
