@@ -184,6 +184,7 @@ models.onReady(function() {
                 };
 
                 var categories = [];
+                var visitedCategories = {};
 
                 function Category() {
                 }
@@ -335,8 +336,10 @@ models.onReady(function() {
 
                                 console.log("got categories");
                                 for (var i = 0; i < categories.length; i++) {
+                                    var category = categories[i];
+
                                     // get more category details
-                                    saveCategoryDetail(categories[i]);
+                                    fetchCategoryDetail(category);
 
                                     // save
                                     saveCategory(categories[i]);
@@ -345,10 +348,11 @@ models.onReady(function() {
                         }
                     });
 
-                    function saveCategoryDetail(category) {
+                    function fetchCategoryDetail(category) {
                         var categoryId = category._id;
                         var u = BASE_SITE_URL + "/csr-admin-4/productcatalog/product-category.detail?action=edit&categoryId=" + categoryId;
-                        console.log("Loading category detail");
+
+                        console.log("[summary] Loading category detail", u);
 
                         casper.thenOpen(u, function (response) {
                             if (response.status !== 200) {
@@ -357,70 +361,104 @@ models.onReady(function() {
                             } else {
                                 console.log('Got category detail page');
 
+                                // get details
                                 var detail = casper.evaluate(function (LANGUAGE) {
-                                    var detail = {};
-                                    detail.startDate = new Date(moment($('input[name="category.startDate"]').val(), 'MM/DD/YYYY').unix() * 1000);
-                                    detail.endDate = new Date(moment($('input[name="category.endDate"]').val(), 'MM/DD/YYYY').unix() * 1000);
+                                    try {
+                                        var detail = {};
+                                        detail.startDate = new Date(moment($('input[name="category.startDate"]').val(), 'MM/DD/YYYY').unix() * 1000);
+                                        detail.endDate = new Date(moment($('input[name="category.endDate"]').val(), 'MM/DD/YYYY').unix() * 1000);
 
-                                    // description
-                                    detail.description = $('textarea[name="categoryLocale.'+LANGUAGE+'.description"]').html();
+                                        // description
+                                        detail.description = $('textarea[name="categoryLocale.' + LANGUAGE + '.description"]').html();
+                                        console.log('Got category description', detail.description);
 
-                                    // images
-                                    var images = [];
-
-                                    $("#gridImages .x-grid3-scroller table tr").each(function () {
-                                        try {
-                                            var image = {};
-                                            image.rank = parseInt($(this).find('div.x-grid3-cell-inner.x-grid3-col-1').html());
-                                            image.startDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html(), 'MM/DD/YYYY').unix() * 1000);
-                                            image.endDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-3').html(), 'MM/DD/YYYY').unix() * 1000);
-                                            image.imagePath = $(this).find('div.x-grid3-cell-inner.x-grid3-col-4 a').attr("href");
-                                            image.alt = $(this).find('div.x-grid3-cell-inner.x-grid3-col-5').html();
-                                            images.push(image);
-                                            console.log('Got image', JSON.stringify(image));
-                                        } catch (ex) {
-                                            console.error('error parsing category image', JSON.stringify(ex));
+                                        // customer type
+                                        detail.customerTypes = [];
+                                        if ($('input[name="customerType1"]').attr('checked')) {
+                                            detail.customerTypes.push("Non-Party Customer");
                                         }
-                                    });
-                                    detail.images = images;
-
-                                    // customer type
-                                    detail.customerTypes = [];
-                                    if ($('input[name="customerType1"]').attr('checked')) {
-                                        detail.customerTypes.push("Non-Party Customer");
+                                        if ($('input[name="customerType2"]').attr('checked')) {
+                                            detail.customerTypes.push("Consultant");
+                                        }
+                                        if ($('input[name="customerType4"]').attr('checked')) {
+                                            detail.customerTypes.push("Employee");
+                                        }
+                                        if ($('input[name="customerType5"]').attr('checked')) {
+                                            detail.customerTypes.push("Party Guest");
+                                        }
+                                        if ($('input[name="customerType6"]').attr('checked')) {
+                                            detail.customerTypes.push("Hostess");
+                                        }
+                                        if ($('input[name="customerType7"]').attr('checked')) {
+                                            detail.customerTypes.push("Fundraiser");
+                                        }
+                                        if ($('input[name="customerType8"]').attr('checked')) {
+                                            detail.customerTypes.push("Department");
+                                        }
+                                        return detail;
+                                    } catch (ex) {
+                                        console.error("error parsing category detail page", JSON.stringify(ex));
                                     }
-                                    if ($('input[name="customerType2"]').attr('checked')) {
-                                        detail.customerTypes.push("Consultant");
-                                    }
-                                    if ($('input[name="customerType4"]').attr('checked')) {
-                                        detail.customerTypes.push("Employee");
-                                    }
-                                    if ($('input[name="customerType5"]').attr('checked')) {
-                                        detail.customerTypes.push("Party Guest");
-                                    }
-                                    if ($('input[name="customerType6"]').attr('checked')) {
-                                        detail.customerTypes.push("Hostess");
-                                    }
-                                    if ($('input[name="customerType7"]').attr('checked')) {
-                                        detail.customerTypes.push("Fundraiser");
-                                    }
-                                    if ($('input[name="customerType8"]').attr('checked')) {
-                                        detail.customerTypes.push("Department");
-                                    }
-                                    return detail;
                                 }, LANGUAGE);
                                 category.startDate = detail.startDate;
                                 category.endDate = detail.endDate;
-                                category.images = detail.images;
                                 category.customerTypes = detail.customerTypes;
 
-                                if (LANGUAGE == "en_US") {
-                                    category.description = detail.description;
-                                } else {
-                                    category.description_es_US = detail.description;
-                                }
+                                // get any images
+                                casper.waitUntilVisible('#gridImages .x-grid3-scroller table tr div.x-grid3-cell-inner.x-grid3-col-4 a', function(LANGUAGE) {
+                                    console.log('[summary] category image DOM loaded');
+
+                                    var images = casper.evaluate(function (LANGUAGE) {
+                                        try {
+                                            // images
+                                            var images = [];
+
+                                            console.log('[summary] Got image count', $("#gridImages .x-grid3-scroller table tr").length);
+
+                                            $("#gridImages .x-grid3-scroller table tr").each(function () {
+                                                try {
+                                                    var image = {};
+                                                    image.rank = parseInt($(this).find('div.x-grid3-cell-inner.x-grid3-col-1').html());
+                                                    image.startDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html(), 'MM/DD/YYYY').unix() * 1000);
+                                                    image.endDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-3').html(), 'MM/DD/YYYY').unix() * 1000);
+                                                    image.imagePath = $(this).find('div.x-grid3-cell-inner.x-grid3-col-4 a').attr("href");
+                                                    image.alt = $(this).find('div.x-grid3-cell-inner.x-grid3-col-5').html();
+                                                    images.push(image);
+                                                    console.log('[summary] Got image', JSON.stringify(image));
+                                                } catch (ex) {
+                                                    console.error('error parsing category image', JSON.stringify(ex));
+                                                }
+                                            });
+
+                                            return images;
+                                        } catch (ex) {
+                                            console.error("error parsing category detail images", JSON.stringify(ex));
+                                        }
+                                    }, LANGUAGE);
+
+                                    console.log('[summary] Got category images', JSON.stringify(images));
+
+                                    category.images = images;
+                                }, function() {
+                                    console.log('[summary] No category images');
+                                }, 3000);
                             }
                         });
+
+                        if (visitedCategories[categoryId]==null) {
+                            casper.then(function () {
+                                // handle parent, if any
+                                if (category.children) {
+                                    var ids = [];
+                                    for (var i = 0; i < category.children.length; i++) {
+                                        var child = category.children[i];
+                                        fetchCategoryDetail(child);
+                                    }
+                                }
+                            });
+                        } else {
+                            console.log("[summary] Already fetched category details", categoryId);
+                        }
                     }
 
                     function saveCategory(category) {
@@ -2009,7 +2047,7 @@ models.onReady(function() {
     });
 
     spooky.on('category.save', function(json) {
-        //console.log('saving category', json);
+        console.log('saving category', json);
         try {
             var c = JSON.parse(json);
             var id = c._id;
@@ -2187,7 +2225,7 @@ models.onReady(function() {
 
     function saveImages(id, item, type) {
         try {
-            console.log("saveImages()", type, id);
+            console.log("saveImages():", type, id);
             if (item && item.images && item.images.length > 0) {
                 console.log("saveImages():", type, "has", item.images.length, "images");
                 for (var j=0; j < item.images.length; j++) {
@@ -2203,7 +2241,7 @@ models.onReady(function() {
                     });
                 }
             } else {
-                console.error("saveImages(): product has no images", id);
+                console.error("saveImages():", type,"has no images", id);
             }
         } catch (ex) {
             console.error("saveImages(): error", ex);
