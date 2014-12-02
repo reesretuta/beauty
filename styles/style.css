@@ -937,7 +937,7 @@ a:focus {
 
 
 .configureKitModal.modal {
-    min-width: 640px;
+    /*min-width: 640px; REMOVED because it broke responsiveness!*/
     min-height: 400px;
     max-width: 90%;
     max-height: 90%;
@@ -967,10 +967,10 @@ a:focus {
 }
 
 .configureKitModal .modal-header {
-    height: 55px;
+    /*height: 55px; REMOVED because it broke responsiveness!*/
 }
 .configureKitModal .modal-body {
-    height: calc(100% - 110px);
+    height: calc(100% - 135px); /*height: calc(100% - 110px);*/
     overflow-x: hidden;
     overflow-y: auto;
 }
@@ -1147,6 +1147,12 @@ button.processing:before {
  * Responsive Styles
  * --------------------------------------------------
  */
+
+@media (max-width: 424px) {
+  .configureKitModal .modal-body {
+    height: calc(100% - 135px);
+  }
+}
 @media screen and (max-width: 767px) {
   .configureKitModal .modal-body .kitSelections {
     border-bottom: 1px solid #dddddd;
@@ -1187,6 +1193,7 @@ button.processing:before {
     margin-right: -1px;
   }
 }
+
 @media (min-width: 768px) {
   .tab-pane {
     min-height: 100px;
