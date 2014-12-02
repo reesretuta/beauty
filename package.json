@@ -34,7 +34,6 @@
     "newrelic": "^1.13.0",
     "xml2js": "^0.4.4",
     "mockserver": "^0.10.0",
-    "nodetime": "^0.8.15",
     "minimist": "^1.1.0",
     "spooky": "^0.2.5",
     "random-string": "^0.1.1",
