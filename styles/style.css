@@ -1064,6 +1064,12 @@ a:focus {
     font-family: "News Cycle", sans-serif !important;
 }
 
+.hover-row:hover {
+  background-color: #eee;
+  background-color: rgba(170,115,177,.1);
+  cursor: pointer;
+}
+
 /* add to cart and step buttons anims */
 .add-to-cart:before {
   content: "\f07a";

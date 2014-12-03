@@ -30,19 +30,20 @@
     <div class="col-lg-9 col-md-9 col-sm-9 kitSelectionList">
       <form name="kitSelectionForm" role="form" class="form-inline clearfix">
         <div ng-repeat="kitGroup in item.product.kitGroups">
-          <div id="kitGroup{{kitGroup.kitGroup.id}}" class="ng-binding kitnameWrapper">
+          <div id="kitGroup{{kitGroup.kitGroup.id}}" class="ng-binding kitnameWrapper row">
             <h2 class="kitname">Choose one from group ({{kitGroup.kitGroup.id}})</h2>
             <span ng-if="$index > 0" class="pull-right"><a href="" ng-click="kitGroupClicked(item.product.kitGroups[$index-1].kitGroup)">Back to {{item.product.kitGroups[$index-1].kitGroup.id}}</a></span>
           </div>
           <!-- products in kitgroup -->
-          <div class="row" ng-repeat="component in kitGroup.kitGroup.components">
-            <div ng-if="productIdToProduct[component.product]" class="col-lg-3 col-md-3 col-xs-3 col-sm-3 modal-addon-item product-image" ng-class="{'selected': item.kitSelections[kitGroup.kitGroup.id].sku == component.product}">
-              <img ng-if="productIdToProduct[component.product].images.length > 0" class="img-responsive" ng-src="{{getImagePath(productIdToProduct[component.product].images[0])}}" ng-click="selectProduct(kitGroup.kitGroup.id, component.product)">
+          <div class="row hover-row" ng-repeat="component in kitGroup.kitGroup.components" ng-click="selectProduct(kitGroup.kitGroup.id, component.product)">
+            <div ng-if="productIdToProduct[component.product]" class="col-lg-3 col-md-3 col-xs-3 col-sm-3 modal-addon-item product-image clearfix" ng-class="{'selected': item.kitSelections[kitGroup.kitGroup.id].sku == component.product}">
+              <img ng-if="productIdToProduct[component.product].images.length > 0" class="img-responsive" ng-src="{{getImagePath(productIdToProduct[component.product].images[0])}}">
               <img ng-if="productIdToProduct[component.product].images.length == 0" class="img-responsive" ng-src="/img/product_placeholder.gif" ng-click="selectProduct(kitGroup.kitGroup.id, component.product)">
               <span ng-if="item.kitSelections[kitGroup.id].sku != component.product" class="kit-selection-plus">+</span>
               <i ng-if="item.kitSelections[kitGroup.id].sku == component.product" class="kit-selection-check fa fa-check"></i>
             </div>
             <div ng-if="productIdToProduct[component.product]" class="col-lg-9 col-md-9 col-xs-9 col-sm-9 modal-addon-item">
+              <br>
               <p class="modal-addon-item-title">{{productIdToProduct[component.product][session.language=='en_US'?'name':'name_'+session.language]}}</p>
               <p class="modal-addon-item-description" ng-bind-html="productIdToProduct[sku].description | unsafe">Product description</p>
               <p class="modal-addon-item-quantity"><span ng-bind-html="'QUANTITY' | translate | unsafe"></span>: {{productIdToProduct[component.product].quantity}}</p>
