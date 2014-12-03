@@ -1000,38 +1000,18 @@ a:focus {
     height: 100%;
     overflow-y: scroll;
 }
-.configureKitModal .modal-body .kitSelectionList .row {
-    padding-bottom: 5px;
-    padding-left: 15px;
-}
+
 .configureKitModal .modal-body .kitSelectionList div.product-image {
     margin-top: 1px;
     padding: 8px;
 }
-.configureKitModal .modal-body .kitSelectionList div.product-image.selected {
-    margin-top: 2px;
-    padding: 5px;
-    border: 3px solid #b51a8a;
+.kitSelectionList div.row {
+  margin: 0 0 10px;
 }
-.configureKitModal .modal-body .kitSelectionList .kit-selection-plus {
-    top: 1px;
-    right: 12px;
-    color: #b51a8a;
-    font-size: 18px;
-    font-weight: bold;
-    position: absolute;
+.kitSelectionList div.selected {
+    outline: 3px solid #b51a8a;
 }
-.configureKitModal .modal-body .kitSelectionList .div.product-image.selected .kit-selection-plus {
-    top: 0px;
-    right: 9px;
-}
-.configureKitModal .modal-body .kitSelectionList .kit-selection-check {
-    top: 3px;
-    right: 8px;
-    color: #b51a8a;
-    font-size: 16px;
-    position: absolute;
-}
+
 .configureKitModal .modal-body .kitSelectionList .div.product-image.selected .kit-selection-check {
     top: 0px;
     right: 5px;
@@ -1062,6 +1042,22 @@ a:focus {
 .configureKitModal .modal-addon-item-quantity {
     font-size: 14px;
     font-family: "News Cycle", sans-serif !important;
+}
+
+.kit-selection-check, div.selected .kit-selection-plus {
+  display: none;
+  color: #b51a8a;
+}
+
+div.selected .kit-selection-check, .kit-selection-plus {
+  display: inline-block;
+  color: #b51a8a;
+}
+
+.hover-row:hover {
+  background-color: #eee;
+  background-color: rgba(170,115,177,.1);
+  cursor: pointer;
 }
 
 /* add to cart and step buttons anims */
