@@ -11,7 +11,7 @@
                             <span ng-bind-html="'OS-SECTION2-BODY' | translate | unsafe"></span>
                         </p>
                         <!-- collapsed section toggle (default collapsed) -->
-                        <p class="text-right prod_more_link"><a class="more-link more-link-alt collapsed" data-toggle="collapse" href="#more_products"><span><span ng-bind-html="'OUR-PRODUCTS' | translate | unsafe"></span></span></a></p>
+                        <p class="text-right prod_more_link"><a class="more-link more-link-alt collapsed" data-toggle="collapse" data-target="#more_products"><span><span ng-bind-html="'OUR-PRODUCTS' | translate | unsafe"></span></span></a></p>
                     </div><!-- /.section-copy -->
                 </div><!-- /.col -->
                 <div class="col-md-6">
@@ -37,10 +37,10 @@
                                 <img class="img-responsive" src="/img/products_color.jpg">
                             </div>
                         </div><!-- Controls -->
-                         <a class="left carousel-control" href="#carousel-product-generic" role="button" data-slide="prev">
+                         <a class="left carousel-control" data-target="#carousel-product-generic" role="button" data-slide="prev">
                              <span class="glyphicon glyphicon-chevron-left"></span>
                          </a>
-                        <a class="right carousel-control" href="#carousel-product-generic" role="button" data-slide="next">
+                        <a class="right carousel-control" data-target="#carousel-product-generic" role="button" data-slide="next">
                             <span class="glyphicon glyphicon-chevron-right"></span>
                         </a>
                     </div><!-- /.carousel -->

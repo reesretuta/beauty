@@ -12,7 +12,7 @@
         <ul>
           <li id="kitGroupNav{{kitGroup.kitGroup.id}}" ng-repeat="kitGroup in item.product.kitGroups" ng-click="kitGroupClicked(kitGroup)">
             <a href="" ng-class="{'active': isKitGroupSelected(kitGroup.kitGroup)}">
-              <span class="ng-binding kitGroupNavName">{{kitGroup.kitGroup.id}}</span>
+              <span class="ng-binding kitGroupNavName">{{kitGroup.kitGroup[session.language=='en_US'?'name':'name_'+session.language]}}</span>
               <!-- <i ng-if="isKitGroupSelected(kitGroup.kitGroup)" class="fa fa-angle-up pull-right ng-scope"></i>
               <i ng-if="!isKitGroupSelected(kitGroup.kitGroup)" class="fa fa-angle-down pull-right ng-scope"></i> -->
             </a>
@@ -32,7 +32,7 @@
       <form name="kitSelectionForm" role="form" class="form-inline clearfix">
         <div ng-repeat="kitGroup in item.product.kitGroups">
           <div id="kitGroup{{kitGroup.kitGroup.id}}" class="ng-binding kitnameWrapper row">
-            <h2 class="kitname">Choose one from group ({{kitGroup.kitGroup.id}}) <small class="text-muted italic pull-right" style="text-transform:none;">click one to select &nbsp;&nbsp;</small> </h2>
+            <h2 class="kitname">{{kitGroup.kitGroup[session.language=='en_US'?'name':'name_'+session.language]}} <small class="text-muted italic pull-right" style="text-transform:none;">click one to select &nbsp;&nbsp;</small> </h2>
             <!-- <span ng-if="$index > 0" class="pull-right"><a href="" ng-click="kitGroupClicked(item.product.kitGroups[$index-1].kitGroup)">Back to {{item.product.kitGroups[$index-1].kitGroup.id}}</a></span> -->
           </div>
           <!-- products in kitgroup -->
