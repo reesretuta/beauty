@@ -91,7 +91,8 @@
                 <p><span ng-repeat="productdetail in product.contains">
                     <a class="store-group-colors-swatch"
                       ng-class="{'active': selectedProduct.sku==productdetail.product.sku}"
-                      ng-click="categoryClicked($index); showhide(productdetail.product.sku)">
+                      ng-click="categoryClicked($index); showhide(productdetail.product.sku)"
+                      title="{{getTranslated(selectedProduct).name}}">
                       <img ng-src="{{getImagePath(productdetail.product.images[0])}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';">
                     </a>
                 </span></p>
@@ -99,14 +100,14 @@
                     <option value='{{productdetail.product.sku}}' ng-repeat="productdetail in product.contains">{{getTranslated(productdetail.product).name}}</option>
                 </select></p>
 
-                <div class="store-dropdown btn-group" ng-model="selectedProduct.sku" dropdown is-open="status.isopen">
+                <!-- <div class="store-dropdown btn-group" ng-model="selectedProduct.sku" dropdown is-open="status.isopen">
                   <button type="button" class="btn dropdown-toggle"><img ng-src="{{getImagePath(selectedProduct.images[0])}}" width="24" onError="this.onerror=null;this.src='/img/product_placeholder.gif';"> {{getTranslated(selectedproduct).name}} &nbsp;&nbsp;<span class="caret"></span></button>
                   <ul class="dropdown-menu" role="menu">
                     <li id="{{productdetail.product.sku}}" ng-repeat="productdetail in product.contains">
                       <a href="" ng-click="showhide(productdetail.product.sku); categoryClicked(-1)" ng-class="{'active': selectedProduct.sku==productdetail.product.sku}"><img ng-src="{{getImagePath(productdetail.product.images[0])}}" width="24" onError="this.onerror=null;this.src='/img/product_placeholder.gif';"> {{getTranslated(productdetail.product).name}}</a>
                     </li>
                   </ul>
-                </div><!-- /color dropdown -->
+                </div> /color dropdown -->
 
                 <p class="itemsleep"><span ng-bind-html="'ITEM' | translate | unsafe"></span> #{{selectedProduct.sku}} - {{getTranslated(selectedProduct).name}}</p>
                 <p class="pricesleep">{{ selectedProduct.currentPrice.price | currency }}</p>
