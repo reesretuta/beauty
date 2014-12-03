@@ -346,6 +346,7 @@ font-size: 48px;
 .section-copy {
   padding: 0 15px 30px 30px;
 }
+/* NOVEMBER PROMO
 .promo {
   width: 260px;
   height: 260px;
@@ -391,7 +392,7 @@ font-size: 48px;
 }
 .promo .more-link:after {
   top: 5px;
-}
+}*/
 
 section .cta-section {
   padding: 50px 0px;
