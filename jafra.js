@@ -65,7 +65,6 @@ var STRIKEIRON_ADDRESS_LICENSE = "0DA72EA3199C10ABDE0B";
 
 var PASSWORD_RESET_INTERVAL = 15 * 1000 * 60;
 var MIN_INVENTORY = 10;
-exports.MIN_INVENTORY = MIN_INVENTORY;
 
 function authenticate(email, password) {
     //console.log("authenticating", email, password);

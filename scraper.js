@@ -1884,11 +1884,12 @@ models.onReady(function() {
         }
 
         // KIT GROUPS
-        if (!options["skipKits"] && !options["products"]) {
+        if (!options["skipKitGroups"]) {
             spooky.then([{
                 existingProducts: existingProducts,
                 AVAILABLE_ONLY: AVAILABLE_ONLY,
-                BASE_SITE_URL: BASE_SITE_URL
+                BASE_SITE_URL: BASE_SITE_URL,
+                LANGUAGE: LANGUAGE
             }, function () {
                 console.log("[summary] == KIT GROUPS ==");
 
@@ -1999,7 +2000,7 @@ models.onReady(function() {
                             casper.waitUntilVisible('#secondGrid .x-grid3-scroller', function () {
                                 console.log("DOM available");
                                 var kitGroup = {};
-                                kitGroup.components = casper.evaluate(function () {
+                                var ret = casper.evaluate(function () {
                                     try {
                                         var components = [];
                                         $('#secondGrid .x-grid3-scroller .x-grid3-row').each(function (index, row) {
@@ -2010,13 +2011,26 @@ models.onReady(function() {
                                             component.endDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-5').html(), 'MM/DD/YYYY').unix() * 1000);
                                             components.push(component);
                                         });
-                                        return components;
+
+                                        var name = $("input[name='kitGroupLocale.name']").val();
+                                        return {
+                                            name: name,
+                                            components: components
+                                        };
                                     } catch (ex) {
                                         console.error("error parsing kit group detail", JSON.stringify(ex));
                                     }
                                 });
+
                                 // set the group systemRef as the ID
                                 kitGroup._id = systemRef;
+
+                                if (LANGUAGE == "en_US") {
+                                    kitGroup.name = ret.name;
+                                } else {
+                                    kitGroup.name_es_US = ret.name;
+                                }
+                                kitGroup.components = ret.components;
 
                                 kitGroups[kitGroupId] = kitGroup;
                                 //console.log("Product Group:", JSON.stringify(kitGroup));

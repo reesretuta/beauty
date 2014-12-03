@@ -102,6 +102,8 @@ exports.SharedAttribute = SharedAttribute;
 // KIT GROUP
 var kitGroupSchema = Schema({
     "_id" : { type: String },
+    "name" : String,
+    "name_es_US" : String,
     // kits groups have products they contain
     // NOTE: to reduce complexity, kit groups cannot currently contain other kit groups
     "components" : [{
@@ -236,7 +238,6 @@ var productSchema = Schema({
     }],
     "kitGroups" : [{
         "kitGroup" : {type: String, ref: 'KitGroup'},
-        "name" : String,
         "rank" : Number,
         "quantity" : Number,
         "startDate" : { type: Date, default: null },

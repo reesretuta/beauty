@@ -312,13 +312,6 @@ router.route('/products')
                 }).populate({
                     path: 'kitGroups.kitGroup',
                     model: 'KitGroup'
-                }).populate({
-                    path: 'kitGroups.kitGroup.components.product',
-                    model: 'Product',
-                    match: { $and: [
-                        {masterStatus: "A", onHold: false},
-                        {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
-                    ]}
                 }).exec(function (err, products) {
                     if (err) {
                         console.log("error getting products by string", err);
@@ -326,8 +319,22 @@ router.route('/products')
                         return;
                     }
 
-                    console.log("returning", products.length, "products");
-                    res.json(products);
+                    products = products ? products : [];
+
+                    //var opts = {
+                    //    path: 'kitGroups.kitGroup.components.product',
+                    //    model: 'Product',
+                    //    match: { $and: [
+                    //        {masterStatus: "A", onHold: false},
+                    //        {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
+                    //    ]}
+                    //}
+                    //
+                    //// populate components
+                    //models.Product.populate(products, opts, function (err, products) {
+                        console.log("returning", products.length, "products");
+                        res.json(products);
+                    //})
                 });
         } else if (categoryId != null && !S(categoryId).isEmpty()) {
             console.log("searching for products by category", categoryId);
@@ -377,8 +384,20 @@ router.route('/products')
 
                 products = products ? products : [];
 
-                console.log("returning", products.length, "products");
-                res.json(products);
+                //var opts = {
+                //    path: 'kitGroups.kitGroup.components.product',
+                //    model: 'Product',
+                //    match: { $and: [
+                //        {masterStatus: "A", onHold: false},
+                //        {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
+                //    ]}
+                //}
+                //
+                //// populate components
+                //models.Product.populate(products, opts, function (err, products) {
+                    console.log("returning", products.length, "products");
+                    res.json(products);
+                //})
             });
         } else if (productIds != null) {
             if (!Array.isArray(productIds)) {
@@ -413,13 +432,6 @@ router.route('/products')
             }).populate({
                 path: 'kitGroups.kitGroup',
                 model: 'KitGroup'
-            }).populate({
-                path: 'kitGroups.kitGroup.components.product',
-                model: 'Product',
-                match: { $and: [
-                    {masterStatus: "A", onHold: false},
-                    {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
-                ]}
             }).exec(function (err, products) {
                 if (err) {
                     console.log("error getting products by ID", err);
@@ -427,8 +439,22 @@ router.route('/products')
                     return;
                 }
 
-                console.log("returning", products.length, "products");
-                res.json(products);
+                products = products ? products : [];
+
+                //var opts = {
+                //    path: 'kitGroups.kitGroup.components.product',
+                //    model: 'Product',
+                //    match: { $and: [
+                //        {masterStatus: "A", onHold: false},
+                //        {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
+                //    ]}
+                //}
+                //
+                //// populate components
+                //models.Product.populate(products, opts, function (err, products) {
+                    console.log("returning", products.length, "products");
+                    res.json(products);
+                //})
             });
         } else {
             console.log("getting product list");
@@ -461,13 +487,6 @@ router.route('/products')
             }).populate({
                 path: 'kitGroups.kitGroup',
                 model: 'KitGroup'
-            }).populate({
-                path: 'kitGroups.kitGroup.components.product',
-                model: 'Product',
-                match: { $and: [
-                    {masterStatus: "A", onHold: false},
-                    {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
-                ]}
             }).exec(function (err, products) {
                 if (err) {
                     console.log("error getting products", err);
@@ -475,8 +494,22 @@ router.route('/products')
                     return;
                 }
 
-                console.log("returning", products.length, "products");
-                res.json(products);
+                products = products ? products : [];
+
+                //var opts = {
+                //    path: 'kitGroups.kitGroup.components.product',
+                //    model: 'Product',
+                //    match: { $and: [
+                //        {masterStatus: "A", onHold: false},
+                //        {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
+                //    ]}
+                //}
+                //
+                //// populate components
+                //models.Product.populate(products, opts, function (err, products) {
+                    console.log("returning", products.length, "products");
+                    res.json(products);
+                //})
             });
         }
     });
@@ -511,13 +544,6 @@ router.route('/products/:productId').get(function (req, res) {
     }).populate({
         path: 'kitGroups.kitGroup',
         model: 'KitGroup'
-    }).populate({
-        path: 'kitGroups.kitGroup.components.product',
-        model: 'Product',
-        match: { $and: [
-            {masterStatus: "A", onHold: false},
-            {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
-        ]}
     }).exec(function (err, products) {
         if (err) {
             console.error("error populating product", err);
@@ -526,17 +552,33 @@ router.route('/products/:productId').get(function (req, res) {
         }
         if (products.length == 1) {
             console.log("returning", products.length, "products");
-            // TMP
-            console.log('products:', products);
-            products[0].upsellItems = products[0].upsellItems.filter(function (obj, index) {
-                return (obj.product !== null);
-            });
-            products[0].youMayAlsoLike = products[0].youMayAlsoLike.filter(function (obj, index) {
-                return (obj.product !== null);
-            });
-            console.log('products (filtered null upsells):', products);
-            res.json(products[0]);
-            res.end();
+
+            //var opts = {
+            //    path: 'kitGroups.kitGroup.components.product',
+            //    model: 'Product',
+            //    match: { $and: [
+            //        {masterStatus: "A", onHold: false},
+            //        {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
+            //    ]}
+            //}
+            //
+            //// populate components
+            //models.Product.populate(products, opts, function (err, products) {
+                console.log("returning", products.length, "products");
+
+                // TMP
+                //console.log('products:', products);
+                products[0].upsellItems = products[0].upsellItems.filter(function (obj, index) {
+                    return (obj.product !== null);
+                });
+                products[0].youMayAlsoLike = products[0].youMayAlsoLike.filter(function (obj, index) {
+                    return (obj.product !== null);
+                });
+                console.log('products (filtered null upsells):', products);
+                res.json(products[0]);
+                res.end();
+            //})
+
             return;
         }
         res.status(404);
