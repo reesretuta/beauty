@@ -7,7 +7,7 @@
 
   <div class="row">
     <div class="col-lg-3 col-md-3 col-sm-3 kitSelections">
-      <h2>Select Products &nbsp;&rarr;</h2>
+      <h2>Selected Products</h2>
       <aside id="shop_menu">
         <ul>
           <li id="kitGroupNav{{kitGroup.kitGroup.id}}" ng-repeat="kitGroup in item.product.kitGroups" ng-click="kitGroupClicked(kitGroup)">
@@ -32,16 +32,16 @@
       <form name="kitSelectionForm" role="form" class="form-inline clearfix">
         <div ng-repeat="kitGroup in item.product.kitGroups">
           <div id="kitGroup{{kitGroup.kitGroup.id}}" class="ng-binding kitnameWrapper row">
-            <h2 class="kitname">Choose one from group ({{kitGroup.kitGroup.id}}) <small class="text-muted italic pull-right" style="text-transform:none;">scroll down and click to select &nbsp;&nbsp;</small> </h2>
+            <h2 class="kitname">Choose one from group ({{kitGroup.kitGroup.id}}) <small class="text-muted italic pull-right" style="text-transform:none;">click one to select &nbsp;&nbsp;</small> </h2>
             <!-- <span ng-if="$index > 0" class="pull-right"><a href="" ng-click="kitGroupClicked(item.product.kitGroups[$index-1].kitGroup)">Back to {{item.product.kitGroups[$index-1].kitGroup.id}}</a></span> -->
           </div>
           <!-- products in kitgroup -->
           <div class="row hover-row" ng-repeat="component in kitGroup.kitGroup.components" ng-class="{'selected': item.kitSelections[kitGroup.kitGroup.id].sku == component.product}" ng-click="selectProduct(kitGroup.kitGroup.id, component.product)">
-            <div ng-if="productIdToProduct[component.product]" class="col-lg-3 col-md-3 col-xs-3 col-sm-3 modal-addon-item product-image clearfix">
+            <div ng-if="productIdToProduct[component.product]" class="col-lg-2 col-md-2 col-xs-3 col-sm-3 modal-addon-item product-image clearfix">
               <img ng-if="productIdToProduct[component.product].images.length > 0" class="img-responsive" ng-src="{{getImagePath(productIdToProduct[component.product].images[0])}}">
               <img ng-if="productIdToProduct[component.product].images.length == 0" class="img-responsive" ng-src="/img/product_placeholder.gif" ng-click="selectProduct(kitGroup.kitGroup.id, component.product)">
             </div>
-            <div ng-if="productIdToProduct[component.product]" class="col-lg-9 col-md-9 col-xs-9 col-sm-9 modal-addon-item">
+            <div ng-if="productIdToProduct[component.product]" class="col-lg-10 col-md-10 col-xs-9 col-sm-9 modal-addon-item">
               <br>
               <i class="kit-selection-plus pull-right fa fa-plus"></i>
               <i class="kit-selection-check pull-right fa fa-check"></i>
