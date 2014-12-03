@@ -1620,8 +1620,10 @@ angular.module('app.services', ['ngResource'])
 
         // make sure to update the breadcrumbs on language change
         $rootScope.$on('$translateChangeSuccess', function () {
-            //$log.debug("language changed", $rootScope.session.language);
-            breadcrumbService.setPath(currentCategory, currentProduct);
+            if ($rootScope.session.language != null) {
+                $log.debug("language changed", $rootScope.session.language);
+                breadcrumbService.setPath(currentCategory, currentProduct);
+            }
         });
 
         breadcrumbService.setPath = function(category, product) {
@@ -1637,7 +1639,7 @@ angular.module('app.services', ['ngResource'])
             if (category == null) {
                 $log.debug("breadcrumbService.setPath(): removing breadcrumbs");
                 $rootScope.breadcrumbs = new Array();
-                return $rootScope.breadcrumbs;
+                d.resolve($rootScope.breadcrumbs);
             }
 
             var list = buildPath(category, product, null);
@@ -1786,6 +1788,47 @@ angular.module('app.services', ['ngResource'])
         }
 
         return resetHelper;
+    })
+    .factory('Inventory', function ($resource, $http, $log, $q, $translate, Session, API_URL) {
+        var inventoryService = $resource(API_URL + '/inventory', {}, {
+            'update': { method:'PUT' }
+        });
+
+        inventoryService.query = function() {
+            var d = $q.defer();
+
+            $log.debug("Inventory(): getAll()");
+            // validate the inventory first
+            var inventory = $http.get(API_URL + '/inventory', {}).success(function(data, status, headers, config) {
+                $log.debug("Inventory(): getAll()", data);
+
+                d.resolve(data);
+            }).error(function(data, status, headers, config) {
+                $log.error("Inventory(): getAll(): error", status, data);
+                d.reject(data);
+            });
+
+            return d.promise;
+        }
+
+        inventoryService.get = function(id) {
+            var d = $q.defer();
+
+            $log.debug("Inventory(): get()");
+            // validate the inventory first
+            var inventory = $http.get(API_URL + '/inventory/' + id, {}).success(function(data, status, headers, config) {
+                $log.debug("Inventory(): get()", data);
+
+                d.resolve(data);
+            }).error(function(data, status, headers, config) {
+                $log.error("Inventory(): get(): error", status, data);
+                d.reject(data);
+            });
+
+            return d.promise;
+        }
+
+        return inventoryService;
     })
     .factory('focus', function ($rootScope, $timeout) {
         return function(name) {

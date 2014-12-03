@@ -30,6 +30,7 @@ var port = process.env.PORT || 8090; // set our port
 var mock_port = process.env.MOCK_PORT || 9001; // set our port
 var LEAD_PROCESSING_INTERVAL = process.env.LEAD_PROCESSING_INTERVAL || 5 * 60 * 1000; // default: 5 min
 var LEAD_MAX_AGE = process.env.LEAD_MAX_AGE || 60 * 60 * 1000; // default: 1 hour
+var INVENTORY_SCANNING_INTERVAL = process.env.INVENTORY_SCANNING_INTERVAL || 4 * 60 * 60 * 1000; // default: 4 hours
 
 //var morgan = require('morgan')
 var models = require('./common/models.js');
@@ -395,8 +396,6 @@ router.route('/products')
                     ]}
                 ]
             })
-            .skip(skip)
-            .limit(limit)
             .populate({
                 path: 'upsellItems.product youMayAlsoLike.product',
                 model: 'Product',
@@ -1398,6 +1397,23 @@ router.route('/calculateTax')
         });
     });
 
+// INVENTORY
+// ----------------------------------------------------
+// check if product is available
+router.route('/inventory/:inventoryId').get(function (req, res) {
+    console.log('getting inventory', req.params);
+
+    jafraClient.getInventory(req.params.inventoryId).then(function(r) {
+        console.log("got inventory", r.status, "result", r.result);
+        // return response
+        res.status(r.status);
+        res.json(r.result);
+    }, function (r) {
+        console.error("failed to get inventory", r.status, "result", r.result);
+        res.status(r.status);
+        res.json(r.result);
+    });
+});
 
 var assetRouter = express.Router();
 assetRouter.get('*', function (req, res) {
@@ -1483,6 +1499,21 @@ setInterval(function() {
         }
     });
 }, LEAD_PROCESSING_INTERVAL);
+
+function updateInventory() {
+    console.log("updating inventory");
+    jafraClient.updateInventory().then(function(inventory) {
+        console.log("updated inventory", inventory);
+    }, function(err) {
+        console.error("failed to update inventory", err);
+    });
+}
+
+// update on startup and on an interval
+updateInventory();
+setInterval(function() {
+    updateInventory();
+}, INVENTORY_SCANNING_INTERVAL);
 
 // Configure Express
 

@@ -45,6 +45,7 @@ var GET_CREDIT_CARD_URL = BASE_URL + "/JCD05008P.pgm";
 var CREATE_CREDIT_CARD_URL = BASE_URL + "/JCD05008P.pgm";
 var UPDATE_CREDIT_CARD_URL = BASE_URL + "/JCD05008P.pgm";
 var DELETE_CREDIT_CARD_URL = BASE_URL + "/JCD05008P.pgm";
+var GET_ALL_INVENTORY_URL = BASE_URL + "/JCD05012P.pgm";
 var GET_INVENTORY_URL = BASE_URL + "/JCD05021P.pgm"; // productId=<productId>
 
 var GET_GEOCODES_URL = BASE_URL2 + "/JNS0002R.pgm";
@@ -63,6 +64,8 @@ var STRIKEIRON_ADDRESS_SOAP_URL = 'http://ws.strikeiron.com/NAAddressVerificatio
 var STRIKEIRON_ADDRESS_LICENSE = "0DA72EA3199C10ABDE0B";
 
 var PASSWORD_RESET_INTERVAL = 15 * 1000 * 60;
+var MIN_INVENTORY = 10;
+exports.MIN_INVENTORY = MIN_INVENTORY;
 
 function authenticate(email, password) {
     //console.log("authenticating", email, password);
@@ -695,6 +698,19 @@ function createOrder(data) {
             });
             return;
         }
+
+        // save the transaction locally
+        try {
+            data.orderId = body.orderId;
+            var orderHistory = new models.OrderHistory(data);
+
+            orderHistory.save(function (err) {
+                if (err) return console.error("createOrder(): error saving order history record", err);
+            })
+        } catch (ex) {
+            console.error("error saving order history record", ex);
+        }
+
 
         // we should get orderId back
         deferred.resolve({
@@ -1885,6 +1901,213 @@ function requestPasswordChange(email, password, token) {
     return deferred.promise;
 }
 
+function getInventory(inventoryId) {
+    //console.log("getInventory()", inventoryId);
+    var deferred = Q.defer();
+
+    request.get({
+        url: GET_INVENTORY_URL,
+        qs: {
+            inventoryId: inventoryId
+        },
+        headers: {
+            'Accept': 'application/json, text/json',
+            'Authorization': AUTH_STRING
+        },
+        agentOptions: agentOptions,
+        strictSSL: false,
+        json: true
+    }, function (error, response, body) {
+        console.log("getInventory()", error, response ? response.statusCode: null, body);
+        if (error || response.statusCode != 200) {
+            console.error("getInventory(): error", error, response.statusCode, body);
+            deferred.reject({
+                status: response.statusCode,
+                result: {
+                    statusCode: response.statusCode,
+                    errorCode: body.errorCode,
+                    message: body.message
+                }
+            });
+            return;
+        }
+
+        if (body.availableInventory != null) {
+            //console.log("getInventory(): success", body);
+            deferred.resolve({
+                status: 200,
+                result: {
+                    isAvailable: (body.availableInventory >= MIN_INVENTORY)
+                }
+            });
+        } else {
+            deferred.reject({
+                status: 500,
+                result: {
+                    statusCode: 500,
+                    errorCode: "inventoryLoadFailed",
+                    message: "Failed to load inventory"
+                }
+            });
+        }
+    });
+
+    return deferred.promise;
+}
+
+function updateInventory() {
+    //console.log("updateInventory()", inventoryId);
+    var deferred = Q.defer();
+
+    request.get({
+        url: GET_ALL_INVENTORY_URL,
+        headers: {
+            'Accept': 'application/json, text/json',
+            'Authorization': AUTH_STRING
+        },
+        agentOptions: agentOptions,
+        strictSSL: false,
+        json: true
+    }, function (error, response, body) {
+        console.log("getAllInventory()", error, response ? response.statusCode: null, body);
+        if (error || response.statusCode != 200) {
+            console.error("getAllInventory(): error", error, response.statusCode, body);
+            deferred.reject();
+        }
+
+        if (body.inventory != null) {
+            for (var key in body.inventory) {
+                if (body.inventory.hasOwnProperty(key)) {
+                    models.Inventory.update({_id: key}, {available: body.inventory[key]}, {upsert: true}, function (err, numAffected, rawResponse) {
+                        try {
+                            if (err) return console.error("getAllInventory(): error updating inventory", key, err);
+                        } catch (ex) {
+                            console.error("getAllInventory(): error updating inventory", key, ex);
+                        }
+                    });
+                }
+            }
+            calculateAllAvailableInventory(body.inventory).then(function(inventory) {
+                deferred.resolve(inventory);
+            }, function(err) {
+                deferred.reject(err);
+            })
+        } else {
+            console.error("getAllInventory(): invalid inventory body");
+            deferred.reject("invalid inventory body");
+        }
+    });
+
+    return deferred.promise;
+}
+
+function calculateAllAvailableInventory(allInventory) {
+    var deferred = Q.defer();
+
+    // fetch all products, groups and kits to calculate availability
+    models.Product.find({}).populate({
+        path: 'contains.product',
+        model: 'Product'
+    }).populate({
+        path: 'kitGroups.kitGroup',
+        model: 'KitGroup'
+    }).exec(function (err, products) {
+        if (err) {
+            console.log("calculateAllAvailableInventory(): error getting products", err);
+            deferred.reject(err);
+            return;
+        }
+
+        console.log("calculateAllAvailableInventory(): loaded products for inventory calculation");
+        var finalInventory = {};
+
+        for (var i=0; i < products.length; i++) {
+            var product = products[i];
+            //console.log("calculateAllAvailableInventory(): product", product.id, "type", product.type);
+
+            var availableInventory = allInventory[product.id] != null ? allInventory[product.id] : 0;
+            //console.log("calculateAllAvailableInventory(): product", product.id,"availability after first check", availableInventory);
+
+            // ensure all the product contains have inventory, else mark as no inventory
+            if (product.contains && product.contains.length > 0) {
+                //console.log("calculateAllAvailableInventory(): product", product.id, "contains", product.contains.length, "products");
+                var available = null;
+                for (var j=0; j < product.contains.length; j++) {
+                    var p = product.contains[j];
+                    //console.log("calculateAllAvailableInventory(): product", product.id, "availability of item is", allInventory[p._id]);
+                    if (available != null && allInventory[p._id] > 0) {
+                        // our availability is the availability of the least available item
+                        available = allInventory[p._id] < available ? allInventory[p._id] : available;
+                    } else if (available == null) {
+                        available = allInventory[p._id];
+                    }
+                }
+                availableInventory = available && available < availableInventory ? available : availableInventory;
+                //console.log("calculateAllAvailableInventory(): product", product.id, "availability after contains check", availableInventory);
+            }
+
+            // ensure that any kit groups have at least one available product
+            if (product.kitGroups && product.kitGroups.length > 0) {
+                //console.log("calculateAllAvailableInventory(): product", product.id, "contains", product.kitGroups.length, "kitGroups");
+                var available = null;
+                for (var j=0; j < product.kitGroups.length; j++) {
+                    var numAvailableForKitGroup = 0;
+                    var kitGroup = product.kitGroups[j];
+                    if (kitGroup.kitGroup && kitGroup.kitGroup.components) {
+                        for (var k=0; k < kitGroup.kitGroup.components.length; k++) {
+                            var component = kitGroup.kitGroup.components[k];
+                            if (component.product) {
+                                var sku = component.product;
+                                if (allInventory[sku] > 0) {
+                                    numAvailableForKitGroup += allInventory[sku];
+                                }
+                            }
+                        }
+                        //console.log("calculateAllAvailableInventory(): product", product.id, "kitGroup", sku, "numAvailableForKitGroup", numAvailableForKitGroup);
+
+                        if (numAvailableForKitGroup == 0) {
+                            //console.log("calculateAllAvailableInventory(): product", product.id, "product has 0 availability, since a kitGroup has 0 inventory");
+                            available = null;
+                            break;
+                        } else if (available != null) {
+                            available = numAvailableForKitGroup < available ? numAvailableForKitGroup : available;
+                            //console.log("calculateAllAvailableInventory(): product", product.id, "inventory now", available);
+                        } else {
+                            available = numAvailableForKitGroup;
+                            //console.log("calculateAllAvailableInventory(): product", product.id, "inventory now", available);
+                        }
+                    }
+                }
+
+                availableInventory = available && available < availableInventory ? available : availableInventory;
+                //console.log("calculateAllAvailableInventory(): product", product.id, "availability after kitGroup check", availableInventory);
+            }
+
+            //console.log("calculateAllAvailableInventory(): product", product.id, "updating availability to", availableInventory);
+
+            // update the product/kit/group with the resultant inventory
+            models.Product.findOneAndUpdate({
+                _id: product.id
+            }, {
+                availableInventory: availableInventory != null ? availableInventory : 0
+            }, { upsert: true }, function (err, product) {
+                if (err) {
+                    console.log("calculateAllAvailableInventory(): error updating product inventory", err);
+                    deferred.reject(err);
+                    return;
+                }
+
+                //console.log("calculateAllAvailableInventory(): updated inventory for product", product.type, "to", product.availableInventory);
+                finalInventory[product.id] = product.availableInventory;
+            });
+        }
+
+        deferred.resolve(finalInventory);
+    });
+
+    return deferred.promise;
+}
+
 exports.authenticate = authenticate;
 exports.getClient = getClient;
 exports.createClient = createClient;
@@ -1917,3 +2140,6 @@ exports.calculateSalesTax = calculateSalesTax;
 
 exports.requestPasswordReset = requestPasswordReset;
 exports.requestPasswordChange = requestPasswordChange;
+
+exports.getInventory = getInventory;
+exports.updateInventory = updateInventory;

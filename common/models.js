@@ -136,6 +136,39 @@ var leadSchema = Schema({
 var Lead = mongoose.model('Lead', leadSchema);
 exports.Lead = Lead;
 
+// INVENTORY
+var inventorySchema = Schema({
+    "_id" : String,
+    "available" : Number
+});
+
+var Inventory = mongoose.model('Inventory', inventorySchema);
+exports.Inventory = Inventory;
+
+// ORDER HISTORY
+var orderHistorySchema = Schema({
+    "orderId": Number,
+    "firstName": String,
+    "lastName": String,
+    "clientId": Number,
+    "consultantId": Number,
+    "language": String,
+    "billingAddressId": Number,
+    "shippingAddressId": Number,
+    "creditCardId": Number,
+    "source": String,
+    "total": Number,
+    "products" : [{
+        "sku" : {type: String, ref: 'Product'},
+        "qty" : Number,
+        "kitSelections": Schema.Types.Mixed
+    }],
+    "created": { type: Date, default: Date.now }
+});
+
+var OrderHistory = mongoose.model('OrderHistory', orderHistorySchema);
+exports.OrderHistory = OrderHistory;
+
 // PRODUCTS
 var productPriceSchema = Schema({
     "typeId" : Number,
@@ -203,11 +236,13 @@ var productSchema = Schema({
     }],
     "kitGroups" : [{
         "kitGroup" : {type: String, ref: 'KitGroup'},
+        "name" : String,
         "rank" : Number,
         "quantity" : Number,
         "startDate" : { type: Date, default: null },
         "endDate" : { type: Date, default: null }
-    }]
+    }],
+    availableInventory: { type: Number, default: 0 }
 }, { id: false, autoIndex: true });
 
 // text search
