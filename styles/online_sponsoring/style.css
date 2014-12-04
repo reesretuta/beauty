@@ -332,10 +332,10 @@ font-size: 48px;
   display: block;
   position: absolute;
   bottom: -18px;
-  width: 120%; /*changed from 120% to 100% due to broken width in tablet layout */
+  width: 100%;
   height: 18px;
-  left: -10%;
-  /*background: -webkit-radial-gradient(50% -3%, ellipse cover, rgba(00, 00, 00, 0.25), rgba(97, 97, 97, 0.0) 40%);
+  /*left: -10%;
+  background: -webkit-radial-gradient(50% -3%, ellipse cover, rgba(00, 00, 00, 0.25), rgba(97, 97, 97, 0.0) 40%);
   background:      radial-gradient(ellipse at 50% -3%, rgba(00, 00, 00, 0.25), rgba(97, 97, 97, 0.0) 40%);*/
 }
 .subcontainer .row {
@@ -476,13 +476,14 @@ section#why_jafra_lifestyle .subcontainer {
   background-color: #380A52;
 }
 section#why_jafra_lifestyle .sales-equation {
+  width: 90%;
 line-height: 1.7em;
-padding: 3em 5em 2em 4.2em;
+/*padding: 3em 5em 2em 4.2em;*/
 min-height: 200px;
 position: relative;
-margin-bottom: 45px;
+/*margin-bottom: 45px;
 left: 45px;
-width: 677px;
+width: 677px;*/
 }
 section#why_jafra_lifestyle .business-right-col{
   border-left: 1px solid #5A376F;
@@ -1213,8 +1214,8 @@ body.incheckout {
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
-  #pastelpatches {
-  right: -90px;
+  section#freedom_flexibility_section div.subcontainer, section#freedom_flexibility_section.expanded div.subcontainer{
+  width: 95% !important;
   }
   .freedom_flexibility_description {
     margin: 0em 3em;
@@ -1241,9 +1242,9 @@ body.incheckout {
 }
 
 @media (min-width:992px) and (max-width:1199px) {
-  section#why_jafra_lifestyle .sales-equation {
+  /*section#why_jafra_lifestyle .sales-equation {
     width: 629px !important;
-  }
+  }*/
 }
 
 /* Large screens like HDTVs and modern desktop monitors */
@@ -1258,7 +1259,7 @@ body.incheckout {
 }
 @media (min-width:900px) and (max-width:1200px){
   #pastelpatches {
-  right: -87px;
+  right: -20px;
   }
 	#lipsticksmear{
 		left:-120px;
@@ -1294,13 +1295,13 @@ body.incheckout {
   body.es p.precio_al_publico{
     font-size: 1.9em;
   }
-  section#why_jafra_lifestyle .sales-equation {
-    /*width: 546px;*/
+  /*section#why_jafra_lifestyle .sales-equation {
+    /width: 546px;/
     max-width: 565px !important;
     padding: 3em 0em 0em 2em;
     min-width: 446px !important;
     width: 100%;
-  }
+  }*/
 }
 
 /* addthis cutoff fix */
