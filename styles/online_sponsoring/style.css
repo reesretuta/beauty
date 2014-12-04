@@ -983,7 +983,7 @@ left: -70px;
 #pastelpatches {
   position: absolute;
   top: 10px;
-  right: -106px;
+  right: -76px;
 }
 #liner_black {
   position: absolute;
@@ -1232,22 +1232,33 @@ body.incheckout {
     p.jumbo-description br {
       display: inline;
     }
+    section#why_jafra_testimonials span.is_everything {
+      padding-right: 400px;
+    }
+    section#why_jafra_testimonials span.and_more {
+      padding-left: 400px;
+    }
+}
+
+@media (min-width:992px) and (max-width:1199px) {
+  section#why_jafra_lifestyle .sales-equation {
+    width: 629px !important;
+  }
 }
 
 /* Large screens like HDTVs and modern desktop monitors */
 @media (min-width:1200px) {
     .jumbotron {
-        padding-top: 180px;
+      padding-top: 180px;
     }
 
     section#why_jafra_lifestyle .subcontainer ul.golden_bullets {
       width: 23.6em;
     }
-
 }
 @media (min-width:900px) and (max-width:1200px){
   #pastelpatches {
-  right: -90px;
+  right: -87px;
   }
 	#lipsticksmear{
 		left:-120px;
@@ -1284,7 +1295,11 @@ body.incheckout {
     font-size: 1.9em;
   }
   section#why_jafra_lifestyle .sales-equation {
-    width: 546px;
+    /*width: 546px;*/
+    max-width: 565px !important;
+    padding: 3em 0em 0em 2em;
+    min-width: 446px !important;
+    width: 100%;
   }
 }
 
