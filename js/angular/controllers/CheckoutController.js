@@ -1635,22 +1635,22 @@ angular.module('app.controllers.checkout')
                 $log.debug("CheckoutController(): processOrder(): creating order", order);
 
                 if (!debug) {
-                    //Order.create(order).then(function(result) {
-                    //    $log.debug("CheckoutController(): loginOrCreateUser(): created order, moving to next step", result);
-                    //
-                    //    // jump to Shipping
-                    //    $scope.confirmation = {
-                    //        orderId: result.orderId,
-                    //        consultantId: consultantId
-                    //    };
-                    //
-                    //    WizardHandler.wizard('checkoutWizard').goTo('Finish');
-                    //    $scope.processing = false;
-                    //}, function(error) {
-                    //    $log.error("CheckoutController(): processOrder(): failed to create order", error);
-                    //    $scope.orderError = error.message;
-                    //    $scope.processing = false;
-                    //});
+                    Order.create(order).then(function(result) {
+                        $log.debug("CheckoutController(): loginOrCreateUser(): created order, moving to next step", result);
+
+                        // jump to Shipping
+                        $scope.confirmation = {
+                            orderId: result.orderId,
+                            consultantId: consultantId
+                        };
+
+                        WizardHandler.wizard('checkoutWizard').goTo('Finish');
+                        $scope.processing = false;
+                    }, function(error) {
+                        $log.error("CheckoutController(): processOrder(): failed to create order", error);
+                        $scope.orderError = error.message;
+                        $scope.processing = false;
+                    });
                 } else {
                     WizardHandler.wizard('checkoutWizard').goTo('Finish');
                     $scope.processing = false;
