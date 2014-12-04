@@ -46,8 +46,10 @@
 
               <p ng-if="item.product.kitGroups.length > 0"><span ng-bind-html="'KIT_INCLUDE' | translate | unsafe"></span>:</p>
               <ul ng-if="item.product.kitGroups.length > 0">
-                <li ng-repeat="(kitId, kitProduct) in item.kitSelections">
-                  {{getTranslated(kitProduct).name}} #{{kitProduct.sku}}
+                <li ng-repeat="(kitId, kitProducts) in item.kitSelections">
+                  <div ng-repeat="kitProduct in kitProducts">
+                    {{getTranslated(kitProduct).name}} #{{kitProduct.sku}}
+                  </div>
                 </li>
               </ul>
               <p class="cart-item-actions">

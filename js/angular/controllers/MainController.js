@@ -75,7 +75,9 @@ angular.module('app.controllers.main')
         $scope.quantities = {};
 
         $rootScope.getTranslated = function(product) {
-            return Product.getTranslated(product);
+            var translated = Product.getTranslated(product);
+            //$log.debug("MainController(): got translated", translated, "for", product);
+            return translated;
         }
 
         $scope.addToCart = function(product) {
