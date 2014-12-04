@@ -78,7 +78,8 @@ angular.module('app.controllers.products')
                         }
 
                         var item = {
-                            name: Product.getTranslated($scope.product).name,
+                            name: $scope.product.name,
+                            name_es_US: $scope.product.name_es_US,
                             sku: $scope.product.sku,
                             quantity: qty,
                             kitSelections: {},

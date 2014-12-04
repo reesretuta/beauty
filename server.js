@@ -269,6 +269,7 @@ router.route('/products')
         var searchString = req.query.search;
         var categoryId = req.query.categoryId;
         var productIds = req.query.productIds;
+        var loadUnavailable = req.query.loadUnavailable || false;
         var limit = parseInt(req.query.limit);
         if (!limit || isNaN(limit)) {
             limit = 20;
@@ -283,8 +284,12 @@ router.route('/products')
         if (searchString != null && !S(searchString).isEmpty()) {
             console.log("searching for product by string", searchString);
             //var re = new RegExp(searchString);
-            models.Product.find({ $text: { $search: "" + searchString } }, {score: { $meta: "textScore" }})
-                .and([
+
+            var query = {$and: [
+                {$text: { $search: "" + searchString }}
+            ]};
+            if (!loadUnavailable) {
+                query["$and"].concat([
                     {masterStatus: "A", onHold: false, searchable: true},
                     {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
                     {$or: [
@@ -292,6 +297,9 @@ router.route('/products')
                         {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
                     ]}
                 ])
+            }
+
+            models.Product.find(query, {score: { $meta: "textScore" }})
                 .sort({ score: { $meta: "textScore" } })
                 .skip(skip)
                 .limit(limit)
@@ -339,16 +347,22 @@ router.route('/products')
         } else if (categoryId != null && !S(categoryId).isEmpty()) {
             console.log("searching for products by category", categoryId);
             var id = parseInt(categoryId);
-            models.Product.find({
-                $and: [
-                    {categories: {$in: categoryToChildren[categoryId]}, masterStatus: "A", onHold: false, searchable: true},
+
+            var query = {$and: [
+                {categories: {$in: categoryToChildren[categoryId]}}
+            ]};
+            if (!loadUnavailable) {
+                query["$and"].concat([
+                    {masterStatus: "A", onHold: false, searchable: true},
                     {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
                     {$or: [
                         {$and: [{type: "group"}, {prices: {$exists: false}}]},
                         {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
                     ]}
-                ]
-            })
+                ])
+            }
+
+            models.Product.find(query)
             .skip(skip)
             .limit(limit)
             .populate({
@@ -405,16 +419,21 @@ router.route('/products')
             }
             console.log("searching for product by IDs", productIds);
 
-            models.Product.find({
-                $and: [
-                    {_id: { $in: productIds }, masterStatus: "A", onHold: false},
+            var query = {$and: [
+                {_id: { $in: productIds }}
+            ]};
+            if (!loadUnavailable) {
+                query["$and"].concat([
+                    {masterStatus: "A", onHold: false},
                     {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
                     {$or: [
                         {$and: [{type: "group"}, {prices: {$exists: false}}]},
                         {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
                     ]}
-                ]
-            })
+                ])
+            }
+
+            models.Product.find(query)
             .populate({
                 path: 'upsellItems.product youMayAlsoLike.product',
                 model: 'Product',

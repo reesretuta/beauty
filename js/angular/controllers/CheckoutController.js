@@ -1572,10 +1572,12 @@ angular.module('app.controllers.checkout')
 
                 for (var i=0; i < $scope.cart.length; i++) {
                     var item = $scope.cart[i];
+                    $log.debug("CheckoutController(): processOrder(): processing cart item", item, "product", item.product, item.product.contains);
 
                     var components = [];
-                    for (var j=0; j < item.product.contains; j++) {
+                    for (var j=0; j < item.product.contains.length; j++) {
                         var contains = item.product.contains[j];
+                        $log.debug("CheckoutController(): processOrder(): contained product", contains);
                         if (contains.product) {
                             components.push({
                                 sku: contains.product.sku,
@@ -1583,6 +1585,7 @@ angular.module('app.controllers.checkout')
                             });
                         }
                     }
+                    $log.debug("CheckoutController(): processOrder(): have components", components);
 
                     var d = {
                         sku: item.sku,
