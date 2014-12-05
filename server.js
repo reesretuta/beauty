@@ -104,72 +104,7 @@ var router = express.Router();
 //    next();
 //});
 
-
-// pre-load categories so we can do some child category searches
-var categoryToChildren = {};
-
-models.Category.find({parent: { $exists: false }, onHold: false, showInMenu: true }).sort('rank').limit(100)
-.populate({
-    path: 'children',
-    match: {onHold: false, showInMenu: true}
-}).exec(function (err, categories) {
-    if (err) {
-        console.error("error loading categories", err);
-        return;
-    }
-
-    var opts = {
-        path: 'children.children',
-        model: 'Category',
-        match: { onHold: false, showInMenu: true }
-    }
-
-    // populate all levels
-    models.Category.populate(categories, opts, function (err, categories) {
-        opts = {
-            path: 'children.children.children',
-            model: 'Category',
-            match: { onHold: false, showInMenu: true }
-        }
-
-        // populate all levels
-        models.Category.populate(categories, opts, function (err, categories) {
-            //console.log(JSON.stringify(categories));
-
-            for (var i=0; i < categories.length; i++) {
-                var category = categories[i];
-                //console.log("category", category._id);
-                var ids = getCategoryAndChildren(category);
-                //console.log("children", ids);
-                //console.log("top level category", category._id, ids);
-                categoryToChildren[category._id] = ids;
-                //console.log("category sub-categories", category._id, ids);
-            }
-
-            //console.log("categoryToChildren", categoryToChildren);
-        })
-    })
-});
-
-function getCategoryAndChildren(category) {
-    //console.log("processing category", category._id);
-    var all = [];
-
-    // add this category
-    all.push(category._id);
-
-    var children = category.children ? category.children : [];
-    for (var i=0; i < children.length; i++) {
-        var child = children[i];
-        //console.log("processing category child", child._id);
-        var childIds = getCategoryAndChildren(child);
-        //console.log("processing category child", child._id, childIds);
-        categoryToChildren[child._id] = childIds;
-        all = all.concat(childIds);
-    }
-
-    return all;
-}
+jafraClient.preloadCategories();
 
 // CATEGORIES
 // ----------------------------------------------------
@@ -270,6 +205,15 @@ router.route('/products')
         var categoryId = req.query.categoryId;
         var productIds = req.query.productIds;
         var loadUnavailable = req.query.loadUnavailable || false;
+        var language = req.query.language || 'en_US';
+        var sort = req.query.sort;
+        if (sort == null) {
+            if (language == 'es_US') {
+                sort = 'name_es_US';
+            } else {
+                sort = 'name';
+            }
+        }
         var limit = parseInt(req.query.limit);
         if (!limit || isNaN(limit)) {
             limit = 20;
@@ -285,328 +229,58 @@ router.route('/products')
             console.log("searching for product by string", searchString);
             //var re = new RegExp(searchString);
 
-            var query = {$and: [
-                {$text: { $search: "" + searchString }}
-            ]};
-            if (!loadUnavailable) {
-                query["$and"].concat([
-                    {masterStatus: "A", onHold: false, searchable: true},
-                    {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
-                    {$or: [
-                        {$and: [{type: "group"}, {prices: {$exists: false}}]},
-                        {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
-                    ]}
-                ])
-            }
+            jafraClient.searchProducts(searchString, loadUnavailable, skip, limit).then(function(products) {
+                res.json(products);
+            }, function (err) {
+                res.send(err);
+            });
 
-            models.Product.find(query, {score: { $meta: "textScore" }})
-                .sort({ score: { $meta: "textScore" } })
-                .skip(skip)
-                .limit(limit)
-                .populate({
-                    path: 'upsellItems.product youMayAlsoLike.product',
-                    model: 'Product',
-                    match: { $and: [
-                        {masterStatus: "A", onHold: false},
-                        {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
-                        {$or: [
-                            {$and: [{type: "group"}, {prices: {$exists: false}}]},
-                            {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
-                        ]}
-                    ]}
-                }).populate({
-                    path: 'contains.product',
-                    model: 'Product'
-                }).populate({
-                    path: 'kitGroups.kitGroup',
-                    model: 'KitGroup'
-                }).exec(function (err, products) {
-                    if (err) {
-                        console.log("error getting products by string", err);
-                        res.send(err);
-                        return;
-                    }
-
-                    products = products ? products : [];
-
-                    //var opts = {
-                    //    path: 'kitGroups.kitGroup.components.product',
-                    //    model: 'Product',
-                    //    match: { $and: [
-                    //        {masterStatus: "A", onHold: false},
-                    //        {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
-                    //    ]}
-                    //}
-                    //
-                    //// populate components
-                    //models.Product.populate(products, opts, function (err, products) {
-                        console.log("returning", products.length, "products");
-                        res.json(products);
-                    //})
-                });
         } else if (categoryId != null && !S(categoryId).isEmpty()) {
             console.log("searching for products by category", categoryId);
             var id = parseInt(categoryId);
 
-            var query = {$and: [
-                {categories: {$in: categoryToChildren[categoryId]}}
-            ]};
-            if (!loadUnavailable) {
-                query["$and"].concat([
-                    {masterStatus: "A", onHold: false, searchable: true},
-                    {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
-                    {$or: [
-                        {$and: [{type: "group"}, {prices: {$exists: false}}]},
-                        {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
-                    ]}
-                ])
-            }
-
-            models.Product.find(query)
-            .skip(skip)
-            .limit(limit)
-            .populate({
-                path: 'upsellItems.product youMayAlsoLike.product',
-                model: 'Product',
-                match: { $and: [
-                    {masterStatus: "A", onHold: false},
-                    {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
-                    {$or: [
-                        {$and: [{type: "group"}, {prices: {$exists: false}}]},
-                        {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
-                    ]}
-                ]}
-            }).populate({
-                path: 'contains.product',
-                model: 'Product'
-            }).populate({
-                path: 'kitGroups.kitGroup',
-                model: 'KitGroup'
-            }).populate({
-                path: 'kitGroups.kitGroup.components.product',
-                model: 'Product',
-                match: { $and: [
-                    {masterStatus: "A", onHold: false},
-                    {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
-                ]}
-            }).exec(function (err, products) {
-                if (err) {
-                    console.log("error getting products by category", err);
-                    res.send(err);
-                    return;
-                }
-
-                products = products ? products : [];
-
-                //var opts = {
-                //    path: 'kitGroups.kitGroup.components.product',
-                //    model: 'Product',
-                //    match: { $and: [
-                //        {masterStatus: "A", onHold: false},
-                //        {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
-                //    ]}
-                //}
-                //
-                //// populate components
-                //models.Product.populate(products, opts, function (err, products) {
-                    console.log("returning", products.length, "products");
-                    res.json(products);
-                //})
+            jafraClient.loadProductsByCategory(id, loadUnavailable, skip, limit, sort).then(function(products) {
+                res.json(products);
+            }, function (err) {
+                res.send(err);
             });
+
         } else if (productIds != null) {
             if (!Array.isArray(productIds)) {
                 productIds = [productIds];
             }
             console.log("searching for product by IDs", productIds);
 
-            var query = {$and: [
-                {_id: { $in: productIds }}
-            ]};
-            if (!loadUnavailable) {
-                query["$and"].concat([
-                    {masterStatus: "A", onHold: false},
-                    {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
-                    {$or: [
-                        {$and: [{type: "group"}, {prices: {$exists: false}}]},
-                        {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
-                    ]}
-                ])
-            }
-
-            models.Product.find(query)
-            .populate({
-                path: 'upsellItems.product youMayAlsoLike.product',
-                model: 'Product',
-                match: { $and: [
-                    {masterStatus: "A", onHold: false},
-                    {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
-                    {$or: [
-                        {$and: [{type: "group"}, {prices: {$exists: false}}]},
-                        {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
-                    ]}
-                ]}
-            }).populate({
-                path: 'contains.product',
-                model: 'Product'
-            }).populate({
-                path: 'kitGroups.kitGroup',
-                model: 'KitGroup'
-            }).exec(function (err, products) {
-                if (err) {
-                    console.log("error getting products by ID", err);
-                    res.send(err);
-                    return;
-                }
-
-                products = products ? products : [];
-
-                //var opts = {
-                //    path: 'kitGroups.kitGroup.components.product',
-                //    model: 'Product',
-                //    match: { $and: [
-                //        {masterStatus: "A", onHold: false},
-                //        {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
-                //    ]}
-                //}
-                //
-                //// populate components
-                //models.Product.populate(products, opts, function (err, products) {
-                    console.log("returning", products.length, "products");
-                    res.json(products);
-                //})
+            jafraClient.loadProductsById(productIds, loadUnavailable).then(function(products) {
+                res.json(products);
+            }, function (err) {
+                res.send(err);
             });
         } else {
             console.log("getting product list");
-            models.Product.find({
-                $and: [
-                    {masterStatus: "A", onHold: false, searchable: true},
-                    {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
-                    {$or: [
-                        {$and: [{type: "group"}, {prices: {$exists: false}}]},
-                        {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
-                    ]}
-                ]
-            })
-            .skip(skip)
-            .limit(limit)
-            .populate({
-                path: 'upsellItems.product youMayAlsoLike.product',
-                model: 'Product',
-                match: { $and: [
-                    {masterStatus: "A", onHold: false},
-                    {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
-                    {$or: [
-                        {$and: [{type: "group"}, {prices: {$exists: false}}]},
-                        {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
-                    ]}
-                ]}
-            }).populate({
-                path: 'contains.product',
-                model: 'Product'
-            }).populate({
-                path: 'kitGroups.kitGroup',
-                model: 'KitGroup'
-            }).exec(function (err, products) {
-                if (err) {
-                    console.log("error getting products", err);
-                    res.send(err);
-                    return;
-                }
 
-                products = products ? products : [];
-
-                //var opts = {
-                //    path: 'kitGroups.kitGroup.components.product',
-                //    model: 'Product',
-                //    match: { $and: [
-                //        {masterStatus: "A", onHold: false},
-                //        {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
-                //    ]}
-                //}
-                //
-                //// populate components
-                //models.Product.populate(products, opts, function (err, products) {
-                    console.log("returning", products.length, "products");
-                    res.json(products);
-                //})
+            jafraClient.loadProducts(loadUnavailable, skip, limit, sort).then(function(products) {
+                res.json(products);
+            }, function (err) {
+                res.send(err);
             });
+
         }
     });
 
 // on routes that end in /products/:productId, get the product with that id
 router.route('/products/:productId').get(function (req, res) {
-    console.log('getting product', req.params);
-    var now = new Date();
-    models.Product.find({
-        $and: [
-            { _id: req.params.productId, masterStatus: "A", onHold: false },
-            { $or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group" }]},
-            { $or: [
-                { $and: [{type: "group"}, {prices: {$exists: false }}]},
-                { prices: {$elemMatch: {"effectiveStartDate":{ $lte: now }, "effectiveEndDate":{ $gte: now }}}}
-            ]}
-        ]
-    }).populate({
-        path: 'upsellItems.product youMayAlsoLike.product',
-        model: 'Product',
-        match: { $and: [
-            { masterStatus: "A", onHold: false},
-            { $or: [{masterType: "R"}, { masterType: {$exists: false}, type:"group" }]},
-            { $or: [
-                { $and: [{type: "group"}, {prices: {$exists: false}}]},
-                { prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{ $gte: now }}}}
-            ]}
-        ]}
-    }).populate({
-        path: 'contains.product',
-        model: 'Product'
-    }).populate({
-        path: 'kitGroups.kitGroup',
-        model: 'KitGroup'
-    }).exec(function (err, products) {
-        if (err) {
-            console.error("error populating product", err);
-            res.send(err);
-            return;
-        }
-        if (products.length == 1) {
-            console.log("returning", products.length, "products");
+    var productId = req.params.productId;
+    var loadUnavailable = req.query.loadUnavailable || false;
 
-            //var opts = {
-            //    path: 'kitGroups.kitGroup.components.product',
-            //    model: 'Product',
-            //    match: { $and: [
-            //        {masterStatus: "A", onHold: false},
-            //        {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
-            //    ]}
-            //}
-            //
-            //// populate components
-            //models.Product.populate(products, opts, function (err, products) {
-                console.log("returning", products.length, "products");
+    console.log('getting product', req.params.productId);
 
-                // TMP
-                //console.log('products:', products);
-                products[0].upsellItems = products[0].upsellItems.filter(function (obj, index) {
-                    return (obj.product !== null);
-                });
-                products[0].youMayAlsoLike = products[0].youMayAlsoLike.filter(function (obj, index) {
-                    return (obj.product !== null);
-                });
-                console.log('products (filtered null upsells):', products);
-                res.json(products[0]);
-                res.end();
-            //})
-
-            return;
-        }
-        res.status(404);
-        res.json({
-            statusCode: 404,
-            errorCode: "productLookupFailed",
-            errorMessage: "Failed to lookup product"
-        });
+    jafraClient.loadProductById(productId, loadUnavailable).then(function(product) {
+        res.json(product);
         res.end();
+    }, function(r) {
+        res.status(r.statusCode);
+        res.json(r);
     });
 });
 

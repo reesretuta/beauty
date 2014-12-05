@@ -7,6 +7,7 @@ var Spooky = require('spooky');
 var S = require('string');
 var request = require('request');
 var Q = require('Q');
+var jafraClient = require('./jafra');
 var models = require('./common/models.js');
 var Grid = require('gridfs-stream');
 var GridFS = Grid(models.mongoose.connection.db, models.mongoose.mongo);
@@ -1152,6 +1153,7 @@ models.onReady(function() {
                                         item.marketingText = $(this).find('div.x-grid3-cell-inner.x-grid3-col-5').html();
                                         // for now, all upsell items are products with sub-types: product/kit/group
                                         item.product = $(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html();
+                                        item.productId = item.product;
 
                                         upsellItems.push(item);
                                     });
@@ -1198,6 +1200,7 @@ models.onReady(function() {
                                             item.rank = parseInt($(this).find('div.x-grid3-cell-inner.x-grid3-col-1').html());
                                             // for now, all YMAL items are products with sub-types: product/kit/group
                                             item.product = $(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html();
+                                            item.productId = item.product;
 
                                             youMayAlsoLike.push(item);
                                         });
@@ -1320,9 +1323,11 @@ models.onReady(function() {
                                             var id = $(this).find('div.x-grid3-cell-inner.x-grid3-col-3').html();
                                             if (item.type == 'kitGroup') {
                                                 item.kitGroup = id;
+                                                item.kitGroupId = id;
                                                 kitGroups.push(item);
                                             } else {
                                                 item.product = id;
+                                                item.productId = id;
                                                 contains.push(item);
                                             }
                                         });
@@ -1771,6 +1776,7 @@ models.onReady(function() {
                                         //item.type = $(this).find('div.x-grid3-cell-inner.x-grid3-col-5').html();
                                         // for now, all upsell items are products with sub-types: product/kit/group
                                         item.product = $(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html();
+                                        item.productId = item.product;
 
                                         upsellItems.push(item);
                                     });
@@ -1815,6 +1821,7 @@ models.onReady(function() {
                                             //item.type = $(this).find('div.x-grid3-cell-inner.x-grid3-col-4').html();
                                             // for now, all upsell items are products with sub-types: product/kit/group
                                             item.product = $(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html();
+                                            item.productId = item.product;
 
                                             youMayAlsoLike.push(item);
                                         });
@@ -1854,16 +1861,17 @@ models.onReady(function() {
 
                                 productGroup.contains = casper.evaluate(function () {
                                     try {
-                                        var products = [];
+                                        var contains = [];
                                         $('#productAdminContent #secondGrid .x-grid3-scroller .x-grid3-row ').each(function (index, row) {
-                                            var product = {};
-                                            //product.type = $(this).find('divx-grid3-cell-inner.x-grid3-col-3').html();
+                                            var contain = {};
+                                            //contain.type = $(this).find('divx-grid3-cell-inner.x-grid3-col-3').html();
                                             // for now, all product group items are products
-                                            product.product = $(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html();
+                                            contain.product = $(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html();
+                                            contain.productId = contain.product;
 
-                                            products.push(product);
+                                            contains.push(contain);
                                         });
-                                        return products;
+                                        return contains;
                                     } catch (ex) {
                                         console.error("error processing sku", JSON.stringify(ex));
                                     }
@@ -2007,6 +2015,7 @@ models.onReady(function() {
                                             var component = {};
                                             component.rank = parseInt($(this).find('div.x-grid3-cell-inner.x-grid3-col-0').html());
                                             component.product = $(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html();
+                                            component.productId = component.product;
                                             component.startDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-4').html(), 'MM/DD/YYYY').unix() * 1000);
                                             component.endDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-5').html(), 'MM/DD/YYYY').unix() * 1000);
                                             components.push(component);
