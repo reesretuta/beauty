@@ -3,6 +3,7 @@
 var request = require('request');
 var SHA1 = require("crypto-js/sha1");
 var Q = require('q');
+Q.longStackSupport = true;
 var soap = require('soap');
 var parseString = require('xml2js').parseString;
 var fs = require('fs');
@@ -11,9 +12,12 @@ var models = require('./common/models.js');
 var mongoose = require('mongoose');
 var randomString = require('random-string');
 var moment = require('moment');
+var util = require('util');
+var async = require('async');
 
 var BASE_URL = "https://" + (process.env.JCS_API_URL || config.jcs_api_ip) + "/cgidev2";
 var BASE_URL2 = "https://" + (process.env.JCS_API_URL || config.jcs_api_ip) + "/WEBCGIPR";
+var FORCE_INVENTORY_CACHE = process.env.FORCE_INVENTORY_CACHE || false;
 
 var agentOptions = {
     rejectUnauthorized: true,
@@ -2030,13 +2034,13 @@ function getInventory(inventoryId) {
 
 function getConfigValue(key) {
     var deferred = Q.defer();
-    models.Config.findOne({_id: key}).exec(function (err, value) {
+    models.Config.findOne({_id: key}).exec(function (err, config) {
         if (err) {
             console.error("getConfigValue(): error", error, response.statusCode);
             deferred.reject(err);
             return;
         }
-        deferred.resolve(value);
+        deferred.resolve(config.value);
     });
     return deferred.promise;
 }
@@ -2044,15 +2048,17 @@ function getConfigValue(key) {
 function updateInventory() {
     //console.log("updateInventory()", inventoryId);
     var deferred = Q.defer();
-
+    var now = new Date();
     var HOURS_24 = moment.duration(24, "hours");
     var HOURS_24_AGO = moment().subtract(HOURS_24);
 
+    // FIXME - don't update everything if the inventory hasn't changed.
+
     getConfigValue("inventoryLastUpdated").then(function(lastUpdated) {
-        console.error("getAllInventory(): inventory lastUpdated", lastUpdated);
+        console.log("getAllInventory(): inventory lastUpdated", moment(lastUpdated).toDate(), "now", now, "24 hours ago", HOURS_24_AGO.toDate());
 
         // if we have lastUpdated and it's less than 24 hours ago, do a fetch to the DB
-        if (lastUpdated != null && moment(lastUpdated).isAfter(HOURS_24_AGO)) {
+        if (lastUpdated != null && (moment(lastUpdated).isAfter(HOURS_24_AGO) || FORCE_INVENTORY_CACHE)) {
             // we need to update again
             console.error("getAllInventory(): fetching inventory from the database");
 
@@ -2103,7 +2109,7 @@ function updateInventory() {
                     }
 
                     // save last updated to config
-                    models.Config.update({_id: "inventoryLastUpdated"}, {value: moment(body.lastUpdated, "MM/DD/YYYY HH:mm:ss").unix()}, {upsert: true}, function (err, numAffected, rawResponse) {
+                    models.Config.update({_id: "inventoryLastUpdated"}, {value: moment.unix(body.lastUpdated)}, {upsert: true}, function (err, numAffected, rawResponse) {
                         if (err) return console.error("getAllInventory(): error saving lastUpdated", err);
                         console.log("getAllInventory(): saved inventory lastUpdated", lastUpdated);
                     });
@@ -2148,11 +2154,7 @@ function processAvailabilityAndHiddenProducts(allInventory) {
 
         var opts = {
             path: 'kitGroups.kitGroup.components.product',
-            model: 'Product'//, not needed since we check below for all this
-            //match: { $and: [
-            //    {masterStatus: "A", onHold: false},
-            //    {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
-            //]}
+            model: 'Product'
         }
 
         // FIXME - save kitGroup product IDs and component product IDs, so we have them when populate wipes them out (already done in scraper)
@@ -2163,155 +2165,259 @@ function processAvailabilityAndHiddenProducts(allInventory) {
             console.log("processAvailabilityAndHiddenProducts(): loaded products for inventory calculation");
             var finalInventory = {};
 
-            for (var i = 0; i < products.length; i++) {
-                var product = products[i];
-                //console.log("processAvailabilityAndHiddenProducts(): product", product.id, "type", product.type);
+            // check orders since last inventory update to subtract from the availableInventory
+            getConfigValue("inventoryLastUpdated").then(function(lastUpdated) {
+                console.error("getAllInventory(): inventory lastUpdated", lastUpdated);
 
-                var availableInventory = allInventory[product.id] != null ? allInventory[product.id] : 0;
-                var unavailable = false;
-                var updates = {};
-                //console.log("processAvailabilityAndHiddenProducts(): product", product.id,"availability after first check", availableInventory);
+                var orderHistoryComplete = Q.defer();
 
-                // ensure all the product contains have inventory, else mark as no inventory
-                if (product.contains && product.contains.length > 0) {
-                    //console.log("processAvailabilityAndHiddenProducts(): product", product.id, "contains", product.contains.length, "products");
-                    var available = null;
+                var deductFromInventory = {};
+                // if we have lastUpdated and it's less than 24 hours ago, do a fetch to the DB
+                if (lastUpdated != null) {
+                    var lastUpdatedDate = moment(lastUpdated).toDate();
+                    console.log("processAvailabilityAndHiddenProducts(): merging order history since", lastUpdatedDate);
 
-                    for (var j = 0; j < product.contains.length; j++) {
-                        updates["contains."+j+".unavailable"] = false;
-                        var c = product.contains[j];
-                        //console.log("processAvailabilityAndHiddenProducts(): product", product.id, "contains", j, c);
-
-                        if (c.product != null) {
-                            var p = c.product;
-
-                            // determine inventory availability for the parent product based on inventory of children
-                            //console.log("processAvailabilityAndHiddenProducts(): product", product.id, "availability of item is", allInventory[p._id]);
-                            if (available != null && allInventory[p._id] > 0) {
-                                // our availability is the availability of the least available item
-                                available = allInventory[p._id] < available ? allInventory[p._id] : available;
-                            } else if (available == null) {
-                                available = allInventory[p._id];
-                            }
-
-                            // mark products as available/unavailable based on contains group / kits statuses
-                            // contains only products that are available status "A" and type "R" or "B"
-                            if (p.masterStatus == "A" && p.onHold == false && (p.masterType == "R" || p.masterType == "B" || p.masterType == null || type == "group")) {
-                                unavailable = false;
-                            } else {
-                                //console.log("processAvailabilityAndHiddenProducts(): hiding product", product.id, "because contained product", p.id, "is unavailable");
-                                unavailable = true;
-                                updates["contains."+j+".unavailable"] = true;
-                            }
-                        } else {
-                            //console.log("processAvailabilityAndHiddenProducts(): hiding product", product.id, "because contained product", p.id, "is not found");
-                            unavailable = true;
-                            updates["contains."+j+".unavailable"] = true;
+                    models.OrderHistory.find({
+                        created: {$gte: lastUpdatedDate}
+                    }).populate({
+                        path: 'products.product',
+                        model: 'Product'
+                    }).exec(function (err, orderHistoryItems) {
+                        //console.log("processAvailabilityAndHiddenProducts(): processing updates for product", product.id, updates);
+                        if (err) {
+                            console.log("processAvailabilityAndHiddenProducts(): error updating product inventory", err);
+                            deferred.reject(err);
+                            return;
                         }
-                    }
-                    availableInventory = available && available < availableInventory ? available : availableInventory;
-                    //console.log("processAvailabilityAndHiddenProducts(): product", product.id, "availability after contains check", availableInventory);
-                }
 
-                if (product.kitGroups && product.kitGroups.length > 0) {
+                        var opts = {
+                            path: 'products.product.contains.product',
+                            model: 'KitGroup'
+                        };
 
-                    // ensure that any kit groups have at least one available product
-                    //console.log("processAvailabilityAndHiddenProducts(): product", product.id, "contains", product.kitGroups.length, "kitGroups");
-                    var available = null;
-                    for (var j = 0; j < product.kitGroups.length; j++) {
-                        var numAvailableForKitGroup = 0;
-                        var kitGroup = product.kitGroups[j];
-                        if (kitGroup.kitGroup && kitGroup.kitGroup.components) {
-                            var hasValidComponentOption = false;
-                            for (var k = 0; k < kitGroup.kitGroup.components.length; k++) {
-                                var component = kitGroup.kitGroup.components[k];
-                                if (component.product) {
-                                    var p = component.product;
-                                    var sku = p.sku;
-                                    if (allInventory[sku] > 0) {
-                                        numAvailableForKitGroup += allInventory[sku];
+                        models.Product.populate(orderHistoryItems, opts, function (err, orderHistoryItems) {
+                            console.log("processAvailabilityAndHiddenProducts(): have orderHistoryItems", orderHistoryItems);
+
+                            // we need to remove the order amount for this product from the available
+                            for (var k = 0; k < orderHistoryItems.length; k++) {
+                                var orderHistoryItem = orderHistoryItems[k];
+                                for (var l = 0; l < orderHistoryItem.products.length; l++) {
+                                    var p = orderHistoryItem.products[l];
+
+                                    // deduct this item
+                                    deductFromInventory[p.sku] = deductFromInventory[p.sku] ? deductFromInventory[p.sku] + 1 : 1;
+                                    console.log("processAvailabilityAndHiddenProducts(): deducting for purchased item", p.sku);
+
+                                    /**
+                                     *        {
+                                            "sku" : "19376",
+                                            "qty" : 1,
+                                            "kitSelections" : {
+                                                "NUPL193761" : [
+                                                    {
+                                                        "name" : "Amor - Full Coverage Lipstick",
+                                                        "sku" : "15602"
+                                                    }
+                                                ],
+                                                "NUPL19376" : [
+                                                    {
+                                                        "name" : "Black - Eye Pencil",
+                                                        "sku" : "15730"
+                                                    }
+                                                ]
+                                            },
+                                            "product" : "19376",
+                                            "_id" : ObjectId("5482a3613e8b4d00007df2ac")
+                                        }
+                                     */
+                                    if (p.product != null) {
+                                        for (var m = 0; m < p.product.contains.length; m++) {
+                                            var c = p.product.contains[m];
+                                            deductFromInventory[c.productId] = deductFromInventory[c.productId] ? deductFromInventory[c.productId] + 1 : 1;
+                                            console.log("processAvailabilityAndHiddenProducts(): deducting for purchased item contains", p.sku, "->", c.productId);
+                                        }
+                                        for (var key in p.kitSelections) {
+                                            if (p.kitSelections.hasOwnProperty(key)) {
+                                                var items = p.kitSelections[key];
+                                                for (var n = 0; n < items.length; n++) {
+                                                    var item = items[n];
+                                                    deductFromInventory[item.sku] = deductFromInventory[item.sku] ? deductFromInventory[item.sku] + 1 : 1;
+                                                    console.log("processAvailabilityAndHiddenProducts(): deducting for purchased item kitGroup component", p.sku, "->", item.sku);
+                                                }
+                                            }
+                                        }
                                     }
-
-                                    // ensure all valid kit groups (in date range) have at least one available product
-                                    //     status "A" and type "R" or "B"
-                                    //
-                                    //"kitGroups" : [{
-                                    //    "kitGroup" : {type: String, ref: 'KitGroup'},
-                                    //    "rank" : Number,
-                                    //    "quantity" : Number,
-                                    //    "startDate" : { type: Date, default: null },
-                                    //    "endDate" : { type: Date, default: null }
-                                    //}],
-                                    //...
-                                    //"components" : [{
-                                    //    "product" : {type: String, ref: 'Product'},
-                                    //    "rank" : Number,
-                                    //    "startDate" : { type: Date, default: null },
-                                    //    "endDate" : { type: Date, default: null }
-                                    //}]
-
-                                    if ((kitGroup.startDate == null || moment(kitGroup.startDate).isBefore(now)) &&
-                                        (kitGroup.endDate == null || moment(kitGroup.endDate).isAfter(now)) &&
-                                        (p.masterStatus == "A" && p.onHold == false && (p.masterType == "R" || p.masterType == "B" || p.masterType == null || type == "group")))
-                                    {
-                                        // the kitgroup is in range and should be valid
-                                        hasValidComponentOption = true;
-                                    }
-                                } else {
-                                    console.warn("processAvailabilityAndHiddenProducts(): kitGroup", kitGroup.kitGroupId, "product", component.productId, "is not found");
                                 }
                             }
 
-                            // mark products as available/unavailable based on kitGroup date range and having any valid products
-                            if (!hasValidComponentOption) {
-                                //console.log("processAvailabilityAndHiddenProducts(): hiding product", product.id, "because a kitGroup product", p.id, "is not found");
-                                unavailable = true;
-                                // also set this kitGroup to hidden
-                                updates["kitGroups."+j+".unavailable"] = true;
-                            } else {
-                                updates["kitGroups."+j+".unavailable"] = false;
-                            }
-
-                            //console.log("processAvailabilityAndHiddenProducts(): product", product.id, "kitGroup", sku, "numAvailableForKitGroup", numAvailableForKitGroup);
-
-                            if (numAvailableForKitGroup == 0) {
-                                //console.log("processAvailabilityAndHiddenProducts(): product", product.id, "product has 0 availability, since a kitGroup has 0 inventory");
-                                available = null;
-                                break;
-                            } else if (available != null) {
-                                available = numAvailableForKitGroup < available ? numAvailableForKitGroup : available;
-                                //console.log("processAvailabilityAndHiddenProducts(): product", product.id, "inventory now", available);
-                            } else {
-                                available = numAvailableForKitGroup;
-                                //console.log("processAvailabilityAndHiddenProducts(): product", product.id, "inventory now", available);
-                            }
-                        }
-                    }
-
-                    availableInventory = available && available < availableInventory ? available : availableInventory;
-                    //console.log("processAvailabilityAndHiddenProducts(): product", product.id, "availability after kitGroup check", availableInventory);
+                            orderHistoryComplete.resolve();
+                        });
+                    });
+                } else {
+                    orderHistoryComplete.resolve();
                 }
 
-                //console.log("processAvailabilityAndHiddenProducts(): product", product.id, "updating availability to", availableInventory);
-                updates["availableInventory"] = availableInventory;
-                updates["unavailableComponents"] = unavailable;
+                // wait for order history to be complete if available
+                orderHistoryComplete.promise.then(function() {
 
-                //console.log("processAvailabilityAndHiddenProducts(): processing updates for product", product.id, updates);
+                    for (var i = 0; i < products.length; i++) {
+                        var product = products[i];
+                        //console.log("processAvailabilityAndHiddenProducts(): product", product.id, "type", product.type);
 
-                // update the product/kit/group with the resultant inventory
-                models.Product.findOneAndUpdate({
-                    _id: product.id
-                }, updates, {upsert: true}, function (err, product) {
-                    if (err) {
-                        console.log("processAvailabilityAndHiddenProducts(): error updating product inventory", err);
-                        deferred.reject(err);
-                        return;
+                        var availableInventory = allInventory[product.id] != null ? allInventory[product.id] : 0;
+                        var unavailableComponents = false;
+                        var updates = {};
+                        //console.log("processAvailabilityAndHiddenProducts(): product", product.id,"availability after first check", availableInventory);
+
+                        // ensure all the product contains have inventory, else mark as no inventory
+                        if (product.contains && product.contains.length > 0) {
+                            //console.log("processAvailabilityAndHiddenProducts(): product", product.id, "contains", product.contains.length, "products");
+                            var availableCount = null;
+
+                            for (var j = 0; j < product.contains.length; j++) {
+                                updates["contains." + j + ".unavailable"] = false;
+                                var c = product.contains[j];
+                                //console.log("processAvailabilityAndHiddenProducts(): product", product.id, "contains", j, c);
+
+                                if (c.product != null) {
+                                    var p = c.product;
+
+                                    // determine inventory availability for the parent product based on inventory of children
+                                    //console.log("processAvailabilityAndHiddenProducts(): product", product.id, "availability of item is", allInventory[p._id]);
+                                    if (availableCount != null && allInventory[p._id] > 0) {
+                                        // our availability is the availability of the least available item
+                                        availableCount = allInventory[p._id] < availableCount ? allInventory[p._id] : availableCount;
+                                    } else if (availableCount == null) {
+                                        availableCount = allInventory[p._id];
+                                    }
+
+                                    // mark products as available/unavailable based on contains group / kits statuses
+                                    // contains only products that are available status "A" and type "R" or "B"
+                                    if (p.masterStatus == "A" && p.onHold == false && (p.masterType == "R" || p.masterType == "B" || p.masterType == null || type == "group")) {
+                                        unavailableComponents = false;
+                                    } else {
+                                        //console.log("processAvailabilityAndHiddenProducts(): hiding product", product.id, "because contained product", p.id, "is unavailable");
+                                        unavailableComponents = true;
+                                        updates["contains." + j + ".unavailable"] = true;
+                                    }
+                                } else {
+                                    //console.log("processAvailabilityAndHiddenProducts(): hiding product", product.id, "because contained product", p.id, "is not found");
+                                    unavailableComponents = true;
+                                    updates["contains." + j + ".unavailable"] = true;
+                                }
+                            }
+                            availableInventory = availableCount && availableCount < availableInventory ? availableCount : availableInventory;
+                            //console.log("processAvailabilityAndHiddenProducts(): product", product.id, "availability after contains check", availableInventory);
+                        }
+
+                        // if kit components are unavailable, then available inventory = 0 too;
+                        if (unavailableComponents) {
+                            availableInventory = 0;
+                        }
+
+                        if (product.kitGroups && product.kitGroups.length > 0) {
+                            // ensure that any kit groups have at least one available product
+                            //console.log("processAvailabilityAndHiddenProducts(): product", product.id, "contains", product.kitGroups.length, "kitGroups");
+                            var availableCount = null;
+                            for (var j = 0; j < product.kitGroups.length; j++) {
+                                var numAvailableForKitGroup = 0;
+                                var kitGroup = product.kitGroups[j];
+                                if (kitGroup.kitGroup && kitGroup.kitGroup.components) {
+                                    var hasValidComponentOption = false;
+                                    for (var k = 0; k < kitGroup.kitGroup.components.length; k++) {
+                                        var component = kitGroup.kitGroup.components[k];
+                                        if (component.product) {
+                                            var p = component.product;
+                                            var sku = p.sku;
+                                            if (allInventory[sku] > 0) {
+                                                numAvailableForKitGroup += allInventory[sku];
+                                            }
+
+                                            // ensure all valid kit groups (in date range) have at least one available product
+                                            //     status "A" and type "R" or "B"
+                                            //
+                                            //"kitGroups" : [{
+                                            //    "kitGroup" : {type: String, ref: 'KitGroup'},
+                                            //    "rank" : Number,
+                                            //    "quantity" : Number,
+                                            //    "startDate" : { type: Date, default: null },
+                                            //    "endDate" : { type: Date, default: null }
+                                            //}],
+                                            //...
+                                            //"components" : [{
+                                            //    "product" : {type: String, ref: 'Product'},
+                                            //    "rank" : Number,
+                                            //    "startDate" : { type: Date, default: null },
+                                            //    "endDate" : { type: Date, default: null }
+                                            //}]
+
+                                            if ((kitGroup.startDate == null || moment(kitGroup.startDate).isBefore(now)) && (kitGroup.endDate == null || moment(kitGroup.endDate).isAfter(now)) && (p.masterStatus == "A" && p.onHold == false && (p.masterType == "R" || p.masterType == "B" || p.masterType == null || type == "group"))) {
+                                                // the kitgroup is in range and should be valid
+                                                hasValidComponentOption = true;
+                                            }
+                                        } else {
+                                            console.warn("processAvailabilityAndHiddenProducts(): kitGroup", kitGroup.kitGroupId, "product", component.productId, "is not found");
+                                        }
+                                    }
+
+                                    // mark products as available/unavailable based on kitGroup date range and having any valid products
+                                    if (!hasValidComponentOption) {
+                                        //console.log("processAvailabilityAndHiddenProducts(): hiding product", product.id, "because a kitGroup product", p.id, "is not found");
+                                        unavailableComponents = true;
+                                        // also set this kitGroup to hidden
+                                        updates["kitGroups." + j + ".unavailable"] = true;
+                                    } else {
+                                        updates["kitGroups." + j + ".unavailable"] = false;
+                                    }
+
+                                    //console.log("processAvailabilityAndHiddenProducts(): product", product.id, "kitGroup", sku, "numAvailableForKitGroup", numAvailableForKitGroup);
+
+                                    if (numAvailableForKitGroup == 0 || !hasValidComponentOption) {
+                                        //console.log("processAvailabilityAndHiddenProducts(): product", product.id, "product has 0 availability, since a kitGroup has 0 inventory");
+                                        availableInventory = 0;
+                                        break;
+                                    } else if (availableCount != null) {
+                                        availableCount = numAvailableForKitGroup < availableCount ? numAvailableForKitGroup : availableCount;
+                                        //console.log("processAvailabilityAndHiddenProducts(): product", product.id, "inventory now", availableCount);
+                                    } else {
+                                        availableCount = numAvailableForKitGroup;
+                                        //console.log("processAvailabilityAndHiddenProducts(): product", product.id, "inventory now", availableCount);
+                                    }
+                                }
+                            }
+
+                            availableInventory = availableCount && availableCount < availableInventory ? availableCount : availableInventory;
+                            //console.log("processAvailabilityAndHiddenProducts(): product", product.id, "availability after kitGroup check", availableInventory);
+                        }
+
+                        //console.log("processAvailabilityAndHiddenProducts(): product", product.id, "updating availability to", availableInventory);
+                        updates["availableInventory"] = availableInventory;
+                        updates["unavailableComponents"] = unavailableComponents;
+
+                        //console.log("processAvailabilityAndHiddenProducts(): processing updates for product", product.id, updates);
+                        if (deductFromInventory[product.id]) {
+                            console.log("processAvailabilityAndHiddenProducts(): deducting", deductFromInventory[product.id], "for purchases of", product.id);
+                            updates["availableInventory"] = availableInventory - deductFromInventory[product.id];
+                        }
+
+                        // update the product/kit/group with the resultant inventory
+                        models.Product.findOneAndUpdate({
+                            _id: product.id
+                        }, updates, {upsert: true}, function (err, product) {
+                            if (err) {
+                                console.log("processAvailabilityAndHiddenProducts(): error updating product inventory", err);
+                                deferred.reject(err);
+                                return;
+                            }
+
+                            //console.log("processAvailabilityAndHiddenProducts(): updated inventory for product", product.type, "to", product.availableInventory);
+                            finalInventory[product.id] = product.availableInventory;
+                        });
                     }
-
-                    //console.log("processAvailabilityAndHiddenProducts(): updated inventory for product", product.type, "to", product.availableInventory);
-                    finalInventory[product.id] = product.availableInventory;
+                }, function(err) {
+                    console.log("processAvailabilityAndHiddenProducts(): error on fetching order historys", err);
                 });
-            }
+            });
 
             deferred.resolve(finalInventory);
         });

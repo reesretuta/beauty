@@ -30,7 +30,7 @@ var port = process.env.PORT || 8090; // set our port
 var mock_port = process.env.MOCK_PORT || 9001; // set our port
 var LEAD_PROCESSING_INTERVAL = process.env.LEAD_PROCESSING_INTERVAL || 5 * 60 * 1000; // default: 5 min
 var LEAD_MAX_AGE = process.env.LEAD_MAX_AGE || 60 * 60 * 1000; // default: 1 hour
-var INVENTORY_SCANNING_INTERVAL = process.env.INVENTORY_SCANNING_INTERVAL || 4 * 60 * 60 * 1000; // default: 4 hours
+var INVENTORY_SCANNING_INTERVAL = process.env.INVENTORY_SCANNING_INTERVAL || 30 * 60 * 1000; // default: 30 minutes
 
 //var morgan = require('morgan')
 var models = require('./common/models.js');
