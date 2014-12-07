@@ -143,7 +143,8 @@ angular.module('app.controllers.products')
                     $scope.noMoreToLoad = true;
                 }
 
-                BreadcrumbsHelper.setPath($scope.category, null, null).then(function(path) {
+                $log.debug("ProductsController(): setting path", $scope.category);
+                BreadcrumbsHelper.setPath($scope.category, null).then(function(path) {
                     $log.debug("ProductsController(): path", path);
                 });
 
@@ -164,7 +165,7 @@ angular.module('app.controllers.products')
 
         if ($scope.categoryId) {
             categoriesLoadedPromise.promise.then(function(category) {
-                $log.debug("ProductsController(): loading products after category loaded");
+                $log.debug("ProductsController(): loading products after category loaded", category);
                 // kick off the first refresh
                 loadProducts();
             });

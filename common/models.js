@@ -102,10 +102,13 @@ exports.SharedAttribute = SharedAttribute;
 // KIT GROUP
 var kitGroupSchema = Schema({
     "_id" : { type: String },
+    "name" : String,
+    "name_es_US" : String,
     // kits groups have products they contain
     // NOTE: to reduce complexity, kit groups cannot currently contain other kit groups
     "components" : [{
         "product" : {type: String, ref: 'Product'},
+        "productId" : String,
         "rank" : Number,
         "startDate" : { type: Date, default: null },
         "endDate" : { type: Date, default: null }
@@ -136,6 +139,49 @@ var leadSchema = Schema({
 var Lead = mongoose.model('Lead', leadSchema);
 exports.Lead = Lead;
 
+// INVENTORY
+var inventorySchema = Schema({
+    "_id" : String,
+    "available" : Number
+});
+
+var Inventory = mongoose.model('Inventory', inventorySchema);
+exports.Inventory = Inventory;
+
+// CONFIG
+var configSchema = Schema({
+    "_id" : String,
+    "value" : Schema.Types.Mixed
+});
+
+var Config = mongoose.model('Config', configSchema);
+exports.Config = Config;
+
+// ORDER HISTORY
+var orderHistorySchema = Schema({
+    "orderId": Number,
+    "firstName": String,
+    "lastName": String,
+    "clientId": Number,
+    "consultantId": Number,
+    "language": String,
+    "billingAddressId": Number,
+    "shippingAddressId": Number,
+    "creditCardId": Number,
+    "source": String,
+    "total": Number,
+    "products" : [{
+        "product" : {type: String, ref: 'Product'},
+        "sku" : String,
+        "qty" : Number,
+        "kitSelections": Schema.Types.Mixed
+    }],
+    "created": { type: Date, default: Date.now }
+});
+
+var OrderHistory = mongoose.model('OrderHistory', orderHistorySchema);
+exports.OrderHistory = OrderHistory;
+
 // PRODUCTS
 var productPriceSchema = Schema({
     "typeId" : Number,
@@ -161,11 +207,13 @@ var productSchema = Schema({
     "taxCode" : String,
     "upsellItems" : [{
         "product" : {type: String, ref: 'Product'},
+        "productId" : String,
         "rank" : Number,
         "marketingText" : String
     }],
     "youMayAlsoLike" : [{
         "product" : {type: String, ref: 'Product'},
+        "productId" : String,
         "rank" : Number
     }],
     "usage" : String,
@@ -195,19 +243,25 @@ var productSchema = Schema({
     // kits & groups can be composed of other products & kitGroups
     "contains" : [{
         "product" : {type: String, ref: 'Product'},
+        "productId" : String,
         "quantity" : Number,
         "rank" : Number,
         "display" : Boolean,
         "startDate" : { type: Date, default: null },
-        "endDate" : { type: Date, default: null }
+        "endDate" : { type: Date, default: null },
+        "unavailable": { type: Boolean, default: false}
     }],
     "kitGroups" : [{
         "kitGroup" : {type: String, ref: 'KitGroup'},
+        "kitGroupId" : String,
         "rank" : Number,
         "quantity" : Number,
         "startDate" : { type: Date, default: null },
-        "endDate" : { type: Date, default: null }
-    }]
+        "endDate" : { type: Date, default: null },
+        "unavailable": { type: Boolean, default: false}
+    }],
+    "availableInventory": { type: Number, default: 0 },
+    "unavailableComponents": { type: Boolean, default: false}
 }, { id: false, autoIndex: true });
 
 // text search
@@ -248,7 +302,6 @@ productSchema.set('toJSON', {
 
 var Product = mongoose.model('Product', productSchema);
 exports.Product = Product;
-
 
 // PASSWORD RESET TOKEN
 var passwordResetTokenSchema = Schema({

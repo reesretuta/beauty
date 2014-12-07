@@ -43,5 +43,5 @@ angular.module('app.filters', [])// Navigation Item Filter
 
             return "(" + prefix + ") " + part1 + "-" + part2;
         };
-    });;
+    });
 
