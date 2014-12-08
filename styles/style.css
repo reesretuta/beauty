@@ -1281,4 +1281,10 @@ button.processing:before {
     to {transform:rotate(360deg);}
 }
 
+/** fixes for field styling to utilize <fieldset ng-disabled **/
+
+fieldset[disabled].fieldset-no-bg {
+  background-color: transparent;
+  border-color: transparent;
+}
 

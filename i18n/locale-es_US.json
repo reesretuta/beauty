@@ -493,5 +493,8 @@
 
     "CVV-INVALID": "Inválido Código CVV",
 
-    "PASSWORD-RESET-ERROR-TOO-SOON": "Solicitud de restablecimiento de contraseña para la cuenta demasiado pronto (a intentarlo más tarde)"
+    "PASSWORD-RESET-ERROR-TOO-SOON": "Solicitud de restablecimiento de contraseña para la cuenta demasiado pronto (a intentarlo más tarde)",
+
+    "ERROR-MANY-ADDRESSES": "Usted puede tener sólo tres direcciones en archivo"
+
 }

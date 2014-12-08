@@ -490,6 +490,8 @@
 
     "CVV-INVALID": "Invalid CVV Code",
 
-    "PASSWORD-RESET-ERROR-TOO-SOON": "Password reset request for account too soon (try again later)"
+    "PASSWORD-RESET-ERROR-TOO-SOON": "Password reset request for account too soon (try again later)",
+
+    "ERROR-MANY-ADDRESSES": "You may only have three addresses on file"
 
 }
