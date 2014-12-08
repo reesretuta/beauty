@@ -28,21 +28,21 @@
       <tr ng-show="cart != null && cart.length > 0" ng-repeat="item in cart">
         <td>
           <div class="cart-item-info">
-            <a ng-href="{{STORE_BASE_URL}}/products/{{item.product.sku}}#top" class="col-xs-5 col-sm-3 col-md-2 col-lg-2"
+            <a ng-href="{{STORE_BASE_URL}}/products/{{ item.product.sku || item.sku}}#top" class="col-xs-5 col-sm-3 col-md-2 col-lg-2"
                ng-if="item.product.type != 'group'">
-              <img class="img-responsive cart-item-image" ng-src="{{getImagePath(item.product.images[0])}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';">
+              <img class="img-responsive cart-item-image" ng-src="{{ getImagePath(item.product.images[0] || item.images[0]) }}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';">
             </a>
-            <a ng-href="{{STORE_BASE_URL}}/products/{{item.product.sku}}#top" class="col-xs-5 col-sm-3 col-md-2 col-lg-2"
+            <a ng-href="{{STORE_BASE_URL}}/products/{{ item.product.sku || item.sku }}#top" class="col-xs-5 col-sm-3 col-md-2 col-lg-2"
                ng-if="item.product.type == 'group'">
-              <img class="img-responsive cart-item-image" ng-src="{{getImagePath(item.product.images[0])}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';">
+              <img class="img-responsive cart-item-image" ng-src="{{ getImagePath(item.product.images[0] || item.images[0] ) }}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';">
             </a>
 
             <div class="col-sm-9 col-md-8 col-lg-8">
               <h3>
-                <a ng-href="{{STORE_BASE_URL}}/products/{{item.product.sku}}#top">{{getTranslated(item.product).name}}</a>
+                <a ng-href="{{STORE_BASE_URL}}/products/{{ item.product.sku || item.sku }}#top">{{ getTranslated(item.product || items).name }}</a>
               </h3>
 
-              <p><label>{{item.product.sku}}</label></p>
+              <p><label>{{ item.product.sku || item.sku }}</label></p>
 
               <p ng-if="item.product.kitGroups.length > 0"><span ng-bind-html="'KIT_INCLUDE' | translate | unsafe"></span>:</p>
               <ul ng-if="item.product.kitGroups.length > 0">
