@@ -67,6 +67,7 @@ angular.module('app.controllers.cart')
             }
 
             if (product != null) {
+                $log.debug('CartController(): addToCart(): product:', product);
                 if (product.type == 'kit' && product.kitGroups.length > 0) {
                     // configure kit
                     $scope.configureKit({
@@ -79,13 +80,14 @@ angular.module('app.controllers.cart')
                     }, false);
                     //$scope.orderByIdQty = 1;
                 } else {
-                    $log.debug("CartController(): addToCart(): adding product", product);
+                    $log.debug("CartController(): addToCart(): adding product [images]", product.images);
                     Cart.addToCart({
                         name: product.name,
                         name_es_US: product.name_es_US,
                         sku: product.sku,
                         kitSelections: product.kitSelections,
-                        quantity: $scope.orderByIdQty
+                        quantity: $scope.orderByIdQty,
+                        images: product.images
                     }).then(function () {
                         $log.debug('CartController(): addToCart: cart loaded, clearing quantity');
                         $scope.orderByIdQty = 1;
