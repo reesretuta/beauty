@@ -651,6 +651,7 @@ angular.module('app.services', ['ngResource'])
                         name_es_US: item.name_es_US,
                         sku: item.sku,
                         images: item.images,
+                        product: item,
                         kitSelections: item.kitSelections,
                         quantity: item.quantity,
                         contains: item.contains
