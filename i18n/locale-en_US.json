@@ -492,6 +492,8 @@
 
     "PASSWORD-RESET-ERROR-TOO-SOON": "Password reset request for account too soon (try again later)",
 
-    "ERROR-MANY-ADDRESSES": "You may only have three addresses on file"
+    "ERROR-MANY-ADDRESSES": "You may only have three addresses on file",
+
+    "ADDED-TO-CART": "added to cart"
 
 }
