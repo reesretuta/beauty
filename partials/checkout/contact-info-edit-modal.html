@@ -43,7 +43,7 @@
     <div class="form-group">
       <label for="loginEmail" class="col-md-3 control-label"><span ng-bind-html="'EMAIL_ADD' | translate | unsafe"></span></label>
       <div class="col-sm-6" ng-class="{ 'has-error' : contactForm.loginEmail.$invalid && (contactForm.loginEmail.$touched || contactForm.loginEmail.$dirty) }">
-        <input name="loginEmail" ng-pattern="/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/" ng-model="profile.loginEmail" type="email" class="form-control" id="loginEmail" placeholder="example@gmail.com" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" required>
+        <input name="loginEmail" ng-pattern="/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/" ng-model="profile.loginEmail" type="email" class="form-control" id="loginEmail" placeholder="{{ 'EXAMPLE-EMAIL-PLACEHOLDER' | translate | unsafe }}" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" required>
         <span ng-show="contactForm.loginEmail.$invalid && (contactForm.loginEmail.$touched || contactForm.loginEmail.$dirty)" class="help-block" ng-class="{ 'text-danger' : contactForm.loginEmail.$invalid }"><span ng-bind-html="'REQUIRES-VALID-EMAIL-ADDRESS' | translate | unsafe"></span>.</span>
       </div>
     </div>

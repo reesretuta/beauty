@@ -507,7 +507,7 @@ angular.module('app.services', ['ngResource'])
 
         return checkoutService;
     })
-    .factory('Cart', function ($rootScope, $log, $timeout, $q, STORE_BASE_URL, Session, Product, growlNotifications) {
+    .factory('Cart', function ($rootScope, $log, $timeout, $q, $translate, STORE_BASE_URL, Session, Product, growlNotifications) {
         var cartService = {};
         // fetch cart
         cartService.get = function(noLoadProducts) {
@@ -659,7 +659,9 @@ angular.module('app.services', ['ngResource'])
                 }
 
                 // growlnotification when adding to cart
-                growlNotifications.add('<i class="fa fa-shopping-cart"></i> '+item.name+' <a href="' + STORE_BASE_URL + '/cart"><b>added to cart</b></a>', 'warning', 4000);
+                $translate('ADDED-TO-CART').then(function (message) {
+                    growlNotifications.add('<i class="fa fa-shopping-cart"></i> '+item.name+' <a href="' + STORE_BASE_URL + '/cart"><b>' + message + '</b></a>', 'warning', 4000);
+                });
 
                 $log.debug("cartService(): addToCart(): saving cart to session", cart);
 

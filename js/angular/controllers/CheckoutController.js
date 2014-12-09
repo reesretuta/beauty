@@ -2,6 +2,8 @@
 angular.module('app.controllers.checkout')
     .controller('CheckoutController', function ($location, $scope, $document, $timeout, $rootScope, $anchorScroll, $routeParams, $modal, $log, $q, $translate, STORE_BASE_URL, JOIN_BASE_URL, focus, Geocodes, Session, Consultant, Addresses, Order, OrderHelper, Checkout, Cart, Product, SalesTax, CreditCards, Leads, PasswordResetHelper, HashKeyCopier, WizardHandler) {
 
+        $scope.forms = {};
+
         $log.debug("CheckoutController()");
         $rootScope.inCheckout = true;
         
@@ -1700,6 +1702,12 @@ angular.module('app.controllers.checkout')
                     $scope.checkoutUpdated();
                     WizardHandler.wizard('checkoutWizard').goTo('Payment');
                     $scope.processing = false;
+                    // save our name, remove everything else
+                    // clear address in case of back/forward save action & set pristine
+                    $scope.forms.shippingForm.$setPristine();
+                    $scope.profile.newShippingAddress = {
+                        name : $scope.profile.newShippingAddress.name
+                    };
                 }, function(err) {
                     $log.error("CheckoutController(): addShippingAddressAndContinue(): failed to get sales tax info", err);
                     $translate('SALES-TAX-ERROR').then(function (message) {

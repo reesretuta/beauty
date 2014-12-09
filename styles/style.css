@@ -702,6 +702,12 @@ a, .btn {
 .checkout-address .address-actions {
   padding: 15px 0;
 }
+.address-block {
+  min-height: 91px;
+}
+.checkout-address .btn {
+  margin-bottom: 40px;
+}
 .shippingSpeedModal.modal {
     overflow: hidden;
 }
@@ -1275,4 +1281,10 @@ button.processing:before {
     to {transform:rotate(360deg);}
 }
 
+/** fixes for field styling to utilize <fieldset ng-disabled **/
+
+fieldset[disabled].fieldset-no-bg {
+  background-color: transparent;
+  border-color: transparent;
+}
 

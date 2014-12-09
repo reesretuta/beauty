@@ -300,8 +300,8 @@
     "IN_COUNTY":"Condado",
     "IN_STATE":"Estado/Provincia/Regi&oacute;n",
     "IN_COUNTRY":"Pa&iacute;s",
-    "PHONE-NUMBER":"No. de Tel&eacute;fono",
-    "PHONE-NUMBER-DES":"Puede imprimirse en la etiqueta de env&iacute;o para facilitar el env&iacute;o.",
+    "PHONE-NUMBER":"No. de Teléfono",
+    "PHONE-NUMBER-DES":"Puede imprimirse en la etiqueta de envío para facilitar el envío.",
     "DELIVERY_TIT":"Preferencias de Entrega <(opcional)",
     "WHATS-THIS":"&iquest;Qu&eacute; es esto?",
     "WHATS_THIS_DES1":"Tipo de Direcci&oacute;n (Opcional) - Esto nos ayuda a seleccionar el mejor metodo de env&iacute;o de acuerdo con tu domicilio.",
@@ -493,5 +493,14 @@
 
     "CVV-INVALID": "Inválido Código CVV",
 
-    "PASSWORD-RESET-ERROR-TOO-SOON": "Solicitud de restablecimiento de contraseña para la cuenta demasiado pronto (a intentarlo más tarde)"
+    "PASSWORD-RESET-ERROR-TOO-SOON": "Solicitud de restablecimiento de contraseña para la cuenta demasiado pronto (a intentarlo más tarde)",
+
+    "ERROR-MANY-ADDRESSES": "Usted puede tener sólo tres direcciones en archivo",
+
+    "ADDED-TO-CART": "añadido a la cesta",
+
+    "EXAMPLE-EMAIL-PLACEHOLDER": "ejemplo@gmail.com",
+    "EXAMPLE-PASSWORD-PLACEHOLDER": "Contraseña",
+    "EXAMPLE-PASSWORD-PLACEHOLDER-VERIFY": "Verifique su contraseña"
+
 }
