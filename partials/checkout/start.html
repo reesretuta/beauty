@@ -75,7 +75,9 @@
     <div class="form-group">
       <div class="col-md-offset-3 col-sm-9">
         <div class="row"><div class="col-sm-8"><hr></div></div>
-        <p><small ng-bind-html="'OS-START-PRIVACY-AGREE' | translate | unsafe"></small></p>
+        <p>
+          <small ng-bind-html="'OS-START-PRIVACY-AGREE' | translate | unsafe"></small> <small><a href ng-bind-html="'OS-START-PRIVACY-AGREE-2' | translate | unsafe" data-toggle="modal" data-target=".bs-privacy-modal-lg"></a> <small ng-bind-html="'OS-START-PRIVACY-AGREE-3' | translate | unsafe" class="ng-binding"></small>
+        </p>
         <div class="input-group">
           <span class="input-group-addon"><i class="fa fa-lock"></i></span>
           <button ng-if="!isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" ng-class="{ 'processing' : processing }" ng-click="loginOrCreateUser()" ng-disabled="!signInForm.$valid || processing">

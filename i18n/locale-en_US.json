@@ -434,7 +434,9 @@
     "EMAIL_CONS_MSG":"Has placed an order through the Client Direct Order Entry",
     "OS-START-TITLE":"Contact Information",
     "OS-START-TAG":"Start by entering your contact information below.",
-    "OS-START-PRIVACY-AGREE":"By clicking continue, you agree to JAFRA&rsquo;s <a href=\"\" data-toggle=\"modal\" data-target=\".bs-privacy-modal-lg\">Privacy Policy</a>.",
+    "OS-START-PRIVACY-AGREE":"By clicking continue, you agree to JAFRA&rsquo;s",
+    "OS-START-PRIVACY-AGREE-2":"Privacy Policy",
+    "OS-START-PRIVACY-AGREE-3":"",
 
     "CONSULTANT-AGREEMENT-TITLE":"JAFRA Independent Consultant Agreement",
     "CONSULTANT-AGREEMENT-NOTE":"You must read the entire agreement (scroll down) before you can continue.",

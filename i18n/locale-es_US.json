@@ -436,7 +436,9 @@
     "EMAIL_CONS_MSG":"Se ha hecho un pedido a traves del Client Order Entry",
     "OS-START-TITLE":"Informaci&oacute;n de Contacto",
     "OS-START-TAG":"­Entra abajo tu informaci&oacute;n de contacto",
-    "OS-START-PRIVACY-AGREE":"­Al hacer clic en CONTINUAR, est&aacute;s aceptando la <a href=\"\" data-toggle=\"modal\" data-target=\".bs-privacy-modal-lg\">Pol&iacute;tica de Privacidad</a> de JAFRA.",
+    "OS-START-PRIVACY-AGREE":"­Al hacer clic en CONTINUAR, est&aacute;s aceptando la",
+    "OS-START-PRIVACY-AGREE-2": "Pol&iacute;tica de Privacidad",
+    "OS-START-PRIVACY-AGREE-3":"de JAFRA.",
 
     "CONSULTANT-AGREEMENT-TITLE":"Contrato De Consultora Independiente JAFRA",
     "CONSULTANT-AGREEMENT-NOTE":"Debes leer el contrato completo ( bajando en la barra de navegaci&oacute;n  ) antes de poder continuar.",
