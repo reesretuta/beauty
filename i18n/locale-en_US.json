@@ -494,6 +494,11 @@
 
     "ERROR-MANY-ADDRESSES": "You may only have three addresses on file",
 
-    "ADDED-TO-CART": "added to cart"
+    "ADDED-TO-CART": "added to cart",
+
+    "EXAMPLE-EMAIL-PLACEHOLDER": "example@gmail.com",
+    "EXAMPLE-PASSWORD-PLACEHOLDER": "Password",
+    "EXAMPLE-PASSWORD-PLACEHOLDER-VERIFY": "Verify Password"
+
 
 }

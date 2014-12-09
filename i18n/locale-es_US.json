@@ -497,6 +497,10 @@
 
     "ERROR-MANY-ADDRESSES": "Usted puede tener sólo tres direcciones en archivo",
 
-    "ADDED-TO-CART": "añadido a la cesta"
+    "ADDED-TO-CART": "añadido a la cesta",
+
+    "EXAMPLE-EMAIL-PLACEHOLDER": "ejemplo@gmail.com",
+    "EXAMPLE-PASSWORD-PLACEHOLDER": "Contraseña",
+    "EXAMPLE-PASSWORD-PLACEHOLDER-VERIFY": "Verifique su contraseña"
 
 }
