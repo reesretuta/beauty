@@ -13,7 +13,6 @@ var mongoose = require('mongoose');
 var randomString = require('random-string');
 var moment = require('moment');
 var util = require('util');
-var async = require('async');
 
 var BASE_URL = "https://" + (process.env.JCS_API_URL || config.jcs_api_ip) + "/cgidev2";
 var BASE_URL2 = "https://" + (process.env.JCS_API_URL || config.jcs_api_ip) + "/WEBCGIPR";
