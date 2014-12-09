@@ -148,7 +148,7 @@ a.checkout-link {
 }
 
 /* Carousel Styling */
-.glyphicon-chevron-right:before 
+.join .glyphicon-chevron-right:before 
 {
      content: " ";
        
@@ -160,7 +160,7 @@ a.checkout-link {
       width:30px;
        height:50px;
 }
-.glyphicon-chevron-left:before 
+.join .glyphicon-chevron-left:before 
 {
    content: " ";
       
@@ -172,25 +172,25 @@ a.checkout-link {
        width:30px;
        height:50px;
       }
-      
-.carousel-control.right
+
+.join .carousel-control.right
 {
   background-image:none;
 }
 
-.carousel .left
+.join .carousel .left
 {
   background-image:none;
 }
 
-.carousel .left .glyphicon {
+.join .carousel .left .glyphicon {
   /*display: none;*/
   cursor: pointer;
 }
-.carousel .right {
+.join .carousel .right {
   cursor: pointer;
 }
-.carousel-control 
+.join .carousel-control 
 {
   display: block;
   opacity:.5 ; 
@@ -199,6 +199,12 @@ a.checkout-link {
   color:#fff;   
   z-index: 6;
 }
+.shop .carousel-control.right, .shop .carousel .left {
+  height: 90%;
+  background:none;
+}
+
+
 .navbar-right {
   margin-right: 20px;
 }
