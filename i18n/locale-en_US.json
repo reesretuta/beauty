@@ -185,6 +185,7 @@
 
     "VIEW_CART": "View Cart",
     "SIGN-IN": "Sign In",
+    "SIGN-IN-ALREADY-A-CUSTOMER": "Sign In",
     "CREATE-ACCOUNT": "Create Account",
     "INVALID-EMAIL-ADDRESS": "Invalid email address",
     "INVALID-EMAIL-ADDRESS-IN-USE": "The email address provided is already being used",

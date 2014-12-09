@@ -187,6 +187,7 @@
 
     "VIEW_CART": "Ver Carrito",
     "SIGN-IN": "Registrarse",
+    "SIGN-IN-ALREADY-A-CUSTOMER": "Ingresar",
     "CREATE-ACCOUNT": "Crear una Cuenta",
     "INVALID-EMAIL-ADDRESS": "Direcci&oacute;n de correo electr&oacute;nico no es v&aacute;lido",
     "INVALID-EMAIL-ADDRESS-IN-USE": "La dirección de correo electrónico proporcionada ya está siendo utilizado",
