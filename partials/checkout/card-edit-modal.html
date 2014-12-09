@@ -80,11 +80,8 @@
     <button ng-click="close()" class="btn btn-link">
       <span ng-bind-html="'BTN_CANCEL' | translate | unsafe"></span>
     </button>
-    <button ng-show="editCardForm.$valid" ng-click="save()" class="btn btn-primary" ng-disabled="editCardForm.$invalid || processing">
-      <span ng-bind-html="'BTN_SAVE' | translate | unsafe"></span>
-    </button>
-    <button ng-show="editCardForm.$invalid" class="btn btn-primary" ng-disabled="true">
-      <span ng-bind-html="'BTN-REENTER-CREDIT-CARD' | translate | unsafe"></span>
+    <button ng-click="save()" class="btn btn-primary" ng-disabled="editCardForm.$invalid || processing" ng-class="{ 'processing' : processing }">
+      <span ng-bind-html="'BTN-SAVE-CHANGES' | translate | unsafe"></span>
     </button>
   </div>
 </div>

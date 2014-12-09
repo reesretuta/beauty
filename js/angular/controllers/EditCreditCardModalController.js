@@ -25,15 +25,18 @@ angular.module('app.controllers.checkout').controller('EditCreditCardModalContro
 
     $scope.save = function () {
         $scope.saveError = null;
+        $scope.processing = true;
         $log.debug("EditCreditCardModalController(): save(): saving creditCard correction");
         CreditCards.saveCreditCard($scope.creditCard).then(function(card) {
             $log.debug("EditCreditCardModalController(): save(): saved");
+            $scope.processing = false;
             $modalInstance.close({
                 creditCard: card,
                 canceled: false
             });
         }, function(error) {
             $log.debug("EditCreditCardModalController(): save(): error", error);
+            $scope.processing = false;
             $scope.saveError = "There was an error updating this card";
         });
     };
