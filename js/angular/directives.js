@@ -146,6 +146,7 @@ angular.module('app.directives', [])// directives
                 // watch for changes to number
                 angular.element(elem).on('input keydown change', function (evt) {
                     var val = this.value.replace(/[^\d\.]/g, '');
+                    $log.debug('one-to-ninety-nine, elem change val:', val);
                     if (val === '' || val === null) {
                         $timeout(function() {
                             runCheck(val);
