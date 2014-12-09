@@ -1114,6 +1114,9 @@ body.incheckout {
   #freedom_flexibility_section .subrow {
     margin: 0em !important;
   }
+  .agreement-content {
+    max-height: 200px;
+  }
 
 }
 @media (min-width:400px) and (max-width:767px) {
