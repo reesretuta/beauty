@@ -1167,6 +1167,7 @@ body.incheckout {
   #freedom_flexibility_section .subrow {
     margin: 0em !important;
   }
+
 }
 @media (max-width: 767px) {
     .navbar-fixed-top, #pagenav.affix {
@@ -1196,6 +1197,15 @@ body.incheckout {
   }
   #freedom_flexibility_section .subcontainer .row {
     margin: 0em;
+  }
+  .contact-description, .language-dropdown>ul>li>a {
+    color: #fff;
+  }
+  .contact-header .social_dropdown {
+    margin-left: 0;
+  }
+  li.open>a span {
+    color: #222;
   }
 }
 
