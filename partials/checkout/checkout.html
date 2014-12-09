@@ -1,20 +1,20 @@
 
 <section class="store-checkout container">
   <wizard name="checkoutWizard" hide-indicators="false" on-finish="finished()" current-step="currentStep">
-  <!--current step: {{ checkout.currentStep }}-->
-    <wz-step title="Start" display-name="{{ 'WZ_START' | translate | unsafe }}">
+    <!--current step: {{ checkout.currentStep }}-->
+    <wz-step wz-title="Start" display-name="{{ 'WZ_START' | translate | unsafe }}">
       <ng-include src="'/partials/checkout/start.html'"/>
     </wz-step>
-    <wz-step title="Shipping" display-name="{{ 'WZ_SHIPPING' | translate | unsafe }}">
+    <wz-step wz-title="Shipping" display-name="{{ 'WZ_SHIPPING' | translate | unsafe }}">
       <ng-include src="'/partials/checkout/shipping.html'"/>
     </wz-step>
-    <wz-step title="Payment" display-name="{{ 'WZ_PAYMENT' | translate | unsafe }}">
+    <wz-step wz-title="Payment" display-name="{{ 'WZ_PAYMENT' | translate | unsafe }}">
       <ng-include src="'/partials/checkout/payment.html'"/>
     </wz-step>
-    <wz-step title="Review" display-name="{{ 'WZ_REVIEW' | translate | unsafe }}">
+    <wz-step wz-title="Review" display-name="{{ 'WZ_REVIEW' | translate | unsafe }}">
       <ng-include src="'/partials/checkout/review.html'"/>
     </wz-step>
-    <wz-step title="Finish" display-name="{{ 'WZ_FINISH' | translate | unsafe }}">
+    <wz-step wz-title="Finish" display-name="{{ 'WZ_FINISH' | translate | unsafe }}">
       <ng-include src="'/partials/checkout/finish.html'"/>
     </wz-step>
   </wizard>
