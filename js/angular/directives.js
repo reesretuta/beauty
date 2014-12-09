@@ -126,11 +126,12 @@ angular.module('app.directives', [])// directives
             restrict: 'A',
             require: '?ngModel',
             link: function($scope, elem, attrs, ngModelCtrl) {
+                var val;
                 if (!ngModelCtrl) {
                     return;
                 }
                 // actual number check
-                function runCheck(val) {
+                function runCheck() {
                     var fixed;
                     if (val < 1) {
                         fixed = 1;
@@ -145,12 +146,12 @@ angular.module('app.directives', [])// directives
                 }
                 // watch for changes to number
                 angular.element(elem).on('input keydown change', function (evt) {
-                    var val = this.value.replace(/[^\d\.]/g, '');
+                    val = this.value.replace(/[^\d\.]/g, '');
                     $log.debug('one-to-ninety-nine, elem change val:', val);
                     if (val === '' || val === null) {
                         $timeout(function() {
-                            runCheck(val);
-                        }, 250);
+                            runCheck();
+                        }, 1500);
                     } else {
                         runCheck(val);
                     }
