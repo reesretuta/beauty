@@ -502,7 +502,9 @@
 
     "TABS-SUMMARY": "Summary",
     "TABS-INGREDIENTS": "Ingredients",
-    "TABS-USAGE": "Usage"
+    "TABS-USAGE": "Usage",
+
+    "BTN-REENTER-CREDIT-CARD": "Retype Information"
 
 
 }

@@ -505,6 +505,8 @@
 
     "TABS-SUMMARY": "Resumen",
     "TABS-INGREDIENTS": "Ingredientes",
-    "TABS-USAGE": "Uso"
+    "TABS-USAGE": "Uso",
+
+    "BTN-REENTER-CREDIT-CARD": "Vuelva a escribir la Información"
 
 }
