@@ -498,7 +498,11 @@
 
     "EXAMPLE-EMAIL-PLACEHOLDER": "example@gmail.com",
     "EXAMPLE-PASSWORD-PLACEHOLDER": "Password",
-    "EXAMPLE-PASSWORD-PLACEHOLDER-VERIFY": "Verify Password"
+    "EXAMPLE-PASSWORD-PLACEHOLDER-VERIFY": "Verify Password",
+
+    "TABS-SUMMARY": "Summary",
+    "TABS-INGREDIENTS": "Ingredients",
+    "TABS-USAGE": "Usage"
 
 
 }

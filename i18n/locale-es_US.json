@@ -501,6 +501,10 @@
 
     "EXAMPLE-EMAIL-PLACEHOLDER": "ejemplo@gmail.com",
     "EXAMPLE-PASSWORD-PLACEHOLDER": "Contraseña",
-    "EXAMPLE-PASSWORD-PLACEHOLDER-VERIFY": "Verifique su contraseña"
+    "EXAMPLE-PASSWORD-PLACEHOLDER-VERIFY": "Verifique su contraseña",
+
+    "TABS-SUMMARY": "Resumen",
+    "TABS-INGREDIENTS": "Ingredientes",
+    "TABS-USAGE": "Uso"
 
 }

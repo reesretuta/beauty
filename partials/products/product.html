@@ -73,13 +73,13 @@
           </aside>
 
           <tabset>
-            <tab heading="Summary">
+            <tab heading="{{ 'TABS-SUMMARY' | translate | unsafe }}">
               <div ng-bind-html="product[session.language=='en_US'?'description':'description_'+session.language] | unsafe"><span ng-bind-html="'SUMMARY_CONTENT' | translate | unsafe"></span></div>
             </tab>
-            <tab heading="Ingredients">
+            <tab heading="{{ 'TABS-INGREDIENTS' | translate | unsafe }}">
               <div ng-bind-html="product[session.language=='en_US'?'ingredients':'ingredients_'+session.language] | unsafe"><span ng-bind-html="'INGREDIENTS_CONT' | translate | unsafe"></span></div>
             </tab>
-            <tab heading="Usage">
+            <tab heading="{{ 'TABS-USAGE' | translate | unsafe }}">
               <div ng-bind-html="product[session.language=='en_US'?'usage':'usage_'+session.language] | unsafe"><span ng-bind-html="'USAGE_CONTENT' | translate | unsafe"></span></div>
             </tab>
           </tabset>
