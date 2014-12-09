@@ -507,5 +507,11 @@
     "TABS-INGREDIENTS": "Ingredients",
     "TABS-USAGE": "Usage",
 
-    "BTN-SAVE-CHANGES": "Save Changes"
+    "BTN-SAVE-CHANGES": "Save Changes",
+
+    "ORDER-CONFIRMATION-TITLE": "Order Confirmation",
+    "ORDER-CONFIRMATION-WILL-RECEIVE-EMAIL": "You will receive a confirmation email for this order",
+    "ORDER-CONFIRMATION-ORDER-NUMBER": "Order Number",
+    "ORDER-CONFIRMATION-DETAILS-AFTER-SHIPPING": "Information will be sent after your order has been shipped"
+
 }
