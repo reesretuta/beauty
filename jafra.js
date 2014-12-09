@@ -2040,7 +2040,11 @@ function getConfigValue(key) {
             deferred.reject(err);
             return;
         }
-        deferred.resolve(config.value);
+        if (!config) {
+            deferred.resolve(null);
+        } else {
+            deferred.resolve(config.value);
+        }
     });
     return deferred.promise;
 }
