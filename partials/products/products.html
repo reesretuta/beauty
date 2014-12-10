@@ -33,13 +33,19 @@
               </p>
             </div>
             <p ng-if="product.type == 'product' || (product.type == 'kit' && product.kitGroups.length == 0)">
-              <a class="btn btn-primary primary-cta add-to-cart" ng-class="{ 'processing' : (adding && addingId == product.sku) }" ng-click="addToCart(product)">
+              <a ng-if="product.availableInventory >= 1" class="btn btn-primary primary-cta add-to-cart" ng-class="{ 'processing' : (adding && addingId == product.sku) }" ng-click="addToCart(product)">
                 <span ng-bind-html="'BTN_ADD_CART' | translate | unsafe"></span>
+              </a>
+              <a ng-if="product.availableInventory <= 0 || product.availableInventory == null || !product.availableInventory" class="btn btn-primary primary-cta disabled">
+                <span>Out of Stock</span>
               </a>
             </p>
             <p ng-if="product.type == 'kit' && product.kitGroups.length > 0">
-              <a class="btn btn-primary primary-cta" ng-href="{{STORE_BASE_URL}}/products/{{product.sku}}#top">
+              <a ng-if="product.availableInventory >= 1" class="btn btn-primary primary-cta" ng-href="{{STORE_BASE_URL}}/products/{{product.sku}}#top">
                 <i class="fa fa-cogs"></i> <span ng-bind-html="'TIT_CONF_OFFER' | translate | unsafe"></span>
+              </a>
+              <a ng-if="product.availableInventory <= 0 || !product.availableInventory" class="btn btn-primary primary-cta disabled">
+                <span>Out of Stock</span>
               </a>
             </p>
           </div><!--/store-item-wrapper-->
