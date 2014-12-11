@@ -1,6 +1,6 @@
 
 angular.module('app.controllers.onlineSponsor')
-.controller('OnlineSponsorLandingController', function ($scope, $document, $location, $translate, $rootScope, $routeParams, $log, Session, JOIN_BASE_URL, Categories, Product) {
+.controller('OnlineSponsorLandingController', function ($scope, $window, $document, $location, $translate, $rootScope, $routeParams, $log, Session, JOIN_BASE_URL, Categories, Product) {
     
     $rootScope.title = 'JOIN_JAFRA_TITLE';
 
@@ -18,7 +18,12 @@ angular.module('app.controllers.onlineSponsor')
         $('.modal-backdrop').remove();
         $log.debug("joining with sku", sku);
         $log.debug("language", language);
-        $location.url(JOIN_BASE_URL + "/checkout?sku=" + sku);
+        if ($rootScope.session.source == 'fb') {
+          $window.open(JOIN_BASE_URL + "/checkout?sku=" + sku);
+        } else {
+          $location.url(JOIN_BASE_URL + "/checkout?sku=" + sku);
+        }
+        
     };
     
     $scope.productMap = [];
