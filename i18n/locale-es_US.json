@@ -240,6 +240,7 @@
     "PASSWORD-RESET-ERROR": "Hubo un error al restablecer su contrase&ntilde;a",
     "FORGOT-PASSWORD-ERROR": "Hubo un error al solicitar un restablecimiento de contrase&ntilde;a",
 
+    "LOADING": "Cargando",
     "LOADING-CART": "Cargando carrito...",
 
     "BTN_LOGIN":"Login",
