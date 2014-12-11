@@ -660,7 +660,8 @@ angular.module('app.services', ['ngResource'])
 
                 // growlnotification when adding to cart
                 $translate('ADDED-TO-CART').then(function (message) {
-                    growlNotifications.add('<i class="fa fa-shopping-cart"></i> '+item.name+' <a href="' + STORE_BASE_URL + '/cart"><b>' + message + '</b></a>', 'warning', 4000);
+                    var productName = item[$rootScope.session.language=='en_US' ? 'name' : 'name_' + $rootScope.session.language];
+                    growlNotifications.add('<i class="fa fa-shopping-cart"></i> '+ productName +' <a href="' + STORE_BASE_URL + '/cart"><b>' + message + '</b></a>', 'warning', 4000);
                 });
 
                 $log.debug("cartService(): addToCart(): saving cart to session", cart);
