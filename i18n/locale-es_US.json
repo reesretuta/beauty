@@ -516,7 +516,9 @@
     "ORDER-CONFIRMATION-TITLE": "Confirmación de Pedido",
     "ORDER-CONFIRMATION-WILL-RECEIVE-EMAIL": "Usted recibirá un correo electrónico de confirmación para este fin",
     "ORDER-CONFIRMATION-ORDER-NUMBER": "Número de Orden",
-    "ORDER-CONFIRMATION-DETAILS-AFTER-SHIPPING": "La información será enviada después de que su pedido ha sido enviado"
+    "ORDER-CONFIRMATION-DETAILS-AFTER-SHIPPING": "La información será enviada después de que su pedido ha sido enviado",
+
+    "QTY-ERROR-INVENTORY": "actualmente en stock"
 
 
 }

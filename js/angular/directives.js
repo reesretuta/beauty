@@ -121,10 +121,11 @@ angular.module('app.directives', [])// directives
             }
         }
     // only allow numbers between 1 & 99. no less than 1, no great than 99.
-    }]).directive('oneToNinetyNine', ['$log','$timeout', function ($log, $timeout) {
+    }]).directive('oneToNinetyNine', ['$log','$timeout', function ($log, $timeout, $rootScope) {
         return {
             restrict: 'A',
             require: '?ngModel',
+            scope: true,
             link: function($scope, elem, attrs, ngModelCtrl) {
                 var val;
                 if (!ngModelCtrl) {
