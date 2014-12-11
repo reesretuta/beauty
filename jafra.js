@@ -2469,7 +2469,7 @@ function searchProducts(searchString, loadUnavailable, skip, limit) {
     ]};
     if (!loadUnavailable) {
         query["$and"] = query["$and"].concat([
-            {masterStatus: "A", onHold: false, searchable: true, unavailableComponents: false},
+            {masterStatus:{$in:["A","T"]}, onHold: false, searchable: true, unavailableComponents: false},
             {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
             {$or: [
                 {$and: [{type: "group"}, {prices: {$exists: false}}]},
@@ -2486,7 +2486,7 @@ function searchProducts(searchString, loadUnavailable, skip, limit) {
         path: 'upsellItems.product youMayAlsoLike.product',
         model: 'Product',
         match: { $and: [
-            {masterStatus: "A", onHold: false},
+            {masterStatus:{$in:["A","T"]}, onHold: false, unavailableComponents: false},
             {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
             {$or: [
                 {$and: [{type: "group"}, {prices: {$exists: false}}]},
@@ -2512,7 +2512,7 @@ function searchProducts(searchString, loadUnavailable, skip, limit) {
         //    path: 'kitGroups.kitGroup.components.product',
         //    model: 'Product',
         //    match: { $and: [
-        //        {masterStatus: "A", onHold: false},
+        //        {masterStatus:{$in:["A","T"]}, onHold: false},
         //        {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
         //    ]}
         //}
@@ -2550,7 +2550,7 @@ function loadProductsByCategory(categoryId, loadUnavailable, skip, limit, sort) 
 
     if (!loadUnavailable) {
         query["$and"] = query["$and"].concat([
-            {masterStatus: "A", onHold: false, searchable: true, unavailableComponents: false},
+            {masterStatus:{$in:["A","T"]}, onHold: false, searchable: true, unavailableComponents: false},
             {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
             {$or: [
                 {$and: [{type: "group"}, {prices: {$exists: false}}]},
@@ -2567,7 +2567,7 @@ function loadProductsByCategory(categoryId, loadUnavailable, skip, limit, sort) 
         path: 'upsellItems.product youMayAlsoLike.product',
         model: 'Product',
         match: { $and: [
-            {masterStatus: "A", onHold: false},
+            {masterStatus:{$in:["A","T"]}, onHold: false, unavailableComponents: false},
             {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
             {$or: [
                 {$and: [{type: "group"}, {prices: {$exists: false}}]},
@@ -2584,7 +2584,7 @@ function loadProductsByCategory(categoryId, loadUnavailable, skip, limit, sort) 
         path: 'kitGroups.kitGroup.components.product',
         model: 'Product',
         match: { $and: [
-            {masterStatus: "A", onHold: false},
+            {masterStatus:{$in:["A","T"]}, onHold: false},
             {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
         ]}
     }).exec(function (err, products) {
@@ -2600,7 +2600,7 @@ function loadProductsByCategory(categoryId, loadUnavailable, skip, limit, sort) 
         //    path: 'kitGroups.kitGroup.components.product',
         //    model: 'Product',
         //    match: { $and: [
-        //        {masterStatus: "A", onHold: false},
+        //        {masterStatus:{$in:["A","T"]}, onHold: false},
         //        {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
         //    ]}
         //}
@@ -2638,7 +2638,7 @@ function loadProductsById(productIds, loadUnavailable) {
 
     if (!loadUnavailable) {
         query["$and"] = query["$and"].concat([
-            {masterStatus: "A", onHold: false, unavailableComponents: false},
+            {masterStatus:{$in:["A","T"]}, onHold: false, unavailableComponents: false},
             {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
             {$or: [
                 {$and: [{type: "group"}, {prices: {$exists: false}}]},
@@ -2652,7 +2652,7 @@ function loadProductsById(productIds, loadUnavailable) {
         path: 'upsellItems.product youMayAlsoLike.product',
         model: 'Product',
         match: { $and: [
-            {masterStatus: "A", onHold: false},
+            {masterStatus:{$in:["A","T"]}, onHold: false, unavailableComponents: false},
             {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
             {$or: [
                 {$and: [{type: "group"}, {prices: {$exists: false}}]},
@@ -2678,7 +2678,7 @@ function loadProductsById(productIds, loadUnavailable) {
         //    path: 'kitGroups.kitGroup.components.product',
         //    model: 'Product',
         //    match: { $and: [
-        //        {masterStatus: "A", onHold: false},
+        //        {masterStatus:{$in:["A","T"]}, onHold: false},
         //        {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
         //    ]}
         //}
@@ -2714,7 +2714,7 @@ function loadProducts(loadUnavailable, skip, limit, sort) {
 
     if (!loadUnavailable) {
         query = {$and: [
-            {masterStatus: "A", onHold: false, searchable: true, unavailableComponents: false},
+            {masterStatus:{$in:["A","T"]}, onHold: false, searchable: true, unavailableComponents: false},
             {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
             {$or: [
                 {$and: [{type: "group"}, {prices: {$exists: false}}]},
@@ -2731,7 +2731,7 @@ function loadProducts(loadUnavailable, skip, limit, sort) {
         path: 'upsellItems.product youMayAlsoLike.product',
         model: 'Product',
         match: { $and: [
-            {masterStatus: "A", onHold: false},
+            {masterStatus:{$in:["A","T"]}, onHold: false, unavailableComponents: false},
             {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
             {$or: [
                 {$and: [{type: "group"}, {prices: {$exists: false}}]},
@@ -2782,7 +2782,7 @@ function loadProductById(productId, loadUnavailable) {
 
     if (!loadUnavailable) {
         query["$and"] = query["$and"].concat([
-            { masterStatus: "A", onHold: false, unavailableComponents: false },
+            { masterStatus:{$in:["A","T"]}, onHold: false, unavailableComponents: false },
             { $or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group" }]},
             { $or: [
                 { $and: [{type: "group"}, {prices: {$exists: false }}]},
@@ -2795,7 +2795,7 @@ function loadProductById(productId, loadUnavailable) {
         path: 'upsellItems.product youMayAlsoLike.product',
         model: 'Product',
         match: { $and: [
-            { masterStatus: "A", onHold: false},
+            { masterStatus:{$in:["A","T"]}, onHold: false, unavailableComponents: false},
             { $or: [{masterType: "R"}, { masterType: {$exists: false}, type:"group" }]},
             { $or: [
                 { $and: [{type: "group"}, {prices: {$exists: false}}]},
@@ -2825,7 +2825,7 @@ function loadProductById(productId, loadUnavailable) {
             //    path: 'kitGroups.kitGroup.components.product',
             //    model: 'Product',
             //    match: { $and: [
-            //        {masterStatus: "A", onHold: false},
+            //        {masterStatus:{$in:["A","T"]}, onHold: false},
             //        {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
             //    ]}
             //}

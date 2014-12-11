@@ -520,6 +520,7 @@ models.onReady(function() {
             var newProducts = [];
             var updateProducts = [];
             var unavailableProducts = [];
+            var tempUnavailableProducts = [];
 
             // PRODUCT LISTING
             function getProductListing(pageNum, kits, productSku) {
@@ -573,10 +574,12 @@ models.onReady(function() {
                                             var c = $(this).find("div.x-grid3-cell-inner.x-grid3-col-status").html();
                                             if (c.match(/\/available.gif/)) {
                                                 //console.log("available");
-                                                product.available = true;
+                                                product.status = "A";
+                                            } else if (c.match(/\/temp-unavailable.gif/)) {
+                                                product.status = "T";
                                             } else {
                                                 //console.log("unavailable");
-                                                product.available = false;
+                                                product.status = "I";
                                             }
                                             var c2 = $(this).find("div.x-grid3-cell-inner.x-grid3-col-3").html();
                                             if (match = productRe.exec(c2)) {
@@ -609,7 +612,7 @@ models.onReady(function() {
                                     var product = products[i];
                                     //console.log("found product page", JSON.stringify(product));
 
-                                    if (AVAILABLE_ONLY == false || product.available == true) {
+                                    if (AVAILABLE_ONLY == false || product.status == "A") {
                                         // add to the list to be fetched if new
                                         if (existingProducts[product.sku]) {
                                             console.log("[summary] found updated product"+(kits?' kit':''), product.sku);
@@ -623,7 +626,11 @@ models.onReady(function() {
                                         console.log("skipping unavailable product"+(kits?' kit':''), JSON.stringify(product));
                                         // mark it as unavailable in the database too, since we now know it's unavailable
                                         if (existingProducts[product.sku]) {
-                                            unavailableProducts.push(product.sku);
+                                            if (product.status == "I") {
+                                                unavailableProducts.push(product.sku);
+                                            } else if (product.status == "T") {
+                                                tempUnavailableProducts.push(product.sku);
+                                            }
                                         }
                                     }
                                 }
@@ -1420,10 +1427,12 @@ models.onReady(function() {
                                                 var productGroupId, systemRef;
                                                 var c = $(this).find("div.x-grid3-cell-inner.x-grid3-col-4").html();
 
-                                                var available = false;
+                                                var status = "I";
                                                 if (c.match(/\/available.gif/)) {
                                                     console.log("available");
-                                                    available = true;
+                                                    status = "A";
+                                                } else if (c.match(/\/temp-unavailable.gif/)) {
+                                                    status = "T";
                                                 }
 
                                                 var c2 = $(this).find("div.x-grid3-cell-inner.x-grid3-col-3").html();
@@ -1435,7 +1444,7 @@ models.onReady(function() {
                                                     systemRef = match[2];
                                                     console.log("[summary] Found product group", productGroupId, systemRef);
                                                     productGroups.push({
-                                                        available: available,
+                                                        status: status,
                                                         id: productGroupId,
                                                         systemRef: systemRef
                                                     });
@@ -1466,7 +1475,7 @@ models.onReady(function() {
                                     for (var i=0; i < productGroups.length; i++) {
                                         var productGroup = productGroups[i];
 
-                                        if (AVAILABLE_ONLY == false || productGroup.available) {
+                                        if (AVAILABLE_ONLY == false || productGroup.status == "A") {
                                             console.log("processing product group", productGroup.id, productGroup.systemRef);
 
                                             try {
@@ -1493,9 +1502,15 @@ models.onReady(function() {
                                             console.log("skipping unproductGroup.available product group", productGroup.id, productGroup.systemRef);
                                             if (existingProducts[productGroup.id]) {
                                                 // mark all unproductGroup.available products as unvailable
-                                                this.emit('product.markUnproductGroup.available', productGroup.id);
-                                                this.emit('productGroup.skip', productGroup.id);
+
+                                                if (productGroup.status == "I") {
+                                                    this.emit('product.markUnavailable', productGroup.id);
+                                                } else if (productGroup.status == "T") {
+                                                    this.emit('product.markTempUnavailable', productGroup.id);
+                                                }
+
                                             }
+                                            this.emit('productGroup.skip', productGroup.id);
                                         }
                                     }
 
@@ -2125,6 +2140,20 @@ models.onReady(function() {
                 }
             } catch (ex) {
                 console.error("error marking product unavailable", id, JSON.stringify(ex));
+            }
+        });
+    });
+
+    spooky.on('product.markTempUnavailable', function(id) {
+        // do a lookup on id
+        models.Product.findByIdAndUpdate(id, { $set: { masterStatus: 'T' }}, function(err, prod) {
+            try {
+                if (err) return console.error("error loading product", id, err);
+                if (prod != null) {
+                    console.log("marked product temp unvailable", prod._id);
+                }
+            } catch (ex) {
+                console.error("error marking product temp unavailable", id, JSON.stringify(ex));
             }
         });
     });
