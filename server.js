@@ -206,6 +206,8 @@ router.route('/products')
         var productIds = req.query.productIds;
         var loadUnavailable = req.query.loadUnavailable || false;
         var loadComponents = req.query.loadComponents || false;
+        var loadStarterKits = req.query.loadStarterKits || false;
+
         var language = req.query.language || 'en_US';
         var sort = req.query.sort;
         if (sort == null) {
@@ -252,7 +254,7 @@ router.route('/products')
             }
             console.log("searching for product by IDs", productIds);
 
-            jafraClient.loadProductsById(productIds, loadUnavailable).then(function(products) {
+            jafraClient.loadProductsById(productIds, loadUnavailable, loadStarterKits).then(function(products) {
                 res.json(products);
             }, function (err) {
                 res.send(err);
