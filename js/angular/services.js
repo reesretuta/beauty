@@ -751,7 +751,7 @@ angular.module('app.services', ['ngResource'])
             });
             //$log.debug("cartService(): loadProducts(): loading products", productIds);
 
-            var p = Product.query({productIds: productIds, loadStartKits: true}).then(function(products) {
+            var p = Product.query({productIds: productIds, loadStarterKits: true}).then(function(products) {
                 $log.debug("cartService(): loadProducts(): loaded products", products);
 
                 $.each(products, function(index, product) {

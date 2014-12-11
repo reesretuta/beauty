@@ -1378,6 +1378,8 @@ angular.module('app.controllers.checkout')
                 };
                 var productComponents = productComponentMap[$scope.cart[0].product._id];
 
+                $log.debug("CheckoutController(): processOrder(): cart item", $scope.cart[0].product._id, $scope.cart[0], "components", productComponents);
+
                 for (var i=0; i < productComponents.length; i++) {
                     components.push({
                         sku: productComponents[i].sku,
