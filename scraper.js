@@ -43,6 +43,9 @@ models.onReady(function() {
     var skippedProductGroups = 0
 
     var existingProducts = {};
+
+    var updatedProductIds = [];
+
     var VERBOSE = process.env.VERBOSE || options["verbose"] || false;
     var AVAILABLE_ONLY = process.env.AVAILABLE_ONLY || options["available-only"] || false;
     var BASIC = process.env.BASIC || options["basic"] || false;
@@ -2175,6 +2178,7 @@ models.onReady(function() {
             delete p._id;
 
             var isUpdate = false;
+            updatedProductIds.push(id);
 
             // do a lookup on id, so we can detect how many are actually updates & if there are any type overwrites
             models.Product.findById(id, 'type', function(err, prod) {
@@ -2406,7 +2410,19 @@ models.onReady(function() {
         console.log("[summary] Skipped", skippedProducts, "products");
         console.log("[summary] Skipped", skippedProductKits, "product kits");
 
-        process.exit(0);
+        // now update availability of components, inventory numbers, etc.
+        jafraClient.updateInventory(true).then(function(inventory) {
+            jafraClient.processAvailabilityAndHiddenProducts(inventory, updatedProductIds).then(function(inventory) {
+                console.log("[summary] updated availability for products", updatedProductIds);
+                process.exit(0);
+            }, function(err) {
+                console.error("error processing availability", err);
+                process.exit(0);
+            });
+        }, function(err) {
+            console.error("error updating inventory", err);
+            process.exit(0);
+        });
     });
 
     spooky.on('error', function (e, stack) {

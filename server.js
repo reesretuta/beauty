@@ -205,6 +205,7 @@ router.route('/products')
         var categoryId = req.query.categoryId;
         var productIds = req.query.productIds;
         var loadUnavailable = req.query.loadUnavailable || false;
+        var loadComponents = req.query.loadComponents || false;
         var language = req.query.language || 'en_US';
         var sort = req.query.sort;
         if (sort == null) {
@@ -259,7 +260,7 @@ router.route('/products')
         } else {
             console.log("getting product list");
 
-            jafraClient.loadProducts(loadUnavailable, skip, limit, sort).then(function(products) {
+            jafraClient.loadProducts(loadUnavailable, loadComponents, skip, limit, sort).then(function(products) {
                 res.json(products);
             }, function (err) {
                 res.send(err);
@@ -1238,7 +1239,7 @@ setInterval(function() {
 function updateInventory() {
     console.log("updating inventory");
     jafraClient.updateInventory().then(function(inventory) {
-        console.log("updated inventory", inventory);
+        console.log("updated inventory");
     }, function(err) {
         console.error("failed to update inventory", err);
     });
