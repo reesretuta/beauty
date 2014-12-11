@@ -2523,10 +2523,10 @@ function searchProducts(searchString, loadUnavailable, skip, limit) {
         // filter out upsellItems and youMailAlsoLike that aren't available
         for (var i=0; i < products; i++) {
             products[i].upsellItems = products[i].upsellItems.filter(function (obj, index) {
-                return (obj.product !== null);
+                return (obj.product != null && obj.unavailable == false);
             });
             products[i].youMayAlsoLike = products[i].youMayAlsoLike.filter(function (obj, index) {
-                return (obj.product !== null);
+                return (obj.product != null && obj.unavailable == false);
             });
         }
 
@@ -2611,10 +2611,10 @@ function loadProductsByCategory(categoryId, loadUnavailable, skip, limit, sort) 
         // filter out upsellItems and youMailAlsoLike that aren't available
         for (var i=0; i < products; i++) {
             products[i].upsellItems = products[i].upsellItems.filter(function (obj, index) {
-                return (obj.product !== null);
+                return (obj.product != null && obj.unavailable == false);
             });
             products[i].youMayAlsoLike = products[i].youMayAlsoLike.filter(function (obj, index) {
-                return (obj.product !== null);
+                return (obj.product != null && obj.unavailable == false);
             });
         }
 
@@ -2689,10 +2689,10 @@ function loadProductsById(productIds, loadUnavailable) {
         // filter out upsellItems and youMailAlsoLike that aren't available
         for (var i=0; i < products; i++) {
             products[i].upsellItems = products[i].upsellItems.filter(function (obj, index) {
-                return (obj.product !== null);
+                return (obj.product != null && obj.unavailable == false);
             });
             products[i].youMayAlsoLike = products[i].youMayAlsoLike.filter(function (obj, index) {
-                return (obj.product !== null);
+                return (obj.product != null && obj.unavailable == false);
             });
         }
 
@@ -2756,10 +2756,10 @@ function loadProducts(loadUnavailable, skip, limit, sort) {
         // filter out upsellItems and youMailAlsoLike that aren't available
         for (var i=0; i < products; i++) {
             products[i].upsellItems = products[i].upsellItems.filter(function (obj, index) {
-                return (obj.product !== null);
+                return (obj.product != null && obj.unavailable == false);
             });
             products[i].youMayAlsoLike = products[i].youMayAlsoLike.filter(function (obj, index) {
-                return (obj.product !== null);
+                return (obj.product != null && obj.unavailable == false);
             });
         }
 
@@ -2837,10 +2837,10 @@ function loadProductById(productId, loadUnavailable) {
             // TMP
             //console.log('products:', products);
             products[0].upsellItems = products[0].upsellItems.filter(function (obj, index) {
-                return (obj.product !== null);
+                return (obj.product != null && obj.unavailable == false);
             });
             products[0].youMayAlsoLike = products[0].youMayAlsoLike.filter(function (obj, index) {
-                return (obj.product !== null);
+                return (obj.product != null && obj.unavailable == false);
             });
             console.log('products (filtered null upsells):', products);
             d.resolve(products[0]);
