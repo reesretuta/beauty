@@ -2313,6 +2313,35 @@ function processAvailabilityAndHiddenProducts(allInventory) {
                             //console.log("processAvailabilityAndHiddenProducts(): product", product.id, "availability after contains check", availableInventory);
                         }
 
+                        // set unavailable for upsell items
+                        if (product.upsellItems && product.upsellItems.length > 0) {
+                            //console.log("processAvailabilityAndHiddenProducts(): product", product.id, "upsellItems", product.upsellItems.length, "products");
+                            var availableCount = null;
+
+                            for (var j = 0; j < product.upsellItems.length; j++) {
+                                updates["upsellItems." + j + ".unavailable"] = false;
+                                var c = product.upsellItems[j];
+                                //console.log("processAvailabilityAndHiddenProducts(): product", product.id, "upsellItems", j, c);
+
+                                if (c.product != null) {
+                                    var p = c.product;
+
+                                    // mark products as available/unavailable based on upsellItems group / kits statuses
+                                    // upsellItems only products that are available status "A" and type "R" or "B"
+                                    if (p.masterStatus == "A" && p.onHold == false && (p.masterType == "R" || p.masterType == "B" || p.masterType == null || type == "group")) {
+                                        // nothing
+                                    } else {
+                                        //console.log("processAvailabilityAndHiddenProducts(): hiding product", product.id, "because upsellItemed product", p.id, "is unavailable");
+                                        updates["upsellItems." + j + ".unavailable"] = true;
+                                    }
+                                } else {
+                                    //console.log("processAvailabilityAndHiddenProducts(): hiding product", product.id, "because upsellItemed product", p.id, "is not found");
+                                    updates["upsellItems." + j + ".unavailable"] = true;
+                                }
+                            }
+                            //console.log("processAvailabilityAndHiddenProducts(): product", product.id, "availability after upsellItems check", availableInventory);
+                        }
+
                         // if kit components are unavailable, then available inventory = 0 too;
                         if (unavailableComponents) {
                             availableInventory = 0;
