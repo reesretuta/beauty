@@ -2849,17 +2849,17 @@ function loadProducts(loadUnavailable, loadComponents, skip, limit, sort) {
     return d.promise;
 }
 
-function loadProductById(productId, loadUnavailable) {
+function loadProductById(productId, loadUnavailable, loadStarterKit) {
     var d = Q.defer();
     var now = new Date();
 
-    console.log("loadProductById()", productId, loadUnavailable);
+    console.log("loadProductById()", productId, loadUnavailable, loadStarterKit);
 
     var query = {$and: [
         {_id: productId}
     ]};
 
-    if (!loadUnavailable) {
+    if (!loadUnavailable && !loadStarterKit) {
         query["$and"] = query["$and"].concat([
             { masterStatus:{$in:["A","T"]}, onHold: false, unavailableComponents: false },
             { $or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group" }]},
@@ -2867,6 +2867,10 @@ function loadProductById(productId, loadUnavailable) {
                 { $and: [{type: "group"}, {prices: {$exists: false }}]},
                 { prices: {$elemMatch: {"effectiveStartDate":{ $lte: now }, "effectiveEndDate":{ $gte: now }}}}
             ]}
+        ]);
+    } else if (loadStarterKit) {
+        query["$and"] = query["$and"].concat([
+            { masterType:{$in:["K"]}, masterStatus:{$in:["A"]}, onHold: false, unavailableComponents: false, type: "kit" }
         ]);
     }
 

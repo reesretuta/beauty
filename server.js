@@ -273,10 +273,11 @@ router.route('/products')
 router.route('/products/:productId').get(function (req, res) {
     var productId = req.params.productId;
     var loadUnavailable = req.query.loadUnavailable || false;
+    var loadStarterKit = req.query.loadStarterKit || false;
 
     console.log('getting product', req.params.productId);
 
-    jafraClient.loadProductById(productId, loadUnavailable).then(function(product) {
+    jafraClient.loadProductById(productId, loadUnavailable, loadStarterKit).then(function(product) {
         res.json(product);
         res.end();
     }, function(r) {

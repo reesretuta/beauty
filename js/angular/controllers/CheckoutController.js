@@ -348,7 +348,7 @@ angular.module('app.controllers.checkout')
             $log.debug("CheckoutController(): selectProduct(): loading product with sku=", sku);
 
             // load the product
-            Product.get({productId: sku}).then(function(product) {
+            Product.get({productId: sku, loadStarterKit: true}).then(function(product) {
                 $log.debug("CheckoutController(): selectProduct(): loaded sku", product.sku, "product", product);
 
                 // FIXME - verify all previous steps data is available, else restart process
