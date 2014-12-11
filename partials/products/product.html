@@ -62,8 +62,8 @@
                   <div class="form-group">
                     <label for="qty1234"><span ng-bind-html="'QTY' | translate | unsafe"></span>:</label>
                     <input type="number" class="form-control qty-input" id="qty1234" placeholder="1" value="1" one-to-ninety-nine>
-                    <a class="btn btn-primary" ng-class="{ 'disabled' : adding, 'add-to-cart' : (adding && addingId == product.sku) }">
-                      <i class="fa fa-shopping-cart"></i> <span ng-bind-html="'BTN_ADD_CART' | translate | unsafe"></span>
+                    <a class="btn btn-primary add-to-cart" ng-class="{ 'processing' : (adding && addingId == product.sku) }" ng-click="addToCart(upsellItem.product)">
+                      <span ng-bind-html="'BTN_ADD_CART' | translate | unsafe"></span>
                     </a>
                   </div>
                 </form>
