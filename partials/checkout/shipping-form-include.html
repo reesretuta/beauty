@@ -1,16 +1,18 @@
 
 <form name="forms.shippingForm" class="form-horizontal" role="form" novalidate>
 
-  <fieldset ng-disabled="session.client.addresses && session.client.addresses.length >= 3" class="fieldset-no-bg">
-    
-    <div class="row form-group" ng-if="session.client.addresses && session.client.addresses.length >= 3">
+  <!--<fieldset ng-disabled="session.client.addresses && session.client.addresses.length >= 6" class="fieldset-no-bg">-->
+
+  <fieldset ng-disabled="session.client.addresses && session.client.addresses.length >= 6" class="fieldset-no-bg">
+
+    <!--<div class="row form-group" ng-if="session.client.addresses && session.client.addresses.length >= 6">
       <label for="" class="col-md-3 control-label"></label>
       <div class="col-sm-8 col-lg-6 has-error">
         <span class="help-block text-danger">
           <span ng-bind-html="'ERROR-MANY-ADDRESSES' | translate | unsafe"></span>
         </span>
       </div>
-    </div>
+    </div>-->
 
     <div class="row form-group" ng-if="!isOnlineSponsoring">
       <label for="shippingFullName" class="col-md-3 control-label"><span ng-bind-html="'IN_FULL_NAME' | translate | unsafe"></span></label>
