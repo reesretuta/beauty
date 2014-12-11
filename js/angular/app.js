@@ -158,7 +158,7 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
             $translate.use(language);
         }
         if (!S(source).isEmpty()) {
-            sess["source"] = (source == "facebook" || source == "pws") ? source : "web";
+            sess["source"] = (source == "fb" || source == "pws") ? source : "web";
         }
         if (!S(cid).isEmpty()) {
             sess["consultantId"] = cid;
