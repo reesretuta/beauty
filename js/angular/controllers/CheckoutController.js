@@ -1682,7 +1682,7 @@ angular.module('app.controllers.checkout')
         $scope.selectShippingAddressAndContinue = function(address) {
             $log.debug("CheckoutController(): selectShippingAddressAndContinue(): setting shipping to", address);
             $scope.processing = true;
-            if (address.name === namePlaceholder) {
+            if (address.name === $rootScope.namePlaceholder) {
                 delete address.name;
             }
             $scope.selectShippingAddress(address);
@@ -1705,7 +1705,7 @@ angular.module('app.controllers.checkout')
         $scope.addShippingAddressAndContinue = function(address) {
             $log.debug("CheckoutController(): addShippingAddressAndContinue()", address);
             $scope.processing = true;
-            if (address.name === namePlaceholder) {
+            if (address.name === $rootScope.namePlaceholder) {
                 delete address.name;
             }
             $scope.addShippingAddress(address).then(function() {
