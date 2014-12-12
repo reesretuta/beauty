@@ -207,6 +207,7 @@ router.route('/products')
         var loadUnavailable = req.query.loadUnavailable || false;
         var loadComponents = req.query.loadComponents || false;
         var loadStarterKits = req.query.loadStarterKits || false;
+        var loadStarterKitsOnly = req.query.loadStarterKitsOnly || false;
 
         var language = req.query.language || 'en_US';
         var sort = req.query.sort;
@@ -256,7 +257,7 @@ router.route('/products')
             }
             console.log("searching for product by IDs", productIds);
 
-            jafraClient.loadProductsById(productIds, loadUnavailable, loadStarterKits).then(function(products) {
+            jafraClient.loadProductsById(productIds, loadUnavailable, loadStarterKits, loadStarterKitsOnly).then(function(products) {
                 res.json(products);
             }, function (err) {
                 console.error("error while searching products by ID", err);
@@ -280,10 +281,11 @@ router.route('/products/:productId').get(function (req, res) {
     var productId = req.params.productId;
     var loadUnavailable = req.query.loadUnavailable || false;
     var loadStarterKit = req.query.loadStarterKit || false;
+    var loadStarterKitOnly = req.query.loadStarterKitOnly || false;
 
     console.log('getting product', req.params.productId);
 
-    jafraClient.loadProductById(productId, loadUnavailable, loadStarterKit).then(function(product) {
+    jafraClient.loadProductById(productId, loadUnavailable, loadStarterKit, loadStarterKitOnly).then(function(product) {
         res.json(product);
         res.end();
     }, function(r) {

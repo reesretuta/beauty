@@ -2569,6 +2569,14 @@ function getAvailableStarterKitCriteria() {
     return availableStarterKitCriteria;
 }
 
+function getAvailableProductOrStarterKitCriteria() {
+    var criteria = {$or:[
+        getAvailableProductCriteria(),
+        getAvailableStarterKitCriteria()
+    ]};
+    return criteria;
+}
+
 function getProductAsKitComponentCriteria() {
     var availableKitComponentsCriteria = [
         {masterStatus:"A", unavailableComponents: false},
@@ -2710,20 +2718,21 @@ function loadProductsByCategory(categoryId, loadUnavailable, skip, limit, sort) 
     return d.promise;
 }
 
-function loadProductsById(productIds, loadUnavailable, loadStarterKits) {
+function loadProductsById(productIds, loadUnavailable, loadStarterKits, loadStarterKitsOnly) {
     var d = Q.defer();
-    var now = new Date();
 
-    console.log("loadProductsById()", productIds, loadUnavailable, loadStarterKits);
+    console.log("loadProductsById()", productIds, loadUnavailable, loadStarterKits, loadStarterKitsOnly);
 
     var query = {$and: [
         {_id: { $in: productIds }}
     ]};
 
-    if (!loadUnavailable && !loadStarterKits) {
+    if (!loadUnavailable && !loadStarterKits && !loadStarterKitsOnly) {
         query["$and"] = query["$and"].concat(getAvailableProductCriteria())
-    } else if (loadStarterKits) {
+    } else if (loadStarterKitsOnly) {
         query["$and"] = query["$and"].concat(getAvailableStarterKitCriteria());
+    } else if (loadStarterKits) {
+        query["$and"] = query["$and"].concat(getAvailableProductOrStarterKitCriteria());
     }
 
     models.Product.find(query)
@@ -2821,20 +2830,22 @@ function loadProducts(loadUnavailable, loadComponents, skip, limit, sort) {
     return d.promise;
 }
 
-function loadProductById(productId, loadUnavailable, loadStarterKit) {
+function loadProductById(productId, loadUnavailable, loadStarterKit, loadStarterKitOnly) {
     var d = Q.defer();
     var now = new Date();
 
-    console.log("loadProductById()", productId, loadUnavailable, loadStarterKit);
+    console.log("loadProductById()", productId, loadUnavailable, loadStarterKit, loadStarterKitOnly);
 
     var query = {$and: [
         {_id: productId}
     ]};
 
-    if (!loadUnavailable && !loadStarterKit) {
+    if (!loadUnavailable && !loadStarterKit && !loadStarterKitOnly) {
         query["$and"] = query["$and"].concat(getAvailableProductCriteria());
-    } else if (loadStarterKit) {
+    } else if (loadStarterKitOnly) {
         query["$and"] = query["$and"].concat(getAvailableStarterKitCriteria());
+    } else if (loadStarterKit) {
+        query["$and"] = query["$and"].concat(getAvailableProductOrStarterKitCriteria());
     }
 
     models.Product.find(query).populate({
