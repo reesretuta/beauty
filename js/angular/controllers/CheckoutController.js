@@ -1682,6 +1682,9 @@ angular.module('app.controllers.checkout')
         $scope.selectShippingAddressAndContinue = function(address) {
             $log.debug("CheckoutController(): selectShippingAddressAndContinue(): setting shipping to", address);
             $scope.processing = true;
+            if (address.name === namePlaceholder) {
+                delete address.name;
+            }
             $scope.selectShippingAddress(address);
             fetchSalesTax().then(function(salesTaxInfo) {
                 $log.debug("CheckoutController(): selectShippingAddressAndContinue(): got sales tax info", salesTaxInfo);
@@ -1702,6 +1705,9 @@ angular.module('app.controllers.checkout')
         $scope.addShippingAddressAndContinue = function(address) {
             $log.debug("CheckoutController(): addShippingAddressAndContinue()", address);
             $scope.processing = true;
+            if (address.name === namePlaceholder) {
+                delete address.name;
+            }
             $scope.addShippingAddress(address).then(function() {
                 fetchSalesTax().then(function(salesTaxInfo) {
                     $log.debug("CheckoutController(): addShippingAddressAndContinue(): got sales tax info", salesTaxInfo);
