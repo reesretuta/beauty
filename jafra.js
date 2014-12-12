@@ -2343,7 +2343,7 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
 
                                         // mark products as available/unavailable based on contains group / kits statuses
                                         // contains only products that are available status "A" and type "R" or "B"
-                                        if (p.masterStatus == "A" && (p.masterType == "R" || p.masterType == "B" || p.masterType == null || type == "group")) {
+                                        if (p.masterStatus == "A" && (p.masterType == "R" || p.masterType == "B" || product.type == "group")) {
                                             // products leave alone
 
                                             // groups add to count
@@ -2439,7 +2439,10 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
                                                 //    "endDate" : { type: Date, default: null }
                                                 //}]
 
-                                                if ((kitGroup.startDate == null || moment(kitGroup.startDate).isBefore(now)) && (kitGroup.endDate == null || moment(kitGroup.endDate).isAfter(now)) && (p.masterStatus == "A" && (p.masterType == "R" || p.masterType == "B" || p.masterType == null || type == "group"))) {
+                                                if ((kitGroup.startDate == null || moment(kitGroup.startDate).isBefore(now)) &&
+                                                    (kitGroup.endDate == null || moment(kitGroup.endDate).isAfter(now)) &&
+                                                    (p.masterStatus == "A" && (p.masterType == "R" || p.masterType == "B" || type == "group")))
+                                                {
                                                     // the kitgroup is in range and should be valid
                                                     hasValidComponentOption = true;
                                                 }
@@ -2537,6 +2540,66 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
     return deferred.promise;
 }
 
+function getAvailableProductCriteria() {
+    var now = new Date();
+    var availableProductCriteria = [
+        {onHold: false, searchable: true, unavailableComponents: false},
+        {$or: [
+            {masterType: "R"},
+            {$and: [
+                {type:"group"},
+                {$or: [{"startDate":{$eq:null}}, {"startDate":{$lte: now}}]},
+                {$or: [{"endDate":{$eq:null}}, {"endDate":{$gt: now}}]}
+            ]}
+        ]},
+        {$or: [
+            {masterStatus: "A", prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}},
+            {masterStatus: "A", type: "group"}
+            // TODO - OR masterStatus: "T", and valid promo message exists
+            // TODO - OR type: "group", and valid promo message exists
+        ]}
+    ];
+    return availableProductCriteria;
+}
+
+function getAvailableStarterKitCriteria() {
+    var availableStarterKitCriteria = [
+        {masterType:"K", masterStatus:"A", type: "kit" }
+    ];
+    return availableStarterKitCriteria;
+}
+
+function getProductAsKitComponentCriteria() {
+    var availableKitComponentsCriteria = [
+        {masterStatus:"A", unavailableComponents: false},
+        {$or:[{masterType: "R"}, {masterType: "B"}, {type: "group"}]},
+    ];
+    return availableKitComponentsCriteria;
+}
+
+function getKitComponentsCriteria() {
+    var now = new Date();
+    var kitComponentsCriteria = [
+        // in date range
+        {$or: [{"startDate":{$eq:null}}, {"startDate":{$lte: now}}]},
+        {$or: [{"endDate":{$eq:null}}, {"endDate":{$gt: now}}]},
+        {unavailable: false}
+    ];
+    return kitComponentsCriteria;
+}
+
+function getKitGroupComponentsCriteria() {
+    var now = new Date();
+    var kitGroupComponentCriteria = [
+        // in date range
+        {$or: [{"startDate":{$eq:null}}, {"startDate":{$lte: now}}]},
+        {$or: [{"endDate":{$eq:null}}, {"endDate":{$gt: now}}]},
+        {unavailable: false}
+    ];
+
+    return kitGroupComponentCriteria;
+}
+
 function searchProducts(searchString, loadUnavailable, skip, limit) {
     var d = Q.defer();
     var now = new Date();
@@ -2547,14 +2610,7 @@ function searchProducts(searchString, loadUnavailable, skip, limit) {
         {$text: { $search: "" + searchString }}
     ]};
     if (!loadUnavailable) {
-        query["$and"] = query["$and"].concat([
-            {masterStatus:{$in:["A","T"]}, onHold: false, searchable: true, unavailableComponents: false},
-            {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
-            {$or: [
-                {$and: [{type: "group"}, {prices: {$exists: false}}]},
-                {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
-            ]}
-        ])
+        query["$and"] = query["$and"].concat(getAvailableProductCriteria())
     }
 
     models.Product.find(query, {score: { $meta: "textScore" }})
@@ -2564,20 +2620,15 @@ function searchProducts(searchString, loadUnavailable, skip, limit) {
     .populate({
         path: 'upsellItems.product youMayAlsoLike.product',
         model: 'Product',
-        match: { $and: [
-            {masterStatus:{$in:["A","T"]}, onHold: false, unavailableComponents: false},
-            {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
-            {$or: [
-                {$and: [{type: "group"}, {prices: {$exists: false}}]},
-                {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
-            ]}
-        ]}
+        match: { $and: getAvailableProductCriteria()}
     }).populate({
         path: 'contains.product',
-        model: 'Product'
+        model: 'Product',
+        match: { $and: getKitComponentsCriteria()}
     }).populate({
         path: 'kitGroups.kitGroup',
-        model: 'KitGroup'
+        model: 'KitGroup',
+        match: { $and: getKitGroupComponentsCriteria()}
     }).exec(function (err, products) {
         if (err) {
             console.log("error getting products by string", err);
@@ -2586,18 +2637,6 @@ function searchProducts(searchString, loadUnavailable, skip, limit) {
         }
 
         products = products ? products : [];
-
-        //var opts = {
-        //    path: 'kitGroups.kitGroup.components.product',
-        //    model: 'Product',
-        //    match: { $and: [
-        //        {masterStatus:{$in:["A","T"]}, onHold: false},
-        //        {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
-        //    ]}
-        //}
-        //
-        //// populate components
-        //models.Product.populate(products, opts, function (err, products) {
 
         // filter out upsellItems and youMailAlsoLike that aren't available
         for (var i=0; i < products; i++) {
@@ -2611,7 +2650,6 @@ function searchProducts(searchString, loadUnavailable, skip, limit) {
 
         console.log("returning", products.length, "products");
         d.resolve(products);
-        //})
     });
 
     return d.promise;
@@ -2619,7 +2657,6 @@ function searchProducts(searchString, loadUnavailable, skip, limit) {
 
 function loadProductsByCategory(categoryId, loadUnavailable, skip, limit, sort) {
     var d = Q.defer();
-    var now = new Date();
 
     console.log("loadProductsByCategory()", categoryId, loadUnavailable, skip, limit, sort);
 
@@ -2628,14 +2665,7 @@ function loadProductsByCategory(categoryId, loadUnavailable, skip, limit, sort) 
     ]};
 
     if (!loadUnavailable) {
-        query["$and"] = query["$and"].concat([
-            {masterStatus:{$in:["A","T"]}, onHold: false, searchable: true, unavailableComponents: false},
-            {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
-            {$or: [
-                {$and: [{type: "group"}, {prices: {$exists: false}}]},
-                {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
-            ]}
-        ])
+        query["$and"] = query["$and"].concat(getAvailableProductCriteria());
     }
 
     models.Product.find(query)
@@ -2645,20 +2675,15 @@ function loadProductsByCategory(categoryId, loadUnavailable, skip, limit, sort) 
     .populate({
         path: 'upsellItems.product youMayAlsoLike.product',
         model: 'Product',
-        match: { $and: [
-            {masterStatus:{$in:["A","T"]}, onHold: false, unavailableComponents: false},
-            {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
-            {$or: [
-                {$and: [{type: "group"}, {prices: {$exists: false}}]},
-                {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
-            ]}
-        ]}
+        match: { $and: getAvailableProductCriteria()}
     }).populate({
         path: 'contains.product',
-        model: 'Product'
+        model: 'Product',
+        match: { $and: getKitComponentsCriteria()}
     }).populate({
         path: 'kitGroups.kitGroup',
-        model: 'KitGroup'
+        model: 'KitGroup',
+        match: { $and: getKitGroupComponentsCriteria()}
     }).exec(function (err, products) {
         if (err) {
             console.log("error getting products by category", err);
@@ -2668,31 +2693,18 @@ function loadProductsByCategory(categoryId, loadUnavailable, skip, limit, sort) 
 
         products = products ? products : [];
 
-        var opts = {
-            path: 'kitGroups.kitGroup.components.product',
-            model: 'Product',
-            match: { $and: [
-                {masterStatus:{$in:["A","T"]}},
-                {$or: [{masterType: "R"}, {masterType: "B"}, {masterType: {$exists: false}, type:"group"}]}
-            ]}
+        // filter out upsellItems and youMailAlsoLike that aren't available
+        for (var i=0; i < products; i++) {
+            products[i].upsellItems = products[i].upsellItems.filter(function (obj, index) {
+                return (obj.product != null && obj.unavailable == false);
+            });
+            products[i].youMayAlsoLike = products[i].youMayAlsoLike.filter(function (obj, index) {
+                return (obj.product != null && obj.unavailable == false);
+            });
         }
 
-        // populate components
-        models.Product.populate(products, opts, function (err, products) {
-
-            // filter out upsellItems and youMailAlsoLike that aren't available
-            for (var i=0; i < products; i++) {
-                products[i].upsellItems = products[i].upsellItems.filter(function (obj, index) {
-                    return (obj.product != null && obj.unavailable == false);
-                });
-                products[i].youMayAlsoLike = products[i].youMayAlsoLike.filter(function (obj, index) {
-                    return (obj.product != null && obj.unavailable == false);
-                });
-            }
-
-            console.log("returning", products.length, "products");
-            d.resolve(products);
-        })
+        console.log("returning", products.length, "products");
+        d.resolve(products);
     });
 
     return d.promise;
@@ -2709,38 +2721,24 @@ function loadProductsById(productIds, loadUnavailable, loadStarterKits) {
     ]};
 
     if (!loadUnavailable && !loadStarterKits) {
-        query["$and"] = query["$and"].concat([
-            {masterStatus:{$in:["A","T"]}, onHold: false, unavailableComponents: false},
-            {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
-            {$or: [
-                {$and: [{type: "group"}, {prices: {$exists: false}}]},
-                {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
-            ]}
-        ])
+        query["$and"] = query["$and"].concat(getAvailableProductCriteria())
     } else if (loadStarterKits) {
-        query["$and"] = query["$and"].concat([
-            {$or: [{masterType: "R"}, {masterType: "K"}, {masterType: {$exists: false}, type:"group"}]},
-        ]);
+        query["$and"] = query["$and"].concat(getAvailableStarterKitCriteria());
     }
 
     models.Product.find(query)
     .populate({
         path: 'upsellItems.product youMayAlsoLike.product',
         model: 'Product',
-        match: { $and: [
-            {masterStatus:{$in:["A","T"]}, onHold: false, unavailableComponents: false},
-            {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
-            {$or: [
-                {$and: [{type: "group"}, {prices: {$exists: false}}]},
-                {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
-            ]}
-        ]}
+        match: { $and: getAvailableProductCriteria()}
     }).populate({
         path: 'contains.product',
-        model: 'Product'
+        model: 'Product',
+        match: { $and: getKitComponentsCriteria()}
     }).populate({
         path: 'kitGroups.kitGroup',
-        model: 'KitGroup'
+        model: 'KitGroup',
+        match: { $and: getKitGroupComponentsCriteria()}
     }).exec(function (err, products) {
         if (err) {
             console.log("error getting products by ID", err);
@@ -2749,18 +2747,6 @@ function loadProductsById(productIds, loadUnavailable, loadStarterKits) {
         }
 
         products = products ? products : [];
-
-        //var opts = {
-        //    path: 'kitGroups.kitGroup.components.product',
-        //    model: 'Product',
-        //    match: { $and: [
-        //        {masterStatus:{$in:["A","T"]}, onHold: false},
-        //        {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
-        //    ]}
-        //}
-        //
-        //// populate components
-        //models.Product.populate(products, opts, function (err, products) {
 
         // filter out upsellItems and youMailAlsoLike that aren't available
         for (var i=0; i < products; i++) {
@@ -2774,7 +2760,6 @@ function loadProductsById(productIds, loadUnavailable, loadStarterKits) {
 
         console.log("returning", products.length, "products");
         d.resolve(products);
-        //})
     });
 
     return d.promise;
@@ -2789,21 +2774,9 @@ function loadProducts(loadUnavailable, loadComponents, skip, limit, sort) {
     var query = {};
 
     if (!loadUnavailable && !loadComponents) {
-        query = {$and: [
-            {masterStatus:{$in:["A","T"]}, onHold: false, searchable: true, unavailableComponents: false},
-            {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
-            {$or: [
-                {$and: [{type: "group"}, {prices: {$exists: false}}]},
-                {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
-            ]}
-        ]};
+        query["$and"] = query["$and"].concat(getAvailableProductCriteria())
     } else if (loadComponents) {
-        query = {
-            masterStatus:{$in:["A","T"]},
-            masterType: {$in:["R","B"]},
-            unavailableComponents: false,
-            prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}
-        };
+        query["$and"] = query["$and"].concat(getProductAsKitComponentCriteria())
     }
 
     models.Product.find(query)
@@ -2813,20 +2786,15 @@ function loadProducts(loadUnavailable, loadComponents, skip, limit, sort) {
     .populate({
         path: 'upsellItems.product youMayAlsoLike.product',
         model: 'Product',
-        match: { $and: [
-            {masterStatus:{$in:["A","T"]}, onHold: false, unavailableComponents: false},
-            {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]},
-            {$or: [
-                {$and: [{type: "group"}, {prices: {$exists: false}}]},
-                {prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}}
-            ]}
-        ]}
+        match: { $and: getAvailableProductCriteria()}
     }).populate({
         path: 'contains.product',
-        model: 'Product'
+        model: 'Product',
+        match: { $and: getKitComponentsCriteria()}
     }).populate({
         path: 'kitGroups.kitGroup',
-        model: 'KitGroup'
+        model: 'KitGroup',
+        match: { $and: getKitGroupComponentsCriteria()}
     }).exec(function (err, products) {
         if (err) {
             console.log("error getting products", err);
@@ -2864,37 +2832,23 @@ function loadProductById(productId, loadUnavailable, loadStarterKit) {
     ]};
 
     if (!loadUnavailable && !loadStarterKit) {
-        query["$and"] = query["$and"].concat([
-            { masterStatus:{$in:["A","T"]}, onHold: false, unavailableComponents: false },
-            { $or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group" }]},
-            { $or: [
-                { $and: [{type: "group"}, {prices: {$exists: false }}]},
-                { prices: {$elemMatch: {"effectiveStartDate":{ $lte: now }, "effectiveEndDate":{ $gte: now }}}}
-            ]}
-        ]);
+        query["$and"] = query["$and"].concat(getAvailableProductCriteria());
     } else if (loadStarterKit) {
-        query["$and"] = query["$and"].concat([
-            { masterType:{$in:["K"]}, masterStatus:{$in:["A"]}, onHold: false, unavailableComponents: false, type: "kit" }
-        ]);
+        query["$and"] = query["$and"].concat(getAvailableStarterKitCriteria());
     }
 
     models.Product.find(query).populate({
         path: 'upsellItems.product youMayAlsoLike.product',
         model: 'Product',
-        match: { $and: [
-            { masterStatus:{$in:["A","T"]}, onHold: false, unavailableComponents: false},
-            { $or: [{masterType: "R"}, { masterType: {$exists: false}, type:"group" }]},
-            { $or: [
-                { $and: [{type: "group"}, {prices: {$exists: false}}]},
-                { prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{ $gte: now }}}}
-            ]}
-        ]}
+        match: { $and: getAvailableProductCriteria()}
     }).populate({
         path: 'contains.product',
-        model: 'Product'
+        model: 'Product',
+        match: { $and: getKitComponentsCriteria()}
     }).populate({
         path: 'kitGroups.kitGroup',
-        model: 'KitGroup'
+        model: 'KitGroup',
+        match: { $and: getKitGroupComponentsCriteria()}
     }).exec(function (err, products) {
         if (err) {
             console.error("error populating product", err);
@@ -2908,17 +2862,6 @@ function loadProductById(productId, loadUnavailable, loadStarterKit) {
         if (products.length == 1) {
             console.log("returning", products.length, "products");
 
-            //var opts = {
-            //    path: 'kitGroups.kitGroup.components.product',
-            //    model: 'Product',
-            //    match: { $and: [
-            //        {masterStatus:{$in:["A","T"]}, onHold: false},
-            //        {$or: [{masterType: "R"}, {masterType: {$exists: false}, type:"group"}]}
-            //    ]}
-            //}
-            //
-            //// populate components
-            //models.Product.populate(products, opts, function (err, products) {
             console.log("returning", products.length, "products");
 
             // TMP
@@ -2931,7 +2874,6 @@ function loadProductById(productId, loadUnavailable, loadStarterKit) {
             });
             console.log('products (filtered null upsells):', products);
             d.resolve(products[0]);
-            //})
 
             return;
         }
