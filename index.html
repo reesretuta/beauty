@@ -137,7 +137,7 @@
             </div><!--/span-->
           </div>
 
-          <div ng-if="session.source != 'fb'" class="col-xs-12 col-sm-9 collapse navbar-collapse">
+          <div ng-if="iveBeenFramed" class="col-xs-12 col-sm-9 collapse navbar-collapse">
             <ul ng-if="consultant" class="nav navbar-nav">
               <li><a ng-href="http://myjafra.com/sites/{{consultant.firstName|substr:0:1|lowercase}}{{consultant.lastName|lowercase}}"><span ng-bind-html="'NAV_HOME' | translate | unsafe"></span></a></li>
               <li><a ng-href="http://myjafra.com/sites/{{consultant.firstName|substr:0:1|lowercase}}{{consultant.lastName|lowercase}}/about"><span ng-bind-html="'NAV_ABOUT' | translate | unsafe"></span></a></li>

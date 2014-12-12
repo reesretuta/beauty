@@ -18,7 +18,7 @@ angular.module('app.controllers.onlineSponsor')
         $('.modal-backdrop').remove();
         $log.debug("joining with sku", sku);
         $log.debug("language", language);
-        if ($rootScope.session.source == 'fb') {
+        if ( $rootScope.iveBeenFramed ) {
           $window.open(JOIN_BASE_URL + "/checkout?sku=" + sku);
         } else {
           $location.url(JOIN_BASE_URL + "/checkout?sku=" + sku);
