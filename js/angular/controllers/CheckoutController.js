@@ -115,6 +115,7 @@ angular.module('app.controllers.checkout')
                             var accountName = ($rootScope.session.client.firstName + ' ' + $rootScope.session.client.lastName);
                             $log.debug('CheckoutController(): NOT Online Sponsoring: setting shipping name (default):', accountName);
                             $scope.profile.newShippingAddress.name = accountName;
+                            $rootScope.namePlaceholder = accountName;
                         }
                         $log.debug("CheckoutController(): focusing address1 field");
                         focus('shipping-address1-focus');
@@ -818,7 +819,7 @@ angular.module('app.controllers.checkout')
                 if (!data.exists) {
                     // set the name on the shipping address
                     $scope.profile.newShippingAddress.name = $scope.profile.firstName + " " + $scope.profile.lastName;
-
+                    $rootScope.namePlaceholder = $scope.profile.firstName + " " + $scope.profile.lastName;
                     // do the sales tax calculations before moving to the next page
                     WizardHandler.wizard('checkoutWizard').goTo('Shipping');
                     $scope.processing = false;
@@ -894,6 +895,9 @@ angular.module('app.controllers.checkout')
                     },
                     addAddress: function() {
                         return addAddress;
+                    },
+                    namePlaceholder: function () {
+                        return $scope.namePlaceholder;
                     }
                 }
             });
@@ -1029,7 +1033,8 @@ angular.module('app.controllers.checkout')
 
                     // set the name on the shipping address
                     $scope.profile.newShippingAddress.name = $scope.profile.firstName + " " + $scope.profile.lastName;
-
+                    $rootScope.namePlaceholder = $scope.profile.firstName + " " + $scope.profile.lastName;
+                    
                     $scope.profile.customerStatus = 'existing';
                     $scope.checkoutUpdated();
                     // jump to Shipping

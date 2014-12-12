@@ -92,7 +92,7 @@
     <!-- shipping card -->
     <div class="col-sm-3 col-lg-3 checkout-address" ng-if="profile.shipping">
       <h3><span ng-bind-html="'PAY_TIT2' | translate | unsafe"></span></h3>
-      <span ng-if="!isOnlineSponsoring">{{ profile.shipping.name }}</span>
+      <span ng-if="!isOnlineSponsoring">{{ profile.shipping.name || namePlaceholder }}</span>
       <span ng-if="isOnlineSponsoring" class="address-businessCO">{{ profile.shipping.businessCO }}</span>
       <span class="address-street">{{profile.shipping.address1}}</span>
       <span class="address-street">{{profile.shipping.address2}}</span>
@@ -106,6 +106,7 @@
     <!-- billing card -->
     <div class="col-xs-3 col-lg-3 checkout-address">
       <h3><span ng-bind-html="'PAY_TIT3' | translate | unsafe"></span></h3>
+      <span class="address-businessCO">{{ profile.billing.name || namePlaceholder }}</span>
       <span class="address-businessCO">{{profile.billing.businessCO}}</span>
       <span class="address-street">{{profile.billing.address1}}</span>
       <span class="address-street">{{profile.billing.address2}}</span>
