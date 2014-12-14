@@ -2,7 +2,7 @@
 <div id="signin" class="col-sm-12">
 
   <div class="col-md-offset-3">
-    <h1 class="checkouth1" ng-if="profile.customerStatus == 'existing' && !isOnlineSponsoring"><span ng-bind-html="'SIGN-IN' | translate | unsafe"></span></h1>
+    <h1 class="checkouth1" ng-if="profile.customerStatus == 'existing' && !isOnlineSponsoring"><span ng-bind-html="'SIGN-IN-ALREADY-A-CUSTOMER' | translate | unsafe"></span></h1>
     <h1 class="checkouth1" ng-if="profile.customerStatus == 'new' && !isOnlineSponsoring"><span ng-bind-html="'CREATE-ACCOUNT' | translate | unsafe"></span></h1>
     <h1 class="checkouth1" ng-if="isOnlineSponsoring">
       <span ng-bind-html="'OS-START-TITLE' | translate | unsafe"></span>
@@ -21,6 +21,14 @@
   </div>
 
   <form name="signInForm" class="form-horizontal" role="form">
+
+    <div class="form-group" ng-if="!isOnlineSponsoring">
+      <div class="col-md-offset-3 col-sm-9">
+        <div class="row"><div class="col-sm-6"><hr></div></div>
+        <p ng-if="profile.customerStatus == 'new'" style="font-size: 1.5em;"><b class="control-label" ng-bind-html="'ALREADY-A-CUSTOMER' | translate | unsafe"></b> <a href="" ng-mousedown="profile.customerStatus = 'existing'" class="checkout-link"><b ng-bind-html="'SIGN-IN-ALREADY-A-CUSTOMER' | translate | unsafe"></b></a>.</p>
+        <p ng-if="profile.customerStatus == 'existing'" style="font-size: 1.5em;"><b><span ng-bind-html="'NOT-YET-A-CUSTOMER' | translate | unsafe"></span></b> <a href="" ng-click="profile.customerStatus = 'new'" class="checkout-link"><span ng-bind-html="'CREATE-ACCOUNT' | translate | unsafe"></span></a>.</p>
+      </div>
+    </div>
 
     <div class="form-group" ng-if="profile.customerStatus == 'new' || isOnlineSponsoring">
       <label for="firstName" class="col-md-3 control-label"><span ng-bind-html="'OS-NAME' | translate | unsafe"></span></label>
@@ -75,12 +83,14 @@
     <div class="form-group">
       <div class="col-md-offset-3 col-sm-9">
         <div class="row"><div class="col-sm-8"><hr></div></div>
-        <p><small ng-bind-html="'OS-START-PRIVACY-AGREE' | translate | unsafe"></small></p>
+        <p>
+          <small ng-bind-html="'OS-START-PRIVACY-AGREE' | translate | unsafe"></small> <small><a href ng-bind-html="'OS-START-PRIVACY-AGREE-2' | translate | unsafe" data-toggle="modal" data-target=".bs-privacy-modal-lg"></a> <small ng-bind-html="'OS-START-PRIVACY-AGREE-3' | translate | unsafe" class="ng-binding"></small>
+        </p>
         <div class="input-group">
           <span class="input-group-addon"><i class="fa fa-lock"></i></span>
           <button ng-if="!isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" ng-class="{ 'processing' : processing }" ng-click="loginOrCreateUser()" ng-disabled="!signInForm.$valid || processing">
             <span ng-show="profile.customerStatus == 'new'" ng-bind-html="'CREATE-ACCOUNT' | translate | unsafe"></span>
-            <span ng-show="profile.customerStatus == 'existing'" ng-bind-html="'SIGN-IN' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i>
+            <span ng-show="profile.customerStatus == 'existing'" ng-bind-html="'SIGN-IN-ALREADY-A-CUSTOMER' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i>
           </button>
           <button ng-if="isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" ng-class="{ 'processing' : processing }" ng-click="validateEmailAndContinue(profile.loginEmail)" ng-disabled="!signInForm.$valid || processing">
             <span ng-bind-html="'BTN_CONTINUE' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i>
@@ -93,11 +103,10 @@
       <div class="col-md-offset-3 col-sm-9">
         <div class="row"><div class="col-sm-6"><hr></div></div>
         <p ng-if="profile.customerStatus == 'existing'"><a href="" ng-click="forgotPassword()"><span ng-bind-html="'I-FORGOT-MY-PASSWORD' | translate | unsafe"></span></a><br><br></p>
-        
-        <p ng-if="profile.customerStatus == 'new'" style="font-size: 1.5em;"><b class="control-label" ng-bind-html="'ALREADY-A-CUSTOMER' | translate | unsafe"></b> <a href="" ng-mousedown="profile.customerStatus = 'existing'" class="checkout-link"><b ng-bind-html="'SIGN-IN' | translate | unsafe"></b></a>.</p>
-        <p ng-if="profile.customerStatus == 'existing'"><span ng-bind-html="'NOT-YET-A-CUSTOMER' | translate | unsafe"></span> <a href="" ng-click="profile.customerStatus = 'new'" class="checkout-link"><span ng-bind-html="'CREATE-ACCOUNT' | translate | unsafe"></span></a>.</p>
       </div>
     </div>
+
   </form>
-</div><!--/span-->
+
+</div>
 

@@ -110,8 +110,8 @@
     "OS-PRODUCTS-TOILETRIES": "ART&Iacute;CULOS DE TOCADOR",
     "OS-PRODUCTS-TOILETRIES-DESC": "Te sentir&aacute;s orgullosa de vender los irresistibles y extraordinarios productos arom&aacute;ticos para el cuidado del cuerpo y cabello. No nos hemos olvidado de nadie, tenemos l&iacute;neas de art&iacute;culos de tocador para toda la familia.",
 
-    "OS-PRODUCTS-RESULTS-PART1": "Los resultados son",
-    "OS-PRODUCTS-RESULTS-PART2": "garantizados",
+    "OS-PRODUCTS-RESULTS-PART1": "La belleza es",
+    "OS-PRODUCTS-RESULTS-PART2": "tuya",
     "OS-PRODUCTS-RESULTS-PART3": "<br>&iexcl;Todo lo que tienes que hacer es compartir!",
 
     "OS-PRODUCTS-GET-YOUR-STARTER-KIT": "Adquiere tu Kit de Inicio",
@@ -187,6 +187,7 @@
 
     "VIEW_CART": "Ver Carrito",
     "SIGN-IN": "Registrarse",
+    "SIGN-IN-ALREADY-A-CUSTOMER": "Ingresar",
     "CREATE-ACCOUNT": "Crear una Cuenta",
     "INVALID-EMAIL-ADDRESS": "Direcci&oacute;n de correo electr&oacute;nico no es v&aacute;lido",
     "INVALID-EMAIL-ADDRESS-IN-USE": "La dirección de correo electrónico proporcionada ya está siendo utilizado",
@@ -239,6 +240,7 @@
     "PASSWORD-RESET-ERROR": "Hubo un error al restablecer su contrase&ntilde;a",
     "FORGOT-PASSWORD-ERROR": "Hubo un error al solicitar un restablecimiento de contrase&ntilde;a",
 
+    "LOADING": "Cargando",
     "LOADING-CART": "Cargando carrito...",
 
     "BTN_LOGIN":"Login",
@@ -436,7 +438,9 @@
     "EMAIL_CONS_MSG":"Se ha hecho un pedido a traves del Client Order Entry",
     "OS-START-TITLE":"Informaci&oacute;n de Contacto",
     "OS-START-TAG":"­Entra abajo tu informaci&oacute;n de contacto",
-    "OS-START-PRIVACY-AGREE":"­Al hacer clic en CONTINUAR, est&aacute;s aceptando la <a href=\"\" data-toggle=\"modal\" data-target=\".bs-privacy-modal-lg\">Pol&iacute;tica de Privacidad</a> de JAFRA.",
+    "OS-START-PRIVACY-AGREE":"­Al hacer clic en CONTINUAR, est&aacute;s aceptando la",
+    "OS-START-PRIVACY-AGREE-2": "Pol&iacute;tica de Privacidad",
+    "OS-START-PRIVACY-AGREE-3":"de JAFRA.",
 
     "CONSULTANT-AGREEMENT-TITLE":"Contrato De Consultora Independiente JAFRA",
     "CONSULTANT-AGREEMENT-NOTE":"Debes leer el contrato completo ( bajando en la barra de navegaci&oacute;n  ) antes de poder continuar.",
@@ -505,6 +509,16 @@
 
     "TABS-SUMMARY": "Resumen",
     "TABS-INGREDIENTS": "Ingredientes",
-    "TABS-USAGE": "Uso"
+    "TABS-USAGE": "Uso",
+
+    "BTN-SAVE-CHANGES": "Guardar Cambios",
+
+    "ORDER-CONFIRMATION-TITLE": "Confirmación de Pedido",
+    "ORDER-CONFIRMATION-WILL-RECEIVE-EMAIL": "Usted recibirá un correo electrónico de confirmación para este fin",
+    "ORDER-CONFIRMATION-ORDER-NUMBER": "Número de Orden",
+    "ORDER-CONFIRMATION-DETAILS-AFTER-SHIPPING": "La información será enviada después de que su pedido ha sido enviado",
+
+    "QTY-ERROR-INVENTORY": "actualmente en stock"
+
 
 }

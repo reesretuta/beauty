@@ -62,8 +62,8 @@
                   <div class="form-group">
                     <label for="qty1234"><span ng-bind-html="'QTY' | translate | unsafe"></span>:</label>
                     <input type="number" class="form-control qty-input" id="qty1234" placeholder="1" value="1" one-to-ninety-nine>
-                    <a class="btn btn-primary" ng-class="{ 'disabled' : adding, 'add-to-cart' : (adding && addingId == product.sku) }">
-                      <i class="fa fa-shopping-cart"></i> <span ng-bind-html="'BTN_ADD_CART' | translate | unsafe"></span>
+                    <a class="btn btn-primary add-to-cart" ng-class="{ 'processing' : (adding && addingId == product.sku) }" ng-click="addToCart(upsellItem.product)">
+                      <span ng-bind-html="'BTN_ADD_CART' | translate | unsafe"></span>
                     </a>
                   </div>
                 </form>
@@ -135,28 +135,45 @@
           </div>
 
           <div class="store-item-detail-actions">
-            <p><form role="form" class="form-inline store-item-add">
-              <div class="form-group">
-                <label for="qty12345"><span ng-bind-html="'QTY' | translate | unsafe"></span>:</label>
-                <input type="number" class="form-control qty-input" id="qty12345" placeholder="1" value="1" one-to-ninety-nine ng-model="quantities[product.sku]" ng-if="product.type != 'group'">
-                <input type="number" class="form-control qty-input" id="qty12345-group" placeholder="1" one-to-ninety-nine ng-model="quantities[selectedProduct.sku]" ng-if="product.type == 'group'">
-              </div>
-            </form></p>
-            <p ng-if="product.type == 'product' || (product.type == 'kit' && product.kitGroups.length == 0)">
-              <a class="btn btn-primary btn-lg add-to-cart" ng-class="{ 'processing' : (adding && addingId == product.sku) }" ng-click="addToCart(product)">
-                 <span ng-bind-html="'BTN_ADD_CART' | translate | unsafe"></span>
-              </a>
+            <p>
+              <form role="form" class="form-inline store-item-add">
+                <div class="form-group" ng-class="{ 'has-error' : qtyError }">
+                  <label for="qty12345"><span ng-bind-html="'QTY' | translate | unsafe"></span>:</label>
+                  <input type="number" class="form-control qty-input" id="qty12345" placeholder="1" value="1" one-to-ninety-nine ng-change="resetQtyError();" ng-model="quantities[product.sku]" ng-if="product.type != 'group'">
+                  <input type="number" class="form-control qty-input" id="qty12345-group" placeholder="1" one-to-ninety-nine ng-change="resetQtyError();" ng-model="quantities[selectedProduct.sku]" ng-if="product.type == 'group'">
+                  <div ng-show="qtyError">
+                    <span class="text-danger">{{ productAvailableInventory }}</span> <span class="text-danger" ng-bind-html="'QTY-ERROR-INVENTORY' | translate | unsafe"></span>
+                  </div>
+                </div>
+              </form>
             </p>
-            <p ng-if="product.type == 'group'">
-              <a class="btn btn-primary btn-lg add-to-cart" ng-class="{ 'processing' : (adding) }" ng-click="addToCartGroup(selectedProduct.sku)">
-                 <span ng-bind-html="'BTN_ADD_CART' | translate | unsafe"></span>
-              </a>
-            </p>
-            <p ng-if="product.type == 'kit' && product.kitGroups.length > 0">
-              <a class="btn btn-primary btn-lg" ng-click="configureKit()">
-                <i class="fa fa-cogs"></i> <span ng-bind-html="'BTN_CONFIGURE' | translate | unsafe"></span>
-              </a>
-            </p>
+
+            <div ng-if="product.availableInventory >= 1">
+              <p ng-if="product.type == 'product' || (product.type == 'kit' && product.kitGroups.length == 0)">
+                <a class="btn btn-primary btn-lg add-to-cart" ng-class="{ 'processing' : (adding && addingId == product.sku) }" ng-click="addToCart(product)">
+                   <span ng-bind-html="'BTN_ADD_CART' | translate | unsafe"></span>
+                </a>
+              </p>
+              <p ng-if="product.type == 'group'">
+                <a class="btn btn-primary btn-lg add-to-cart" ng-class="{ 'processing' : (adding) }" ng-click="addToCartGroup(selectedProduct.sku)">
+                   <span ng-bind-html="'BTN_ADD_CART' | translate | unsafe"></span>
+                </a>
+              </p>
+              <p ng-if="product.type == 'kit' && product.kitGroups.length > 0">
+                <a class="btn btn-primary btn-lg" ng-click="configureKit()">
+                  <i class="fa fa-cogs"></i> <span ng-bind-html="'BTN_CONFIGURE' | translate | unsafe"></span>
+                </a>
+              </p>
+            </div>
+
+            <div ng-if="product.availableInventory <= 0 || !product.availableInventory">
+              <p>
+                <a class="btn btn-primary btn-lg disabled">
+                  <span>Out of Stock</span>
+                </a>
+              </p>
+            </div>
+
           </div>
 
         </div><!--/span-->
@@ -192,7 +209,6 @@
           <div class="col-lg-12">
             <h2><span ng-bind-html="'TIT_REC_VIEWED' | translate | unsafe"></span></h2>
           </div>
-
           <div ng-repeat="viewedProduct in recentlyViewedProducts" class="col-xs-6 col-sm-4 col-md-3 col-lg-3 store-item related" ng-show="viewedProduct.sku != product.sku && viewedProduct.sku != product.sku">
             <div class="store-item-wrapper" ng-if="viewedProduct.type!='group'">
               <a ng-href="{{STORE_BASE_URL}}/products/{{viewedProduct.sku}}#top">

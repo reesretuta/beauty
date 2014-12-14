@@ -115,6 +115,7 @@ angular.module('app.controllers.checkout')
                             var accountName = ($rootScope.session.client.firstName + ' ' + $rootScope.session.client.lastName);
                             $log.debug('CheckoutController(): NOT Online Sponsoring: setting shipping name (default):', accountName);
                             $scope.profile.newShippingAddress.name = accountName;
+                            $rootScope.namePlaceholder = accountName;
                         }
                         $log.debug("CheckoutController(): focusing address1 field");
                         focus('shipping-address1-focus');
@@ -348,7 +349,7 @@ angular.module('app.controllers.checkout')
             $log.debug("CheckoutController(): selectProduct(): loading product with sku=", sku);
 
             // load the product
-            Product.get({productId: sku}).then(function(product) {
+            Product.get({productId: sku, loadStarterKit: true}).then(function(product) {
                 $log.debug("CheckoutController(): selectProduct(): loaded sku", product.sku, "product", product);
 
                 // FIXME - verify all previous steps data is available, else restart process
@@ -818,7 +819,7 @@ angular.module('app.controllers.checkout')
                 if (!data.exists) {
                     // set the name on the shipping address
                     $scope.profile.newShippingAddress.name = $scope.profile.firstName + " " + $scope.profile.lastName;
-
+                    $rootScope.namePlaceholder = $scope.profile.firstName + " " + $scope.profile.lastName;
                     // do the sales tax calculations before moving to the next page
                     WizardHandler.wizard('checkoutWizard').goTo('Shipping');
                     $scope.processing = false;
@@ -894,6 +895,9 @@ angular.module('app.controllers.checkout')
                     },
                     addAddress: function() {
                         return addAddress;
+                    },
+                    namePlaceholder: function () {
+                        return $scope.namePlaceholder;
                     }
                 }
             });
@@ -1029,7 +1033,8 @@ angular.module('app.controllers.checkout')
 
                     // set the name on the shipping address
                     $scope.profile.newShippingAddress.name = $scope.profile.firstName + " " + $scope.profile.lastName;
-
+                    $rootScope.namePlaceholder = $scope.profile.firstName + " " + $scope.profile.lastName;
+                    
                     $scope.profile.customerStatus = 'existing';
                     $scope.checkoutUpdated();
                     // jump to Shipping
@@ -1378,6 +1383,8 @@ angular.module('app.controllers.checkout')
                 };
                 var productComponents = productComponentMap[$scope.cart[0].product._id];
 
+                $log.debug("CheckoutController(): processOrder(): cart item", $scope.cart[0].product._id, $scope.cart[0], "components", productComponents);
+
                 for (var i=0; i < productComponents.length; i++) {
                     components.push({
                         sku: productComponents[i].sku,
@@ -1675,6 +1682,9 @@ angular.module('app.controllers.checkout')
         $scope.selectShippingAddressAndContinue = function(address) {
             $log.debug("CheckoutController(): selectShippingAddressAndContinue(): setting shipping to", address);
             $scope.processing = true;
+            if (address.name === $rootScope.namePlaceholder) {
+                delete address.name;
+            }
             $scope.selectShippingAddress(address);
             fetchSalesTax().then(function(salesTaxInfo) {
                 $log.debug("CheckoutController(): selectShippingAddressAndContinue(): got sales tax info", salesTaxInfo);
@@ -1695,6 +1705,9 @@ angular.module('app.controllers.checkout')
         $scope.addShippingAddressAndContinue = function(address) {
             $log.debug("CheckoutController(): addShippingAddressAndContinue()", address);
             $scope.processing = true;
+            if (address.name === $rootScope.namePlaceholder) {
+                delete address.name;
+            }
             $scope.addShippingAddress(address).then(function() {
                 fetchSalesTax().then(function(salesTaxInfo) {
                     $log.debug("CheckoutController(): addShippingAddressAndContinue(): got sales tax info", salesTaxInfo);

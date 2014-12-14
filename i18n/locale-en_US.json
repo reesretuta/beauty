@@ -96,7 +96,7 @@
     "OS-PRODUCTS-PURITY-PERFORMANCE": "PURITY  <span class='color-gold'>+</span>  PERFORMANCE",
     "OS-PRODUCTS-PURITY-PERFORMANCE-DESC": "The finest ingredients, blended and formulated through a state-of-the-art, cruelty-free process. Samples are taken at every step to test purity, effectiveness, and performance. This passion for quality and integrity in our products has proven to keep customers coming back for more.",
 
-    "OS-PRODUCTS-SKINCARE": "SKINCARE",
+    "OS-PRODUCTS-SKINCARE": "SKIN CARE",
     "OS-PRODUCTS-SKINCARE-DESC": "The finest ingredients, blended and formulated through a state-of-the-art, cruelty-free process. Samples are taken at every step to test purity, effectiveness, and performance. This passion for quality and integrity in our products has proven to keep customers coming back for more.",
 
     "OS-PRODUCTS-FRAGRANCE": "FRAGRANCE",
@@ -108,8 +108,8 @@
     "OS-PRODUCTS-TOILETRIES": "TOILETRIES",
     "OS-PRODUCTS-TOILETRIES-DESC": "You&lsquo;ll be proud to sell JAFRA’s irresistible and extraordinary aromatic body and hair care products. No one is forgotten because there are toiletry lines created for the entire family.",
 
-    "OS-PRODUCTS-RESULTS-PART1": "Results are",
-    "OS-PRODUCTS-RESULTS-PART2": "guaranteed",
+    "OS-PRODUCTS-RESULTS-PART1": "Beauty is",
+    "OS-PRODUCTS-RESULTS-PART2": "yours",
     "OS-PRODUCTS-RESULTS-PART3": "All you have to do is share!",
 
     "OS-PRODUCTS-GET-YOUR-STARTER-KIT": "GET YOUR STARTER KIT",
@@ -185,6 +185,7 @@
 
     "VIEW_CART": "View Cart",
     "SIGN-IN": "Sign In",
+    "SIGN-IN-ALREADY-A-CUSTOMER": "Sign In",
     "CREATE-ACCOUNT": "Create Account",
     "INVALID-EMAIL-ADDRESS": "Invalid email address",
     "INVALID-EMAIL-ADDRESS-IN-USE": "The email address provided is already being used",
@@ -237,6 +238,7 @@
     "PASSWORD-RESET-ERROR": "There was an error resetting your password",
     "FORGOT-PASSWORD-ERROR": "There was an error requesting a password reset",
 
+    "LOADING": "Loading",
     "LOADING-CART": "Loading cart...",
 
     "BTN_LOGIN":"Login",
@@ -434,7 +436,9 @@
     "EMAIL_CONS_MSG":"Has placed an order through the Client Direct Order Entry",
     "OS-START-TITLE":"Contact Information",
     "OS-START-TAG":"Start by entering your contact information below.",
-    "OS-START-PRIVACY-AGREE":"By clicking continue, you agree to JAFRA&rsquo;s <a href=\"\" data-toggle=\"modal\" data-target=\".bs-privacy-modal-lg\">Privacy Policy</a>.",
+    "OS-START-PRIVACY-AGREE":"By clicking continue, you agree to JAFRA&rsquo;s",
+    "OS-START-PRIVACY-AGREE-2":"Privacy Policy",
+    "OS-START-PRIVACY-AGREE-3":"",
 
     "CONSULTANT-AGREEMENT-TITLE":"JAFRA Independent Consultant Agreement",
     "CONSULTANT-AGREEMENT-NOTE":"You must read the entire agreement (scroll down) before you can continue.",
@@ -502,7 +506,15 @@
 
     "TABS-SUMMARY": "Summary",
     "TABS-INGREDIENTS": "Ingredients",
-    "TABS-USAGE": "Usage"
+    "TABS-USAGE": "Usage",
 
+    "BTN-SAVE-CHANGES": "Save Changes",
 
+    "ORDER-CONFIRMATION-TITLE": "Order Confirmation",
+    "ORDER-CONFIRMATION-WILL-RECEIVE-EMAIL": "You will receive a confirmation email for this order",
+    "ORDER-CONFIRMATION-ORDER-NUMBER": "Order Number",
+    "ORDER-CONFIRMATION-DETAILS-AFTER-SHIPPING": "Information will be sent after your order has been shipped",
+
+    "QTY-ERROR-INVENTORY": "currently in stock"
+    
 }

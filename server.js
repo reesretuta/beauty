@@ -205,6 +205,9 @@ router.route('/products')
         var categoryId = req.query.categoryId;
         var productIds = req.query.productIds;
         var loadUnavailable = req.query.loadUnavailable || false;
+        var loadComponents = req.query.loadComponents || false;
+        var loadStarterKits = req.query.loadStarterKits || false;
+
         var language = req.query.language || 'en_US';
         var sort = req.query.sort;
         if (sort == null) {
@@ -251,7 +254,7 @@ router.route('/products')
             }
             console.log("searching for product by IDs", productIds);
 
-            jafraClient.loadProductsById(productIds, loadUnavailable).then(function(products) {
+            jafraClient.loadProductsById(productIds, loadUnavailable, loadStarterKits).then(function(products) {
                 res.json(products);
             }, function (err) {
                 res.send(err);
@@ -259,7 +262,7 @@ router.route('/products')
         } else {
             console.log("getting product list");
 
-            jafraClient.loadProducts(loadUnavailable, skip, limit, sort).then(function(products) {
+            jafraClient.loadProducts(loadUnavailable, loadComponents, skip, limit, sort).then(function(products) {
                 res.json(products);
             }, function (err) {
                 res.send(err);
@@ -272,10 +275,11 @@ router.route('/products')
 router.route('/products/:productId').get(function (req, res) {
     var productId = req.params.productId;
     var loadUnavailable = req.query.loadUnavailable || false;
+    var loadStarterKit = req.query.loadStarterKit || false;
 
     console.log('getting product', req.params.productId);
 
-    jafraClient.loadProductById(productId, loadUnavailable).then(function(product) {
+    jafraClient.loadProductById(productId, loadUnavailable, loadStarterKit).then(function(product) {
         res.json(product);
         res.end();
     }, function(r) {
@@ -1238,7 +1242,7 @@ setInterval(function() {
 function updateInventory() {
     console.log("updating inventory");
     jafraClient.updateInventory().then(function(inventory) {
-        console.log("updated inventory", inventory);
+        console.log("updated inventory");
     }, function(err) {
         console.error("failed to update inventory", err);
     });
@@ -1265,7 +1269,7 @@ app.use(bodyParser.urlencoded({
 // serve up proper PGP dynamically for dev/prod
 app.get('/js/pgp_key.js', function(req, res) {
     try {
-        res.sendfile(basepath + '/' + config.pgp_key_file);
+        res.sendFile(basepath + '/' + config.pgp_key_file);
     } catch (ex) {
         console.error("Failed to open PGP key", ex);
         res.status(404);
@@ -1317,7 +1321,7 @@ app.get('*', function (req, res, next) {
     //console.log("request for hostname", req.hostname);
     if (req.hostname && S(req.hostname).endsWith("joinjafra.com")) {
         console.log("redirecting joinjafra.com to usa.jafra.com");
-        res.redirect("https://usa.jafra.com/join/");
+        res.redirect(301, "https://usa.jafra.com/join/");
         res.end();
         return;
     }
@@ -1332,9 +1336,9 @@ app.get('/*', function (req, res, next) {
         var IEbrowser = parseInt(myNav.split('MSIE')[1])
         if (IEbrowser <= 9) {
             if (req.originalUrl != null && req.originalUrl.match("/join")) {
-                res.sendfile(basepath + '/browser_unsupported.join.html');
+                res.sendFile(basepath + '/browser_unsupported.join.html');
             } else {
-                res.sendfile(basepath + '/browser_unsupported.shop.html');
+                res.sendFile(basepath + '/browser_unsupported.shop.html');
             }
             return;
         }
@@ -1350,17 +1354,17 @@ app.get('/$', function (req, res) {
 // any URL beginning with /join without a dot or / should serve online_sponsoring.html, save for /api methods captured above
 app.get('/join*', function (req, res) {
     console.log('join path');
-    res.sendfile(basepath + '/online_sponsoring.html'); // load the single view file (angular will handle the page changes on the front-end)
+    res.sendFile(basepath + '/online_sponsoring.html'); // load the single view file (angular will handle the page changes on the front-end)
 });
 
 // any URL without a dot or / should serve index.html, save for /api methods captured above
 app.get('/shop*', function (req, res) {
     console.log('store path');
-    res.sendfile(basepath + '/index.html'); // load the single view file (angular will handle the page changes on the front-end)
+    res.sendFile(basepath + '/index.html'); // load the single view file (angular will handle the page changes on the front-end)
 });
 
 app.get('/encrypt_test.html$', function (req, res) {
-    res.sendfile(basepath + '/encrypt_test.html'); // load the single view file (angular will handle the page changes on the front-end)
+    res.sendFile(basepath + '/encrypt_test.html'); // load the single view file (angular will handle the page changes on the front-end)
 });
 
 models.onReady(function () {

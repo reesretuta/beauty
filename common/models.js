@@ -209,12 +209,14 @@ var productSchema = Schema({
         "product" : {type: String, ref: 'Product'},
         "productId" : String,
         "rank" : Number,
-        "marketingText" : String
+        "marketingText" : String,
+        "unavailable": {type: Boolean, default: false}
     }],
     "youMayAlsoLike" : [{
         "product" : {type: String, ref: 'Product'},
         "productId" : String,
-        "rank" : Number
+        "rank" : Number,
+        "unavailable": {type: Boolean, default: false}
     }],
     "usage" : String,
     "usage_es_US" : String,

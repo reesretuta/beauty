@@ -13,6 +13,7 @@ angular.module('app.controllers.products')
 
         $scope.errorMessage = '';
         $scope.loading = true;
+        $scope.qtyError = false;
 
         $scope.selectedProduct = {};
         
@@ -21,24 +22,33 @@ angular.module('app.controllers.products')
         // reset the navigation
         BreadcrumbsHelper.setPath(null, null);
 
+        $scope.resetQtyError = function() {
+            $scope.qtyError = null;
+        };
+
         $scope.addToCart = function(product) {
             $log.debug("ProductDetailsController(): adding product", product);
             var qty = $scope.quantities[product.sku];
             if (qty == null) {
                 qty = 1;
             }
-            $log.debug("ProductDetailsController(): adding product", product, qty);
-            Cart.addToCart({
-                name: product.name,
-                name_es_US: product.name_es_US,
-                sku: product.sku,
-                quantity: qty,
-                kitSelections: {}
-            }).then(function() {
-                $log.debug('ProductDetailsController(): addToCart: complete (clearing qty)');
-                $scope.quantities[product.sku] = 1;
-            });
-        }
+            if (qty > product.availableInventory) {
+                $scope.qtyError = true;
+                $scope.productAvailableInventory = product.availableInventory;
+            } else {
+                $scope.qtyError = false;
+                Cart.addToCart({
+                    name: product.name,
+                    name_es_US: product.name_es_US,
+                    sku: product.sku,
+                    quantity: qty,
+                    kitSelections: {}
+                }).then(function() {
+                    $log.debug('ProductDetailsController(): addToCart: complete (clearing qty)');
+                    $scope.quantities[product.sku] = 1;
+                });
+            }
+        };
 
         $scope.addToCartGroup = function(sku) {
 
