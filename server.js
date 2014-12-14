@@ -1321,7 +1321,7 @@ app.get('*', function (req, res, next) {
     //console.log("request for hostname", req.hostname);
     if (req.hostname && S(req.hostname).endsWith("joinjafra.com")) {
         console.log("redirecting joinjafra.com to usa.jafra.com");
-        res.redirect("https://usa.jafra.com/join/");
+        res.redirect(301, "https://usa.jafra.com/join/");
         res.end();
         return;
     }

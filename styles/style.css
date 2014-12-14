@@ -1159,6 +1159,10 @@ button.processing:before {
   overflow-y: scroll;
 }
 
+.at-share-btn {
+  display: inline-block;
+}
+
 
 
 /*
