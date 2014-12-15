@@ -50,7 +50,16 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
         }).when(STORE_BASE_URL + '/forgotPassword', {
           templateUrl: BASE_URL + '/partials/forgot-password.html',
           controller: 'PasswordResetController'
-        }).otherwise({
+        })
+        .when(STORE_BASE_URL + '/oops', {
+          templateUrl: BASE_URL + '/partials/unknown-error.html',
+          controller: 'MainController'
+        })
+        .when(JOIN_BASE_URL + '/oops', {
+          templateUrl: BASE_URL + '/partials/unknown-error.html',
+          controller: 'MainController'
+        })
+        .otherwise({
           templateUrl: BASE_URL + '/partials/page-not-found.html',
           controller: 'MainController'
         });
@@ -194,4 +203,38 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
             "  </div>\n" +
             "</div>\n" +
             "");
-    });
+})
+
+/**
+ * handle exceptions gracefully
+ * -----------------------------
+ * in production, return users to an error page 
+ */
+
+.factory('$exceptionHandler', ['$log', '$injector', 'STORE_BASE_URL', 'JOIN_BASE_URL', function($log, $injector, STORE_BASE_URL, JOIN_BASE_URL) {
+
+    var ENV, BASE_URL;
+
+    // determine env
+    ENV = (/localhost:8090/.test(window.location.host)) ? 
+        'development' : 'production';
+
+    // shop or join?
+    BASE_URL = (new RegExp(STORE_BASE_URL).test(window.location.host)) ? 
+        STORE_BASE_URL : JOIN_BASE_URL;
+
+    $log.debug('exception_handler: ENV: %s, BASE_URL: %s', ENV, BASE_URL);
+
+    // production behavior (OOPS!)
+    if (ENV !== 'production') {
+        return function(exception, cause) {
+            var nextPath, $location = $injector.get('$location');
+            exception.message += ' [caused by "' + cause + '"]';
+            $log.debug('exception_handler: exception.message:', exception.message);
+            $location.path(STORE_BASE_URL + '/oops');
+        };
+    }
+
+}]);
+
+

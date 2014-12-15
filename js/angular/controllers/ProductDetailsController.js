@@ -247,6 +247,11 @@ angular.module('app.controllers.products')
                 // set the page title
                 $rootScope.title = Product.getTranslated(product).name;
 
+                $rootScope.$on('set_language', function() {
+                    $log.debug('ProductDetailsController(): $rootScope.$on("set_language")');
+                    $rootScope.title = Product.getTranslated(product).name;
+                });
+
                 if ($scope.categoryId == null && $scope.product.categories != null) {
                     // load the first category from this product, we probably landed here from search
                     var categories = $scope.product.categories.category;

@@ -119,7 +119,7 @@ angular.module('app.controllers.cart')
         $scope.configureKit = function(item, inCart) {
             var d = $modal.open({
                 backdrop: true,
-                keyboard: true, // we will handle ESC in the modal for cleanup
+                keyboard: true,
                 windowClass: "configureKitModal",
                 templateUrl: '/partials/products/configure-kit-modal.html',
                 controller: 'ConfigureKitModalController',
@@ -128,11 +128,11 @@ angular.module('app.controllers.cart')
                         return item;
                     },
                     inCart: function() {
-                        console.log("inCart", inCart);
                         return inCart == null ? true : inCart;
                     },
                     whizFunc: function() {
                         return function() {
+                            // huh?
                             //WizardHandler.wizard('checkoutWizard').goTo('Shipping');
                         }
                     }

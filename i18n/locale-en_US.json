@@ -108,8 +108,8 @@
     "OS-PRODUCTS-TOILETRIES": "TOILETRIES",
     "OS-PRODUCTS-TOILETRIES-DESC": "You&lsquo;ll be proud to sell JAFRA’s irresistible and extraordinary aromatic body and hair care products. No one is forgotten because there are toiletry lines created for the entire family.",
 
-    "OS-PRODUCTS-RESULTS-PART1": "Results are",
-    "OS-PRODUCTS-RESULTS-PART2": "guaranteed",
+    "OS-PRODUCTS-RESULTS-PART1": "Beauty is",
+    "OS-PRODUCTS-RESULTS-PART2": "yours",
     "OS-PRODUCTS-RESULTS-PART3": "All you have to do is share!",
 
     "OS-PRODUCTS-GET-YOUR-STARTER-KIT": "GET YOUR STARTER KIT",
@@ -515,6 +515,9 @@
     "ORDER-CONFIRMATION-ORDER-NUMBER": "Order Number",
     "ORDER-CONFIRMATION-DETAILS-AFTER-SHIPPING": "Information will be sent after your order has been shipped",
 
-    "QTY-ERROR-INVENTORY": "currently in stock"
+    "QTY-ERROR-INVENTORY": "currently in stock",
+
+    "UNKNOWN_ERROR_HEADER": "OOPS!",
+    "UNKNOWN_ERROR_BODY": "Something went wrong, please try again later"
     
 }
