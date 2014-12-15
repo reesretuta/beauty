@@ -406,6 +406,7 @@ angular.module('app.services', ['ngResource'])
             sessionService.set('language', language).then(function() {
                 $log.debug("sessionService(): setLanguage(): language set");
                 $translate.use(language);
+                $rootScope.$broadcast('set_language');
             });
         }
 
