@@ -48,7 +48,7 @@
               <ul ng-if="item.product.kitGroups.length > 0">
                 <li ng-repeat="(kitId, kitProducts) in item.kitSelections">
                   <div ng-repeat="kitProduct in kitProducts">
-                    {{getTranslated(kitProduct).name}} #{{kitProduct.sku}}
+                    {{ getTranslated(kitProduct).name }} #{{ kitProduct.sku }}
                   </div>
                 </li>
               </ul>

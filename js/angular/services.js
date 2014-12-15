@@ -1277,11 +1277,9 @@ angular.module('app.services', ['ngResource'])
         creditCardService.addCreditCard = function(creditCard) {
             $log.debug("addressService(): addCreditCard()");
             var d = $q.defer();
-
+            
             creditCard = angular.copy(creditCard);
-            $log.debug('CREDIT CARD:', creditCard.cvv, typeof(creditCard.cvv));
             creditCard.cvv = parseInt(creditCard.cvv);
-            $log.debug('CREDIT CARD:', creditCard.cvv, typeof(creditCard.cvv));
 
             var session = Session.get().then(function(session) {
                 var clientId = session.client.id;
