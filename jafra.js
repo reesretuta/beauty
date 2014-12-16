@@ -2779,7 +2779,7 @@ function loadProducts(loadUnavailable, loadComponents, skip, limit, sort) {
 
     console.log("loadProducts()", loadUnavailable, loadComponents, skip, limit, sort);
 
-    var query = {};
+    var query = {$and: []};
 
     if (!loadUnavailable && !loadComponents) {
         query["$and"] = query["$and"].concat(getAvailableProductCriteria())
