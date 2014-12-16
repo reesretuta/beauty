@@ -52,7 +52,7 @@
           <td colspan="3">
             <p><span ng-bind-html="'SUBTOTAL' | translate | unsafe"></span>: {{ salesTaxInfo.SubTotal | currency }}</p>
             <p><span ng-bind-html="'SHIPPING' | translate | unsafe"></span>: {{ salesTaxInfo.SH | currency }}</p>
-            <p><span ng-bind-html="'TAX' | translate | unsafe"></span>: {{ salesTaxInfo.TaxRate }}%</p>
+            <p><span ng-bind-html="'TAX' | translate | unsafe"></span>: ({{ salesTaxInfo.TaxRate}}%): {{ salesTaxInfo.TaxAmount | currency }}</p>
             <p class="lead"><b><span ng-bind-html="'TOTAL_CHARGES' | translate | unsafe"></span>: {{ salesTaxInfo.Total | currency }}</b></p>
           </td>
         </tr>
@@ -86,7 +86,6 @@
           <small>EXP:</small>
           {{profile.card.expMonth}}/{{profile.card.expYear|substr:2:2}}
         </p>
-        <a ng-click="editCreditCard(profile.card)" class="pull-right card-use-btn"><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'EDIT' | translate | unsafe"></span></a>
       </div>
     </div><!-- /card -->
     <!-- shipping card -->
@@ -99,9 +98,6 @@
       <span class="address-region">{{profile.shipping.city}}, {{profile.shipping.state}} {{ profile.shipping.zip }}</span>
       <span class="phone-number" ng-if="!isOnlineSponsoring">{{profile.shipping.phone}}</span>
       <span ng-if="!isOnlineSponsoring"><span ng-bind-html="'SHIPPING-CARRIER' | translate | unsafe"></span>: {{ salesTaxInfo.Carrier || 'UPS' }}</span>
-      <div class="address-actions">
-        <a href ng-click="editAddress(profile.shipping, 'shipping')" class="pull-left"><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'EDIT' | translate | unsafe"></span></a>
-      </div>
     </div><!-- /address -->
     <!-- billing card -->
     <div class="col-xs-3 col-lg-3 checkout-address">
@@ -112,9 +108,6 @@
       <span class="address-street">{{profile.billing.address2}}</span>
       <span class="address-region">{{profile.billing.city}}, {{profile.billing.state}} {{profile.billing.zip }}</span>
       <span class="phone-number" ng-if="!isOnlineSponsoring">{{profile.billing.phone}}</span>
-      <div class="address-actions">
-        <a href ng-click="editAddress(profile.billing, 'billing')" class="pull-left"><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'EDIT' | translate | unsafe"></span></a>
-      </div>
     </div><!-- /address -->
   </div><!-- /row / end review info -->
 
