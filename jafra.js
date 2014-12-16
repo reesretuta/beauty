@@ -2599,7 +2599,7 @@ function getKitComponentsCriteria() {
 function getKitGroupComponentsCriteria() {
     var now = new Date();
     var kitGroupComponentCriteria = [
-        // in date range
+        // FIXME - in date range this needs to be applied to the kitGroup/component somehow
         //{$or: [{"startDate":{$eq:null}}, {"startDate":{$lte: now}}]},
         //{$or: [{"endDate":{$eq:null}}, {"endDate":{$gt: now}}]}
     ];
@@ -2631,11 +2631,11 @@ function searchProducts(searchString, loadUnavailable, skip, limit) {
     }).populate({
         path: 'contains.product',
         model: 'Product',
-        match: { $and: getKitComponentsCriteria()}
+        //match: { $and: getKitComponentsCriteria()}
     }).populate({
         path: 'kitGroups.kitGroup',
         model: 'KitGroup',
-        match: { $and: getKitGroupComponentsCriteria()}
+        //match: { $and: getKitGroupComponentsCriteria()}
     }).exec(function (err, products) {
         if (err) {
             console.log("error getting products by string", err);
@@ -2686,11 +2686,11 @@ function loadProductsByCategory(categoryId, loadUnavailable, skip, limit, sort) 
     }).populate({
         path: 'contains.product',
         model: 'Product',
-        match: { $and: getKitComponentsCriteria()}
+        //match: { $and: getKitComponentsCriteria()}
     }).populate({
         path: 'kitGroups.kitGroup',
         model: 'KitGroup',
-        match: { $and: getKitGroupComponentsCriteria()}
+        //match: { $and: getKitGroupComponentsCriteria()}
     }).exec(function (err, products) {
         if (err) {
             console.log("error getting products by category", err);
@@ -2742,11 +2742,11 @@ function loadProductsById(productIds, loadUnavailable, loadStarterKits, loadStar
     }).populate({
         path: 'contains.product',
         model: 'Product',
-        match: { $and: getKitComponentsCriteria()}
+        //match: { $and: getKitComponentsCriteria()}
     }).populate({
         path: 'kitGroups.kitGroup',
         model: 'KitGroup',
-        match: { $and: getKitGroupComponentsCriteria()}
+        //match: { $and: getKitGroupComponentsCriteria()}
     }).exec(function (err, products) {
         if (err) {
             console.log("error getting products by ID", err);
@@ -2798,11 +2798,11 @@ function loadProducts(loadUnavailable, loadComponents, skip, limit, sort) {
     }).populate({
         path: 'contains.product',
         model: 'Product',
-        match: { $and: getKitComponentsCriteria()}
+        //match: { $and: getKitComponentsCriteria()}
     }).populate({
         path: 'kitGroups.kitGroup',
         model: 'KitGroup',
-        match: { $and: getKitGroupComponentsCriteria()}
+        //match: { $and: getKitGroupComponentsCriteria()}
     }).exec(function (err, products) {
         if (err) {
             console.log("error getting products", err);
@@ -2857,11 +2857,11 @@ function loadProductById(productId, loadUnavailable, loadStarterKit, loadStarter
     }).populate({
         path: 'contains.product',
         model: 'Product',
-        match: { $and: getKitComponentsCriteria()}
+        //match: { $and: getKitComponentsCriteria()}
     }).populate({
         path: 'kitGroups.kitGroup',
         model: 'KitGroup',
-        match: { $and: getKitGroupComponentsCriteria()}
+        //match: { $and: getKitGroupComponentsCriteria()}
     }).exec(function (err, products) {
         if (err) {
             console.error("error populating product", err);
