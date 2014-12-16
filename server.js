@@ -1318,6 +1318,32 @@ app.use('/api', router);
 
 app.use('/assets', assetRouter);
 
+
+/**
+ * maintenance mode 
+ * MAINTENANCE_MODE {Boolean} = true/[false|undefined]
+ * MAINTENANCE_MODE=true node server.js
+ * flips between standard operation or `oops!` page
+ */
+
+app.use(function(req, res, next) {
+    // check for MAINTENANCE env variable
+    var redirect, isInMaintenanceMode = (process.env.MAINTENANCE_MODE) ? true : false;
+    console.log('> MAINTENANCE_MODE? -', isInMaintenanceMode);
+    // is maintenance && index -> continue, otherwise redirect to home
+    if (isInMaintenanceMode) {
+        if (req.url === '/shop' || req.url === '/join' || /oops/.test(req.url)) {
+            return next();
+        } else {
+            redirect = (/^\/shop/.test(req.url)) ? '/shop/oops' : '/join/oops';
+            return res.redirect(redirect);
+        }
+    } else {
+        return next();
+    }
+});
+
+
 //app.get('/$', function (req, res) {
 //    console.log('root', req);
 //    res.redirect("http://www.jafra.com/");
@@ -1390,21 +1416,4 @@ models.onReady(function () {
     app.listen(port);
     console.log('App & API on port ' + port);
 });
-
-/**
- * maintenance mode
- * MAINTENANCE_MODE {Boolean} = true/[false|undefined]
- * flips between standard operation or `oops!` page
- */
-
-// testing - wait for inventory update on init process #TODO
-setTimeout(function() {
-    var maintenance = config.MAINTENANCE_MODE; 
-    console.log('>> MAINTENANCE_MODE?:', maintenance);
-}, 20000);
-
-
-
-
-
 

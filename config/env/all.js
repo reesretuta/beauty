@@ -7,6 +7,5 @@ module.exports = {
   jcs_api_ip: "189.206.20.52",
   pgp_key_file: "pgp_keys/pgp_key_dev.js",
   cdn_base_url: process.env.FASTLY_CDN_URL ? "http://" + process.env.FASTLY_CDN_URL : "http://localhost:8090",
-  debug: false,
-  MAINTENANCE_MODE: (process.env.MAINTENANCE_MODE && process.env.MAINTENANCE_MODE === true) ? true : false
+  debug: false
 };
