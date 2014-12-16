@@ -1390,3 +1390,21 @@ models.onReady(function () {
     app.listen(port);
     console.log('App & API on port ' + port);
 });
+
+/**
+ * maintenance mode
+ * MAINTENANCE_MODE {Boolean} = true/[false|undefined]
+ * flips between standard operation or `oops!` page
+ */
+
+// testing - wait for inventory update on init process #TODO
+setTimeout(function() {
+    var maintenance = config.MAINTENANCE_MODE; 
+    console.log('>> MAINTENANCE_MODE?:', maintenance);
+}, 20000);
+
+
+
+
+
+
