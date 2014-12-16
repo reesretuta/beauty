@@ -1,6 +1,6 @@
 
 angular.module('app.controllers.cart')
-    .controller('CartController', function ($scope, $document, $rootScope, $compile, $routeParams, $modal, $log, $q, $location, SalesTax, Cart, Product, OrderHelper, HashKeyCopier, STORE_BASE_URL, $translate) {
+    .controller('CartController', function ($scope, $document, $rootScope, $compile, $routeParams, $modal, $log, $q, $location, SalesTax, Cart, Product, OrderHelper, HashKeyCopier, STORE_BASE_URL, Session) {
         $log.debug("CartController");
 
         //change page title
@@ -20,6 +20,19 @@ angular.module('app.controllers.cart')
         $scope.searchProductsByName = {};
 
         $scope.cartLoaded = false;
+
+        $scope.$watch(function () {
+            return $scope.cart;
+        }, function (newValue, oldValue) {
+            if (newValue && JSON.stringify(newValue) != JSON.stringify(oldValue)) {
+                // call handler
+                Session.set("cart", $scope.cart).then(function() {
+                    $log.debug("CartController(): cart saved to session", newValue);
+                }, function(err) {
+                    $log.error("CartController(): error saving cart to session", err);
+                });
+            }
+        }, true);
 
         function loadCart() {
             var d = $q.defer();

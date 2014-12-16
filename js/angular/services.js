@@ -1734,7 +1734,7 @@ angular.module('app.services', ['ngResource'])
           //$log.debug("calculating price for item", item);
           if (item.product==null || item.product.currentPrice==null) {
             // there is a problem, we don't have prices
-            $log.error("there are no prices listed for this item", item);
+            $log.error("there are no prices listed for this item", item.product, item.product.currentPrice);
           } else {
             // use the first price in the list
             total += parseInt(item.quantity) * item.product.currentPrice.price;
