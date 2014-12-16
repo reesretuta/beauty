@@ -119,6 +119,8 @@ section#why_jafra_testimonials .btn-lg {
 .royal_kit .kit-value,
 #royal_starter_kit .kit-desc {
 	font-size: 48px;
+	position: relative;
+	z-index: 1;
 }
 .royal_kit .kit-desc {
 	font-size: 36px;
