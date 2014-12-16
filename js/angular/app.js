@@ -233,6 +233,10 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
             $log.debug('exception_handler: exception.message:', exception.message);
             $location.path(STORE_BASE_URL + '/oops');
         };
+    } else {
+        return function(exception, cause) {
+            
+        }
     }
 
 }]);
