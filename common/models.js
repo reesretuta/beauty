@@ -11,6 +11,30 @@ var db = mongoose.connection;
 exports.db = db;
 exports.mongoose = mongoose;
 
+// SCRAPE PROGRESS
+var scrapeProgressSchema = Schema({
+    "session" : String, // unique key
+    "type" : String, // product, kit, group, kitGroup
+    "items" : [Schema.Types.Mixed], // array of IDs (string/number)
+    "lastCompletedItem" : Schema.Types.Mixed, // string/number
+    "lastCompletedDate" : { type: Date, default: null },
+    "progress" : Number
+}, { id: false });
+
+var ScrapeProgress = mongoose.model('ScrapeProgress', scrapeProgressSchema);
+exports.ScrapeProgress = ScrapeProgress;
+
+// SCRAPE ERRORS
+var scrapeErrorSchema = Schema({
+    "type" : String, // product, kit, group, kitGroup
+    "error" : Schema.Types.Mixed,
+    "date" : { type: Date, default: null }
+}, { id: false });
+
+var ScrapeError = mongoose.model('ScrapeError', scrapeErrorSchema);
+exports.ScrapeError = ScrapeError;
+
+
 // IMAGES
 var imageSchema = Schema({
     "alt" : String,
@@ -205,11 +229,18 @@ var productSchema = Schema({
     "masterStatus" : String,
     "sharedAssets" : [{type: Number, ref: 'SharedAsset'}],
     "taxCode" : String,
+    "promotionalMessages" : [{
+        "message" : String,
+        "message_es_US" : String,
+        "startDate" : { type: Date, default: null },
+        "endDate" : { type: Date, default: null }
+    }],
     "upsellItems" : [{
         "product" : {type: String, ref: 'Product'},
         "productId" : String,
         "rank" : Number,
         "marketingText" : String,
+        "marketingText_es_US" : String,
         "unavailable": {type: Boolean, default: false}
     }],
     "youMayAlsoLike" : [{
