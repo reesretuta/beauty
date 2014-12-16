@@ -51,8 +51,10 @@ angular.module('app.controllers.products').controller('ConfigureKitModalControll
 
     var kitgroups = new Array();
     if (Array.isArray(item.product.kitGroups)) {
+        $log.debug("ConfigureKitModalController(): have kit groups array", item.product.kitGroups);
         kitgroups = item.product.kitGroups;
     } else {
+        $log.debug("ConfigureKitModalController(): have kit groups item");
         kitgroups.push(item.product.kitGroups);
     }
 
@@ -76,8 +78,11 @@ angular.module('app.controllers.products').controller('ConfigureKitModalControll
     var productIds = new Array();
     var allKitGroups = new Array();
     $.each(kitgroups, function(index, kitgroup) {
+        $log.debug('ConfigureKitModalController(): processing kitGroup', kitgroup);
+
         // get product list to load
         $.each(kitgroup.kitGroup.components, function(index, component) {
+            $log.debug('ConfigureKitModalController(): adding kitGroup component', component);
             productIds.push(component.productId);
         });
 
