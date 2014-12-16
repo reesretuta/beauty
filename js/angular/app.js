@@ -226,7 +226,7 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
     $log.debug('exception_handler: ENV: %s, BASE_URL: %s', ENV, BASE_URL);
 
     // production behavior (OOPS!)
-    if (ENV !== 'production') {
+    if (ENV === 'production') {
         return function(exception, cause) {
             var nextPath, $location = $injector.get('$location');
             exception.message += ' [caused by "' + cause + '"]';
