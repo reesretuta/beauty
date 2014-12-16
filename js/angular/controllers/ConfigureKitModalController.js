@@ -20,13 +20,14 @@ angular.module('app.controllers.products').controller('ConfigureKitModalControll
     }
 
     $scope.selectProduct = function(kitId, kitGroupNum, productId) {
-        $log.debug("ConfigureKitModalController(): selected product", productId, "for kit", kitId);
+        $log.debug("ConfigureKitModalController(): selected product", productId, "for kit", kitId, "kitGroupNum", kitGroupNum);
 
-        $scope.kitData.kitSelections[kitId+'_'+kitGroupNum]= {
+        $scope.kitData.kitSelections[kitId+'_'+kitGroupNum] = {
             sku: productId,
             name: $scope.productIdToProduct[productId].name
         };
         $scope.kitGroupSelected = kitId+'_'+kitGroupNum;
+        $log.debug("ConfigureKitModalController(): kitSelections now", $scope.kitData.kitSelections);
     };
 
     $scope.kitGroupSelected = null;
@@ -77,7 +78,7 @@ angular.module('app.controllers.products').controller('ConfigureKitModalControll
     $.each(kitgroups, function(index, kitgroup) {
         // get product list to load
         $.each(kitgroup.kitGroup.components, function(index, component) {
-            productIds.push(component.product);
+            productIds.push(component.productId);
         });
 
         // break out quantities to create a list of kit groups for configuring
@@ -112,13 +113,15 @@ angular.module('app.controllers.products').controller('ConfigureKitModalControll
     //}
 
     var kitSelections = {};
-    $.each($scope.item.product.kitGroups, function(kitId, selections) {
-        $log.debug("ConfigureKitModalController(): processing loaded kitSelections", selections);
-        $.each(selections, function(index, selection) {
-            $log.debug("ConfigureKitModalController(): setting", kitId+"_"+(index+1), "to", selection);
-            kitSelections[kitId+"_"+(index+1)] = selection;
+    if ($scope.item.kitSelections) {
+        $.each($scope.item.kitSelections, function(kitId, selections) {
+            $log.debug("ConfigureKitModalController(): processing loaded kitSelections", selections);
+            $.each(selections, function(index, selection) {
+                $log.debug("ConfigureKitModalController(): setting", kitId+"_"+(index+1), "to", selection);
+                kitSelections[kitId+"_"+(index+1)] = selection;
+            });
         });
-    });
+    }
     $log.debug("ConfigureKitModalController(): setting kitSelections", kitSelections);
     $scope.kitData.kitSelections = kitSelections;
 
@@ -205,11 +208,15 @@ angular.module('app.controllers.products').controller('ConfigureKitModalControll
         //    }]
         //}
         var kitSelections = {};
+        $log.debug("ConfigureKitModalController(): kitSelections", $scope.kitData.kitSelections);
+
         for (var kitKey in $scope.kitData.kitSelections) {
             if ($scope.kitData.kitSelections.hasOwnProperty(kitKey)) {
-                var key = kitKey.substring(0, kitKey.indexOf('_'));
+                $log.debug("ConfigureKitModalController(): processing kit selection key", kitKey);
                 var kitItem = $scope.kitData.kitSelections[kitKey];
-                $log.debug("ConfigureKitModalController(): have kitGroup", key, kitItem);
+                $log.debug("ConfigureKitModalController(): have kitItem", kitItem);
+                var key = kitKey.substring(0, kitKey.indexOf('_'));
+                $log.debug("ConfigureKitModalController(): have key", key);
 
                 if (kitSelections[key] == null) {
                     kitSelections[key] = [kitItem];
