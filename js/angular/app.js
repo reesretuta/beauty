@@ -208,7 +208,7 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
 /**
  * handle exceptions gracefully
  * -----------------------------
- * in production, return users to an error page 
+ * in production, return users to an error page
  */
 
 .factory('$exceptionHandler', ['$log', '$injector', 'STORE_BASE_URL', 'JOIN_BASE_URL', function($log, $injector, STORE_BASE_URL, JOIN_BASE_URL) {
