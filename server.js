@@ -1328,7 +1328,7 @@ app.use('/assets', assetRouter);
 
 app.use(function(req, res, next) {
     // check for MAINTENANCE env variable
-    var redirect, isInMaintenanceMode = (process.env.MAINTENANCE_MODE) ? true : false;
+    var redirect, isInMaintenanceMode = (process.env.MAINTENANCE_MODE && process.env.MAINTENANCE_MODE.toString() === 'true') ? true : false;
     console.log('> MAINTENANCE_MODE? -', isInMaintenanceMode);
     // is maintenance && index -> continue, otherwise redirect to home
     if (isInMaintenanceMode) {
