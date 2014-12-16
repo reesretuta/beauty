@@ -2601,8 +2601,7 @@ function getKitGroupComponentsCriteria() {
     var kitGroupComponentCriteria = [
         // in date range
         {$or: [{"startDate":{$eq:null}}, {"startDate":{$lte: now}}]},
-        {$or: [{"endDate":{$eq:null}}, {"endDate":{$gt: now}}]},
-        {unavailable: false}
+        {$or: [{"endDate":{$eq:null}}, {"endDate":{$gt: now}}]}
     ];
 
     return kitGroupComponentCriteria;
@@ -2841,10 +2840,13 @@ function loadProductById(productId, loadUnavailable, loadStarterKit, loadStarter
     ]};
 
     if (!loadUnavailable && !loadStarterKit && !loadStarterKitOnly) {
+        console.log("loadProductById(): getAvailableProductCriteria");
         query["$and"] = query["$and"].concat(getAvailableProductCriteria());
     } else if (loadStarterKitOnly) {
+        console.log("loadProductById(): getAvailableStarterKitCriteria");
         query["$and"] = query["$and"].concat(getAvailableStarterKitCriteria());
     } else if (loadStarterKit) {
+        console.log("loadProductById(): getAvailableProductOrStarterKitCriteria");
         query["$and"] = query["$and"].concat(getAvailableProductOrStarterKitCriteria());
     }
 
@@ -2870,22 +2872,40 @@ function loadProductById(productId, loadUnavailable, loadStarterKit, loadStarter
             });
             return;
         }
+
         if (products.length == 1) {
             console.log("returning", products.length, "products");
 
-            console.log("returning", products.length, "products");
+            var opts = {
+                path: 'kitGroups.kitGroup.components.product',
+                model: 'Product'
+            }
 
-            // TMP
-            //console.log('products:', products);
-            products[0].upsellItems = products[0].upsellItems.filter(function (obj, index) {
-                return (obj.product != null && obj.unavailable == false);
-            });
-            products[0].youMayAlsoLike = products[0].youMayAlsoLike.filter(function (obj, index) {
-                return (obj.product != null && obj.unavailable == false);
-            });
-            console.log('products (filtered null upsells):', products);
-            d.resolve(products[0]);
+            // populate components
+            models.Product.populate(products, opts, function (err, products) {
+                if (err) {
+                    console.error("error populating product kitGroup components", err);
+                    d.reject({
+                        statusCode: 500,
+                        errorCode: "productLookupFailed",
+                        errorMessage: "Failed to lookup product"
+                    });
+                    return;
+                }
 
+                //console.log('products:', products);
+                products[0].upsellItems = products[0].upsellItems.filter(function (obj, index) {
+                    return (obj.product != null && obj.unavailable == false);
+                });
+                products[0].youMayAlsoLike = products[0].youMayAlsoLike.filter(function (obj, index) {
+                    return (obj.product != null && obj.unavailable == false);
+                });
+                d.resolve(products[0]);
+
+                console.log('product', products[0]);
+
+                return;
+            });
             return;
         }
         d.reject({
