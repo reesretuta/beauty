@@ -30,18 +30,18 @@ models.onReady(function() {
     var savedCategories = 0;
     var savedProducts = 0;
     var savedProductKits = 0;
-    var savedProductGroups = 0
-    var savedKitGroups = 0
+    var savedProductGroups = 0;
+    var savedKitGroups = 0;
 
     var updatedCategories = 0;
     var updatedProducts = 0;
     var updatedProductKits = 0;
-    var updatedProductGroups = 0
-    var updatedKitGroups = 0
+    var updatedProductGroups = 0;
+    var updatedKitGroups = 0;
 
     var skippedProducts = 0;
     var skippedProductKits = 0;
-    var skippedProductGroups = 0
+    var skippedProductGroups = 0;
 
     var existingProducts = {};
     var existingProductPromotionalMessages = {};
@@ -53,7 +53,7 @@ models.onReady(function() {
     var AVAILABLE_ONLY = process.env.AVAILABLE_ONLY || options["available-only"] || false;
     var TEMP_UNAVAILABLE_ONLY = process.env.TEMP_UNAVAILABLE_ONLY || options["temp-unavailable-only"] || false;
     var BASIC = process.env.BASIC || options["basic"] || false;
-    var IMAGES = process.env.IMAGES || options["images"] || false;
+    var IMAGES_ONLY = process.env.IMAGES_ONLY || options["images"] || false;
     var BASE_SITE_URL = process.env.BASE_SITE_URL || "https://stageadmin.jafra.com";
     var USERNAME = process.env.USERNAME || "jafra_test";
     var PASSWORD = process.env.PASSWORD || "lavisual1";
@@ -66,7 +66,7 @@ models.onReady(function() {
     console.log("available only", AVAILABLE_ONLY);
     console.log("temp available only", TEMP_UNAVAILABLE_ONLY);
     console.log("basic", BASIC);
-    console.log("images", IMAGES);
+    console.log("images only", IMAGES_ONLY);
     console.log("language", LANGUAGE);
     console.log("================================");
 
@@ -528,7 +528,7 @@ models.onReady(function() {
             BASE_SITE_URL: BASE_SITE_URL,
             LANGUAGE: LANGUAGE,
             BASIC: BASIC,
-            IMAGES: IMAGES,
+            IMAGES_ONLY: IMAGES_ONLY,
             options: options
         }, function () {
             console.log("[summary] == PRODUCTS ==");
@@ -762,26 +762,28 @@ models.onReady(function() {
                             console.log('[summary] processing product', productId, 'sku', sku, 'isKit', isKit);
                         });
 
-                        fetchProductDetail(productId, sku, isKit);
-                        fetchProductPromotionalMessages(productId, sku, isKit);
-                        fetchProductIngredients(productId, sku, isKit);
-                        fetchProductUsage(productId, sku, isKit);
-                        fetchProductUpsellItems(productId, sku, isKit);
-
-                        // we only do this for english, spanish is just for fetching the text
-                        if (LANGUAGE == "en_US" && !BASIC) {
+                        if (IMAGES_ONLY) {
                             fetchProductImages(productId, sku, isKit);
-                            fetchProductPrices(productId, sku, isKit);
-                            fetchProductCategories(productId, sku, isKit);
-                            fetchProductYouMayAlsoLike(productId, sku, isKit);
-                            fetchProductSharedAssets(productId, sku, isKit);
+                        } else {
+                            fetchProductDetail(productId, sku, isKit);
+                            fetchProductPromotionalMessages(productId, sku, isKit);
+                            fetchProductIngredients(productId, sku, isKit);
+                            fetchProductUsage(productId, sku, isKit);
+                            fetchProductUpsellItems(productId, sku, isKit);
 
-                            // only for kits
-                            if (isKit) {
-                                fetchProductComponents(productId, sku);
+                            // we only do this for english, spanish is just for fetching the text
+                            if (LANGUAGE == "en_US" && !BASIC) {
+                                fetchProductImages(productId, sku, isKit);
+                                fetchProductPrices(productId, sku, isKit);
+                                fetchProductCategories(productId, sku, isKit);
+                                fetchProductYouMayAlsoLike(productId, sku, isKit);
+                                fetchProductSharedAssets(productId, sku, isKit);
+
+                                // only for kits
+                                if (isKit) {
+                                    fetchProductComponents(productId, sku);
+                                }
                             }
-                        } else if (LANGUAGE == "en_US" && IMAGES) {
-                            fetchProductImages(productId, sku, isKit);
                         }
 
                         saveProduct(productId);
@@ -1712,19 +1714,23 @@ models.onReady(function() {
 
                                             try {
                                                 // NOTE: save the base level information first, so we could load any group system refs later
-                                                fetchProductGroupDetail(productGroup.id, productGroup.systemRef);
-                                                saveProductGroup(productGroup.id, productGroup.systemRef);
-
-                                                fetchProductGroupPromotionalMessages(productGroup.id, productGroup.systemRef);
-                                                fetchProductGroupIngredients(productGroup.id, productGroup.systemRef);
-                                                fetchProductGroupUsage(productGroup.id, productGroup.systemRef);
-                                                fetchProductGroupUpsellItems(productGroup.id, productGroup.systemRef);
-
-                                                if (LANGUAGE == "en_US") {
+                                                if (IMAGES_ONLY) {
                                                     fetchProductGroupImages(productGroup.id, productGroup.systemRef);
-                                                    fetchProductGroupCategories(productGroup.id, productGroup.systemRef);
-                                                    fetchProductGroupYouMayAlsoLike(productGroup.id, productGroup.systemRef);
-                                                    fetchProductGroupSKUs(productGroup.id, productGroup.systemRef);
+                                                } else {
+                                                    fetchProductGroupDetail(productGroup.id, productGroup.systemRef);
+                                                    saveProductGroup(productGroup.id, productGroup.systemRef);
+
+                                                    fetchProductGroupPromotionalMessages(productGroup.id, productGroup.systemRef);
+                                                    fetchProductGroupIngredients(productGroup.id, productGroup.systemRef);
+                                                    fetchProductGroupUsage(productGroup.id, productGroup.systemRef);
+                                                    fetchProductGroupUpsellItems(productGroup.id, productGroup.systemRef);
+
+                                                    if (LANGUAGE == "en_US") {
+                                                        fetchProductGroupImages(productGroup.id, productGroup.systemRef);
+                                                        fetchProductGroupCategories(productGroup.id, productGroup.systemRef);
+                                                        fetchProductGroupYouMayAlsoLike(productGroup.id, productGroup.systemRef);
+                                                        fetchProductGroupSKUs(productGroup.id, productGroup.systemRef);
+                                                    }
                                                 }
 
                                                 saveProductGroup(productGroup.id);
