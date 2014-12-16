@@ -1255,7 +1255,9 @@ function updateInventory() {
 }
 
 // update on startup and on an interval
-updateInventory();
+setTimeout(function() {
+    updateInventory();
+}, 0)
 setInterval(function() {
     updateInventory();
 }, INVENTORY_SCANNING_INTERVAL);
