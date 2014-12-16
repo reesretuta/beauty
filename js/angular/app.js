@@ -203,7 +203,7 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
             "  </div>\n" +
             "</div>\n" +
             "");
-})
+});
 
 /**
  * handle exceptions gracefully
@@ -211,7 +211,7 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
  * in production, return users to an error page
  */
 
-.factory('$exceptionHandler', ['$log', '$injector', 'STORE_BASE_URL', 'JOIN_BASE_URL', function($log, $injector, STORE_BASE_URL, JOIN_BASE_URL) {
+/*.factory('$exceptionHandler', ['$log', '$injector', 'STORE_BASE_URL', 'JOIN_BASE_URL', function($log, $injector, STORE_BASE_URL, JOIN_BASE_URL) {
 
     var ENV, BASE_URL;
 
@@ -239,6 +239,6 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
         }
     }
 
-}]);
+}]);*/
 
 
