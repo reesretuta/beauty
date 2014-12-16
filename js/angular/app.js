@@ -235,7 +235,7 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
         };
     } else {
         return function(exception, cause) {
-            $log.debug('exception_handler: exception', exception);
+            $log.error('exception_handler: exception', exception);
             exception.message += ' [caused by "' + cause + '"]';
         }
     }
