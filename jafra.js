@@ -2726,7 +2726,7 @@ function loadProductsById(productIds, loadUnavailable, loadStarterKits, loadStar
         {_id: { $in: productIds }}
     ]};
 
-    if (!loadUnavailable && !loadStarterKits && !loadStarterKitsOnly) {
+    if (!loadUnavailable && !loadStarterKitsOnly) {
         query["$and"] = query["$and"].concat(getAvailableProductCriteria())
     } else if (loadStarterKitsOnly) {
         query["$and"] = query["$and"].concat(getAvailableStarterKitCriteria());
