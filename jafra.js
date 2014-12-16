@@ -2588,10 +2588,10 @@ function getProductAsKitComponentCriteria() {
 function getKitComponentsCriteria() {
     var now = new Date();
     var kitComponentsCriteria = [
-        // in date range
-        {$or: [{"startDate":{$eq:null}}, {"startDate":{$lte: now}}]},
-        {$or: [{"endDate":{$eq:null}}, {"endDate":{$gt: now}}]},
-        {unavailable: false}
+        // FIXME - in date range this is on components sub-document, not product
+        //{$or: [{"startDate":{$eq:null}}, {"startDate":{$lte: now}}]},
+        //{$or: [{"endDate":{$eq:null}}, {"endDate":{$gt: now}}]},
+        //{unavailable: false}
     ];
     return kitComponentsCriteria;
 }
@@ -2600,8 +2600,8 @@ function getKitGroupComponentsCriteria() {
     var now = new Date();
     var kitGroupComponentCriteria = [
         // in date range
-        {$or: [{"startDate":{$eq:null}}, {"startDate":{$lte: now}}]},
-        {$or: [{"endDate":{$eq:null}}, {"endDate":{$gt: now}}]}
+        //{$or: [{"startDate":{$eq:null}}, {"startDate":{$lte: now}}]},
+        //{$or: [{"endDate":{$eq:null}}, {"endDate":{$gt: now}}]}
     ];
 
     return kitGroupComponentCriteria;
