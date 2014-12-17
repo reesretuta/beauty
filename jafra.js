@@ -14,6 +14,7 @@ var randomString = require('random-string');
 var moment = require('moment');
 var util = require('util');
 
+var port = process.env.PORT || 8090;
 var BASE_URL = "https://" + (process.env.JCS_API_URL || config.jcs_api_ip) + "/cgidev2";
 var BASE_URL2 = "https://" + (process.env.JCS_API_URL || config.jcs_api_ip) + "/WEBCGIPR";
 var FORCE_INVENTORY_CACHE = process.env.FORCE_INVENTORY_CACHE || false;
@@ -66,6 +67,9 @@ var STRIKEIRON_EMAIL_TIMEOUT = 15;
 //var STRIKEIRON_ADDRESS_URL = 'http://ws.strikeiron.com/StrikeIron/NAAddressVerification6/NorthAmericanAddressVerificationService/NorthAmericanAddressVerification';
 var STRIKEIRON_ADDRESS_SOAP_URL = 'http://ws.strikeiron.com/NAAddressVerification6?WSDL';
 var STRIKEIRON_ADDRESS_LICENSE = "0DA72EA3199C10ABDE0B";
+
+var API_BASE_URL = 'http://localhost:' + port + '/api';
+var API_PRODUCTS_URL = API_BASE_URL + "/products";
 
 var PASSWORD_RESET_INTERVAL = 15 * 1000 * 60;
 var MIN_INVENTORY = 10;
@@ -2918,6 +2922,66 @@ function loadProductById(productId, loadUnavailable, loadStarterKit, loadStarter
     return d.promise;
 }
 
+// API
+
+function getProducts(loadUnavailable, loadComponents, skip, limit, sort) {
+    var d = Q.defer();
+
+    console.log("getProducts()", loadUnavailable, loadComponents, skip, limit, sort);
+
+    request.get({
+        url: API_PRODUCTS_URL,
+        qs: {
+            loadUnavailble: loadUnavailable,
+            loadComponents: loadComponents,
+            skip: skip,
+            limit: limit,
+            sort: sort
+        },
+        headers: {
+            'Accept': 'application/json, text/json'
+        },
+        json: true
+    }, function (error, response, body) {
+        console.log("getProducts()", error, response ? response.statusCode: null);
+        if (error || response.statusCode != 200) {
+            console.error("getProducts(): error", error, response.statusCode);
+
+            d.reject({
+                status: response.statusCode,
+                result: {
+                    statusCode: response.statusCode,
+                    errorCode: body.errorCode,
+                    message: body.message
+                }
+            });
+            return;
+        }
+
+        if (body != null) {
+            //console.log("getProducts(): success", body);
+            d.resolve({
+                status: 200,
+                result: body
+            });
+        } else {
+            console.log("getProducts(): no products");
+            d.reject({
+                status: 500,
+                result: {
+                    statusCode: 500,
+                    errorCode: "getProductsFailed",
+                    message: "Failed to get products"
+                }
+            });
+        }
+    })
+
+    return d.promise;
+}
+
+
+
 // EXPORTS
 exports.preloadCategories = preloadCategories;
 
@@ -2963,3 +3027,5 @@ exports.searchProducts = searchProducts;
 exports.loadProductsByCategory = loadProductsByCategory;
 exports.loadProductsById = loadProductsById;
 exports.loadProductById = loadProductById;
+
+exports.getProducts = getProducts;
