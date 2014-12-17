@@ -47,6 +47,9 @@ models.onReady(function() {
     var existingProductPromotionalMessages = {};
     var existingProductUpsellItems = {};
 
+    var totalImageFetches = 0;
+    var completedImageFetches = 0;
+
     var updatedProductIds = [];
 
     var VERBOSE = process.env.VERBOSE || options["verbose"] || false;
@@ -794,6 +797,7 @@ models.onReady(function() {
             }
 
             function saveProduct(productId) {
+                totalImageFetches++;
                 casper.then(function() {
                     var json = JSON.stringify(products[productId]);
                     console.log("====== Product ======");
@@ -2498,7 +2502,7 @@ models.onReady(function() {
 
         // SEND COMPLETE EVENT
         spooky.then(function() {
-            this.emit('done');
+            //this.emit('done');
         });
 
         spooky.run();
@@ -2591,6 +2595,8 @@ models.onReady(function() {
     });
 
     spooky.on('product.save', function(json) {
+        var spookyThis = this;
+
         try {
             //console.log('saving product', json);
 
@@ -2612,48 +2618,63 @@ models.onReady(function() {
                             console.warn("saving over another type of product", p._id, p.type, prod.type);
                         }
                     }
+
+                    // do a save
+                    models.Product.update({_id: id}, p, {upsert: true}, function (err, numAffected, rawResponse) {
+                        try {
+                            if (err) return console.error("error saving product", err, JSON.stringify(p));
+                            if (p.type == "kit") {
+                                if (isUpdate) {
+                                    updatedProductKits++;
+                                    console.log("[summary] updated product kit", id, updatedProductKits, numAffected, rawResponse);
+                                } else {
+                                    savedProductKits++;
+                                    console.log("[summary] saved product kit", id, savedProductKits, numAffected, rawResponse);
+                                }
+                            } else if (p.type == "group") {
+                                if (isUpdate) {
+                                    updatedProductGroups++;
+                                    console.log("[summary] updated product group", id, updatedProductGroups, numAffected, rawResponse);
+                                } else {
+                                    savedProductGroups++;
+                                    console.log("[summary] saved product group", id, savedProductGroups, numAffected, rawResponse);
+                                }
+                            } else {
+                                if (isUpdate) {
+                                    updatedProducts++;
+                                    console.log("[summary] updated product", id, updatedProducts, numAffected, rawResponse);
+                                } else {
+                                    savedProducts++;
+                                    console.log("[summary] saved product", id, savedProducts, numAffected, rawResponse);
+                                }
+                            }
+
+                            saveImages(id, p, "products").then(function() {
+                                console.log("[summary] saved product images");
+                                completedImageFetches++;
+
+                                if (completedImageFetches == totalImageFetches) {
+                                    console.log("[summary] all images fetched, triggering done");
+                                    spookyThis.emit('done');
+                                }
+                            }, function(err) {
+                                completedImageFetches++;
+                                console.error("[summary] failed to saved product images", err);
+                            });
+                        } catch (ex) {
+                            console.error("error saving/updating product", id, ex, JSON.stringify(ex));
+                            completedImageFetches++;
+                        }
+                    });
+
                 } catch (ex) {
                     console.error("error looking up product before save/update", id, JSON.stringify(ex));
-                }
-            });
-
-            // do a save
-            models.Product.update({_id: id}, p, {upsert: true}, function (err, numAffected, rawResponse) {
-                try {
-                    if (err) return console.error("error saving product", err, JSON.stringify(p));
-                    if (p.type == "kit") {
-                        if (isUpdate) {
-                            updatedProductKits++;
-                            console.log("[summary] updated product kit", id, updatedProductKits, numAffected, rawResponse);
-                        } else {
-                            savedProductKits++;
-                            console.log("[summary] saved product kit", id, savedProductKits, numAffected, rawResponse);
-                        }
-                    } else if (p.type == "group") {
-                        if (isUpdate) {
-                            updatedProductGroups++;
-                            console.log("[summary] updated product group", id, updatedProductGroups, numAffected, rawResponse);
-                        } else {
-                            savedProductGroups++;
-                            console.log("[summary] saved product group", id, savedProductGroups, numAffected, rawResponse);
-                        }
-                    } else {
-                        if (isUpdate) {
-                            updatedProducts++;
-                            console.log("[summary] updated product", id, updatedProducts, numAffected, rawResponse);
-                        } else {
-                            savedProducts++;
-                            console.log("[summary] saved product", id, savedProducts, numAffected, rawResponse);
-                        }
-                    }
-
-                    saveImages(id, p, "products");
-                } catch (ex) {
-                    console.error("error saving/updating product", id, JSON.stringify(ex));
+                    completedImageFetches++;
                 }
             });
         } catch (ex) {
             console.error("error in product.save handler", JSON.stringify(ex));
+            completedImageFetches++;
         }
     });
 
@@ -2701,17 +2722,26 @@ models.onReady(function() {
     });
 
     function saveImages(id, item, type) {
+        var d = Q.defer();
+
         try {
             console.log("saveImages():", type, id);
             if (item && item.images && item.images.length > 0) {
                 console.log("saveImages():", type, "has", item.images.length, "images");
+                var completed = 0;
                 for (var j=0; j < item.images.length; j++) {
                     console.log("saveImages(): checking image", j, "for", type);
                     checkAndReplaceImage(id, j, item.images[j].imagePath, type).then(function(ret) {
                         if (ret.exists) {
-                            //console.log(ret.id, ret.j, "image found");
+                            console.log(ret.id, ret.j, "image found");
                         } else {
                             console.log(ret.id, ret.j, type, "image NOT found");
+                        }
+                        completed++;
+                        if (completed == item.images.length) {
+                            // all are complete
+                            console.log("saveImages(): all images fetched");
+                            d.resolve();
                         }
                     }, function(error) {
                         console.error("saveImages(): failed to save/replace image", error);
@@ -2719,10 +2749,14 @@ models.onReady(function() {
                 }
             } else {
                 console.error("saveImages():", type,"has no images", id);
+                d.resolve();
             }
         } catch (ex) {
             console.error("saveImages(): error", ex);
+            d.reject(ex);
         }
+
+        return d.promise;
     }
 
     function checkAndReplaceImage(id, j, imagePath, type) {
@@ -2768,7 +2802,7 @@ models.onReady(function() {
         var d = Q.defer();
 
         try {
-            var url = "https://admin.jafra.com" + imagePath;
+            var url = BASE_SITE_URL + imagePath;
             console.log("createFile(): fetching image", url);
 
             var writestream = GridFS.createWriteStream({
@@ -2776,10 +2810,12 @@ models.onReady(function() {
             });
 
             request.get({
-                url: url
-            }, function (error, response, body) {
-                if (error || response.statusCode != 200) {
-                    console.log("createFile(): error!", error, response ? response.statusCode : null);
+                url: url,
+                strictSSL: false
+            }).on('response', function(response) {
+                console.log("createFile(): got response");
+                if (response.statusCode != 200) {
+                    console.error("createFile(): error!", response ? response.statusCode : null);
                     d.resolve({
                         id: id, j: j, exists: false
                     });
@@ -2803,12 +2839,12 @@ models.onReady(function() {
                     }
 
                     console.log("createFile(): updated", update);
+                    d.resolve({
+                        id: id, j: j, exists: true
+                    });
                 });
-
-                console.log("createFile(): success");
-                d.resolve({
-                    id: id, j: j, exists: true
-                });
+            }).on('error', function(err) {
+                console.error("createFile(): error fetching image", err);
             }).pipe(writestream);
         } catch (ex) {
             console.error("createFile(): failed to write gridfs file", ex);

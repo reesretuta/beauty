@@ -2589,15 +2589,15 @@ function getProductAsKitComponentCriteria() {
     return availableKitComponentsCriteria;
 }
 
-function getKitComponentsCriteria() {
+function getComponentsCriteria() {
     var now = new Date();
-    var kitComponentsCriteria = [
+    var componentsCriteria = [
         // in date range
         {$or: [{"startDate":{$eq:null}}, {"startDate":{$lte: now}}]},
         {$or: [{"endDate":{$eq:null}}, {"endDate":{$gt: now}}]},
         {unavailable: false}
     ];
-    return kitComponentsCriteria;
+    return componentsCriteria;
 }
 
 function getKitGroupComponentsCriteria() {
@@ -2634,8 +2634,8 @@ function searchProducts(searchString, loadUnavailable, skip, limit) {
         match: { $and: getAvailableProductCriteria()}
     }).populate({
         path: 'contains.product',
-        model: 'Product',
-        match: { $and: getKitComponentsCriteria()}
+        model: 'Product'//,
+        //match: { $and: getComponentsCriteria()}
     }).populate({
         path: 'kitGroups.kitGroup',
         model: 'KitGroup',
@@ -2651,6 +2651,14 @@ function searchProducts(searchString, loadUnavailable, skip, limit) {
 
         // filter out upsellItems and youMailAlsoLike that aren't available
         for (var i=0; i < products; i++) {
+            products[i].contains = products[i].contains.filter(function (obj, index) {
+                return (
+                    obj.product == null ||
+                    obj.unavailable == false ||
+                    (obj.startDate != null && moment(obj.startDate).isAfter(now)) ||
+                    (obj.endDate != null && moment(obj.endDate).isBefore(now))
+                );
+            });
             products[i].upsellItems = products[i].upsellItems.filter(function (obj, index) {
                 return (obj.product != null && obj.unavailable == false);
             });
@@ -2690,7 +2698,7 @@ function loadProductsByCategory(categoryId, loadUnavailable, skip, limit, sort) 
     }).populate({
         path: 'contains.product',
         model: 'Product',
-        match: { $and: getKitComponentsCriteria()}
+        match: { $and: getComponentsCriteria()}
     }).populate({
         path: 'kitGroups.kitGroup',
         model: 'KitGroup',
@@ -2746,7 +2754,7 @@ function loadProductsById(productIds, loadUnavailable, loadStarterKits, loadStar
     }).populate({
         path: 'contains.product',
         model: 'Product',
-        match: { $and: getKitComponentsCriteria()}
+        match: { $and: getComponentsCriteria()}
     }).populate({
         path: 'kitGroups.kitGroup',
         model: 'KitGroup',
@@ -2802,7 +2810,7 @@ function loadProducts(loadUnavailable, loadComponents, skip, limit, sort) {
     }).populate({
         path: 'contains.product',
         model: 'Product',
-        match: { $and: getKitComponentsCriteria()}
+        match: { $and: getComponentsCriteria()}
     }).populate({
         path: 'kitGroups.kitGroup',
         model: 'KitGroup',
@@ -2861,7 +2869,7 @@ function loadProductById(productId, loadUnavailable, loadStarterKit, loadStarter
     }).populate({
         path: 'contains.product',
         model: 'Product',
-        match: { $and: getKitComponentsCriteria()}
+        match: { $and: getComponentsCriteria()}
     }).populate({
         path: 'kitGroups.kitGroup',
         model: 'KitGroup',

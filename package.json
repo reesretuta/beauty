@@ -18,7 +18,7 @@
     "express-session": "^1.8.2",
     "openpgp": "^0.7.2",
     "soap": "git://github.com/arimus/node-soap.git#6ab362737b2604883d7d78d68c340578ce3c40a7",
-    "request": "^2.44.0",
+    "request": "^2.51.0",
     "crypto-js": "^3.1.2-5",
     "q": "^1.0.1",
     "glob": "^4.1.3",
