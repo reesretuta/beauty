@@ -695,7 +695,7 @@ a, .btn {
   display: block;
 }
 .checkout-address span {
-  display: inline-block;
+  display: block;
   line-height: 1.6em;
 }
 .checkout-address a:hover {
@@ -707,6 +707,9 @@ a, .btn {
 }
 .checkout-address .address-actions {
   padding: 15px 0;
+}
+.checkout-address .address-actions span {
+  display: inline-block;
 }
 .address-block {
   min-height: 91px;
