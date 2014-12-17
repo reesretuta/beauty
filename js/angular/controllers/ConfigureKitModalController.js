@@ -83,9 +83,7 @@ angular.module('app.controllers.products').controller('ConfigureKitModalControll
         // get product list to load
         $.each(kitgroup.kitGroup.components, function(index, component) {
             $log.debug('ConfigureKitModalController(): adding kitGroup component', component);
-            if (component.product) {
-                productIds.push(component.product.id);
-            }
+            productIds.push(component.productId);
         });
 
         // break out quantities to create a list of kit groups for configuring
