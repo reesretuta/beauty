@@ -1190,78 +1190,6 @@ assetRouter.get('*', function (req, res) {
         }
     });
 
-// Configure Lead Cleanup Interval
-
-setInterval(function() {
-    var now = new Date();
-    var olderThan = new Date(now.getTime() - LEAD_MAX_AGE);
-    //console.log("now", now, "olderThan", olderThan);
-
-    models.Lead.find({created: {$lte: olderThan}, sent: false, completed: false}, function(err, leads) {
-        if (err) {
-            console.error("failed looking up leads from server", err);
-            return;
-        }
-
-        if (leads == null) {
-            console.log("no leads to send to server");
-            return;
-        }
-
-        console.log("found old leads to send to server", leads);
-        for (var i=0; i < leads.length; i++) {
-            var lead = leads[i];
-            jafraClient.createLead({
-                email: lead.email,
-                firstName: lead.firstName,
-                lastName: lead.lastName,
-                phone: lead.phone,
-                language: lead.language
-            }).then(function(r) {
-                console.log("created lead on server", r.result.statusCode, "body", r.result, "removing from local", lead._id);
-                lead.sent = true;
-                lead.save(function (err, product, numberAffected) {
-                    if (err) {
-                        console.error("failed to mark lead sent", err);
-                        return;
-                    }
-                })
-            }, function(r) {
-                if (r.status == 409) {
-                    // lead already created, mark sent
-                    console.log("created already on server", r.result.statusCode, "body", r.result, "marking sent", lead._id);
-                    lead.sent = true;
-                    lead.save(function (err, product, numberAffected) {
-                        if (err) {
-                            console.error("failed to mark lead sent", err);
-                            return;
-                        }
-                    })
-                } else {
-                    console.error("failed to create lead on server", r.result.statusCode, "body", r.body);
-                }
-            });
-        }
-    });
-}, LEAD_PROCESSING_INTERVAL);
-
-function updateInventory() {
-    console.log("updating inventory");
-    jafraClient.updateInventory().then(function(inventory) {
-        console.log("updated inventory");
-    }, function(err) {
-        console.error("failed to update inventory", err);
-    });
-}
-
-// update on startup and on an interval
-setTimeout(function() {
-    updateInventory();
-}, 0)
-setInterval(function() {
-    updateInventory();
-}, INVENTORY_SCANNING_INTERVAL);
-
 // Configure Express
 
 var basepath = __dirname;
@@ -1364,19 +1292,21 @@ app.get('*', function (req, res, next) {
 });
 
 app.get('/*', function (req, res, next) {
-    if (req.headers['user-agent'].indexOf("MSIE") >= 0) {
-        console.log('IE <= 9 detected, showing upgrade page');
-        var myNav = req.headers['user-agent'];
-        var IEbrowser = parseInt(myNav.split('MSIE')[1])
-        if (IEbrowser <= 9) {
-            if (req.originalUrl != null && req.originalUrl.match("/join")) {
-                res.sendFile(basepath + '/browser_unsupported.join.html');
-            } else {
-                res.sendFile(basepath + '/browser_unsupported.shop.html');
+    try {
+        if (req.headers['user-agent'].indexOf("MSIE") >= 0) {
+            console.log('IE <= 9 detected, showing upgrade page');
+            var myNav = req.headers['user-agent'];
+            var IEbrowser = parseInt(myNav.split('MSIE')[1])
+            if (IEbrowser <= 9) {
+                if (req.originalUrl != null && req.originalUrl.match("/join")) {
+                    res.sendFile(basepath + '/browser_unsupported.join.html');
+                } else {
+                    res.sendFile(basepath + '/browser_unsupported.shop.html');
+                }
+                return;
             }
-            return;
         }
-    }
+    } catch (e) {}
     next();
 });
 
@@ -1415,5 +1345,78 @@ models.onReady(function () {
     // =============================================================================
     app.listen(port);
     console.log('App & API on port ' + port);
+
+
+    // Configure Lead Cleanup Interval
+
+    setInterval(function() {
+        var now = new Date();
+        var olderThan = new Date(now.getTime() - LEAD_MAX_AGE);
+        //console.log("now", now, "olderThan", olderThan);
+
+        models.Lead.find({created: {$lte: olderThan}, sent: false, completed: false}, function(err, leads) {
+            if (err) {
+                console.error("failed looking up leads from server", err);
+                return;
+            }
+
+            if (leads == null) {
+                console.log("no leads to send to server");
+                return;
+            }
+
+            console.log("found old leads to send to server", leads);
+            for (var i=0; i < leads.length; i++) {
+                var lead = leads[i];
+                jafraClient.createLead({
+                    email: lead.email,
+                    firstName: lead.firstName,
+                    lastName: lead.lastName,
+                    phone: lead.phone,
+                    language: lead.language
+                }).then(function(r) {
+                    console.log("created lead on server", r.result.statusCode, "body", r.result, "removing from local", lead._id);
+                    lead.sent = true;
+                    lead.save(function (err, product, numberAffected) {
+                        if (err) {
+                            console.error("failed to mark lead sent", err);
+                            return;
+                        }
+                    })
+                }, function(r) {
+                    if (r.status == 409) {
+                        // lead already created, mark sent
+                        console.log("created already on server", r.result.statusCode, "body", r.result, "marking sent", lead._id);
+                        lead.sent = true;
+                        lead.save(function (err, product, numberAffected) {
+                            if (err) {
+                                console.error("failed to mark lead sent", err);
+                                return;
+                            }
+                        })
+                    } else {
+                        console.error("failed to create lead on server", r.result.statusCode, "body", r.body);
+                    }
+                });
+            }
+        });
+    }, LEAD_PROCESSING_INTERVAL);
+
+    function updateInventory() {
+        console.log("updating inventory");
+        jafraClient.updateInventory().then(function(inventory) {
+            console.log("updated inventory");
+        }, function(err) {
+            console.error("failed to update inventory", err);
+        });
+    }
+
+    // update on startup and on an interval
+    setTimeout(function() {
+        //updateInventory();
+    }, 0)
+    setInterval(function() {
+        updateInventory();
+    }, INVENTORY_SCANNING_INTERVAL);
 });
 
