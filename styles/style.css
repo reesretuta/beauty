@@ -694,7 +694,7 @@ a, .btn {
 .checkout-address span.block {
   display: block;
 }
-.checkout-address span {
+.checkout-address>span {
   display: block;
   line-height: 1.6em;
 }
