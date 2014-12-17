@@ -85,7 +85,7 @@
           </tabset>
 
           <div class="store-item-detail-stats">
-            <label ng-if="product.type == 'product'" class="store-item-size">{{product.quantity}}</label>
+            <label ng-if="product.type == 'product'" class="store-item-size">{{getTranslated(product).quantity}}</label>
             <hr>
             <div class="store-group-colors" ng-if="product.type == 'group'">
                 <p><span ng-repeat="productdetail in product.contains">

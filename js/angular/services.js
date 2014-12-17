@@ -916,14 +916,16 @@ angular.module('app.services', ['ngResource'])
                     name: null,
                     description: null,
                     usage: null,
-                    ingredients: null
+                    ingredients: null,
+                    quantity: null
                 };
             }
             return {
                 name: product[$rootScope.session.language=='en_US'?'name':'name_'+$rootScope.session.language],
                 description: product[$rootScope.session.language=='en_US'?'description':'description_'+$rootScope.session.language],
                 usage: product[$rootScope.session.language=='en_US'?'usage':'usage_'+$rootScope.session.language],
-                ingredients: product[$rootScope.session.language=='en_US'?'ingredients':'ingredients_'+$rootScope.session.language]
+                ingredients: product[$rootScope.session.language=='en_US'?'ingredients':'ingredients_'+$rootScope.session.language],
+                quantity: product[$rootScope.session.language=='en_US'?'quantity':'quantity_'+$rootScope.session.language]
             };
         }
 

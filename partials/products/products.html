@@ -29,7 +29,7 @@
                   {{ product.currentPrice.price | currency }}
                 </span>
               </span>
-                &nbsp;&nbsp;<span class="item-measure">{{product.quantity}}</span>
+                &nbsp;&nbsp;<span class="item-measure">{{getTranslated(product).quantity}}</span>
               </p>
             </div>
             <p ng-if="product.type == 'product' || (product.type == 'kit' && product.kitGroups.length == 0)">
@@ -56,7 +56,7 @@
               <p class="store-item-sku">&nbsp; <!-- leave empty for UI --></p>
               <p class="store-item-title"><a ng-href="{{STORE_BASE_URL}}/products/{{product.sku}}#top">{{getTranslated(product).name}}</a></p>
               <p class="store-item-price">
-                &nbsp;&nbsp;<span class="item-measure">{{product.quantity}}</span>
+                &nbsp;&nbsp;<span class="item-measure">{{getTranslated(product).quantity}}</span>
               </p>
             </div>
             <p>
