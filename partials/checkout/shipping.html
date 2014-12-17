@@ -6,7 +6,7 @@
     <div class="row" ng-if="!isOnlineSponsoring">
       <div class="col-xs-6 col-lg-4 checkout-address" ng-repeat="addressData in session.client.addresses">
         <div class="address-block">
-          <span class="address-name block">{{ addressData.name }}</span>
+          <span class="address-name block">{{ addressData.name || namePlaceholder }}</span>
           <span class="address-street block">{{ addressData.address1 }} {{ addressData.address2 }}</span>
           <span class="address-region block">{{ addressData.city }}, {{ addressData.state }} {{ addressData.zip }}</span>
           <span class="phone-number block">{{ addressData.phone}}</span>
