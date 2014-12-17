@@ -1175,8 +1175,22 @@ assetRouter.get('*', function (req, res) {
                 }
 
                 if (found) {
-                    var readstream = GridFS.createReadStream({filename: asset});
-                    readstream.pipe(res);
+                    GridFS.files.find({filename: asset}).toArray(function (err, files) {
+                        if (err) {
+                            console.error("error loading asset metadata", err);
+                        }
+
+                        if (files && files.length > 0) {
+                            //console.log(files);
+                            res.writeHead(200, {
+                                "Content-Type": "image/jpg",
+                                "Last-Modified": files[0].uploadDate,
+                                "Content-Length": files[0].length
+                            });
+                        }
+                        var readstream = GridFS.createReadStream({filename: asset});
+                        readstream.pipe(res);
+                    });
                 } else {
                     res.status(404);
                     res.end();
@@ -1245,7 +1259,6 @@ app.use('/i18n', express.static(basepath + '/i18n'));
 app.use('/api', router);
 
 app.use('/assets', assetRouter);
-
 
 /**
  * maintenance mode 
@@ -1337,6 +1350,9 @@ models.onReady(function () {
     if (env === 'mock') {
         http.createServer(mockserver('./mocks')).listen(mock_port);
         console.log('Mock API server on port ' + mock_port);
+
+        console.log('Loading test data');
+        require('./data/test')(models.mongoose);
     }
 
     console.log('Using JCS API IP ', config.jcs_api_ip);
