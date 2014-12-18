@@ -1742,9 +1742,9 @@ models.onReady(function() {
                                                 console.error("error while processing product group", productGroup.id, JSON.stringify(ex));
                                             }
                                         } else {
-                                            console.log("skipping unproductGroup.available product group", productGroup.id, productGroup.systemRef);
+                                            console.log("skipping productGroup.available product group", productGroup.id, productGroup.systemRef);
                                             if (existingProducts[productGroup.id]) {
-                                                // mark all unproductGroup.available products as unvailable
+                                                // mark all productGroup.available products as unvailable
 
                                                 if (productGroup.status == "I") {
                                                     this.emit('product.markUnavailable', productGroup.id);

@@ -361,6 +361,10 @@ a:hover cart-item-image {
 .store-item-title {
   height: 2.5em;
 }
+.promotional-message {
+  color: #DE6D30;
+  text-transform: none;
+}
 .item-price-sale {
   font-weight: bold;
   color: red;

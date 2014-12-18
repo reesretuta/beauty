@@ -2315,7 +2315,7 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
                             var availableInventory = allInventory[product.id] != null ? allInventory[product.id] : -1;
                             var unavailableComponents = false;
                             var updates = {};
-                            //console.log("processAvailabilityAndHiddenProducts(): product", product.id,"availability after first check", availableInventory);
+                            console.log("processAvailabilityAndHiddenProducts(): product", product.id,"availability after first check", availableInventory);
 
                             // ensure all the product contains for a kit have inventory, else mark as no inventory
                             // inventory for a group is the sum of all inventories for items inside
@@ -2334,26 +2334,29 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
                                         updates["contains." + j + ".availableInventory"] = allInventory[p._id];
 
                                         // determine inventory availability for the parent product based on lowest inventory of children
-                                        console.log("processAvailabilityAndHiddenProducts(): product", product.id, "availability of item", p.id,"is", allInventory[p._id]);
+                                        //console.log("processAvailabilityAndHiddenProducts(): product", product.id, "availability of item", p.id,"is", allInventory[p._id]);
 
                                         if (product.type == "kit") {
                                             if (availableCount != null && allInventory[p._id] > 0) {
                                                 // our availability is the availability of the least available item
                                                 availableCount = allInventory[p._id] < availableCount ? allInventory[p._id] : availableCount;
+                                                //console.log("processAvailabilityAndHiddenProducts(): product", product.id,"availability after contains check", availableCount, "component", p._id,"inventory", allInventory[p._id]);
                                             } else if (availableCount == null) {
                                                 availableCount = allInventory[p._id];
+                                                //console.log("processAvailabilityAndHiddenProducts(): product", product.id,"availability after contains check", availableCount, "component", p._id,"inventory", allInventory[p._id]);
                                             }
                                         }
 
                                         // mark products as available/unavailable based on contains group / kits statuses
                                         // contains only products that are available status "A" and type "R" or "B"
-                                        if (p.masterStatus == "A" && (p.masterType == "R" || p.masterType == "B" || product.type == "group")) {
+                                        if ((p.masterStatus == "A" || p.masterStatus == "T") && (p.masterType == "R" || p.masterType == "B" || product.type == "group")) {
                                             // products leave alone
 
                                             // groups add to count
                                             if (product.type == "group") {
                                                 // only if product in the group is available do we add to the sum for of inventories for product in a group
                                                 availableCount += allInventory[p._id];
+                                                //console.log("processAvailabilityAndHiddenProducts(): product", product.id,"availability after contains added", availableCount);
                                             }
                                         } else {
                                             //console.log("processAvailabilityAndHiddenProducts(): hiding product", product.id, "because contained product", p.id, "is unavailable");
@@ -2407,6 +2410,8 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
                                 availableInventory = 0;
                             }
 
+                            console.log("processAvailabilityAndHiddenProducts(): product", product.id, "availability before kitgroups check", availableInventory);
+
                             if (product.kitGroups && product.kitGroups.length > 0) {
                                 // ensure that any kit groups have at least one available product
                                 //console.log("processAvailabilityAndHiddenProducts(): product", product.id, "contains", product.kitGroups.length, "kitGroups");
@@ -2445,10 +2450,12 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
 
                                                 if ((kitGroup.startDate == null || moment(kitGroup.startDate).isBefore(now)) &&
                                                     (kitGroup.endDate == null || moment(kitGroup.endDate).isAfter(now)) &&
-                                                    (p.masterStatus == "A" && (p.masterType == "R" || p.masterType == "B" || type == "group")))
+                                                    ((p.masterStatus == "A" || p.masterStatus == "T") && (p.masterType == "R" || p.masterType == "B" || type == "group")))
                                                 {
                                                     // the kitgroup is in range and should be valid
                                                     hasValidComponentOption = true;
+                                                } else {
+                                                    //console.log("processAvailabilityAndHiddenProducts(): component is unavailable", component)
                                                 }
                                             } else {
                                                 console.warn("processAvailabilityAndHiddenProducts(): kitGroup", kitGroup.kitGroupId, "product", component.productId, "is not found");
@@ -2482,7 +2489,7 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
                                 }
 
                                 availableInventory = availableCount && availableCount < availableInventory ? availableCount : availableInventory;
-                                //console.log("processAvailabilityAndHiddenProducts(): product", product.id, "availability after kitGroup check", availableInventory);
+                                console.log("processAvailabilityAndHiddenProducts(): product", product.id, "availability after kitGroup check", availableInventory);
                             }
 
                             if (availableInventory == -1) {
@@ -2558,7 +2565,8 @@ function getAvailableProductCriteria() {
         ]},
         {$or: [
             {masterStatus: "A", prices: {$elemMatch: {"effectiveStartDate":{$lte: now}, "effectiveEndDate":{$gte: now}}}},
-            {masterStatus: "A", type: "group"}
+            {masterStatus: "A", type: "group"},
+            {masterStatus: "T", promotionalMessages: {$elemMatch: {"startDate":{$lte: now}, "endDate":{$gte: now}}}}
             // TODO - OR masterStatus: "T", and valid promo message exists
             // TODO - OR type: "group", and valid promo message exists
         ]}
@@ -2650,17 +2658,30 @@ function searchProducts(searchString, loadUnavailable, skip, limit) {
 
         // filter out upsellItems and youMailAlsoLike that aren't available
         for (var i=0; i < products; i++) {
-            products[i].contains = products[i].contains.filter(function (obj, index) {
-                return ((obj.startDate != null && moment(obj.startDate).isBefore(now)) ||
-                (obj.endDate != null && moment(obj.endDate).isAfter(now))
-                );
-            });
-            products[i].upsellItems = products[i].upsellItems.filter(function (obj, index) {
-                return (obj.product != null && obj.unavailable == false);
-            });
-            products[i].youMayAlsoLike = products[i].youMayAlsoLike.filter(function (obj, index) {
-                return (obj.product != null && obj.unavailable == false);
-            });
+            if (products[i].contains) {
+                products[i].contains = products[i].contains.filter(function (obj, index) {
+                    return ((obj.startDate != null && moment(obj.startDate).isBefore(now)) ||
+                    (obj.endDate != null && moment(obj.endDate).isAfter(now))
+                    );
+                });
+            }
+            if (products[i].promotionalMessages) {
+                products[i].promotionalMessages = products[i].promotionalMessages.filter(function (obj, index) {
+                    return ((obj.startDate != null && moment(obj.startDate).isBefore(now)) ||
+                    (obj.endDate != null && moment(obj.endDate).isAfter(now))
+                    );
+                });
+            }
+            if (products[i].upsellItems) {
+                products[i].upsellItems = products[i].upsellItems.filter(function (obj, index) {
+                    return (obj.product != null && obj.unavailable == false);
+                });
+            }
+            if (products[i].youMayAlsoLike) {
+                products[i].youMayAlsoLike = products[i].youMayAlsoLike.filter(function (obj, index) {
+                    return (obj.product != null && obj.unavailable == false);
+                });
+            }
         }
 
         console.log("returning", products.length, "products");
@@ -2710,17 +2731,30 @@ function loadProductsByCategory(categoryId, loadUnavailable, skip, limit, sort) 
 
         // filter out upsellItems and youMailAlsoLike that aren't available
         for (var i=0; i < products; i++) {
-            products[i].contains = products[i].contains.filter(function (obj, index) {
-                return ((obj.startDate != null && moment(obj.startDate).isBefore(now)) ||
-                (obj.endDate != null && moment(obj.endDate).isAfter(now))
-                );
-            });
-            products[i].upsellItems = products[i].upsellItems.filter(function (obj, index) {
-                return (obj.product != null && obj.unavailable == false);
-            });
-            products[i].youMayAlsoLike = products[i].youMayAlsoLike.filter(function (obj, index) {
-                return (obj.product != null && obj.unavailable == false);
-            });
+            if (products[i].contains) {
+                products[i].contains = products[i].contains.filter(function (obj, index) {
+                    return ((obj.startDate != null && moment(obj.startDate).isBefore(now)) ||
+                    (obj.endDate != null && moment(obj.endDate).isAfter(now))
+                    );
+                });
+            }
+            if (products[i].promotionalMessages) {
+                products[i].promotionalMessages = products[i].promotionalMessages.filter(function (obj, index) {
+                    return ((obj.startDate != null && moment(obj.startDate).isBefore(now)) ||
+                    (obj.endDate != null && moment(obj.endDate).isAfter(now))
+                    );
+                });
+            }
+            if (products[i].upsellItems) {
+                products[i].upsellItems = products[i].upsellItems.filter(function (obj, index) {
+                    return (obj.product != null && obj.unavailable == false);
+                });
+            }
+            if (products[i].youMayAlsoLike) {
+                products[i].youMayAlsoLike = products[i].youMayAlsoLike.filter(function (obj, index) {
+                    return (obj.product != null && obj.unavailable == false);
+                });
+            }
         }
 
         console.log("returning", products.length, "products");
@@ -2771,17 +2805,30 @@ function loadProductsById(productIds, loadUnavailable, loadStarterKits, loadStar
 
         // filter out upsellItems and youMailAlsoLike that aren't available
         for (var i=0; i < products; i++) {
-            products[i].contains = products[i].contains.filter(function (obj, index) {
-                return ((obj.startDate != null && moment(obj.startDate).isBefore(now)) ||
-                (obj.endDate != null && moment(obj.endDate).isAfter(now))
-                );
-            });
-            products[i].upsellItems = products[i].upsellItems.filter(function (obj, index) {
-                return (obj.product != null && obj.unavailable == false);
-            });
-            products[i].youMayAlsoLike = products[i].youMayAlsoLike.filter(function (obj, index) {
-                return (obj.product != null && obj.unavailable == false);
-            });
+            if (products[i].contains) {
+                products[i].contains = products[i].contains.filter(function (obj, index) {
+                    return ((obj.startDate != null && moment(obj.startDate).isBefore(now)) ||
+                    (obj.endDate != null && moment(obj.endDate).isAfter(now))
+                    );
+                });
+            }
+            if (products[i].promotionalMessages) {
+                products[i].promotionalMessages = products[i].promotionalMessages.filter(function (obj, index) {
+                    return ((obj.startDate != null && moment(obj.startDate).isBefore(now)) ||
+                    (obj.endDate != null && moment(obj.endDate).isAfter(now))
+                    );
+                });
+            }
+            if (products[i].upsellItems) {
+                products[i].upsellItems = products[i].upsellItems.filter(function (obj, index) {
+                    return (obj.product != null && obj.unavailable == false);
+                });
+            }
+            if (products[i].youMayAlsoLike) {
+                products[i].youMayAlsoLike = products[i].youMayAlsoLike.filter(function (obj, index) {
+                    return (obj.product != null && obj.unavailable == false);
+                });
+            }
         }
 
         console.log("loadProductsById(): returning", products.length, "products");
@@ -2831,17 +2878,30 @@ function loadProducts(loadUnavailable, loadComponents, skip, limit, sort) {
 
         // filter out upsellItems and youMailAlsoLike that aren't available
         for (var i=0; i < products; i++) {
-            products[i].contains = products[i].contains.filter(function (obj, index) {
-                return ((obj.startDate != null && moment(obj.startDate).isBefore(now)) ||
-                (obj.endDate != null && moment(obj.endDate).isAfter(now))
-                );
-            });
-            products[i].upsellItems = products[i].upsellItems.filter(function (obj, index) {
-                return (obj.product != null && obj.unavailable == false);
-            });
-            products[i].youMayAlsoLike = products[i].youMayAlsoLike.filter(function (obj, index) {
-                return (obj.product != null && obj.unavailable == false);
-            });
+            if (products[i].contains) {
+                products[i].contains = products[i].contains.filter(function (obj, index) {
+                    return ((obj.startDate != null && moment(obj.startDate).isBefore(now)) ||
+                    (obj.endDate != null && moment(obj.endDate).isAfter(now))
+                    );
+                });
+            }
+            if (products[i].promotionalMessages) {
+                products[i].promotionalMessages = products[i].promotionalMessages.filter(function (obj, index) {
+                    return ((obj.startDate != null && moment(obj.startDate).isBefore(now)) ||
+                    (obj.endDate != null && moment(obj.endDate).isAfter(now))
+                    );
+                });
+            }
+            if (products[i].upsellItems) {
+                products[i].upsellItems = products[i].upsellItems.filter(function (obj, index) {
+                    return (obj.product != null && obj.unavailable == false);
+                });
+            }
+            if (products[i].youMayAlsoLike) {
+                products[i].youMayAlsoLike = products[i].youMayAlsoLike.filter(function (obj, index) {
+                    return (obj.product != null && obj.unavailable == false);
+                });
+            }
         }
 
         console.log("returning", products.length, "products");
@@ -2918,18 +2978,30 @@ function loadProductById(productId, loadUnavailable, loadStarterKit, loadStarter
 
 
                 //console.log('products:', products);
-                products[0].contains = products[0].contains.filter(function (obj, index) {
-                    return ((obj.startDate != null && moment(obj.startDate).isBefore(now)) ||
-                            (obj.endDate != null && moment(obj.endDate).isAfter(now))
-                           );
-                });
-
-                products[0].upsellItems = products[0].upsellItems.filter(function (obj, index) {
-                    return (obj.product != null && obj.unavailable == false);
-                });
-                products[0].youMayAlsoLike = products[0].youMayAlsoLike.filter(function (obj, index) {
-                    return (obj.product != null && obj.unavailable == false);
-                });
+                if (products[0].contains) {
+                    products[0].contains = products[0].contains.filter(function (obj, index) {
+                        return ((obj.startDate != null && moment(obj.startDate).isBefore(now)) ||
+                        (obj.endDate != null && moment(obj.endDate).isAfter(now))
+                        );
+                    });
+                }
+                if (products[0].promotionalMessages) {
+                    products[0].promotionalMessages = products[0].promotionalMessages.filter(function (obj, index) {
+                        return ((obj.startDate != null && moment(obj.startDate).isBefore(now)) ||
+                        (obj.endDate != null && moment(obj.endDate).isAfter(now))
+                        );
+                    });
+                }
+                if (products[0].upsellItems) {
+                    products[0].upsellItems = products[0].upsellItems.filter(function (obj, index) {
+                        return (obj.product != null && obj.unavailable == false);
+                    });
+                }
+                if (products[0].youMayAlsoLike) {
+                    products[0].youMayAlsoLike = products[0].youMayAlsoLike.filter(function (obj, index) {
+                        return (obj.product != null && obj.unavailable == false);
+                    });
+                }
                 d.resolve(products[0]);
 
                 console.log('product', products[0]);

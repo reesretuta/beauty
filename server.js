@@ -1431,7 +1431,7 @@ models.onReady(function () {
 
     // update on startup and on an interval
     setTimeout(function() {
-        //updateInventory();
+        updateInventory();
     }, 0)
     setInterval(function() {
         updateInventory();

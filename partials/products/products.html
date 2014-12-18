@@ -13,26 +13,27 @@
             <div class="store-item-info">
               <p class="store-item-sku"><span ng-bind-html="'ITEM' | translate | unsafe"></span> #{{product.sku}}</p>
               <p class="store-item-title"><a ng-href="{{STORE_BASE_URL}}/products/{{product.sku}}#top">{{getTranslated(product).name}}</a></p>
-              <p class="store-item-price">
-
-              <span ng-repeat="detailprice in product.currentPrice">
-                <span ng-if="detailprice.type==2" class="item-price-sale">
-                  {{ detailprice.price | currency }}
-                  <span class="brand-font saleflag">On Sale!</span>
+              <p ng-if="product.masterStatus == 'A'" class="store-item-price">
+                <span ng-repeat="detailprice in product.currentPrice">
+                  <span ng-if="detailprice.type==2" class="item-price-sale">
+                    {{ detailprice.price | currency }}
+                    <span class="brand-font saleflag">On Sale!</span>
+                  </span>
+                  <span ng-if="detailprice.type==1" class="item-price-strike">
+                    {{ detailprice.price | currency }}
+                  </span>
                 </span>
-                <span ng-if="detailprice.type==1" class="item-price-strike">
-                  {{ detailprice.price | currency }}
+                <span ng-if="product.currentPrice.price">
+                  <span class="item-price">
+                    {{ product.currentPrice.price | currency }}
+                  </span>
                 </span>
-              </span>
-              <span ng-if="product.currentPrice.price">
-                <span class="item-price">
-                  {{ product.currentPrice.price | currency }}
-                </span>
-              </span>
                 &nbsp;&nbsp;<span class="item-measure">{{getTranslated(product).quantity}}</span>
               </p>
+              <p ng-if="product.masterStatus == 'T'" data-ng-bind-html="product.promotionalMessages[0].message | unsafe" class="promotional-message">
+              </p>
             </div>
-            <p ng-if="product.type == 'product' || (product.type == 'kit' && product.kitGroups.length == 0)">
+            <p ng-if="(product.type == 'product' || (product.type == 'kit' && product.kitGroups.length == 0)) && product.masterStatus == 'A'">
               <a ng-if="product.availableInventory >= 1" class="btn btn-primary primary-cta add-to-cart" ng-class="{ 'processing' : (adding && addingId == product.sku) }" ng-click="addToCart(product)">
                 <span ng-bind-html="'BTN_ADD_CART' | translate | unsafe"></span>
               </a>
@@ -40,7 +41,7 @@
                 <span>Out of Stock</span>
               </a>
             </p>
-            <p ng-if="product.type == 'kit' && product.kitGroups.length > 0">
+            <p ng-if="(product.type == 'kit' && product.kitGroups.length > 0) && product.masterStatus == 'A'">
               <a ng-if="product.availableInventory >= 1" class="btn btn-primary primary-cta" ng-href="{{STORE_BASE_URL}}/products/{{product.sku}}#top">
                 <i class="fa fa-cogs"></i> <span ng-bind-html="'TIT_CONF_OFFER' | translate | unsafe"></span>
               </a>
