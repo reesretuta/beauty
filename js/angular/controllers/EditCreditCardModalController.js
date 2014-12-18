@@ -3,7 +3,7 @@ angular.module('app.controllers.checkout').controller('EditCreditCardModalContro
 
     $log.debug("EditCreditCardModalController(): editing creditCard", creditCard);
 
-    $scope.creditCard = creditCard;
+    $scope.creditCard = angular.copy(creditCard);
 
     $scope.close = function () {
         $log.debug("EditCreditCardModalController(): canceling creditCard correction");
