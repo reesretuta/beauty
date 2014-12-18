@@ -797,7 +797,6 @@ models.onReady(function() {
             }
 
             function saveProduct(productId) {
-                totalImageFetches++;
                 casper.then(function() {
                     var json = JSON.stringify(products[productId]);
                     console.log("====== Product ======");
@@ -1610,6 +1609,7 @@ models.onReady(function() {
                 existingProductUpsellItems: existingProductUpsellItems,
                 AVAILABLE_ONLY: AVAILABLE_ONLY,
                 BASE_SITE_URL: BASE_SITE_URL,
+                IMAGES_ONLY: IMAGES_ONLY,
                 LANGUAGE: LANGUAGE,
                 options: options
             }, function () {
@@ -2597,6 +2597,8 @@ models.onReady(function() {
     spooky.on('product.save', function(json) {
         var spookyThis = this;
 
+        totalImageFetches++;
+
         try {
             //console.log('saving product', json);
 
@@ -2648,6 +2650,9 @@ models.onReady(function() {
                                     console.log("[summary] saved product", id, savedProducts, numAffected, rawResponse);
                                 }
                             }
+
+                            // queue up images
+                            console.log("saving images for product", id);
 
                             saveImages(id, p, "products").then(function() {
                                 console.log("[summary] saved product images");
@@ -2874,14 +2879,14 @@ models.onReady(function() {
         jafraClient.updateInventory(true).then(function(inventory) {
             jafraClient.processAvailabilityAndHiddenProducts(inventory, updatedProductIds).then(function(inventory) {
                 console.log("[summary] updated availability for products", updatedProductIds);
-                process.exit(0);
+                //process.exit(0);
             }, function(err) {
                 console.error("error processing availability", err);
-                process.exit(0);
+                //process.exit(0);
             });
         }, function(err) {
             console.error("error updating inventory", err);
-            process.exit(0);
+            //process.exit(0);
         });
     });
 
