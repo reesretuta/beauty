@@ -227,14 +227,20 @@ angular.module('app.controllers.checkout')
                             // send the user past the login page if they are in client direct & logged in
                             if (urlStep != 'Start') {
                                 $log.debug("CheckoutController(): online sponsoring: sending logged in user to", urlStep);
-                                WizardHandler.wizard('checkoutWizard').goTo(urlStep);
+                                $timeout(function() {
+                                    WizardHandler.wizard('checkoutWizard').goTo(urlStep);
+                                }, 0);
                             } else {
                                 $log.debug("CheckoutController(): online sponsoring: sending logged in user to Shipping, skipping login/create");
-                                WizardHandler.wizard('checkoutWizard').goTo('Shipping');
+                                $timeout(function() {
+                                    WizardHandler.wizard('checkoutWizard').goTo('Shipping');
+                                }, 0);
                             }
                         } else {
                             $log.debug("CheckoutController(): online sponsoring: sending non-logged in user to Start");
-                            WizardHandler.wizard('checkoutWizard').goTo('Start');
+                            $timeout(function() {
+                                WizardHandler.wizard('checkoutWizard').goTo('Start');
+                            }, 0);
                         }
                     }
                 }, function() {
