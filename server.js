@@ -1331,12 +1331,14 @@ app.get('/$', function (req, res) {
 // any URL beginning with /join without a dot or / should serve online_sponsoring.html, save for /api methods captured above
 app.get('/join*', function (req, res) {
     console.log('join path');
+    console.log('User-Agent: ' + req.headers['user-agent']);
     res.sendFile(basepath + '/online_sponsoring.html'); // load the single view file (angular will handle the page changes on the front-end)
 });
 
 // any URL without a dot or / should serve index.html, save for /api methods captured above
 app.get('/shop*', function (req, res) {
     console.log('store path');
+    console.log('User-Agent: ' + req.headers['user-agent']);
     res.sendFile(basepath + '/index.html'); // load the single view file (angular will handle the page changes on the front-end)
 });
 
