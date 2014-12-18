@@ -1381,9 +1381,9 @@ angular.module('app.controllers.checkout')
                     "19822": [{sku:"25192",qty:1}, {sku:"25195",qty:1}, {sku:"25193",qty:1}, {sku:"25194",qty:1}, {sku:"15522",qty:1}, {sku:"12038",qty:1}, {sku:"19329",qty:1}, {sku:"19038",qty:1}, {sku:"19034",qty:1}, {sku:"19496",qty:1}, {sku:"19354",qty:1}, {sku:"19411",qty:1}, {sku:"19361",qty:1}, {sku:"19243",qty:1}, {sku:"18372",qty:1}, {sku:"19053",qty:1}, {sku:"19508",qty:1}, {sku:"19858",qty:1}, {sku:"18799",qty:1}],
                     "19823": [{sku:"19823",qty:1}, {sku:"25192",qty:1}, {sku:"25195",qty:1}, {sku:"25193",qty:1}, {sku:"25194",qty:1}, {sku:"15522",qty:1}, {sku:"12038",qty:1}, {sku:"19329",qty:1}, {sku:"19039",qty:1}, {sku:"19035",qty:1}, {sku:"19355",qty:1}, {sku:"19413",qty:1}, {sku:"18996",qty:1}, {sku:"19244",qty:1}, {sku:"18373",qty:1}, {sku:"19054",qty:1}, {sku:"19509",qty:1}, {sku:"19858",qty:1}, {sku:"18800",qty:1}]
                 };
-                var productComponents = productComponentMap[$scope.cart[0].product._id];
+                var productComponents = productComponentMap[$scope.cart[0].product.sku];
 
-                $log.debug("CheckoutController(): processOrder(): cart item", $scope.cart[0].product._id, $scope.cart[0], "components", productComponents);
+                $log.debug("CheckoutController(): processOrder(): cart item", $scope.cart[0].product.sku, $scope.cart[0], "components", productComponents);
 
                 for (var i=0; i < productComponents.length; i++) {
                     components.push({
