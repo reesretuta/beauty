@@ -2595,7 +2595,7 @@ function getComponentsCriteria() {
         // in date range
         {$or: [{"startDate":{$eq:null}}, {"startDate":{$lte: now}}]},
         {$or: [{"endDate":{$eq:null}}, {"endDate":{$gt: now}}]},
-        {unavailable: false}
+        //{unavailable: false}
     ];
     return componentsCriteria;
 }
@@ -2634,8 +2634,7 @@ function searchProducts(searchString, loadUnavailable, skip, limit) {
         match: { $and: getAvailableProductCriteria()}
     }).populate({
         path: 'contains.product',
-        model: 'Product'//,
-        //match: { $and: getComponentsCriteria()}
+        model: 'Product'
     }).populate({
         path: 'kitGroups.kitGroup',
         model: 'KitGroup',
@@ -2652,11 +2651,8 @@ function searchProducts(searchString, loadUnavailable, skip, limit) {
         // filter out upsellItems and youMailAlsoLike that aren't available
         for (var i=0; i < products; i++) {
             products[i].contains = products[i].contains.filter(function (obj, index) {
-                return (
-                    obj.product == null ||
-                    obj.unavailable == false ||
-                    (obj.startDate != null && moment(obj.startDate).isAfter(now)) ||
-                    (obj.endDate != null && moment(obj.endDate).isBefore(now))
+                return ((obj.startDate != null && moment(obj.startDate).isBefore(now)) ||
+                (obj.endDate != null && moment(obj.endDate).isAfter(now))
                 );
             });
             products[i].upsellItems = products[i].upsellItems.filter(function (obj, index) {
@@ -2676,6 +2672,7 @@ function searchProducts(searchString, loadUnavailable, skip, limit) {
 
 function loadProductsByCategory(categoryId, loadUnavailable, skip, limit, sort) {
     var d = Q.defer();
+    var now = new Date();
 
     console.log("loadProductsByCategory()", categoryId, loadUnavailable, skip, limit, sort);
 
@@ -2697,8 +2694,7 @@ function loadProductsByCategory(categoryId, loadUnavailable, skip, limit, sort) 
         match: { $and: getAvailableProductCriteria()}
     }).populate({
         path: 'contains.product',
-        model: 'Product',
-        match: { $and: getComponentsCriteria()}
+        model: 'Product'
     }).populate({
         path: 'kitGroups.kitGroup',
         model: 'KitGroup',
@@ -2714,6 +2710,11 @@ function loadProductsByCategory(categoryId, loadUnavailable, skip, limit, sort) 
 
         // filter out upsellItems and youMailAlsoLike that aren't available
         for (var i=0; i < products; i++) {
+            products[i].contains = products[i].contains.filter(function (obj, index) {
+                return ((obj.startDate != null && moment(obj.startDate).isBefore(now)) ||
+                (obj.endDate != null && moment(obj.endDate).isAfter(now))
+                );
+            });
             products[i].upsellItems = products[i].upsellItems.filter(function (obj, index) {
                 return (obj.product != null && obj.unavailable == false);
             });
@@ -2731,6 +2732,7 @@ function loadProductsByCategory(categoryId, loadUnavailable, skip, limit, sort) 
 
 function loadProductsById(productIds, loadUnavailable, loadStarterKits, loadStarterKitsOnly) {
     var d = Q.defer();
+    var now = new Date();
 
     console.log("loadProductsById()", productIds, loadUnavailable, loadStarterKits, loadStarterKitsOnly);
 
@@ -2753,8 +2755,7 @@ function loadProductsById(productIds, loadUnavailable, loadStarterKits, loadStar
         match: { $and: getAvailableProductCriteria()}
     }).populate({
         path: 'contains.product',
-        model: 'Product',
-        match: { $and: getComponentsCriteria()}
+        model: 'Product'
     }).populate({
         path: 'kitGroups.kitGroup',
         model: 'KitGroup',
@@ -2770,6 +2771,11 @@ function loadProductsById(productIds, loadUnavailable, loadStarterKits, loadStar
 
         // filter out upsellItems and youMailAlsoLike that aren't available
         for (var i=0; i < products; i++) {
+            products[i].contains = products[i].contains.filter(function (obj, index) {
+                return ((obj.startDate != null && moment(obj.startDate).isBefore(now)) ||
+                (obj.endDate != null && moment(obj.endDate).isAfter(now))
+                );
+            });
             products[i].upsellItems = products[i].upsellItems.filter(function (obj, index) {
                 return (obj.product != null && obj.unavailable == false);
             });
@@ -2778,7 +2784,7 @@ function loadProductsById(productIds, loadUnavailable, loadStarterKits, loadStar
             });
         }
 
-        console.log("returning", products.length, "products");
+        console.log("loadProductsById(): returning", products.length, "products");
         d.resolve(products);
     });
 
@@ -2809,8 +2815,7 @@ function loadProducts(loadUnavailable, loadComponents, skip, limit, sort) {
         match: { $and: getAvailableProductCriteria()}
     }).populate({
         path: 'contains.product',
-        model: 'Product',
-        match: { $and: getComponentsCriteria()}
+        model: 'Product'
     }).populate({
         path: 'kitGroups.kitGroup',
         model: 'KitGroup',
@@ -2826,6 +2831,11 @@ function loadProducts(loadUnavailable, loadComponents, skip, limit, sort) {
 
         // filter out upsellItems and youMailAlsoLike that aren't available
         for (var i=0; i < products; i++) {
+            products[i].contains = products[i].contains.filter(function (obj, index) {
+                return ((obj.startDate != null && moment(obj.startDate).isBefore(now)) ||
+                (obj.endDate != null && moment(obj.endDate).isAfter(now))
+                );
+            });
             products[i].upsellItems = products[i].upsellItems.filter(function (obj, index) {
                 return (obj.product != null && obj.unavailable == false);
             });
@@ -2868,8 +2878,7 @@ function loadProductById(productId, loadUnavailable, loadStarterKit, loadStarter
         match: { $and: getAvailableProductCriteria()}
     }).populate({
         path: 'contains.product',
-        model: 'Product',
-        match: { $and: getComponentsCriteria()}
+        model: 'Product'
     }).populate({
         path: 'kitGroups.kitGroup',
         model: 'KitGroup',
@@ -2905,7 +2914,16 @@ function loadProductById(productId, loadUnavailable, loadStarterKit, loadStarter
                     return;
                 }
 
+                console.log("loadProductsById(): got products", products);
+
+
                 //console.log('products:', products);
+                products[0].contains = products[0].contains.filter(function (obj, index) {
+                    return ((obj.startDate != null && moment(obj.startDate).isBefore(now)) ||
+                            (obj.endDate != null && moment(obj.endDate).isAfter(now))
+                           );
+                });
+
                 products[0].upsellItems = products[0].upsellItems.filter(function (obj, index) {
                     return (obj.product != null && obj.unavailable == false);
                 });
