@@ -5,6 +5,8 @@
     "LAN01":"English",
     "LAN02":"Spanish",
     "LOGO": "<img class=\"img-responsive\" src=\"/img/logo.png\" alt=\"JAFRA | The Power to Transform Lives.\" />",
+    "JAFRA-color":"<img class=\"img-responsive\" src=\"/img/jafra-color.jpg\">",
+    "skincare_profile":"<img class=\"img-responsive\" src=\"/img/skincare_profile.jpg\">",
     "NAV_HOME": "Home",
     "NAV_ABOUT": "About",
     "NAV_OPPORTUNITY": "Opportunity",
