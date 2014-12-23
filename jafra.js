@@ -163,7 +163,7 @@ function authenticate(email, password) {
     }, function (error, response, body) {
         if (error || response.statusCode != 200) {
             console.error("authenticate(): error", error, response ? response.statusCode: null, body);
-            if (response.statusCode == 401) {
+            if (response && response.statusCode == 401) {
                 deferred.reject({
                     status: response.statusCode,
                     result: {
@@ -259,16 +259,29 @@ function getClient(clientId) {
         json: true
     }, function (error, response, body) {
         console.log("getClient()", error, response ? response.statusCode: null, body);
-        if (error || response.statusCode != 200) {
+        if (error || response == null || response.statusCode != 200) {
             console.error("getClient(): error", error, response ? response.statusCode: null, body);
-            deferred.reject({
-                status: response.statusCode,
-                result: {
-                    statusCode: response.statusCode,
-                    errorCode: body.errorCode,
-                    message: body.message
-                }
-            });
+
+            if (response && response.statusCode) {
+                deferred.reject({
+                    status: response.statusCode,
+                    result: {
+                        statusCode: response.statusCode,
+                        errorCode: body.errorCode,
+                        message: body.message
+                    }
+                });
+            } else {
+                deferred.reject({
+                    status: 500,
+                    result: {
+                        statusCode: 500,
+                        errorCode: "clientInvalidResponse",
+                        message: "Failed to get client"
+                    }
+                });
+            }
+
             return;
         }
 
@@ -339,14 +352,25 @@ function createClient(client) {
 
             if (body && body.statusCode && body.errorCode && body.message) {
                 console.error("createClient(): error, returning server error");
-                deferred.reject({
-                    status: response.statusCode,
-                    result: {
-                        statusCode: body.statusCode,
-                        errorCode: body.errorCode,
-                        message: body.message
-                    }
-                });
+                if (response && response.statusCode) {
+                    deferred.reject({
+                        status: response.statusCode,
+                        result: {
+                            statusCode: body.statusCode,
+                            errorCode: body.errorCode,
+                            message: body.message
+                        }
+                    });
+                } else {
+                    deferred.reject({
+                        status: 500,
+                        result: {
+                            statusCode: 500,
+                            errorCode: "createClientInvalidResponse",
+                            message: "Failed to create client"
+                        }
+                    });
+                }
             } else {
                 console.error("createClient(): error, returning generic error");
                 deferred.reject({
@@ -446,16 +470,27 @@ function getConsultant(consultantId) {
         json: true
     }, function (error, response, body) {
         console.log("getConsultant()", error, response ? response.statusCode: null, body);
-        if (error || response.statusCode != 200) {
-            console.error("getConsultant(): error", error, response.statusCode, body);
-            deferred.reject({
-                status: response.statusCode,
-                result: {
-                    statusCode: response.statusCode,
-                    errorCode: body.errorCode,
-                    message: body.message
-                }
-            });
+        if (error || response == null || response.statusCode != 200) {
+            console.error("getConsultant(): error", error, response ? response.statusCode: null, body);
+            if (response && response.statusCode) {
+                deferred.reject({
+                    status: response.statusCode,
+                    result: {
+                        statusCode: response.statusCode,
+                        errorCode: body.errorCode,
+                        message: body.message
+                    }
+                });
+            } else {
+                deferred.reject({
+                    status: 500,
+                    result: {
+                        statusCode: 500,
+                        errorCode: "createClientInvalidResponse",
+                        message: "Failed to create client"
+                    }
+                });
+            }
             return;
         }
 
@@ -507,8 +542,8 @@ function lookupConsultant(encrypted) {
         if (error || response.statusCode != 200) {
             console.error("lookupConsultant(): error", error, response ? response.statusCode : null, body);
 
-            if (body && body.statusCode && body.errorCode && body.message) {
-                if (body.statusCode == 404) {
+            if (response && response.statusCode) {
+                if (response.statusCode == 404) {
                     // not found
                     deferred.reject({
                         status: 200,
@@ -585,10 +620,10 @@ function createConsultant(encrypted) {
         strictSSL: false,
         json: true
     }, function (error, response, body) {
-        if (error || response.statusCode != 201) {
+        if (error || response == null || response.statusCode != 201) {
             console.error("createConsultant(): error", error, response ? response.statusCode : null, body);
 
-            if (body && body.statusCode && body.errorCode && body.message) {
+            if (body && body.statusCode && body.errorCode && body.message && response && response.statusCode) {
                 if (body.errorCode == 409) {
                     deferred.reject({
                         status: response.statusCode,
@@ -672,15 +707,26 @@ function lookupByEmail(email, type) {
     }, function (error, response, body) {
         console.log("lookupByEmail()", error, response ? response.statusCode: null, body);
         if (error || response.statusCode != 200) {
-            console.error("lookupByEmail(): error", error, response.statusCode, body);
-            deferred.reject({
-                status: response.statusCode,
-                result: {
-                    statusCode: response.statusCode,
-                    errorCode: body.errorCode,
-                    message: body.message
-                }
-            });
+            console.error("lookupByEmail(): error", error, response ? response.statusCode: null, body);
+            if (response && response.statusCode && body) {
+                deferred.reject({
+                    status: response.statusCode,
+                    result: {
+                        statusCode: response.statusCode,
+                        errorCode: body.errorCode,
+                        message: body.message
+                    }
+                });
+            } else {
+                deferred.reject({
+                    status: 500,
+                    result: {
+                        statusCode: 500,
+                        errorCode: "createClientInvalidResponse",
+                        message: "Failed to create client"
+                    }
+                });
+            }
             return;
         }
 
@@ -739,7 +785,7 @@ function createOrder(data) {
         if (error || response.statusCode != 201) {
             console.error("createOrder(): error", error, response ? response.statusCode : null, body);
 
-            if (body && body.statusCode && body.errorCode && body.message) {
+            if (body && body.statusCode && body.errorCode && body.message && response && response.statusCode) {
                 deferred.reject({
                     status: response.statusCode,
                     result: {
@@ -828,7 +874,7 @@ function createLead(lead) {
         if (error || response.statusCode != 200) {
             console.error("createLead(): error", response ? response.statusCode: null, body);
 
-            if (body && body.statusCode && body.errorCode && body.message) {
+            if (body && body.statusCode && body.errorCode && body.message && response && response.statusCode) {
                 console.error("createLead(): error, returning server error");
                 deferred.reject({
                     status: response.statusCode,
@@ -894,8 +940,8 @@ function getAddresses(clientId) {
         strictSSL: false,
         json: true
     }, function (error, response, body) {
-        if (error || response.statusCode != 200) {
-            console.error("getAddresses(): error", error, response.statusCode, body);
+        if (error || response == null || response.statusCode != 200) {
+            console.error("getAddresses(): error", error, response? response.statusCode : null, body);
             deferred.reject({error: error, response: response, body: body});
             return;
         }
@@ -930,8 +976,8 @@ function getAddress(clientId, addressId) {
         strictSSL: false,
         json: true
     }, function (error, response, body) {
-        if (error || response.statusCode != 200) {
-            console.error("getAddress(): error", error, response.statusCode, body);
+        if (error || response == null || response.statusCode != 200) {
+            console.error("getAddress(): error", error, response ? response.statusCode : null, body);
             deferred.reject({error: error, response: response, body: body});
         }
         //console.log("getAddress(): success", body);
@@ -978,9 +1024,9 @@ function createAddress(clientId, address) {
         json: true
     }, function (error, response, body) {
         if (error || response.statusCode != 201) {
-            console.error("createAddress(): error", response.statusCode, body);
+            console.error("createAddress(): error", response ? response.statusCode : null, body);
 
-            if (body && body.statusCode && body.errorCode && body.message) {
+            if (body && body.statusCode && body.errorCode && body.message && response && response.statusCode) {
                 deferred.reject({
                     status: response.statusCode,
                     result: {
@@ -1059,9 +1105,9 @@ function updateAddress(clientId, addressId, address) {
         json: true
     }, function (error, response, body) {
         if (error || response.statusCode != 204) {
-            console.error("updateAddress(): error", response.statusCode, body);
+            console.error("updateAddress(): error", response ? response.statusCode : null, body);
 
-            if (body && body.statusCode && body.errorCode && body.message) {
+            if (body && body.statusCode && body.errorCode && body.message && response && response.statusCode) {
                 deferred.reject({
                     status: response.statusCode,
                     result: {
@@ -1113,9 +1159,9 @@ function deleteAddress(clientId, addressId) {
         json: true
     }, function (error, response, body) {
         if (error || response.statusCode != 204) {
-            console.error("deleteAddress(): error", response.statusCode, body);
+            console.error("deleteAddress(): error", response ? response.statusCode : null, body);
 
-            if (body && body.statusCode && body.errorCode && body.message) {
+            if (body && body.statusCode && body.errorCode && body.message && response && response.statusCode) {
                 deferred.reject({
                     status: response.statusCode,
                     result: {
@@ -1415,7 +1461,7 @@ function getCreditCards(clientId) {
         }
         //console.log("getCreditCards(): success", body);
         deferred.resolve({
-            status: response.statusCode,
+            status: response ? response.statusCode : 500,
             result: body
         });
     });
@@ -1476,7 +1522,7 @@ function createCreditCard(clientId, data) {
         if (error || response.statusCode != 201) {
             console.error("createCreditCard(): error", error, response ? response.statusCode : null, body);
 
-            if (body && body.statusCode && body.errorCode && body.message) {
+            if (body && body.statusCode && body.errorCode && body.message && response && response.statusCode) {
                 deferred.reject({
                     status: response.statusCode,
                     result: {
@@ -1546,7 +1592,7 @@ function updateCreditCard(clientId, creditCardId, data) {
         if (error || response.statusCode != 201) {
             console.error("updateCreditCard(): error", error, response ? response.statusCode : null, body);
 
-            if (body && body.statusCode && body.errorCode && body.message) {
+            if (body && body.statusCode && body.errorCode && body.message && response && response.statusCode) {
                 deferred.reject({
                     status: response.statusCode,
                     result: {
@@ -1612,7 +1658,7 @@ function deleteCreditCard(clientId, creditCardId) {
         if (error || response.statusCode != 204) {
             console.error("deleteCreditCard(): error", response ? response.statusCode: null, body);
 
-            if (body && body.statusCode && body.errorCode && body.message) {
+            if (body && body.statusCode && body.errorCode && body.message && response && response.statusCode) {
                 deferred.reject({
                     status: response.statusCode,
                     result: {
@@ -1663,8 +1709,8 @@ function getGeocodes(zipCode) {
         json: true
     }, function (error, response, body) {
         console.log("getGeocodes()", error, response ? response.statusCode: null, body);
-        if (error || response.statusCode != 200) {
-            console.error("getGeocodes(): error", error, response.statusCode, body);
+        if (error || response == null || response.statusCode != 200) {
+            console.error("getGeocodes(): error", error, response ? response.statusCode: null, body);
             deferred.reject({
                 status: response.statusCode,
                 result: {
@@ -1890,7 +1936,7 @@ function requestPasswordReset(email, language) {
             }, function (error, response, body) {
                 console.log("requestPasswordReset(): body", body);
 
-                if (error || response.statusCode != 204) {
+                if (error || response == null || response.statusCode != 204) {
                     console.error("requestPasswordReset(): error", error, response ? response.statusCode : null, body);
                     deferred.reject({
                         status: 500,
@@ -1949,7 +1995,7 @@ function requestPasswordChange(email, password, token) {
             }, function (error, response, body) {
                 console.log("requestPasswordChange(): body", body);
 
-                if (error || response.statusCode != 204) {
+                if (error || response == null || response.statusCode != 204) {
                     console.error("requestPasswordChange(): error", error, response ? response.statusCode : null, body);
                     deferred.reject({
                         status: 500, result: {
@@ -1999,16 +2045,26 @@ function getInventory(inventoryId) {
         json: true
     }, function (error, response, body) {
         console.log("getInventory()", error, response ? response.statusCode: null, body);
-        if (error || response.statusCode != 200) {
-            console.error("getInventory(): error", error, response.statusCode, body);
-            deferred.reject({
-                status: response.statusCode,
-                result: {
-                    statusCode: response.statusCode,
-                    errorCode: body.errorCode,
-                    message: body.message
-                }
-            });
+        if (error || response == null | response.statusCode != 200) {
+            console.error("getInventory(): error", error, response ? response.statusCode: null, body);
+            if (response && response.statusCode) {
+                deferred.reject({
+                    status: response.statusCode,
+                    result: {
+                        statusCode: response.statusCode,
+                        errorCode: body.errorCode,
+                        message: body.message
+                    }
+                });            } else {
+                deferred.reject({
+                    status: 500,
+                    result: {
+                        statusCode: 500,
+                        errorCode: "getInventoryInvalidResponse",
+                        message: "Failed to get inventory"
+                    }
+                });
+            }
             return;
         }
 
@@ -2039,7 +2095,7 @@ function getConfigValue(key) {
     var deferred = Q.defer();
     models.Config.findOne({_id: key}).exec(function (err, config) {
         if (err) {
-            console.error("getConfigValue(): error", error, response.statusCode);
+            console.error("getConfigValue(): error", error, response ? response.statusCode : null);
             deferred.reject(err);
             return;
         }
@@ -2156,7 +2212,7 @@ function updateInventory(noProcessing) {
             });
         }
     }, function(err) {
-        console.error("updateInventory(): error getting config", error, response.statusCode);
+        console.error("updateInventory(): error getting config", error, response ? response.statusCode : null);
         deferred.reject(err);
     });
 
@@ -3042,17 +3098,28 @@ function getProducts(loadUnavailable, loadComponents, skip, limit, sort) {
         json: true
     }, function (error, response, body) {
         console.log("getProducts()", error, response ? response.statusCode: null);
-        if (error || response.statusCode != 200) {
-            console.error("getProducts(): error", error, response.statusCode);
+        if (error || response == null || response.statusCode != 200) {
+            console.error("getProducts(): error", error, response ? response.statusCode: null);
 
-            d.reject({
-                status: response.statusCode,
-                result: {
-                    statusCode: response.statusCode,
-                    errorCode: body.errorCode,
-                    message: body.message
-                }
-            });
+            if (response && response.statusCode) {
+                d.reject({
+                    status: response.statusCode,
+                    result: {
+                        statusCode: response.statusCode,
+                        errorCode: body.errorCode,
+                        message: body.message
+                    }
+                });
+            } else {
+                d.reject({
+                    status: 500,
+                    result: {
+                        statusCode: 500,
+                        errorCode: "createClientInvalidResponse",
+                        message: "Failed to create client"
+                    }
+                });
+            }
             return;
         }
 
