@@ -1,238 +1,244 @@
 
-      <!-- Item Detail Section -->
-      <section class="row store-section">
+<!-- product not found && not loading -->
 
-        <div class="col-xs-12 col-sm-5 col-md-4 col-lg-4">
-          <div class="text-center item-image-wrapper">
-            <div class="clearfix">
-              <small class="pull-left"><span ng-bind-html="'IMAGES' | translate | unsafe"></span></small>
-              <small class="pull-right item-image-pager">
-                <a href=""><i class="fa fa-caret-left"></i></a>
-                <span>1 of 1</span>
-                <a href=""><i class="fa fa-caret-right"></i></a>
-              </small>
-            </div>
-            <a href="" ng-click="zoomImage()" class="image-zoom">
-              <span class="responsive-container img-responsive">
-                <img class="responsive-element img-responsive" ng-src="{{getImagePath(product.images[0])}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';">
-              </span>
-              <small><i class="fa fa-search-plus"></i> <span ng-bind-html="'BTN_VIEW_LARGER' | translate | unsafe"></span></small>
-            </a>
+<section ng-if="!loading && !product" class="row store-section store-section-minimal-top">
+  <ng-include src="'/partials/product-not-found.html'"/>
+</section>
 
-            <div ng-if="product.videos.videodetail.imagepath" class="item-videos">
-              <hr>
-              <div class="clearfix">
-                <small class="pull-left"><span ng-bind-html="'VIDEOS' | translate | unsafe"></span></small>
-                <small class="pull-right item-image-pager">
-                  <span>1 of 1</span>
-                </small>
-              </div>
-              <a href="javascript:alert('Current videos require flash media server and flash video player (flash development not in scope). Flash video no longer supported on many devices. Require videos encoded as h.264 (eg. YouTube).')" class="image-zoom">
-                <span class="responsive-container img-responsive">
-                  <img class="responsive-element img-responsive" ng-src="/{{product.videos.videodetail.imagepath}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';">
-                </span>
-                <small><i class="fa fa-play"></i> <span ng-bind-html="'BTN_WATCH_VIDEO' | translate | unsafe"></span></small>
+<!-- Item Detail Section (product found) -->
+<section ng-if="!loading && product" class="row store-section">
+
+  <div class="col-xs-12 col-sm-5 col-md-4 col-lg-4">
+    <div class="text-center item-image-wrapper">
+      <div class="clearfix">
+        <small class="pull-left"><span ng-bind-html="'IMAGES' | translate | unsafe"></span></small>
+        <small class="pull-right item-image-pager">
+          <a href=""><i class="fa fa-caret-left"></i></a>
+          <span>1 of 1</span>
+          <a href=""><i class="fa fa-caret-right"></i></a>
+        </small>
+      </div>
+      <a href="" ng-click="zoomImage()" class="image-zoom">
+        <span class="responsive-container img-responsive">
+          <img class="responsive-element img-responsive" ng-src="{{getImagePath(product.images[0])}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';">
+        </span>
+        <small><i class="fa fa-search-plus"></i> <span ng-bind-html="'BTN_VIEW_LARGER' | translate | unsafe"></span></small>
+      </a>
+
+      <div ng-if="product.videos.videodetail.imagepath" class="item-videos">
+        <hr>
+        <div class="clearfix">
+          <small class="pull-left"><span ng-bind-html="'VIDEOS' | translate | unsafe"></span></small>
+          <small class="pull-right item-image-pager">
+            <span>1 of 1</span>
+          </small>
+        </div>
+        <a href="javascript:alert('Current videos require flash media server and flash video player (flash development not in scope). Flash video no longer supported on many devices. Require videos encoded as h.264 (eg. YouTube).')" class="image-zoom">
+          <span class="responsive-container img-responsive">
+            <img class="responsive-element img-responsive" ng-src="/{{product.videos.videodetail.imagepath}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';">
+          </span>
+          <small><i class="fa fa-play"></i> <span ng-bind-html="'BTN_WATCH_VIDEO' | translate | unsafe"></span></small>
+        </a>
+      </div>
+
+      <div class="store-item-social">
+        <div add-this class="addthis_sharing_toolbox"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="col-xs-12 col-sm-7 col-md-8 col-lg-8">
+
+    <div class="store-item-detail-info">
+
+    <aside ng-if="product.upsellItems.length > 0" class="well store-upsell-item">
+
+      <div class="row" ng-repeat="upsellItem in product.upsellItems">
+        <div class="col-md-3">
+          <img ng-show="upsellItem.product.images.length > 0" class="img-responsive img-thumbnail" ng-src="{{getImagePath(upsellItem.product.images[0])}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';">
+        </div><!-- /span -->
+        <div class="col-md-9">
+          <p>
+            <label class="primary-color">{{upsellItem.product.price[0].price | currency}}</label>
+            &nbsp;&nbsp;
+            <label><span ng-bind-html="'ITEM' | translate | unsafe"></span> #{{upsellItem.product.sku}}</label>
+            &nbsp;&nbsp; {{getTranslated(upsellItem.product).name}}</p>
+          <form role="form" class="form-inline store-item-add">
+            <div class="form-group">
+              <label for="qty1234"><span ng-bind-html="'QTY' | translate | unsafe"></span>:</label>
+              <input type="number" class="form-control qty-input" id="qty1234" placeholder="1" value="1" one-to-ninety-nine>
+              <a class="btn btn-primary add-to-cart" ng-class="{ 'processing' : (adding && addingId == product.sku) }" ng-click="addToCart(upsellItem.product)">
+                <span ng-bind-html="'BTN_ADD_CART' | translate | unsafe"></span>
               </a>
             </div>
-
-            <div class="store-item-social">
-              <div add-this class="addthis_sharing_toolbox"></div>
-            </div>
-
-          </div>
+          </form>
         </div>
+      </div>
 
-        <div class="col-xs-12 col-sm-7 col-md-8 col-lg-8">
+    </aside>
 
-          <div class="store-item-detail-info">
+    <tabset>
+      <tab heading="{{ 'TABS-SUMMARY' | translate | unsafe }}">
+        <div ng-bind-html="product[session.language=='en_US'?'description':'description_'+session.language] | unsafe"><span ng-bind-html="'SUMMARY_CONTENT' | translate | unsafe"></span></div>
+      </tab>
+      <tab heading="{{ 'TABS-INGREDIENTS' | translate | unsafe }}">
+        <div ng-bind-html="product[session.language=='en_US'?'ingredients':'ingredients_'+session.language] | unsafe"><span ng-bind-html="'INGREDIENTS_CONT' | translate | unsafe"></span></div>
+      </tab>
+      <tab heading="{{ 'TABS-USAGE' | translate | unsafe }}">
+        <div ng-bind-html="product[session.language=='en_US'?'usage':'usage_'+session.language] | unsafe"><span ng-bind-html="'USAGE_CONTENT' | translate | unsafe"></span></div>
+      </tab>
+    </tabset>
 
-          <aside ng-if="product.upsellItems.length > 0" class="well store-upsell-item">
-
-            <div class="row" ng-repeat="upsellItem in product.upsellItems">
-              <div class="col-md-3">
-                <img ng-show="upsellItem.product.images.length > 0" class="img-responsive img-thumbnail" ng-src="{{getImagePath(upsellItem.product.images[0])}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';">
-              </div><!-- /span -->
-              <div class="col-md-9">
-                <p>
-                  <label class="primary-color">{{upsellItem.product.price[0].price | currency}}</label>
-                  &nbsp;&nbsp;
-                  <label><span ng-bind-html="'ITEM' | translate | unsafe"></span> #{{upsellItem.product.sku}}</label>
-                  &nbsp;&nbsp; {{getTranslated(upsellItem.product).name}}</p>
-                <form role="form" class="form-inline store-item-add">
-                  <div class="form-group">
-                    <label for="qty1234"><span ng-bind-html="'QTY' | translate | unsafe"></span>:</label>
-                    <input type="number" class="form-control qty-input" id="qty1234" placeholder="1" value="1" one-to-ninety-nine>
-                    <a class="btn btn-primary add-to-cart" ng-class="{ 'processing' : (adding && addingId == product.sku) }" ng-click="addToCart(upsellItem.product)">
-                      <span ng-bind-html="'BTN_ADD_CART' | translate | unsafe"></span>
-                    </a>
-                  </div>
-                </form>
-              </div>
-            </div>
-
-          </aside>
-
-          <tabset>
-            <tab heading="{{ 'TABS-SUMMARY' | translate | unsafe }}">
-              <div ng-bind-html="product[session.language=='en_US'?'description':'description_'+session.language] | unsafe"><span ng-bind-html="'SUMMARY_CONTENT' | translate | unsafe"></span></div>
-            </tab>
-            <tab heading="{{ 'TABS-INGREDIENTS' | translate | unsafe }}">
-              <div ng-bind-html="product[session.language=='en_US'?'ingredients':'ingredients_'+session.language] | unsafe"><span ng-bind-html="'INGREDIENTS_CONT' | translate | unsafe"></span></div>
-            </tab>
-            <tab heading="{{ 'TABS-USAGE' | translate | unsafe }}">
-              <div ng-bind-html="product[session.language=='en_US'?'usage':'usage_'+session.language] | unsafe"><span ng-bind-html="'USAGE_CONTENT' | translate | unsafe"></span></div>
-            </tab>
-          </tabset>
-
-          <div class="store-item-detail-stats">
-            <label ng-if="product.type == 'product'" class="store-item-size">{{getTranslated(product).quantity}}</label>
-            <hr>
-            <div class="store-group-colors" ng-if="product.type == 'group'">
-                <p><span ng-repeat="productdetail in product.contains">
-                    <a class="store-group-colors-swatch"
-                      ng-class="{'active': selectedProduct.sku==productdetail.product.sku}"
-                      ng-click="categoryClicked($index); showhide(productdetail.product.sku)"
-                      title="{{getTranslated(selectedProduct).name}}">
-                      <img ng-src="{{getImagePath(productdetail.product.images[0])}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';">
-                    </a>
-                </span></p>
-                <p class="hidden"><select ng-model="selectedProduct.sku" ng-change="showhide(selectedProduct.sku); categoryClicked(-1)">
-                    <option value='{{productdetail.product.sku}}' ng-repeat="productdetail in product.contains">{{getTranslated(productdetail.product).name}}</option>
-                </select></p>
-
-                <!-- <div class="store-dropdown btn-group" ng-model="selectedProduct.sku" dropdown is-open="status.isopen">
-                  <button type="button" class="btn dropdown-toggle"><img ng-src="{{getImagePath(selectedProduct.images[0])}}" width="24" onError="this.onerror=null;this.src='/img/product_placeholder.gif';"> {{getTranslated(selectedproduct).name}} &nbsp;&nbsp;<span class="caret"></span></button>
-                  <ul class="dropdown-menu" role="menu">
-                    <li id="{{productdetail.product.sku}}" ng-repeat="productdetail in product.contains">
-                      <a href="" ng-click="showhide(productdetail.product.sku); categoryClicked(-1)" ng-class="{'active': selectedProduct.sku==productdetail.product.sku}"><img ng-src="{{getImagePath(productdetail.product.images[0])}}" width="24" onError="this.onerror=null;this.src='/img/product_placeholder.gif';"> {{getTranslated(productdetail.product).name}}</a>
-                    </li>
-                  </ul>
-                </div> /color dropdown -->
-
-                <p class="itemsleep"><span ng-bind-html="'ITEM' | translate | unsafe"></span> #{{selectedProduct.sku}} - {{getTranslated(selectedProduct).name}}</p>
-                <p class="pricesleep">{{ selectedProduct.currentPrice.price | currency }}</p>
-            </div>
-            <p class="store-item-sku" ng-if="product.type != 'group'">
-              <span ng-bind-html="'ITEM' | translate | unsafe"></span> #{{product.sku}} - {{getTranslated(product).name}}
-            </p>
-            <p ng-if="product.masterStatus == 'A'" class="store-item-price">
-
-              <span ng-repeat="detailprice in product.currentPrice">
-                <span ng-if="detailprice.type==2" class="item-price-sale">
-                  {{ detailprice.price | currency }}
-                </span>
-                <span ng-if="detailprice.type==1" class="item-price-strike">
-                  {{ detailprice.price | currency }}
-                </span>
-              </span>
-              <span ng-if="product.currentPrice.price">
-                <span class="item-price">
-                  {{ product.currentPrice.price | currency }}
-                </span>
-              </span>
-
-            </p>
-            <br ng-if="product.masterStatus == 'T'">
-            <p ng-if="product.masterStatus == 'T'" data-ng-bind-html="product.promotionalMessages[0].message | unsafe" class="promotional-message">
-            </p>
-          </div>
-
-          <div class="store-item-detail-actions" ng-if="product.masterStatus == 'A'">
-            <p>
-              <form role="form" class="form-inline store-item-add">
-                <div class="form-group" ng-class="{ 'has-error' : qtyError }">
-                  <label for="qty12345"><span ng-bind-html="'QTY' | translate | unsafe"></span>:</label>
-                  <input type="number" class="form-control qty-input" id="qty12345" placeholder="1" value="1" one-to-ninety-nine ng-change="resetQtyError();" ng-model="quantities[product.sku]" ng-if="product.type != 'group'">
-                  <input type="number" class="form-control qty-input" id="qty12345-group" placeholder="1" one-to-ninety-nine ng-change="resetQtyError();" ng-model="quantities[selectedProduct.sku]" ng-if="product.type == 'group'">
-                  <div ng-show="qtyError">
-                    <span class="text-danger">{{ productAvailableInventory }}</span> <span class="text-danger" ng-bind-html="'QTY-ERROR-INVENTORY' | translate | unsafe"></span>
-                  </div>
-                </div>
-              </form>
-            </p>
-
-            <div ng-if="product.availableInventory >= 1">
-              <p ng-if="product.type == 'product' || (product.type == 'kit' && product.kitGroups.length == 0)">
-                <a class="btn btn-primary btn-lg add-to-cart" ng-class="{ 'processing' : (adding && addingId == product.sku) }" ng-click="addToCart(product)">
-                   <span ng-bind-html="'BTN_ADD_CART' | translate | unsafe"></span>
-                </a>
-              </p>
-              <p ng-if="product.type == 'group'">
-                <a class="btn btn-primary btn-lg add-to-cart" ng-class="{ 'processing' : (adding) }" ng-click="addToCartGroup(selectedProduct.sku)">
-                   <span ng-bind-html="'BTN_ADD_CART' | translate | unsafe"></span>
-                </a>
-              </p>
-              <p ng-if="product.type == 'kit' && product.kitGroups.length > 0">
-                <a class="btn btn-primary btn-lg" ng-click="configureKit()">
-                  <i class="fa fa-cogs"></i> <span ng-bind-html="'BTN_CONFIGURE' | translate | unsafe"></span>
-                </a>
-              </p>
-            </div>
-
-            <div ng-if="product.availableInventory <= 0 || !product.availableInventory">
-              <p>
-                <a class="btn btn-primary btn-lg disabled">
-                  <span>Out of Stock</span>
-                </a>
-              </p>
-            </div>
-
-          </div>
-
-        </div><!--/span-->
-        </div>
-      </section><!--/row-->
-      <!-- /Item Detail Section -->
-
-      <!-- Related Products Section -->
-      <section class="row store-section" ng-if="product.youMayAlsoLike.length > 0">
-        <div class="col-lg-12">
-          <h2><span ng-bind-html="'TIT_MAY_ALSO_LK' | translate | unsafe"></span></h2>
-        </div>
-
-        <div ng-repeat="relatedproduct in product.youMayAlsoLike" class="col-xs-6 col-sm-4 col-md-3 col-lg-3 store-item related">
-          <div class="store-item-wrapper">
-            <a ng-href="{{STORE_BASE_URL}}/products/{{relatedproduct.product.sku}}#top">
-              <span class="responsive-container img-responsive">
-                <img class="responsive-container img-responsive" ng-src="{{getImagePath(relatedproduct.product.images[0])}}">
-              </span>
-            </a>
-            <div class="store-item-info">
-              <p class="store-item-title"><a href="itemdetail.html">{{getTranslated(relatedproduct.product).name}}</a></p>
-            </div>
-          </div><!--/store-item-wrapper-->
-        </div><!--/span-->
-
-      </section>
-      <!-- /Related Products Section -->
-
-      <!-- Recently Viewed Section -->
-      <section class="row store-section" ng-controller="RecentlyViewedController">
-        <div ng-if="recentlyViewedProducts.length > 0 && !(recentlyViewedProducts.length == 1 && recentlyViewedProducts[0].sku == product.sku)">
-          <div class="col-lg-12">
-            <h2><span ng-bind-html="'TIT_REC_VIEWED' | translate | unsafe"></span></h2>
-          </div>
-          <div ng-repeat="viewedProduct in recentlyViewedProducts" class="col-xs-6 col-sm-4 col-md-3 col-lg-3 store-item related" ng-show="viewedProduct.sku != product.sku && viewedProduct.sku != product.sku">
-            <div class="store-item-wrapper" ng-if="viewedProduct.type!='group'">
-              <a ng-href="{{STORE_BASE_URL}}/products/{{viewedProduct.sku}}#top">
-                <span class="responsive-container img-responsive">
-                  <img class="responsive-container img-responsive" ng-src="{{getImagePath(viewedProduct.images[0])}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';">
-                </span>
+    <div class="store-item-detail-stats">
+      <label ng-if="product.type == 'product'" class="store-item-size">{{getTranslated(product).quantity}}</label>
+      <hr>
+      <div class="store-group-colors" ng-if="product.type == 'group'">
+          <p><span ng-repeat="productdetail in product.contains">
+              <a class="store-group-colors-swatch"
+                ng-class="{'active': selectedProduct.sku==productdetail.product.sku}"
+                ng-click="categoryClicked($index); showhide(productdetail.product.sku)"
+                title="{{getTranslated(selectedProduct).name}}">
+                <img ng-src="{{getImagePath(productdetail.product.images[0])}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';">
               </a>
-              <div class="store-item-info">
-                <p class="store-item-title"><a ng-href="{{STORE_BASE_URL}}/products/{{viewedProduct.sku}}#top">{{getTranslated(viewedProduct).name}}</a></p>
-              </div>
-            </div><!--/store-item-wrapper-->
-            <div class="store-item-wrapper" ng-if="viewedProduct.type=='group'">
-              <a ng-href="{{STORE_BASE_URL}}/products/{{viewedProduct.sku}}#top"><img class="img-responsive" ng-src="{{getImagePath(viewedProduct.images[0])}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';"></a>
-              <div class="store-item-info">
-                <p class="store-item-title"><a ng-href="{{STORE_BASE_URL}}/products/{{viewedProduct.sku}}#top">{{getTranslated(viewedProduct).name}}</a></p>
-              </div>
-            </div><!--/store-item-wrapper-->
-          </div><!--/span-->
+          </span></p>
+          <p class="hidden"><select ng-model="selectedProduct.sku" ng-change="showhide(selectedProduct.sku); categoryClicked(-1)">
+              <option value='{{productdetail.product.sku}}' ng-repeat="productdetail in product.contains">{{getTranslated(productdetail.product).name}}</option>
+          </select></p>
+
+          <!-- <div class="store-dropdown btn-group" ng-model="selectedProduct.sku" dropdown is-open="status.isopen">
+            <button type="button" class="btn dropdown-toggle"><img ng-src="{{getImagePath(selectedProduct.images[0])}}" width="24" onError="this.onerror=null;this.src='/img/product_placeholder.gif';"> {{getTranslated(selectedproduct).name}} &nbsp;&nbsp;<span class="caret"></span></button>
+            <ul class="dropdown-menu" role="menu">
+              <li id="{{productdetail.product.sku}}" ng-repeat="productdetail in product.contains">
+                <a href="" ng-click="showhide(productdetail.product.sku); categoryClicked(-1)" ng-class="{'active': selectedProduct.sku==productdetail.product.sku}"><img ng-src="{{getImagePath(productdetail.product.images[0])}}" width="24" onError="this.onerror=null;this.src='/img/product_placeholder.gif';"> {{getTranslated(productdetail.product).name}}</a>
+              </li>
+            </ul>
+          </div> /color dropdown -->
+
+          <p class="itemsleep"><span ng-bind-html="'ITEM' | translate | unsafe"></span> #{{selectedProduct.sku}} - {{getTranslated(selectedProduct).name}}</p>
+          <p class="pricesleep">{{ selectedProduct.currentPrice.price | currency }}</p>
+      </div>
+      <p class="store-item-sku" ng-if="product.type != 'group'">
+        <span ng-bind-html="'ITEM' | translate | unsafe"></span> #{{product.sku}} - {{getTranslated(product).name}}
+      </p>
+      <p ng-if="product.masterStatus == 'A'" class="store-item-price">
+
+        <span ng-repeat="detailprice in product.currentPrice">
+          <span ng-if="detailprice.type==2" class="item-price-sale">
+            {{ detailprice.price | currency }}
+          </span>
+          <span ng-if="detailprice.type==1" class="item-price-strike">
+            {{ detailprice.price | currency }}
+          </span>
+        </span>
+        <span ng-if="product.currentPrice.price">
+          <span class="item-price">
+            {{ product.currentPrice.price | currency }}
+          </span>
+        </span>
+
+      </p>
+      <br ng-if="product.masterStatus == 'T'">
+      <p ng-if="product.masterStatus == 'T'" data-ng-bind-html="product.promotionalMessages[0].message | unsafe" class="promotional-message">
+      </p>
+    </div>
+
+    <div class="store-item-detail-actions" ng-if="product.masterStatus == 'A'">
+      <p>
+        <form role="form" class="form-inline store-item-add">
+          <div class="form-group" ng-class="{ 'has-error' : qtyError }">
+            <label for="qty12345"><span ng-bind-html="'QTY' | translate | unsafe"></span>:</label>
+            <input type="number" class="form-control qty-input" id="qty12345" placeholder="1" value="1" one-to-ninety-nine ng-change="resetQtyError();" ng-model="quantities[product.sku]" ng-if="product.type != 'group'">
+            <input type="number" class="form-control qty-input" id="qty12345-group" placeholder="1" one-to-ninety-nine ng-change="resetQtyError();" ng-model="quantities[selectedProduct.sku]" ng-if="product.type == 'group'">
+            <div ng-show="qtyError">
+              <span class="text-danger">{{ productAvailableInventory }}</span> <span class="text-danger" ng-bind-html="'QTY-ERROR-INVENTORY' | translate | unsafe"></span>
+            </div>
+          </div>
+        </form>
+      </p>
+
+      <div ng-if="product.availableInventory >= 1">
+        <p ng-if="product.type == 'product' || (product.type == 'kit' && product.kitGroups.length == 0)">
+          <a class="btn btn-primary btn-lg add-to-cart" ng-class="{ 'processing' : (adding && addingId == product.sku) }" ng-click="addToCart(product)">
+             <span ng-bind-html="'BTN_ADD_CART' | translate | unsafe"></span>
+          </a>
+        </p>
+        <p ng-if="product.type == 'group'">
+          <a class="btn btn-primary btn-lg add-to-cart" ng-class="{ 'processing' : (adding) }" ng-click="addToCartGroup(selectedProduct.sku)">
+             <span ng-bind-html="'BTN_ADD_CART' | translate | unsafe"></span>
+          </a>
+        </p>
+        <p ng-if="product.type == 'kit' && product.kitGroups.length > 0">
+          <a class="btn btn-primary btn-lg" ng-click="configureKit()">
+            <i class="fa fa-cogs"></i> <span ng-bind-html="'BTN_CONFIGURE' | translate | unsafe"></span>
+          </a>
+        </p>
+      </div>
+
+      <div ng-if="product.availableInventory <= 0 || !product.availableInventory">
+        <p>
+          <a class="btn btn-primary btn-lg disabled">
+            <span>Out of Stock</span>
+          </a>
+        </p>
+      </div>
+
+    </div>
+
+  </div><!--/span-->
+  </div>
+</section><!--/row-->
+<!-- /Item Detail Section -->
+
+<!-- Related Products Section -->
+<section class="row store-section" ng-if="product.youMayAlsoLike.length > 0">
+  <div class="col-lg-12">
+    <h2><span ng-bind-html="'TIT_MAY_ALSO_LK' | translate | unsafe"></span></h2>
+  </div>
+
+  <div ng-repeat="relatedproduct in product.youMayAlsoLike" class="col-xs-6 col-sm-4 col-md-3 col-lg-3 store-item related">
+    <div class="store-item-wrapper">
+      <a ng-href="{{STORE_BASE_URL}}/products/{{relatedproduct.product.sku}}#top">
+        <span class="responsive-container img-responsive">
+          <img class="responsive-container img-responsive" ng-src="{{getImagePath(relatedproduct.product.images[0])}}">
+        </span>
+      </a>
+      <div class="store-item-info">
+        <p class="store-item-title"><a href="itemdetail.html">{{getTranslated(relatedproduct.product).name}}</a></p>
+      </div>
+    </div><!--/store-item-wrapper-->
+  </div><!--/span-->
+
+</section>
+<!-- /Related Products Section -->
+
+<!-- Recently Viewed Section -->
+<section class="row store-section" ng-controller="RecentlyViewedController">
+  <div ng-if="recentlyViewedProducts.length > 0 && !(recentlyViewedProducts.length == 1 && recentlyViewedProducts[0].sku == product.sku)">
+    <div class="col-lg-12">
+      <h2><span ng-bind-html="'TIT_REC_VIEWED' | translate | unsafe"></span></h2>
+    </div>
+    <div ng-repeat="viewedProduct in recentlyViewedProducts" class="col-xs-6 col-sm-4 col-md-3 col-lg-3 store-item related" ng-show="viewedProduct.sku != product.sku && viewedProduct.sku != product.sku">
+      <div class="store-item-wrapper" ng-if="viewedProduct.type!='group'">
+        <a ng-href="{{STORE_BASE_URL}}/products/{{viewedProduct.sku}}#top">
+          <span class="responsive-container img-responsive">
+            <img class="responsive-container img-responsive" ng-src="{{getImagePath(viewedProduct.images[0])}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';">
+          </span>
+        </a>
+        <div class="store-item-info">
+          <p class="store-item-title"><a ng-href="{{STORE_BASE_URL}}/products/{{viewedProduct.sku}}#top">{{getTranslated(viewedProduct).name}}</a></p>
         </div>
-      </section>
-      <!-- /Recently Viewed Section -->
+      </div><!--/store-item-wrapper-->
+      <div class="store-item-wrapper" ng-if="viewedProduct.type=='group'">
+        <a ng-href="{{STORE_BASE_URL}}/products/{{viewedProduct.sku}}#top"><img class="img-responsive" ng-src="{{getImagePath(viewedProduct.images[0])}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';"></a>
+        <div class="store-item-info">
+          <p class="store-item-title"><a ng-href="{{STORE_BASE_URL}}/products/{{viewedProduct.sku}}#top">{{getTranslated(viewedProduct).name}}</a></p>
+        </div>
+      </div><!--/store-item-wrapper-->
+    </div><!--/span-->
+  </div>
+</section>
+<!-- /Recently Viewed Section -->
 
 <!-- Loading -->
   <div class="loader" ng-show="loading"></div>

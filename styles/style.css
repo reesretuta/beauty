@@ -1307,3 +1307,13 @@ fieldset[disabled].fieldset-no-bg {
   border-color: transparent;
 }
 
+/* product not found uses this */
+
+.store-section-minimal-top {
+  margin-left: 10px;
+}
+
+.store-section-minimal-top .subheader h1 {
+  margin-top: 0;
+}
+
