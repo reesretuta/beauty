@@ -2104,7 +2104,7 @@ function updateInventory(noProcessing) {
                 }, agentOptions: agentOptions, strictSSL: false, json: true
             }, function (error, response, body) {
                 console.log("getAllInventory()", error, response ? response.statusCode : null, body);
-                if (error || response.statusCode != 200) {
+                if (error || response == null || response.statusCode != 200) {
                     console.error("getAllInventory(): error", error, response.statusCode, body);
                     deferred.reject();
                     return;
