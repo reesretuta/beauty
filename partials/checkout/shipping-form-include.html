@@ -29,7 +29,7 @@
         <span ng-bind-html="'IN_BUSINESS_CO' | translate | unsafe"></span>
       </label>
       <div class="col-sm-8 col-lg-6">
-        <input id="shippingBusinessCO" name="businessCO" ng-model="profile.newShippingAddress.businessCO" ng-pattern="/^[a-zA-Z0-9\s,'-\/]+$/" type="text" class="form-control" placeholder="{{ 'IN_BUSINESS_CO_DES' | translate }}" autocomplete="off">
+        <input id="shippingBusinessCO" name="businessCO" ng-model="profile.newShippingAddress.businessCO" ng-pattern="/^[a-zA-Z0-9\s,'-\/]+$/" type="text" class="form-control" placeholder="{{ 'IN_BUSINESS_CO_DES' | translate }}" autocomplete="off" />
         <span ng-show="forms.shippingForm.businessCO.$invalid && (forms.shippingForm.businessCO.$touched || forms.shippingForm.businessCO.$dirty)" class="text-danger">
           <span ng-bind-html="'ENTER-VALID-SHIPPING-NAME' | translate | unsafe"></span>
         </span>
@@ -39,7 +39,7 @@
     <div class="row form-group">
       <label for="shippingAddress1" class="col-md-3 control-label"><span ng-bind-html="'IN_ADD_LINE1' | translate | unsafe"></span></label>
       <div class="col-sm-8 col-lg-6" ng-class="{ 'has-error' : forms.shippingForm.address1.$invalid && (forms.shippingForm.address1.$touched || forms.shippingForm.address1.$dirty) }">
-        <input id="shippingAddress1" name="address1" ng-model="profile.newShippingAddress.address1" type="text" class="form-control" placeholder="{{ 'IN_ADD_LINE1_DES' | translate }} " focus-on="shipping-address1-focus" required>
+        <input id="shippingAddress1" name="address1" ng-model="profile.newShippingAddress.address1" type="text" class="form-control" placeholder="{{ 'IN_ADD_LINE1_DES' | translate }} " focus-on="shipping-address1-focus" ng-maxlength="40" maxlength="40" required />
         <span ng-show="forms.shippingForm.address1.$invalid && (forms.shippingForm.address1.$touched && forms.shippingForm.address1.$dirty)" class="help-block text-danger">
           <span ng-bind-html="'ENTER-VALID-ADDRESS' | translate | unsafe"></span>
         </span>
@@ -49,7 +49,7 @@
     <div class="row form-group">
       <label for="shippingAddress2" class="col-md-3 control-label"><span ng-bind-html="'IN_ADD_LINE2' | translate | unsafe"></span></label>
       <div class="col-sm-8 col-lg-6" ng-class="{ 'has-error' : forms.shippingForm.address2.$invalid && forms.shippingForm.address2.$dirty }">
-        <input id="shippingAddress2" name="address2" ng-model="profile.newShippingAddress.address2" type="text" class="form-control" placeholder="{{ 'IN_ADD_LINE2_DES' | translate }} ">
+        <input id="shippingAddress2" name="address2" ng-model="profile.newShippingAddress.address2" type="text" class="form-control" placeholder="{{ 'IN_ADD_LINE2_DES' | translate }}" ng-maxlength="40" maxlength="40" />
         <span ng-show="forms.shippingForm.address2.$invalid && (forms.shippingForm.address2.$touched || forms.shippingForm.address2.$dirty)" class="help-block text-danger">
           <span ng-bind-html="'ENTER-VALID-ADDRESS' | translate | unsafe"></span>
         </span>
@@ -59,7 +59,7 @@
     <div class="row form-group">
       <label for="shippingCity" class="col-md-3 control-label"><span ng-bind-html="'IN_CITY' | translate | unsafe"></span></label>
       <div class="col-sm-7 col-lg-5" ng-class="{ 'has-error' : forms.shippingForm.city.$invalid && (forms.shippingForm.city.$touched || forms.shippingForm.city.$dirty) }">
-        <input id="shippingCity" name="city" ng-pattern="/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/" ng-model="profile.newShippingAddress.city" type="text" class="form-control" placeholder="{{ 'IN_CITY' | translate }}" required>
+        <input id="shippingCity" name="city" ng-pattern="/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/" ng-model="profile.newShippingAddress.city" type="text" class="form-control" placeholder="{{ 'IN_CITY' | translate }}" required />
         <span ng-show="forms.shippingForm.city.$invalid && (forms.shippingForm.city.$touched || forms.shippingForm.city.$dirty)" class="help-block text-danger"><span ng-bind-html="'ENTER-VALID-CITY' | translate | unsafe"></span></span>
       </div>
     </div>
