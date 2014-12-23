@@ -260,7 +260,7 @@ function getClient(clientId) {
     }, function (error, response, body) {
         console.log("getClient()", error, response ? response.statusCode: null, body);
         if (error || response.statusCode != 200) {
-            console.error("getClient(): error", error, response.statusCode, body);
+            console.error("getClient(): error", error, response ? response.statusCode: null, body);
             deferred.reject({
                 status: response.statusCode,
                 result: {
