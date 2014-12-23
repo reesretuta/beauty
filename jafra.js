@@ -2334,7 +2334,7 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
 
                                     // deduct this item
                                     deductFromInventory[p.sku] = deductFromInventory[p.sku] ? deductFromInventory[p.sku] + 1 : 1;
-                                    console.log("processAvailabilityAndHiddenProducts(): deducting for purchased item", p.sku);
+                                    //console.log("processAvailabilityAndHiddenProducts(): deducting for purchased item", p.sku);
 
                                     /**
                                      *        {
@@ -2362,7 +2362,7 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
                                         for (var m = 0; m < p.product.contains.length; m++) {
                                             var c = p.product.contains[m];
                                             deductFromInventory[c.productId] = deductFromInventory[c.productId] ? deductFromInventory[c.productId] + 1 : 1;
-                                            console.log("processAvailabilityAndHiddenProducts(): deducting for purchased item contains", p.sku, "->", c.productId);
+                                            //console.log("processAvailabilityAndHiddenProducts(): deducting for purchased item contains", p.sku, "->", c.productId);
                                         }
                                         for (var key in p.kitSelections) {
                                             if (p.kitSelections.hasOwnProperty(key)) {
@@ -2370,7 +2370,7 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
                                                 for (var n = 0; n < items.length; n++) {
                                                     var item = items[n];
                                                     deductFromInventory[item.sku] = deductFromInventory[item.sku] ? deductFromInventory[item.sku] + 1 : 1;
-                                                    console.log("processAvailabilityAndHiddenProducts(): deducting for purchased item kitGroup component", p.sku, "->", item.sku);
+                                                    //console.log("processAvailabilityAndHiddenProducts(): deducting for purchased item kitGroup component", p.sku, "->", item.sku);
                                                 }
                                             }
                                         }
