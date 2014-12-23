@@ -2162,7 +2162,33 @@ function updateInventory(noProcessing) {
                 console.log("getAllInventory()", error, response ? response.statusCode : null, body);
                 if (error || response == null || response.statusCode != 200) {
                     console.error("getAllInventory(): error", error, response ? response.statusCode : null, body);
-                    deferred.reject();
+
+                    // just load inventory from DB anyways & process
+                    models.Inventory.find({}).exec(function (err, inventoryItems) {
+                        if (err) {
+                            console.error("getAllInventory(): error fetching inventory from database");
+                            deferred.reject(err);
+                            return;
+                        }
+
+                        var inventory = {};
+                        for (var i=0; i < inventoryItems.length; i++) {
+                            var inventoryItem = inventoryItems[i];
+                            inventory[inventoryItem._id] = inventoryItem.available;
+                        }
+
+                        if (!noProcessing) {
+                            console.log("getAllInventory(): processing");
+                            processAvailabilityAndHiddenProducts(inventory).then(function (inventory) {
+                                deferred.resolve(inventory);
+                            }, function (err) {
+                                console.error("getAllInventory(): processAvailabilityAndHiddenProducts(): error", err);
+                                deferred.reject(err);
+                            })
+                        } else {
+                            deferred.resolve(inventory);
+                        }
+                    });
                     return;
                 }
 
