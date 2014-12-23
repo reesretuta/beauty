@@ -2105,7 +2105,7 @@ function updateInventory(noProcessing) {
             }, function (error, response, body) {
                 console.log("getAllInventory()", error, response ? response.statusCode : null, body);
                 if (error || response == null || response.statusCode != 200) {
-                    console.error("getAllInventory(): error", error, response.statusCode, body);
+                    console.error("getAllInventory(): error", error, response ? response.statusCode : null, body);
                     deferred.reject();
                     return;
                 }
