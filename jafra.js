@@ -2110,7 +2110,7 @@ function updateInventory(noProcessing) {
                     return;
                 }
 
-                if (body.inventory != null) {
+                if (body && body.inventory != null) {
                     for (var key in body.inventory) {
                         var count = 0;
                         var updated = 0;
