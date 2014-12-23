@@ -1,5 +1,10 @@
 'use strict';
 
+var config = require('./config/config');
+
+var winston = require('winston');
+var logger = new (winston.Logger)({ exitOnError: false, handleExceptions: true });
+
 var request = require('request');
 var SHA1 = require("crypto-js/sha1");
 var Q = require('q');
@@ -7,7 +12,6 @@ Q.longStackSupport = true;
 var soap = require('soap');
 var parseString = require('xml2js').parseString;
 var fs = require('fs');
-var config = require('./config/config');
 var models = require('./common/models.js');
 var mongoose = require('mongoose');
 var randomString = require('random-string');
@@ -84,7 +88,7 @@ function preloadCategories() {
         match: {onHold: false, showInMenu: true}
     }).exec(function (err, categories) {
         if (err) {
-            console.error("error loading categories", err);
+            logger.error("error loading categories", err);
             return;
         }
 
@@ -104,26 +108,26 @@ function preloadCategories() {
 
             // populate all levels
             models.Category.populate(categories, opts, function (err, categories) {
-                //console.log(JSON.stringify(categories));
+                //logger.log(JSON.stringify(categories));
 
                 for (var i=0; i < categories.length; i++) {
                     var category = categories[i];
-                    //console.log("category", category._id);
+                    //logger.log("category", category._id);
                     var ids = _getCategoryAndChildren(category);
-                    //console.log("children", ids);
-                    //console.log("top level category", category._id, ids);
+                    //logger.log("children", ids);
+                    //logger.log("top level category", category._id, ids);
                     categoryToChildren[category._id] = ids;
-                    //console.log("category sub-categories", category._id, ids);
+                    //logger.log("category sub-categories", category._id, ids);
                 }
 
-                //console.log("categoryToChildren", categoryToChildren);
+                //logger.log("categoryToChildren", categoryToChildren);
             })
         })
     });
 }
 
 function _getCategoryAndChildren(category) {
-    //console.log("processing category", category._id);
+    //logger.log("processing category", category._id);
     var all = [];
 
     // add this category
@@ -132,9 +136,9 @@ function _getCategoryAndChildren(category) {
     var children = category.children ? category.children : [];
     for (var i=0; i < children.length; i++) {
         var child = children[i];
-        //console.log("processing category child", child._id);
+        //logger.log("processing category child", child._id);
         var childIds = _getCategoryAndChildren(child);
-        //console.log("processing category child", child._id, childIds);
+        //logger.log("processing category child", child._id, childIds);
         categoryToChildren[child._id] = childIds;
         all = all.concat(childIds);
     }
@@ -143,7 +147,7 @@ function _getCategoryAndChildren(category) {
 }
 
 function authenticate(email, password) {
-    //console.log("authenticating", email, password);
+    //logger.log("authenticating", email, password);
     var deferred = Q.defer();
 
     request.post({
@@ -162,7 +166,7 @@ function authenticate(email, password) {
         json: true
     }, function (error, response, body) {
         if (error || response.statusCode != 200) {
-            console.error("authenticate(): error", error, response ? response.statusCode: null, body);
+            logger.error("authenticate(): error", error, response ? response.statusCode: null, body);
             if (response && response.statusCode == 401) {
                 deferred.reject({
                     status: response.statusCode,
@@ -184,10 +188,10 @@ function authenticate(email, password) {
             }
             return;
         }
-        //console.log("authenticate(): success", body);
+        //logger.log("authenticate(): success", body);
 
         if (body == null || body.clientId == null) {
-            console.log("authenticate(): invalid return data", body, typeof body, "clientId", body.clientId);
+            logger.log("authenticate(): invalid return data", body, typeof body, "clientId", body.clientId);
             deferred.reject({
                 status: 500,
                 result: {
@@ -214,7 +218,7 @@ function authenticate(email, password) {
                 result: r.result
             });
         }, function (r) {
-            console.error("authenticate(): failed to load client", r.result);
+            logger.error("authenticate(): failed to load client", r.result);
             deferred.reject({
                 status: 500,
                 result: {
@@ -229,20 +233,20 @@ function authenticate(email, password) {
     return deferred.promise;
 }
 //authenticate('vilchis40@gmail.com', 'ferrari').then(function(r) {
-//    console.log("auth", r.status, r.result);
+//    logger.log("auth", r.status, r.result);
 //}, function(r) {
-//    console.error("auth", r.status, r.result);
+//    logger.error("auth", r.status, r.result);
 //});
 
 //authenticate('davidcastro@lavisual.com', 'testpass').then(function(r) {
-//    console.log(r.response.statusCode, r.body);
+//    logger.log(r.response.statusCode, r.body);
 //}, function(r) {
-//    console.error(r.response.statusCode, r.body);
+//    logger.error(r.response.statusCode, r.body);
 //});
 
 // ?clientId=
 function getClient(clientId) {
-    //console.log("getClient()", clientId);
+    //logger.log("getClient()", clientId);
     var deferred = Q.defer();
 
     request.get({
@@ -258,9 +262,9 @@ function getClient(clientId) {
         strictSSL: false,
         json: true
     }, function (error, response, body) {
-        console.log("getClient()", error, response ? response.statusCode: null, body);
+        logger.log("getClient()", error, response ? response.statusCode: null, body);
         if (error || response == null || response.statusCode != 200) {
-            console.error("getClient(): error", error, response ? response.statusCode: null, body);
+            logger.error("getClient(): error", error, response ? response.statusCode: null, body);
 
             if (response && response.statusCode) {
                 deferred.reject({
@@ -286,7 +290,7 @@ function getClient(clientId) {
         }
 
         if (body.id != null) {
-            //console.log("getClient(): success", body);
+            //logger.log("getClient(): success", body);
             deferred.resolve({
                 status: 200,
                 result: body
@@ -306,10 +310,10 @@ function getClient(clientId) {
     return deferred.promise;
 }
 //getClient(50000023).then(function(r) {
-//    console.log(r.status, r.result);
+//    logger.log(r.status, r.result);
 //});
 //getClient(50000019).then(function(r) {
-//    console.log(r.body);
+//    logger.log(r.body);
 //});
 
 /**
@@ -325,7 +329,7 @@ function getClient(clientId) {
 }
 */
 function createClient(client) {
-    //console.log("createClient", email, password);
+    //logger.log("createClient", email, password);
     var deferred = Q.defer();
 
     request.post({
@@ -348,10 +352,10 @@ function createClient(client) {
         json: true
     }, function (error, response, body) {
         if (error || response.statusCode != 201) {
-            console.error("createClient(): error", response ? response.statusCode: null, body);
+            logger.error("createClient(): error", response ? response.statusCode: null, body);
 
             if (body && body.statusCode && body.errorCode && body.message) {
-                console.error("createClient(): error, returning server error");
+                logger.error("createClient(): error, returning server error");
                 if (response && response.statusCode) {
                     deferred.reject({
                         status: response.statusCode,
@@ -372,7 +376,7 @@ function createClient(client) {
                     });
                 }
             } else {
-                console.error("createClient(): error, returning generic error");
+                logger.error("createClient(): error, returning generic error");
                 deferred.reject({
                     status: 500,
                     result: {
@@ -386,7 +390,7 @@ function createClient(client) {
         }
 
         if (body == null || body.clientId == null) {
-            console.log("createClient(): invalid return data", body, typeof body, "clientId", body.clientId);
+            logger.log("createClient(): invalid return data", body, typeof body, "clientId", body.clientId);
             deferred.reject({
                 status: 500,
                 result: {
@@ -399,13 +403,13 @@ function createClient(client) {
         }
 
         // we should get clientId back
-        console.log("createClient(): returning success");
+        logger.log("createClient(): returning success");
         var clientId = body.clientId;
 
         // fetch the client information & return
         getClient(clientId).then(function(r) {
             if (r.status != 200) {
-                console.error("server: createClient(): failed to load client", r.result);
+                logger.error("server: createClient(): failed to load client", r.result);
                 deferred.reject({
                     status: 500,
                     result: {
@@ -422,7 +426,7 @@ function createClient(client) {
                 result: r.result
             });
         }, function (r) {
-            console.error("server: createClient(): failed to load client", r.result);
+            logger.error("server: createClient(): failed to load client", r.result);
             deferred.reject({
                 status: 500,
                 result: {
@@ -447,13 +451,13 @@ function createClient(client) {
 //    "dateOfBirth": "12/12/1978", // optional
 //    "language": "en_US"          // optional
 //}).then(function(r) {
-//    console.log("response", r.response.statusCode, "body", r.body);
+//    logger.log("response", r.response.statusCode, "body", r.body);
 //}, function(r) {
-//    console.error("response", r.response.statusCode, "body", r.body);
+//    logger.error("response", r.response.statusCode, "body", r.body);
 //});
 
 function getConsultant(consultantId) {
-    //console.log("getConsultant()", clientId);
+    //logger.log("getConsultant()", clientId);
     var deferred = Q.defer();
 
     request.get({
@@ -469,9 +473,9 @@ function getConsultant(consultantId) {
         strictSSL: false,
         json: true
     }, function (error, response, body) {
-        console.log("getConsultant()", error, response ? response.statusCode: null, body);
+        logger.log("getConsultant()", error, response ? response.statusCode: null, body);
         if (error || response == null || response.statusCode != 200) {
-            console.error("getConsultant(): error", error, response ? response.statusCode: null, body);
+            logger.error("getConsultant(): error", error, response ? response.statusCode: null, body);
             if (response && response.statusCode) {
                 deferred.reject({
                     status: response.statusCode,
@@ -495,7 +499,7 @@ function getConsultant(consultantId) {
         }
 
         if (body.id != null) {
-            //console.log("getConsultant(): success", body);
+            //logger.log("getConsultant(): success", body);
             deferred.resolve({
                 status: 200,
                 result: {
@@ -520,7 +524,7 @@ function getConsultant(consultantId) {
 }
 
 function lookupConsultant(encrypted) {
-    console.log("lookupConsultant()", encrypted);
+    logger.log("lookupConsultant()", encrypted);
     var deferred = Q.defer();
 
     request.post({
@@ -537,10 +541,10 @@ function lookupConsultant(encrypted) {
         strictSSL: false,
         json: true
     }, function (error, response, body) {
-        console.log("lookupConsultant(): body", body);
+        logger.log("lookupConsultant(): body", body);
 
         if (error || response.statusCode != 200) {
-            console.error("lookupConsultant(): error", error, response ? response.statusCode : null, body);
+            logger.error("lookupConsultant(): error", error, response ? response.statusCode : null, body);
 
             if (response && response.statusCode) {
                 if (response.statusCode == 404) {
@@ -575,7 +579,7 @@ function lookupConsultant(encrypted) {
         }
 
         if (body == null || body.consultantId == null) {
-            console.log("lookupConsultant(): invalid return data", body, typeof body, "consultantId", body.consultantId);
+            logger.log("lookupConsultant(): invalid return data", body, typeof body, "consultantId", body.consultantId);
             deferred.reject({
                 status: 500,
                 result: {
@@ -588,7 +592,7 @@ function lookupConsultant(encrypted) {
         }
 
         var exists = body.consultantId > 0;
-        console.log("lookupConsultant(): exists", exists, "consultantId", body.consultantId);
+        logger.log("lookupConsultant(): exists", exists, "consultantId", body.consultantId);
 
         // we should get consultantId back
         deferred.resolve({
@@ -603,7 +607,7 @@ function lookupConsultant(encrypted) {
 }
 
 function createConsultant(encrypted) {
-    //console.log("createCreditCard", email, password);
+    //logger.log("createCreditCard", email, password);
     var deferred = Q.defer();
 
     request.post({
@@ -621,7 +625,7 @@ function createConsultant(encrypted) {
         json: true
     }, function (error, response, body) {
         if (error || response == null || response.statusCode != 201) {
-            console.error("createConsultant(): error", error, response ? response.statusCode : null, body);
+            logger.error("createConsultant(): error", error, response ? response.statusCode : null, body);
 
             if (body && body.statusCode && body.errorCode && body.message && response && response.statusCode) {
                 if (body.errorCode == 409) {
@@ -657,7 +661,7 @@ function createConsultant(encrypted) {
         }
 
         if (body == null || body.consultantId == null || body.orderId == null) {
-            console.log("createConsultant(): invalid return data", body, typeof body, "consultantId", body.consultantId, "orderId", body.orderId);
+            logger.log("createConsultant(): invalid return data", body, typeof body, "consultantId", body.consultantId, "orderId", body.orderId);
             deferred.reject({
                 status: 500,
                 result: {
@@ -688,7 +692,7 @@ function lookupClientByEmail(email) {
 }
 
 function lookupByEmail(email, type) {
-    //console.log("lookupByEmail()", clientId);
+    //logger.log("lookupByEmail()", clientId);
     var deferred = Q.defer();
 
     request.get({
@@ -705,9 +709,9 @@ function lookupByEmail(email, type) {
         strictSSL: false,
         json: true
     }, function (error, response, body) {
-        console.log("lookupByEmail()", error, response ? response.statusCode: null, body);
+        logger.log("lookupByEmail()", error, response ? response.statusCode: null, body);
         if (error || response.statusCode != 200) {
-            console.error("lookupByEmail(): error", error, response ? response.statusCode: null, body);
+            logger.error("lookupByEmail(): error", error, response ? response.statusCode: null, body);
             if (response && response.statusCode && body) {
                 deferred.reject({
                     status: response.statusCode,
@@ -734,7 +738,7 @@ function lookupByEmail(email, type) {
             (type == 1 && body.consultantId != null) ||
             (type == 2 && body.clientId != null)
         ) {
-            //console.log("lookupByEmail(): success", body);
+            //logger.log("lookupByEmail(): success", body);
             deferred.resolve({
                 status: 204,
                 result: null
@@ -755,7 +759,7 @@ function lookupByEmail(email, type) {
 }
 
 function createOrder(data) {
-    //console.log("createOrder", data);
+    //logger.log("createOrder", data);
     var deferred = Q.defer();
 
     request.post({
@@ -783,7 +787,7 @@ function createOrder(data) {
         json: true
     }, function (error, response, body) {
         if (error || response.statusCode != 201) {
-            console.error("createOrder(): error", error, response ? response.statusCode : null, body);
+            logger.error("createOrder(): error", error, response ? response.statusCode : null, body);
 
             if (body && body.statusCode && body.errorCode && body.message && response && response.statusCode) {
                 deferred.reject({
@@ -808,7 +812,7 @@ function createOrder(data) {
         }
 
         if (body == null || body.orderId == null || body.orderId == null) {
-            console.log("createOrder(): invalid return data", body, typeof body, "orderId", body.orderId, "orderId", body.orderId);
+            logger.log("createOrder(): invalid return data", body, typeof body, "orderId", body.orderId, "orderId", body.orderId);
             deferred.reject({
                 status: 500,
                 result: {
@@ -831,10 +835,10 @@ function createOrder(data) {
             var orderHistory = new models.OrderHistory(data);
 
             orderHistory.save(function (err) {
-                if (err) return console.error("createOrder(): error saving order history record", err);
+                if (err) return logger.error("createOrder(): error saving order history record", err);
             })
         } catch (ex) {
-            console.error("error saving order history record", ex);
+            logger.error("error saving order history record", ex);
         }
 
 
@@ -850,7 +854,7 @@ function createOrder(data) {
 
 
 function createLead(lead) {
-    //console.log("createLead", email, password);
+    //logger.log("createLead", email, password);
     var deferred = Q.defer();
 
     request.post({
@@ -872,10 +876,10 @@ function createLead(lead) {
         json: true
     }, function (error, response, body) {
         if (error || response.statusCode != 200) {
-            console.error("createLead(): error", response ? response.statusCode: null, body);
+            logger.error("createLead(): error", response ? response.statusCode: null, body);
 
             if (body && body.statusCode && body.errorCode && body.message && response && response.statusCode) {
-                console.error("createLead(): error, returning server error");
+                logger.error("createLead(): error, returning server error");
                 deferred.reject({
                     status: response.statusCode,
                     result: {
@@ -885,7 +889,7 @@ function createLead(lead) {
                     }
                 });
             } else {
-                console.error("createLead(): error, returning generic error");
+                logger.error("createLead(): error, returning generic error");
                 deferred.reject({
                     status: 500,
                     result: {
@@ -899,7 +903,7 @@ function createLead(lead) {
         }
 
         if (body == null || body.leadId == null) {
-            console.log("createLead(): invalid return data", body, typeof body, "leadId", body.leadId);
+            logger.log("createLead(): invalid return data", body, typeof body, "leadId", body.leadId);
             deferred.reject({
                 status: 500,
                 result: {
@@ -912,7 +916,7 @@ function createLead(lead) {
         }
 
         // we should get leadId back
-        console.log("createLead(): returning success");
+        logger.log("createLead(): returning success");
         var leadId = body.leadId;
         deferred.resolve({
             status: 201,
@@ -924,7 +928,7 @@ function createLead(lead) {
 }
 
 function getAddresses(clientId) {
-    //console.log("getAddresses()", clientId);
+    //logger.log("getAddresses()", clientId);
     var deferred = Q.defer();
 
     request.get({
@@ -941,11 +945,11 @@ function getAddresses(clientId) {
         json: true
     }, function (error, response, body) {
         if (error || response == null || response.statusCode != 200) {
-            console.error("getAddresses(): error", error, response? response.statusCode : null, body);
+            logger.error("getAddresses(): error", error, response? response.statusCode : null, body);
             deferred.reject({error: error, response: response, body: body});
             return;
         }
-        //console.log("getAddresses(): success", body);
+        //logger.log("getAddresses(): success", body);
         deferred.resolve({
             status: 200,
             result: body
@@ -955,11 +959,11 @@ function getAddresses(clientId) {
     return deferred.promise;
 }
 //getAddresses(12).then(function(r) {
-//    console.log(r.body);
+//    logger.log(r.body);
 //});
 
 function getAddress(clientId, addressId) {
-    //console.log("getAddress()", clientId);
+    //logger.log("getAddress()", clientId);
     var deferred = Q.defer();
 
     request.get({
@@ -977,10 +981,10 @@ function getAddress(clientId, addressId) {
         json: true
     }, function (error, response, body) {
         if (error || response == null || response.statusCode != 200) {
-            console.error("getAddress(): error", error, response ? response.statusCode : null, body);
+            logger.error("getAddress(): error", error, response ? response.statusCode : null, body);
             deferred.reject({error: error, response: response, body: body});
         }
-        //console.log("getAddress(): success", body);
+        //logger.log("getAddress(): success", body);
         deferred.resolve({response: response, body: body});
     });
 
@@ -989,11 +993,11 @@ function getAddress(clientId, addressId) {
 
 // FIXME - error when requesting addressId 1200, get array instead of single address
 //getAddress(12, 1200).then(function(r) {
-//    console.log(r.body);
+//    logger.log(r.body);
 //});
 
 function createAddress(clientId, address) {
-    //console.log("createAddress", email, password);
+    //logger.log("createAddress", email, password);
     var deferred = Q.defer();
 
     request.post({
@@ -1024,7 +1028,7 @@ function createAddress(clientId, address) {
         json: true
     }, function (error, response, body) {
         if (error || response.statusCode != 201) {
-            console.error("createAddress(): error", response ? response.statusCode : null, body);
+            logger.error("createAddress(): error", response ? response.statusCode : null, body);
 
             if (body && body.statusCode && body.errorCode && body.message && response && response.statusCode) {
                 deferred.reject({
@@ -1049,7 +1053,7 @@ function createAddress(clientId, address) {
         }
 
         if (body == null || body.addressId == null) {
-            console.log("createAddress(): invalid return data", body, typeof body, "addressId", body.addressId);
+            logger.log("createAddress(): invalid return data", body, typeof body, "addressId", body.addressId);
             deferred.reject({
                 status: 500,
                 result: {
@@ -1073,7 +1077,7 @@ function createAddress(clientId, address) {
 }
 
 function updateAddress(clientId, addressId, address) {
-    console.log("updateAddress", clientId, addressId, address);
+    logger.log("updateAddress", clientId, addressId, address);
     var deferred = Q.defer();
 
     request.post({
@@ -1105,7 +1109,7 @@ function updateAddress(clientId, addressId, address) {
         json: true
     }, function (error, response, body) {
         if (error || response.statusCode != 204) {
-            console.error("updateAddress(): error", response ? response.statusCode : null, body);
+            logger.error("updateAddress(): error", response ? response.statusCode : null, body);
 
             if (body && body.statusCode && body.errorCode && body.message && response && response.statusCode) {
                 deferred.reject({
@@ -1130,7 +1134,7 @@ function updateAddress(clientId, addressId, address) {
         }
 
         // we should get nothing back
-        console.log("updateAddress(): success");
+        logger.log("updateAddress(): success");
         deferred.resolve({
             status: 204,
             result: null
@@ -1141,7 +1145,7 @@ function updateAddress(clientId, addressId, address) {
 }
 
 function deleteAddress(clientId, addressId) {
-    console.log("deleteAddress", clientId, addressId);
+    logger.log("deleteAddress", clientId, addressId);
     var deferred = Q.defer();
 
     request.del({
@@ -1159,7 +1163,7 @@ function deleteAddress(clientId, addressId) {
         json: true
     }, function (error, response, body) {
         if (error || response.statusCode != 204) {
-            console.error("deleteAddress(): error", response ? response.statusCode : null, body);
+            logger.error("deleteAddress(): error", response ? response.statusCode : null, body);
 
             if (body && body.statusCode && body.errorCode && body.message && response && response.statusCode) {
                 deferred.reject({
@@ -1183,7 +1187,7 @@ function deleteAddress(clientId, addressId) {
             return;
         }
 
-        console.log("deleteAddress(): success");
+        logger.log("deleteAddress(): success");
         deferred.resolve({
             status: 204,
             result: null
@@ -1209,9 +1213,9 @@ function validateEmail(email) {
         },
         json: true
     }, function (error, response, body) {
-        console.log("validateEmail()", error, response ? response.statusCode: null, body);
+        logger.log("validateEmail()", error, response ? response.statusCode: null, body);
         if (error || response.statusCode != 200) {
-            console.error("validateEmail(): error", error, response ? response.statusCode: null, body);
+            logger.error("validateEmail(): error", error, response ? response.statusCode: null, body);
             deferred.reject({
                 status: 500,
                 result: {
@@ -1270,7 +1274,7 @@ function validateEmail(email) {
          *}
          */
 
-        console.log("validateEmail(): body", body, body.WebServiceResponse.VerifyEmailResponse.VerifyEmailResult);
+        logger.log("validateEmail(): body", body, body.WebServiceResponse.VerifyEmailResponse.VerifyEmailResult);
 
         if (body && body.WebServiceResponse && body.WebServiceResponse.VerifyEmailResponse &&
             body.WebServiceResponse.VerifyEmailResponse.VerifyEmailResult &&
@@ -1278,10 +1282,10 @@ function validateEmail(email) {
             body.WebServiceResponse.VerifyEmailResponse.VerifyEmailResult.ServiceStatus.StatusNbr)
         {
             var statusNbr = parseInt(body.WebServiceResponse.VerifyEmailResponse.VerifyEmailResult.ServiceStatus.StatusNbr);
-            console.log("validateEmail(): statusNbr", statusNbr);
+            logger.log("validateEmail(): statusNbr", statusNbr);
 
             if (statusNbr == 310 || statusNbr == 311 || (statusNbr >= 200 && statusNbr < 300)) {
-                console.log("validateEmail(): valid");
+                logger.log("validateEmail(): valid");
                 deferred.resolve({
                     status: 200,
                     result: body
@@ -1304,7 +1308,7 @@ function validateEmail(email) {
 }
 
 function validateAddress(address) {
-    console.log("validateAddress()", address);
+    logger.log("validateAddress()", address);
     var deferred = Q.defer();
 
     var options = {
@@ -1317,7 +1321,7 @@ function validateAddress(address) {
         soap.createClient(STRIKEIRON_ADDRESS_SOAP_URL, options, function(err, client) {
             var userId = STRIKEIRON_ADDRESS_LICENSE;
 
-            console.log("license", userId);
+            logger.log("license", userId);
 
             client.addSoapHeader({LicenseInfo: {RegisteredUser: {UserID: userId}}});
 
@@ -1328,9 +1332,9 @@ function validateAddress(address) {
                 "Country":address.country,
                 "Casing":"PROPER"
             }, function (error, response) {
-                console.log("validateAddress(): response", error);
+                logger.log("validateAddress(): response", error);
                 if (error || response.NorthAmericanAddressVerificationResult.ServiceStatus.StatusNbr != 200) {
-                    console.error("validateAddress(): error", error, "response", response);
+                    logger.error("validateAddress(): error", error, "response", response);
                     deferred.reject({
                         status: 500,
                         result: {
@@ -1358,14 +1362,14 @@ function validateAddress(address) {
                     response.NorthAmericanAddressVerificationResult.ServiceResult.USAddress &&
                     response.NorthAmericanAddressVerificationResult.ServiceStatus.StatusNbr == 200)
                 {
-                    console.log("validateAddress(): success", response.NorthAmericanAddressVerificationResult.ServiceResult.USAddress);
+                    logger.log("validateAddress(): success", response.NorthAmericanAddressVerificationResult.ServiceResult.USAddress);
 
                     /**
                      * State, Urbanization, ZIPPlus4, ZIPCode, ZIPAddOn, CarrierRoute, PMB, PMBDesignator,
                      * DeliveryPoint, DPCheckDigit, LACS, CMRA, DPV, DPVFootnote, RDI, RecordType,
                      * CongressDistrict, County, CountyNumber, StateNumber, GeoCode
                      */
-                    //console.log("getClient(): success", body);
+                    //logger.log("getClient(): success", body);
 
                     var usAddress = response.NorthAmericanAddressVerificationResult.ServiceResult.USAddress;
 
@@ -1402,14 +1406,14 @@ function validateAddress(address) {
                         geocode: "000000",
                         phone: address.phone
                     };
-                    console.log("validateAddress(): returning address", a);
+                    logger.log("validateAddress(): returning address", a);
 
                     deferred.resolve({
                         status: 200,
                         result: a
                     });
                 } else {
-                    console.error("validateAddress(): result was not expected", result);
+                    logger.error("validateAddress(): result was not expected", result);
 
                     deferred.reject({
                         status: 500,
@@ -1438,7 +1442,7 @@ function validateAddress(address) {
 //2451 Townsgate Rd., Westlake Village 91361
 
 function getCreditCards(clientId) {
-    //console.log("getCreditCards()", clientId);
+    //logger.log("getCreditCards()", clientId);
     var deferred = Q.defer();
 
     request.get({
@@ -1455,11 +1459,11 @@ function getCreditCards(clientId) {
         json: true
     }, function (error, response, body) {
         if (error || response.statusCode != 200) {
-            console.error("getCreditCards(): error", error, response ? response.statusCode: null, body);
+            logger.error("getCreditCards(): error", error, response ? response.statusCode: null, body);
             deferred.reject({error: error, response: response, body: body});
             return;
         }
-        //console.log("getCreditCards(): success", body);
+        //logger.log("getCreditCards(): success", body);
         deferred.resolve({
             status: response ? response.statusCode : 500,
             result: body
@@ -1470,7 +1474,7 @@ function getCreditCards(clientId) {
 }
 
 function getCreditCard(clientId, creditCardId) {
-    //console.log("getCreditCard()", clientId);
+    //logger.log("getCreditCard()", clientId);
     var deferred = Q.defer();
 
     request.get({
@@ -1488,10 +1492,10 @@ function getCreditCard(clientId, creditCardId) {
         json: true
     }, function (error, response, body) {
         if (error || response.statusCode != 200) {
-            console.error("getCreditCard(): error", error, response ? response.statusCode: null, body);
+            logger.error("getCreditCard(): error", error, response ? response.statusCode: null, body);
             deferred.reject({error: error, response: response, body: body});
         }
-        //console.log("getCreditCard(): success", body);
+        //logger.log("getCreditCard(): success", body);
         deferred.resolve({response: response, body: body});
     });
 
@@ -1499,7 +1503,7 @@ function getCreditCard(clientId, creditCardId) {
 }
 
 function createCreditCard(clientId, data) {
-    //console.log("createCreditCard", email, password);
+    //logger.log("createCreditCard", email, password);
     var deferred = Q.defer();
 
     request.post({
@@ -1520,7 +1524,7 @@ function createCreditCard(clientId, data) {
         json: true
     }, function (error, response, body) {
         if (error || response.statusCode != 201) {
-            console.error("createCreditCard(): error", error, response ? response.statusCode : null, body);
+            logger.error("createCreditCard(): error", error, response ? response.statusCode : null, body);
 
             if (body && body.statusCode && body.errorCode && body.message && response && response.statusCode) {
                 deferred.reject({
@@ -1545,7 +1549,7 @@ function createCreditCard(clientId, data) {
         }
 
         if (body == null || body.id == null) {
-            console.log("createCreditCard(): invalid return data", body, typeof body, "creditCardId", body.creditCardId);
+            logger.log("createCreditCard(): invalid return data", body, typeof body, "creditCardId", body.creditCardId);
             deferred.reject({
                 status: 500,
                 result: {
@@ -1568,7 +1572,7 @@ function createCreditCard(clientId, data) {
 }
 
 function updateCreditCard(clientId, creditCardId, data) {
-    //console.log("updateCreditCard", email, password);
+    //logger.log("updateCreditCard", email, password);
     var deferred = Q.defer();
 
     request.post({
@@ -1590,7 +1594,7 @@ function updateCreditCard(clientId, creditCardId, data) {
         json: true
     }, function (error, response, body) {
         if (error || response.statusCode != 201) {
-            console.error("updateCreditCard(): error", error, response ? response.statusCode : null, body);
+            logger.error("updateCreditCard(): error", error, response ? response.statusCode : null, body);
 
             if (body && body.statusCode && body.errorCode && body.message && response && response.statusCode) {
                 deferred.reject({
@@ -1615,7 +1619,7 @@ function updateCreditCard(clientId, creditCardId, data) {
         }
 
         if (body == null || body.id == null) {
-            console.log("updateCreditCard(): invalid return data", body, typeof body, "creditCardId", body.creditCardId);
+            logger.log("updateCreditCard(): invalid return data", body, typeof body, "creditCardId", body.creditCardId);
             deferred.reject({
                 status: 500,
                 result: {
@@ -1638,7 +1642,7 @@ function updateCreditCard(clientId, creditCardId, data) {
 }
 
 function deleteCreditCard(clientId, creditCardId) {
-    console.log("deleteCreditCard", clientId, creditCardId);
+    logger.log("deleteCreditCard", clientId, creditCardId);
     var deferred = Q.defer();
 
     request.del({
@@ -1656,7 +1660,7 @@ function deleteCreditCard(clientId, creditCardId) {
         json: true
     }, function (error, response, body) {
         if (error || response.statusCode != 204) {
-            console.error("deleteCreditCard(): error", response ? response.statusCode: null, body);
+            logger.error("deleteCreditCard(): error", response ? response.statusCode: null, body);
 
             if (body && body.statusCode && body.errorCode && body.message && response && response.statusCode) {
                 deferred.reject({
@@ -1680,7 +1684,7 @@ function deleteCreditCard(clientId, creditCardId) {
             return;
         }
 
-        console.log("deleteCreditCard(): success");
+        logger.log("deleteCreditCard(): success");
         deferred.resolve({
             status: 204,
             result: null
@@ -1691,7 +1695,7 @@ function deleteCreditCard(clientId, creditCardId) {
 }
 
 function getGeocodes(zipCode) {
-    console.log("getGeocodes()", zipCode);
+    logger.log("getGeocodes()", zipCode);
     var deferred = Q.defer();
 
     request.get({
@@ -1708,9 +1712,9 @@ function getGeocodes(zipCode) {
         strictSSL: false,
         json: true
     }, function (error, response, body) {
-        console.log("getGeocodes()", error, response ? response.statusCode: null, body);
+        logger.log("getGeocodes()", error, response ? response.statusCode: null, body);
         if (error || response == null || response.statusCode != 200) {
-            console.error("getGeocodes(): error", error, response ? response.statusCode: null, body);
+            logger.error("getGeocodes(): error", error, response ? response.statusCode: null, body);
             deferred.reject({
                 status: response.statusCode,
                 result: {
@@ -1735,10 +1739,10 @@ function getGeocodes(zipCode) {
 
         // parse the list of geocodes
         parseString(body, function (err, result) {
-            console.log("err", err, "result", result);
+            logger.log("err", err, "result", result);
 
             if (err) {
-                console.log("getGeocodes(): failure");
+                logger.log("getGeocodes(): failure");
                 deferred.reject({
                     status: 500,
                     result: {
@@ -1757,7 +1761,7 @@ function getGeocodes(zipCode) {
                     cities.push(list[i]["$"]);
                 }
 
-                console.log("getGeocodes(): success");
+                logger.log("getGeocodes(): success");
                 deferred.resolve({
                     status: 200,
                     result: cities
@@ -1791,8 +1795,8 @@ function calculateSalesTax(data) {
      }
      */
 
-    console.log("getCalculateTax()", data);
-    console.log("getCalculateTax(): products",JSON.stringify(data.products));
+    logger.log("getCalculateTax()", data);
+    logger.log("getCalculateTax(): products",JSON.stringify(data.products));
     var deferred = Q.defer();
 
     request.post({
@@ -1813,9 +1817,9 @@ function calculateSalesTax(data) {
         strictSSL: false,
         json: true
     }, function (error, response, body) {
-        console.log("getCalculateTax()", error, response ? response.statusCode: null, body);
+        logger.log("getCalculateTax()", error, response ? response.statusCode: null, body);
         if (error || response == null || response.statusCode != 200) {
-            console.error("getCalculateTax(): error", error, response ? response.statusCode: null, body);
+            logger.error("getCalculateTax(): error", error, response ? response.statusCode: null, body);
             deferred.reject({
                 status: response ? response.statusCode : 500,
                 result: {
@@ -1838,7 +1842,7 @@ function calculateSalesTax(data) {
          }
          */
 
-        console.log("getCalculateTax(): success", body);
+        logger.log("getCalculateTax(): success", body);
         deferred.resolve({
             status: 200,
             result: body
@@ -1850,7 +1854,7 @@ function calculateSalesTax(data) {
 }
 
 function requestPasswordReset(email, language) {
-    console.log("requestPasswordReset()", email, language);
+    logger.log("requestPasswordReset()", email, language);
     var deferred = Q.defer();
 
     if (!email || !language) {
@@ -1871,7 +1875,7 @@ function requestPasswordReset(email, language) {
     // make sure this user hasn't done a password reset in past N minutes
     models.PasswordResetToken.find({email: email, created: {$gt: mustBeOlderThan}}, function(err, tokens) {
         if (err) {
-            console.error("failed to lookup password reset token", err);
+            logger.error("failed to lookup password reset token", err);
             deferred.reject({
                 status: 500,
                 result: {
@@ -1884,7 +1888,7 @@ function requestPasswordReset(email, language) {
         }
 
         if (tokens && tokens.length > 0) {
-            console.error("password reset requested too soon", tokens);
+            logger.error("password reset requested too soon", tokens);
             deferred.reject({
                 status: 409,
                 result: {
@@ -1915,7 +1919,7 @@ function requestPasswordReset(email, language) {
                 return;
             }
 
-            console.log('requestPasswordReset(): created password reset token for ' + email);
+            logger.log('requestPasswordReset(): created password reset token for ' + email);
 
             request.post({
                 url: PASSWORD_RESET_REQUEST_URL,
@@ -1934,10 +1938,10 @@ function requestPasswordReset(email, language) {
                 strictSSL: false,
                 json: true
             }, function (error, response, body) {
-                console.log("requestPasswordReset(): body", body);
+                logger.log("requestPasswordReset(): body", body);
 
                 if (error || response == null || response.statusCode != 204) {
-                    console.error("requestPasswordReset(): error", error, response ? response.statusCode : null, body);
+                    logger.error("requestPasswordReset(): error", error, response ? response.statusCode : null, body);
                     deferred.reject({
                         status: 500,
                         result: {
@@ -1961,7 +1965,7 @@ function requestPasswordReset(email, language) {
 }
 
 function requestPasswordChange(email, password, token) {
-    console.log("requestPasswordChange()", email, token);
+    logger.log("requestPasswordChange()", email, token);
     var deferred = Q.defer();
 
     var now = new Date();
@@ -1969,7 +1973,7 @@ function requestPasswordChange(email, password, token) {
 
     models.PasswordResetToken.find({email: email, token: token, created: {$gt: cantBeOlderThan}}, function(err, tokens) {
         if (err) {
-            console.error("requestPasswordChange(): failed to lookup password reset token", err);
+            logger.error("requestPasswordChange(): failed to lookup password reset token", err);
             deferred.reject({
                 status: 500, result: {
                     statusCode: 500,
@@ -1981,7 +1985,7 @@ function requestPasswordChange(email, password, token) {
         }
 
         if (tokens && tokens.length > 0) {
-            console.log("requestPasswordChange(): found token", token);
+            logger.log("requestPasswordChange(): found token", token);
             request.post({
                 url: PASSWORD_RESET_CHANGE_URL,
                 form: {
@@ -1993,10 +1997,10 @@ function requestPasswordChange(email, password, token) {
                     'Authorization': AUTH_STRING
                 }, agentOptions: agentOptions, strictSSL: false, json: true
             }, function (error, response, body) {
-                console.log("requestPasswordChange(): body", body);
+                logger.log("requestPasswordChange(): body", body);
 
                 if (error || response == null || response.statusCode != 204) {
-                    console.error("requestPasswordChange(): error", error, response ? response.statusCode : null, body);
+                    logger.error("requestPasswordChange(): error", error, response ? response.statusCode : null, body);
                     deferred.reject({
                         status: 500, result: {
                             statusCode: 500,
@@ -2012,7 +2016,7 @@ function requestPasswordChange(email, password, token) {
                 });
             });
         } else {
-            console.error("requestPasswordChange(): no token found");
+            logger.error("requestPasswordChange(): no token found");
 
             deferred.reject({
                 status: 500, result: {
@@ -2028,7 +2032,7 @@ function requestPasswordChange(email, password, token) {
 }
 
 function getInventory(inventoryId) {
-    //console.log("getInventory()", inventoryId);
+    //logger.log("getInventory()", inventoryId);
     var deferred = Q.defer();
 
     request.get({
@@ -2044,9 +2048,9 @@ function getInventory(inventoryId) {
         strictSSL: false,
         json: true
     }, function (error, response, body) {
-        console.log("getInventory()", error, response ? response.statusCode: null, body);
+        logger.log("getInventory()", error, response ? response.statusCode: null, body);
         if (error || response == null | response.statusCode != 200) {
-            console.error("getInventory(): error", error, response ? response.statusCode: null, body);
+            logger.error("getInventory(): error", error, response ? response.statusCode: null, body);
             if (response && response.statusCode) {
                 deferred.reject({
                     status: response.statusCode,
@@ -2069,7 +2073,7 @@ function getInventory(inventoryId) {
         }
 
         if (body.availableInventory != null) {
-            //console.log("getInventory(): success", body);
+            //logger.log("getInventory(): success", body);
             deferred.resolve({
                 status: 200,
                 result: {
@@ -2095,7 +2099,7 @@ function getConfigValue(key) {
     var deferred = Q.defer();
     models.Config.findOne({_id: key}).exec(function (err, config) {
         if (err) {
-            console.error("getConfigValue(): error", error, response ? response.statusCode : null);
+            logger.error("getConfigValue(): error", error, response ? response.statusCode : null);
             deferred.reject(err);
             return;
         }
@@ -2109,7 +2113,7 @@ function getConfigValue(key) {
 }
 
 function updateInventory(noProcessing) {
-    //console.log("updateInventory()", inventoryId);
+    //logger.log("updateInventory()", inventoryId);
     var deferred = Q.defer();
     var now = new Date();
     var HOURS_24 = moment.duration(24, "hours");
@@ -2118,16 +2122,16 @@ function updateInventory(noProcessing) {
     // FIXME - don't update everything if the inventory hasn't changed.
 
     getConfigValue("inventoryLastUpdated").then(function(lastUpdated) {
-        console.log("getAllInventory(): inventory lastUpdated", moment.unix(lastUpdated).toDate(), "now", now, "24 hours ago", HOURS_24_AGO.toDate());
+        logger.log("getAllInventory(): inventory lastUpdated", moment.unix(lastUpdated).toDate(), "now", now, "24 hours ago", HOURS_24_AGO.toDate());
 
         // if we have lastUpdated and it's less than 24 hours ago, do a fetch to the DB
         if (lastUpdated != null && (moment.unix(lastUpdated).isAfter(HOURS_24_AGO) || FORCE_INVENTORY_CACHE)) {
             // we need to update again
-            console.error("getAllInventory(): fetching inventory from the database");
+            logger.error("getAllInventory(): fetching inventory from the database");
 
             models.Inventory.find({}).exec(function (err, inventoryItems) {
                 if (err) {
-                    console.error("getAllInventory(): error fetching inventory from database");
+                    logger.error("getAllInventory(): error fetching inventory from database");
                     deferred.reject(err);
                     return;
                 }
@@ -2139,11 +2143,11 @@ function updateInventory(noProcessing) {
                 }
 
                 if (!noProcessing) {
-                    console.log("getAllInventory(): processing");
+                    logger.log("getAllInventory(): processing");
                     processAvailabilityAndHiddenProducts(inventory).then(function (inventory) {
                         deferred.resolve(inventory);
                     }, function (err) {
-                        console.error("getAllInventory(): processAvailabilityAndHiddenProducts(): error", err);
+                        logger.error("getAllInventory(): processAvailabilityAndHiddenProducts(): error", err);
                         deferred.reject(err);
                     })
                 } else {
@@ -2153,20 +2157,20 @@ function updateInventory(noProcessing) {
 
         // else fetch from the server
         } else {
-            console.error("getAllInventory(): fetching inventory from JCS");
+            logger.error("getAllInventory(): fetching inventory from JCS");
             request.get({
                 url: GET_ALL_INVENTORY_URL, headers: {
                     'Accept': 'application/json, text/json', 'Authorization': AUTH_STRING
                 }, agentOptions: agentOptions, strictSSL: false, json: true
             }, function (error, response, body) {
-                console.log("getAllInventory()", error, response ? response.statusCode : null, body);
+                logger.log("getAllInventory()", error, response ? response.statusCode : null, body);
                 if (error || response == null || response.statusCode != 200) {
-                    console.error("getAllInventory(): error", error, response ? response.statusCode : null, body);
+                    logger.error("getAllInventory(): error", error, response ? response.statusCode : null, body);
 
                     // just load inventory from DB anyways & process
                     models.Inventory.find({}).exec(function (err, inventoryItems) {
                         if (err) {
-                            console.error("getAllInventory(): error fetching inventory from database");
+                            logger.error("getAllInventory(): error fetching inventory from database");
                             deferred.reject(err);
                             return;
                         }
@@ -2178,11 +2182,11 @@ function updateInventory(noProcessing) {
                         }
 
                         if (!noProcessing) {
-                            console.log("getAllInventory(): processing");
+                            logger.log("getAllInventory(): processing");
                             processAvailabilityAndHiddenProducts(inventory).then(function (inventory) {
                                 deferred.resolve(inventory);
                             }, function (err) {
-                                console.error("getAllInventory(): processAvailabilityAndHiddenProducts(): error", err);
+                                logger.error("getAllInventory(): processAvailabilityAndHiddenProducts(): error", err);
                                 deferred.reject(err);
                             })
                         } else {
@@ -2199,8 +2203,8 @@ function updateInventory(noProcessing) {
                         if (body.inventory.hasOwnProperty(key)) {
                             count++;
                             models.Inventory.update({_id: key}, {available: body.inventory[key]}, {upsert: true}, function (err, numAffected, rawResponse) {
-                                if (err) return console.error("getAllInventory(): error updating inventory", key, err);
-                                //console.log("getAllInventory(): updated inventory for", key, "to", body.inventory[key]);
+                                if (err) return logger.error("getAllInventory(): error updating inventory", key, err);
+                                //logger.log("getAllInventory(): updated inventory for", key, "to", body.inventory[key]);
                                 updated++;
 
                                 // once we've saved everything, update the config lastUpdated timestamp
@@ -2209,18 +2213,18 @@ function updateInventory(noProcessing) {
                                     var d = moment.unix(body.lastUpdated);
                                     models.Config.update({_id: "inventoryLastUpdated"}, {value: body.lastUpdated}, {upsert: true}, function (err, numAffected, rawResponse) {
                                         if (err) {
-                                            return console.error("getAllInventory(): error saving lastUpdated", err);
+                                            return logger.error("getAllInventory(): error saving lastUpdated", err);
                                             deferred.reject(err);
                                             return;
                                         }
-                                        console.log("getAllInventory(): saved inventory lastUpdated", body.lastUpdated, d.toDate());
+                                        logger.log("getAllInventory(): saved inventory lastUpdated", body.lastUpdated, d.toDate());
 
                                         if (!noProcessing) {
-                                            console.log("getAllInventory(): processing inventory", body.inventory);
+                                            logger.log("getAllInventory(): processing inventory", body.inventory);
                                             processAvailabilityAndHiddenProducts(body.inventory).then(function (inventory) {
                                                 deferred.resolve(inventory);
                                             }, function (err) {
-                                                console.error("getAllInventory(): processAvailabilityAndHiddenProducts(): error", err);
+                                                logger.error("getAllInventory(): processAvailabilityAndHiddenProducts(): error", err);
                                                 deferred.reject(err);
                                             })
                                         } else {
@@ -2232,13 +2236,13 @@ function updateInventory(noProcessing) {
                         }
                     }
                 } else {
-                    console.error("getAllInventory(): invalid inventory body");
+                    logger.error("getAllInventory(): invalid inventory body");
                     deferred.reject("invalid inventory body");
                 }
             });
         }
     }, function(err) {
-        console.error("updateInventory(): error getting config", error, response ? response.statusCode : null);
+        logger.error("updateInventory(): error getting config", error, response ? response.statusCode : null);
         deferred.reject(err);
     });
 
@@ -2266,7 +2270,7 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
         model: 'KitGroup'
     }).exec(function (err, products) {
         if (err) {
-            console.error("processAvailabilityAndHiddenProducts(): error getting products", err);
+            logger.error("processAvailabilityAndHiddenProducts(): error getting products", err);
             deferred.reject(err);
             return;
         }
@@ -2281,12 +2285,12 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
         // populate components
         models.Product.populate(products, opts, function (err, products) {
 
-            console.log("processAvailabilityAndHiddenProducts(): loaded products for inventory calculation");
+            logger.log("processAvailabilityAndHiddenProducts(): loaded products for inventory calculation");
             var finalInventory = {};
 
             // check orders since last inventory update to subtract from the availableInventory
             getConfigValue("inventoryLastUpdated").then(function(lastUpdated) {
-                console.error("getAllInventory(): inventory lastUpdated", lastUpdated);
+                logger.error("getAllInventory(): inventory lastUpdated", lastUpdated);
 
                 var orderHistoryComplete = Q.defer();
 
@@ -2294,7 +2298,7 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
                 // if we have lastUpdated and it's less than 24 hours ago, do a fetch to the DB
                 if (lastUpdated != null) {
                     var lastUpdatedDate = moment.unix(lastUpdated).toDate();
-                    console.log("processAvailabilityAndHiddenProducts(): merging order history since", lastUpdatedDate);
+                    logger.log("processAvailabilityAndHiddenProducts(): merging order history since", lastUpdatedDate);
 
                     models.OrderHistory.find({
                         created: {$gte: lastUpdatedDate}
@@ -2302,9 +2306,9 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
                         path: 'products.product',
                         model: 'Product'
                     }).exec(function (err, orderHistoryItems) {
-                        //console.log("processAvailabilityAndHiddenProducts(): processing updates for product", product.id, updates);
+                        //logger.log("processAvailabilityAndHiddenProducts(): processing updates for product", product.id, updates);
                         if (err) {
-                            console.error("processAvailabilityAndHiddenProducts(): error updating product inventory", err);
+                            logger.error("processAvailabilityAndHiddenProducts(): error updating product inventory", err);
                             deferred.reject(err);
                             return;
                         }
@@ -2318,10 +2322,10 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
                             if (!orderHistoryItems) {
                                 orderHistoryItem = [];
                             }
-                            console.log("processAvailabilityAndHiddenProducts(): have", orderHistoryItems.length, "orderHistoryItems");
+                            logger.log("processAvailabilityAndHiddenProducts(): have", orderHistoryItems.length, "orderHistoryItems");
 
                             if (err) {
-                                console.error("processAvailabilityAndHiddenProducts(): error updating product inventory", err);
+                                logger.error("processAvailabilityAndHiddenProducts(): error updating product inventory", err);
                                 deferred.reject(err);
                                 return;
                             }
@@ -2334,7 +2338,7 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
 
                                     // deduct this item
                                     deductFromInventory[p.sku] = deductFromInventory[p.sku] ? deductFromInventory[p.sku] + 1 : 1;
-                                    //console.log("processAvailabilityAndHiddenProducts(): deducting for purchased item", p.sku);
+                                    logger.log("processAvailabilityAndHiddenProducts(): deducting for purchased item", p.sku);
 
                                     /**
                                      *        {
@@ -2362,7 +2366,7 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
                                         for (var m = 0; m < p.product.contains.length; m++) {
                                             var c = p.product.contains[m];
                                             deductFromInventory[c.productId] = deductFromInventory[c.productId] ? deductFromInventory[c.productId] + 1 : 1;
-                                            //console.log("processAvailabilityAndHiddenProducts(): deducting for purchased item contains", p.sku, "->", c.productId);
+                                            logger.log("processAvailabilityAndHiddenProducts(): deducting for purchased item contains", p.sku, "->", c.productId);
                                         }
                                         for (var key in p.kitSelections) {
                                             if (p.kitSelections.hasOwnProperty(key)) {
@@ -2370,7 +2374,7 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
                                                 for (var n = 0; n < items.length; n++) {
                                                     var item = items[n];
                                                     deductFromInventory[item.sku] = deductFromInventory[item.sku] ? deductFromInventory[item.sku] + 1 : 1;
-                                                    //console.log("processAvailabilityAndHiddenProducts(): deducting for purchased item kitGroup component", p.sku, "->", item.sku);
+                                                    logger.log("processAvailabilityAndHiddenProducts(): deducting for purchased item kitGroup component", p.sku, "->", item.sku);
                                                 }
                                             }
                                         }
@@ -2378,7 +2382,7 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
                                 }
                             }
 
-                            console.log("processAvailabilityAndHiddenProducts(): orderHistoryComplete");
+                            logger.log("processAvailabilityAndHiddenProducts(): orderHistoryComplete");
                             orderHistoryComplete.resolve();
                         });
                     });
@@ -2392,23 +2396,23 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
                         var updateCount = 0;
                         for (var i = 0; i < products.length; i++) {
                             var product = products[i];
-                            console.log("processAvailabilityAndHiddenProducts(): product", product.id, "type", product.type);
+                            logger.log("processAvailabilityAndHiddenProducts(): product", product.id, "type", product.type);
 
                             var availableInventory = allInventory[product.id] != null ? allInventory[product.id] : -1;
                             var unavailableComponents = false;
                             var updates = {};
-                            console.log("processAvailabilityAndHiddenProducts(): product", product.id,"availability after first check", availableInventory);
+                            logger.log("processAvailabilityAndHiddenProducts(): product", product.id,"availability after first check", availableInventory);
 
                             // ensure all the product contains for a kit have inventory, else mark as no inventory
                             // inventory for a group is the sum of all inventories for items inside
                             if (product.contains && product.contains.length > 0) {
-                                //console.log("processAvailabilityAndHiddenProducts(): product", product.id, "contains", product.contains.length, "products");
+                                //logger.log("processAvailabilityAndHiddenProducts(): product", product.id, "contains", product.contains.length, "products");
                                 var availableCount = null;
 
                                 for (var j = 0; j < product.contains.length; j++) {
                                     updates["contains." + j + ".unavailable"] = false;
                                     var c = product.contains[j];
-                                    //console.log("processAvailabilityAndHiddenProducts(): product", product.id, "contains", j, c);
+                                    //logger.log("processAvailabilityAndHiddenProducts(): product", product.id, "contains", j, c);
 
                                     if (c.product != null) {
                                         var p = c.product;
@@ -2416,16 +2420,16 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
                                         updates["contains." + j + ".availableInventory"] = allInventory[p._id];
 
                                         // determine inventory availability for the parent product based on lowest inventory of children
-                                        //console.log("processAvailabilityAndHiddenProducts(): product", product.id, "availability of item", p.id,"is", allInventory[p._id]);
+                                        //logger.log("processAvailabilityAndHiddenProducts(): product", product.id, "availability of item", p.id,"is", allInventory[p._id]);
 
                                         if (product.type == "kit") {
                                             if (availableCount != null && allInventory[p._id] > 0) {
                                                 // our availability is the availability of the least available item
                                                 availableCount = allInventory[p._id] < availableCount ? allInventory[p._id] : availableCount;
-                                                //console.log("processAvailabilityAndHiddenProducts(): product", product.id,"availability after contains check", availableCount, "component", p._id,"inventory", allInventory[p._id]);
+                                                //logger.log("processAvailabilityAndHiddenProducts(): product", product.id,"availability after contains check", availableCount, "component", p._id,"inventory", allInventory[p._id]);
                                             } else if (availableCount == null) {
                                                 availableCount = allInventory[p._id];
-                                                //console.log("processAvailabilityAndHiddenProducts(): product", product.id,"availability after contains check", availableCount, "component", p._id,"inventory", allInventory[p._id]);
+                                                //logger.log("processAvailabilityAndHiddenProducts(): product", product.id,"availability after contains check", availableCount, "component", p._id,"inventory", allInventory[p._id]);
                                             }
                                         }
 
@@ -2438,14 +2442,14 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
                                             if (product.type == "group") {
                                                 // only if product in the group is available do we add to the sum for of inventories for product in a group
                                                 availableCount += allInventory[p._id];
-                                                //console.log("processAvailabilityAndHiddenProducts(): product", product.id,"availability after contains added", availableCount);
+                                                //logger.log("processAvailabilityAndHiddenProducts(): product", product.id,"availability after contains added", availableCount);
                                             }
                                         } else {
-                                            //console.log("processAvailabilityAndHiddenProducts(): hiding product", product.id, "because contained product", p.id, "is unavailable");
+                                            //logger.log("processAvailabilityAndHiddenProducts(): hiding product", product.id, "because contained product", p.id, "is unavailable");
                                             updates["contains." + j + ".unavailable"] = true;
                                         }
                                     } else {
-                                        //console.log("processAvailabilityAndHiddenProducts(): hiding product", product.id, "because contained product", p.id, "is not found");
+                                        //logger.log("processAvailabilityAndHiddenProducts(): hiding product", product.id, "because contained product", p.id, "is not found");
                                         updates["contains." + j + ".unavailable"] = true;
                                     }
                                 }
@@ -2455,18 +2459,18 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
                                 } else {
                                     availableInventory = availableCount ? availableCount : 0;
                                 }
-                                console.log("processAvailabilityAndHiddenProducts(): product", product.id, "this product inventory", allInventory[p._id], "availableCount", availableCount, "availability after contains check", availableInventory);
+                                logger.log("processAvailabilityAndHiddenProducts(): product", product.id, "this product inventory", allInventory[p._id], "availableCount", availableCount, "availability after contains check", availableInventory);
                             }
 
                             // set unavailable for upsell items
                             if (product.upsellItems && product.upsellItems.length > 0) {
-                                //console.log("processAvailabilityAndHiddenProducts(): product", product.id, "upsellItems", product.upsellItems.length, "products");
+                                //logger.log("processAvailabilityAndHiddenProducts(): product", product.id, "upsellItems", product.upsellItems.length, "products");
                                 var availableCount = null;
 
                                 for (var j = 0; j < product.upsellItems.length; j++) {
                                     updates["upsellItems." + j + ".unavailable"] = false;
                                     var c = product.upsellItems[j];
-                                    //console.log("processAvailabilityAndHiddenProducts(): product", product.id, "upsellItems", j, c);
+                                    //logger.log("processAvailabilityAndHiddenProducts(): product", product.id, "upsellItems", j, c);
 
                                     if (c.product != null) {
                                         var p = c.product;
@@ -2476,15 +2480,15 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
                                         if (p.masterStatus == "A" && p.onHold == false && (p.masterType == "R" || p.masterType == "B" || p.masterType == null || type == "group")) {
                                             // nothing
                                         } else {
-                                            //console.log("processAvailabilityAndHiddenProducts(): hiding product", product.id, "because upsellItemed product", p.id, "is unavailable");
+                                            //logger.log("processAvailabilityAndHiddenProducts(): hiding product", product.id, "because upsellItemed product", p.id, "is unavailable");
                                             updates["upsellItems." + j + ".unavailable"] = true;
                                         }
                                     } else {
-                                        //console.log("processAvailabilityAndHiddenProducts(): hiding product", product.id, "because upsellItemed product", p.id, "is not found");
+                                        //logger.log("processAvailabilityAndHiddenProducts(): hiding product", product.id, "because upsellItemed product", p.id, "is not found");
                                         updates["upsellItems." + j + ".unavailable"] = true;
                                     }
                                 }
-                                //console.log("processAvailabilityAndHiddenProducts(): product", product.id, "availability after upsellItems check", availableInventory);
+                                //logger.log("processAvailabilityAndHiddenProducts(): product", product.id, "availability after upsellItems check", availableInventory);
                             }
 
                             // if kit components are unavailable, then available inventory = 0 too;
@@ -2492,11 +2496,11 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
                                 availableInventory = 0;
                             }
 
-                            console.log("processAvailabilityAndHiddenProducts(): product", product.id, "availability before kitgroups check", availableInventory);
+                            logger.log("processAvailabilityAndHiddenProducts(): product", product.id, "availability before kitgroups check", availableInventory);
 
                             if (product.kitGroups && product.kitGroups.length > 0) {
                                 // ensure that any kit groups have at least one available product
-                                //console.log("processAvailabilityAndHiddenProducts(): product", product.id, "contains", product.kitGroups.length, "kitGroups");
+                                //logger.log("processAvailabilityAndHiddenProducts(): product", product.id, "contains", product.kitGroups.length, "kitGroups");
                                 var availableCount = null;
                                 for (var j = 0; j < product.kitGroups.length; j++) {
                                     var numAvailableForKitGroup = 0;
@@ -2537,16 +2541,16 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
                                                     // the kitgroup is in range and should be valid
                                                     hasValidComponentOption = true;
                                                 } else {
-                                                    //console.log("processAvailabilityAndHiddenProducts(): component is unavailable", component)
+                                                    //logger.log("processAvailabilityAndHiddenProducts(): component is unavailable", component)
                                                 }
                                             } else {
-                                                console.warn("processAvailabilityAndHiddenProducts(): kitGroup", kitGroup.kitGroupId, "product", component.productId, "is not found");
+                                                logger.warn("processAvailabilityAndHiddenProducts(): kitGroup", kitGroup.kitGroupId, "product", component.productId, "is not found");
                                             }
                                         }
 
                                         // mark products as available/unavailable based on kitGroup date range and having any valid products
                                         if (!hasValidComponentOption) {
-                                            //console.log("processAvailabilityAndHiddenProducts(): hiding product", product.id, "because a kitGroup product", p.id, "is not found");
+                                            //logger.log("processAvailabilityAndHiddenProducts(): hiding product", product.id, "because a kitGroup product", p.id, "is not found");
                                             unavailableComponents = true;
                                             // also set this kitGroup to hidden
                                             updates["kitGroups." + j + ".unavailable"] = true;
@@ -2554,37 +2558,37 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
                                             updates["kitGroups." + j + ".unavailable"] = false;
                                         }
 
-                                        //console.log("processAvailabilityAndHiddenProducts(): product", product.id, "kitGroup", sku, "numAvailableForKitGroup", numAvailableForKitGroup);
+                                        //logger.log("processAvailabilityAndHiddenProducts(): product", product.id, "kitGroup", sku, "numAvailableForKitGroup", numAvailableForKitGroup);
 
                                         if (numAvailableForKitGroup == 0 || !hasValidComponentOption) {
-                                            //console.log("processAvailabilityAndHiddenProducts(): product", product.id, "product has 0 availability, since a kitGroup has 0 inventory");
+                                            //logger.log("processAvailabilityAndHiddenProducts(): product", product.id, "product has 0 availability, since a kitGroup has 0 inventory");
                                             availableInventory = 0;
                                             break;
                                         } else if (availableCount != null) {
                                             availableCount = numAvailableForKitGroup < availableCount ? numAvailableForKitGroup : availableCount;
-                                            //console.log("processAvailabilityAndHiddenProducts(): product", product.id, "inventory now", availableCount);
+                                            //logger.log("processAvailabilityAndHiddenProducts(): product", product.id, "inventory now", availableCount);
                                         } else {
                                             availableCount = numAvailableForKitGroup;
-                                            //console.log("processAvailabilityAndHiddenProducts(): product", product.id, "inventory now", availableCount);
+                                            //logger.log("processAvailabilityAndHiddenProducts(): product", product.id, "inventory now", availableCount);
                                         }
                                     }
                                 }
 
                                 availableInventory = availableCount && availableCount < availableInventory ? availableCount : availableInventory;
-                                console.log("processAvailabilityAndHiddenProducts(): product", product.id, "availability after kitGroup check", availableInventory);
+                                logger.log("processAvailabilityAndHiddenProducts(): product", product.id, "availability after kitGroup check", availableInventory);
                             }
 
                             if (availableInventory == -1) {
                                 availableInventory = 0;
                             }
 
-                            //console.log("processAvailabilityAndHiddenProducts(): product", product.id, "updating availability to", availableInventory);
+                            //logger.log("processAvailabilityAndHiddenProducts(): product", product.id, "updating availability to", availableInventory);
                             updates["availableInventory"] = availableInventory;
                             updates["unavailableComponents"] = unavailableComponents;
 
-                            //console.log("processAvailabilityAndHiddenProducts(): processing updates for product", product.id, updates);
+                            //logger.log("processAvailabilityAndHiddenProducts(): processing updates for product", product.id, updates);
                             if (deductFromInventory[product.id]) {
-                                console.log("processAvailabilityAndHiddenProducts(): deducting", deductFromInventory[product.id], "for purchases of", product.id);
+                                logger.log("processAvailabilityAndHiddenProducts(): deducting", deductFromInventory[product.id], "for purchases of", product.id);
                                 updates["availableInventory"] = availableInventory - deductFromInventory[product.id];
                             }
 
@@ -2598,31 +2602,31 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
                                 updateCount++;
 
                                 if (err) {
-                                    console.error("processAvailabilityAndHiddenProducts(): error updating product inventory", err);
+                                    logger.error("processAvailabilityAndHiddenProducts(): error updating product inventory", err);
                                     deferred.reject(err);
                                     return;
                                 }
 
-                                //console.log("processAvailabilityAndHiddenProducts(): updated inventory for product", product.type, "to", product.availableInventory);
+                                //logger.log("processAvailabilityAndHiddenProducts(): updated inventory for product", product.type, "to", product.availableInventory);
                                 finalInventory[product.id] = product.availableInventory;
 
                                 if (updateCount == products.length) {
-                                    console.error("processAvailabilityAndHiddenProducts(): all products updated, returning");
+                                    logger.log("processAvailabilityAndHiddenProducts(): all products updated, returning");
                                     deferred.resolve(finalInventory);
                                 }
                             });
                         }
                     } catch (ex) {
-                        console.error("processAvailabilityAndHiddenProducts(): error processing products", ex);
+                        logger.error("processAvailabilityAndHiddenProducts(): error processing products", ex);
                         deferred.reject(ex);
                     }
                 }, function(err) {
-                    console.error("processAvailabilityAndHiddenProducts(): error on fetching order historys", err);
+                    logger.error("processAvailabilityAndHiddenProducts(): error on fetching order historys", err);
                     deferred.reject(err);
                 });
             }, function (err) {
                 if (err) {
-                    console.error("processAvailabilityAndHiddenProducts(): error getting config", err);
+                    logger.error("processAvailabilityAndHiddenProducts(): error getting config", err);
                     deferred.reject(err);
                     return;
                 }
@@ -2705,7 +2709,7 @@ function searchProducts(searchString, loadUnavailable, skip, limit) {
     var d = Q.defer();
     var now = new Date();
 
-    console.log("searchProducts()", searchString, loadUnavailable, skip, limit);
+    logger.log("searchProducts()", searchString, loadUnavailable, skip, limit);
 
     var query = {$and: [
         {$text: { $search: "" + searchString }}
@@ -2731,7 +2735,7 @@ function searchProducts(searchString, loadUnavailable, skip, limit) {
         match: { $and: getKitGroupComponentsCriteria()}
     }).exec(function (err, products) {
         if (err) {
-            console.log("error getting products by string", err);
+            logger.log("error getting products by string", err);
             d.reject(err);
             return;
         }
@@ -2766,7 +2770,7 @@ function searchProducts(searchString, loadUnavailable, skip, limit) {
             }
         }
 
-        console.log("returning", products.length, "products");
+        logger.log("returning", products.length, "products");
         d.resolve(products);
     });
 
@@ -2777,7 +2781,7 @@ function loadProductsByCategory(categoryId, loadUnavailable, skip, limit, sort) 
     var d = Q.defer();
     var now = new Date();
 
-    console.log("loadProductsByCategory()", categoryId, loadUnavailable, skip, limit, sort);
+    logger.log("loadProductsByCategory()", categoryId, loadUnavailable, skip, limit, sort);
 
     var query = {$and: [
         {categories: {$in: categoryToChildren[categoryId]}}
@@ -2804,7 +2808,7 @@ function loadProductsByCategory(categoryId, loadUnavailable, skip, limit, sort) 
         match: { $and: getKitGroupComponentsCriteria()}
     }).exec(function (err, products) {
         if (err) {
-            console.log("error getting products by category", err);
+            logger.log("error getting products by category", err);
             d.reject(err);
             return;
         }
@@ -2839,7 +2843,7 @@ function loadProductsByCategory(categoryId, loadUnavailable, skip, limit, sort) 
             }
         }
 
-        console.log("returning", products.length, "products");
+        logger.log("returning", products.length, "products");
         d.resolve(products);
     });
 
@@ -2850,7 +2854,7 @@ function loadProductsById(productIds, loadUnavailable, loadStarterKits, loadStar
     var d = Q.defer();
     var now = new Date();
 
-    console.log("loadProductsById()", productIds, loadUnavailable, loadStarterKits, loadStarterKitsOnly);
+    logger.log("loadProductsById()", productIds, loadUnavailable, loadStarterKits, loadStarterKitsOnly);
 
     var query = {$and: [
         {_id: { $in: productIds }}
@@ -2878,7 +2882,7 @@ function loadProductsById(productIds, loadUnavailable, loadStarterKits, loadStar
         match: { $and: getKitGroupComponentsCriteria()}
     }).exec(function (err, products) {
         if (err) {
-            console.log("error getting products by ID", err);
+            logger.log("error getting products by ID", err);
             d.reject(err);
             return;
         }
@@ -2913,7 +2917,7 @@ function loadProductsById(productIds, loadUnavailable, loadStarterKits, loadStar
             }
         }
 
-        console.log("loadProductsById(): returning", products.length, "products");
+        logger.log("loadProductsById(): returning", products.length, "products");
         d.resolve(products);
     });
 
@@ -2924,7 +2928,7 @@ function loadProducts(loadUnavailable, loadComponents, skip, limit, sort) {
     var d = Q.defer();
     var now = new Date();
 
-    console.log("loadProducts()", loadUnavailable, loadComponents, skip, limit, sort);
+    logger.log("loadProducts()", loadUnavailable, loadComponents, skip, limit, sort);
 
     var query = {$and: []};
 
@@ -2951,7 +2955,7 @@ function loadProducts(loadUnavailable, loadComponents, skip, limit, sort) {
         match: { $and: getKitGroupComponentsCriteria()}
     }).exec(function (err, products) {
         if (err) {
-            console.log("error getting products", err);
+            logger.log("error getting products", err);
             d.reject(err);
             return;
         }
@@ -2986,7 +2990,7 @@ function loadProducts(loadUnavailable, loadComponents, skip, limit, sort) {
             }
         }
 
-        console.log("returning", products.length, "products");
+        logger.log("returning", products.length, "products");
         d.resolve(products);
     });
 
@@ -2997,20 +3001,20 @@ function loadProductById(productId, loadUnavailable, loadStarterKit, loadStarter
     var d = Q.defer();
     var now = new Date();
 
-    console.log("loadProductById()", productId, loadUnavailable, loadStarterKit, loadStarterKitOnly);
+    logger.log("loadProductById()", productId, loadUnavailable, loadStarterKit, loadStarterKitOnly);
 
     var query = {$and: [
         {_id: productId}
     ]};
 
     if (!loadUnavailable && !loadStarterKit && !loadStarterKitOnly) {
-        console.log("loadProductById(): getAvailableProductCriteria");
+        logger.log("loadProductById(): getAvailableProductCriteria");
         query["$and"] = query["$and"].concat(getAvailableProductCriteria());
     } else if (loadStarterKitOnly) {
-        console.log("loadProductById(): getAvailableStarterKitCriteria");
+        logger.log("loadProductById(): getAvailableStarterKitCriteria");
         query["$and"] = query["$and"].concat(getAvailableStarterKitCriteria());
     } else if (loadStarterKit) {
-        console.log("loadProductById(): getAvailableProductOrStarterKitCriteria");
+        logger.log("loadProductById(): getAvailableProductOrStarterKitCriteria");
         query["$and"] = query["$and"].concat(getAvailableProductOrStarterKitCriteria());
     }
 
@@ -3027,7 +3031,7 @@ function loadProductById(productId, loadUnavailable, loadStarterKit, loadStarter
         match: { $and: getKitGroupComponentsCriteria()}
     }).exec(function (err, products) {
         if (err) {
-            console.error("error populating product", err);
+            logger.error("error populating product", err);
             d.reject({
                 statusCode: 500,
                 errorCode: "productLookupFailed",
@@ -3037,7 +3041,7 @@ function loadProductById(productId, loadUnavailable, loadStarterKit, loadStarter
         }
 
         if (products.length == 1) {
-            console.log("returning", products.length, "products");
+            logger.log("returning", products.length, "products");
 
             var opts = {
                 path: 'kitGroups.kitGroup.components.product',
@@ -3047,7 +3051,7 @@ function loadProductById(productId, loadUnavailable, loadStarterKit, loadStarter
             // populate components
             models.Product.populate(products, opts, function (err, products) {
                 if (err) {
-                    console.error("error populating product kitGroup components", err);
+                    logger.error("error populating product kitGroup components", err);
                     d.reject({
                         statusCode: 500,
                         errorCode: "productLookupFailed",
@@ -3056,10 +3060,10 @@ function loadProductById(productId, loadUnavailable, loadStarterKit, loadStarter
                     return;
                 }
 
-                console.log("loadProductsById(): got products", products);
+                logger.log("loadProductsById(): got products", products);
 
 
-                //console.log('products:', products);
+                //logger.log('products:', products);
                 if (products[0].contains) {
                     products[0].contains = products[0].contains.filter(function (obj, index) {
                         return ((obj.startDate != null && moment(obj.startDate).isBefore(now)) ||
@@ -3086,7 +3090,7 @@ function loadProductById(productId, loadUnavailable, loadStarterKit, loadStarter
                 }
                 d.resolve(products[0]);
 
-                console.log('product', products[0]);
+                logger.log('product', products[0]);
 
                 return;
             });
@@ -3107,7 +3111,7 @@ function loadProductById(productId, loadUnavailable, loadStarterKit, loadStarter
 function getProducts(loadUnavailable, loadComponents, skip, limit, sort) {
     var d = Q.defer();
 
-    console.log("getProducts()", loadUnavailable, loadComponents, skip, limit, sort);
+    logger.log("getProducts()", loadUnavailable, loadComponents, skip, limit, sort);
 
     request.get({
         url: API_PRODUCTS_URL,
@@ -3123,9 +3127,9 @@ function getProducts(loadUnavailable, loadComponents, skip, limit, sort) {
         },
         json: true
     }, function (error, response, body) {
-        console.log("getProducts()", error, response ? response.statusCode: null);
+        logger.log("getProducts()", error, response ? response.statusCode: null);
         if (error || response == null || response.statusCode != 200) {
-            console.error("getProducts(): error", error, response ? response.statusCode: null);
+            logger.error("getProducts(): error", error, response ? response.statusCode: null);
 
             if (response && response.statusCode) {
                 d.reject({
@@ -3150,13 +3154,13 @@ function getProducts(loadUnavailable, loadComponents, skip, limit, sort) {
         }
 
         if (body != null) {
-            //console.log("getProducts(): success", body);
+            //logger.log("getProducts(): success", body);
             d.resolve({
                 status: 200,
                 result: body
             });
         } else {
-            console.log("getProducts(): no products");
+            logger.log("getProducts(): no products");
             d.reject({
                 status: 500,
                 result: {
