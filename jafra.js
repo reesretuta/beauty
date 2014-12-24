@@ -2749,15 +2749,17 @@ function searchProducts(searchString, loadUnavailable, skip, limit) {
         for (var i=0; i < products; i++) {
             if (products[i].contains) {
                 products[i].contains = products[i].contains.filter(function (obj, index) {
-                    return ((obj.startDate != null && moment(obj.startDate).isBefore(now)) ||
-                    (obj.endDate != null && moment(obj.endDate).isAfter(now))
+                    return (
+                    (obj.startDate == null || (obj.startDate != null && moment(obj.startDate).isBefore(now))) &&
+                    (obj.endDate == null || (obj.endDate != null && moment(obj.endDate).isAfter(now)))
                     );
                 });
             }
             if (products[i].promotionalMessages) {
                 products[i].promotionalMessages = products[i].promotionalMessages.filter(function (obj, index) {
-                    return ((obj.startDate != null && moment(obj.startDate).isBefore(now)) ||
-                    (obj.endDate != null && moment(obj.endDate).isAfter(now))
+                    return (
+                    (obj.startDate == null || (obj.startDate != null && moment(obj.startDate).isBefore(now))) &&
+                    (obj.endDate == null || (obj.endDate != null && moment(obj.endDate).isAfter(now)))
                     );
                 });
             }
@@ -2822,15 +2824,17 @@ function loadProductsByCategory(categoryId, loadUnavailable, skip, limit, sort) 
         for (var i=0; i < products; i++) {
             if (products[i].contains) {
                 products[i].contains = products[i].contains.filter(function (obj, index) {
-                    return ((obj.startDate != null && moment(obj.startDate).isBefore(now)) ||
-                    (obj.endDate != null && moment(obj.endDate).isAfter(now))
+                    return (
+                    (obj.startDate == null || (obj.startDate != null && moment(obj.startDate).isBefore(now))) &&
+                    (obj.endDate == null || (obj.endDate != null && moment(obj.endDate).isAfter(now)))
                     );
                 });
             }
             if (products[i].promotionalMessages) {
                 products[i].promotionalMessages = products[i].promotionalMessages.filter(function (obj, index) {
-                    return ((obj.startDate != null && moment(obj.startDate).isBefore(now)) ||
-                    (obj.endDate != null && moment(obj.endDate).isAfter(now))
+                    return (
+                    (obj.startDate == null || (obj.startDate != null && moment(obj.startDate).isBefore(now))) &&
+                    (obj.endDate == null || (obj.endDate != null && moment(obj.endDate).isAfter(now)))
                     );
                 });
             }
@@ -2896,15 +2900,17 @@ function loadProductsById(productIds, loadUnavailable, loadStarterKits, loadStar
         for (var i=0; i < products; i++) {
             if (products[i].contains) {
                 products[i].contains = products[i].contains.filter(function (obj, index) {
-                    return ((obj.startDate != null && moment(obj.startDate).isBefore(now)) ||
-                    (obj.endDate != null && moment(obj.endDate).isAfter(now))
+                    return (
+                    (obj.startDate == null || (obj.startDate != null && moment(obj.startDate).isBefore(now))) &&
+                    (obj.endDate == null || (obj.endDate != null && moment(obj.endDate).isAfter(now)))
                     );
                 });
             }
             if (products[i].promotionalMessages) {
                 products[i].promotionalMessages = products[i].promotionalMessages.filter(function (obj, index) {
-                    return ((obj.startDate != null && moment(obj.startDate).isBefore(now)) ||
-                    (obj.endDate != null && moment(obj.endDate).isAfter(now))
+                    return (
+                    (obj.startDate == null || (obj.startDate != null && moment(obj.startDate).isBefore(now))) &&
+                    (obj.endDate == null || (obj.endDate != null && moment(obj.endDate).isAfter(now)))
                     );
                 });
             }
@@ -2969,15 +2975,17 @@ function loadProducts(loadUnavailable, loadComponents, skip, limit, sort) {
         for (var i=0; i < products; i++) {
             if (products[i].contains) {
                 products[i].contains = products[i].contains.filter(function (obj, index) {
-                    return ((obj.startDate != null && moment(obj.startDate).isBefore(now)) ||
-                    (obj.endDate != null && moment(obj.endDate).isAfter(now))
+                    return (
+                    (obj.startDate == null || (obj.startDate != null && moment(obj.startDate).isBefore(now))) &&
+                    (obj.endDate == null || (obj.endDate != null && moment(obj.endDate).isAfter(now)))
                     );
                 });
             }
             if (products[i].promotionalMessages) {
                 products[i].promotionalMessages = products[i].promotionalMessages.filter(function (obj, index) {
-                    return ((obj.startDate != null && moment(obj.startDate).isBefore(now)) ||
-                    (obj.endDate != null && moment(obj.endDate).isAfter(now))
+                    return (
+                    (obj.startDate == null || (obj.startDate != null && moment(obj.startDate).isBefore(now))) &&
+                    (obj.endDate == null || (obj.endDate != null && moment(obj.endDate).isAfter(now)))
                     );
                 });
             }
@@ -3069,15 +3077,17 @@ function loadProductById(productId, loadUnavailable, loadStarterKit, loadStarter
                 //logger.debug('products:', products);
                 if (products[0].contains) {
                     products[0].contains = products[0].contains.filter(function (obj, index) {
-                        return ((obj.startDate != null && moment(obj.startDate).isBefore(now)) ||
-                        (obj.endDate != null && moment(obj.endDate).isAfter(now))
+                        return (
+                            (obj.startDate == null || (obj.startDate != null && moment(obj.startDate).isBefore(now))) &&
+                            (obj.endDate == null || (obj.endDate != null && moment(obj.endDate).isAfter(now)))
                         );
                     });
                 }
                 if (products[0].promotionalMessages) {
                     products[0].promotionalMessages = products[0].promotionalMessages.filter(function (obj, index) {
-                        return ((obj.startDate != null && moment(obj.startDate).isBefore(now)) ||
-                        (obj.endDate != null && moment(obj.endDate).isAfter(now))
+                        return (
+                            (obj.startDate == null || (obj.startDate != null && moment(obj.startDate).isBefore(now))) &&
+                            (obj.endDate == null || (obj.endDate != null && moment(obj.endDate).isAfter(now)))
                         );
                     });
                 }
