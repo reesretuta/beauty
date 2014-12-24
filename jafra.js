@@ -2130,7 +2130,7 @@ function updateInventory(noProcessing) {
         // if we have lastUpdated and it's less than 24 hours ago, do a fetch to the DB
         if (lastUpdated != null && (moment.unix(lastUpdated).isAfter(HOURS_24_AGO) || FORCE_INVENTORY_CACHE)) {
             // we need to update again
-            logger.error("getAllInventory(): fetching inventory from the database");
+            logger.debug("getAllInventory(): fetching inventory from the database");
 
             models.Inventory.find({}).exec(function (err, inventoryItems) {
                 if (err) {
@@ -2160,7 +2160,7 @@ function updateInventory(noProcessing) {
 
         // else fetch from the server
         } else {
-            logger.error("getAllInventory(): fetching inventory from JCS");
+            logger.debug("getAllInventory(): fetching inventory from JCS");
             request.get({
                 url: GET_ALL_INVENTORY_URL, headers: {
                     'Accept': 'application/json, text/json', 'Authorization': AUTH_STRING
@@ -2293,7 +2293,7 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
 
             // check orders since last inventory update to subtract from the availableInventory
             getConfigValue("inventoryLastUpdated").then(function(lastUpdated) {
-                logger.error("getAllInventory(): inventory lastUpdated", lastUpdated);
+                logger.debug("getAllInventory(): inventory lastUpdated", lastUpdated);
 
                 var orderHistoryComplete = Q.defer();
 
