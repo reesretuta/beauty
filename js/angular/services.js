@@ -1364,7 +1364,7 @@ angular.module('app.services', ['ngResource'])
                     var cardData = JSON.stringify(creditCard);
                     var encrypted = openpgp.encryptMessage(publicKey.keys, cardData);
                     encrypted = encrypted.trim();
-                    console.log("credit card data", cardData);
+                    //console.log("credit card data", cardData);
                     console.log("encrypted credit card data", encrypted);
 
                     creditCardService.update({

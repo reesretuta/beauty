@@ -1249,6 +1249,10 @@ angular.module('app.controllers.checkout')
                 // re-enable scrolling on body
                 body.css("overflow-y", "auto");
 
+                if (result.creditCard) {
+                    $scope.profile.card = result.creditCard;
+                }
+
                 dd.resolve(result);
             });
 

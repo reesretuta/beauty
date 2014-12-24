@@ -1,9 +1,17 @@
 
-angular.module('app.controllers.checkout').controller('EditCreditCardModalController', function ($document, HashKeyCopier, $modalInstance, $q, $scope, $location, $log, CreditCards, creditCard) {
+angular.module('app.controllers.checkout').controller('EditCreditCardModalController', function ($document, HashKeyCopier, $modalInstance, $q, $scope, $location, $log, CreditCards, creditCard, JOIN_BASE_URL) {
 
     $log.debug("EditCreditCardModalController(): editing creditCard", creditCard);
 
     $scope.creditCard = angular.copy(creditCard);
+
+    $scope.isOnlineSponsoring = false;
+
+    var path = $location.path();
+    $log.debug("EditCreditCardModalController(): path", path);
+    if (path && path.match(JOIN_BASE_URL)) {
+        $scope.isOnlineSponsoring = true;
+    }
 
     $scope.close = function () {
         $log.debug("EditCreditCardModalController(): canceling creditCard correction");
@@ -26,19 +34,28 @@ angular.module('app.controllers.checkout').controller('EditCreditCardModalContro
     $scope.save = function () {
         $scope.saveError = null;
         $scope.processing = true;
+
         $log.debug("EditCreditCardModalController(): save(): saving creditCard correction");
-        CreditCards.saveCreditCard($scope.creditCard).then(function(card) {
-            $log.debug("EditCreditCardModalController(): save(): saved");
-            $scope.processing = false;
+
+        if ($scope.isOnlineSponsoring) {
             $modalInstance.close({
-                creditCard: card,
+                creditCard: $scope.creditCard,
                 canceled: false
             });
-        }, function(error) {
-            $log.debug("EditCreditCardModalController(): save(): error", error);
-            $scope.processing = false;
-            $scope.saveError = "There was an error updating this card";
-        });
+        } else {
+            CreditCards.saveCreditCard($scope.creditCard).then(function(card) {
+                $log.debug("EditCreditCardModalController(): save(): saved");
+                $scope.processing = false;
+                $modalInstance.close({
+                    creditCard: card,
+                    canceled: false
+                });
+            }, function(error) {
+                $log.debug("EditCreditCardModalController(): save(): error", error);
+                $scope.processing = false;
+                $scope.saveError = "There was an error updating this card";
+            });
+        }
     };
 
     $scope.$on('$destroy', function() {
