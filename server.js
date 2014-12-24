@@ -8,6 +8,22 @@ var config = require('./config/config');
 
 var env = process.env.NODE_ENV || "development";
 
+var winston = require('winston');
+var logger = new winston.Logger({
+    transports: [
+        new winston.transports.Console({
+            level: env === 'development' ? 'debug' : 'info',
+            handleExceptions: false,
+            json: false,
+            colorize: true
+        })
+    ],
+    exitOnError: true
+});
+var expressWinston = require('express-winston');
+
+// FIXME - pull from config and set logger.transports.console.level = 'debug';
+
 var express = require('express');
 var methodOverride = require('method-override');
 var bodyParser = require('body-parser');
@@ -17,6 +33,7 @@ var session = require('express-session');
 var auth = require("basic-auth");
 var MongoStore = require('connect-mongo')(session);
 var jafraClient = require('./jafra');
+jafraClient.setLogger(logger);
 var Types = require("mongoose").Types;
 var S = require("string");
 var http = require('http');
@@ -32,7 +49,6 @@ var LEAD_PROCESSING_INTERVAL = process.env.LEAD_PROCESSING_INTERVAL || 5 * 60 * 
 var LEAD_MAX_AGE = process.env.LEAD_MAX_AGE || 60 * 60 * 1000; // default: 1 hour
 var INVENTORY_SCANNING_INTERVAL = process.env.INVENTORY_SCANNING_INTERVAL || 30 * 60 * 1000; // default: 30 minutes
 
-//var morgan = require('morgan')
 var models = require('./common/models.js');
 var GridFS = Grid(models.mongoose.connection.db, models.mongoose.mongo);
 
@@ -67,18 +83,18 @@ app.use(session(sess));
 app.use(function(req, res, next) {
     var user = auth(req);
 
-    //console.log("user", user);
+    //logger.debug("user", user);
     if ((user === undefined || user['name'] !== 'jafra' || user['pass'] !== 'easypassfordpaxton') && env != "development") {
         //res.statusCode = 401;
         //res.setHeader('WWW-Authenticate', 'Basic realm="JafraProto"');
         //res.end('Unauthorized');
         next();
     } else if (S(req.url).startsWith("/debug")) {
-        console.log("CLIENT DEBUG", req.url);
+        logger.debug("CLIENT DEBUG", req.url);
         res.statusCode = 200;
         res.end();
     } else if (S(req.url).startsWith("/error")) {
-        console.log("CLIENT ERROR", req.url);
+        logger.debug("CLIENT ERROR", req.url);
         res.statusCode = 200;
         res.end();
     } else {
@@ -92,7 +108,7 @@ app.use(function(req, res, next) {
 // create our router
 var router = express.Router();
 
-//console.log("have router",router);
+//logger.debug("have router",router);
 
 //// middleware to use for all requests
 //router.use(function(req, res, next) {
@@ -100,7 +116,7 @@ var router = express.Router();
 //    res.header("Access-Control-Allow-Headers", "X-Requested-With");
 //
 //    // do logging
-//    console.log('Request', JSON.stringify(req.url));
+//    logger.debug('Request', JSON.stringify(req.url));
 //    next();
 //});
 
@@ -110,7 +126,7 @@ jafraClient.preloadCategories();
 // ----------------------------------------------------
 router.route('/categories')// get all the categories
     .get(function (req, res) {
-        console.log("getting category list");
+        logger.debug("getting category list");
         var now = new Date();
 
         models.Category.find({$and:[
@@ -153,7 +169,7 @@ router.route('/categories')// get all the categories
                     ]}
                 }
 
-                console.log("returning", categories.length, "categories");
+                logger.debug("returning", categories.length, "categories");
                 res.json(categories);
             })
         });
@@ -188,7 +204,7 @@ router.route('/categories/:category_id')// get the category with that id
                         match: { onHold: false, showInMenu: true }
                     }
 
-                    console.log("returning category");
+                    logger.debug("returning category");
                     res.json(category);
                 })
             });
@@ -230,24 +246,24 @@ router.route('/products')
         var now = new Date();
 
         if (searchString != null && !S(searchString).isEmpty()) {
-            console.log("searching for product by string", searchString);
+            logger.debug("searching for product by string", searchString);
             //var re = new RegExp(searchString);
 
             jafraClient.searchProducts(searchString, loadUnavailable, skip, limit).then(function(products) {
                 res.json(products);
             }, function (err) {
-                console.error("error while searching products by string", err);
+                logger.error("error while searching products by string", err);
                 res.send(err);
             });
 
         } else if (categoryId != null && !S(categoryId).isEmpty()) {
-            console.log("searching for products by category", categoryId);
+            logger.debug("searching for products by category", categoryId);
             var id = parseInt(categoryId);
 
             jafraClient.loadProductsByCategory(id, loadUnavailable, skip, limit, sort).then(function(products) {
                 res.json(products);
             }, function (err) {
-                console.error("error while searching products by category", err);
+                logger.error("error while searching products by category", err);
                 res.send(err);
             });
 
@@ -255,21 +271,21 @@ router.route('/products')
             if (!Array.isArray(productIds)) {
                 productIds = [productIds];
             }
-            console.log("searching for product by IDs", productIds);
+            logger.debug("searching for product by IDs", productIds);
 
             jafraClient.loadProductsById(productIds, loadUnavailable, loadStarterKits, loadStarterKitsOnly).then(function(products) {
                 res.json(products);
             }, function (err) {
-                console.error("error while searching products by ID", err);
+                logger.error("error while searching products by ID", err);
                 res.send(err);
             });
         } else {
-            console.log("getting product list");
+            logger.debug("getting product list");
 
             jafraClient.loadProducts(loadUnavailable, loadComponents, skip, limit, sort).then(function(products) {
                 res.json(products);
             }, function (err) {
-                console.error("error while getting product list", err);
+                logger.error("error while getting product list", err);
                 res.send(err);
             });
 
@@ -283,7 +299,7 @@ router.route('/products/:productId').get(function (req, res) {
     var loadStarterKit = req.query.loadStarterKit || false;
     var loadStarterKitOnly = req.query.loadStarterKitOnly || false;
 
-    console.log('getting product', req.params.productId);
+    logger.debug('getting product', req.params.productId);
 
     jafraClient.loadProductById(productId, loadUnavailable, loadStarterKit, loadStarterKitOnly).then(function(product) {
         res.json(product);
@@ -301,26 +317,26 @@ router.route('/authenticate')// authenticate a user (accessed at POST http://loc
         var username = req.body.username;
         var password = req.body.password;
 
-        console.log("logging in with", username, password);
+        logger.debug("logging in with", username, password);
 
         // TODO - auth & get client ID
 
         // associate the client with the session
         if (req.session.cart == null) {
-            console.log('setting default cart');
+            logger.debug('setting default cart');
             req.session.cart = [];
         }
         if (req.session.checkout == null) {
-            console.log('setting default checkout');
+            logger.debug('setting default checkout');
             req.session.checkout = {};
         }
         if (req.session.language == null) {
-            console.log('setting default language');
+            logger.debug('setting default language');
             req.session.language = 'en_US';
         }
 
         jafraClient.authenticate(username, password).then(function(r) {
-            console.log("authentication successful", r);
+            logger.debug("authentication successful", r);
 
             // set the client in the session
             req.session.client = r.result;
@@ -328,7 +344,7 @@ router.route('/authenticate')// authenticate a user (accessed at POST http://loc
             res.status(r.status);
             res.json(req.session);
         }, function(r) {
-            console.log("authentication failed");
+            logger.debug("authentication failed");
             res.status(r.status);
             res.json(r.result);
         });
@@ -336,15 +352,15 @@ router.route('/authenticate')// authenticate a user (accessed at POST http://loc
 
 router.route('/logout')
     .post(function (req, res) {
-        console.log("logout", req.session);
+        logger.debug("logout", req.session);
         req.session.destroy(function(err) {
             if (err) {
-                console.log('failed to delete session', error);
+                logger.debug('failed to delete session', error);
                 res.status(500);
                 res.end();
                 return;
             }
-            console.log('session deleted');
+            logger.debug('session deleted');
             res.status(200);
             res.json(req.session);
             res.end();
@@ -376,20 +392,20 @@ router.route('/session')
         if (updated) {
             req.session.save(function(err) {
                 if (err) {
-                    console.error('error saving session', err);
+                    logger.error('error saving session', err);
                     res.status(500);
                     res.end();
                     return;
                 }
 
-                console.log('session saved', req.session);
+                logger.debug('session saved', req.session);
                 res.json(req.session);
                 res.end();
             });
             return;
         }
 
-        console.log("returning session", req.session);
+        logger.debug("returning session", req.session);
         res.json(req.session);
         res.end();
     })
@@ -398,7 +414,7 @@ router.route('/session')
     .put(function (req, res) {
         var session = req.body;
 
-        console.log("update session request", session);
+        logger.debug("update session request", session);
 
         req.session.consultantId = session.consultantId;
         req.session.source = session.source;
@@ -423,14 +439,14 @@ router.route('/session')
 
         req.session.save(function(err) {
             if (err) {
-                console.error('error saving session', err);
+                logger.error('error saving session', err);
                 res.status(500);
                 res.end();
                 return;
             }
 
             // session saved
-            console.log('session updated', req.session);
+            logger.debug('session updated', req.session);
             res.status(200);
             res.json(req.session);
             res.end();
@@ -450,7 +466,7 @@ router.route('/leads')// create a lead
             language: req.body.language
         }, function (err, lead) {
             if (err) {
-                console.error("failed to create lead", err);
+                logger.error("failed to create lead", err);
                 res.status(500);
                 res.json({
                     statusCode: 500,
@@ -464,7 +480,7 @@ router.route('/leads')// create a lead
             // any leads that are created will get pushed to JCS on an interval, if they haven't been
             // closed by the user completing the online sponsoring process
 
-            console.error("created lead", lead);
+            logger.error("created lead", lead);
 
             res.status(201);
             res.json(lead);
@@ -475,7 +491,7 @@ router.route('/leads')// create a lead
     .delete(function (req, res) {
         var email = req.query.email;
 
-        console.log("removing leads for", email);
+        logger.debug("removing leads for", email);
 
         if (S(email).isEmpty()) {
             res.status(400);
@@ -490,7 +506,7 @@ router.route('/leads')// create a lead
 
         models.Lead.update({ email: email, sent: false, completed: false }, { completed: true }, {options: { multi: true }}, function (err, count) {
             if (err) {
-                console.error("failed to remove lead", err);
+                logger.error("failed to remove lead", err);
                 res.status(500);
                 res.json({
                     statusCode: 500,
@@ -504,7 +520,7 @@ router.route('/leads')// create a lead
             // any leads that are created will get pushed to JCS on an interval, if they haven't been
             // closed by the user completing the online sponsoring process
 
-            console.error("updated lead count", count);
+            logger.error("updated lead count", count);
 
             res.status(204);
             res.end();
@@ -519,7 +535,7 @@ router.route('/clients') // get current client
 
         // validate the email address first, then create the client if it's valid
         jafraClient.validateEmail(req.body.email).then(function(r) {
-            console.log("validated email", r.status, "result", r.result);
+            logger.debug("validated email", r.status, "result", r.result);
 
             // email is valid, continue
             jafraClient.createClient({
@@ -531,7 +547,7 @@ router.route('/clients') // get current client
                 consultantId: req.body.consultantId,
                 language: req.body.language
             }).then(function(r2) {
-                console.log("created client", r2.result.statusCode, "body", r2.result);
+                logger.debug("created client", r2.result.statusCode, "body", r2.result);
 
                 // add the new client to the session
                 req.session.client = r2.result;
@@ -541,13 +557,13 @@ router.route('/clients') // get current client
                 res.json(r2.result);
                 res.end();
             }, function(r2) {
-                console.error("failed to create client", r2.result.statusCode, "body", r2.body);
+                logger.error("failed to create client", r2.result.statusCode, "body", r2.body);
                 res.status(r2.status);
                 res.json(r2.result);
                 res.end();
             });
         }, function(r) {
-            console.error("failed to validate email", r.status, "result", r.result);
+            logger.error("failed to validate email", r.status, "result", r.result);
             res.status(r.status);
             res.json(r.result);
             res.end();
@@ -557,33 +573,33 @@ router.route('/clients') // get current client
 
 router.route('/clients/passwordReset')
     .get(function (req, res) {
-        console.log("password reset: got data", req.query);
+        logger.debug("password reset: got data", req.query);
         var email = req.query.email;
         var language = req.query.language;
 
         jafraClient.requestPasswordReset(email, language).then(function(r) {
-            console.log("success", r)
+            logger.debug("success", r)
             res.status(r.status);
             res.json(r.result);
         }, function(r) {
-            console.error("failure", r)
+            logger.error("failure", r)
             res.status(r.status);
             res.json(r.result);
         });
     })
 
     .post(function (req, res) {
-        console.log("password change: got data", req.body);
+        logger.debug("password change: got data", req.body);
         var token = req.body.token;
         var email = req.body.email;
         var password = req.body.password;
 
         jafraClient.requestPasswordChange(email, password, token).then(function(r) {
-            console.log("success", r)
+            logger.debug("success", r)
             res.status(r.status);
             res.json(r.result);
         }, function(r) {
-            console.error("failure", r)
+            logger.error("failure", r)
             res.status(r.status);
             res.json(r.result);
         });
@@ -598,7 +614,7 @@ router.route('/clients/:client_id').get(function (req, res) {
             res.status(data.status);
             res.json(data.result);
         }, function (data) {
-            console.error('server: getClient(): failed to load client', data.result);
+            logger.error('server: getClient(): failed to load client', data.result);
             res.status(data.status);
             res.json(data.result);
         });
@@ -618,7 +634,7 @@ router.route('/clients/:client_id').get(function (req, res) {
             res.status(r.status);
             res.json(r.result);
         }, function (r) {
-            console.error("server: getClient(): failed to load client", r.result);
+            logger.error("server: getClient(): failed to load client", r.result);
             res.status(500);
             res.json(r.result);
         });
@@ -636,14 +652,14 @@ router.route('/consultants') // get current consultant
 
     // create a consultant
     .post(function (req, res) {
-        console.log("create consultant: got data", req.body.encrypted);
+        logger.debug("create consultant: got data", req.body.encrypted);
 
         jafraClient.createConsultant(req.body.encrypted).then(function(r) {
-            console.log("success", r)
+            logger.debug("success", r)
             res.status(r.status);
             res.json(r.result);
         }, function(r) {
-            console.error("failure", r)
+            logger.error("failure", r)
             res.status(r.status);
             res.json(r.result);
         });
@@ -653,15 +669,15 @@ router.route('/consultants/lookup') // get current consultant
 
     // lookup a consultant
     .post(function (req, res) {
-        console.log("lookup consultant: got data", req.body.encrypted);
+        logger.debug("lookup consultant: got data", req.body.encrypted);
 
         // fetch
         jafraClient.lookupConsultant(req.body.encrypted).then(function(r) {
-            console.log("server: consultant looked up");
+            logger.debug("server: consultant looked up");
             res.status(200);
             res.json(r.result);
         }, function (r) {
-            console.error("server: failed to load consultant", r.result);
+            logger.error("server: failed to load consultant", r.result);
             res.status(r.status);
             res.json(r.result);
             res.end();
@@ -679,7 +695,7 @@ router.route('/consultants/:consultant_id')// get a consultant
                 res.status(r.status);
                 res.json(r.result);
             }, function (r) {
-                console.error("server: getConsultant(): failed to load consultant", r.result);
+                logger.error("server: getConsultant(): failed to load consultant", r.result);
                 res.status(r.status);
                 res.json(r.result);
             });
@@ -689,7 +705,7 @@ router.route('/consultants/:consultant_id')// get a consultant
                 res.status(r.status);
                 res.json(r.result);
             }, function (r) {
-                console.error("server: getConsultant(): failed to load consultant", r.result);
+                logger.error("server: getConsultant(): failed to load consultant", r.result);
                 res.status(500);
                 res.json(r.result);
             });
@@ -703,7 +719,7 @@ router.route('/consultants/:consultant_id')// get a consultant
 router.route('/clients/:client_id/addresses')// get a client's addresses
     .get(function (req, res) {
         var clientId = req.params.client_id;
-        console.log("create address", req.body);
+        logger.debug("create address", req.body);
 
         // must be authenticated
         if (req.session.client == null) {
@@ -717,7 +733,7 @@ router.route('/clients/:client_id/addresses')// get a client's addresses
         }
 
         jafraClient.getAddresses(clientId).then(function(r) {
-            console.error("got addresses", r.status, r.result);
+            logger.error("got addresses", r.status, r.result);
 
             // return response
             res.status(r.status);
@@ -729,7 +745,7 @@ router.route('/clients/:client_id/addresses')// get a client's addresses
             // return the address data
             res.json(addresses);
         }, function(r) {
-            console.error("failed to get addresses", r.status, r.result);
+            logger.error("failed to get addresses", r.status, r.result);
             res.status(r.status);
             res.json(r.result);
         });
@@ -750,7 +766,7 @@ router.route('/clients/:client_id/addresses')// get a client's addresses
             return;
         }
 
-        console.log("creating address", clientId, req.body);
+        logger.debug("creating address", clientId, req.body);
 
         jafraClient.createAddress(clientId, {
             "name": req.body.name,
@@ -764,7 +780,7 @@ router.route('/clients/:client_id/addresses')// get a client's addresses
             "country": req.body.country,
             "phone": req.body.phone
         }).then(function(r) {
-            console.error("created address", r.status, r.result);
+            logger.error("created address", r.status, r.result);
 
             // return response
             res.status(r.status);
@@ -776,7 +792,7 @@ router.route('/clients/:client_id/addresses')// get a client's addresses
             // return the address data
             res.json(address);
         }, function(r) {
-            console.error("failed to create address", r.status, r.result);
+            logger.error("failed to create address", r.status, r.result);
             res.status(r.status);
             res.json(r.result);
         });
@@ -806,10 +822,10 @@ router.route('/clients/:client_id/addresses/:address_id')// get a client address
             return;
         }
 
-        console.log("updating address", req.body);
+        logger.debug("updating address", req.body);
 
         jafraClient.updateAddress(clientId, addressId, req.body).then(function(r) {
-            console.error("updated address", r.status, r.result);
+            logger.error("updated address", r.status, r.result);
 
             // update this address in the session
             if (req.session.checkout && req.session.checkout.shipping && req.session.checkout.shipping.id == addressId) {
@@ -822,7 +838,7 @@ router.route('/clients/:client_id/addresses/:address_id')// get a client address
             res.json(r.status);
             res.json(r.result);
         }, function(r) {
-            console.error("failed to create cc", r.status, r.result);
+            logger.error("failed to create cc", r.status, r.result);
             res.status(r.status);
             res.json(r.result);
         });
@@ -844,10 +860,10 @@ router.route('/clients/:client_id/addresses/:address_id')// get a client address
             return;
         }
 
-        console.log("deleting", clientId, addressId);
+        logger.debug("deleting", clientId, addressId);
 
         jafraClient.deleteAddress(clientId, addressId).then(function(r) {
-            console.log("deleted address", clientId, addressId);
+            logger.debug("deleted address", clientId, addressId);
 
             // remove the address from the req.session data
             for (var i=0; i < req.session.client.addresses.length; i++) {
@@ -869,7 +885,7 @@ router.route('/clients/:client_id/addresses/:address_id')// get a client address
             res.status(r.status);
             res.json(r.result);
         }, function(r) {
-            console.error("failed to delete address", r.status, r.result);
+            logger.error("failed to delete address", r.status, r.result);
             res.status(r.status);
             res.json(r.result);
         });
@@ -888,10 +904,10 @@ router.route('/clients/:client_id/creditCards')// get a client's creditCards
     .post(function (req, res) {
         var clientId = req.params.client_id;
 
-        console.log("got data", req.body.encrypted);
+        logger.debug("got data", req.body.encrypted);
 
         jafraClient.createCreditCard(clientId, req.body.encrypted).then(function(r) {
-            console.log("created credit card", r.status, r.result);
+            logger.debug("created credit card", r.status, r.result);
 
             // return response
             res.status(r.status);
@@ -899,15 +915,15 @@ router.route('/clients/:client_id/creditCards')// get a client's creditCards
             // add this CC to the session
             var cc = r.result;
 
-            console.log("created credit card, client", req.session.client);
+            logger.debug("created credit card, client", req.session.client);
             req.session.client.creditCards.push(cc);
 
             // return the address data
             res.json(cc);
             res.end();
-            console.error("create credit card done");
+            logger.error("create credit card done");
         }, function(r) {
-            console.error("failed to create cc", r.status, r.result);
+            logger.error("failed to create cc", r.status, r.result);
             res.status(r.status);
             res.json(r.result);
             res.end();
@@ -930,15 +946,15 @@ router.route('/clients/:client_id/creditCards/:creditCardId')// get a client cre
             return;
         }
 
-        console.log("got cc get", clientId, creditCardId);
+        logger.debug("got cc get", clientId, creditCardId);
 
         jafraClient.getCreditCard(clientId, creditCardId).then(function(r) {
-            console.log("got credit card", r.status, "result", r.result);
+            logger.debug("got credit card", r.status, "result", r.result);
             // return response
             res.status(r.status);
             res.json(r.result);
         }, function(r) {
-            console.error("failed to get credit card", r.status, "result", r.result);
+            logger.error("failed to get credit card", r.status, "result", r.result);
             res.status(r.status);
             res.json(r.result);
         });
@@ -960,16 +976,16 @@ router.route('/clients/:client_id/creditCards/:creditCardId')// get a client cre
             return;
         }
 
-        console.log("got cc update", clientId, creditCardId, req.body.encrypted);
+        logger.debug("got cc update", clientId, creditCardId, req.body.encrypted);
 
         jafraClient.updateCreditCard(clientId, creditCardId, req.body.encrypted).then(function(r) {
-            console.error("updated credit card", r.status, r.result);
+            logger.error("updated credit card", r.status, r.result);
 
             // remove the cc from the req.session data
             for (var i=0; i < req.session.client.creditCards.length; i++) {
                 if (req.session.client.creditCards[i].id == creditCardId) {
                     req.session.client.creditCards[i] = r.result;
-                    console.log("updated credit card in session");
+                    logger.debug("updated credit card in session");
                     break;
                 }
             }
@@ -980,12 +996,12 @@ router.route('/clients/:client_id/creditCards/:creditCardId')// get a client cre
 
             //// fetch credit cards now to place in the session
             //jafraClient.getCreditCards(clientId).then(function(r) {
-            //    console.error("setting credit cards in session to", r.status, r.result);
+            //    logger.error("setting credit cards in session to", r.status, r.result);
             //    req.session.client.creditCards = r.result;
             //    res.status(204);
             //    res.end();
             //}, function(r) {
-            //    console.error("failed to create cc", r.status, r.result);
+            //    logger.error("failed to create cc", r.status, r.result);
             //    res.status(500);
             //    res.json({
             //        statusCode: 500,
@@ -995,7 +1011,7 @@ router.route('/clients/:client_id/creditCards/:creditCardId')// get a client cre
             //    res.end();
             //});
         }, function(r) {
-            console.error("failed to create cc", r.status, r.result);
+            logger.error("failed to create cc", r.status, r.result);
             res.status(r.status);
             res.json(r.result);
         });
@@ -1017,16 +1033,16 @@ router.route('/clients/:client_id/creditCards/:creditCardId')// get a client cre
             return;
         }
 
-        console.log("got cc delete", clientId, creditCardId);
+        logger.debug("got cc delete", clientId, creditCardId);
 
         jafraClient.deleteCreditCard(clientId, creditCardId).then(function(r) {
-            console.log("deleted credit card", r.status, r.result);
+            logger.debug("deleted credit card", r.status, r.result);
 
             // remove the cc from the req.session data
             for (var i=0; i < req.session.client.creditCards.length; i++) {
                 if (req.session.client.creditCards[i].id == creditCardId) {
                     req.session.client.creditCards.splice(i, 1);
-                    console.log("removing deleted credit card from session");
+                    logger.debug("removing deleted credit card from session");
                     break;
                 }
             }
@@ -1034,13 +1050,13 @@ router.route('/clients/:client_id/creditCards/:creditCardId')// get a client cre
             res.json(r.status);
             res.json(r.result);
         }, function(r) {
-            console.error("failed to delete cc", r.status, r.result);
+            logger.error("failed to delete cc", r.status, r.result);
 
             // remove the cc from the req.session data
             for (var i=0; i < req.session.client.creditCards.length; i++) {
                 if (req.session.client.creditCards[i].id == creditCardId) {
                     req.session.client.creditCards.splice(i, 1);
-                    console.log("removing deleted credit card from session");
+                    logger.debug("removing deleted credit card from session");
                     break;
                 }
             }
@@ -1054,14 +1070,14 @@ router.route('/clients/:client_id/creditCards/:creditCardId')// get a client cre
 // ----------------------------------------------------
 router.route('/orders')// create an order
     .post(function (req, res) {
-        console.log("create order: got data", req.body);
+        logger.debug("create order: got data", req.body);
 
         jafraClient.createOrder(req.body).then(function(r) {
-            console.log("success", r)
+            logger.debug("success", r)
             res.status(r.status);
             res.json(r.result);
         }, function(r) {
-            console.error("failure", r)
+            logger.error("failure", r)
             res.status(r.status);
             res.json(r.result);
         });
@@ -1070,7 +1086,7 @@ router.route('/orders')// create an order
 //// VALIDATION
 router.route('/validate/address') // validate address
     .post(function (req, res) {
-        console.log("validating address", req.body);
+        logger.debug("validating address", req.body);
 
         // validate the address
         jafraClient.validateAddress({
@@ -1083,11 +1099,11 @@ router.route('/validate/address') // validate address
             "country": req.body.country,
             "phone": req.body.phone
         }).then(function(r) {
-            console.log("validated address", r.status, "result", r.result);
+            logger.debug("validated address", r.status, "result", r.result);
             res.status(r.status);
             res.json(r.result);
         }, function(r) {
-            console.error("failed to validate address", r.status, "result", r.result);
+            logger.error("failed to validate address", r.status, "result", r.result);
             res.status(r.status);
             res.json(r.result);
         });
@@ -1097,14 +1113,14 @@ router.route('/validate/email') // validate email address
     .get(function (req, res) {
         var email = req.param('email');
 
-        console.log("validating email", email);
+        logger.debug("validating email", email);
         jafraClient.validateEmail(email).then(function(r) {
-            console.log("validated email", r.status, "result", r.result);
+            logger.debug("validated email", r.status, "result", r.result);
             // return response
             res.status(r.status);
             res.json(r.result);
         }, function(r) {
-            console.error("failed to validate email", r.status, "result", r.result);
+            logger.error("failed to validate email", r.status, "result", r.result);
             res.status(r.status);
             res.json(r.result);
         });
@@ -1114,14 +1130,14 @@ router.route('/geocodes')
     .get(function (req, res) {
         var zipCode = req.param('zipCode');
 
-        console.log("getting geocodes for zip", zipCode);
+        logger.debug("getting geocodes for zip", zipCode);
         jafraClient.getGeocodes(zipCode).then(function(r) {
-            console.log("got geocodes", r.status, "result", r.result);
+            logger.debug("got geocodes", r.status, "result", r.result);
             // return response
             res.status(r.status);
             res.json(r.result);
         }, function(r) {
-            console.error("failed to get geocodes", r.status, "result", r.result);
+            logger.error("failed to get geocodes", r.status, "result", r.result);
             res.status(r.status);
             res.json(r.result);
         });
@@ -1129,14 +1145,14 @@ router.route('/geocodes')
 
 router.route('/calculateTax')
     .post(function (req, res) {
-        console.log("getting tax calculations for", req.body);
+        logger.debug("getting tax calculations for", req.body);
         jafraClient.calculateSalesTax(req.body).then(function(r) {
-            console.log("got tax calculations", r.status, "result", r.result);
+            logger.debug("got tax calculations", r.status, "result", r.result);
             // return response
             res.status(r.status);
             res.json(r.result);
         }, function(r) {
-            console.error("failed to get tax calculations", r.status, "result", r.result);
+            logger.error("failed to get tax calculations", r.status, "result", r.result);
             res.status(r.status);
             res.json(r.result);
         });
@@ -1146,15 +1162,15 @@ router.route('/calculateTax')
 // ----------------------------------------------------
 // check if product is available
 router.route('/inventory/:inventoryId').get(function (req, res) {
-    console.log('getting inventory', req.params);
+    logger.debug('getting inventory', req.params);
 
     jafraClient.getInventory(req.params.inventoryId).then(function(r) {
-        console.log("got inventory", r.status, "result", r.result);
+        logger.debug("got inventory", r.status, "result", r.result);
         // return response
         res.status(r.status);
         res.json(r.result);
     }, function (r) {
-        console.error("failed to get inventory", r.status, "result", r.result);
+        logger.error("failed to get inventory", r.status, "result", r.result);
         res.status(r.status);
         res.json(r.result);
     });
@@ -1163,12 +1179,12 @@ router.route('/inventory/:inventoryId').get(function (req, res) {
 var assetRouter = express.Router();
 assetRouter.get('*', function (req, res) {
         var asset = req.params[0];
-        console.log("getting asset", asset);
+        logger.debug("getting asset", asset);
 
         try {
             GridFS.exist({filename: asset}, function (err, found) {
                 if (err) {
-                    console.error(err);
+                    logger.error(err);
                     res.status(404);
                     res.end();
                     return;
@@ -1177,11 +1193,11 @@ assetRouter.get('*', function (req, res) {
                 if (found) {
                     GridFS.files.find({filename: asset}).toArray(function (err, files) {
                         if (err) {
-                            console.error("error loading asset metadata", err);
+                            logger.error("error loading asset metadata", err);
                         }
 
                         if (files && files.length > 0) {
-                            //console.log(files);
+                            //logger.debug(files);
                             res.writeHead(200, {
                                 "Content-Type": "image/jpg",
                                 "Last-Modified": files[0].uploadDate,
@@ -1216,34 +1232,6 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
-// serve up proper PGP dynamically for dev/prod
-app.get('/js/pgp_key.js', function(req, res) {
-    try {
-        res.sendFile(basepath + '/' + config.pgp_key_file);
-    } catch (ex) {
-        console.error("Failed to open PGP key", ex);
-        res.status(404);
-        res.end();
-    }
-});
-
-// serve up proper config.js
-app.get('/js/config.js', function(req, res) {
-    try {
-        res.contentType("text/javascript");
-        if (env === 'test' || env === 'development') {
-            res.send("DEBUG=true;CDN_URL='"+config.cdn_base_url+"';");
-        } else {
-            res.send("DEBUG=false;CDN_URL='"+config.cdn_base_url+"';");
-        }
-        res.end();
-    } catch (ex) {
-        console.error("Failed to open debug script", ex);
-        res.status(404);
-        res.end();
-    }
-});
-
 // Web application
 app.use('/img', express.static(basepath + '/img'));
 app.use('/video', express.static(basepath + '/video'));
@@ -1270,7 +1258,7 @@ app.use('/assets', assetRouter);
 app.use(function(req, res, next) {
     // check for MAINTENANCE env variable
     var redirect, isInMaintenanceMode = (process.env.MAINTENANCE_MODE && process.env.MAINTENANCE_MODE.toString() === 'true') ? true : false;
-    console.log('> MAINTENANCE_MODE? -', isInMaintenanceMode);
+    logger.debug('> MAINTENANCE_MODE? -', isInMaintenanceMode);
     // is maintenance && index -> continue, otherwise redirect to home
     if (isInMaintenanceMode) {
         if (req.url === '/shop' || req.url === '/join' || /oops/.test(req.url)) {
@@ -1284,18 +1272,82 @@ app.use(function(req, res, next) {
     }
 });
 
+//app.use(expressWinston.errorLogger({
+//    transports: [
+//        new winston.transports.Console({
+//            level: env === 'development' ? 'debug' : 'info',
+//            handleExceptions: true,
+//            json: false,
+//            colorize: true
+//        })
+//    ]
+//}));
 
-//app.get('/$', function (req, res) {
-//    console.log('root', req);
-//    res.redirect("http://www.jafra.com/");
-//    res.end();
-//});
+// development error handler
+// will print stacktrace
+if (env === 'development') {
+    app.use(function(err, req, res, next) {
+        console.error("dev error handler invoked");
+        res.status(err.status || 500);
+        res.send({
+            status: 500,
+            result: {
+                statusCode: 500,
+                errorCode: "unknownError",
+                message: "Unknown Error"
+            }
+        });
+    });
+}
+
+// production error handler
+// no stacktraces leaked to user
+app.use(function(err, req, res, next) {
+    console.error("prod error handler invoked");
+    res.status(err.status || 500);
+    res.render('error', {
+        message: err.message,
+        error: {}
+    });
+});
+
+app.get('/testError', function (req, res) {
+    throw new Error('This should be caught');
+});
+
+// serve up proper PGP dynamically for dev/prod
+app.get('/js/pgp_key.js', function(req, res) {
+    try {
+        res.sendFile(basepath + '/' + config.pgp_key_file);
+    } catch (ex) {
+        logger.error("Failed to open PGP key", ex);
+        res.status(404);
+        res.end();
+    }
+});
+
+// serve up proper config.js
+app.get('/js/config.js', function(req, res) {
+    try {
+        res.contentType("text/javascript");
+        if (env === 'test' || env === 'development') {
+            res.send("DEBUG=true;CDN_URL='"+config.cdn_base_url+"';");
+        } else {
+            res.send("DEBUG=false;CDN_URL='"+config.cdn_base_url+"';");
+        }
+        res.end();
+    } catch (ex) {
+        logger.error("Failed to open debug script", ex);
+        res.status(404);
+        res.end();
+    }
+});
 
 // handle redirects
 app.get('*', function (req, res, next) {
-    //console.log("request for hostname", req.hostname);
+    //logger.debug("request for hostname", req.hostname);
     if (req.hostname && S(req.hostname).endsWith("joinjafra.com")) {
-        console.log("redirecting joinjafra.com to usa.jafra.com");
+        logger.debug("redirecting joinjafra.com to usa.jafra.com");
         res.redirect(301, "https://usa.jafra.com/join/");
         res.end();
         return;
@@ -1307,7 +1359,7 @@ app.get('*', function (req, res, next) {
 app.get('/*', function (req, res, next) {
     try {
         if (req.headers['user-agent'].indexOf("MSIE") >= 0) {
-            console.log('IE <= 9 detected, showing upgrade page');
+            logger.debug('IE <= 9 detected, showing upgrade page');
             var myNav = req.headers['user-agent'];
             var IEbrowser = parseInt(myNav.split('MSIE')[1])
             if (IEbrowser <= 9) {
@@ -1324,21 +1376,21 @@ app.get('/*', function (req, res, next) {
 });
 
 app.get('/$', function (req, res) {
-    console.log('root');
+    logger.debug('root');
     res.redirect("http://www.jafra.com/");
 });
 
 // any URL beginning with /join without a dot or / should serve online_sponsoring.html, save for /api methods captured above
 app.get('/join*', function (req, res) {
-    console.log('join path');
-    console.log('User-Agent: ' + req.headers['user-agent']);
+    logger.debug('join path');
+    logger.debug('User-Agent: ' + req.headers['user-agent']);
     res.sendFile(basepath + '/online_sponsoring.html'); // load the single view file (angular will handle the page changes on the front-end)
 });
 
 // any URL without a dot or / should serve index.html, save for /api methods captured above
 app.get('/shop*', function (req, res) {
-    console.log('store path');
-    console.log('User-Agent: ' + req.headers['user-agent']);
+    logger.debug('store path');
+    logger.debug('User-Agent: ' + req.headers['user-agent']);
     res.sendFile(basepath + '/index.html'); // load the single view file (angular will handle the page changes on the front-end)
 });
 
@@ -1347,22 +1399,22 @@ app.get('/encrypt_test.html$', function (req, res) {
 });
 
 models.onReady(function () {
-    console.log('Connected to database');
+    logger.debug('Connected to database');
 
     if (env === 'mock') {
         http.createServer(mockserver('./mocks')).listen(mock_port);
-        console.log('Mock API server on port ' + mock_port);
+        logger.debug('Mock API server on port ' + mock_port);
 
-        console.log('Loading test data');
+        logger.debug('Loading test data');
         require('./data/test')(models.mongoose);
     }
 
-    console.log('Using JCS API IP ', config.jcs_api_ip);
+    logger.debug('Using JCS API IP ', config.jcs_api_ip);
 
     // START THE SERVER
     // =============================================================================
     app.listen(port);
-    console.log('App & API on port ' + port);
+    logger.debug('App & API on port ' + port);
 
 
     // Configure Lead Cleanup Interval
@@ -1370,20 +1422,20 @@ models.onReady(function () {
     setInterval(function() {
         var now = new Date();
         var olderThan = new Date(now.getTime() - LEAD_MAX_AGE);
-        //console.log("now", now, "olderThan", olderThan);
+        //logger.debug("now", now, "olderThan", olderThan);
 
         models.Lead.find({created: {$lte: olderThan}, sent: false, completed: false}, function(err, leads) {
             if (err) {
-                console.error("failed looking up leads from server", err);
+                logger.error("failed looking up leads from server", err);
                 return;
             }
 
             if (leads == null) {
-                console.log("no leads to send to server");
+                logger.debug("no leads to send to server");
                 return;
             }
 
-            console.log("found old leads to send to server", leads);
+            logger.debug("found old leads to send to server", leads);
             for (var i=0; i < leads.length; i++) {
                 var lead = leads[i];
                 jafraClient.createLead({
@@ -1393,27 +1445,27 @@ models.onReady(function () {
                     phone: lead.phone,
                     language: lead.language
                 }).then(function(r) {
-                    console.log("created lead on server", r.result.statusCode, "body", r.result, "removing from local", lead._id);
+                    logger.debug("created lead on server", r.result.statusCode, "body", r.result, "removing from local", lead._id);
                     lead.sent = true;
                     lead.save(function (err, product, numberAffected) {
                         if (err) {
-                            console.error("failed to mark lead sent", err);
+                            logger.error("failed to mark lead sent", err);
                             return;
                         }
                     })
                 }, function(r) {
                     if (r.status == 409) {
                         // lead already created, mark sent
-                        console.log("created already on server", r.result.statusCode, "body", r.result, "marking sent", lead._id);
+                        logger.debug("created already on server", r.result.statusCode, "body", r.result, "marking sent", lead._id);
                         lead.sent = true;
                         lead.save(function (err, product, numberAffected) {
                             if (err) {
-                                console.error("failed to mark lead sent", err);
+                                logger.error("failed to mark lead sent", err);
                                 return;
                             }
                         })
                     } else {
-                        console.error("failed to create lead on server", r.result.statusCode, "body", r.body);
+                        logger.error("failed to create lead on server", r.result.statusCode, "body", r.body);
                     }
                 });
             }
@@ -1421,11 +1473,11 @@ models.onReady(function () {
     }, LEAD_PROCESSING_INTERVAL);
 
     function updateInventory() {
-        console.log("updating inventory");
+        logger.debug("updating inventory");
         jafraClient.updateInventory().then(function(inventory) {
-            console.log("updated inventory");
+            logger.debug("updated inventory");
         }, function(err) {
-            console.error("failed to update inventory", err);
+            logger.error("failed to update inventory", err);
         });
     }
 

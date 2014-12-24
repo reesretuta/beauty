@@ -36,7 +36,7 @@
         <div class="row form-group">
           <label for="address1" class="col-md-3 control-label"><span ng-bind-html="'IN_ADD_LINE1' | translate | unsafe"></span></label>
           <div class="col-sm-8 col-lg-6" ng-class="{ 'has-error' : addressForm.address1.$invalid && (addressForm.address1.$touched || addressForm.address1.$dirty) }">
-            <input id="address1" name="address1" ng-model="address.address1" type="text" class="form-control" placeholder="{{ 'IN_ADD_LINE1_DES' | translate }} " focus-on="address1-focus" required>
+            <input id="address1" name="address1" ng-model="address.address1" type="text" class="form-control" ng-maxlength="40" maxlength="40" placeholder="{{ 'IN_ADD_LINE1_DES' | translate }}" focus-on="address1-focus" required />
             <span ng-show="addressForm.address1.$invalid && (addressForm.address1.$touched || addressForm.address1.$dirty)" class="help-block text-danger">
               <span ng-bind-html="'ENTER-VALID-ADDRESS' | translate | unsafe"></span>
             </span>
@@ -46,7 +46,7 @@
         <div class="row form-group">
           <label for="address2" class="col-md-3 control-label"><span ng-bind-html="'IN_ADD_LINE2' | translate | unsafe"></span></label>
           <div class="col-sm-8 col-lg-6" ng-class="{ 'has-error' : addressForm.address2.$invalid && (addressForm.address2.$touched || addressForm.address2.$dirty) }">
-            <input id="shippingAddress2" name="address2" ng-model="address.address2" type="text" class="form-control" placeholder="{{ 'IN_ADD_LINE2_DES' | translate }} ">
+            <input id="shippingAddress2" name="address2" ng-model="address.address2" type="text" class="form-control" placeholder="{{ 'IN_ADD_LINE2_DES' | translate }}" ng-maxlength="40" maxlength="40" />
             <span ng-show="addressForm.address2.$invalid && (addressForm.address2.$touched || addressForm.address2.$dirty)" class="help-block text-danger">
               <span ng-bind-html="'ENTER-VALID-ADDRESS' | translate | unsafe"></span>
             </span>
