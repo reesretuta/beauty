@@ -544,7 +544,8 @@ angular.module('app.controllers.checkout')
                 $scope.profile.billing = angular.copy(address);
             }
 
-            $log.debug("CheckoutController(): selectShippingAddress(): profile now", $scope.profile);
+            //$log.debug("CheckoutController(): selectShippingAddress(): profile now", $scope.profile);
+            $log.debug("CheckoutController(): selectShippingAddress(): profile now");
             $scope.checkoutUpdated();
         }
 
@@ -809,7 +810,8 @@ angular.module('app.controllers.checkout')
         }
 
         $scope.validateProfileAndContinue = function() {
-            $log.debug("CheckoutController(): validateProfileAndContinue()", $scope.profile);
+            //$log.debug("CheckoutController(): validateProfileAndContinue()", $scope.profile);
+            $log.debug("CheckoutController(): validateProfileAndContinue()");
             $scope.profileSSNError = false;
             $scope.processing = true;
             if (debug) {
@@ -912,9 +914,9 @@ angular.module('app.controllers.checkout')
                 $log.debug('CheckoutController(): editAddress(): edit address modal: saved');
                 $log.debug('CheckoutController(): editAddress(): checking for addressType: (%s)', addressType);
                 if (addressType && !result.canceled) {
-                    $log.debug('CheckoutController(): editAddress(): set $scope.profile:', addressType, $scope.profile);
+                    $log.debug('CheckoutController(): editAddress()', addressType);
                     $scope.profile[addressType] = angular.copy(result.address);
-                    $log.debug('CheckoutController(): editAddress(): FINISHED setting $scope.profile:', $scope.profile);
+                    $log.debug('CheckoutController(): editAddress(): FINISHED');
                 }
                 dd.resolve();
                 body.css('overflow-y', 'auto');
@@ -1108,10 +1110,11 @@ angular.module('app.controllers.checkout')
         }
 
         $scope.selectCardAndContinue = function(ccData) {
-            $log.debug("CheckoutController(): selectCardAndContinue()", ccData);
+            //$log.debug("CheckoutController(): selectCardAndContinue()", ccData);
+            $log.debug("CheckoutController(): selectCardAndContinue()");
             $scope.profile.card = angular.copy(ccData);
 
-            $log.debug("CheckoutController(): selectCardAndContinue(): profile now", $scope.profile);
+            //$log.debug("CheckoutController(): selectCardAndContinue(): profile now", $scope.profile);
 
             $scope.checkoutUpdated();
             WizardHandler.wizard('checkoutWizard').goTo('Review');
@@ -1121,7 +1124,8 @@ angular.module('app.controllers.checkout')
             $scope.processing = true;
 
             if (debug) {
-                $log.debug("CheckoutController(): addPaymentMethod(): debug, adding card to checkout", $scope.profile.newCard);
+                //$log.debug("CheckoutController(): addPaymentMethod(): debug, adding card to checkout", $scope.profile.newCard);
+                $log.debug("CheckoutController(): addPaymentMethod(): debug, adding card to checkout");
                 $scope.profile.card = angular.copy($scope.profile.newCard);
                 WizardHandler.wizard('checkoutWizard').goTo('Review');
                 $scope.processing = false;
@@ -1129,10 +1133,12 @@ angular.module('app.controllers.checkout')
             }
 
             if (!$scope.isOnlineSponsoring) {
-                $log.debug("CheckoutController(): addPaymentMethod(): adding card to account", $scope.profile.newCard);
+                //$log.debug("CheckoutController(): addPaymentMethod(): adding card to account", $scope.profile.newCard);
+                $log.debug("CheckoutController(): addPaymentMethod(): adding card to account");
                 // we need to create a card and add to the account for client direct
                 CreditCards.addCreditCard($scope.profile.newCard).then(function(card) {
-                    $log.debug("CheckoutController(): addPaymentMethod(): continuing to review after adding card", card);
+                    //$log.debug("CheckoutController(): addPaymentMethod(): continuing to review after adding card", card);
+                    $log.debug("CheckoutController(): addPaymentMethod(): continuing to review after adding card");
                     $scope.profile.card = angular.copy(card);
                     $scope.profile.newCard = null;
 
@@ -1141,11 +1147,11 @@ angular.module('app.controllers.checkout')
                         // we need to create an address to add to the account for client direct
                         $scope.addBillingAddress($scope.profile.newBillingAddress).then(function(a) {
                             // only do the clear
-                            $log.debug('CheckoutController(): addPaymentMethod(): profile:', $scope.profile);
+                            //$log.debug('CheckoutController(): addPaymentMethod(): profile:', $scope.profile);
                             $scope.profile.billing = angular.copy(a);
                             $scope.profile.newBillingAddress = null;
                             $scope.checkoutUpdated();
-                            $log.debug('CheckoutController(): addPaymentMethod(): profile:', $scope.profile);
+                            $log.debug('CheckoutController(): addPaymentMethod()');
                             WizardHandler.wizard('checkoutWizard').goTo('Review');
                             $scope.processing = false;
                         }, function(err) {
@@ -1165,7 +1171,8 @@ angular.module('app.controllers.checkout')
             } else {
                 // we just add to checkout for online sponsoring
                 $scope.profile.newCard.lastFour = $scope.profile.newCard.card.substr($scope.profile.newCard.card.length - 4);
-                $log.debug("CheckoutController(): addPaymentMethod(): saving the card to the checkout and continuing on", $scope.profile.newCard);
+                //$log.debug("CheckoutController(): addPaymentMethod(): saving the card to the checkout and continuing on", $scope.profile.newCard);
+                $log.debug("CheckoutController(): addPaymentMethod(): saving the card to the checkout and continuing on");
                 $scope.profile.card = angular.copy($scope.profile.newCard);
 
                 if (!$scope.profile.billSame) {
@@ -1226,7 +1233,8 @@ angular.module('app.controllers.checkout')
         $scope.editCreditCard = function(card) {
             var dd = $q.defer();
 
-            $log.debug("CheckoutController(): editCreditCard()", card);
+            //$log.debug("CheckoutController(): editCreditCard()", card);
+            $log.debug("CheckoutController(): editCreditCard()");
 
             var d = $modal.open({
                 backdrop: true,
@@ -1265,7 +1273,8 @@ angular.module('app.controllers.checkout')
         // FIXME - only supports Online Sponsoring currently
         $scope.updatePaymentMethod = function() {
             if (debug) {
-                $log.debug("CheckoutController(): updatePaymentMethod(): debug, adding card to checkout", $scope.profile.newCard);
+                //$log.debug("CheckoutController(): updatePaymentMethod(): debug, adding card to checkout", $scope.profile.newCard);
+                $log.debug("CheckoutController(): updatePaymentMethod(): debug, adding card to checkout");
                 $scope.profile.card = angular.copy($scope.profile.newCard);
 
                 // close any modals
@@ -1277,7 +1286,8 @@ angular.module('app.controllers.checkout')
             if ($scope.isOnlineSponsoring) {
                 // we just add to checkout for online sponsoring
                 $scope.profile.newCard.lastFour = $scope.profile.newCard.card.substr($scope.profile.newCard.card.length - 4);
-                $log.debug("CheckoutController(): updatePaymentMethod(): saving the card to the checkout and continuing on", $scope.profile.newCard);
+                //$log.debug("CheckoutController(): updatePaymentMethod(): saving the card to the checkout and continuing on", $scope.profile.newCard);
+                $log.debug("CheckoutController(): updatePaymentMethod(): saving the card to the checkout and continuing on");
                 $scope.profile.card = angular.copy($scope.profile.newCard);
 
                 // no need to update sales tax, because we just updated the card, not the address
@@ -1339,11 +1349,11 @@ angular.module('app.controllers.checkout')
 
         $scope.$watch('profile.newCard.card', function(newVal, oldVal) {
             if (newVal != null) {
-                $log.debug("CheckoutController(): cardChanged()", newVal);
+                //$log.debug("CheckoutController(): cardChanged()", newVal);
                 var res = CreditCards.validateCard($scope.profile.newCard.card);
                 $scope.profile.newCard.cardType = res.type;
             } else if ($scope.profile.newCard) {
-                $log.debug("CheckoutController(): cardChanged()", newVal);
+                //$log.debug("CheckoutController(): cardChanged()", newVal);
                 $scope.profile.newCard.cardType = null;
             }
         });
@@ -1357,7 +1367,7 @@ angular.module('app.controllers.checkout')
 
         $scope.processOrder = function() {
             $log.debug("CheckoutController(): processOrder(): checkout", $scope.checkout);
-            $log.debug("CheckoutController(): processOrder(): profile", $scope.profile);
+            //$log.debug("CheckoutController(): processOrder(): profile", $scope.profile);
 
             $scope.processing = true;
             $scope.orderError = null;
@@ -1365,7 +1375,8 @@ angular.module('app.controllers.checkout')
             if ($scope.isOnlineSponsoring) {
                 if (debug) {
                     // need to add
-                    $log.debug("CheckoutController(): processOrder(): debug, adding card to checkout", $scope.profile.newCard);
+                    //$log.debug("CheckoutController(): processOrder(): debug, adding card to checkout", $scope.profile.newCard);
+                    $log.debug("CheckoutController(): processOrder(): debug, adding card to checkout");
                     $scope.profile.card = angular.copy($scope.profile.newCard);
                 }
 
