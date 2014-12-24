@@ -147,14 +147,14 @@
   <div class="row form-group">
     <label for="billingAddress1" class="col-md-3 control-label"><span ng-bind-html="'IN_ADD_LINE1' | translate | unsafe"></span></label>
     <div class="col-sm-8 col-lg-6">
-      <input name="address1" ng-model="profile.newBillingAddress.address1" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" type="text" class="form-control" id="billingAddress1" placeholder="{{ 'IN_ADD_LINE1_DES' | translate }} " required>
+      <input name="address1" ng-model="profile.newBillingAddress.address1" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-maxlength="40" maxlength="40" type="text" class="form-control" id="billingAddress1" placeholder="{{ 'IN_ADD_LINE1_DES' | translate }}" required />
     </div>
   </div>
 
   <div class="row form-group">
     <label for="billingAddress2" class="col-md-3 control-label"><span ng-bind-html="'IN_ADD_LINE2' | translate | unsafe"></span></label>
     <div class="col-sm-8 col-lg-6">
-      <input name="address2" ng-model="profile.newBillingAddress.address2" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" type="text" class="form-control" id="billingAddress2" placeholder="{{ 'IN_ADD_LINE2_DES' | translate }} " >
+      <input name="address2" ng-model="profile.newBillingAddress.address2" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-maxlength="40" maxlength="40" type="text" class="form-control" id="billingAddress2" placeholder="{{ 'IN_ADD_LINE2_DES' | translate }} " >
     </div>
   </div>
 
