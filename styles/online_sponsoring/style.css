@@ -1233,6 +1233,9 @@ body.incheckout {
   #freedom_flexibility_section .subcontainer .row {
     margin: 0em;
   }
+  body.es #pagenav #navbar-sections ul.join_nav {
+    font-size: 62.5%;
+  }
 }
 
 /* Medium screens like laptops and smaller desktop monitors */
