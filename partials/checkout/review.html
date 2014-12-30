@@ -132,7 +132,8 @@
             <small>EXP:</small>
             {{profile.card.expMonth}}/{{profile.card.expYear|substr:2:2}}
           </p>
-          <a ng-click="modifyPayment()" class="pull-right card-use-btn"><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'CHANGE' | translate | unsafe"></span></a>
+          <a ng-if="isOnlineSponsoring" ng-click="editCreditCard(profile.card)" class="pull-right card-use-btn"><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'EDIT' | translate | unsafe"></span></a>
+          <a ng-if="!isOnlineSponsoring" ng-click="modifyPayment()" class="pull-right card-use-btn"><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'CHANGE' | translate | unsafe"></span></a>
         </div>
       </div><!-- /card -->
       <!-- shipping card -->
