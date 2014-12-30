@@ -40,6 +40,7 @@
     "moment": "^2.8.4",
     "mongoose-q": "0.0.13",
     "winston": "^0.8.3",
-    "express-winston": "^0.2.9"
+    "express-winston": "^0.2.9",
+    "changeset": "^0.1.0"
   }
 }

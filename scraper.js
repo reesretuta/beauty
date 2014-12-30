@@ -12,6 +12,7 @@ var models = require('./common/models.js');
 var Grid = require('gridfs-stream');
 var GridFS = Grid(models.mongoose.connection.db, models.mongoose.mongo);
 var moment = require('moment');
+var diff = require('changeset');
 
 var options = require('minimist')(process.argv.slice(2));
 if (options["products"]) {
@@ -43,7 +44,7 @@ models.onReady(function() {
     var skippedProductKits = 0;
     var skippedProductGroups = 0;
 
-    var existingProducts = {};
+    var existingProductTypes = {};
     var existingProductPromotionalMessages = {};
     var existingProductUpsellItems = {};
 
@@ -79,7 +80,7 @@ models.onReady(function() {
         if (products != null) {
             for (var i=0; i < products.length; i++) {
                 var id = products[i]._id;
-                existingProducts[id] = products[i].type;
+                existingProductTypes[id] = products[i].type;
                 //console.log("product", id, "type", products[i].type);
                 existingProductPromotionalMessages[id] = products[i].promotionalMessages;
                 //console.log("product", id, "messages", products[i].promotionalMessages);
@@ -139,7 +140,7 @@ models.onReady(function() {
 
         // LOGIN
         spooky.then([{
-            existingProducts: existingProducts,
+            existingProductTypes: existingProductTypes,
             AVAILABLE_ONLY: AVAILABLE_ONLY,
             TEMP_UNAVAILABLE_ONLY: TEMP_UNAVAILABLE_ONLY,
             BASE_SITE_URL: BASE_SITE_URL,
@@ -194,7 +195,7 @@ models.onReady(function() {
         // CATEGORIES
         if (!options["skipCategories"] && !options["products"]) {
             spooky.then([{
-                existingProducts: existingProducts,
+                existingProductTypes: existingProductTypes,
                 AVAILABLE_ONLY: AVAILABLE_ONLY,
                 TEMP_UNAVAILABLE_ONLY: TEMP_UNAVAILABLE_ONLY,
                 BASE_SITE_URL: BASE_SITE_URL,
@@ -523,7 +524,7 @@ models.onReady(function() {
 
         // PRODUCTS & KITS
         spooky.then([{
-            existingProducts: existingProducts,
+            existingProductTypes: existingProductTypes,
             existingProductPromotionalMessages: existingProductPromotionalMessages,
             existingProductUpsellItems: existingProductUpsellItems,
             AVAILABLE_ONLY: AVAILABLE_ONLY,
@@ -646,7 +647,7 @@ models.onReady(function() {
                                         (TEMP_UNAVAILABLE_ONLY == true && product.status == "T"))      // temp unavail && product is temp unavail
                                     {
                                         // add to the list to be fetched if new
-                                        if (existingProducts[product.sku]) {
+                                        if (existingProductTypes[product.sku]) {
                                             console.log("[summary] found updated product" + (kits ? ' kit' : ''), product.sku);
                                             updateProducts.push({
                                                 id: product.id,
@@ -665,7 +666,7 @@ models.onReady(function() {
                                     } else {
                                         console.log("skipping unavailable product"+(kits?' kit':''), JSON.stringify(product));
                                         // mark it as unavailable in the database too, since we now know it's unavailable
-                                        if (existingProducts[product.sku]) {
+                                        if (existingProductTypes[product.sku]) {
                                             if (product.status == "I") {
                                                 unavailableProducts.push(product.sku);
                                             } else if (product.status == "T") {
@@ -716,12 +717,12 @@ models.onReady(function() {
 
                 for (var i=0; i < options["products"].length; i++) {
                     var sku = options["products"][i];
-                    console.log("getting listings for product", sku, "known type?", existingProducts[sku]);
+                    console.log("getting listings for product", sku, "known type?", existingProductTypes[sku]);
 
                     // try to fetch this product as both a product / kit
-                    if (existingProducts[sku] == "kit") {
+                    if (existingProductTypes[sku] == "kit") {
                         getProductListing(1, true, sku);
-                    } else if (existingProducts[sku] == "product") {
+                    } else if (existingProductTypes[sku] == "product") {
                         getProductListing(1, false, sku);
                     } else {
                         // not sure, so just try both
@@ -1604,7 +1605,7 @@ models.onReady(function() {
         // PRODUCT GROUPS
         if (!options["skipGroups"] && !options["products"]) {
             spooky.then([{
-                existingProducts: existingProducts,
+                existingProductTypes: existingProductTypes,
                 existingProductPromotionalMessages: existingProductPromotionalMessages,
                 existingProductUpsellItems: existingProductUpsellItems,
                 AVAILABLE_ONLY: AVAILABLE_ONLY,
@@ -1743,7 +1744,7 @@ models.onReady(function() {
                                             }
                                         } else {
                                             console.log("skipping productGroup.available product group", productGroup.id, productGroup.systemRef);
-                                            if (existingProducts[productGroup.id]) {
+                                            if (existingProductTypes[productGroup.id]) {
                                                 // mark all productGroup.available products as unvailable
 
                                                 if (productGroup.status == "I") {
@@ -2337,7 +2338,7 @@ models.onReady(function() {
         // KIT GROUPS
         if (!options["skipKitGroups"] && !options["products"]) {
             spooky.then([{
-                existingProducts: existingProducts,
+                existingProductTypes: existingProductTypes,
                 AVAILABLE_ONLY: AVAILABLE_ONLY,
                 BASE_SITE_URL: BASE_SITE_URL,
                 LANGUAGE: LANGUAGE
@@ -2651,6 +2652,12 @@ models.onReady(function() {
                                 }
                             }
 
+                            if (isUpdate) {
+                                // print out the changes
+                                var changes = diff(prod, p);
+                                console.log("[summary] changes", changes);
+                            }
+
                             // queue up images
                             console.log("saving images for product", id);
 
@@ -2701,24 +2708,24 @@ models.onReady(function() {
                         console.log("found existing kitGroup", JSON.stringify(prod));
                         isUpdate = true;
                     }
+
+                    // do a save
+                    models.KitGroup.update({_id: id}, kg, {upsert: true}, function (err, numAffected, rawResponse) {
+                        try {
+                            if (err) return console.error("error saving kitGroup", err, JSON.stringify(p));
+                            if (isUpdate) {
+                                updatedKitGroups++;
+                                console.log("updated kitGroup", id, updatedKitGroups, numAffected, rawResponse);
+                            } else {
+                                savedKitGroups++;
+                                console.log("saved kitGroup", id, savedKitGroups, numAffected, rawResponse);
+                            }
+                        } catch (ex) {
+                            console.error("error saving/updating kitGroup", id, JSON.stringify(ex));
+                        }
+                    });
                 } catch (ex) {
                     console.error("error looking up kitGroup before save/update", id, JSON.stringify(ex));
-                }
-            });
-
-            // do a save
-            models.KitGroup.update({_id: id}, kg, {upsert: true}, function (err, numAffected, rawResponse) {
-                try {
-                    if (err) return console.error("error saving kitGroup", err, JSON.stringify(p));
-                    if (isUpdate) {
-                        updatedKitGroups++;
-                        console.log("updated kitGroup", id, updatedKitGroups, numAffected, rawResponse);
-                    } else {
-                        savedKitGroups++;
-                        console.log("saved kitGroup", id, savedKitGroups, numAffected, rawResponse);
-                    }
-                } catch (ex) {
-                    console.error("error saving/updating kitGroup", id, JSON.stringify(ex));
                 }
             });
         } catch (ex) {
