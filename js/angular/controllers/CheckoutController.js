@@ -1230,6 +1230,10 @@ angular.module('app.controllers.checkout')
             return d.promise;
         }
 
+        $scope.modifyPayment = function() {
+            WizardHandler.wizard('checkoutWizard').goTo('Payment');
+        }
+
         $scope.editCreditCard = function(card) {
             var dd = $q.defer();
 

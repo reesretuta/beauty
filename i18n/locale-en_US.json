@@ -385,6 +385,7 @@
     "LAB_CONF_NEW_PASS":"Confirm New Password",
     "PASS_NOT_MATCH":"Passwords don't match.",
     "EDIT":"Edit",
+    "CHANGE":"Change",
     "TIT_ADD_NEW_ADDR":"Add a new address",
     "COUNTRY-US":"United States",
     "PHONE-NUMBER-WRONG":"Phone Number needs to be at least 10 numbers.",
