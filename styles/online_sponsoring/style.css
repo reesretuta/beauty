@@ -1234,7 +1234,7 @@ body.incheckout {
     margin: 0em;
   }
   body.es #pagenav #navbar-sections ul.join_nav {
-    font-size: 62.5%;
+    font-size: 73%; /*Fixing overflowing navbar text for Spanish navigation*/
   }
 }
 
