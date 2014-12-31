@@ -7,12 +7,14 @@ var init = require('./config/init')();
 var config = require('./config/config');
 
 var env = process.env.NODE_ENV || "development";
+var logLevel = process.env.LOG_LEVEL || (env === 'development' ? 'debug' : 'info');
+console.log("Log Level:", logLevel);
 
 var winston = require('winston');
 var logger = new winston.Logger({
     transports: [
         new winston.transports.Console({
-            level: env === 'development' ? 'debug' : 'info',
+            level: logLevel,
             handleExceptions: false,
             json: false,
             colorize: true
