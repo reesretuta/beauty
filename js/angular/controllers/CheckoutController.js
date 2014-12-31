@@ -1033,6 +1033,7 @@ angular.module('app.controllers.checkout')
                     lastName: $scope.profile.lastName,
                     dateOfBirth: $scope.profile.dateOfBirth,
                     consultantId: $scope.profile.consultantId,
+                    source: $scope.profile.source,
                     language: $scope.profile.language
                 }).then(function(session) {
                     $log.debug("CheckoutController(): loginOrCreateUser(): created client, moving to next step", session.client);
