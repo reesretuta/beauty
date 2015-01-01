@@ -8,11 +8,13 @@ var S = require('string');
 var request = require('request');
 var Q = require('Q');
 var jafraClient = require('./jafra');
+jafraClient.setLogger(console);
+
 var models = require('./common/models.js');
 var Grid = require('gridfs-stream');
 var GridFS = Grid(models.mongoose.connection.db, models.mongoose.mongo);
 var moment = require('moment');
-var diff = require('changeset');
+var deep = require('deep-diff');
 
 var options = require('minimist')(process.argv.slice(2));
 if (options["products"]) {
@@ -50,6 +52,8 @@ models.onReady(function() {
 
     var totalImageFetches = 0;
     var completedImageFetches = 0;
+
+    var processingProductComplete = {};
 
     var updatedProductIds = [];
 
@@ -790,14 +794,16 @@ models.onReady(function() {
                             }
                         }
 
-                        saveProduct(productId);
+                        saveProduct(productId, sku);
                     } catch (ex) {
                         console.error("error processing product", productId, JSON.stringify(ex));
                     }
                 }
             }
 
-            function saveProduct(productId) {
+            function saveProduct(productId, sku) {
+                console.log("[summary] saveProduct", sku);
+                this.emit('product.process', sku);
                 casper.then(function() {
                     var json = JSON.stringify(products[productId]);
                     console.log("====== Product ======");
@@ -1738,7 +1744,7 @@ models.onReady(function() {
                                                     }
                                                 }
 
-                                                saveProductGroup(productGroup.id);
+                                                saveProductGroup(productGroup.id, productGroup.systemRef);
                                             } catch (ex) {
                                                 console.error("error while processing product group", productGroup.id, JSON.stringify(ex));
                                             }
@@ -1776,7 +1782,8 @@ models.onReady(function() {
                 }
                 getProductGroupListing()
 
-                function saveProductGroup(productGroupId) {
+                function saveProductGroup(productGroupId, sku) {
+                    this.emit('product.process', sku);
                     casper.then(function () {
                         var json = JSON.stringify(productGroups[productGroupId]);
                         console.log("====== Product Group ======");
@@ -2595,27 +2602,32 @@ models.onReady(function() {
         skippedProducts++;
     });
 
-    spooky.on('product.save', function(json) {
-        var spookyThis = this;
-
+    spooky.on('product.process', function(sku) {
+        console.log("[summary] processing product", sku);
+        processingProductComplete[sku] = false;
         totalImageFetches++;
+    });
 
+    spooky.on('product.save', function(json) {
         try {
-            //console.log('saving product', json);
+            console.log('saving product', json);
 
             var p = JSON.parse(json);
             var id = p._id;
             delete p._id;
 
+            console.log('[summary] saving product', id);
+
             var isUpdate = false;
             updatedProductIds.push(id);
 
             // do a lookup on id, so we can detect how many are actually updates & if there are any type overwrites
-            models.Product.findById(id, 'type', function(err, prod) {
+            models.Product.findById(id, function (err, prod) {
                 try {
                     if (err) return console.error("error loading product", err);
                     if (prod != null) {
-                        console.log("found existing product", JSON.stringify(prod));
+                        //console.log("found existing product", JSON.stringify(prod));
+                        console.log("found existing product");
                         isUpdate = true;
                         if (p.type != prod.type) {
                             console.warn("saving over another type of product", p._id, p.type, prod.type);
@@ -2654,24 +2666,42 @@ models.onReady(function() {
 
                             if (isUpdate) {
                                 // print out the changes
-                                var changes = diff(prod, p);
-                                console.log("[summary] changes", changes);
+
+                                models.Product.findById(id, function (err, p) {
+                                    try {
+                                        if (err) return console.error("error loading updated product", err);
+                                        if (prod != null) {
+                                            var changes = deep.diff(prod, p, function (path, key) {
+                                                //console.log("[summary] key", key);
+                                                if (S(key).startsWith("$") || S(key).startsWith("_") || key == "save") {
+                                                    //console.log("[summary] ignoring key", key);
+                                                    return true;
+                                                }
+                                                return false;
+                                            });
+                                            //console.log("original", JSON.stringify(prod));
+                                            //console.log("updated", JSON.stringify(p));
+                                            console.log("[summary] product changes", changes);
+                                        }
+                                    } catch (ex) {
+                                        console.error("failed to re-load product to view changeset");
+                                    }
+                                });
                             }
 
                             // queue up images
                             console.log("saving images for product", id);
 
-                            saveImages(id, p, "products").then(function() {
+                            saveImages(id, p, "products").then(function () {
                                 console.log("[summary] saved product images");
+                                processingProductComplete[id] = true;
                                 completedImageFetches++;
-
-                                if (completedImageFetches == totalImageFetches) {
-                                    console.log("[summary] all images fetched, triggering done");
-                                    spookyThis.emit('done');
-                                }
-                            }, function(err) {
-                                completedImageFetches++;
+                                spooky.emit('doneCheck');
+                            }, function (err) {
                                 console.error("[summary] failed to saved product images", err);
+                                processingProductComplete[id] = true;
+                                completedImageFetches++;
+                                spooky.emit('doneCheck');
                             });
                         } catch (ex) {
                             console.error("error saving/updating product", id, ex, JSON.stringify(ex));
@@ -2687,6 +2717,28 @@ models.onReady(function() {
         } catch (ex) {
             console.error("error in product.save handler", JSON.stringify(ex));
             completedImageFetches++;
+        }
+    });
+
+    spooky.on('doneCheck', function() {
+        //console.log('doneCheck');
+
+        var done = true;
+        for (var id in processingProductComplete) {
+            if (processingProductComplete.hasOwnProperty(id)) {
+                if (processingProductComplete[id] == false) {
+                    console.log('[summary] not yet done', id);
+                    done = false;
+                    break;
+                }
+            }
+        }
+
+        if (done && completedImageFetches == totalImageFetches) {
+            //console.log('DONE');
+            this.emit('done');
+        } else {
+            //console.log('NOT DONE', completedImageFetches, totalImageFetches);
         }
     });
 
@@ -2788,14 +2840,14 @@ models.onReady(function() {
                             console.error("error removing old file", fileName);
                         }
 
-                        createFile(id, j, imagePath, fileName).then(function(val) {
+                        createFile(id, j, imagePath, type, fileName).then(function(val) {
                             d.resolve(val);
                         }, function(error) {
                             d.reject(error);
                         });
                     });
                 } else {
-                    createFile(id, j, imagePath, fileName).then(function(val) {
+                    createFile(id, j, imagePath, type, fileName).then(function(val) {
                         d.resolve(val);
                     }, function(error) {
                         d.reject(error);
@@ -2810,7 +2862,7 @@ models.onReady(function() {
         return d.promise;
     }
 
-    function createFile(id, j, imagePath, fileName) {
+    function createFile(id, j, imagePath, type, fileName) {
         var d = Q.defer();
 
         try {
@@ -2841,7 +2893,12 @@ models.onReady(function() {
 
                 console.log("createFile(): updating product image");
 
-                models.Product.update({_id: id}, update, {upsert: true}, function (err, numAffected, rawResponse) {
+                var model = models.Product;
+                if (type == "categories") {
+                    model = models.Category;
+                }
+
+                model.update({_id: id}, update, {upsert: true}, function (err, numAffected, rawResponse) {
                     if (err) {
                         console.error("createFile(): error updating product image path", err);
                         d.resolve({
@@ -2883,18 +2940,27 @@ models.onReady(function() {
         console.log("[summary] Skipped", skippedProductKits, "product kits");
 
         // now update availability of components, inventory numbers, etc.
-        jafraClient.updateInventory(true).then(function(inventory) {
-            jafraClient.processAvailabilityAndHiddenProducts(inventory, updatedProductIds).then(function(inventory) {
-                console.log("[summary] updated availability for products", updatedProductIds);
-                //process.exit(0);
-            }, function(err) {
-                console.error("error processing availability", err);
-                //process.exit(0);
+        try {
+            console.log("[summary] updating inventory");
+
+            jafraClient.updateInventory(true).then(function (inventory) {
+                console.log("[summary] updated inventory");
+
+                jafraClient.processAvailabilityAndHiddenProducts(inventory, updatedProductIds).then(function (inventory) {
+                    console.log("[summary] updated availability for products", updatedProductIds);
+                    process.exit(0);
+                }, function (err) {
+                    console.error("error processing availability", err);
+                    process.exit(0);
+                });
+            }, function (err) {
+                console.error("error updating inventory", err);
+                process.exit(0);
             });
-        }, function(err) {
-            console.error("error updating inventory", err);
-            //process.exit(0);
-        });
+        } catch (ex) {
+            console.error("error updating inventory", ex);
+            process.exit(0);
+        }
     });
 
     spooky.on('error', function (e, stack) {

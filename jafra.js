@@ -82,6 +82,9 @@ var logger;
 
 exports.setLogger = function(l) {
     logger = l;
+    if (logger.debug == null) {
+        logger.debug = logger.log;
+    }
 }
 
 function preloadCategories() {
@@ -2116,7 +2119,7 @@ function getConfigValue(key) {
 }
 
 function updateInventory(noProcessing) {
-    //logger.debug("updateInventory()", inventoryId);
+    logger.debug("updateInventory()", noProcessing);
     var deferred = Q.defer();
     var now = new Date();
     var HOURS_24 = moment.duration(24, "hours");
