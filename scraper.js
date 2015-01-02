@@ -2681,7 +2681,7 @@ models.onReady(function() {
                                             });
                                             //console.log("original", JSON.stringify(prod));
                                             //console.log("updated", JSON.stringify(p));
-                                            console.log("[summary] product changes", changes);
+                                            console.log("[summary] product changes", id, changes);
                                         }
                                     } catch (ex) {
                                         console.error("failed to re-load product to view changeset");
