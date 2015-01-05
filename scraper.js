@@ -906,7 +906,7 @@ models.onReady(function() {
                         console.log('Got product promotionalMessages page', productId, 'sku', sku);
 
                         casper.waitUntilVisible('#grid-promomessages', function() {
-                            var product = products[productId];
+                            var product = productMap[productId];
 
                             if (product == null) {
                                 console.error("fetchProductPromotionalMessages(): couldn't find product", productId, 'sku', sku, "is null");
