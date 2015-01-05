@@ -874,7 +874,6 @@ models.onReady(function() {
                                 product.type = isKit ? "kit" : "product";
                                 product._id = sku;
 
-                                products[productId] = product;
                                 console.log("Product:", JSON.stringify(product));
                             }, function() {
                                 console.error("timed out waiting on product detail");
