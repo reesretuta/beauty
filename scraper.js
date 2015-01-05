@@ -630,7 +630,7 @@ models.onReady(function() {
                                                         products.push(product);
                                                     }
                                                 } else {
-                                                    console.log("found product", productSku);
+                                                    console.log("found product", product.sku);
                                                     products.push(product);
                                                 }
 
