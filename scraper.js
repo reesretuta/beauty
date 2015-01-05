@@ -814,7 +814,7 @@ models.onReady(function() {
                 console.log("[summary] saveProduct", sku);
                 this.emit('product.process', sku);
                 casper.then(function() {
-                    var json = JSON.stringify(products[productId]);
+                    var json = JSON.stringify(productMap[productId]);
                     console.log("====== Product ======");
                     console.log(json);
                     console.log("=====================");
