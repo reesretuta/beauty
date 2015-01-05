@@ -6,7 +6,7 @@
 var Spooky = require('spooky');
 var S = require('string');
 var request = require('request');
-var Q = require('Q');
+var Q = require('q');
 var jafraClient = require('./jafra');
 jafraClient.setLogger(console);
 
@@ -108,6 +108,8 @@ models.onReady(function() {
     //
     // Ability to resume
     // TODO - fetch available (include temp unavailable products)
+
+
 
     var spooky = new Spooky({
         child: {
@@ -550,7 +552,7 @@ models.onReady(function() {
             };
 
             // map of all products
-            var products = {};
+            var productMap = {};
             var newProducts = [];
             var updateProducts = [];
             var unavailableProducts = [];
@@ -628,6 +630,7 @@ models.onReady(function() {
                                                         products.push(product);
                                                     }
                                                 } else {
+                                                    console.log("found product", productSku);
                                                     products.push(product);
                                                 }
 
@@ -739,12 +742,18 @@ models.onReady(function() {
             casper.then(function() {
                 console.log("got all products & kits, get product listings");
 
-                var allProducts = newProducts.concat(updateProducts);
+                // if fetching images only, we can only fetch existing products, not new ones since
+                // we don't have a record to associate the images with
+                var allProducts = IMAGES_ONLY ? updateProducts : newProducts.concat(updateProducts);
+                for (var i=0; i < allProducts.length; i++) {
+                    var product = allProducts[i];
+                    productMap[product.id] = product;
+                }
 
                 // go through the products and fetch product/kit details
                 processAllProducts(allProducts);
 
-                // mark all unavailable products as unvailable
+                // mark all unavailable products as unavailable
                 for (var i=0; i < unavailableProducts.length; i++) {
                     this.emit('product.markUnavailable', unavailableProducts[i]);
                     if (unavailableProducts[i].type == 'kit') {
@@ -1027,7 +1036,9 @@ models.onReady(function() {
                         console.log('Got product images page', productId, 'sku', sku);
 
                         casper.waitUntilVisible('#gridImages', function() {
-                            var product = products[productId];
+                            var product = productMap[productId];
+
+                            console.log('Using current product', JSON.stringify(product));
 
                             product.images = casper.evaluate(function() {
                                 try {
@@ -1079,7 +1090,7 @@ models.onReady(function() {
                         console.log('Got product ingredients page', productId, 'sku', sku);
 
                         casper.waitUntilVisible('iframe', function() {
-                            var product = products[productId];
+                            var product = productMap[productId];
 
                             var ingredients = casper.evaluate(function() {
                                 try {
@@ -1119,7 +1130,7 @@ models.onReady(function() {
                         console.log('Got product usage page', productId, 'sku', sku);
 
                         casper.waitUntilVisible('iframe', function() {
-                            var product = products[productId];
+                            var product = productMap[productId];
 
                             var usage = casper.evaluate(function() {
                                 try {
@@ -1159,7 +1170,7 @@ models.onReady(function() {
                         console.log('Got product prices page', productId, 'sku', sku);
 
                         casper.waitUntilVisible('#grid-prices .x-grid3-scroller', function() {
-                            var product = products[productId];
+                            var product = productMap[productId];
                             product.prices = [];
 
                             var linkCount = casper.evaluate(function() {
@@ -1291,7 +1302,7 @@ models.onReady(function() {
                         console.log('Got product categories page', productId, 'sku', sku);
 
                         casper.waitUntilVisible('#grid-categories .x-grid3-scroller', function() {
-                            var product = products[productId];
+                            var product = productMap[productId];
 
                             product.categories = casper.evaluate(function() {
                                 try {
@@ -1334,7 +1345,7 @@ models.onReady(function() {
                         console.log('Got product upsellItems page', productId, 'sku', sku);
 
                         casper.waitUntilVisible('#simpleGrid .x-grid3-scroller', function() {
-                            var product = products[productId];
+                            var product = productMap[productId];
 
                             var upsellItems = casper.evaluate(function(LANGUAGE) {
                                 try {
@@ -1439,7 +1450,7 @@ models.onReady(function() {
                         casper.waitUntilVisible('#simpleGrid .x-grid3-scroller', function() {
                             console.log('youMayAlsoLike loaded');
                             try {
-                                var product = products[productId];
+                                var product = productMap[productId];
 
                                 product.youMayAlsoLike = casper.evaluate(function() {
                                     try {
@@ -1487,7 +1498,7 @@ models.onReady(function() {
                         console.log('Got product sharedAssets page', productId, 'sku', sku);
 
                         casper.waitUntilVisible('#gridAccessories .x-grid3-scroller', function() {
-                            var product = products[productId];
+                            var product = productMap[productId];
 
                             product.sharedAssets = casper.evaluate(function() {
                                 try {
@@ -1542,7 +1553,7 @@ models.onReady(function() {
                         casper.waitUntilVisible('#secondGrid .x-grid3-scroller', function() {
                             console.log('components loaded');
                             try {
-                                var product = products[productId];
+                                var product = productMap[productId];
 
                                 var ret = casper.evaluate(function() {
                                     try {
@@ -1715,6 +1726,18 @@ models.onReady(function() {
                                     }, pageNum);
 
                                     var productGroups = result.productGroups;
+                                    if (IMAGES_ONLY) {
+                                        // remove items that are not existing product groups, because we won't have anything to
+                                        // associate the images with
+                                        var filtered = [];
+                                        for (var i=0; i < productGroups.length; i++) {
+                                            var productGroup = productGroups[i];
+                                            if (existingProductTypes[productGroup.sku]) {
+                                                filtered.push(productGroup);
+                                            }
+                                        }
+                                        productGroups = filtered;
+                                    }
                                     var hasNext = result.hasNext;
 
                                     for (var i=0; i < productGroups.length; i++) {
@@ -2969,6 +2992,8 @@ models.onReady(function() {
         if (stack) {
             console.log(stack);
         }
+
+        process.exit(0);
     });
 
     // Uncomment this block to see all of the things Casper has to say.
