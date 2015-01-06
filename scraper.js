@@ -748,6 +748,7 @@ models.onReady(function() {
                 for (var i=0; i < allProducts.length; i++) {
                     var product = allProducts[i];
                     productMap[product.id] = product;
+                    //console.log("have product", product.id, JSON.stringify(product));
                 }
 
                 // go through the products and fetch product/kit details
@@ -845,6 +846,8 @@ models.onReady(function() {
                             console.log('Got product detail page', productId, sku, isKit);
                             casper.waitUntilVisible('input[name=formalName_'+LANGUAGE+']', function() {
                                 console.log("DOM available");
+                                var p = productMap[productId];
+
                                 var product = casper.evaluate(function(LANGUAGE) {
                                     try {
                                         var product = {};
@@ -874,7 +877,31 @@ models.onReady(function() {
                                 product.type = isKit ? "kit" : "product";
                                 product._id = sku;
 
-                                console.log("Product:", JSON.stringify(product));
+                                if (p) {
+                                    // copy over existing
+                                    if (LANGUAGE == "en_US") {
+                                        p.name = product.name;
+                                        p.quantity = product.quantity;
+                                        p.description = product.description;
+                                    } else {
+                                        p.name_es_US = product.name_es_US;
+                                        p.quantity_es_US = product.quantity_es_US;
+                                        p.description_es_US = product.description_es_US;
+                                    }
+                                    p.onHold = product.onHold;
+                                    p.searchable = product.searchable;
+                                    p.masterStatus = product.masterStatus;
+                                    p.masterType = product.masterType;
+                                    p.taxCode = product.taxCode;
+                                    p.standardCost = product.standardCost;
+                                    p.hazmatClass = product.hazmatClass;
+                                    p.productClass = product.productClass;
+                                    console.log("Product:", JSON.stringify(p));
+                                } else {
+                                    // new product
+                                    productMap[productId] = product;
+                                    console.log("Product:", JSON.stringify(product));
+                                }
                             }, function() {
                                 console.error("timed out waiting on product detail");
                                 this.exit();
@@ -2635,13 +2662,14 @@ models.onReady(function() {
             console.log('saving product', json);
 
             var p = JSON.parse(json);
-            var id = p._id;
+            console.log('saving product object', JSON.stringify(p));
+            var id = p.id;
+            delete p.id;
             delete p._id;
 
-            console.log('[summary] saving product', id);
+            console.log('[summary] saving product', id, p.sku);
 
             var isUpdate = false;
-            updatedProductIds.push(id);
 
             // do a lookup on id, so we can detect how many are actually updates & if there are any type overwrites
             models.Product.findById(id, function (err, prod) {
@@ -2650,9 +2678,10 @@ models.onReady(function() {
                     if (prod != null) {
                         //console.log("found existing product", JSON.stringify(prod));
                         console.log("found existing product");
+                        updatedProductIds.push(id);
                         isUpdate = true;
                         if (p.type != prod.type) {
-                            console.warn("saving over another type of product", p._id, p.type, prod.type);
+                            console.warn("saving over another type of product", id, p.type, prod.type);
                         }
                     }
 
