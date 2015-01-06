@@ -410,6 +410,16 @@ angular.module('app.services', ['ngResource'])
             });
         }
 
+        sessionService.getSource = function() {
+            var session = getLocalSession();
+            //$log.debug("sessionService(): getLanguage(): source", source);
+            if (session) {
+                return session.source;
+            } else {
+                return "web";
+            }
+        }
+
         sessionService.isLoggedIn = function() {
             var session = getLocalSession();
             if (session.client && session.client.id) {

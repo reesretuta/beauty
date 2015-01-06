@@ -12,6 +12,12 @@ angular.module('app.controllers.onlineSponsor')
         return lang;
     }
 
+    $scope.getSessionSource = function() {
+        var source = Session.getSource();
+        $log.debug("OnlineSponsorLandingController(): get session source", source);
+        return source;
+    }
+
     $scope.join = function(sku, language, name, price) {
         $('.modal').modal('hide');
         $('body').removeClass('modal-open');
@@ -19,7 +25,7 @@ angular.module('app.controllers.onlineSponsor')
         $log.debug("joining with sku", sku);
         $log.debug("language", language);
         if ( $rootScope.iveBeenFramed ) {
-          $window.open(JOIN_BASE_URL + "/checkout?sku=" + sku);
+          $window.open(JOIN_BASE_URL + "/checkout?sku=" + sku + "&language=" + $scope.getSessionLanguage() + "&source=" + $scope.getSessionSource());
         } else {
           $location.url(JOIN_BASE_URL + "/checkout?sku=" + sku);
         }
