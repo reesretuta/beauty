@@ -102,6 +102,7 @@ angular.module('app.services', ['ngResource'])
                     cart: [],
                     checkout: {}
                 };
+                $rootScope.consultant = null;
             }
         }
 
