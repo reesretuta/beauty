@@ -2263,7 +2263,7 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
     if (ids == null) {
         logger.error("processAvailabilityAndHiddenProducts(): ID list is null");
         deferred.reject("ID list is null");
-        return;
+        return deferred.promise;
     }
     if (ids) {
         if (!Array.isArray(ids)) {
