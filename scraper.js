@@ -563,7 +563,7 @@ models.onReady(function() {
                 if (pageNum == null) {
                     pageNum = 1;
                 }
-                console.log('getProductListing(', pageNum, ",", kits, ",", productSku, ")");
+                console.log('[summary] getProductListing(', pageNum, ",", kits, ",", productSku, ")");
 
                 // GET PRODUCT LISTING
                 var u = BASE_SITE_URL + "/csr-admin-4/productcatalog/product"+(kits?'kit':'')+".listing?currentPage=" + pageNum;
@@ -624,7 +624,7 @@ models.onReady(function() {
 
                                                 if (productSku) {
                                                     if (product.sku != productSku) {
-                                                        console.warn("product id doesn't match expected, skipping", product.sku, "!=", productSku);
+                                                        console.log("product id doesn't match expected, skipping", product.sku, "!=", productSku);
                                                     } else {
                                                         console.log("found product", productSku);
                                                         products.push(product);
@@ -644,6 +644,10 @@ models.onReady(function() {
                                         console.error("error parsing product "+(kits?'kit':'')+" listing page", JSON.stringify(ex));
                                     }
                                 }, productSku);
+
+                                if (productSku && products.length == 0) {
+                                    console.warn("unable to find product page listing for", productSku);
+                                }
 
                                 for (var i=0; i < products.length; i++) {
                                     var product = products[i];
@@ -687,11 +691,20 @@ models.onReady(function() {
                                     return document.all[0].outerHTML;
                                 });
 
+                                var nextPage = pageNum + 1;
+                                var find = "pageChange\\("+nextPage+", true\\)";
+                                //console.log("searching for next page using", find);
+
                                 // continue if we have more pages, else we're done
-                                if (content.match(/\[Next\]/)) {
+                                if (productSku == null && content.match(new RegExp(find))) {
                                     // uncomment to enable multiple product page scraping
                                     // we have another page
-                                    getProductListing(pageNum+1, kits);
+                                    console.log("[summary] have another page, fetching");
+                                    getProductListing(nextPage, kits);
+                                } else if (productSku != null) {
+                                    console.log("[summary] fetch by product ID complete");
+                                } else {
+                                    console.log("[summary] last page was", pageNum);
                                 }
                             } catch (ex) {
                                 console.error("error evaluating product listing", pageNum, JSON.stringify(ex));
@@ -879,6 +892,7 @@ models.onReady(function() {
 
                                 if (p) {
                                     // copy over existing
+                                    p.type = product.type;
                                     if (LANGUAGE == "en_US") {
                                         p.name = product.name;
                                         p.quantity = product.quantity;
@@ -1652,6 +1666,7 @@ models.onReady(function() {
                 existingProductPromotionalMessages: existingProductPromotionalMessages,
                 existingProductUpsellItems: existingProductUpsellItems,
                 AVAILABLE_ONLY: AVAILABLE_ONLY,
+                TEMP_UNAVAILABLE_ONLY: TEMP_UNAVAILABLE_ONLY,
                 BASE_SITE_URL: BASE_SITE_URL,
                 IMAGES_ONLY: IMAGES_ONLY,
                 LANGUAGE: LANGUAGE,
@@ -1668,7 +1683,7 @@ models.onReady(function() {
                 };
 
                 // map of all products
-                var productGroups = {};
+                var productGroupMap = {};
 
                 // PRODUCT GROUP LISTING
                 function getProductGroupListing(pageNum) {
@@ -1753,13 +1768,19 @@ models.onReady(function() {
 
                                     var productGroups = result.productGroups;
                                     if (IMAGES_ONLY) {
+                                        console.log("[summary] getting only images for product groups");
                                         // remove items that are not existing product groups, because we won't have anything to
                                         // associate the images with
                                         var filtered = [];
                                         for (var i=0; i < productGroups.length; i++) {
                                             var productGroup = productGroups[i];
-                                            if (existingProductTypes[productGroup.sku]) {
+                                            productGroup.sku = productGroup.systemRef;
+                                            productGroupMap[productGroup.id] = productGroup;
+                                            if (existingProductTypes[productGroup.systemRef]) {
+                                                console.log("[summary] updating product group images", JSON.stringify(productGroup));
                                                 filtered.push(productGroup);
+                                            } else {
+                                                console.log("[summary] NOT updating product group images", JSON.stringify(productGroup));
                                             }
                                         }
                                         productGroups = filtered;
@@ -1769,8 +1790,11 @@ models.onReady(function() {
                                     for (var i=0; i < productGroups.length; i++) {
                                         var productGroup = productGroups[i];
 
-                                        if (AVAILABLE_ONLY == false || productGroup.status == "A") {
-                                            console.log("processing product group", productGroup.id, productGroup.systemRef);
+                                        if ((AVAILABLE_ONLY == false && TEMP_UNAVAILABLE_ONLY == false)    || // everything included
+                                            (TEMP_UNAVAILABLE_ONLY == false && productGroup.status == "A") || // avail && not just fetching temp unavail
+                                            (TEMP_UNAVAILABLE_ONLY == true && productGroup.status == "T"))    // temp unavail && product is temp unavail
+                                        {
+                                            console.log("[summary] processing product group", productGroup.id, productGroup.systemRef);
 
                                             try {
                                                 // NOTE: save the base level information first, so we could load any group system refs later
@@ -1798,7 +1822,7 @@ models.onReady(function() {
                                                 console.error("error while processing product group", productGroup.id, JSON.stringify(ex));
                                             }
                                         } else {
-                                            console.log("skipping productGroup.available product group", productGroup.id, productGroup.systemRef);
+                                            console.log("[summary] skipping productGroup.available product group", productGroup.id, productGroup.systemRef);
                                             if (existingProductTypes[productGroup.id]) {
                                                 // mark all productGroup.available products as unvailable
 
@@ -1834,10 +1858,10 @@ models.onReady(function() {
                 function saveProductGroup(productGroupId, sku) {
                     this.emit('product.process', sku);
                     casper.then(function () {
-                        var json = JSON.stringify(productGroups[productGroupId]);
-                        console.log("====== Product Group ======");
-                        console.log(json);
-                        console.log("===========================");
+                        var json = JSON.stringify(productGroupMap[productGroupId]);
+                        console.log("[summary] ====== Product Group ======");
+                        console.log("[summary]", json);
+                        console.log("[summary] ===========================");
 
                         this.emit('product.save', json);
                     });
@@ -1861,6 +1885,9 @@ models.onReady(function() {
                             console.log('Got product group detail page', productGroupId);
                             casper.waitUntilVisible('input[name="groupLocale.name"]', function () {
                                 console.log("DOM available");
+
+                                var p = productGroupMap[productGroupId];
+
                                 var product = casper.evaluate(function (LANGUAGE) {
                                     try {
                                         var product = {};
@@ -1888,7 +1915,29 @@ models.onReady(function() {
                                 // set the group systemRef as the ID
                                 product._id = systemRef;
 
-                                productGroups[productGroupId] = product;
+                                if (p) {
+                                    // copy over existing
+                                    if (LANGUAGE == "en_US") {
+                                        p.name = product.name;
+                                        p.description = product.description;
+                                    } else {
+                                        p.name_es_US = product.name_es_US;
+                                        p.description_es_US = product.description_es_US;
+                                    }
+                                    p.onHold = product.onHold;
+                                    p.searchable = product.searchable;
+                                    p.masterStatus = product.masterStatus;
+                                    p.launchId = product.launchId;
+                                    p.startDate = product.startDate;
+                                    p.endDate = product.endDate;
+                                    console.log("Product Group:", JSON.stringify(p));
+                                } else {
+                                    // new product
+                                    product.type = "group";
+                                    productGroupMap[productGroupId] = product;
+                                    console.log("Product Group:", JSON.stringify(product));
+                                }
+
                                 //console.log("Product Group:", JSON.stringify(productGroup));
                             }, function () {
                                 console.error("timed out waiting to get product group detail page");
@@ -1914,7 +1963,7 @@ models.onReady(function() {
                             console.log('Got product group promotionalMessages page', productGroupId);
 
                             casper.waitUntilVisible('#grid-promomessages', function() {
-                                var product = productGroups[productGroupId];
+                                var product = productGroupMap[productGroupId];
 
                                 if (product == null) {
                                     console.error("fetchProductGroupPromotionalMessages(): couldn't find product group", productGroupId, 'sku', sku, "is null");
@@ -2041,10 +2090,10 @@ models.onReady(function() {
                         if (response.status !== 200) {
                             console.error('Unable to get product group images page!', productGroupId, systemRef);
                         } else {
-                            console.log('Got product group images page', productGroupId, systemRef);
+                            console.log('[summary] Got product group images page', productGroupId, systemRef);
 
                             casper.waitUntilVisible('#gridImages', function () {
-                                var productGroup = productGroups[productGroupId];
+                                var productGroup = productGroupMap[productGroupId];
 
                                 productGroup.images = casper.evaluate(function () {
                                     var images = [];
@@ -2066,7 +2115,8 @@ models.onReady(function() {
 
                                     return images;
                                 });
-                                //console.log("Product Group:", JSON.stringify(productGroup));
+
+                                console.log("Product Group:", JSON.stringify(productGroup));
                             }, function () {
                                 console.error("timed out waiting to get product group images");
                                 //this.exit();
@@ -2093,7 +2143,7 @@ models.onReady(function() {
                             console.log('Got product group ingredients page', productGroupId, systemRef);
 
                             casper.waitUntilVisible('iframe', function () {
-                                var productGroup = productGroups[productGroupId];
+                                var productGroup = productGroupMap[productGroupId];
 
                                 var ingredients = casper.evaluate(function () {
                                     return $('iframe').contents().find("body").html();
@@ -2130,7 +2180,7 @@ models.onReady(function() {
                             console.log('Got product group usage page', productGroupId, systemRef);
 
                             casper.waitUntilVisible('iframe', function () {
-                                var productGroup = productGroups[productGroupId];
+                                var productGroup = productGroupMap[productGroupId];
 
                                 var usage = casper.evaluate(function () {
                                     return $('iframe').contents().find("body").html();
@@ -2168,7 +2218,7 @@ models.onReady(function() {
                             console.log('Got product group categories page', productGroupId, systemRef);
 
                             casper.waitUntilVisible('#grid-categories .x-grid3-scroller', function () {
-                                var productGroup = productGroups[productGroupId];
+                                var productGroup = productGroupMap[productGroupId];
 
                                 productGroup.categories = casper.evaluate(function () {
                                     var categories = [];
@@ -2208,7 +2258,7 @@ models.onReady(function() {
                             console.log('Got product group upsellItems page', productGroupId);
 
                             casper.waitUntilVisible('#simpleGrid .x-grid3-scroller', function () {
-                                var productGroup = productGroups[productGroupId];
+                                var productGroup = productGroupMap[productGroupId];
 
                                 var upsellItems = casper.evaluate(function (LANGUAGE) {
                                     var upsellItems = [];
@@ -2311,7 +2361,7 @@ models.onReady(function() {
                             casper.waitUntilVisible('#simpleGrid .x-grid3-scroller', function () {
                                 console.log('youMayAlsoLike loaded');
                                 try {
-                                    var productGroup = productGroups[productGroupId];
+                                    var productGroup = productGroupMap[productGroupId];
 
                                     productGroup.youMayAlsoLike = casper.evaluate(function () {
                                         var youMayAlsoLike = [];
@@ -2357,7 +2407,7 @@ models.onReady(function() {
                             console.log('Got product group SKUs page', productGroupId);
 
                             casper.waitUntilVisible('#productAdminContent #secondGrid .x-grid3-scroller', function () {
-                                var productGroup = productGroups[productGroupId];
+                                var productGroup = productGroupMap[productGroupId];
 
                                 productGroup.contains = casper.evaluate(function () {
                                     try {
@@ -2659,15 +2709,15 @@ models.onReady(function() {
 
     spooky.on('product.save', function(json) {
         try {
-            console.log('saving product', json);
+            console.log('[summary] saving product', json);
 
             var p = JSON.parse(json);
             console.log('saving product object', JSON.stringify(p));
-            var id = p.id;
+            var id = p.sku;
             delete p.id;
             delete p._id;
 
-            console.log('[summary] saving product', id, p.sku);
+            console.log('[summary] saving product', id);
 
             var isUpdate = false;
 

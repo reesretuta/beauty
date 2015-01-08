@@ -2260,6 +2260,11 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
     var now = new Date();
 
     var query = {};
+    if (ids == null) {
+        logger.error("processAvailabilityAndHiddenProducts(): ID list is null");
+        deferred.reject("ID list is null");
+        return;
+    }
     if (ids) {
         if (!Array.isArray(ids)) {
             ids = [ids];

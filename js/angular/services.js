@@ -847,6 +847,7 @@ angular.module('app.services', ['ngResource'])
                     if (product.type != 'group') {
                         productService.selectCurrentPrice(product);
                     }
+                    productService.selectCurrentPromotionalMessage(product);
                 });
                 d.resolve(products);
             }, function(error) {
@@ -868,6 +869,7 @@ angular.module('app.services', ['ngResource'])
                 if (product.type != 'group') {
                     productService.selectCurrentPrice(product);
                 }
+                productService.selectCurrentPromotionalMessage(product);
                 d.resolve(product);
             }, function(response) {
                 $log.error("productService(): get(): failure", response.data);
@@ -918,6 +920,23 @@ angular.module('app.services', ['ngResource'])
                 $log.debug("cartService(): loadProducts(): priceSelected?", priceSelected, product.prices);
             } else {
                 $log.warn("cartService(): loadProducts(): priceSelected? no prices found");
+            }
+        }
+
+        productService.selectCurrentPromotionalMessage = function(product) {
+            if (Array.isArray(product.promotionalMessages)) {
+                $log.error("processing promotional messages for product", product.sku, product.promotionalMessages);
+                $.each(product.promotionalMessages, function (index2, promotionalMessage) {
+                    var now = new Date().getTime();
+                    var start = S(promotionalMessage.startDate).isEmpty() ? null : moment(promotionalMessage.startDate, 'YYYY-MM-DDTHH:mm:ss.SSSZ').unix()*1000;
+                    var end = S(promotionalMessage.endDate).isEmpty() ? null : moment(promotionalMessage.endDate, 'YYYY-MM-DDTHH:mm:ss.SSSZ').unix()*1000;
+                    if ((now >= start || start == null) && (now <= end || end == null)) {
+                        // this is our current price
+                        $log.error("setting current promotional message", product.sku, promotionalMessage);
+                        product.currentPromotionalMessage = promotionalMessage;
+                        return;
+                    }
+                });
             }
         }
 

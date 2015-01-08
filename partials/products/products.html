@@ -30,10 +30,10 @@
                 </span>
                 &nbsp;&nbsp;<span class="item-measure">{{getTranslated(product).quantity}}</span>
               </p>
-              <p ng-if="product.masterStatus == 'T'" data-ng-bind-html="product.promotionalMessages[0].message | unsafe" class="promotional-message">
+              <p ng-if="product.masterStatus == 'T'" data-ng-bind-html="product.currentPromotionalMessage.message | unsafe" class="promotional-message">
               </p>
             </div>
-            <p ng-if="(product.type == 'product' || (product.type == 'kit' && product.kitGroups.length == 0)) && product.masterStatus == 'A'">
+            <p ng-if="(product.type == 'product' || (product.type == 'kit' && (product.kitGroups == null || product.kitGroups.length == 0))) && product.masterStatus == 'A'">
               <a ng-if="product.availableInventory >= 1" class="btn btn-primary primary-cta add-to-cart" ng-class="{ 'processing' : (adding && addingId == product.sku) }" ng-click="addToCart(product)">
                 <span ng-bind-html="'BTN_ADD_CART' | translate | unsafe"></span>
               </a>
