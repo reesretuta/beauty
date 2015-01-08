@@ -1608,14 +1608,17 @@ angular.module('app.controllers.checkout')
                     $log.debug("CheckoutController(): processOrder(): processing cart item", item, "product", item.product, item.product.contains);
 
                     var components = [];
-                    for (var j=0; j < item.product.contains.length; j++) {
-                        var contains = item.product.contains[j];
-                        $log.debug("CheckoutController(): processOrder(): contained product", contains);
-                        if (contains.product) {
-                            components.push({
-                                sku: contains.product.sku,
-                                qty: contains.quantity
-                            });
+
+                    if (item.product.contains) {
+                        for (var j=0; j < item.product.contains.length; j++) {
+                            var contains = item.product.contains[j];
+                            $log.debug("CheckoutController(): processOrder(): contained product", contains);
+                            if (contains.product) {
+                                components.push({
+                                    sku: contains.product.sku,
+                                    qty: contains.quantity
+                                });
+                            }
                         }
                     }
                     $log.debug("CheckoutController(): processOrder(): have components", components);
@@ -1633,7 +1636,7 @@ angular.module('app.controllers.checkout')
                     products.push(d);
                 }
 
-                // FIXME - make sure we have a client ID (aka the use is logged in)
+                // FIXME - make sure we have a client ID (aka the user is logged in)
 
                 var consultantId = getConsultantId();
 
