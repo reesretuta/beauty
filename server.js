@@ -7,7 +7,7 @@ var init = require('./config/init')();
 var config = require('./config/config');
 
 var env = process.env.NODE_ENV || "development";
-var logLevel = process.env.LOG_LEVEL || (env === 'development' ? 'debug' : 'info');
+var logLevel = process.env.LOG_LEVEL || (env === 'development' || env === 'staging' ? 'debug' : 'info');
 console.log("Log Level:", logLevel);
 
 var winston = require('winston');

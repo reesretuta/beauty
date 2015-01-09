@@ -2165,9 +2165,13 @@ function updateInventory(noProcessing) {
         } else {
             logger.debug("getAllInventory(): fetching inventory from JCS");
             request.get({
-                url: GET_ALL_INVENTORY_URL, headers: {
+                url: GET_ALL_INVENTORY_URL,
+                headers: {
                     'Accept': 'application/json, text/json', 'Authorization': AUTH_STRING
-                }, agentOptions: agentOptions, strictSSL: false, json: true
+                },
+                agentOptions: agentOptions,
+                strictSSL: false,
+                json: true
             }, function (error, response, body) {
                 logger.debug("getAllInventory()", error, response ? response.statusCode : null, body);
                 if (error || response == null || response.statusCode != 200) {
