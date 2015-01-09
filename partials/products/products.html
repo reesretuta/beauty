@@ -30,7 +30,7 @@
                 </span>
                 &nbsp;&nbsp;<span class="item-measure">{{getTranslated(product).quantity}}</span>
               </p>
-              <p ng-if="product.masterStatus == 'T'" data-ng-bind-html="product.currentPromotionalMessage.message | unsafe" class="promotional-message">
+              <p ng-if="product.masterStatus == 'T'" data-ng-bind-html="getTranslatedPromoMessage(product) | unsafe" class="promotional-message">
               </p>
             </div>
             <p ng-if="(product.type == 'product' || (product.type == 'kit' && (product.kitGroups == null || product.kitGroups.length == 0))) && product.masterStatus == 'A'">

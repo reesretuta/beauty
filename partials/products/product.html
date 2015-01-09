@@ -139,7 +139,7 @@
 
       </p>
       <br ng-if="product.masterStatus == 'T'">
-      <p ng-if="product.masterStatus == 'T'" data-ng-bind-html="product.currentPromotionalMessage.message | unsafe" class="promotional-message">
+      <p ng-if="product.masterStatus == 'T'" data-ng-bind-html="getTranslatedPromoMessage(product) | unsafe" class="promotional-message">
       </p>
     </div>
 

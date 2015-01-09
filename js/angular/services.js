@@ -933,7 +933,16 @@ angular.module('app.services', ['ngResource'])
                     if ((now >= start || start == null) && (now <= end || end == null)) {
                         // this is our current price
                         $log.error("setting current promotional message", product.sku, promotionalMessage);
-                        product.currentPromotionalMessage = promotionalMessage;
+                        if (!product.currentPromotionalMessage) {
+                            product.currentPromotionalMessage = promotionalMessage;
+                        } else {
+                            // looks like we might need to merge a second item with overlapping range...likely diff language
+                            if (promotionalMessage.message_es_US && product.currentPromotionalMessage.message_es_US == null) {
+                                product.currentPromotionalMessage.message_es_US = promotionalMessage.message_es_US;
+                            } else if (promotionalMessage.message && product.currentPromotionalMessage.message == null) {
+                                product.currentPromotionalMessage.message = promotionalMessage.message;
+                            }
+                        }
                         return;
                     }
                 });
@@ -957,6 +966,14 @@ angular.module('app.services', ['ngResource'])
                 ingredients: product[$rootScope.session.language=='en_US'?'ingredients':'ingredients_'+$rootScope.session.language],
                 quantity: product[$rootScope.session.language=='en_US'?'quantity':'quantity_'+$rootScope.session.language]
             };
+        }
+
+        productService.getTranslatedPromoMessage = function(product) {
+            if (product == null || product.currentPromotionalMessage == null) {
+                return null;
+            }
+            //console.log(product.currentPromotionalMessage, product.currentPromotionalMessage.message, product.currentPromotionalMessage.message_es_US);
+            return product.currentPromotionalMessage[$rootScope.session.language=='en_US'?'message':'message_'+$rootScope.session.language];
         }
 
         return productService;
@@ -1555,7 +1572,7 @@ angular.module('app.services', ['ngResource'])
             }
             return {
                 name: category[$rootScope.session.language=='en_US'?'name':'name_'+$rootScope.session.language],
-                description: category[$rootScope.session.language=='en_US'?'description':'description_'+$rootScope.session.language],
+                description: category[$rootScope.session.language=='en_US'?'description':'description_'+$rootScope.session.language]
             };
         }
         

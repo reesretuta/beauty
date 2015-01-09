@@ -702,7 +702,7 @@ models.onReady(function() {
                                     console.log("[summary] have another page, fetching");
                                     getProductListing(nextPage, kits);
                                 } else if (productSku != null) {
-                                    console.log("[summary] fetch by product ID complete");
+                                    console.log("[summary] fetch by product ID complete", productSku);
                                 } else {
                                     console.log("[summary] last page was", pageNum);
                                 }
@@ -737,7 +737,7 @@ models.onReady(function() {
 
                 for (var i=0; i < options["products"].length; i++) {
                     var sku = options["products"][i];
-                    console.log("getting listings for product", sku, "known type?", existingProductTypes[sku]);
+                    console.log("[summary] getting listings for product", sku, "known type?", existingProductTypes[sku]);
 
                     // try to fetch this product as both a product / kit
                     if (existingProductTypes[sku] == "kit") {
@@ -753,11 +753,13 @@ models.onReady(function() {
             }
 
             casper.then(function() {
-                console.log("got all products & kits, get product listings");
+                console.log("[summary] got all products & kits, process products");
 
                 // if fetching images only, we can only fetch existing products, not new ones since
                 // we don't have a record to associate the images with
                 var allProducts = IMAGES_ONLY ? updateProducts : newProducts.concat(updateProducts);
+                console.log("[summary] processing", allProducts.length, "products");
+
                 for (var i=0; i < allProducts.length; i++) {
                     var product = allProducts[i];
                     productMap[product.id] = product;
@@ -779,7 +781,7 @@ models.onReady(function() {
             });
 
             function processAllProducts(products) {
-                console.log("processNextProduct()");
+                console.log("processAllProducts()");
 
                 for (var i=0; i < products.length; i++) {
                     try {
@@ -983,15 +985,22 @@ models.onReady(function() {
 
                             if (existingPromotionalMessages) {
                                 console.log("have promo messages", existingPromotionalMessages);
+
                                 for (var i=0; i < existingPromotionalMessages.length; i++) {
                                     var p = existingPromotionalMessages[i];
                                     console.log("have orig message", JSON.stringify(p));
 
                                     var index = -1;
+                                    var startDate, endDate;
                                     for (var j=0; j < promotionalMessages.length; j++) {
                                         var m = promotionalMessages[j];
-                                        console.log("found existing", p.startDate, m.startDate, p.endDate, m.endDate);
-                                        if (p.startDate == m.startDate && p.endDate == m.endDate) {
+
+                                        var isSameStart = m.startDate == p.startDate;
+                                        var isSameEnd = m.endDate == p.endDate;
+
+                                        console.log("[summary] found existing start", p.startDate, m.startDate, isSameStart, "end", p.endDate, m.endDate, isSameEnd);
+
+                                        if (isSameStart && isSameEnd) {
                                             console.log("found existing promo message to update");
                                             index = j;
                                             break;
@@ -1774,7 +1783,6 @@ models.onReady(function() {
                                         var filtered = [];
                                         for (var i=0; i < productGroups.length; i++) {
                                             var productGroup = productGroups[i];
-                                            productGroup.sku = productGroup.systemRef;
                                             productGroupMap[productGroup.id] = productGroup;
                                             if (existingProductTypes[productGroup.systemRef]) {
                                                 console.log("[summary] updating product group images", JSON.stringify(productGroup));
@@ -1789,6 +1797,7 @@ models.onReady(function() {
 
                                     for (var i=0; i < productGroups.length; i++) {
                                         var productGroup = productGroups[i];
+                                        productGroupMap[productGroup.id] = productGroup;
 
                                         if ((AVAILABLE_ONLY == false && TEMP_UNAVAILABLE_ONLY == false)    || // everything included
                                             (TEMP_UNAVAILABLE_ONLY == false && productGroup.status == "A") || // avail && not just fetching temp unavail
@@ -1857,6 +1866,9 @@ models.onReady(function() {
 
                 function saveProductGroup(productGroupId, sku) {
                     this.emit('product.process', sku);
+                    var productGroup = productGroupMap[productGroupId];
+                    productGroup.sku = sku;
+
                     casper.then(function () {
                         var json = JSON.stringify(productGroupMap[productGroupId]);
                         console.log("[summary] ====== Product Group ======");
@@ -1875,7 +1887,7 @@ models.onReady(function() {
                     //casper.wait(Math.floor(Math.random() * 2000) + 500);
 
                     casper.then(function () {
-                        console.log('[summary] Getting product group detail', productGroupId);
+                        console.log('[summary] Getting product group detail', productGroupId, u);
                     });
 
                     casper.thenOpen(u, function (response) {

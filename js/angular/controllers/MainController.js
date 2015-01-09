@@ -83,6 +83,12 @@ angular.module('app.controllers.main').controller('MainController', function ($s
         return translated;
     };
 
+    $rootScope.getTranslatedPromoMessage = function(product) {
+        var translated = Product.getTranslatedPromoMessage(product);
+        //$log.debug("MainController(): got translated promo message", translated, "for", product);
+        return translated;
+    };
+
     $scope.addToCart = function(product) {
         $log.debug("MainController(): adding product", product);
         var qty = $scope.quantities[product.sku];
