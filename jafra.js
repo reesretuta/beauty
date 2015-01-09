@@ -2234,7 +2234,7 @@ function updateInventory(noProcessing) {
                                     logger.debug("getAllInventory(): saved inventory lastUpdated", body.lastUpdated, d.toDate());
 
                                     if (!noProcessing) {
-                                        logger.debug("getAllInventory(): processing inventory", body.inventory);
+                                        logger.debug("getAllInventory(): processing inventory", JSON.stringify(body.inventory));
                                         processAvailabilityAndHiddenProducts(body.inventory).then(function (inventory) {
                                             deferred.resolve(inventory);
                                         }, function (err) {
@@ -2267,11 +2267,6 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
     var now = new Date();
 
     var query = {};
-    if (ids == null) {
-        logger.error("processAvailabilityAndHiddenProducts(): ID list is null");
-        deferred.reject("ID list is null");
-        return deferred.promise;
-    }
     if (ids) {
         if (!Array.isArray(ids)) {
             ids = [ids];
