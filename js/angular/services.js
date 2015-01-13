@@ -1137,7 +1137,7 @@ angular.module('app.services', ['ngResource'])
                     address2: address.address2,
                     city: address.city,
                     state: address.state,
-                    zip: address.zipCode,
+                    zip: address.zip,
                     country: address.country,
                     phone: address.phone
                 }, {}).success(function(a, status, headers, config) {

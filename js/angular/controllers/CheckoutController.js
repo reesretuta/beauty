@@ -1931,9 +1931,6 @@ angular.module('app.controllers.checkout')
                 if (!addressesEqual(address, a)) {
                     showAddressCorrectionModal(a).then(function(result) {
                         var address = result.address;
-                        if (address && address.zip) {
-                            address.zipCode = address.zip;
-                        }
                         var canceled = result.canceled;
                         $log.debug("CheckoutController(): addAddress(): address correction modal closed", address);
                         if (canceled) {
@@ -1943,9 +1940,6 @@ angular.module('app.controllers.checkout')
                         }
                         selectGeocodeAndAdd(address).then(function(aa) {
                             $log.debug("CheckoutController(): addAddress(): selected geocode and added address", aa);
-                            if (aa && aa.zip) {
-                                aa.zipCode = aa.zip;
-                            }
                             d.resolve(aa);
                         }, function(error) {
                             $log.error("CheckoutController(): addAddress(): select geocode and add failed", error);
