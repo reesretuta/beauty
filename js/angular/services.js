@@ -201,7 +201,7 @@ angular.module('app.services', ['ngResource'])
 
                 var session = getLocalSession();
                 var trimmedSession = angular.copy(session);
-                for (var i=0; i < trimmedSession.cart; i++) {
+                for (var i=0; i < trimmedSession.cart.length; i++) {
                     delete trimmedSession.cart[i].product;
                 }
 
