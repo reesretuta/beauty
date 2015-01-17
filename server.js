@@ -126,8 +126,8 @@ var router = express.Router();
 //});
 
 // needed for IE11 iframe cookie blocking
-router.use(function(req, res, next) {
-    res.header("p3p", "CP = \" IDC DSP COR ADM Devi Taii PSA PSD Ivaí IVDi CONi HIS OUR IND CNT \"");
+app.use(function(req, res, next) {
+    res.header('P3P', 'CP = "IDC DSP COR ADM Devi Taii PSA PSD Ivaí IVDi CONi HIS OUR IND CNT"');
     next();
 });
 

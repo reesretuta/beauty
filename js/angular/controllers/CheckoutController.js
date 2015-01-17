@@ -192,7 +192,7 @@ angular.module('app.controllers.checkout')
                 Session.copy(params.session).then(function() {
                     $log.debug("CheckoutController(): copying session");
                     if ($location.$$search.session) {
-                        delete $location.$$search.Session;
+                        delete $location.$$search.session;
                         $location.$$compose();
                     }
 
@@ -211,6 +211,10 @@ angular.module('app.controllers.checkout')
                     });
                 });
             } else {
+                if (params.session && $location.$$search.session) {
+                    delete $location.$$search.session;
+                    $location.$$compose();
+                }
                 sessionCopy.resolve(session);
             }
 
