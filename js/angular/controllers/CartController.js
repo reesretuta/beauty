@@ -22,7 +22,7 @@ angular.module('app.controllers.cart')
         $scope.cartLoaded = false;
 
         $scope.sessionId = $cookies["connect.sid"];
-        $log.debug("CartController(): session id is", $scope.sessionId);
+        $log.debug("CartController(): session id is", $scope.sessionId, $cookies);
 
         $scope.$watch(function () {
             return $scope.cart;
