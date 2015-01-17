@@ -314,6 +314,25 @@ angular.module('app.services', ['ngResource'])
             return d.promise;
         }
 
+        sessionService.copy = function(sessionId) {
+            var d = $q.defer();
+            initialized.promise.then(function() {
+                $log.debug("Session(): copy()", sessionId);
+
+                $http.put(API_URL + '/sessionCopy', {
+                    sessionId: sessionId
+                }, {}).success(function(data, status, headers, config) {
+                    $log.debug("sessionService(): copy()", data);
+                    d.resolve();
+                }).error(function(data, status, headers, config) {
+                    //failure(data, status, headers, config);
+                    $log.error("sessionService(): copy(): error", status, data);
+                    d.reject(data);
+                });
+            });
+            return d.promise;
+        }
+
         // is client already registered?
         sessionService.clientEmailAvailable = function(email, ignoreExists) {
             var d = $q.defer();
@@ -925,7 +944,7 @@ angular.module('app.services', ['ngResource'])
 
         productService.selectCurrentPromotionalMessage = function(product) {
             if (Array.isArray(product.promotionalMessages)) {
-                $log.error("processing promotional messages for product", product.sku, product.promotionalMessages);
+                $log.debug("processing promotional messages for product", product.sku, product.promotionalMessages);
                 $.each(product.promotionalMessages, function (index2, promotionalMessage) {
                     var now = new Date().getTime();
                     var start = S(promotionalMessage.startDate).isEmpty() ? null : moment(promotionalMessage.startDate, 'YYYY-MM-DDTHH:mm:ss.SSSZ').unix()*1000;

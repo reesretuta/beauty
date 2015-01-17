@@ -1,6 +1,6 @@
 
 angular.module('app.controllers.cart')
-    .controller('CartController', function ($scope, $document, $rootScope, $compile, $routeParams, $modal, $log, $q, $location, SalesTax, Cart, Product, OrderHelper, HashKeyCopier, STORE_BASE_URL, Session) {
+    .controller('CartController', function ($scope, $document, $rootScope, $compile, $routeParams, $modal, $log, $q, $location, $cookies, SalesTax, Cart, Product, OrderHelper, HashKeyCopier, STORE_BASE_URL, Session) {
         $log.debug("CartController");
 
         //change page title
@@ -20,6 +20,9 @@ angular.module('app.controllers.cart')
         $scope.searchProductsByName = {};
 
         $scope.cartLoaded = false;
+
+        $scope.sessionId = $cookies["connect.sid"];
+        $log.debug("CartController(): session id is", $scope.sessionId);
 
         $scope.$watch(function () {
             return $scope.cart;

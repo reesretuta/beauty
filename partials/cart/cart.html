@@ -112,7 +112,7 @@
   </div>
   <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" ng-if="cart.length > 0">
     <a ng-show="!iveBeenFramed" href="{{STORE_BASE_URL}}/checkout#top" class="btn btn-primary btn-lg pull-right"><span ng-bind-html="'BTN_CHECKOUT' | translate | unsafe"></span> <i class="fa fa-angle-right"></i></a>
-    <a ng-show="iveBeenFramed" target="_blank" href="{{STORE_BASE_URL}}/checkout#top" class="btn btn-primary btn-lg pull-right"><span ng-bind-html="'BTN_CHECKOUT' | translate | unsafe"></span> <i class="fa fa-angle-right"></i></a>
+    <a ng-show="iveBeenFramed" target="_blank" href="{{STORE_BASE_URL}}/checkout?session={{sessionId}}#top" class="btn btn-primary btn-lg pull-right"><span ng-bind-html="'BTN_CHECKOUT' | translate | unsafe"></span> <i class="fa fa-angle-right"></i></a>
   </div>
 </div><!-- /row -->
 

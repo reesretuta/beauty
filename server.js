@@ -56,6 +56,13 @@ var GridFS = Grid(models.mongoose.connection.db, models.mongoose.mongo);
 
 // SESSION CONFIG
 var hour = 3600000;
+
+var cookieStore = new MongoStore({
+    mongoose_connection : models.db,
+    db: config.db,
+    stringify: false
+});
+
 var sess = {
     secret: 'jkfh873y8hwhd871wh9udhju1w9sdhyy1gef87g87dfgw',
     cookie: {
@@ -67,11 +74,7 @@ var sess = {
     resave: true,
     saveUninitialized: true,
     unset: "destroy",
-    store: new MongoStore({
-        mongoose_connection : models.db,
-        db: config.db,
-        stringify: false
-    })
+    store: cookieStore
 };
 
 if (env === 'production') {
@@ -453,6 +456,64 @@ router.route('/session')
             res.json(req.session);
             res.end();
         });
+    })
+
+router.route('/sessionCopy')
+    // update the session with some data
+    .put(function (req, res) {
+        var body = req.body;
+
+        var sessionId = body ? body.sessionId : "";
+
+        // example: s%3A8WPFk9y9PKeGUpcT7M5c4Z8OeFil_Q3f.T91ql4sjfUNVKbV1mak9t2HVySE7QQQz4aRjo%2FIOd2Y
+        sessionId = sessionId.replace(/s:([^\.]+)\..*/, "$1");
+
+        logger.debug("copy session request", sessionId, "to", req.sessionID);
+
+        if (sessionId != req.sessionID) {
+            // load up source session
+            logger.debug("loading session", sessionId);
+
+            cookieStore.get(sessionId, function (err, sess) {
+                if (err) {
+                    console.error("failed to load session");
+                    logger.error('error saving session', err);
+                    res.status(500);
+                    res.end();
+                    return;
+                }
+                console.log("loaded session", sess);
+                var currSession = req.session;
+                currSession.consultantId = session.consultantId;
+                currSession.source = session.source;
+                currSession.language = session.language;
+                currSession.cart = session.cart;
+
+                req.session.save(function (err) {
+                    if (err) {
+                        logger.error('error saving session', err);
+                        res.status(500);
+                        res.end();
+                        return;
+                    }
+
+                    // session saved
+                    logger.debug('session updated', req.session);
+                    res.status(204);
+                    res.end();
+                });
+            }, function (err) {
+                console.error("failed to load session");
+                logger.error('error saving session', err);
+                res.status(500);
+                res.end();
+                return;
+            });
+        } else {
+            logger.debug('not copying same session');
+            res.status(204);
+            res.end();
+        }
     })
 
 // LEADS

@@ -185,150 +185,185 @@ angular.module('app.controllers.checkout')
 
             $scope.isOnlineSponsoring = false;
 
-            // for debugging only
-            if (debug) {
-                if (path && path.match(JOIN_BASE_URL)) {
-                    $log.debug("CheckoutController(): online sponsoring");
-                    $scope.isOnlineSponsoring = true;
-                    $scope.APP_BASE_URL = JOIN_BASE_URL;
-                } else {
-                    $log.debug("CheckoutController(): client direct");
-                    $scope.APP_BASE_URL = STORE_BASE_URL;
-                }
+            // session copying if needed
+            var sessionCopy = $q.defer();
+            if (params.session && session.consultantId == null) {
+                // request a session clone here
+                Session.copy(params.session).then(function() {
+                    $log.debug("CheckoutController(): copying session");
+                    if ($location.$$search.session) {
+                        delete $location.$$search.Session;
+                        $location.$$compose();
+                    }
 
-                populateDebugData();
-
-                $timeout(function() {
-                    WizardHandler.wizard('checkoutWizard').goTo(urlStep);
-                }, 0);
-                return;
+                    Session.get().then(function(s) {
+                        $log.debug("CheckoutController(): reloaded session");
+                       $scope.session = session;
+                        sessionCopy.resolve(session);
+                    }, function(err) {
+                        $translate('INVALID_SES').then(function (message) {
+                            sessionCopy.reject(message);
+                        });
+                    });
+                }, function(err) {
+                    $translate('INVALID_SES').then(function (message) {
+                        sessionCopy.reject(message);
+                    });
+                });
+            } else {
+                sessionCopy.resolve(session);
             }
 
-            // Online Sponsoring
-            if (path && path.match(JOIN_BASE_URL)) {
-                $scope.isOnlineSponsoring = true;
-                $scope.APP_BASE_URL = JOIN_BASE_URL;
-                $log.debug("CheckoutController(): online sponsoring");
-
-                // lock profile to new, since we're in online sponsoring
-                $scope.profile.customerStatus = 'new';
-
-                // redirect back home if there is no sku
-                if (S(sku).isEmpty()) {
-                    if ($scope.isOnlineSponsoring) {
-                        $log.debug("CheckoutController(): no SKU, redirecting back to join page");
-                        $scope.alert("There was an error selecting a starter kit");
+            // wait for any session copying that may be required
+            sessionCopy.promise.then(function(session) {
+                // for debugging only
+                if (debug) {
+                    if (path && path.match(JOIN_BASE_URL)) {
+                        $log.debug("CheckoutController(): online sponsoring");
+                        $scope.isOnlineSponsoring = true;
+                        $scope.APP_BASE_URL = JOIN_BASE_URL;
+                    } else {
+                        $log.debug("CheckoutController(): client direct");
+                        $scope.APP_BASE_URL = STORE_BASE_URL;
                     }
+
+                    populateDebugData();
+
+                    $timeout(function() {
+                        WizardHandler.wizard('checkoutWizard').goTo(urlStep);
+                    }, 0);
+                    return;
                 }
 
-                $scope.selectProduct(sku).then(function(product) {
-                    if (!debug) {
-                        if (Session.isLoggedIn() && !$scope.isOnlineSponsoring) {
-                            // send the user past the login page if they are in client direct & logged in
-                            if (urlStep != 'Start') {
-                                $log.debug("CheckoutController(): online sponsoring: sending logged in user to", urlStep);
-                                $timeout(function() {
-                                    WizardHandler.wizard('checkoutWizard').goTo(urlStep);
-                                }, 0);
+                // Online Sponsoring
+                if (path && path.match(JOIN_BASE_URL)) {
+                    $scope.isOnlineSponsoring = true;
+                    $scope.APP_BASE_URL = JOIN_BASE_URL;
+                    $log.debug("CheckoutController(): online sponsoring");
+
+                    // lock profile to new, since we're in online sponsoring
+                    $scope.profile.customerStatus = 'new';
+
+                    // redirect back home if there is no sku
+                    if (S(sku).isEmpty()) {
+                        if ($scope.isOnlineSponsoring) {
+                            $log.debug("CheckoutController(): no SKU, redirecting back to join page");
+                            $scope.alert("There was an error selecting a starter kit");
+                        }
+                    }
+
+                    $scope.selectProduct(sku).then(function(product) {
+                        if (!debug) {
+                            if (Session.isLoggedIn() && !$scope.isOnlineSponsoring) {
+                                // send the user past the login page if they are in client direct & logged in
+                                if (urlStep != 'Start') {
+                                    $log.debug("CheckoutController(): online sponsoring: sending logged in user to", urlStep);
+                                    $timeout(function() {
+                                        WizardHandler.wizard('checkoutWizard').goTo(urlStep);
+                                    }, 0);
+                                } else {
+                                    $log.debug("CheckoutController(): online sponsoring: sending logged in user to Shipping, skipping login/create");
+                                    $timeout(function() {
+                                        WizardHandler.wizard('checkoutWizard').goTo('Shipping');
+                                    }, 0);
+                                }
                             } else {
-                                $log.debug("CheckoutController(): online sponsoring: sending logged in user to Shipping, skipping login/create");
+                                $log.debug("CheckoutController(): online sponsoring: sending non-logged in user to Start");
                                 $timeout(function() {
-                                    WizardHandler.wizard('checkoutWizard').goTo('Shipping');
+                                    WizardHandler.wizard('checkoutWizard').goTo('Start');
                                 }, 0);
                             }
+                        }
+                    }, function() {
+                        $log.error("CheckoutController(): online sponsoring: failed to select product");
+                    });
+
+                    $scope.$watch(Cart.getFirstProductSku(), function(newVal, oldVal) {
+                        if (newVal != null) {
+                            var language = setConsultantLanguage(newVal);
+                            $log.debug("CheckoutController(): online sponsoring: setting consultant language for", sku, "to", language);
+                        }
+                    });
+
+                    // redirect to different steps as needed on load
+                    if (urlStep == 'Finish') {
+                        $log.debug("CheckoutController(): online sponsoring: finished wizard, redirecting to landing page?");
+                        $location.path(JOIN_BASE_URL).search('');
+                        return;
+                    } else if (sku == null) {
+                        $log.error("CheckoutController(): online sponsoring: failed to load sku for online sponsoring");
+                        $scope.alert("There was an error selecting a starter kit");
+                        return;
+                    } else {
+                        if (WizardHandler.wizard('checkoutWizard') != null) {
+                            $log.debug("CheckoutController(): online sponsoring: loading Start step");
+                            WizardHandler.wizard('checkoutWizard').goTo('Start');
                         } else {
-                            $log.debug("CheckoutController(): online sponsoring: sending non-logged in user to Start");
                             $timeout(function() {
+                                $log.debug("CheckoutController(): online sponsoring: loading Start step after delay");
                                 WizardHandler.wizard('checkoutWizard').goTo('Start');
                             }, 0);
                         }
                     }
-                }, function() {
-                    $log.error("CheckoutController(): online sponsoring: failed to select product");
-                });
-
-                $scope.$watch(Cart.getFirstProductSku(), function(newVal, oldVal) {
-                    if (newVal != null) {
-                        var language = setConsultantLanguage(newVal);
-                        $log.debug("CheckoutController(): online sponsoring: setting consultant language for", sku, "to", language);
-                    }
-                });
-
-                // redirect to different steps as needed on load
-                if (urlStep == 'Finish') {
-                    $log.debug("CheckoutController(): online sponsoring: finished wizard, redirecting to landing page?");
-                    $location.path(JOIN_BASE_URL).search('');
-                    return;
-                } else if (sku == null) {
-                    $log.error("CheckoutController(): online sponsoring: failed to load sku for online sponsoring");
-                    $scope.alert("There was an error selecting a starter kit");
-                    return;
+                    // Client Direct
                 } else {
-                    if (WizardHandler.wizard('checkoutWizard') != null) {
-                        $log.debug("CheckoutController(): online sponsoring: loading Start step");
-                        WizardHandler.wizard('checkoutWizard').goTo('Start');
-                    } else {
-                        $timeout(function() {
-                            $log.debug("CheckoutController(): online sponsoring: loading Start step after delay");
-                            WizardHandler.wizard('checkoutWizard').goTo('Start');
-                        }, 0);
+                    // nothing to load, done
+                    $log.debug("CheckoutController(): in store");
+                    $scope.APP_BASE_URL = STORE_BASE_URL;
+
+                    // check for items in the cart, if there are none redirect
+                    if (session.cart == null || session.cart.length == 0) {
+                        $log.debug("CheckoutController(): no items in cart, redirecting");
+                        $scope.alert("No items in cart, redirecting");
+                        return;
                     }
-                }
-            // Client Direct
-            } else {
-                // nothing to load, done
-                $log.debug("CheckoutController(): in store");
-                $scope.APP_BASE_URL = STORE_BASE_URL;
 
-                // check for items in the cart, if there are none redirect
-                if (session.cart == null || session.cart.length == 0) {
-                    $log.debug("CheckoutController(): no items in cart, redirecting");
-                    $scope.alert("No items in cart, redirecting");
-                    return;
-                }
-
-                // on a reload, ensure we've loaded session & moved to the correct step
-                if (urlStep != null && urlStep != 'Start' && !Session.isLoggedIn()) {
-                    if (urlStep == 'Finish') {
+                    // on a reload, ensure we've loaded session & moved to the correct step
+                    if (urlStep != null && urlStep != 'Start' && !Session.isLoggedIn()) {
+                        if (urlStep == 'Finish') {
+                            $log.debug("CheckoutController(): finished wizard, redirecting to products");
+                            $location.path(STORE_BASE_URL).search('');
+                            $location.replace();
+                            return;
+                        } else {
+                            $log.debug("CheckoutController(): sending user to beginning of wizard.  not logged in");
+                            // changing url to reflect beginning of checkout
+                            if (WizardHandler.wizard('checkoutWizard') != null) {
+                                WizardHandler.wizard('checkoutWizard').goTo('Start');
+                            } else {
+                                $timeout(function() {
+                                    $log.debug("CheckoutController(): skipping to Start step after delay");
+                                    //$location.search('step', 'Shipping');
+                                    WizardHandler.wizard('checkoutWizard').goTo('Start');
+                                }, 0);
+                            }
+                        }
+                    } else if (urlStep == 'Finish') {
                         $log.debug("CheckoutController(): finished wizard, redirecting to products");
                         $location.path(STORE_BASE_URL).search('');
                         $location.replace();
                         return;
-                    } else {
-                        $log.debug("CheckoutController(): sending user to beginning of wizard.  not logged in");
-                        // changing url to reflect beginning of checkout
+                    } else if (Session.isLoggedIn()) {
+                        $log.debug("CheckoutController(): user is logged in, determining checkout step", urlStep);
+
                         if (WizardHandler.wizard('checkoutWizard') != null) {
-                            WizardHandler.wizard('checkoutWizard').goTo('Start');
+                            $log.debug("CheckoutController(): skipping to shipping step");
+                            WizardHandler.wizard('checkoutWizard').goTo('Shipping');
                         } else {
                             $timeout(function() {
-                                $log.debug("CheckoutController(): skipping to Start step after delay");
+                                $log.debug("CheckoutController(): skipping to shipping step after delay");
                                 //$location.search('step', 'Shipping');
-                                WizardHandler.wizard('checkoutWizard').goTo('Start');
+                                WizardHandler.wizard('checkoutWizard').goTo('Shipping');
                             }, 0);
                         }
                     }
-                } else if (urlStep == 'Finish') {
-                    $log.debug("CheckoutController(): finished wizard, redirecting to products");
-                    $location.path(STORE_BASE_URL).search('');
-                    $location.replace();
-                    return;
-                } else if (Session.isLoggedIn()) {
-                    $log.debug("CheckoutController(): user is logged in, determining checkout step", urlStep);
 
-                    if (WizardHandler.wizard('checkoutWizard') != null) {
-                        $log.debug("CheckoutController(): skipping to shipping step");
-                        WizardHandler.wizard('checkoutWizard').goTo('Shipping');
-                    } else {
-                        $timeout(function() {
-                            $log.debug("CheckoutController(): skipping to shipping step after delay");
-                            //$location.search('step', 'Shipping');
-                            WizardHandler.wizard('checkoutWizard').goTo('Shipping');
-                        }, 0);
-                    }
+                    loadCheckout();
                 }
+            }, function(err) {
+                $log.debug("CheckoutController(): sessionCopy(): error", err);
 
-                loadCheckout();
-            }
+            })
         });
 
         // select language based on product
