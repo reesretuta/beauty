@@ -73,7 +73,7 @@ var API_BASE_URL = 'http://localhost:' + port + '/api';
 var API_PRODUCTS_URL = API_BASE_URL + "/products";
 
 var PASSWORD_RESET_INTERVAL = 15 * 1000 * 60;
-var MIN_INVENTORY = 10;
+var MIN_INVENTORY = 1;
 
 // pre-load categories so we can do some child category searches
 var categoryToChildren = {};
