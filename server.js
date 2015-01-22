@@ -41,8 +41,8 @@ var S = require("string");
 var http = require('http');
 var mockserver = require('mockserver');
 var Grid = require('gridfs-stream');
+var enforce = require('express-sslify');
 
-// configure app
 //app.use(bodyParser());
 
 var port = process.env.PORT || 8090; // set our port
@@ -77,9 +77,13 @@ var sess = {
     store: cookieStore
 };
 
-if (env === 'production') {
+if (env === 'production' || env === 'staging') {
     app.set('trust proxy', 1) // trust first proxy
     sess.cookie.secure = false // serve secure cookies
+
+    // force SSL
+    console.log("forcing SSL");
+    app.use(enforce.HTTPS());
 }
 
 app.use(session(sess));
