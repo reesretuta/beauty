@@ -41,8 +41,8 @@ var S = require("string");
 var http = require('http');
 var mockserver = require('mockserver');
 var Grid = require('gridfs-stream');
-var enforce = require('express-sslify');
 
+// configure app
 //app.use(bodyParser());
 
 var port = process.env.PORT || 8090; // set our port
@@ -81,9 +81,18 @@ if (env === 'production' || env === 'staging') {
     app.set('trust proxy', 1) // trust first proxy
     sess.cookie.secure = false // serve secure cookies
 
-    // force SSL
-    console.log("forcing SSL");
-    app.use(enforce.HTTPS());
+    var redirectUrl = function(protocol, hostname, url) {
+        return ;
+    };
+
+    app.use(function(req, res, next) {
+        var redirectTo = redirectUrl(req.header('X-Forwarded-Proto'), config.hostname, req.url);
+        if (redirectTo) {
+            res.redirect(301, redirectTo);
+        } else {
+            next();
+        }
+    });
 }
 
 app.use(session(sess));
@@ -130,7 +139,7 @@ var router = express.Router();
 //});
 
 // needed for IE11 iframe cookie blocking
-app.use(function(req, res, next) {
+router.use(function(req, res, next) {
     res.header('P3P', 'CP = "IDC DSP COR ADM Devi Taii PSA PSD Ivaí IVDi CONi HIS OUR IND CNT"');
     next();
 });
