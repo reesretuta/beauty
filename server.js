@@ -86,11 +86,18 @@ if (env === 'production' || env === 'staging') {
     };
 
     app.use(function(req, res, next) {
-        var redirectTo = redirectUrl(req.header('x-forwarded-proto'), req.host, req.url);
-        if (redirectTo) {
-            res.redirect(301, redirectTo);
+        if (req.hostname && S(req.hostname).endsWith("joinjafra.com")) {
+            logger.debug("redirecting joinjafra.com to usa.jafra.com");
+            res.redirect(301, "https://usa.jafra.com/join/");
+            res.end();
+            return;
         } else {
-            next();
+            var redirectTo = redirectUrl(req.header('x-forwarded-proto'), req.host, req.url);
+            if (redirectTo) {
+                res.redirect(301, redirectTo);
+            } else {
+                next();
+            }
         }
     });
 }
@@ -1425,18 +1432,18 @@ app.get('/js/config.js', function(req, res) {
     }
 });
 
-// handle redirects
-app.get('*', function (req, res, next) {
-    //logger.debug("request for hostname", req.hostname);
-    if (req.hostname && S(req.hostname).endsWith("joinjafra.com")) {
-        logger.debug("redirecting joinjafra.com to usa.jafra.com");
-        res.redirect(301, "https://usa.jafra.com/join/");
-        res.end();
-        return;
-    }
-
-    next();
-});
+//// handle redirects
+//app.get('*', function (req, res, next) {
+//    //logger.debug("request for hostname", req.hostname);
+//    if (req.hostname && S(req.hostname).endsWith("joinjafra.com")) {
+//        logger.debug("redirecting joinjafra.com to usa.jafra.com");
+//        res.redirect(301, "https://usa.jafra.com/join/");
+//        res.end();
+//        return;
+//    }
+//
+//    next();
+//});
 
 app.get('/*', function (req, res, next) {
     try {
