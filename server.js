@@ -86,18 +86,18 @@ if (env === 'production' || env === 'staging') {
     };
 
     app.use(function(req, res, next) {
+        var redirectTo = redirectUrl(req.header('x-forwarded-proto'), req.hostname, req.url);
+
         if (req.hostname && S(req.hostname).endsWith("joinjafra.com")) {
             logger.debug("redirecting joinjafra.com to usa.jafra.com");
             res.redirect(301, "https://usa.jafra.com/join/");
             res.end();
             return;
+        } else if (redirectTo) {
+            logger.debug("redirecting to https");
+            res.redirect(301, redirectTo);
         } else {
-            var redirectTo = redirectUrl(req.header('x-forwarded-proto'), req.host, req.url);
-            if (redirectTo) {
-                res.redirect(301, redirectTo);
-            } else {
-                next();
-            }
+            next();
         }
     });
 }
