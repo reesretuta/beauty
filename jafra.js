@@ -496,8 +496,8 @@ function getConsultant(consultantId) {
                     status: 500,
                     result: {
                         statusCode: 500,
-                        errorCode: "createClientInvalidResponse",
-                        message: "Failed to create client"
+                        errorCode: "getConsultantInvalidResponse",
+                        message: "Failed to get consultant"
                     }
                 });
             }
@@ -519,8 +519,8 @@ function getConsultant(consultantId) {
                 status: 500,
                 result: {
                     statusCode: 500,
-                    errorCode: "clientLoadFailed",
-                    message: "Failed to load client"
+                    errorCode: "consultantLoadFailed",
+                    message: "Failed to load consultant"
                 }
             });
         }
