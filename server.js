@@ -82,12 +82,11 @@ if (env === 'production' || env === 'staging') {
     sess.cookie.secure = false // serve secure cookies
 
     var redirectUrl = function(protocol, hostname, url) {
-        return ;
+        return protocol === 'https' ? null : ('https://' + hostname + url);
     };
 
     app.use(function(req, res, next) {
-        console.log(req.headers, req.url);
-        var redirectTo = redirectUrl(req.header('X-Forwarded-Proto'), config.hostname, req.url);
+        var redirectTo = redirectUrl(req.header('x-forwarded-proto'), config.hostname, req.url);
         if (redirectTo) {
             res.redirect(301, redirectTo);
         } else {
