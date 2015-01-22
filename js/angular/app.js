@@ -170,7 +170,7 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
         $log.debug("app(): consultantId", cid, "source", source, "language", language);
 
         var sess = {};
-        if (!S(language).isEmpty()) {
+        if (!S(language).isEmpty() && (language == "en_US" || language == "es_US")) {
             sess["language"] = language;
             $translate.use(language);
         }
