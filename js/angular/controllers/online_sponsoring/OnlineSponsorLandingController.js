@@ -37,7 +37,7 @@ angular.module('app.controllers.onlineSponsor')
     var loadProduct = function() {
         Product.query({"productIds": ["19634", "19635", "19822", "19823"]}).then(function(products, status, headers, config) {
            for (var i = 0; i < products.length; i++) {
-               $log.debug('OS product',products[i].id);
+               //$log.debug('OS product',products[i].id);
                $scope.productMap[products[i].id] = products[i];
            }
            console.log('OnlineSponsorLandingController: ($translating)');
