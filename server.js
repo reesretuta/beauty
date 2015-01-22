@@ -86,7 +86,7 @@ if (env === 'production' || env === 'staging') {
     };
 
     app.use(function(req, res, next) {
-        var redirectTo = redirectUrl(req.header('x-forwarded-proto'), config.hostname, req.url);
+        var redirectTo = redirectUrl(req.header('x-forwarded-proto'), req.host, req.url);
         if (redirectTo) {
             res.redirect(301, redirectTo);
         } else {
