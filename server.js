@@ -436,7 +436,7 @@ router.route('/session')
             return;
         }
 
-        logger.debug("returning session", req.session);
+        //logger.debug("returning session", req.session);
         res.json(req.session);
         res.end();
     })
