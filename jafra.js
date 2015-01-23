@@ -2419,13 +2419,13 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
                             // ensure all the product contains for a kit have inventory, else mark as no inventory
                             // inventory for a group is the sum of all inventories for items inside
                             if (product.contains && product.contains.length > 0) {
-                                logger.debug("processAvailabilityAndHiddenProducts(): product", product.id, "contains", product.contains.length, "products");
+                                //logger.debug("processAvailabilityAndHiddenProducts(): product", product.id, "contains", product.contains.length, "products");
                                 var availableCount = null;
 
                                 for (var j = 0; j < product.contains.length; j++) {
                                     updates["contains." + j + ".unavailable"] = false;
                                     var c = product.contains[j];
-                                    logger.debug("processAvailabilityAndHiddenProducts(): product", product.id, "contains", j, c);
+                                    //logger.debug("processAvailabilityAndHiddenProducts(): product", product.id, "contains", j, c);
 
                                     if (c.product != null) {
                                         var p = c.product;
@@ -2433,16 +2433,16 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
                                         updates["contains." + j + ".availableInventory"] = allInventory[p._id];
 
                                         // determine inventory availability for the parent product based on lowest inventory of children
-                                        logger.debug("processAvailabilityAndHiddenProducts(): product", product.id, "availability of item", p.id,"is", allInventory[p._id]);
+                                        //logger.debug("processAvailabilityAndHiddenProducts(): product", product.id, "availability of item", p.id,"is", allInventory[p._id]);
 
                                         if (product.type == "kit") {
                                             if (availableCount != null && allInventory[p._id] > 0) {
                                                 // our availability is the availability of the least available item
                                                 availableCount = allInventory[p._id] < availableCount ? allInventory[p._id] : availableCount;
-                                                logger.debug("processAvailabilityAndHiddenProducts(): product", product.id,"availability after contains check", availableCount, "component", p._id,"inventory", allInventory[p._id]);
+                                                //logger.debug("processAvailabilityAndHiddenProducts(): product", product.id,"availability after contains check", availableCount, "component", p._id,"inventory", allInventory[p._id]);
                                             } else if (availableCount == null) {
                                                 availableCount = allInventory[p._id];
-                                                logger.debug("processAvailabilityAndHiddenProducts(): product", product.id,"availability after contains check", availableCount, "component", p._id,"inventory", allInventory[p._id]);
+                                                //logger.debug("processAvailabilityAndHiddenProducts(): product", product.id,"availability after contains check", availableCount, "component", p._id,"inventory", allInventory[p._id]);
                                             }
                                         }
 
@@ -2455,7 +2455,7 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
                                             if (product.type == "group") {
                                                 // only if product in the group is available do we add to the sum for of inventories for product in a group
                                                 availableCount += allInventory[p._id];
-                                                logger.debug("processAvailabilityAndHiddenProducts(): product", product.id,"availability after contains added", availableCount);
+                                                //logger.debug("processAvailabilityAndHiddenProducts(): product", product.id,"availability after contains added", availableCount);
                                             }
                                         } else {
                                             //logger.debug("processAvailabilityAndHiddenProducts(): hiding product", product.id, "because contained product", p.id, "is unavailable");
@@ -2477,13 +2477,13 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
 
                             // set unavailable for upsell items
                             if (product.upsellItems && product.upsellItems.length > 0) {
-                                logger.debug("processAvailabilityAndHiddenProducts(): product", product.id, "upsellItems", product.upsellItems.length, "products");
+                                //logger.debug("processAvailabilityAndHiddenProducts(): product", product.id, "upsellItems", product.upsellItems.length, "products");
                                 var availableCount = null;
 
                                 for (var j = 0; j < product.upsellItems.length; j++) {
                                     updates["upsellItems." + j + ".unavailable"] = false;
                                     var c = product.upsellItems[j];
-                                    logger.debug("processAvailabilityAndHiddenProducts(): product", product.id, "upsellItems", j, c);
+                                    //logger.debug("processAvailabilityAndHiddenProducts(): product", product.id, "upsellItems", j, c);
 
                                     if (c.product != null) {
                                         var p = c.product;
@@ -2493,15 +2493,15 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
                                         if (p.masterStatus == "A" && p.onHold == false && (p.masterType == "R" || p.masterType == "B" || p.masterType == null || type == "group")) {
                                             // nothing
                                         } else {
-                                            logger.debug("processAvailabilityAndHiddenProducts(): hiding product", product.id, "because upsellItemed product", p.id, "is unavailable");
+                                            //logger.debug("processAvailabilityAndHiddenProducts(): hiding product", product.id, "because upsellItemed product", p.id, "is unavailable");
                                             updates["upsellItems." + j + ".unavailable"] = true;
                                         }
                                     } else {
-                                        logger.debug("processAvailabilityAndHiddenProducts(): hiding product", product.id, "because upsellItemed product", p.id, "is not found");
+                                        //logger.debug("processAvailabilityAndHiddenProducts(): hiding product", product.id, "because upsellItemed product", p.id, "is not found");
                                         updates["upsellItems." + j + ".unavailable"] = true;
                                     }
                                 }
-                                logger.debug("processAvailabilityAndHiddenProducts(): product", product.id, "availability after upsellItems check", availableInventory);
+                                //logger.debug("processAvailabilityAndHiddenProducts(): product", product.id, "availability after upsellItems check", availableInventory);
                             }
 
                             // if kit components are unavailable, then available inventory = 0 too;
@@ -2513,7 +2513,7 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
 
                             if (product.kitGroups && product.kitGroups.length > 0) {
                                 // ensure that any kit groups have at least one available product
-                                logger.debug("processAvailabilityAndHiddenProducts(): product", product.id, "contains", product.kitGroups.length, "kitGroups");
+                                //logger.debug("processAvailabilityAndHiddenProducts(): product", product.id, "contains", product.kitGroups.length, "kitGroups");
                                 var availableCount = null;
                                 for (var j = 0; j < product.kitGroups.length; j++) {
                                     var numAvailableForKitGroup = 0;
@@ -2554,7 +2554,7 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
                                                     // the kitgroup is in range and should be valid
                                                     hasValidComponentOption = true;
                                                 } else {
-                                                    logger.debug("processAvailabilityAndHiddenProducts(): component is unavailable", component)
+                                                    //logger.debug("processAvailabilityAndHiddenProducts(): component is unavailable", component)
                                                 }
                                             } else {
                                                 logger.warn("processAvailabilityAndHiddenProducts(): kitGroup", kitGroup.kitGroupId, "product", component.productId, "is not found");
@@ -2563,7 +2563,7 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
 
                                         // mark products as available/unavailable based on kitGroup date range and having any valid products
                                         if (!hasValidComponentOption) {
-                                            logger.debug("processAvailabilityAndHiddenProducts(): hiding product", product.id, "because a kitGroup product", p.id, "is not found");
+                                            //logger.debug("processAvailabilityAndHiddenProducts(): hiding product", product.id, "because a kitGroup product", p.id, "is not found");
                                             unavailableComponents = true;
                                             // also set this kitGroup to hidden
                                             updates["kitGroups." + j + ".unavailable"] = true;
@@ -2571,18 +2571,18 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
                                             updates["kitGroups." + j + ".unavailable"] = false;
                                         }
 
-                                        logger.debug("processAvailabilityAndHiddenProducts(): product", product.id, "sku", sku, "kitGroupId", kitGroup.kitGroupId, "numAvailableForKitGroup", numAvailableForKitGroup);
+                                        //logger.debug("processAvailabilityAndHiddenProducts(): product", product.id, "kitGroup", sku, "numAvailableForKitGroup", numAvailableForKitGroup);
 
                                         if (numAvailableForKitGroup == 0 || !hasValidComponentOption) {
-                                            logger.debug("processAvailabilityAndHiddenProducts(): product", product.id, "product has 0 availability, since a kitGroup has 0 inventory");
+                                            //logger.debug("processAvailabilityAndHiddenProducts(): product", product.id, "product has 0 availability, since a kitGroup has 0 inventory");
                                             availableInventory = 0;
                                             break;
                                         } else if (availableCount != null) {
                                             availableCount = numAvailableForKitGroup < availableCount ? numAvailableForKitGroup : availableCount;
-                                            logger.debug("processAvailabilityAndHiddenProducts(): product", product.id, "inventory now", availableCount);
+                                            //logger.debug("processAvailabilityAndHiddenProducts(): product", product.id, "inventory now", availableCount);
                                         } else {
                                             availableCount = numAvailableForKitGroup;
-                                            logger.debug("processAvailabilityAndHiddenProducts(): product", product.id, "inventory now", availableCount);
+                                            //logger.debug("processAvailabilityAndHiddenProducts(): product", product.id, "inventory now", availableCount);
                                         }
                                     }
                                 }
@@ -2600,11 +2600,11 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
                                 availableInventory = 0;
                             }
 
-                            logger.debug("processAvailabilityAndHiddenProducts(): product", product.id, "updating availability to", availableInventory);
+                            //logger.debug("processAvailabilityAndHiddenProducts(): product", product.id, "updating availability to", availableInventory);
                             updates["availableInventory"] = availableInventory;
                             updates["unavailableComponents"] = unavailableComponents;
 
-                            logger.debug("processAvailabilityAndHiddenProducts(): processing updates for product", product.id, updates);
+                            //logger.debug("processAvailabilityAndHiddenProducts(): processing updates for product", product.id, updates);
                             if (deductFromInventory[product.id]) {
                                 logger.debug("processAvailabilityAndHiddenProducts(): deducting", deductFromInventory[product.id], "for purchases of", product.id);
                                 updates["availableInventory"] = availableInventory - deductFromInventory[product.id];
