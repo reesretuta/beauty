@@ -68,7 +68,7 @@
     <input ng-model="profile.newCard.card" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" data-ng-blur="visited=true" ng-minlength="13" ng-maxlength="16" maxlength="16" name="number" type="text" class="form-control" id=" " placeholder=" " data-ui-validate=" 'isValidCard($value)' " required>
     <span ng-show="visited && (paymentForm.number.$error.minlength || paymentForm.number.$error.validator)" class="help-block" ng-class="{ 'text-danger' : paymentForm.number.$invalid && (paymentForm.number.$touched || paymentForm.number.$dirty) }"><span ng-bind-html="'INVALID-CARD-NUMBER' | translate | unsafe"></span></span>
   </div>
-  <div class="col-sm-4 col-lg-4" ng-model="cardType" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-show="!paymentForm.number.$error.minlength && !paymentForm.number.$error.validator">
+  <div class="col-sm-3 col-lg-4" ng-model="cardType" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-show="!paymentForm.number.$error.minlength && !paymentForm.number.$error.validator">
     <img class="img-responsive cardImg" src="/img/visa.png" ng-show="profile.newCard.cardType=='Visa'">
     <img class="img-responsive cardImg" src="/img/mastercard.png" ng-show="profile.newCard.cardType=='MasterCard'">
     <img class="img-responsive cardImg" src="/img/discover.png" ng-show="profile.newCard.cardType=='Discover Card'">
