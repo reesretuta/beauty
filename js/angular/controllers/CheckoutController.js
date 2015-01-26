@@ -94,9 +94,11 @@ angular.module('app.controllers.checkout')
             }
         });
 
+
         // watch current step for changes
         $scope.$watch('currentStep', function(newVal, oldVal) {
             if (newVal != oldVal && newVal != '' && newVal != null) {
+
                 $log.debug("CheckoutController(): step changed from", oldVal, "to", newVal, 'profile.customerStatus', $scope.profile.customerStatus);
 
                 urlStep = newVal;
@@ -132,7 +134,6 @@ angular.module('app.controllers.checkout')
                 } else {
                     $log.debug("CheckoutController(): current step is", urlStep, "newVal", newVal);
                 }
-
                 // scroll back to top for each new step
                 $location.hash("top");
                 $anchorScroll();
@@ -275,6 +276,9 @@ angular.module('app.controllers.checkout')
                                 $log.debug("CheckoutController(): online sponsoring: sending non-logged in user to Start");
                                 $timeout(function() {
                                     WizardHandler.wizard('checkoutWizard').goTo('Start');
+                                    // make modal appear on start
+                                    $log.debug("CheckoutController(): Show myPromoModal");
+                                    $('#myPromoModal').modal('show');
                                 }, 0);
                             }
                         }
@@ -1540,6 +1544,10 @@ angular.module('app.controllers.checkout')
                         };
 
                         WizardHandler.wizard('checkoutWizard').goTo('Finish');
+
+                        //make modal appear on Finish
+                        $('#myPromoModal').modal('show');
+                        
                         // remove the created lead
                         Leads.remove({
                             email: $scope.profile.loginEmail

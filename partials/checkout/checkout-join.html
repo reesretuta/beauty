@@ -21,30 +21,11 @@
       <ng-include src="'/partials/checkout/finish.html'"/>
     </wz-step>
   </wizard>
+  
+  <div ng-if="session.language" ng-include src="'/partials/checkout/modals/promo.html'"></div>
+
   <div ng-if="debug">
     <a ng-click="debugDumpProfile()">dump profile</a>
   </div>
-  <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="false" id="myModal" style="display: block;">
-    <div class="modal-dialog modal-sm">
-      <div class="modal-content">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-            <h4 class="modal-title" id="mySmallModalLabel">Great News!</h4>
-        </div>
-        <div class="modal-body">
-          As a New Consultant, you get FREE shipping when you place your first product order within the next 24 hours!
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <script type="text/javascript">
-      $(function(){
-          if(urlStep = 'Start') {
-            $('#myModal').modal('show');
-          } else if (urlStep ='Finish'){
-            $('#myModal').modal('show');
-          }
-      });
-  </script>
 </section>
