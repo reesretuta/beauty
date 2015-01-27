@@ -5,5 +5,6 @@ module.exports = {
 	app: {
 		title: 'Jafra - Staging Environment'
 	},
-	password_reset_url: "https://jafra-stage.herokuapp.com/shop/passwordReset"
+	password_reset_url: "https://jafra-stage.herokuapp.com/shop/passwordReset",
+	debug: true
 };
