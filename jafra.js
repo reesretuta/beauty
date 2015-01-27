@@ -2757,7 +2757,7 @@ function searchProducts(searchString, loadUnavailable, skip, limit) {
         path: 'kitGroups.kitGroup',
         model: 'KitGroup',
         match: { $and: getKitGroupComponentsCriteria()}
-    }).exec(function (err, products) {
+    }).exec(function (err, products)    {
         if (err) {
             logger.debug("error getting products by string", err);
             d.reject(err);
@@ -2960,12 +2960,12 @@ function loadProducts(loadUnavailable, loadComponents, skip, limit, sort) {
 
     logger.debug("loadProducts()", loadUnavailable, loadComponents, skip, limit, sort);
 
-    var query = {$and: []};
+    var query = {};
 
     if (!loadUnavailable && !loadComponents) {
-        query["$and"] = query["$and"].concat(getAvailableProductCriteria())
+        query["$and"] = query["$and"] = getAvailableProductCriteria();
     } else if (loadComponents) {
-        query["$and"] = query["$and"].concat(getProductAsKitComponentCriteria())
+        query["$and"] = query["$and"] = getProductAsKitComponentCriteria();
     }
 
     models.Product.find(query)
