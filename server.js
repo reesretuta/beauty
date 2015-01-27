@@ -304,7 +304,7 @@ router.route('/products')
             }
             logger.debug("searching for product by IDs", productIds);
 
-            jafraClient.loadProductsById(productIds, loadUnavailable, loadStarterKits, loadStarterKitsOnly).then(function(products) {
+            jafraClient.loadProductsById(productIds, loadComponents, loadUnavailable, loadStarterKits, loadStarterKitsOnly).then(function(products) {
                 res.json(products);
             }, function (err) {
                 logger.error("error while searching products by ID", err);

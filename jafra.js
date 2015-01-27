@@ -2657,7 +2657,6 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
 
 function getAvailableProductCriteria(requireSearchable) {
     var now = new Date();
-    var s = requireSearchable ? true : false;
 
     var availableProductCriteria = [
         {onHold: false, unavailableComponents: false},
@@ -2678,7 +2677,7 @@ function getAvailableProductCriteria(requireSearchable) {
         ]}
     ];
 
-    if (requireSearchable) {
+    if (requireSearchable == null || requireSearchable) {
         availableProductCriteria.unshift({searchable:true});
     }
 
@@ -2879,18 +2878,18 @@ function loadProductsByCategory(categoryId, loadUnavailable, skip, limit, sort) 
     return d.promise;
 }
 
-function loadProductsById(productIds, loadUnavailable, loadStarterKits, loadStarterKitsOnly) {
+function loadProductsById(productIds, loadComponents, loadUnavailable, loadStarterKits, loadStarterKitsOnly) {
     var d = Q.defer();
     var now = new Date();
 
-    logger.debug("loadProductsById()", productIds, loadUnavailable, loadStarterKits, loadStarterKitsOnly);
+    logger.debug("loadProductsById()", productIds, loadComponents, loadUnavailable, loadStarterKits, loadStarterKitsOnly);
 
     var query = {$and: [
         {_id: { $in: productIds }}
     ]};
 
     if (!loadUnavailable && !loadStarterKitsOnly) {
-        query["$and"] = query["$and"].concat(getAvailableProductCriteria())
+        query["$and"] = query["$and"].concat(getAvailableProductCriteria(!loadComponents));
     } else if (loadStarterKitsOnly) {
         query["$and"] = query["$and"].concat(getAvailableStarterKitCriteria());
     } else if (loadStarterKits) {
@@ -3054,7 +3053,7 @@ function loadProductById(productId, loadUnavailable, loadStarterKit, loadStarter
     models.Product.find(query).populate({
         path: 'upsellItems.product youMayAlsoLike.product',
         model: 'Product',
-        match: { $and: getAvailableProductCriteria(loadComponents?false:true)}
+        match: { $and: getAvailableProductCriteria()}
     }).populate({
         path: 'contains.product',
         model: 'Product'
