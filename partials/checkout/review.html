@@ -63,7 +63,13 @@
           </tbody>
           <tfoot>
           <tr>
-            <td colspan="3">
+            <td colspan="2">
+              <div class="promo_free_shipping text-center">
+                <span ng-bind-html="'OS-CHECKOUT-FREESHIPPING-PROMO-TITLE' | translate | unsafe"></span>
+                <p ng-bind-html="'OS-CHECKOUT-FREESHIPPING-PROMO-PARAGRAPH' | translate | unsafe"></p>
+              </div>
+            </td>
+            <td colspan="1">
               <p><span ng-bind-html="'CART_SUBTOTAL' | translate | unsafe"></span>: {{ salesTaxInfo.SubTotal | currency }}</p>
               <p><span ng-bind-html="'CART_SHIPPING' | translate | unsafe"></span>: {{ salesTaxInfo.SH | currency }}</p>
               <p><span ng-bind-html="'CART_TAX' | translate | unsafe"></span>: ({{ salesTaxInfo.TaxRate}}%): {{ salesTaxInfo.TaxAmount | currency }}</p>
