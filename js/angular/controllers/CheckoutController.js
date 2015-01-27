@@ -1546,7 +1546,7 @@ angular.module('app.controllers.checkout')
                         WizardHandler.wizard('checkoutWizard').goTo('Finish');
 
                         //make modal appear on Finish
-                        $('#myPromoModal').modal('show');
+                        // $('#myPromoModal').modal('show'); REMOVED PER FEEDBACK BY CLIENT, 2015-01-26
                         
                         // remove the created lead
                         Leads.remove({
