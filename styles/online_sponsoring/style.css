@@ -346,6 +346,25 @@ font-size: 48px;
 .section-copy {
   padding: 0 15px 30px 30px;
 }
+
+.promo_free_shipping, #myPromoModal .modal-dialog {
+  border-radius: 30px;
+  background-color: #006B77;
+  box-shadow: 4px 4px 0 0 rgba(0,0,0,.2);
+  padding: 0.5em;
+}
+#myPromoModal .modal-dialog {
+  padding: 1.5em;
+}
+.promo_free_shipping span, #myPromoModal .modal-dialog span {
+  text-transform: uppercase;
+  color: #fff;
+  font-family: HelveticaNeueLTStd-BdCn;
+  font-size: 20px;
+}
+.promo_free_shipping p, #myPromoModal .modal-dialog p {
+  color: #fff;
+}
  /*DECEMBER PROMO*/
 .promo {
   width: 260px;

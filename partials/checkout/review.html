@@ -64,8 +64,10 @@
           <tfoot>
           <tr>
             <td colspan="2">
-              <h4 class="modal-title" id="mySmallModalLabel" ng-bind-html="'OS-CHECKOUT-FREESHIPPING-PROMO-TITLE' | translate | unsafe">Great News!</h4>
-              <p ng-bind-html="'OS-CHECKOUT-FREESHIPPING-PROMO-PARAGRAPH' | translate | unsafe"></p>
+              <div class="promo_free_shipping text-center">
+                <span ng-bind-html="'OS-CHECKOUT-FREESHIPPING-PROMO-TITLE' | translate | unsafe"></span>
+                <p ng-bind-html="'OS-CHECKOUT-FREESHIPPING-PROMO-PARAGRAPH' | translate | unsafe"></p>
+              </div>
             </td>
             <td colspan="1">
               <p><span ng-bind-html="'CART_SUBTOTAL' | translate | unsafe"></span>: {{ salesTaxInfo.SubTotal | currency }}</p>
