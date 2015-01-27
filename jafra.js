@@ -2655,10 +2655,12 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
     return deferred.promise;
 }
 
-function getAvailableProductCriteria() {
+function getAvailableProductCriteria(requireSearchable) {
     var now = new Date();
+    var s = requireSearchable ? true : false;
+
     var availableProductCriteria = [
-        {onHold: false, searchable: true, unavailableComponents: false},
+        {onHold: false, unavailableComponents: false},
         {$or: [
             {masterType: "R"},
             {$and: [
@@ -2675,6 +2677,11 @@ function getAvailableProductCriteria() {
             // TODO - OR type: "group", and valid promo message exists
         ]}
     ];
+
+    if (requireSearchable) {
+        availableProductCriteria.unshift({searchable:true});
+    }
+
     return availableProductCriteria;
 }
 
@@ -3047,7 +3054,7 @@ function loadProductById(productId, loadUnavailable, loadStarterKit, loadStarter
     models.Product.find(query).populate({
         path: 'upsellItems.product youMayAlsoLike.product',
         model: 'Product',
-        match: { $and: getAvailableProductCriteria()}
+        match: { $and: getAvailableProductCriteria(loadComponents?false:true)}
     }).populate({
         path: 'contains.product',
         model: 'Product'
@@ -3086,7 +3093,7 @@ function loadProductById(productId, loadUnavailable, loadStarterKit, loadStarter
                     return;
                 }
 
-                logger.debug("loadProductsById(): got products", products);
+                //logger.debug("loadProductsById(): got products", products);
 
 
                 //logger.debug('products:', products);
