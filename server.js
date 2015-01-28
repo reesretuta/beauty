@@ -273,6 +273,7 @@ router.route('/products')
         if (!skip || isNaN(skip)) {
             skip = 0;
         }
+        var count = req.query.count == "true" ? true : false
 
         var now = new Date();
 
@@ -280,7 +281,7 @@ router.route('/products')
             logger.debug("searching for product by string", searchString);
             //var re = new RegExp(searchString);
 
-            jafraClient.searchProducts(searchString, loadUnavailable, skip, limit).then(function(products) {
+            jafraClient.searchProducts(searchString, loadUnavailable, skip, limit, count).then(function(products) {
                 res.json(products);
             }, function (err) {
                 logger.error("error while searching products by string", err);
@@ -304,7 +305,7 @@ router.route('/products')
             }
             logger.debug("searching for product by IDs", productIds);
 
-            jafraClient.loadProductsById(productIds, loadComponents, loadUnavailable, loadStarterKits, loadStarterKitsOnly).then(function(products) {
+            jafraClient.loadProductsById(productIds, loadComponents, loadUnavailable, loadStarterKits, loadStarterKitsOnly, count).then(function(products) {
                 res.json(products);
             }, function (err) {
                 logger.error("error while searching products by ID", err);
@@ -313,7 +314,7 @@ router.route('/products')
         } else {
             logger.debug("getting product list");
 
-            jafraClient.loadProducts(loadUnavailable, loadComponents, skip, limit, sort).then(function(products) {
+            jafraClient.loadProducts(loadUnavailable, loadComponents, skip, limit, sort, count).then(function(products) {
                 res.json(products);
             }, function (err) {
                 logger.error("error while getting product list", err);
