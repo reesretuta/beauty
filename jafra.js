@@ -3139,7 +3139,7 @@ function loadProductById(productId, loadUnavailable, loadStarterKit, loadStarter
                 }
                 d.resolve(products[0]);
 
-                logger.debug('product', products[0]);
+                //logger.debug('product', products[0]);
 
                 return;
             });
