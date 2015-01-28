@@ -2,8 +2,8 @@
 
 // Declare app level module which depends on filters, and services
 var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 'ngAnimate', 'ngCookies', 'ui.mask', 'ui.keypress', 'ui.jq', 'ui.validate', 'app.filters', 'app.services', 'app.controllers', 'app.directives', 'pasvaz.bindonce', 'jmdobry.angular-cache', 'autocomplete', 'ui.event', 'mgo-angular-wizard', 'pascalprecht.translate', 'LocalStorageModule',
-        'ui.bootstrap.tpls', 'ui.bootstrap.alert', 'ui.bootstrap.dropdown', 'ui.bootstrap.tooltip', 'ui.bootstrap.buttons', 'ui.bootstrap.modal', 'ui.bootstrap.popover', 'ui.bootstrap.tabs', 'infinite-scroll'])
-    .config([ '$locationProvider', '$routeProvider', '$rootScopeProvider', '$angularCacheFactoryProvider', '$translateProvider', '$httpProvider', '$provide', 'localStorageServiceProvider', 'BASE_URL', 'STORE_BASE_URL', 'JOIN_BASE_URL', function ($locationProvider, $routeProvider, $rootScopeProvider, $angularCacheFactoryProvider, $translateProvider, $httpProvider, $provide, localStorageServiceProvider, BASE_URL, STORE_BASE_URL, JOIN_BASE_URL) {
+        'ui.bootstrap.tpls', 'ui.bootstrap.alert', 'ui.bootstrap.dropdown', 'ui.bootstrap.tooltip', 'ui.bootstrap.buttons', 'ui.bootstrap.modal', 'ui.bootstrap.popover', 'ui.bootstrap.tabs', 'infinite-scroll', 'angulartics', 'angulartics.google.analytics', 'angulartics.google.tagmanager'])
+    .config([ '$locationProvider', '$routeProvider', '$rootScopeProvider', '$angularCacheFactoryProvider', '$translateProvider', '$httpProvider', '$provide', 'localStorageServiceProvider', '$analyticsProvider', 'BASE_URL', 'STORE_BASE_URL', 'JOIN_BASE_URL', function ($locationProvider, $routeProvider, $rootScopeProvider, $angularCacheFactoryProvider, $translateProvider, $httpProvider, $provide, localStorageServiceProvider, $analyticsProvider, BASE_URL, STORE_BASE_URL, JOIN_BASE_URL) {
         //$locationProvider.html5Mode(true);
         $angularCacheFactoryProvider.setCacheDefaults({
             maxAge: 300000, // default to 5 minute caching
@@ -15,6 +15,8 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
 
         // notify on set / remove items
         localStorageServiceProvider.setNotify(true, true);
+
+        $analyticsProvider.settings.ga.additionalAccountNames = [];
 
         $routeProvider.when(STORE_BASE_URL + '/', {
           templateUrl: BASE_URL + '/partials/home.html',
