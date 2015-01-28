@@ -22,7 +22,7 @@
     </wz-step>
   </wizard>
   
-  <div ng-if="session.language" ng-include src="'/partials/checkout/modals/promo.html'"></div>
+  <div ng-if="isOnlineSponsoring" ng-include src="'/partials/checkout/modals/promo.html'"></div>
 
   <div ng-if="debug">
     <a ng-click="debugDumpProfile()">dump profile</a>
