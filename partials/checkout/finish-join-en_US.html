@@ -12,18 +12,12 @@
       <a href="" onClick="window.print();"><i class="fa fa-print"></i> Print this page</a>
     </div>
   </div>
-  <div ng-if="isOnlineSponsoring" class="row">
-    <div class="col-md-12 text-center promo_free_shipping">
-      <span ng-bind-html="'OS-CHECKOUT-FREESHIPPING-PROMO-TITLE' | translate | unsafe"></span>
-      <p ng-bind-html="'OS-CHECKOUT-FREESHIPPING-PROMO-PARAGRAPH' | translate | unsafe"></p>
-    </div>
-  </div>
   <hr>
   <div class="row">
     <div class="col-md-8 text-left">
       <h3 class="color-red">Your Consultant I.D. # is: <label class="color-purple HelveticaNeueLTStd-BdCn">{{confirmation.consultantId}}</label></h3>
       <p>business portal: <a class="biggify color-red HelveticaNeueLTStd-BdCn">jafrabiz.com</a></p>
-      <p>username: <b ng-bind="confirmation.consultantId"></b></p>
+      <p>username: (consultant ID)</p>
       <p>password: (last 4 digits of SSN)</p>
     </div>
     <div class="col-md-4">
@@ -31,6 +25,12 @@
         <p ng-if="confirmation.sponsor.id">Your JAFRA Sponsor is:<br />#{{confirmation.sponsor.id}} <b class="biggify color-purple HelveticaNeueLTStd-BdCn">{{confirmation.sponsor.firstName}} {{confirmation.sponsor.lastName}}</b></p>
         <p ng-if="!confirmation.sponsor.id">A Sponsor will be assigned by JAFRA within the next 2 days.</p>
       </div>
+    </div>
+  </div>
+  <div ng-if="isOnlineSponsoring" class="row">
+    <div class="col-md-12 text-center promo_free_shipping">
+      <span ng-bind-html="'OS-CHECKOUT-FREESHIPPING-PROMO-TITLE' | translate | unsafe"></span>
+      <p ng-bind-html="'OS-CHECKOUT-FREESHIPPING-PROMO-PARAGRAPH' | translate | unsafe"></p>
     </div>
   </div>
   <hr>
@@ -98,10 +98,6 @@
           <h3><span ng-bind="profile.firstName"></span> <span ng-bind="profile.lastName"></span></h3>
           <p><b ng-bind="profile.loginEmail"></b></p>
           <p>{{profile.phoneNumber|phone}}</p>
-          <a ng-if="isOnlineSponsoring" href ng-click="editContactInfo()" class="pull-left">
-            <i class="fa fa-pencil-square-o"></i>
-            <span ng-bind-html="'EDIT' | translate | unsafe">Edit</span>
-          </a>
         </div>
       </div>
     </div>
@@ -151,11 +147,11 @@
 
   <hr>
 
-  <div class="row">
+  <div class="row" style="background:#E5E2E9;">
     <div class="col-md-4">
       <div class="text-center">
         <h3>1. Grow Your Business</h3>
-        <p>Visit <a href="http://jafrabiz.com" target="_blank">jafrabiz.com</a> and Consultant Connection.</p>
+        <p>Visit <a href="http://jafrabiz.com" target="_blank" class="biggify color-red HelveticaNeueLTStd-BdCn">jafrabiz.com</a> and Consultant Connection.</p>
         <ul class="text-left">
             <li>Place orders</li>
             <li>Make payments</li>
@@ -163,7 +159,7 @@
             <li>Access training</li>
             <li>Get Alerts & Company News</li>
         </ul>
-        <p><a href="http://pages.exacttarget.com/opt-in-sms" target="_blank">Sign Up to receive Text Messages from JAFRA</a></p>
+        <p class="col-lg-12"><a href="http://pages.exacttarget.com/opt-in-sms" target="_blank" class="biggify color-red HelveticaNeueLTStd-BdCn">Sign Up to receive Text Messages from JAFRA</a></p>
         <a class="btn btn-primary HelveticaNeueLTStd-BdCn btn-med" role="button" href="http://jafrabiz.com" target="_blank">GO TO JAFRABIZ.COM</a>
       </div>
     </div>
