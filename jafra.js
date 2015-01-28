@@ -2729,7 +2729,7 @@ function getKitGroupComponentsCriteria() {
     return kitGroupComponentCriteria;
 }
 
-function searchProducts(searchString, loadUnavailable, skip, limit) {
+function searchProducts(searchString, loadUnavailable, skip, limit, count) {
     var d = Q.defer();
     var now = new Date();
 
@@ -2765,6 +2765,11 @@ function searchProducts(searchString, loadUnavailable, skip, limit) {
         }
 
         products = products ? products : [];
+
+        if (count) {
+            d.resolve({count:products.length});
+            return;
+        }
 
         // filter out upsellItems and youMailAlsoLike that aren't available
         for (var i=0; i < products; i++) {
@@ -2917,6 +2922,11 @@ function loadProductsById(productIds, loadComponents, loadUnavailable, loadStart
 
         products = products ? products : [];
 
+        if (count) {
+            d.resolve({count:products.length});
+            return;
+        }
+
         // filter out upsellItems and youMailAlsoLike that aren't available
         for (var i=0; i < products; i++) {
             if (products[i].contains) {
@@ -2954,7 +2964,7 @@ function loadProductsById(productIds, loadComponents, loadUnavailable, loadStart
     return d.promise;
 }
 
-function loadProducts(loadUnavailable, loadComponents, skip, limit, sort) {
+function loadProducts(loadUnavailable, loadComponents, skip, limit, sort, count) {
     var d = Q.defer();
     var now = new Date();
 
@@ -2991,6 +3001,11 @@ function loadProducts(loadUnavailable, loadComponents, skip, limit, sort) {
         }
 
         products = products ? products : [];
+
+        if (count) {
+            d.resolve({count:products.length});
+            return;
+        }
 
         // filter out upsellItems and youMailAlsoLike that aren't available
         for (var i=0; i < products; i++) {
