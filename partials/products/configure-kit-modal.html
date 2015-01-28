@@ -32,7 +32,7 @@
       <form name="kitSelectionForm" role="form" class="form-inline clearfix">
         <div ng-repeat="kitGroup in allKitGroups">
           <div id="kitGroup{{kitGroup.kitGroup.id+'_'+kitGroup.kitGroupNum}}" class="ng-binding kitnameWrapper row">
-            <h2 class="kitname">{{kitGroup.kitGroup[session.language=='en_US'?'name':'name_'+session.language]}} <small class="text-muted italic pull-right" style="text-transform:none;">click one to select &nbsp;&nbsp;</small> </h2>
+            <h2 class="kitname">{{kitGroup.kitGroup[session.language=='en_US'?'name':'name_'+session.language]}} <small class="text-muted italic pull-right" style="text-transform:none;">select product(s) &nbsp;&nbsp;</small> </h2>
             <!-- <span ng-if="$index > 0" class="pull-right"><a href="" ng-click="kitGroupClicked(item.product.kitGroups[$index-1].kitGroup)">Back to {{item.product.kitGroups[$index-1].kitGroup.id}}</a></span> -->
           </div>
           <!-- products in kitgroup -->
