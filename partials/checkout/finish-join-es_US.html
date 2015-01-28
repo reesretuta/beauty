@@ -11,7 +11,7 @@
       <a href="" onClick="window.print();"><i class="fa fa-print"></i> Imprimir</a>
     </div>
   </div>
-  <div class="row">
+  <div ng-if="isOnlineSponsoring" class="row">
     <div class="col-md-12 text-center promo_free_shipping">
       <span ng-bind-html="'OS-CHECKOUT-FREESHIPPING-PROMO-TITLE' | translate | unsafe"></span>
       <p ng-bind-html="'OS-CHECKOUT-FREESHIPPING-PROMO-PARAGRAPH' | translate | unsafe"></p>

@@ -64,7 +64,7 @@
           <tfoot>
           <tr>
             <td colspan="2">
-              <div class="promo_free_shipping text-center">
+              <div ng-if="isOnlineSponsoring" class="promo_free_shipping text-center">
                 <span ng-bind-html="'OS-CHECKOUT-FREESHIPPING-PROMO-TITLE' | translate | unsafe"></span>
                 <p ng-bind-html="'OS-CHECKOUT-FREESHIPPING-PROMO-PARAGRAPH' | translate | unsafe"></p>
               </div>
