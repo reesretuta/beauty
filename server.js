@@ -570,7 +570,7 @@ router.route('/leads')// create a lead
             // any leads that are created will get pushed to JCS on an interval, if they haven't been
             // closed by the user completing the online sponsoring process
 
-            logger.error("created lead", lead);
+            //logger.error("created lead", lead);
 
             res.status(201);
             res.json(lead);
