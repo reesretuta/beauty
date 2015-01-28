@@ -2883,7 +2883,7 @@ function loadProductsByCategory(categoryId, loadUnavailable, skip, limit, sort) 
     return d.promise;
 }
 
-function loadProductsById(productIds, loadComponents, loadUnavailable, loadStarterKits, loadStarterKitsOnly) {
+function loadProductsById(productIds, loadComponents, loadUnavailable, loadStarterKits, loadStarterKitsOnly, count) {
     var d = Q.defer();
     var now = new Date();
 
