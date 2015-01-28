@@ -1,6 +1,6 @@
 <div class="modal-header">
   <button type="button" class="close" ng-click="close()">&times;</button>
-  <h4 class="modal-title">Configure Offer <span class="text-muted italic">- Please select a product from each group</span></h4>
+  <h4 class="modal-title">Configure Offer <span class="text-muted italic">- Please select products from each group</span></h4>
 </div>
 
 <div class="modal-body queue-modal-body">
@@ -13,29 +13,43 @@
           <li id="kitGroupNav{{kitGroup.kitGroup.id+'_'+kitGroup.kitGroupNum}}" ng-repeat="kitGroup in allKitGroups" ng-click="kitGroupClicked(kitGroup)">
             <a href="" ng-class="{'active': isKitGroupSelected(kitGroup)}">
               <span class="ng-binding kitGroupNavName">{{kitGroup.kitGroup[session.language=='en_US'?'name':'name_'+session.language]}}</span>
-              <!-- <i ng-if="isKitGroupSelected(kitGroup)" class="fa fa-angle-up pull-right ng-scope"></i>
-              <i ng-if="!isKitGroupSelected(kitGroup)" class="fa fa-angle-down pull-right ng-scope"></i> -->
+              <!-- FIXME: wire up the selected count and the limit count -->
+              <small class="pull-right">(
+                <b class="kit-item-count" ng-if="kitData.kitSelections[kitGroup.kitGroup.id+'_'+kitGroup.kitGroupNum] == null || productIdToProduct == null">
+                  <span class="kit-selected-count">0</span>/<span class="kit-limit-count">3</span>
+                </b>
+                <b class="kit-item-count" ng-if="kitData.kitSelections[kitGroup.kitGroup.id+'_'+kitGroup.kitGroupNum] != null && productIdToProduct != null">
+                  <span class="kit-selected-count">#</span>/<span class="kit-limit-count">#</span>
+                </b>
+              )</small>
             </a>
-            <!--{{kitData.kitSelections[kitGroup.kitGroup.id+'_'+kitGroup.kitGroupNum]}} {{productIdToProduct}}-->
+            <!-- FIXME: add ng-repeat for multi-select -->
             <span class="modal-addon-item product-image" ng-if="kitData.kitSelections[kitGroup.kitGroup.id+'_'+kitGroup.kitGroupNum] != null && productIdToProduct != null">
               <p class="product-name">1x {{productIdToProduct[kitData.kitSelections[kitGroup.kitGroup.id+'_'+kitGroup.kitGroupNum].sku][session.language=='en_US'?'name':'name_'+session.language]}}</p>
-              <img ng-if="productIdToProduct[kitData.kitSelections[kitGroup.kitGroup.id+'_'+kitGroup.kitGroupNum]].images > 0" class="img-responsive" ng-src="{{productIdToProduct[kitData.kitSelections[kitGroup.kitGroup.id+'_'+kitGroup.kitGroupNum]].images[0]}}">
-              <img ng-if="productIdToProduct[kitData.kitSelections[kitGroup.kitGroup.id+'_'+kitGroup.kitGroupNum]].images == 0" class="img-responsive" ng-src="/img/product_placeholder.gif">
             </span>
           </li>
         </ul>
       </aside>
-      <!--<img class="img-responsive" ng-src="/{{getImagePath(product.images[0].imagePath)}}">-->
-      <!--<p class="modal-addon-item-title">{{product.name}}</p>-->
     </div>
     <div class="col-lg-9 col-md-9 col-sm-9 kitSelectionList">
       <form name="kitSelectionForm" role="form" class="form-inline clearfix">
         <div ng-repeat="kitGroup in allKitGroups">
           <div id="kitGroup{{kitGroup.kitGroup.id+'_'+kitGroup.kitGroupNum}}" class="ng-binding kitnameWrapper row">
-            <h2 class="kitname">{{kitGroup.kitGroup[session.language=='en_US'?'name':'name_'+session.language]}} <small class="text-muted italic pull-right" style="text-transform:none;">select product(s) &nbsp;&nbsp;</small> </h2>
-            <!-- <span ng-if="$index > 0" class="pull-right"><a href="" ng-click="kitGroupClicked(item.product.kitGroups[$index-1].kitGroup)">Back to {{item.product.kitGroups[$index-1].kitGroup.id}}</a></span> -->
+            <h2 class="kitname">{{kitGroup.kitGroup[session.language=='en_US'?'name':'name_'+session.language]}} 
+              <!-- FIXME: wire up the selected count and the limit count -->
+              <span class="pull-right">
+                <small class="text-muted italic" style="text-transform:none;">selected products &nbsp;&nbsp;</small> 
+                <b class="kit-item-count" ng-if="kitData.kitSelections[kitGroup.kitGroup.id+'_'+kitGroup.kitGroupNum] == null || productIdToProduct == null">
+                  <span class="kit-selected-count">0</span>/<span class="kit-limit-count">3</span>
+                </b>
+                <b class="kit-item-count" ng-if="kitData.kitSelections[kitGroup.kitGroup.id+'_'+kitGroup.kitGroupNum] != null && productIdToProduct != null">
+                  <span class="kit-selected-count">#</span>/<span class="kit-limit-count">#</span>
+                </b>
+              </span> 
+            </h2>
           </div>
           <!-- products in kitgroup -->
+          <!-- FIXME: allow for multi-select in ng-class logic -->
           <div class="row hover-row" ng-repeat="component in kitGroup.kitGroup.components" ng-class="{'selected': kitData.kitSelections[kitGroup.kitGroup.id+'_'+kitGroup.kitGroupNum].sku == component.productId}" ng-click="selectProduct(kitGroup.kitGroup.id, kitGroup.kitGroupNum, component.productId)">
             <div ng-if="productIdToProduct[component.productId]" class="col-lg-2 col-md-2 col-xs-3 col-sm-3 modal-addon-item product-image clearfix">
               <img ng-if="productIdToProduct[component.productId].images.length > 0" class="img-responsive" ng-src="{{getImagePath(productIdToProduct[component.productId].images[0])}}">
@@ -61,7 +75,6 @@
   </div>
   <div class="col-lg-6 col-md-6 col-sm-6">
     <button ng-click="close()" class="btn btn-link"><span ng-bind-html="'BTN_CANCEL' | translate | unsafe"></span></button>
-    <button ng-click="save()" class="btn btn-primary" ng-show="isKitSelectionComplete()"><i class="fa fa-shopping-cart"></i> <span ng-bind-html="'BTN_SAVE_CART' | translate | unsafe"></span></button>
-    <button ng-click="save()" class="btn btn-primary" ng-show="!isKitSelectionComplete()" disabled="disabled"><i class="fa fa-shopping-cart"></i> <span ng-bind-html="'BTN_SAVE_CART' | translate | unsafe"></span></button>
+    <button ng-click="save()" class="btn btn-primary" ng-disabled="!isKitSelectionComplete()"><i class="fa fa-shopping-cart"></i> <span ng-bind-html="'BTN_SAVE_CART' | translate | unsafe"></span></button>
   </div>
 </div>
