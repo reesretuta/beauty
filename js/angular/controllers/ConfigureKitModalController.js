@@ -37,16 +37,18 @@ angular.module('app.controllers.products').controller('ConfigureKitModalControll
 
         // remove the first item we selected to make room
         if (foundIndex == -1 && selections.length >= productKitGroup.selectQuantity) {
-            selections.shift();
+            //selections.shift();
         } else if (foundIndex >= 0) {
             // remove it
             selections.splice(foundIndex, 1);
+        } else {
+            selections.push({
+                sku: productId,
+                name: $scope.productIdToProduct[productId].name
+            });
+
         }
 
-        selections.push({
-            sku: productId,
-            name: $scope.productIdToProduct[productId].name
-        });
 
         $scope.kitGroupSelected = kitId+'_'+kitGroupNum;
         $log.debug("ConfigureKitModalController(): kitSelections now", $scope.kitData.kitSelections);
