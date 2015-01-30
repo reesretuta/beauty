@@ -6,8 +6,6 @@ angular.module('app.controllers.products').controller('ConfigureKitModalControll
     $log.debug("ConfigureKitModalController(): the funk", whizFunc);
     whizFunc();
 
-    var NUM_ITEMS_IN_GROUP = 2;
-
     $scope.item = angular.copy(item);
 
     $scope.products = [];
@@ -21,7 +19,7 @@ angular.module('app.controllers.products').controller('ConfigureKitModalControll
         $scope.kitData.kitSelections = {};
     }
 
-    $scope.selectProduct = function(kitId, kitGroupNum, productId) {
+    $scope.selectProduct = function(productKitGroup, kitId, kitGroupNum, productId) {
         $log.debug("ConfigureKitModalController(): selected product", productId, "for kit", kitId, "kitGroupNum", kitGroupNum);
 
         if ($scope.kitData.kitSelections[kitId+'_'+kitGroupNum] == null) {
@@ -38,7 +36,7 @@ angular.module('app.controllers.products').controller('ConfigureKitModalControll
         })
 
         // remove the first item we selected to make room
-        if (foundIndex == -1 && selections.length >= NUM_ITEMS_IN_GROUP) {
+        if (foundIndex == -1 && selections.length >= productKitGroup.selectQuantity) {
             selections.shift();
         } else if (foundIndex >= 0) {
             // remove it
@@ -56,17 +54,17 @@ angular.module('app.controllers.products').controller('ConfigureKitModalControll
 
     $scope.kitGroupSelected = null;
 
-    $scope.isKitGroupSelected = function(kitGroup) {
-        $log.debug("ConfigureKitModalController(): isKitGroupSelected", kitGroup);
-        if (kitGroup.kitGroup.id+'_'+kitGroup.kitGroupNum == $scope.kitGroupSelected) {
+    $scope.isKitGroupSelected = function(productKitGroup) {
+        $log.debug("ConfigureKitModalController(): isKitGroupSelected", productKitGroup);
+        if (productKitGroup.kitGroup.id+'_'+productKitGroup.kitGroupNum == $scope.kitGroupSelected) {
             return true;
         }
         return false;
     };
 
-    $scope.isKitGroupItemSelected = function(kitGroup, productId) {
-        var selections = $scope.kitData.kitSelections[kitGroup.kitGroupId+'_'+kitGroup.kitGroupNum];
-        $log.debug("ConfigureKitModalController(): isKitGroupItemSelected", kitGroup.kitGroupId+'_'+kitGroup.kitGroupNum, selections);
+    $scope.isKitGroupItemSelected = function(productKitGroup, productId) {
+        var selections = $scope.kitData.kitSelections[productKitGroup.kitGroupId+'_'+productKitGroup.kitGroupNum];
+        $log.debug("ConfigureKitModalController(): isKitGroupItemSelected", productKitGroup.kitGroupId+'_'+productKitGroup.kitGroupNum, selections);
 
         if (selections && selections.length > 0) {
             var found = false;
@@ -80,10 +78,10 @@ angular.module('app.controllers.products').controller('ConfigureKitModalControll
         return false;
     }
 
-    $scope.kitGroupClicked = function(kitGroup) {
-        $scope.kitGroupSelected = kitGroup.kitGroup.id+'_'+kitGroup.kitGroupNum;
-        $log.debug("ConfigureKitModalController(): selected kit group", kitGroup);
-        var el = $document[0].querySelector("#kitGroup" + kitGroup.kitGroup.id+'_'+kitGroup.kitGroupNum);
+    $scope.kitGroupClicked = function(productKitGroup) {
+        $scope.kitGroupSelected = productKitGroup.kitGroup.id+'_'+productKitGroup.kitGroupNum;
+        $log.debug("ConfigureKitModalController(): selected kit group", productKitGroup);
+        var el = $document[0].querySelector("#kitGroup" + productKitGroup.kitGroup.id+'_'+productKitGroup.kitGroupNum);
         if (el) {
             el.scrollIntoView(true);
         }
@@ -105,10 +103,10 @@ angular.module('app.controllers.products').controller('ConfigureKitModalControll
         if ($scope.kitData.kitSelections == null) {
             return false;
         }
-        $.each(allKitGroups, function(index, kitgroup) {
-            var selections = $scope.kitData.kitSelections[kitgroup.kitGroup.id+'_'+kitgroup.kitGroupNum];
-            if (selections == null || selections.length < NUM_ITEMS_IN_GROUP) {
-                $log.debug('ConfigureKitModalController(): not complete', kitgroup);
+        $.each(allKitGroups, function(index, productKitGroup) {
+            var selections = $scope.kitData.kitSelections[productKitGroup.kitGroup.id+'_'+productKitGroup.kitGroupNum];
+            if (selections == null || selections.length < productKitGroup.selectQuantity) {
+                $log.debug('ConfigureKitModalController(): not complete', productKitGroup);
                 complete = false;
                 return;
             }
@@ -118,18 +116,23 @@ angular.module('app.controllers.products').controller('ConfigureKitModalControll
 
     var productIds = new Array();
     var allKitGroups = new Array();
-    $.each(kitgroups, function(index, kitgroup) {
-        $log.debug('ConfigureKitModalController(): processing kitGroup', kitgroup);
+    $.each(kitgroups, function(index, productKitGroup) {
+        $log.debug('ConfigureKitModalController(): processing product kitGroup', productKitGroup);
+
+        // set selectQuantity to 1 when null
+        if (productKitGroup.selectQuantity == null) {
+            productKitGroup.selectQuantity = 1;
+        }
 
         // get product list to load
-        $.each(kitgroup.kitGroup.components, function(index, component) {
+        $.each(productKitGroup.kitGroup.components, function(index, component) {
             $log.debug('ConfigureKitModalController(): adding kitGroup component', component);
             productIds.push(component.productId);
         });
 
         // break out quantities to create a list of kit groups for configuring
-        for (var i=1; i <= kitgroup.quantity; i++) {
-            var kg = angular.copy(kitgroup);
+        for (var i=1; i <= productKitGroup.quantity; i++) {
+            var kg = angular.copy(productKitGroup);
             // set this to uniquely identify copies
             kg.kitGroupNum = i;
             allKitGroups.push(kg);
