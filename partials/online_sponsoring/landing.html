@@ -185,18 +185,17 @@
 </div>
 </div>
 
-<!-- WHY JAFRA - Features & Highlights -->
 <section id="why_jafra">
-  <div ng-if="session.language" ng-include="'/partials/online_sponsoring/sections/about.html'"></div>
-  <div ng-if="session.language" ng-include="'/partials/online_sponsoring/sections/products.html'"></div>
-  <div ng-if="session.language" ng-include="'/partials/online_sponsoring/sections/business-'+session.language+'.html'"></div>
-  <div ng-if="session.language" ng-include="'/partials/online_sponsoring/sections/rewards.html'"></div>
-  <div ng-if="session.language" ng-include="'/partials/online_sponsoring/sections/testimonials.html'"></div>
+  <div ng-if="session.language" ng-include="'/partials/online_sponsoring/sections/about.html'" analytics-on="scrollby" analytics-event="Scrolled to About"></div>
+  <div ng-if="session.language" ng-include="'/partials/online_sponsoring/sections/products.html'" analytics-on="scrollby" analytics-event="Scrolled to Products"></div>
+  <div ng-if="session.language" ng-include="'/partials/online_sponsoring/sections/business-'+session.language+'.html'" analytics-on="scrollby" analytics-event="Scrolled to Opportunity"></div>
+  <div ng-if="session.language" ng-include="'/partials/online_sponsoring/sections/rewards.html'" analytics-on="scrollby" analytics-event="Scrolled to Rewards"></div>
+  <div ng-if="session.language" ng-include="'/partials/online_sponsoring/sections/testimonials.html'" analytics-on="scrollby" analytics-event="Scrolled to Testimonials"></div>
 </section>
 
-<div ng-if="session.language" ng-include="'/partials/online_sponsoring/sections/kits-'+session.language+'.html'"></div>
+<div ng-if="session.language" ng-include="'/partials/online_sponsoring/sections/kits-'+session.language+'.html'" analytics-on="scrollby" analytics-event="Scrolled to Kits"></div>
 
-<div ng-if="session.language" ng-include="'/partials/online_sponsoring/sections/faqs.html'"></div>
+<div ng-if="session.language" ng-include="'/partials/online_sponsoring/sections/faqs.html'" analytics-on="scrollby" analytics-event="Scrolled to FAQs"></div>
 
 <section id="social">
   <div class="container">

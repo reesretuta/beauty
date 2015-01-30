@@ -35,6 +35,11 @@
 
     <!-- AddThis widgets for social media sharing -->
     <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5435adb94c0d228e"></script>
+    <script type="text/javascript">
+      var addthis_config = {
+         data_ga_property: 'UA-7560748-27'
+      }; 
+    </script>
     <!-- ShareThis Widgets for social media sharing >
     <script type="text/javascript">var switchTo5x=true;</script>
     <script type="text/javascript" src="/js/sharethis/buttons.js"></script>
@@ -135,7 +140,7 @@
       <div ng-view class="ngview" autoscroll="true"></div>
     <!-- end content area -->
 
-      <footer>
+      <footer id="footer" analytics-on="scrollby" analytics-event="Scrolled to Footer">
           <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
 
         <div class="container-fluid text-center HelveticaNeueLTStd-BdCn footer-links">
