@@ -89,12 +89,12 @@
 
           <div id="navbar-sections">
           <ul class="join_nav nav navbar-nav navbar-right HelveticaNeueLTStd-BdCn">
-            <li ng-if="!inCheckout"><a href="#freedom_flexibility"><span ng-bind-html="'OS-NAV1' | translate | unsafe"></span></a></li>
-            <li ng-if="!inCheckout"><a href="#starter_kits"><span ng-bind-html="'OS-NAV2' | translate | unsafe"></span></a></li>
-            <li ng-if="!inCheckout"><a href="#FAQs"><span ng-bind-html="'OS-NAV3' | translate | unsafe"></span></a></li>
+            <li ng-if="!inCheckout"><a href="#freedom_flexibility" analytics-on="click" analytics-event="Menu About" analytics-category="Content"><span ng-bind-html="'OS-NAV1' | translate | unsafe"></span></a></li>
+            <li ng-if="!inCheckout"><a href="#starter_kits" analytics-on="click" analytics-event="Menu Kits" analytics-category="Content"><span ng-bind-html="'OS-NAV2' | translate | unsafe"></span></a></li>
+            <li ng-if="!inCheckout"><a href="#FAQs" analytics-on="click" analytics-event="Menu FAQs" analytics-category="Content"><span ng-bind-html="'OS-NAV3' | translate | unsafe"></span></a></li>
             <li ng-if="!inCheckout"><a href class="cta" data-toggle="modal" data-target=".bs-example-modal-lg" analytics-on="click" analytics-event="Menu CTA" analytics-category="Buttons"><span ng-bind-html="'OS-NAV4' | translate | unsafe"></span></a></li>
             <li class="contact-dropdown">
-              <a class="dropdown-toggle" data-toggle="dropdown"><span ng-bind-html="'OS-NAV5' | translate | unsafe"></span></a>
+              <a class="dropdown-toggle" data-toggle="dropdown" analytics-on="click" analytics-event="Menu Contact" analytics-category="Content"><span ng-bind-html="'OS-NAV5' | translate | unsafe"></span></a>
               <ul class="dropdown-menu dropdown_jafra contact-header" role="menu">
                 <li class="contact-description" ng-bind-html="'CONTACT-INFO' | translate | unsafe">
                   1 (800) 551-2345<br/>
@@ -103,19 +103,19 @@
                 </li>
                 <li class="social_dropdown" ng-if="!inCheckout">
                       <div class="social-media-icons center-block">
-                        <a target="_blank" href="http://www.facebook.com/JafraWorldwide"><i class="fa fa-facebook-square"></i></a>
+                        <a target="_blank" href="http://www.facebook.com/JafraWorldwide" analytics-on="click" analytics-event="Menu JAFRA Facebook" analytics-category="External Link"><i class="fa fa-facebook-square"></i></a>
                         &nbsp;
-                        <a target="_blank" href="https://plus.google.com/102586203009783197974"><i class="fa fa-google-plus-square"></i></a>
+                        <a target="_blank" href="https://plus.google.com/102586203009783197974" analytics-on="click" analytics-event="Menu JAFRA Google+" analytics-category="External Link"><i class="fa fa-google-plus-square"></i></a>
                         &nbsp;
-                        <a target="_blank" href="https://www.linkedin.com/company/3077948"><i class="fa fa-linkedin-square"></i></a>
+                        <a target="_blank" href="https://www.linkedin.com/company/3077948" analytics-on="click" analytics-event="Menu JAFRA LinkedIn" analytics-category="External Link"><i class="fa fa-linkedin-square"></i></a>
                         &nbsp;
-                        <a target="_blank" href="https://www.twitter.com/JAFRAWorldwide"><i class="fa fa-twitter-square"></i></a>
+                        <a target="_blank" href="https://www.twitter.com/JAFRAWorldwide" analytics-on="click" analytics-event="Menu JAFRA Twitter" analytics-category="External Link"><i class="fa fa-twitter-square"></i></a>
                         &nbsp;
-                        <a target="_blank" href="http://www.youtube.com/user/JAFRACorporate?feature=watch"><i class="fa fa-youtube-square"></i></a>
+                        <a target="_blank" href="http://www.youtube.com/user/JAFRACorporate?feature=watch" analytics-on="click" analytics-event="Menu JAFRA YouTube" analytics-category="External Link"><i class="fa fa-youtube-square"></i></a>
                         &nbsp;
-                        <a target="_blank" href="http://pinterest.com/jafracosmetics/"><i class="fa fa-pinterest-square"></i></a>
+                        <a target="_blank" href="http://pinterest.com/jafracosmetics/" analytics-on="click" analytics-event="Menu JAFRA Pinterest" analytics-category="External Link"><i class="fa fa-pinterest-square"></i></a>
                         &nbsp;
-                        <a target="_blank" href="http://instagram.com/jafracosmeticsint"><i class="fa fa-instagram"></i></a>
+                        <a target="_blank" href="http://instagram.com/jafracosmeticsint" analytics-on="click" analytics-event="Menu JAFRA Instagram" analytics-category="External Link"><i class="fa fa-instagram"></i></a>
                         &nbsp;
                       </div>
 
@@ -125,8 +125,8 @@
             <li class="language-dropdown" ng-controller="LanguageSwitcherController">
               <a class="dropdown-toggle" data-toggle="dropdown" style="white-space: nowrap"><span ng-bind-html="getCurrentLanguage() | translate | unsafe"></span> <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
-                <li><a ng-click="setLanguage('en_US')"><span ng-bind-html="'LAN01' | translate | unsafe"></span></a></li>
-                <li><a ng-click="setLanguage('es_US')"><span ng-bind-html="'LAN02' | translate | unsafe"></span></a></li>
+                <li><a ng-click="setLanguage('en_US')" analytics-on="click" analytics-event="Language English" analytics-category="Content"><span ng-bind-html="'LAN01' | translate | unsafe"></span></a></li>
+                <li><a ng-click="setLanguage('es_US')" analytics-on="click" analytics-event="Language Spanish" analytics-category="Content"><span ng-bind-html="'LAN02' | translate | unsafe"></span></a></li>
               </ul>
             </li>
           </ul>
@@ -159,21 +159,19 @@
                     </li>
                     <li>
                       <div class="social-media-icons center-block" ng-if="!inCheckout">
-                        <a href="http://www.facebook.com/JafraWorldwide" target="_blank"><i class="fa fa-facebook-square"></i></a>
+                        <a target="_blank" href="http://www.facebook.com/JafraWorldwide" analytics-on="click" analytics-event="Footer JAFRA Facebook" analytics-category="External Link"><i class="fa fa-facebook-square"></i></a>
                         &nbsp;
-                        <a href="https://plus.google.com/102586203009783197974" target="_blank"><i class="fa fa-google-plus-square"></i></a>
+                        <a target="_blank" href="https://plus.google.com/102586203009783197974" analytics-on="click" analytics-event="Footer JAFRA Google+" analytics-category="External Link"><i class="fa fa-google-plus-square"></i></a>
                         &nbsp;
-                        <a href="https://www.linkedin.com/company/3077948" target="_blank"><i class="fa fa-linkedin-square"></i></a>
+                        <a target="_blank" href="https://www.linkedin.com/company/3077948" analytics-on="click" analytics-event="Footer JAFRA LinkedIn" analytics-category="External Link"><i class="fa fa-linkedin-square"></i></a>
                         &nbsp;
-                        <a href="https://www.twitter.com/JAFRAWorldwide" target="_blank"><i class="fa fa-twitter-square"></i></a>
+                        <a target="_blank" href="https://www.twitter.com/JAFRAWorldwide" analytics-on="click" analytics-event="Footer JAFRA Twitter" analytics-category="External Link"><i class="fa fa-twitter-square"></i></a>
                         &nbsp;
-                        <a href="http://www.youtube.com/user/JAFRACorporate?feature=watch" target="_blank"><i class="fa fa-youtube-square"></i></a>
+                        <a target="_blank" href="http://www.youtube.com/user/JAFRACorporate?feature=watch" analytics-on="click" analytics-event="Footer JAFRA YouTube" analytics-category="External Link"><i class="fa fa-youtube-square"></i></a>
                         &nbsp;
-                        <a href="http://pinterest.com/jafracosmetics/" target="_blank"><i class="fa fa-pinterest-square"></i></a>
+                        <a target="_blank" href="http://pinterest.com/jafracosmetics/" analytics-on="click" analytics-event="Footer JAFRA Pinterest" analytics-category="External Link"><i class="fa fa-pinterest-square"></i></a>
                         &nbsp;
-                        <a href="http://instagram.com/jafracosmeticsint" target="_blank"><i class="fa fa-instagram"></i></a>
-                        &nbsp;
-                        <a href="mailto:jafracares@jafra.com" target="_blank"><i class="fa fa-envelope-square"></i></a>
+                        <a target="_blank" href="http://instagram.com/jafracosmeticsint" analytics-on="click" analytics-event="Footer JAFRA Instagram" analytics-category="External Link"><i class="fa fa-instagram"></i></a>
                         &nbsp;
                       </div>
                     </li>
@@ -191,7 +189,7 @@
           <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
 
         <div class="container text-center legalcopy">
-          <p><a href="" data-toggle="modal" data-target=".bs-terms-modal-lg"><span ng-bind-html="'TERMS' | translate | unsafe"></span></a> | <a href="" data-toggle="modal" data-target=".bs-privacy-modal-lg"><span ng-bind-html="'PRIVACY' | translate | unsafe"></span></a></p>
+          <p><a href="" data-toggle="modal" data-target=".bs-terms-modal-lg" analytics-on="click" analytics-event="Footer Terms" analytics-category="Content"><span ng-bind-html="'TERMS' | translate | unsafe"></span></a> | <a href="" data-toggle="modal" data-target=".bs-privacy-modal-lg" analytics-on="click" analytics-event="Footer Privacy" analytics-category="Content"><span ng-bind-html="'PRIVACY' | translate | unsafe"></span></a></p>
           <p>
             <span ng-bind-html="'COPYRIGHT' | translate | unsafe"></span>
           </p>
