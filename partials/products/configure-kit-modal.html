@@ -13,19 +13,19 @@
           <li id="kitGroupNav{{kitGroup.kitGroup.id+'_'+kitGroup.kitGroupNum}}" ng-repeat="kitGroup in allKitGroups" ng-click="kitGroupClicked(kitGroup)">
             <a href="" ng-class="{'active': isKitGroupSelected(kitGroup)}">
               <span class="ng-binding kitGroupNavName">{{kitGroup.kitGroup[session.language=='en_US'?'name':'name_'+session.language]}}</span>
-              <!-- FIXME: wire up the selected count and the limit count -->
               <small class="pull-right">(
-                <b class="kit-item-count" ng-if="kitData.kitSelections[kitGroup.kitGroup.id+'_'+kitGroup.kitGroupNum] == null || productIdToProduct == null">
-                  <span class="kit-selected-count">0</span>/<span class="kit-limit-count">3</span>
+                <b class="kit-item-count" ng-if="kitData.kitSelections[kitGroup.kitGroup.id+'_'+kitGroup.kitGroupNum] == null">
+                  <span class="kit-selected-count">0</span>/<span class="kit-limit-count">2</span>
                 </b>
-                <b class="kit-item-count" ng-if="kitData.kitSelections[kitGroup.kitGroup.id+'_'+kitGroup.kitGroupNum] != null && productIdToProduct != null">
-                  <span class="kit-selected-count">#</span>/<span class="kit-limit-count">#</span>
+                <b class="kit-item-count" ng-if="kitData.kitSelections[kitGroup.kitGroup.id+'_'+kitGroup.kitGroupNum] != null">
+                  <span class="kit-selected-count">{{kitData.kitSelections[kitGroup.kitGroup.id+'_'+kitGroup.kitGroupNum].length}}</span>/<span class="kit-limit-count">2</span>
                 </b>
               )</small>
             </a>
-            <!-- FIXME: add ng-repeat for multi-select -->
-            <span class="modal-addon-item product-image" ng-if="kitData.kitSelections[kitGroup.kitGroup.id+'_'+kitGroup.kitGroupNum] != null && productIdToProduct != null">
-              <p class="product-name">1x {{productIdToProduct[kitData.kitSelections[kitGroup.kitGroup.id+'_'+kitGroup.kitGroupNum].sku][session.language=='en_US'?'name':'name_'+session.language]}}</p>
+            <span class="modal-addon-item product-image" ng-if="kitData.kitSelections[kitGroup.kitGroup.id+'_'+kitGroup.kitGroupNum] != null">
+              <p class="product-name" ng-repeat="selection in kitData.kitSelections[kitGroup.kitGroup.id+'_'+kitGroup.kitGroupNum]">
+                1x {{productIdToProduct[selection.sku][session.language=='en_US'?'name':'name_'+session.language]}}
+              </p>
             </span>
           </li>
         </ul>
@@ -39,18 +39,18 @@
               <!-- FIXME: wire up the selected count and the limit count -->
               <span class="pull-right">
                 <small class="text-muted italic" style="text-transform:none;">selected products &nbsp;&nbsp;</small> 
-                <b class="kit-item-count" ng-if="kitData.kitSelections[kitGroup.kitGroup.id+'_'+kitGroup.kitGroupNum] == null || productIdToProduct == null">
-                  <span class="kit-selected-count">0</span>/<span class="kit-limit-count">3</span>
+                <b class="kit-item-count" ng-if="kitData.kitSelections[kitGroup.kitGroup.id+'_'+kitGroup.kitGroupNum] == null">
+                  <span class="kit-selected-count">0</span>/<span class="kit-limit-count">2</span>
                 </b>
-                <b class="kit-item-count" ng-if="kitData.kitSelections[kitGroup.kitGroup.id+'_'+kitGroup.kitGroupNum] != null && productIdToProduct != null">
-                  <span class="kit-selected-count">#</span>/<span class="kit-limit-count">#</span>
+                <b class="kit-item-count" ng-if="kitData.kitSelections[kitGroup.kitGroup.id+'_'+kitGroup.kitGroupNum] != null">
+                  <span class="kit-selected-count">{{kitData.kitSelections[kitGroup.kitGroup.id+'_'+kitGroup.kitGroupNum].length}}</span>/<span class="kit-limit-count">2</span>
                 </b>
-              </span> 
+              </span>
             </h2>
           </div>
           <!-- products in kitgroup -->
           <!-- FIXME: allow for multi-select in ng-class logic -->
-          <div class="row hover-row" ng-repeat="component in kitGroup.kitGroup.components" ng-class="{'selected': kitData.kitSelections[kitGroup.kitGroup.id+'_'+kitGroup.kitGroupNum].sku == component.productId}" ng-click="selectProduct(kitGroup.kitGroup.id, kitGroup.kitGroupNum, component.productId)">
+          <div class="row hover-row" ng-repeat="component in kitGroup.kitGroup.components" ng-class="{'selected': isKitGroupItemSelected(kitGroup, component.productId)}" ng-click="selectProduct(kitGroup.kitGroup.id, kitGroup.kitGroupNum, component.productId)">
             <div ng-if="productIdToProduct[component.productId]" class="col-lg-2 col-md-2 col-xs-3 col-sm-3 modal-addon-item product-image clearfix">
               <img ng-if="productIdToProduct[component.productId].images.length > 0" class="img-responsive" ng-src="{{getImagePath(productIdToProduct[component.productId].images[0])}}">
               <img ng-if="productIdToProduct[component.productId].images.length == 0" class="img-responsive" ng-src="/img/product_placeholder.gif" ng-click="selectProduct(kitGroup.kitGroup.id, kitGroup.kitGroupNum, component.productId)">

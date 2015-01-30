@@ -6,6 +6,8 @@ angular.module('app.controllers.products').controller('ConfigureKitModalControll
     $log.debug("ConfigureKitModalController(): the funk", whizFunc);
     whizFunc();
 
+    var NUM_ITEMS_IN_GROUP = 2;
+
     $scope.item = angular.copy(item);
 
     $scope.products = [];
@@ -22,10 +24,32 @@ angular.module('app.controllers.products').controller('ConfigureKitModalControll
     $scope.selectProduct = function(kitId, kitGroupNum, productId) {
         $log.debug("ConfigureKitModalController(): selected product", productId, "for kit", kitId, "kitGroupNum", kitGroupNum);
 
-        $scope.kitData.kitSelections[kitId+'_'+kitGroupNum] = {
+        if ($scope.kitData.kitSelections[kitId+'_'+kitGroupNum] == null) {
+            $scope.kitData.kitSelections[kitId+'_'+kitGroupNum] = [];
+        }
+
+        var selections = $scope.kitData.kitSelections[kitId+'_'+kitGroupNum];
+
+        var foundIndex = -1;
+        $.each(selections, function(index, product) {
+            if (product.sku == productId) {
+                foundIndex = index;
+            }
+        })
+
+        // remove the first item we selected to make room
+        if (foundIndex == -1 && selections.length >= NUM_ITEMS_IN_GROUP) {
+            selections.shift();
+        } else if (foundIndex >= 0) {
+            // remove it
+            selections.splice(foundIndex, 1);
+        }
+
+        selections.push({
             sku: productId,
             name: $scope.productIdToProduct[productId].name
-        };
+        });
+
         $scope.kitGroupSelected = kitId+'_'+kitGroupNum;
         $log.debug("ConfigureKitModalController(): kitSelections now", $scope.kitData.kitSelections);
     };
@@ -39,6 +63,22 @@ angular.module('app.controllers.products').controller('ConfigureKitModalControll
         }
         return false;
     };
+
+    $scope.isKitGroupItemSelected = function(kitGroup, productId) {
+        var selections = $scope.kitData.kitSelections[kitGroup.kitGroupId+'_'+kitGroup.kitGroupNum];
+        $log.debug("ConfigureKitModalController(): isKitGroupItemSelected", kitGroup.kitGroupId+'_'+kitGroup.kitGroupNum, selections);
+
+        if (selections && selections.length > 0) {
+            var found = false;
+            $.each(selections, function(index, product) {
+                if (product.sku == productId) {
+                    found = true;
+                }
+            })
+            return found;
+        }
+        return false;
+    }
 
     $scope.kitGroupClicked = function(kitGroup) {
         $scope.kitGroupSelected = kitGroup.kitGroup.id+'_'+kitGroup.kitGroupNum;
@@ -66,7 +106,8 @@ angular.module('app.controllers.products').controller('ConfigureKitModalControll
             return false;
         }
         $.each(allKitGroups, function(index, kitgroup) {
-            if ($scope.kitData.kitSelections[kitgroup.kitGroup.id+'_'+kitgroup.kitGroupNum] == null) {
+            var selections = $scope.kitData.kitSelections[kitgroup.kitGroup.id+'_'+kitgroup.kitGroupNum];
+            if (selections == null || selections.length < NUM_ITEMS_IN_GROUP) {
                 $log.debug('ConfigureKitModalController(): not complete', kitgroup);
                 complete = false;
                 return;
