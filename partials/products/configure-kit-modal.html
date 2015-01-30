@@ -13,14 +13,14 @@
           <li id="kitGroupNav{{productKitGroup.kitGroup.id+'_'+productKitGroup.kitGroupNum}}" ng-repeat="productKitGroup in allKitGroups" ng-click="kitGroupClicked(productKitGroup)">
             <a href="" ng-class="{'active': isKitGroupSelected(productKitGroup)}">
               <span class="ng-binding kitGroupNavName">{{productKitGroup.kitGroup[session.language=='en_US'?'name':'name_'+session.language]}}</span>
-              <small class="pull-right">(
+              <small class="pull-right">
                 <b class="kit-item-count" ng-if="kitData.kitSelections[productKitGroup.kitGroup.id+'_'+productKitGroup.kitGroupNum] == null">
                   <span class="kit-selected-count">0</span>/<span class="kit-limit-count">{{productKitGroup.selectQuantity}}</span>
                 </b>
                 <b class="kit-item-count" ng-if="kitData.kitSelections[productKitGroup.kitGroup.id+'_'+productKitGroup.kitGroupNum] != null">
                   <span class="kit-selected-count">{{kitData.kitSelections[productKitGroup.kitGroup.id+'_'+productKitGroup.kitGroupNum].length}}</span>/<span class="kit-limit-count">{{productKitGroup.selectQuantity}}</span>
                 </b>
-              )</small>
+              </small>
             </a>
             <span class="modal-addon-item product-image" ng-if="kitData.kitSelections[productKitGroup.kitGroup.id+'_'+productKitGroup.kitGroupNum] != null">
               <p class="product-name" ng-repeat="selection in kitData.kitSelections[productKitGroup.kitGroup.id+'_'+productKitGroup.kitGroupNum]">
