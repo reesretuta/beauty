@@ -1072,6 +1072,21 @@ div.selected .kit-selection-check, .kit-selection-plus {
   display: inline-block;
   color: #b51a8a;
 }
+.configureKitModal aside a small.pull-right {
+    line-height: 18px;
+  }
+@media (min-width: 1331px) {
+  .configureKitModal aside a small.pull-right {
+    float: right;
+    display: inline;
+  }
+}
+@media (max-width: 1330px) {
+  .configureKitModal aside a small.pull-right {
+    float: none !important;
+    display: block;
+  }
+}
 
 .hover-row:hover {
   background-color: #eee;

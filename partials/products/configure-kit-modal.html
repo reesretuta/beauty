@@ -13,14 +13,14 @@
           <li id="kitGroupNav{{kitGroup.kitGroup.id+'_'+kitGroup.kitGroupNum}}" ng-repeat="kitGroup in allKitGroups" ng-click="kitGroupClicked(kitGroup)">
             <a href="" ng-class="{'active': isKitGroupSelected(kitGroup)}">
               <span class="ng-binding kitGroupNavName">{{kitGroup.kitGroup[session.language=='en_US'?'name':'name_'+session.language]}}</span>
-              <small class="pull-right">(
+              <small class="pull-right">
                 <b class="kit-item-count" ng-if="kitData.kitSelections[kitGroup.kitGroup.id+'_'+kitGroup.kitGroupNum] == null">
                   <span class="kit-selected-count">0</span>/<span class="kit-limit-count">2</span>
                 </b>
                 <b class="kit-item-count" ng-if="kitData.kitSelections[kitGroup.kitGroup.id+'_'+kitGroup.kitGroupNum] != null">
                   <span class="kit-selected-count">{{kitData.kitSelections[kitGroup.kitGroup.id+'_'+kitGroup.kitGroupNum].length}}</span>/<span class="kit-limit-count">2</span>
                 </b>
-              )</small>
+              </small>
             </a>
             <span class="modal-addon-item product-image" ng-if="kitData.kitSelections[kitGroup.kitGroup.id+'_'+kitGroup.kitGroupNum] != null">
               <p class="product-name" ng-repeat="selection in kitData.kitSelections[kitGroup.kitGroup.id+'_'+kitGroup.kitGroupNum]">
