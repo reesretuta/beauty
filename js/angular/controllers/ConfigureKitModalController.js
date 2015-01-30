@@ -237,14 +237,14 @@ angular.module('app.controllers.products').controller('ConfigureKitModalControll
 
         // mash the kits back into what they should be
         //kitSelections: {
-        //     NUPL19405_1: {
+        //     NUPL19405_1: [{
         //         name: "Simple - High Shine Moisture Gloss ",
         //         sku: "25033"
-        //     },
-        //     NUPL19405_2: {
+        //     }[,
+        //     NUPL19405_2: [{
         //         name: " Crush - High Shine Moisture Gloss "
         //         sku: "25037"
-        //     }
+        //     }]
         //}
         //
         //"kitSelections": {
@@ -262,30 +262,39 @@ angular.module('app.controllers.products').controller('ConfigureKitModalControll
         for (var kitKey in $scope.kitData.kitSelections) {
             if ($scope.kitData.kitSelections.hasOwnProperty(kitKey)) {
                 $log.debug("ConfigureKitModalController(): processing kit selection key", kitKey);
-                var kitItem = $scope.kitData.kitSelections[kitKey];
-                $log.debug("ConfigureKitModalController(): have kitItem", kitItem);
-                var key = kitKey.substring(0, kitKey.indexOf('_'));
-                $log.debug("ConfigureKitModalController(): have key", key);
+                var kitItems = $scope.kitData.kitSelections[kitKey];
 
-                if (kitSelections[key] == null) {
-                    kitSelections[key] = [kitItem];
-                    $log.debug("ConfigureKitModalController(): setting kitGroup", key, "to", kitSelections[key]);
-                } else {
-                    // add to the existing items
+                $.each(kitItems, function(index, kitItem) {
+                    $log.debug("ConfigureKitModalController(): have kitItem", kitItem);
+                    var key = kitKey.substring(0, kitKey.indexOf('_'));
+                    $log.debug("ConfigureKitModalController(): have key", key);
+
                     var added = false;
-                    for (var j=0; j < kitSelections[key]; j++) {
-                        var selection = kitSelections[key];
-                        if (selection.sku == kitItem.sku) {
-                            selection.qty += 1;
-                            $log.debug("ConfigureKitModalController(): kitGroup", key, "adding to quantity", selection.sku, selection.quantity);
-                            added = true;
+
+                    if (kitSelections[key] == null) {
+                        console.log("new item");
+                        kitSelections[key] = [];
+                    } else {
+                        // add to the existing items
+                        var selections = kitSelections[key];
+                        console.log("checking existing", JSON.stringify(selections));
+                        for (var j=0; j < selections.length; j++) {
+                            var selection = selections[j];
+                            console.log("already have one?", selection.sku, kitItem.sku);
+                            if (selection.sku == kitItem.sku) {
+                                selection.qty += 1;
+                                $log.debug("ConfigureKitModalController(): kitGroup", key, "adding to quantity", selection.sku, selection.quantity);
+                                added = true;
+                            }
                         }
                     }
+
                     if (!added) {
                         $log.debug("ConfigureKitModalController(): kitGroup", key, "adding", kitItem);
+                        kitItem.qty = 1;
                         kitSelections[key].push(kitItem);
                     }
-                }
+                });
             }
         }
 
