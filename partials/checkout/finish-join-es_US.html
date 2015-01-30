@@ -11,24 +11,25 @@
       <a href="" onClick="window.print();"><i class="fa fa-print"></i> Imprimir</a>
     </div>
   </div>
-  <div ng-if="isOnlineSponsoring" class="row">
-    <div class="col-md-12 text-center promo_free_shipping">
-      <span ng-bind-html="'OS-CHECKOUT-FREESHIPPING-PROMO-TITLE' | translate | unsafe"></span>
-      <p ng-bind-html="'OS-CHECKOUT-FREESHIPPING-PROMO-PARAGRAPH' | translate | unsafe"></p>
-    </div>
-  </div>
   <hr>
   <div class="row">
     <div class="col-md-8 text-left">
       <h3 class="color-red">Tu No. (ID) de Consultora es: <label class="color-purple HelveticaNeueLTStd-BdCn">{{confirmation.consultantId}}</label></h3>
       <p>Portal de la Consultora: <a class="biggify color-red HelveticaNeueLTStd-BdCn">jafrabiz.com</a></p>
-      <p>Contraseña: (Últimos 4 dígitos de tu seguro seguro social)</p>
+      <p>username: (Consultora ID)</p>
+      <p>contraseña: (Últimos 4 dígitos de tu seguro seguro social)</p>
     </div>
     <div class="col-md-4">
       <div class="jafrabiz-well text-center">
         <p ng-if="confirmation.sponsor.id">Tu Patrocinadora JAFRA es:<br />#{{confirmation.sponsor.id}} <b class="biggify color-purple HelveticaNeueLTStd-BdCn">{{confirmation.sponsor.firstName}} {{confirmation.sponsor.lastName}}</b></p>
         <p ng-if="!confirmation.sponsor.id">Se te asignará una Patrocinadora de JAFRA dentro de los próximos 2 días hábiles.</p>
       </div>
+    </div>
+  </div>
+  <div ng-if="isOnlineSponsoring" class="row">
+    <div class="col-md-12 text-center promo_free_shipping">
+      <span ng-bind-html="'OS-CHECKOUT-FREESHIPPING-PROMO-TITLE' | translate | unsafe"></span>
+      <p ng-bind-html="'OS-CHECKOUT-FREESHIPPING-PROMO-PARAGRAPH' | translate | unsafe"></p>
     </div>
   </div>
   <hr>
@@ -96,10 +97,6 @@
           <h3><span ng-bind="profile.firstName"></span> <span ng-bind="profile.lastName"></span></h3>
           <p><b ng-bind="profile.loginEmail"></b></p>
           <p>{{profile.phoneNumber|phone}}</p>
-          <a ng-if="isOnlineSponsoring" href ng-click="editContactInfo()" class="pull-left">
-            <i class="fa fa-pencil-square-o"></i>
-            <span ng-bind-html="'EDIT' | translate | unsafe">Edit</span>
-          </a>
         </div>
       </div>
     </div>
@@ -152,11 +149,11 @@
   </div><!-- /row / end review info -->
 
   <hr>
-  <div class="row">
+  <div class="row" style="background:#E5E2E9;">
     <div class="col-md-4">
       <div class="text-center">
         <h3>1. Edifica tu Negocio</h3>
-        <p>Visita <a href="http://jafrabiz.com" target="_blank">jafrabiz.com</a> y la Conexión de la Consultora.</p>
+        <p>Visita <a href="http://jafrabiz.com" target="_blank" class="biggify color-red HelveticaNeueLTStd-BdCn">jafrabiz.com</a> y la Conexión de la Consultora.</p>
         <ul class="text-left">
             <li>Haz pedidos</li>
             <li>Haz pagos</li>
@@ -164,7 +161,7 @@
             <li>Obtén Capacitación</li>
             <li>Recibe Alertas y Noticias de la Compañía</li>
         </ul>
-        <p><a href="http://pages.exacttarget.com/opt-in-sms-es" target="_blank">Inscríbete para recibir mensajes de Texto de JAFRA</a></p>
+        <p><a href="http://pages.exacttarget.com/opt-in-sms-es" target="_blank" class="biggify color-red HelveticaNeueLTStd-BdCn">Inscríbete para recibir mensajes de Texto de JAFRA</a></p>
         <a class="btn btn-primary HelveticaNeueLTStd-BdCn btn-med" role="button" href="http://jafrabiz.com">VISITA JAFRABIZ.COM</a>
       </div>
     </div>

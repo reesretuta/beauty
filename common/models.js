@@ -127,6 +127,7 @@ var kitGroupSchema = Schema({
     "_id" : { type: String },
     "name" : String,
     "name_es_US" : String,
+    "selectQuantity": Number,
     // kits groups have products they contain
     // NOTE: to reduce complexity, kit groups cannot currently contain other kit groups
     "components" : [{

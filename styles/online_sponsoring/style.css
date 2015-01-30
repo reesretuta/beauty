@@ -350,9 +350,9 @@ font-size: 48px;
 .promo_free_shipping, #myPromoModal .modal-dialog {
   margin-top: 20px;
   border-radius: 9px;
-  /*background-color: #006B77;
-  box-shadow: 4px 4px 0 0 rgba(0,0,0,.2);*/
-  border: 1px solid #c3002f;
+  background-color: #E5E2E9;
+  /*box-shadow: 4px 4px 0 0 rgba(0,0,0,.2);*/
+  border: 1px solid #e3e3e3;
   padding: 0.5em;
 }
 #myPromoModal .modal-dialog {
@@ -360,8 +360,8 @@ font-size: 48px;
 }
 .promo_free_shipping span, #myPromoModal .modal-dialog span {
   text-transform: uppercase;
-  color: #460d66;
-  font-family: HelveticaNeueLTStd-BdCn;
+  color: #c3002f;
+  font-family: DidotLTPro-Roman, serif;
   font-size: 20px;
 }
 .promo_free_shipping p, #myPromoModal .modal-dialog p {
