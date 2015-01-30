@@ -22,7 +22,7 @@
               <span ng-bind-html="'OS-SECTION1-BODY' | translate | unsafe"></span></p>
 
             <p class="jumboget">
-              <a class="btn btn-primary HelveticaNeueLTStd-BdCn btn-med" role="button" href="#" data-toggle="modal" data-target=".bs-example-modal-lg"><span ng-bind-html="'OS-SECTION1-BTN' | translate | unsafe"></span></a>
+              <a class="btn btn-primary HelveticaNeueLTStd-BdCn btn-med" role="button" href="#" data-toggle="modal" data-target=".bs-example-modal-lg" analytics-on="click" analytics-event="Hero CTA" analytics-category="Buttons"><span ng-bind-html="'OS-SECTION1-BTN' | translate | unsafe"></span></a>
               <!--a data-target="#" class="watch-video-link" data-toggle="modal" data-target=".bs-video-modal-lg"><span class="glyphicon glyphicon-play"></span> WATCH VIDEO</a-->
             </p>
           </div>
@@ -74,13 +74,13 @@
                     your new business.</p>
 
                   <p>
-                    <a data-target="#more_royal_2" data-toggle="collapse" class="more-link more-link-alt collapsed"><span ng-bind-html="'KIT-DETAILS-TOGGLE' | translate | unsafe">SEE WHAT&rsquo;S INCLUDED</span></a>
+                    <a data-target="#more_royal_2" data-toggle="collapse" class="more-link more-link-alt collapsed" analytics-on="click" analytics-event="Modal $99 Kit Details" analytics-category="Content"><span ng-bind-html="'KIT-DETAILS-TOGGLE' | translate | unsafe">SEE WHAT&rsquo;S INCLUDED</span></a>
                   </p>
 
                   <div class="product-action pull-right">
                     <span class="product-price"><small>Only<br></small> $99</span>
                     <span ng-if="session.language=='en_US'">
-                      <button type="button" class="btn btn-primary btn-lg" ng-click="join('19634')">
+                      <button type="button" class="btn btn-primary btn-lg" ng-click="join('19634')" analytics-on="click" analytics-event="Modal Buy $99" analytics-category="Buttons">
                         Buy <small>(English)</small>
                       </button>
                       <a data-target="#" ng-click="join('19635')" class="color-red text-center text-underline" style="display:block; margin-top:15px;">
@@ -88,7 +88,7 @@
                       </a>
                     </span>
                     <span ng-if="session.language=='es_US'">
-                      <button type="button" class="btn btn-primary btn-lg" ng-click="join('19635')">
+                      <button type="button" class="btn btn-primary btn-lg" ng-click="join('19635')" analytics-on="click" analytics-event="Modal Buy $99" analytics-category="Buttons">
                         C&oacute;mpralo <small>(Espa&ntilde;ol)</small>
                       </button>
                       <a data-target="#" ng-click="join('19634')" class="color-red text-center" style="display:block; margin-top:15px;">
@@ -141,7 +141,7 @@
 
                 <span class="pull-right color-gold" style="margin: 30px 15px 0 0;"><span style="text-decoration:none; margin-right: 10px;"><img src="/img/icons-video.gif" width="25px"/> <img src="/img/icons-booklets.gif" width="25px"/></span> <span ng-bind-html="'OS-TRAINING-INCLUDED' | translate | unsafe">TRAINING INCLUDED!</span></span>
 
-                <a data-target="#more_skincare_2" data-toggle="collapse" class="more-link more-link-alt collapsed" style="margin-top: 30px;"><span ng-bind-html="'KIT-DETAILS-TOGGLE2' | translate | unsafe">SEE INSIDE</span></a>
+                <a data-target="#more_skincare_2" data-toggle="collapse" class="more-link more-link-alt collapsed" style="margin-top: 30px;" analytics-on="click" analytics-event="Modal $49 Kit Details" analytics-category="Content"><span ng-bind-html="'KIT-DETAILS-TOGGLE2' | translate | unsafe">SEE INSIDE</span></a>
 
 
                 <p class="starter_kits-retail_value"></p>
@@ -149,7 +149,7 @@
                 <div class="product-action">
                   <span class="product-price"><small>Only<br></small> $49</span>
                   <span ng-if="session.language=='en_US'">
-                    <button type="button" class="btn btn-primary btn-lg" ng-click="join('19822')">
+                    <button type="button" class="btn btn-primary btn-lg" ng-click="join('19822')" analytics-on="click" analytics-event="Modal Buy $49" analytics-category="Buttons">
                       Buy <small>(English)</small>
                     </button>
                     <a data-target="#" ng-click="join('19823')" class="color-red text-center" style="margin-left: 20px">
@@ -157,7 +157,7 @@
                     </a>
                   </span>
                   <span ng-if="session.language=='es_US'">
-                    <button type="button" class="btn btn-primary btn-lg" ng-click="join('19823')">
+                    <button type="button" class="btn btn-primary btn-lg" ng-click="join('19823')" analytics-on="click" analytics-event="Modal Buy $49" analytics-category="Buttons">
                       C&oacute;mpralo <small>(Espa&ntilde;ol)</small>
                     </button>
                     <a data-target="#" ng-click="join('19822')" class="color-red text-center" style="margin-left: 20px">
@@ -185,18 +185,17 @@
 </div>
 </div>
 
-<!-- WHY JAFRA - Features & Highlights -->
 <section id="why_jafra">
-  <div ng-if="session.language" ng-include="'/partials/online_sponsoring/sections/about.html'"></div>
-  <div ng-if="session.language" ng-include="'/partials/online_sponsoring/sections/products.html'"></div>
-  <div ng-if="session.language" ng-include="'/partials/online_sponsoring/sections/business-'+session.language+'.html'"></div>
-  <div ng-if="session.language" ng-include="'/partials/online_sponsoring/sections/rewards.html'"></div>
-  <div ng-if="session.language" ng-include="'/partials/online_sponsoring/sections/testimonials.html'"></div>
+  <div ng-if="session.language" ng-include="'/partials/online_sponsoring/sections/about.html'" analytics-on="scrollby" analytics-event="About" analytics-category="Scrolled To"></div>
+  <div ng-if="session.language" ng-include="'/partials/online_sponsoring/sections/products.html'" analytics-on="scrollby" analytics-event="Products" analytics-category="Scrolled To"></div>
+  <div ng-if="session.language" ng-include="'/partials/online_sponsoring/sections/business-'+session.language+'.html'" analytics-on="scrollby" analytics-event="Opportunity" analytics-category="Scrolled To"></div>
+  <div ng-if="session.language" ng-include="'/partials/online_sponsoring/sections/rewards.html'" analytics-on="scrollby" analytics-event="Rewards" analytics-category="Scrolled To"></div>
+  <div ng-if="session.language" ng-include="'/partials/online_sponsoring/sections/testimonials.html'" analytics-on="scrollby" analytics-event="Testimonials" analytics-category="Scrolled To"></div>
 </section>
 
-<div ng-if="session.language" ng-include="'/partials/online_sponsoring/sections/kits-'+session.language+'.html'"></div>
+<div ng-if="session.language" ng-include="'/partials/online_sponsoring/sections/kits-'+session.language+'.html'" analytics-on="scrollby" analytics-event="Kits" analytics-category="Scrolled To"></div>
 
-<div ng-if="session.language" ng-include="'/partials/online_sponsoring/sections/faqs.html'"></div>
+<div ng-if="session.language" ng-include="'/partials/online_sponsoring/sections/faqs.html'" analytics-on="scrollby" analytics-event="FAQs" analytics-category="Scrolled To"></div>
 
 <section id="social">
   <div class="container">

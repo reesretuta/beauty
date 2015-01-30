@@ -11,7 +11,7 @@
                             <span ng-bind-html="'OS-SECTION2-BODY' | translate | unsafe"></span>
                         </p>
                         <!-- collapsed section toggle (default collapsed) -->
-                        <p class="text-right prod_more_link"><a class="more-link more-link-alt collapsed" data-toggle="collapse" data-target="#more_products"><span><span ng-bind-html="'OUR-PRODUCTS' | translate | unsafe"></span></span></a></p>
+                        <p class="text-right prod_more_link"><a class="more-link more-link-alt collapsed" data-toggle="collapse" data-target="#more_products" analytics-on="click" analytics-event="Expand Products" analytics-category="Content"><span><span ng-bind-html="'OUR-PRODUCTS' | translate | unsafe"></span></span></a></p>
                     </div><!-- /.section-copy -->
                 </div><!-- /.col -->
                 <div class="col-md-6">
@@ -37,10 +37,10 @@
                                 <img class="img-responsive" src="/img/products_color.jpg">
                             </div>
                         </div><!-- Controls -->
-                         <a class="left carousel-control" data-target="#carousel-product-generic" role="button" data-slide="prev">
+                         <a class="left carousel-control" data-target="#carousel-product-generic" role="button" data-slide="prev" analytics-on="click" analytics-event="Product Carousel Prev" analytics-category="Content">
                              <span class="glyphicon glyphicon-chevron-left"></span>
                          </a>
-                        <a class="right carousel-control" data-target="#carousel-product-generic" role="button" data-slide="next">
+                        <a class="right carousel-control" data-target="#carousel-product-generic" role="button" data-slide="next" analytics-on="click" analytics-event="Product Carousel Next" analytics-category="Content">
                             <span class="glyphicon glyphicon-chevron-right"></span>
                         </a>
                     </div><!-- /.carousel -->
@@ -105,7 +105,7 @@
 
                     </p>
 
-                    <p><br><br> <a class="btn btn-primary HelveticaNeueLTStd-BdCn btn-lg dropdown-toggle" data-toggle="modal" data-target=".bs-example-modal-lg" role="button" href><span ng-bind-html="'OS-PRODUCTS-GET-YOUR-STARTER-KIT' | translate | unsafe"></span></a></p>
+                    <p><br><br> <a class="btn btn-primary HelveticaNeueLTStd-BdCn btn-lg dropdown-toggle" analytics-on="click" analytics-event="Products CTA" analytics-category="Buttons" data-toggle="modal" data-target=".bs-example-modal-lg" role="button" href><span ng-bind-html="'OS-PRODUCTS-GET-YOUR-STARTER-KIT' | translate | unsafe"></span></a></p>
                </div>
             </div>
         </div><!-- /.container -->
