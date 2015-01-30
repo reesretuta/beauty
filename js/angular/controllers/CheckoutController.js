@@ -10,7 +10,7 @@ angular.module('app.controllers.checkout')
         var params = $location.search();
         $log.debug("CheckoutController(): params", params);
 
-        var urlStep = S(params.step != null ? params.step : "Start").toString();
+        var urlStep = S(params.step != null ? params.step : "").toString();
         $log.debug("CheckoutController(): urlStep", urlStep);
 
         var debug = params.debug;
@@ -71,6 +71,11 @@ angular.module('app.controllers.checkout')
 
         // set current step
         $scope.currentStep = 'Start';
+
+        if (urlStep == null || urlStep == "") {
+            $location.search("step", 'Start');
+            urlStep = "Start";
+        }
 
         $scope.shippingAddressError = null;
         $scope.billingAddressError = null;

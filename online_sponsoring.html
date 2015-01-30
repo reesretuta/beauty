@@ -92,7 +92,7 @@
             <li ng-if="!inCheckout"><a href="#freedom_flexibility"><span ng-bind-html="'OS-NAV1' | translate | unsafe"></span></a></li>
             <li ng-if="!inCheckout"><a href="#starter_kits"><span ng-bind-html="'OS-NAV2' | translate | unsafe"></span></a></li>
             <li ng-if="!inCheckout"><a href="#FAQs"><span ng-bind-html="'OS-NAV3' | translate | unsafe"></span></a></li>
-            <li ng-if="!inCheckout"><a href class="cta" data-toggle="modal" data-target=".bs-example-modal-lg"><span ng-bind-html="'OS-NAV4' | translate | unsafe"></span></a></li>
+            <li ng-if="!inCheckout"><a href class="cta" data-toggle="modal" data-target=".bs-example-modal-lg" analytics-on="click" analytics-event="Menu CTA" analytics-category="Buttons"><span ng-bind-html="'OS-NAV4' | translate | unsafe"></span></a></li>
             <li class="contact-dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown"><span ng-bind-html="'OS-NAV5' | translate | unsafe"></span></a>
               <ul class="dropdown-menu dropdown_jafra contact-header" role="menu">
@@ -140,7 +140,7 @@
       <div ng-view class="ngview" autoscroll="true"></div>
     <!-- end content area -->
 
-      <footer id="footer" analytics-on="scrollby" analytics-event="Scrolled to Footer">
+      <footer id="footer" analytics-on="scrollby" analytics-event="Footer" analytics-category="Scrolled To">
           <!-- SPACER --> <p><br></p> <!-- REPLACE WITH CSS FROM UI DESIGN ITERATIONS BEFORE LAUNCH -->
 
         <div class="container-fluid text-center HelveticaNeueLTStd-BdCn footer-links">
@@ -148,7 +148,7 @@
         		<div class="center-block">
         	   <ul class="nav navbar-nav HelveticaNeueLTStd-BdCn">
 		       	<li ng-if="!inCheckout">
-		            <a href="" role="button" data-toggle="modal" data-target=".bs-example-modal-lg"><span ng-bind-html="'OS-JOIN-BTN' | translate | unsafe"></span></a>
+		            <a href="" role="button" data-toggle="modal" data-target=".bs-example-modal-lg" analytics-on="click" analytics-event="Footer CTA" analytics-category="Buttons"><span ng-bind-html="'OS-JOIN-BTN' | translate | unsafe"></span></a>
 		        </li>
 		  		 <li class="dropup"><a href="" class="dropdown-toggle dropup" data-toggle="dropdown"><span ng-bind-html="'OS-NAV5' | translate | unsafe"></span></a>
 		              <ul class="dropdown-menu dropdown_jafra">
@@ -276,6 +276,7 @@
     <script src="/lib/angulartics/dist/angulartics-ga.min.js"></script>
     <script src="/lib/angulartics/dist/angulartics-gtm.min.js"></script>
     <script src="/lib/angulartics/dist/angulartics-scroll.min.js"></script>
+    <script src="/lib/angulartics/dist/angulartics-debug.min.js"></script>
 
     <script src="/lib/HashKeyCopier/lib/hash-key-copier.js"></script>
     <script src="/lib/string.js/lib/string.min.js"></script>

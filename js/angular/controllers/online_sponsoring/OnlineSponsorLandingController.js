@@ -1,6 +1,6 @@
 
 angular.module('app.controllers.onlineSponsor')
-.controller('OnlineSponsorLandingController', function ($scope, $window, $document, $location, $translate, $rootScope, $routeParams, $log, Session, JOIN_BASE_URL, Categories, Product) {
+.controller('OnlineSponsorLandingController', function ($scope, $window, $document, $location, $translate, $rootScope, $routeParams, $log, $analytics, Session, JOIN_BASE_URL, Categories, Product) {
     
     $rootScope.title = 'JOIN_JAFRA_TITLE';
 
