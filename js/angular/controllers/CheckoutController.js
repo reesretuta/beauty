@@ -277,8 +277,8 @@ angular.module('app.controllers.checkout')
                                 $timeout(function() {
                                     WizardHandler.wizard('checkoutWizard').goTo('Start');
                                     // make modal appear on start
-                                    $log.debug("CheckoutController(): Show myPromoModal");
-                                    $('#myPromoModal').modal('show');
+                                    // $log.debug("CheckoutController(): Show myPromoModal");
+                                    // $('#myPromoModal').modal('show');
                                 }, 0);
                             }
                         }
