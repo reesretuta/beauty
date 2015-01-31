@@ -61,9 +61,12 @@ var LOOKUP_CLIENT_CONSULTANT_URL = BASE_URL + "/JCD05011P.pgm";
 var PASSWORD_RESET_REQUEST_URL = BASE_URL + "/JCD05009P.pgm";
 var PASSWORD_RESET_CHANGE_URL = BASE_URL + "/JCD05010P.pgm";
 
+var STRIKEIRON_VALIDATE = process.env.STRIKEIRON_VALIDATE == "false" ? false : true;
 var STRIKEIRON_EMAIL_URL = 'http://ws.strikeiron.com/StrikeIron/emv6Hygiene/EMV6Hygiene/VerifyEmail';
 var STRIKEIRON_EMAIL_LICENSE = "2086D15410C1B9F9FF89";
 var STRIKEIRON_EMAIL_TIMEOUT = 15;
+
+//console.log("STRIKEIRON_VALIDATE", STRIKEIRON_VALIDATE);
 
 //var STRIKEIRON_ADDRESS_URL = 'http://ws.strikeiron.com/StrikeIron/NAAddressVerification6/NorthAmericanAddressVerificationService/NorthAmericanAddressVerification';
 var STRIKEIRON_ADDRESS_SOAP_URL = 'http://ws.strikeiron.com/NAAddressVerification6?WSDL';
@@ -1206,109 +1209,118 @@ function deleteAddress(clientId, addressId) {
 function validateEmail(email) {
     var deferred = Q.defer();
 
-    request.get({
-        url: STRIKEIRON_EMAIL_URL,
-        qs: {
-            "LicenseInfo.RegisteredUser.UserID": STRIKEIRON_EMAIL_LICENSE,
-            "VerifyEmail.Email": email,
-            "VerifyEmail.Timeout": STRIKEIRON_EMAIL_TIMEOUT,
-            "format": "json"
-        },
-        headers: {
-            'Accept': 'application/json, text/json'
-        },
-        json: true
-    }, function (error, response, body) {
-        logger.debug("validateEmail()", error, response ? response.statusCode: null, body);
-        if (error || response.statusCode != 200) {
-            logger.error("validateEmail(): error", error, response ? response.statusCode: null, body);
+    if (STRIKEIRON_VALIDATE) {
+        request.get({
+            url: STRIKEIRON_EMAIL_URL,
+            qs: {
+                "LicenseInfo.RegisteredUser.UserID": STRIKEIRON_EMAIL_LICENSE,
+                "VerifyEmail.Email": email,
+                "VerifyEmail.Timeout": STRIKEIRON_EMAIL_TIMEOUT,
+                "format": "json"
+            },
+            headers: {
+                'Accept': 'application/json, text/json'
+            },
+            json: true
+        }, function (error, response, body) {
+            logger.debug("validateEmail()", error, response ? response.statusCode: null, body);
+            if (error || response.statusCode != 200) {
+                logger.error("validateEmail(): error", error, response ? response.statusCode: null, body);
+                deferred.reject({
+                    status: 500,
+                    result: {
+                        statusCode: 500,
+                        errorCode: "validateEmailAddressFailed",
+                        message: "Unknown error while validating email address"
+                    }
+                });
+                return;
+            }
+
+            /**
+             * { "WebServiceResponse":
+             * {
+             *   "@xmlns":"http://ws.strikeiron.com",
+             *   "SubscriptionInfo":{
+             *      "@xmlns":"http://ws.strikeiron.com",
+             *      "LicenseStatusCode":"0",
+             *      "LicenseStatus":"Valid license key",
+             *      "LicenseActionCode":"0",
+             *      "LicenseAction":"Decremented hit count",
+             *      "RemainingHits":"999884804",
+             *      "Amount":"0"
+             *    },
+             *    "VerifyEmailResponse":{
+             *      "@xmlns":"http://www.strikeiron.com/",
+             *      "VerifyEmailResult":{
+             *        "ServiceStatus":{
+             *          "StatusNbr":"200",
+             *          "StatusDescription":"Email Valid"
+             *        },
+             *        "ServiceResult":{
+             *          "Reason":{
+             *            "Code":"201",
+             *            "Description":"Mailbox Confirmed"
+             *          },
+             *          "HygieneResult":"Safe US",
+             *          "NetProtected":"false",
+             *          "NetProtectedBy":null,
+             *          "SourceIdentifier":null,
+             *          "Email":"arimus@gmail.com",
+             *          "LocalPart":"arimus",
+             *          "DomainPart":"gmail.com",
+             *          "IronStandardCertifiedTimestamp":"2014-10-04T01:45:41.587",
+             *          "DomainKnowledge":null,
+             *          "AddressKnowledge":{
+             *            "StringKeyValuePair":{
+             *              "Key":"Cached",
+             *              "Value":"true"
+             *            }
+             *          }
+             *        }
+             *      }
+             *    }
+             *  }
+             *}
+             */
+
+            logger.debug("validateEmail(): body", body, body.WebServiceResponse.VerifyEmailResponse.VerifyEmailResult);
+
+            if (body && body.WebServiceResponse && body.WebServiceResponse.VerifyEmailResponse &&
+                body.WebServiceResponse.VerifyEmailResponse.VerifyEmailResult &&
+                body.WebServiceResponse.VerifyEmailResponse.VerifyEmailResult.ServiceStatus &&
+                body.WebServiceResponse.VerifyEmailResponse.VerifyEmailResult.ServiceStatus.StatusNbr)
+            {
+                var statusNbr = parseInt(body.WebServiceResponse.VerifyEmailResponse.VerifyEmailResult.ServiceStatus.StatusNbr);
+                logger.debug("validateEmail(): statusNbr", statusNbr);
+
+                if (statusNbr == 310 || statusNbr == 311 || (statusNbr >= 200 && statusNbr < 300)) {
+                    logger.debug("validateEmail(): valid");
+                    deferred.resolve({
+                        status: 200,
+                        result: body
+                    });
+                    return;
+                }
+            }
+
             deferred.reject({
                 status: 500,
                 result: {
                     statusCode: 500,
-                    errorCode: "validateEmailAddressFailed",
-                    message: "Unknown error while validating email address"
+                    errorCode: "invalidEmailAddress",
+                    message: "Invalid email address"
                 }
             });
-            return;
-        }
-
-        /**
-         * { "WebServiceResponse":
-         * {
-         *   "@xmlns":"http://ws.strikeiron.com",
-         *   "SubscriptionInfo":{
-         *      "@xmlns":"http://ws.strikeiron.com",
-         *      "LicenseStatusCode":"0",
-         *      "LicenseStatus":"Valid license key",
-         *      "LicenseActionCode":"0",
-         *      "LicenseAction":"Decremented hit count",
-         *      "RemainingHits":"999884804",
-         *      "Amount":"0"
-         *    },
-         *    "VerifyEmailResponse":{
-         *      "@xmlns":"http://www.strikeiron.com/",
-         *      "VerifyEmailResult":{
-         *        "ServiceStatus":{
-         *          "StatusNbr":"200",
-         *          "StatusDescription":"Email Valid"
-         *        },
-         *        "ServiceResult":{
-         *          "Reason":{
-         *            "Code":"201",
-         *            "Description":"Mailbox Confirmed"
-         *          },
-         *          "HygieneResult":"Safe US",
-         *          "NetProtected":"false",
-         *          "NetProtectedBy":null,
-         *          "SourceIdentifier":null,
-         *          "Email":"arimus@gmail.com",
-         *          "LocalPart":"arimus",
-         *          "DomainPart":"gmail.com",
-         *          "IronStandardCertifiedTimestamp":"2014-10-04T01:45:41.587",
-         *          "DomainKnowledge":null,
-         *          "AddressKnowledge":{
-         *            "StringKeyValuePair":{
-         *              "Key":"Cached",
-         *              "Value":"true"
-         *            }
-         *          }
-         *        }
-         *      }
-         *    }
-         *  }
-         *}
-         */
-
-        logger.debug("validateEmail(): body", body, body.WebServiceResponse.VerifyEmailResponse.VerifyEmailResult);
-
-        if (body && body.WebServiceResponse && body.WebServiceResponse.VerifyEmailResponse &&
-            body.WebServiceResponse.VerifyEmailResponse.VerifyEmailResult &&
-            body.WebServiceResponse.VerifyEmailResponse.VerifyEmailResult.ServiceStatus &&
-            body.WebServiceResponse.VerifyEmailResponse.VerifyEmailResult.ServiceStatus.StatusNbr)
-        {
-            var statusNbr = parseInt(body.WebServiceResponse.VerifyEmailResponse.VerifyEmailResult.ServiceStatus.StatusNbr);
-            logger.debug("validateEmail(): statusNbr", statusNbr);
-
-            if (statusNbr == 310 || statusNbr == 311 || (statusNbr >= 200 && statusNbr < 300)) {
-                logger.debug("validateEmail(): valid");
-                deferred.resolve({
-                    status: 200,
-                    result: body
-                });
-                return;
-            }
-        }
-
-        deferred.reject({
-            status: 500,
-            result: {
-                statusCode: 500,
-                errorCode: "invalidEmailAddress",
-                message: "Invalid email address"
-            }
         });
-    });
+    } else {
+        logger.debug("validateEmail(): not validating");
+        deferred.resolve({
+            status: 200,
+            result: {}
+        });
+    }
+
 
     return deferred.promise;
 }
