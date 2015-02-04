@@ -2431,6 +2431,7 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
 
                             var availableInventory = allInventory[product.id] != null ? allInventory[product.id] : -1;
                             var unavailableComponents = false;
+                            var fixedComponentInventoryDepleted = false;
                             var updates = {};
                             logger.debug("processAvailabilityAndHiddenProducts(): product", product.id,"availability after first check", availableInventory);
 
@@ -2452,7 +2453,10 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
 
                                         // if there are no components left, then there is no inventory
                                         if (allInventory[p._id] <= MIN_INVENTORY) {
+                                            logger.debug("processAvailabilityAndHiddenProducts(): product", product.id,"availability for fixed component <= MIN_INVENTORY", allInventory[p._id]);
                                             availableCount = 0;
+                                            availableInventory = 0;
+                                            fixedComponentInventoryDepleted = true;
                                             break;
                                         }
 
@@ -2614,10 +2618,13 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
                                 }
 
                                 //availableInventory = availableCount && availableCount < availableInventory ? availableCount : availableInventory;
-                                if (product.type == "kit") {
-                                    availableInventory = availableCount && (availableInventory == -1 || availableCount < availableInventory) ? availableCount : availableInventory;
-                                } else {
-                                    availableInventory = availableCount ? availableCount : 0;
+                                // only process inventory based on kit group components if there were no missing fixed components
+                                if (!fixedComponentInventoryDepleted) {
+                                    if (product.type == "kit") {
+                                        availableInventory = availableCount && (availableInventory == -1 || availableCount < availableInventory) ? availableCount : availableInventory;
+                                    } else {
+                                        availableInventory = availableCount ? availableCount : 0;
+                                    }
                                 }
                                 logger.debug("processAvailabilityAndHiddenProducts(): product", product.id, "availability after kitGroup check", availableInventory);
                             }
