@@ -2452,7 +2452,8 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
 
                                         // if there are no components left, then there is no inventory
                                         if (allInventory[p._id] <= MIN_INVENTORY) {
-                                            unavailableComponents = true;
+                                            availableCount = 0;
+                                            break;
                                         }
 
                                         // determine inventory availability for the parent product based on lowest inventory of children
