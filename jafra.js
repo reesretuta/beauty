@@ -2227,39 +2227,45 @@ function updateInventory(noProcessing) {
                         }
                     }
 
-                    for (var key in body.inventory) {
-                        models.Inventory.update({_id: key}, {available: body.inventory[key]}, {upsert: true}, function (err, numAffected, rawResponse) {
-                            if (err) return logger.error("getAllInventory(): error updating inventory", key, err);
-                            //logger.debug("getAllInventory(): updated inventory for", key, "to", body.inventory[key]);
-                            updated++;
+                    // set everything to 0
+                    models.Inventory.update({}, {available:0}, {multi: true}, function (err, numAffected, rawResponse) {
+                        if (err) return logger.error("getAllInventory(): error resetting inventory", key, err);
 
-                            // once we've saved everything, update the config lastUpdated timestamp
-                            if (count == updated) {
-                                // save last updated to config
-                                var d = moment.unix(body.lastUpdated);
-                                models.Config.update({_id: "inventoryLastUpdated"}, {value: body.lastUpdated}, {upsert: true}, function (err, numAffected, rawResponse) {
-                                    if (err) {
-                                        return logger.error("getAllInventory(): error saving lastUpdated", err);
-                                        deferred.reject(err);
-                                        return;
-                                    }
-                                    logger.debug("getAllInventory(): saved inventory lastUpdated", body.lastUpdated, d.toDate());
+                        // now update inventories with response values
+                        for (var key in body.inventory) {
+                            models.Inventory.update({_id: key}, {available: body.inventory[key]}, {upsert: true}, function (err, numAffected, rawResponse) {
+                                if (err) return logger.error("getAllInventory(): error updating inventory", key, err);
+                                //logger.debug("getAllInventory(): updated inventory for", key, "to", body.inventory[key]);
+                                updated++;
 
-                                    if (!noProcessing) {
-                                        logger.debug("getAllInventory(): processing inventory", JSON.stringify(body.inventory));
-                                        processAvailabilityAndHiddenProducts(body.inventory).then(function (inventory) {
-                                            deferred.resolve(inventory);
-                                        }, function (err) {
-                                            logger.error("getAllInventory(): processAvailabilityAndHiddenProducts(): error", err);
+                                // once we've saved everything, update the config lastUpdated timestamp
+                                if (count == updated) {
+                                    // save last updated to config
+                                    var d = moment.unix(body.lastUpdated);
+                                    models.Config.update({_id: "inventoryLastUpdated"}, {value: body.lastUpdated}, {upsert: true}, function (err, numAffected, rawResponse) {
+                                        if (err) {
+                                            return logger.error("getAllInventory(): error saving lastUpdated", err);
                                             deferred.reject(err);
-                                        })
-                                    } else {
-                                        deferred.resolve(body.inventory);
-                                    }
-                                });
-                            }
-                        });
-                    }
+                                            return;
+                                        }
+                                        logger.debug("getAllInventory(): saved inventory lastUpdated", body.lastUpdated, d.toDate());
+
+                                        if (!noProcessing) {
+                                            logger.debug("getAllInventory(): processing inventory", JSON.stringify(body.inventory));
+                                            processAvailabilityAndHiddenProducts(body.inventory).then(function (inventory) {
+                                                deferred.resolve(inventory);
+                                            }, function (err) {
+                                                logger.error("getAllInventory(): processAvailabilityAndHiddenProducts(): error", err);
+                                                deferred.reject(err);
+                                            })
+                                        } else {
+                                            deferred.resolve(body.inventory);
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
                 } else {
                     logger.error("getAllInventory(): invalid inventory body");
                     deferred.reject("invalid inventory body");
@@ -2472,10 +2478,12 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
                                         } else {
                                             //logger.debug("processAvailabilityAndHiddenProducts(): hiding product", product.id, "because contained product", p.id, "is unavailable");
                                             updates["contains." + j + ".unavailable"] = true;
+                                            unavailableComponents = true;
                                         }
                                     } else {
                                         //logger.debug("processAvailabilityAndHiddenProducts(): hiding product", product.id, "because contained product", p.id, "is not found");
                                         updates["contains." + j + ".unavailable"] = true;
+                                        unavailableComponents = true;
                                     }
                                 }
 
