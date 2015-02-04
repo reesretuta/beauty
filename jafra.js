@@ -2450,6 +2450,11 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
                                         allInventory[p._id] = allInventory[p._id] ? allInventory[p._id] : 0;
                                         updates["contains." + j + ".availableInventory"] = allInventory[p._id];
 
+                                        // if there are no components left, then there is no inventory
+                                        if (allInventory[p._id] <= MIN_INVENTORY) {
+                                            unavailableComponents = true;
+                                        }
+
                                         // determine inventory availability for the parent product based on lowest inventory of children
                                         //logger.debug("processAvailabilityAndHiddenProducts(): product", product.id, "availability of item", p.id,"is", allInventory[p._id]);
 
