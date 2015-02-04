@@ -199,7 +199,9 @@ angular.module('app.controllers.products').controller('ConfigureKitModalControll
             }
 
             angular.forEach(products, function(product) {
-                $scope.productIdToProduct[product.sku] = product;
+                if (product.availableInventory > 0) {
+                    $scope.productIdToProduct[product.sku] = product;
+                }
             });
 
             $scope.loading = false;
