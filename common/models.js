@@ -294,7 +294,8 @@ var productSchema = Schema({
         "unavailable": { type: Boolean, default: false}
     }],
     "availableInventory": { type: Number, default: 0 },
-    "unavailableComponents": { type: Boolean, default: false}
+    "unavailableComponents": { type: Boolean, default: false},
+    "lastUpdated": { type: Date, default: Date.now }
 }, { id: false, autoIndex: true });
 
 // text search

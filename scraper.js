@@ -2729,6 +2729,8 @@ models.onReady(function() {
             delete p.id;
             delete p._id;
 
+            p.lastUpdated = new Date();
+
             console.log('[summary] saving product', id);
 
             var isUpdate = false;
