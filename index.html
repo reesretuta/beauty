@@ -140,12 +140,12 @@
           <div ng-if="!iveBeenFramed" class="col-xs-12 col-sm-9 collapse navbar-collapse">
             <ul ng-if="consultant" class="nav navbar-nav">
               <li><a ng-href="http://www.myjafra.com/external-sites/home?cid={{consultant.id}}"><span ng-bind-html="'NAV_HOME' | translate | unsafe"></span></a></li>
-              <li><a ng-href="http://www.myjafra.com/external-sites/about?cid={{consultant.id}}"><span ng-bind-html="'NAV_ABOUT' | translate | unsafe"></span></a></li>
-              <li><a ng-href="http://www.myjafra.com/external-sites/opportunity?cid={{consultant.id}}"><span ng-bind-html="'NAV_OPPORTUNITY' | translate | unsafe"></span></a></li>
+              <li><a ng-href="http://www.myjafra.com/external-sites/home?cid={{consultant.id}}"><span ng-bind-html="'NAV_ABOUT' | translate | unsafe"></span></a></li>
+              <li><a ng-href="http://www.myjafra.com/external-sites/home?cid={{consultant.id}}"><span ng-bind-html="'NAV_OPPORTUNITY' | translate | unsafe"></span></a></li>
               <li class="active"><a ng-href="{{STORE_BASE_URL}}" ng-click="categoryClicked(null); setNavStatic('0')"><span ng-bind-html="'NAV_STORE' | translate | unsafe"></span></a></li>
-              <li><a ng-href="http://www.myjafra.com/external-sites/party-with-us?cid={{consultant.id}}"><span ng-bind-html="'NAV_PARTY' | translate | unsafe"></span></a></li>
-              <li><a ng-href="http://www.myjafra.com/external-sites/media?cid={{consultant.id}}"><span ng-bind-html="'NAV_MEDIA' | translate | unsafe"></span></a></li>
-              <li><a ng-href="http://www.myjafra.com/external-sites/my-business?cid={{consultant.id}}"><span ng-bind-html="'NAV_MYPAGE' | translate | unsafe"></span></a></li>
+              <li><a ng-href="http://www.myjafra.com/external-sites/home?cid={{consultant.id}}"><span ng-bind-html="'NAV_PARTY' | translate | unsafe"></span></a></li>
+              <li><a ng-href="http://www.myjafra.com/external-sites/home?cid={{consultant.id}}"><span ng-bind-html="'NAV_MEDIA' | translate | unsafe"></span></a></li>
+              <li><a ng-href="http://www.myjafra.com/external-sites/home?cid={{consultant.id}}"><span ng-bind-html="'NAV_MYPAGE' | translate | unsafe"></span></a></li>
             </ul>
             <ul ng-if="!consultant" class="nav navbar-nav">
               <li><a ng-href="http://www.jafrausa.com/regional/home"><span ng-bind-html="'NAV_HOME' | translate | unsafe"></span></a></li>
