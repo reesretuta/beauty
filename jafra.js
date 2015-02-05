@@ -512,6 +512,7 @@ function getConsultant(consultantId) {
             deferred.resolve({
                 status: 200,
                 result: {
+                    id: consultantId,
                     firstName: body.firstName,
                     lastName: body.lastName,
                     email: body.email
