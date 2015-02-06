@@ -18,7 +18,7 @@
         -ms-animation: fadeOut .01s;
         animation: fadeOut .01s;
       }*/
-[ng\:cloak], [ng-cloak], .ng-cloak, .translate-cloak {
+[ng\:cloak], [ng-cloak], .ng-cloak {
   display: none !important;
 }
 
