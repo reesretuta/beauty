@@ -2493,12 +2493,16 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
                                         } else {
                                             //logger.debug("processAvailabilityAndHiddenProducts(): hiding product", product.id, "because contained product", p.id, "is unavailable");
                                             updates["contains." + j + ".unavailable"] = true;
-                                            unavailableComponents = true;
+                                            if (product.type != "group") {
+                                                unavailableComponents = true;
+                                            }
                                         }
                                     } else {
                                         //logger.debug("processAvailabilityAndHiddenProducts(): hiding product", product.id, "because contained product", p.id, "is not found");
                                         updates["contains." + j + ".unavailable"] = true;
-                                        unavailableComponents = true;
+                                        if (product.type != "group") {
+                                            unavailableComponents = true;
+                                        }
                                     }
                                 }
 
