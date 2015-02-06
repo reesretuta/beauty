@@ -954,9 +954,13 @@ angular.module('app.services', ['ngResource'])
                         $log.error("setting current promotional message", product.sku, promotionalMessage);
                         if (!product.currentPromotionalMessage) {
                             var en = promotionalMessage.message;
-                            en = en.replace(/#([0-9]+)/, "<a href='/shop/products/$1'>$1</a>");
+                            if (en) {
+                                en = en.replace(/#([0-9]+)/, "<a href='/shop/products/$1'>$1</a>");
+                            }
                             var es = promotionalMessage.message_es_US;
-                            es = es.replace(/#([0-9]+)/, "<a href='/shop/products/$1'>$1</a>");
+                            if (es) {
+                                es = es.replace(/#([0-9]+)/, "<a href='/shop/products/$1'>$1</a>");
+                            }
                             product.currentPromotionalMessage = {
                                 message: en,
                                 message_es_US: es
@@ -965,11 +969,15 @@ angular.module('app.services', ['ngResource'])
                             // looks like we might need to merge a second item with overlapping range...likely diff language
                             if (promotionalMessage.message_es_US && product.currentPromotionalMessage.message_es_US == null) {
                                 var p = promotionalMessage.message_es_US;
-                                p = p.replace(/#([0-9]+)/, "<a href='/shop/products/$1'>$1</a>");
+                                if (p) {
+                                    p = p.replace(/#([0-9]+)/, "<a href='/shop/products/$1'>$1</a>");
+                                }
                                 product.currentPromotionalMessage.message_es_US = p;
                             } else if (promotionalMessage.message && product.currentPromotionalMessage.message == null) {
                                 var p = promotionalMessage.message;
-                                p = p.replace(/#([0-9]+)/, "<a href='/shop/products/$1'>$1</a>");
+                                if (p) {
+                                    p = p.replace(/#([0-9]+)/, "<a href='/shop/products/$1'>$1</a>");
+                                }
                                 product.currentPromotionalMessage.message = p;
                             }
                         }
