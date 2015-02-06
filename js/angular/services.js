@@ -949,17 +949,28 @@ angular.module('app.services', ['ngResource'])
                     var now = new Date().getTime();
                     var start = S(promotionalMessage.startDate).isEmpty() ? null : moment(promotionalMessage.startDate, 'YYYY-MM-DDTHH:mm:ss.SSSZ').unix()*1000;
                     var end = S(promotionalMessage.endDate).isEmpty() ? null : moment(promotionalMessage.endDate, 'YYYY-MM-DDTHH:mm:ss.SSSZ').unix()*1000;
-                    if ((now >= start || start == null) && (now <= end || end == null)) {
+                    if ((now >= start || start == null) && (now <= end || end == null) && promotionalMessage != null) {
                         // this is our current price
                         $log.error("setting current promotional message", product.sku, promotionalMessage);
                         if (!product.currentPromotionalMessage) {
-                            product.currentPromotionalMessage = promotionalMessage;
+                            var en = promotionalMessage.message;
+                            en = en.replace(/#([0-9]+)/, "<a href='/shop/products/$1'>$1</a>");
+                            var es = promotionalMessage.message_es_US;
+                            es = es.replace(/#([0-9]+)/, "<a href='/shop/products/$1'>$1</a>");
+                            product.currentPromotionalMessage = {
+                                message: en,
+                                message_es_US: es
+                            };
                         } else {
                             // looks like we might need to merge a second item with overlapping range...likely diff language
                             if (promotionalMessage.message_es_US && product.currentPromotionalMessage.message_es_US == null) {
-                                product.currentPromotionalMessage.message_es_US = promotionalMessage.message_es_US;
+                                var p = promotionalMessage.message_es_US;
+                                p = p.replace(/#([0-9]+)/, "<a href='/shop/products/$1'>$1</a>");
+                                product.currentPromotionalMessage.message_es_US = p;
                             } else if (promotionalMessage.message && product.currentPromotionalMessage.message == null) {
-                                product.currentPromotionalMessage.message = promotionalMessage.message;
+                                var p = promotionalMessage.message;
+                                p = p.replace(/#([0-9]+)/, "<a href='/shop/products/$1'>$1</a>");
+                                product.currentPromotionalMessage.message = p;
                             }
                         }
                         return;
