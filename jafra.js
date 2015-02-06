@@ -2453,7 +2453,7 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
                                         updates["contains." + j + ".availableInventory"] = allInventory[p._id];
 
                                         // if there are no components left, then there is no inventory
-                                        if (allInventory[p._id] <= MIN_INVENTORY) {
+                                        if (allInventory[p._id] <= MIN_INVENTORY && product.type != "group") {
                                             logger.debug("processAvailabilityAndHiddenProducts(): product", product.id,"availability for fixed component <= MIN_INVENTORY", allInventory[p._id]);
                                             availableCount = 0;
                                             availableInventory = 0;
