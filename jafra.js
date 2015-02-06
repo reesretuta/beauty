@@ -2436,6 +2436,8 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
                             var updates = {};
                             logger.debug("processAvailabilityAndHiddenProducts(): product", product.id,"availability after first check", availableInventory);
 
+                            var groupHasComponentWithInventory = false;
+
                             // ensure all the product contains for a kit have inventory, else mark as no inventory
                             // inventory for a group is the sum of all inventories for items inside
                             if (product.contains && product.contains.length > 0) {
@@ -2459,6 +2461,8 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
                                             availableInventory = 0;
                                             fixedComponentInventoryDepleted = true;
                                             break;
+                                        } else if (product.type == "group") {
+                                            groupHasComponentWithInventory = true;
                                         }
 
                                         // determine inventory availability for the parent product based on lowest inventory of children
@@ -2504,6 +2508,13 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
                                     availableInventory = availableCount ? availableCount : 0;
                                 }
                                 logger.debug("processAvailabilityAndHiddenProducts(): product", product.id, "this product inventory", allInventory[p._id], "availableCount", availableCount, "availability after contains check", availableInventory);
+                            }
+
+                            if (product.type == "group" && !groupHasComponentWithInventory) {
+                                logger.debug("processAvailabilityAndHiddenProducts(): product", product.id, "has no component with inventory");
+                                availableCount = 0;
+                                availableInventory = 0;
+                                fixedComponentInventoryDepleted = true;
                             }
 
                             // set unavailable for upsell items
