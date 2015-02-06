@@ -95,7 +95,7 @@
       <hr>
       <div class="store-group-colors" ng-if="product.type == 'group'">
           <p><span ng-repeat="productdetail in product.contains">
-              <a class="store-group-colors-swatch"
+              <a ng-if="productdetail.product.availableInventory >= 1 && productdetail.product.unavailable == false" class="store-group-colors-swatch"
                 ng-class="{'active': selectedProduct.sku==productdetail.product.sku}"
                 ng-click="categoryClicked($index); showhide(productdetail.product.sku)"
                 title="{{getTranslated(selectedProduct).name}}">
