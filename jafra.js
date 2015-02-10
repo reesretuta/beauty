@@ -1407,6 +1407,12 @@ function validateAddress(address) {
                         address1 = address1.trim();
                     }
 
+                    // in some cases, PO box comes back as addressline1, so use that if it's available and
+                    // the alternative isn't
+                    if (address1 == "" && usAddress.AddressLine1 != null) {
+                        address1 = usAddress.AddressLine1;
+                    }
+
                     var address2 = "";
                     address2 += usAddress.Extension.length > 0 ? usAddress.Extension + " " : "";
                     address2 += usAddress.ExtensionNumber.length > 0 ? usAddress.ExtensionNumber + " " : "";
