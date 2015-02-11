@@ -2783,12 +2783,7 @@ function getComponentsCriteria(loadUnavailable) {
     var componentsCriteria = {};
 
     if (!loadUnavailable) {
-        componentsCriteria = { $and: [
-            // in date range
-            {$or: [{"startDate":{$eq:null}}, {"startDate":{$lte: now}}]},
-            {$or: [{"endDate":{$eq:null}}, {"endDate":{$gt: now}}]},
-            {unavailable: false}
-        ]};
+        componentsCriteria = {unavailableComponents: false};
     }
     return componentsCriteria;
 }
@@ -2852,10 +2847,15 @@ function searchProducts(searchString, loadUnavailable, skip, limit, count) {
             if (products[i].contains) {
                 products[i].contains = products[i].contains.filter(function (obj, index) {
                     return (
+                    obj.product != null && obj.unavailable == false &&
                     (obj.startDate == null || (obj.startDate != null && moment(obj.startDate).isBefore(now))) &&
                     (obj.endDate == null || (obj.endDate != null && moment(obj.endDate).isAfter(now)))
                     );
                 });
+                if (products[i].type == "group" && (products[i].contains == null || products[i].contains.length == 0)) {
+                    products.splice(i, 1);
+                    continue;
+                }
             }
             if (products[i].promotionalMessages) {
                 products[i].promotionalMessages = products[i].promotionalMessages.filter(function (obj, index) {
@@ -2928,10 +2928,15 @@ function loadProductsByCategory(categoryId, loadUnavailable, skip, limit, sort) 
             if (products[i].contains) {
                 products[i].contains = products[i].contains.filter(function (obj, index) {
                     return (
+                    obj.product != null && obj.unavailable == false &&
                     (obj.startDate == null || (obj.startDate != null && moment(obj.startDate).isBefore(now))) &&
                     (obj.endDate == null || (obj.endDate != null && moment(obj.endDate).isAfter(now)))
                     );
                 });
+                if (products[i].type == "group" && (products[i].contains == null || products[i].contains.length == 0)) {
+                    products.splice(i, 1);
+                    continue;
+                }
             }
             if (products[i].promotionalMessages) {
                 products[i].promotionalMessages = products[i].promotionalMessages.filter(function (obj, index) {
@@ -3010,10 +3015,15 @@ function loadProductsById(productIds, loadComponents, loadUnavailable, loadStart
             if (products[i].contains) {
                 products[i].contains = products[i].contains.filter(function (obj, index) {
                     return (
+                    obj.product != null && obj.unavailable == false &&
                     (obj.startDate == null || (obj.startDate != null && moment(obj.startDate).isBefore(now))) &&
                     (obj.endDate == null || (obj.endDate != null && moment(obj.endDate).isAfter(now)))
                     );
                 });
+                if (products[i].type == "group" && (products[i].contains == null || products[i].contains.length == 0)) {
+                    products.splice(i, 1);
+                    continue;
+                }
             }
             if (products[i].promotionalMessages) {
                 products[i].promotionalMessages = products[i].promotionalMessages.filter(function (obj, index) {
@@ -3091,10 +3101,15 @@ function loadProducts(loadUnavailable, loadComponents, skip, limit, sort, count)
             if (products[i].contains) {
                 products[i].contains = products[i].contains.filter(function (obj, index) {
                     return (
+                    obj.product != null && obj.unavailable == false &&
                     (obj.startDate == null || (obj.startDate != null && moment(obj.startDate).isBefore(now))) &&
                     (obj.endDate == null || (obj.endDate != null && moment(obj.endDate).isAfter(now)))
                     );
                 });
+                if (products[i].type == "group" && (products[i].contains == null || products[i].contains.length == 0)) {
+                    products.splice(i, 1);
+                    continue;
+                }
             }
             if (products[i].promotionalMessages) {
                 products[i].promotionalMessages = products[i].promotionalMessages.filter(function (obj, index) {
@@ -3194,10 +3209,19 @@ function loadProductById(productId, loadUnavailable, loadStarterKit, loadStarter
                 if (products[0].contains) {
                     products[0].contains = products[0].contains.filter(function (obj, index) {
                         return (
-                            (obj.startDate == null || (obj.startDate != null && moment(obj.startDate).isBefore(now))) &&
-                            (obj.endDate == null || (obj.endDate != null && moment(obj.endDate).isAfter(now)))
+                        obj.product != null && obj.unavailable == false &&
+                        (obj.startDate == null || (obj.startDate != null && moment(obj.startDate).isBefore(now))) &&
+                        (obj.endDate == null || (obj.endDate != null && moment(obj.endDate).isAfter(now)))
                         );
                     });
+                    if (products[0].type == "group" && (products[0].contains == null || products[0].contains.length == 0)) {
+                        d.reject({
+                            statusCode: 404,
+                            errorCode: "productNotFound",
+                            errorMessage: "Product not found"
+                        });
+                        return;
+                    }
                 }
                 if (products[0].promotionalMessages) {
                     products[0].promotionalMessages = products[0].promotionalMessages.filter(function (obj, index) {
