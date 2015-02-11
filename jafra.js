@@ -2443,6 +2443,7 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
                             logger.debug("processAvailabilityAndHiddenProducts(): product", product.id,"availability after first check", availableInventory);
 
                             var groupHasComponentWithInventory = false;
+                            var groupHasAvailableComponent = false;
 
                             // ensure all the product contains for a kit have inventory, else mark as no inventory
                             // inventory for a group is the sum of all inventories for items inside
@@ -2490,11 +2491,17 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
                                         if ((p.masterStatus == "A" || p.masterStatus == "T") && (p.masterType == "R" || p.masterType == "B" || product.type == "group")) {
                                             // products leave alone
 
+                                            // mark onhold components as unavailable, even if everything else is correct
+                                            if (p.onHold == true) {
+                                                updates["contains." + j + ".unavailable"] = true;
                                             // groups add to count
-                                            if (product.type == "group") {
+                                            } else if (product.type == "group") {
                                                 // only if product in the group is available do we add to the sum for of inventories for product in a group
                                                 availableCount += allInventory[p._id];
                                                 //logger.debug("processAvailabilityAndHiddenProducts(): product", product.id,"availability after contains added", availableCount);
+
+                                                //logger.debug("processAvailabilityAndHiddenProducts(): product group", product.id, "component", p._id, "not on hold");
+                                                groupHasAvailableComponent = true;
                                             }
                                         } else {
                                             //logger.debug("processAvailabilityAndHiddenProducts(): hiding product", product.id, "because contained product", p.id, "is unavailable");
@@ -2520,11 +2527,19 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
                                 logger.debug("processAvailabilityAndHiddenProducts(): product", product.id, "this product inventory", allInventory[p._id], "availableCount", availableCount, "availability after contains check", availableInventory);
                             }
 
-                            if (product.type == "group" && !groupHasComponentWithInventory) {
-                                logger.debug("processAvailabilityAndHiddenProducts(): product", product.id, "has no component with inventory");
-                                availableCount = 0;
-                                availableInventory = 0;
-                                fixedComponentInventoryDepleted = true;
+                            if (product.type == "group") {
+                                if (!groupHasComponentWithInventory) {
+                                    logger.debug("processAvailabilityAndHiddenProducts(): product", product.id, "has no component with inventory");
+                                    availableCount = 0;
+                                    availableInventory = 0;
+                                    fixedComponentInventoryDepleted = true;
+                                }
+
+                                // group has no available components, so it should be unavailable
+                                if (!groupHasAvailableComponent || product.contains == null || product.contains.length == 0) {
+                                    logger.debug("processAvailabilityAndHiddenProducts(): product", product.id, "is a group with no components");
+                                    unavailableComponents = true;
+                                }
                             }
 
                             // set unavailable for upsell items
@@ -2762,14 +2777,19 @@ function getProductAsKitComponentCriteria() {
     return availableKitComponentsCriteria;
 }
 
-function getComponentsCriteria() {
+function getComponentsCriteria(loadUnavailable) {
     var now = new Date();
-    var componentsCriteria = [
-        // in date range
-        {$or: [{"startDate":{$eq:null}}, {"startDate":{$lte: now}}]},
-        {$or: [{"endDate":{$eq:null}}, {"endDate":{$gt: now}}]},
-        //{unavailable: false}
-    ];
+
+    var componentsCriteria = {};
+
+    if (!loadUnavailable) {
+        componentsCriteria = { $and: [
+            // in date range
+            {$or: [{"startDate":{$eq:null}}, {"startDate":{$lte: now}}]},
+            {$or: [{"endDate":{$eq:null}}, {"endDate":{$gt: now}}]},
+            {unavailable: false}
+        ]};
+    }
     return componentsCriteria;
 }
 
@@ -2807,7 +2827,8 @@ function searchProducts(searchString, loadUnavailable, skip, limit, count) {
         match: { $and: getAvailableProductCriteria()}
     }).populate({
         path: 'contains.product',
-        model: 'Product'
+        model: 'Product',
+        match: getComponentsCriteria(loadUnavailable)
     }).populate({
         path: 'kitGroups.kitGroup',
         model: 'KitGroup',
@@ -2887,7 +2908,8 @@ function loadProductsByCategory(categoryId, loadUnavailable, skip, limit, sort) 
         match: { $and: getAvailableProductCriteria()}
     }).populate({
         path: 'contains.product',
-        model: 'Product'
+        model: 'Product',
+        match: getComponentsCriteria(loadUnavailable)
     }).populate({
         path: 'kitGroups.kitGroup',
         model: 'KitGroup',
@@ -2963,7 +2985,8 @@ function loadProductsById(productIds, loadComponents, loadUnavailable, loadStart
         match: { $and: getAvailableProductCriteria()}
     }).populate({
         path: 'contains.product',
-        model: 'Product'
+        model: 'Product',
+        match: getComponentsCriteria(loadUnavailable)
     }).populate({
         path: 'kitGroups.kitGroup',
         model: 'KitGroup',
@@ -3043,7 +3066,8 @@ function loadProducts(loadUnavailable, loadComponents, skip, limit, sort, count)
         match: { $and: getAvailableProductCriteria()}
     }).populate({
         path: 'contains.product',
-        model: 'Product'
+        model: 'Product',
+        match: getComponentsCriteria(loadUnavailable)
     }).populate({
         path: 'kitGroups.kitGroup',
         model: 'KitGroup',
@@ -3126,7 +3150,8 @@ function loadProductById(productId, loadUnavailable, loadStarterKit, loadStarter
         match: { $and: getAvailableProductCriteria()}
     }).populate({
         path: 'contains.product',
-        model: 'Product'
+        model: 'Product',
+        match: getComponentsCriteria(loadUnavailable)
     }).populate({
         path: 'kitGroups.kitGroup',
         model: 'KitGroup',
