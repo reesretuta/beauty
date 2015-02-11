@@ -22,6 +22,7 @@ exports.config = {
     level : 'info'
   },
   error_collector : {
+      enabled: true,
       ignore_status_codes: [401, 404]
   }
 };
