@@ -31,7 +31,7 @@
     "morgan": "~1.5.1",
     "basic-auth": "~1.0.0",
     "newrelic": "~1.16.2",
-    "xml2js": "~0.4.5",
+    "xml2js": "0.4.4",
     "mockserver": "~0.10.0",
     "minimist": "~1.1.0",
     "random-string": "~0.1.1",
