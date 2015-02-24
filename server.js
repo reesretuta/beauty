@@ -283,6 +283,7 @@ router.route('/products')
 
             jafraClient.searchProducts(searchString, loadUnavailable, skip, limit, count).then(function(products) {
                 res.json(products);
+                res.end();
             }, function (err) {
                 logger.error("error while searching products by string", err);
                 res.send(err);
@@ -294,6 +295,7 @@ router.route('/products')
 
             jafraClient.loadProductsByCategory(id, loadUnavailable, skip, limit, sort).then(function(products) {
                 res.json(products);
+                res.end();
             }, function (err) {
                 logger.error("error while searching products by category", err);
                 res.send(err);
@@ -307,6 +309,7 @@ router.route('/products')
 
             jafraClient.loadProductsById(productIds, loadComponents, loadUnavailable, loadStarterKits, loadStarterKitsOnly, count).then(function(products) {
                 res.json(products);
+                res.end();
             }, function (err) {
                 logger.error("error while searching products by ID", err);
                 res.send(err);
