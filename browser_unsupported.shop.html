@@ -14,9 +14,8 @@
     <link rel="stylesheet" type="text/css" href="/lib/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
 
-    <!-- Custom styles for Online Sponsoring -->
-    <link rel="stylesheet" type="text/css"  href="/styles/online_sponsoring/fonts.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css"  href="/styles/online_sponsoring/style.css" rel="stylesheet">
+    <!-- JAFRA Custom CSS -->
+    <link rel="stylesheet" href="/styles/style.css">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -26,72 +25,51 @@
   </head>
 
   <body data-spy="scroll" data-target=".navbar-sections" class="landing-page join">
-    SHOP
-    <div id="pagenav" class="navbar navbar-default" role="navigation">
+    <header id="shop_header" class="navbar" role="navigation">
       <div class="container">
-        <div class="navbar-header">
-          <a class="navbar-brand" id="logo" href="http://jafra.com/"><img src="/img/logo-join.png" alt="logo" /></a>
+        <div class="row">
+          <div class="col-sm-3 navbar-left">
+            <!-- ngIf: consultant -->
+            <!-- ngIf: !consultant --><a class="navbar-brand ng-binding ng-scope" ng-if="!consultant" ng-href="http://www.jafrausa.com/regional/home" ng-bind-html="'LOGO' | translate | unsafe" href="http://www.jafrausa.com/regional/home"><img class="img-responsive" src="/img/logo.png" alt="JAFRA | The Power to Transform Lives."></a><!-- end ngIf: !consultant -->
+          </div><!--/span-->
         </div>
-        <!-- ... -->
-      </div>
-    </div>
+      </div><!-- /.container -->
+    </header>
 
   <div id="content">
 
     <section id="top">
-      <!-- Main jumbotron for a primary marketing message or call to action -->
-      <div class="jumbotron">
-        <div class="container">
-          <div class="row">
-            <div class="col-md-6" style="background:#ffffff;">
-              <h1 id="jumbo-title">
-                <span id="live">Live</span> <span class="HelveticaNeueLTStd-Th" style="color:#A08B6A;">the Life</span><br />
-                <span id="you">You</span> <span class="DidotLTPro-Italic" id="imagine">imagine</span>
-              </h1>
-              <p id="jumbo-description">Join JAFRA! It’s fun, easy, and empowering. No experience is necessary.All you need is your desire to turn your dream career into a reality! </p>
-              <p><small class="text-danger"><i class="fa fa-exclamation-triangle"></i> &nbsp;Your browser version <a href="http://html5test.com/" target="_blank">does not support HTML5 applications</a>. Please <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">upgrade</a> or go to http://Jafra4u.com</small></p>
-              <p><a class="btn btn-primary btn-med" role="button" href="http://jafra4u.com/">Get Started on Jafra4u.com</a> </p>
-            </div>
-            <div class="col-md-6">
-              <!--video class="img-responsive" controls poster="video/polina.jpg" id="ctavid">
-                <source src="video/polina.webm" type="video/webm">
-                <source src="video/polina.mp4" type="video/mp4">
-              </video-->  
-            </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12" style="background:#ffffff;">
+            <h1><small class="text-danger"><i class="fa fa-exclamation-triangle"></i> &nbsp;Your browser version <a href="http://html5test.com/" target="_blank">does not support HTML5 applications</a>. Please <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">upgrade</a>.</small></h1>
+            <p class="lead">If you are currently using Internet Explorer 10 or above, you may need to disable "Compatibility View".</p>
+            <p><a href="http://windows.microsoft.com/en-us/internet-explorer/use-compatibility-view#ie=ie-11" target="_blank">How to Fix Site Display Problems with Compatibility View in IE</a>
+              <ol class="h5">
+                <li>Open Internet Explorer.</li>
+                <li>Press the Alt key to display the Menu bar (or right–click the Address bar and then select Menu bar).</li>
+                <li>Tap or click Tools, and then tap or click Compatibility View settings.</li>
+              </ol>
+            </p>
+            <br />
+            <p class="lead">If you are still experiencing issues, please contact your JAFRA Beauty Consultant.</p>
           </div>
+        </div>
+        <div class="row">
+          <hr>
+          <footer>
+              <div class="pull-right footer-logos">
+                <a href="" class="jafra-logo"><span class="sr-only">Jafra Usa</span></a>
+                <a href="" class="vorwerk-logo"><span class="sr-only">Vorwerk</span></a>
+                <a href="" class="dsa-logo"><span class="sr-only">DSA</span></a>
+              </div>
+              <div class="legalcopy">
+                <p><span ng-bind-html="'COPYRIGHT' | translate | unsafe" class="ng-binding">© 2015 - JAFRA Cosmetics International - All Rights Reserved</span></p>
+              </div>
+            </footer>
         </div>
       </div>
     </section>
-
-    <footer>
-        <div class="container text-center">
-          <div class="social-media-icons center-block">
-            <a href="http://www.facebook.com/JafraWorldwide" target="_blank"><i class="fa fa-facebook-square"></i></a>
-            &nbsp;
-            <a href="https://plus.google.com/102586203009783197974" target="_blank"><i class="fa fa-google-plus-square"></i></a>
-            &nbsp;
-            <a href="https://www.linkedin.com/company/3077948" target="_blank"><i class="fa fa-linkedin-square"></i></a>
-            &nbsp;
-            <a href="https://www.twitter.com/JAFRAWorldwide" target="_blank"><i class="fa fa-twitter-square"></i></a>
-            &nbsp;
-            <a href="http://www.youtube.com/user/JAFRACorporate?feature=watch" target="_blank"><i class="fa fa-youtube-square"></i></a>
-            &nbsp;
-            <a href="http://pinterest.com/jafracosmetics/" target="_blank"><i class="fa fa-pinterest-square"></i></a>
-            &nbsp;
-            <a href="http://instagram.com/jafracosmeticsint" target="_blank"><i class="fa fa-instagram"></i></a>
-            &nbsp;
-          </div>
-        </div>
-
-         <!-- SPACER --> <p><br></p>
-         <!-- SPACER --> <p><br></p>
-
-        <div class="container text-center legalcopy">
-          <p>
-            <span ng-bind-html="'COPYRIGHT' | translate | unsafe"></span>
-          </p>
-        </div>
-      </footer>
 
   </div> <!-- /#content -->
     <!-- Bootstrap core JavaScript
