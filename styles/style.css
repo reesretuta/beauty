@@ -33,23 +33,23 @@ input[type=number].hide-arrows::-webkit-inner-spin-button {
 }
 
 .primary-color { color: #b51a8a; }
-.secondary-color { color: #AA73B1; }
+.secondary-color { color: rgba(74,13,102,1); }
 
 html {
   -webkit-font-smoothing: antialiased;
 }
 h1, .h1, h2, h3, h4, h5, h6,
 .btn, .label, .badge, .store-checkout .control-label, .steps-indicator {
-  font-family: "News Cycle", sans-serif;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 h2, h3, h4, a, .btn-link {
-  color: #AA73B1;
+  color: rgba(74,13,102,1);
 }
 h4 span.text-muted {
     font-size: 16px;
 }
 h1, .h1, a:hover, a:focus, .btn-link:hover, .btn-link:focus {
-  color: #b51a8a;
+  color: rgba(195,0,47,1);
 }
 .btn-primary.disabled, .btn-primary[disabled], fieldset[disabled] .btn-primary,
 .btn-primary.disabled:hover, .btn-primary[disabled]:hover, fieldset[disabled] .btn-primary:hover, 
@@ -83,7 +83,8 @@ a {
 }*/
 header a, header p {
   color: #fff;
-  font-family: "News Cycle", sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
 }
 h2 {
   font-size: 18px;
@@ -103,7 +104,7 @@ h2 {
 }
 #shop_header {
   min-height: 95px;
-  background: #AA73B1;
+  background: rgba(74,13,102,1);
   border-radius: 0;
   padding-bottom: 5px;
 }
@@ -204,6 +205,13 @@ a.checkout-link {
   background:none;
 }
 
+.shop .carousel-inner .item {
+  border: 1px solid rgba(110,61,132,1);
+}
+
+.shop .zone {
+ border: 1px solid rgba(110,61,132,1); 
+}
 
 .navbar-right {
   margin-right: 20px;
@@ -422,9 +430,9 @@ a:hover cart-item-image {
   background: #fff;
 }
 .btn-default {
-  background: #AA73B1;
+  background: rgba(74,13,102,1);
   color: #fff;
-  border-color: #AA73B1;
+  border-color: rgba(74,13,102,1);
 }
 .btn-primary {
   background: #b51a8a;
@@ -439,8 +447,8 @@ a:hover cart-item-image {
 }
 .input-group-addon {
   color: #fff;
-  background-color: #AA73B1;
-  border-color: #AA73B1;
+  background-color: rgba(74,13,102,1);
+  border-color: rgba(74,13,102,1);
   border-radius: 0;
 }
 .tab-pane {
@@ -540,14 +548,14 @@ a:hover cart-item-image {
   font-size: 26px;
   line-height: 14px;
   padding: 10px 0;
-  background: #AA73B1;
+  background: rgba(74,13,102,1);
   color: #fff !important;
   z-index:999;
   cursor: pointer;
 }
 
 .row-offcanvas-left.active {
-  border-left: 2px solid #AA73B1;
+  border-left: 2px solid rgba(74,13,102,1);
 }
 
 .nav-tabs>li>a {
@@ -586,10 +594,22 @@ a, .btn {
 .item-image-wrapper small {
   font-size: 13px;
   text-transform: uppercase;
-  color:#AA73B1;
+  color:rgba(74,13,102,1);
 }
 .modal-addon-item {
   text-align: center;
+}
+.modal-header {
+  border-bottom: 1px solid rgba(74,13,102,1);
+  background: rgba(74,13,102,1);
+}
+.modal-header .modal-title {
+  margin: 0;
+  line-height: 1.42857143;
+  color: #fff;
+}
+.modal-header .close{
+  color: #fff;
 }
 .store-cart .table>tbody>tr>td {
   vertical-align: middle;
@@ -613,7 +633,7 @@ a, .btn {
 .cart-subtotal span {
   font-size: .8em;
   font-weight: normal;
-  color: #AA73B1;
+  color: rgba(74,13,102,1);
 }
 
 #orderByIdItem {
@@ -651,7 +671,7 @@ a, .btn {
   margin-bottom: 20px;
 }
 .store-checkout-progress {
-  font-family: "News Cycle", sans-serif;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   font-size: 16px;
   line-height: 26px;
   font-weight: 400;
@@ -799,10 +819,6 @@ a, .btn {
     color: #222;
 }
 
-#shop_menu, #shop_menu a {
-    font-family: "News Cycle", sans-serif !important;
-}
-
 #shop_menu ul ul {
     max-height: 0;
     overflow: hidden;
@@ -856,7 +872,7 @@ a:focus {
 }
 
 #shop_menu > ul > li.open > a:nth-of-type(1) {
-    border-bottom: 1px solid #AA73B1;
+    border-bottom: 1px solid rgba(74,13,102,1);
 }
 
 #shop_menu ul ul li.menu-subheading, #shop_menu ul ul li a {
@@ -866,14 +882,14 @@ a:focus {
     text-decoration: none;
     font-size: 14px;
     color: #797c7d;
-    border-left: 4px solid #AA73B1;
+    border-left: 4px solid rgba(74,13,102,1);
 }
 
 #shop_menu ul ul li.menu-subheading {
     cursor: default;
     text-transform: uppercase;
     font-size: 10px;
-    color: #AA73B1;
+    color: rgba(74,13,102,1);
     background: rgba(170,115,177,.05);
 }
 
@@ -1012,7 +1028,6 @@ a:focus {
     width: 50%;
 }
 .configureKitModal .modal-body .kitSelections .kitGroupNavName {
-    font-family: "News Cycle", sans-serif !important;
     text-transform: none;
 }
 .configureKitModal .modal-body .kitSelectionList {
@@ -1039,7 +1054,6 @@ a:focus {
     color: #797c7d;
 }
 .configureKitModal .kitGroupNameWrapper {
-    font-family: "News Cycle", sans-serif !important;
     font-size: 16px;
     width: 100%;
     border-bottom: 1px solid #dddddd;
@@ -1049,18 +1063,15 @@ a:focus {
     text-align: left;
 }
 .configureKitModal .modal-addon-item-title {
-    font-family: "News Cycle", sans-serif !important;
     font-size: 18px;
     font-weight: bold;
     color: #b51a8a;
 }
 .configureKitModal .modal-addon-item-description {
     font-size: 16px;
-    font-family: "News Cycle", sans-serif !important;
 }
 .configureKitModal .modal-addon-item-quantity {
     font-size: 14px;
-    font-family: "News Cycle", sans-serif !important;
 }
 
 .kit-selection-check, div.selected .kit-selection-plus {
@@ -1155,7 +1166,7 @@ button.processing:before {
   background-color: #53366C;
 }
 .steps-indicator li.done a {
-  color: #AA73B1;
+  color: rgba(74,13,102,1);
 }
 .steps-indicator li.done a:before {
   background-color: #DEC8E0;
