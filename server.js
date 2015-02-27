@@ -388,14 +388,20 @@ router.route('/authenticate')// authenticate a user (accessed at POST http://loc
 router.route('/logout')
     .post(function (req, res) {
         logger.debug("logout", req.session);
-        req.session.destroy(function(err) {
+
+        req.session.client = null;
+        req.session.cart = null;
+
+        req.session.save(function(err) {
             if (err) {
-                logger.debug('failed to delete session', error);
+                logger.error('error saving session', err);
                 res.status(500);
                 res.end();
                 return;
             }
-            logger.debug('session deleted');
+
+            // session saved
+            logger.debug('session updated', req.session);
             res.status(200);
             res.json(req.session);
             res.end();
