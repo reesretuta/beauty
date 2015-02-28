@@ -58,6 +58,7 @@ models.onReady(function() {
 
     var updatedProductIds = [];
 
+    var ONE_HOUR = 60*60*24;
     var VERBOSE = process.env.VERBOSE || options["verbose"] || false;
     var AVAILABLE_ONLY = process.env.AVAILABLE_ONLY || options["available-only"] || false;
     var TEMP_UNAVAILABLE_ONLY = process.env.TEMP_UNAVAILABLE_ONLY || options["temp-unavailable-only"] || false;
@@ -148,6 +149,7 @@ models.onReady(function() {
         // LOGIN
         spooky.then([{
             existingProductTypes: existingProductTypes,
+            ONE_HOUR: ONE_HOUR,
             AVAILABLE_ONLY: AVAILABLE_ONLY,
             TEMP_UNAVAILABLE_ONLY: TEMP_UNAVAILABLE_ONLY,
             BASE_SITE_URL: BASE_SITE_URL,
@@ -203,6 +205,7 @@ models.onReady(function() {
         if (!options["skipCategories"] && !options["products"]) {
             spooky.then([{
                 existingProductTypes: existingProductTypes,
+                ONE_HOUR: ONE_HOUR,
                 AVAILABLE_ONLY: AVAILABLE_ONLY,
                 TEMP_UNAVAILABLE_ONLY: TEMP_UNAVAILABLE_ONLY,
                 BASE_SITE_URL: BASE_SITE_URL,
@@ -397,11 +400,11 @@ models.onReady(function() {
                                 console.log('Got category detail page');
 
                                 // get details
-                                var detail = casper.evaluate(function (LANGUAGE) {
+                                var detail = casper.evaluate(function (LANGUAGE, ONE_HOUR) {
                                     try {
                                         var detail = {};
-                                        detail.startDate = new Date(moment($('input[name="category.startDate"]').val(), 'MM/DD/YYYY').unix() * 1000);
-                                        detail.endDate = new Date(moment($('input[name="category.endDate"]').val(), 'MM/DD/YYYY').unix() * 1000);
+                                        detail.startDate = new Date((moment($('input[name="category.startDate"]').val(), 'MM/DD/YYYY').unix()+ONE_HOUR) * 1000);
+                                        detail.endDate = new Date((moment($('input[name="category.endDate"]').val(), 'MM/DD/YYYY').unix()+ONE_HOUR) * 1000);
 
                                         // description
                                         detail.description = $('textarea[name="categoryLocale.' + LANGUAGE + '.description"]').html();
@@ -434,7 +437,7 @@ models.onReady(function() {
                                     } catch (ex) {
                                         console.error("error parsing category detail page", JSON.stringify(ex));
                                     }
-                                }, LANGUAGE);
+                                }, LANGUAGE, ONE_HOUR);
                                 category.startDate = detail.startDate;
                                 category.endDate = detail.endDate;
                                 category.customerTypes = detail.customerTypes;
@@ -443,7 +446,7 @@ models.onReady(function() {
                                 casper.waitUntilVisible('#gridImages .x-grid3-scroller table tr div.x-grid3-cell-inner.x-grid3-col-4 a', function(LANGUAGE) {
                                     console.log('[summary] category image DOM loaded');
 
-                                    var images = casper.evaluate(function (LANGUAGE) {
+                                    var images = casper.evaluate(function (LANGUAGE, ONE_HOUR) {
                                         try {
                                             // images
                                             var images = [];
@@ -454,8 +457,8 @@ models.onReady(function() {
                                                 try {
                                                     var image = {};
                                                     image.rank = parseInt($(this).find('div.x-grid3-cell-inner.x-grid3-col-1').html());
-                                                    image.startDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html(), 'MM/DD/YYYY').unix() * 1000);
-                                                    image.endDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-3').html(), 'MM/DD/YYYY').unix() * 1000);
+                                                    image.startDate = new Date((moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html(), 'MM/DD/YYYY').unix()+ONE_HOUR) * 1000);
+                                                    image.endDate = new Date((moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-3').html(), 'MM/DD/YYYY').unix()+ONE_HOUR) * 1000);
                                                     image.imagePath = $(this).find('div.x-grid3-cell-inner.x-grid3-col-4 a').attr("href");
                                                     image.alt = $(this).find('div.x-grid3-cell-inner.x-grid3-col-5').html();
                                                     images.push(image);
@@ -469,7 +472,7 @@ models.onReady(function() {
                                         } catch (ex) {
                                             console.error("error parsing category detail images", JSON.stringify(ex));
                                         }
-                                    }, LANGUAGE);
+                                    }, LANGUAGE, ONE_HOUR);
 
                                     console.log('[summary] Got category images', JSON.stringify(images));
 
@@ -534,6 +537,7 @@ models.onReady(function() {
             existingProductTypes: existingProductTypes,
             existingProductPromotionalMessages: existingProductPromotionalMessages,
             existingProductUpsellItems: existingProductUpsellItems,
+            ONE_HOUR: ONE_HOUR,
             AVAILABLE_ONLY: AVAILABLE_ONLY,
             TEMP_UNAVAILABLE_ONLY: TEMP_UNAVAILABLE_ONLY,
             BASE_SITE_URL: BASE_SITE_URL,
@@ -965,8 +969,8 @@ models.onReady(function() {
                                         try {
                                             var message = {};
                                             message.message = $(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html();
-                                            message.startDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-3').html()).unix()*1000);
-                                            message.endDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-4').html()).unix()*1000);
+                                            message.startDate = new Date((moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-3').html()).unix()+ONE_HOUR)*1000);
+                                            message.endDate = new Date((moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-4').html()).unix()+ONE_HOUR)*1000);
                                             promotionalMessages.push(message);
                                             console.log('Got message', JSON.stringify(message));
                                         } catch (ex) {
@@ -1090,7 +1094,7 @@ models.onReady(function() {
 
                             console.log('Using current product', JSON.stringify(product));
 
-                            product.images = casper.evaluate(function() {
+                            product.images = casper.evaluate(function(ONE_HOUR) {
                                 try {
                                     var images = [];
 
@@ -1098,8 +1102,8 @@ models.onReady(function() {
                                         try {
                                             var image = {};
                                             image.rank = parseInt($(this).find('div.x-grid3-cell-inner.x-grid3-col-1').html());
-                                            image.startDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html(), 'MM/DD/YYYY').unix()*1000);
-                                            image.endDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-3').html(), 'MM/DD/YYYY').unix()*1000);
+                                            image.startDate = new Date((moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html(), 'MM/DD/YYYY').unix()+ONE_HOUR)*1000);
+                                            image.endDate = new Date((moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-3').html(), 'MM/DD/YYYY').unix()+ONE_HOUR)*1000);
                                             image.imagePath = $(this).find('div.x-grid3-cell-inner.x-grid3-col-4 a').attr("href");
                                             image.alt = $(this).find('div.x-grid3-cell-inner.x-grid3-col-5').html();
                                             images.push(image);
@@ -1113,7 +1117,7 @@ models.onReady(function() {
                                 } catch (ex) {
                                     console.error('error processing images', JSON.stringify(ex));
                                 }
-                            });
+                            }, ONE_HOUR);
                             //console.log("Product:", JSON.stringify(product));
                         }, function() {
                             console.error("timed out waiting to on product images");
@@ -1271,7 +1275,7 @@ models.onReady(function() {
                                         console.log('Got product price detail page', productId, 'sku', sku, priceId);
                                     }
 
-                                    var price = casper.evaluate(function() {
+                                    var price = casper.evaluate(function(ONE_HOUR) {
                                         try {
                                             var p = {};
                                             p.price = parseFloat($('input[name="productPrice.price"]').val());
@@ -1282,8 +1286,8 @@ models.onReady(function() {
                                             p.instantProfit = parseFloat($('input[name="productPrice.instantProfit"]').val());
                                             p.rebate = parseFloat($('input[name="productPrice.rebate"]').val());
                                             p.shippingSurcharge = parseFloat($('input[name="productPrice.shippingSurcharge"]').val());
-                                            p.effectiveStartDate = new Date(moment($('input[name="productPrice.startDate"]').val(), 'MM/DD/YYYY').unix()*1000);
-                                            p.effectiveEndDate = new Date(moment($('input[name="productPrice.endDate"]').val(), 'MM/DD/YYYY').unix()*1000);
+                                            p.effectiveStartDate = new Date((moment($('input[name="productPrice.startDate"]').val(), 'MM/DD/YYYY').unix()+ONE_HOUR)*1000);
+                                            p.effectiveEndDate = new Date((moment($('input[name="productPrice.endDate"]').val(), 'MM/DD/YYYY').unix()+ONE_HOUR)*1000);
 
                                             p.customerTypes = [];
                                             if ($('input[name="customerTypes.itemMapped[0].customerType"]').attr('checked')) {
@@ -1318,7 +1322,7 @@ models.onReady(function() {
                                             console.error("failed to load modal in time");
 
                                         }
-                                    });
+                                    }, ONE_HOUR);
                                     product.prices.push(price);
                                 });
                             }
@@ -1565,8 +1569,8 @@ models.onReady(function() {
                                         item.title = $(this).find('div.x-grid3-cell-inner.x-grid3-col-3').html();
                                         item.description = $(this).find('div.x-grid3-cell-inner.x-grid3-col-4').html();
                                         item.marketingText = $(this).find('div.x-grid3-cell-inner.x-grid3-col-5').html();
-                                        item.startDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-6').html(), 'MM/DD/YYYY').unix()*1000);
-                                        item.endDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-7').html(), 'MM/DD/YYYY').unix()*1000);
+                                        item.startDate = new Date((moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-6').html(), 'MM/DD/YYYY').unix()+ONE_HOUR)*1000);
+                                        item.endDate = new Date((moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-7').html(), 'MM/DD/YYYY').unix()+ONE_HOUR)*1000);
                                         sharedAssets.push(item);
                                     });
                                     return sharedAssets;
@@ -1605,7 +1609,7 @@ models.onReady(function() {
                             try {
                                 var product = productMap[productId];
 
-                                var ret = casper.evaluate(function() {
+                                var ret = casper.evaluate(function(ONE_HOUR) {
                                     try {
                                         var contains = [];
                                         var kitGroups = [];
@@ -1623,8 +1627,8 @@ models.onReady(function() {
                                             //console.log("startDateString", startDateString);
                                             //console.log("endDateString", endDateString);
 
-                                            item.startDate = new Date(moment(startDateString, 'MM/DD/YYYY').unix()*1000);
-                                            item.endDate = new Date(moment(endDateString, 'MM/DD/YYYY').unix()*1000);
+                                            item.startDate = new Date((moment(startDateString, 'MM/DD/YYYY').unix()+ONE_HOUR)*1000);
+                                            item.endDate = new Date((moment(endDateString, 'MM/DD/YYYY').unix()+ONE_HOUR)*1000);
 
                                             //console.log("startDate", item.startDate);
                                             //console.log("endDate", item.endDate);
@@ -1648,7 +1652,7 @@ models.onReady(function() {
                                     } catch (ex) {
                                         console.error("error while parsing product components");
                                     }
-                                });
+                                }, ONE_HOUR);
                                 product.contains = ret.contains;
                                 product.kitGroups = ret.kitGroups;
 
@@ -1675,6 +1679,7 @@ models.onReady(function() {
                 existingProductTypes: existingProductTypes,
                 existingProductPromotionalMessages: existingProductPromotionalMessages,
                 existingProductUpsellItems: existingProductUpsellItems,
+                ONE_HOUR: ONE_HOUR,
                 AVAILABLE_ONLY: AVAILABLE_ONLY,
                 TEMP_UNAVAILABLE_ONLY: TEMP_UNAVAILABLE_ONLY,
                 BASE_SITE_URL: BASE_SITE_URL,
@@ -1909,7 +1914,7 @@ models.onReady(function() {
 
                                 var p = productGroupMap[productGroupId];
 
-                                var product = casper.evaluate(function (LANGUAGE) {
+                                var product = casper.evaluate(function (LANGUAGE, ONE_HOUR) {
                                     try {
                                         var product = {};
                                         product.type = "group";
@@ -1926,13 +1931,13 @@ models.onReady(function() {
                                         product.searchable = $('input[name="group.searchable"]').attr('checked') || false;
                                         product.masterStatus = $('select[name="group.status"] > option:selected').val();
                                         product.launchId = $('input[name="group.launchId"]').val() || 0;
-                                        product.startDate = new Date(moment($('input[name="group.startDate"]').val(), 'MM/DD/YYYY').unix() * 1000);
-                                        product.endDate = new Date(moment($('input[name="group.endDate"]').val(), 'MM/DD/YYYY').unix() * 1000);
+                                        product.startDate = new Date((moment($('input[name="group.startDate"]').val(), 'MM/DD/YYYY').unix()+ONE_HOUR) * 1000);
+                                        product.endDate = new Date((moment($('input[name="group.endDate"]').val(), 'MM/DD/YYYY').unix()+ONE_HOUR) * 1000);
                                         return product;
                                     } catch (ex) {
                                         console.error("error parsing product group detail", JSON.stringify(ex));
                                     }
-                                }, LANGUAGE);
+                                }, LANGUAGE, ONE_HOUR);
                                 // set the group systemRef as the ID
                                 product._id = systemRef;
 
@@ -1991,7 +1996,7 @@ models.onReady(function() {
                                     return;
                                 }
 
-                                var promotionalMessages = casper.evaluate(function() {
+                                var promotionalMessages = casper.evaluate(function(ONE_HOUR) {
                                     try {
                                         var promotionalMessages = [];
 
@@ -1999,8 +2004,8 @@ models.onReady(function() {
                                             try {
                                                 var message = {};
                                                 message.message = $(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html();
-                                                message.startDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-3').html()).unix()*1000);
-                                                message.endDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-4').html()).unix()*1000);
+                                                message.startDate = new Date((moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-3').html()).unix()+ONE_HOUR)*1000);
+                                                message.endDate = new Date((moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-4').html()).unix()+ONE_HOUR)*1000);
                                                 promotionalMessages.push(message);
                                                 console.log('Got message', JSON.stringify(message));
                                             } catch (ex) {
@@ -2012,7 +2017,7 @@ models.onReady(function() {
                                     } catch (ex) {
                                         console.error('error processing promotionalMessages', JSON.stringify(ex));
                                     }
-                                });
+                                }, ONE_HOUR);
 
                                 // create array of messages to keep & update as needed
                                 var savedMessages = [];
@@ -2116,15 +2121,15 @@ models.onReady(function() {
                             casper.waitUntilVisible('#gridImages', function () {
                                 var productGroup = productGroupMap[productGroupId];
 
-                                productGroup.images = casper.evaluate(function () {
+                                productGroup.images = casper.evaluate(function (ONE_HOUR) {
                                     var images = [];
 
                                     $("#gridImages .x-grid3-scroller table tr").each(function () {
                                         try {
                                             var image = {};
                                             image.rank = parseInt($(this).find('div.x-grid3-cell-inner.x-grid3-col-1').html());
-                                            image.startDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html(), 'MM/DD/YYYY').unix() * 1000);
-                                            image.endDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-3').html(), 'MM/DD/YYYY').unix() * 1000);
+                                            image.startDate = new Date((moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html(), 'MM/DD/YYYY').unix()+ONE_HOUR) * 1000);
+                                            image.endDate = new Date((moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-3').html(), 'MM/DD/YYYY').unix()+ONE_HOUR) * 1000);
                                             image.imagePath = $(this).find('div.x-grid3-cell-inner.x-grid3-col-4 a').attr("href");
                                             image.alt = $(this).find('div.x-grid3-cell-inner.x-grid3-col-5').html();
                                             images.push(image);
@@ -2135,7 +2140,7 @@ models.onReady(function() {
                                     });
 
                                     return images;
-                                });
+                                }, ONE_HOUR);
 
                                 console.log("Product Group:", JSON.stringify(productGroup));
                             }, function () {
@@ -2466,6 +2471,7 @@ models.onReady(function() {
         if (!options["skipKitGroups"] && !options["products"]) {
             spooky.then([{
                 existingProductTypes: existingProductTypes,
+                ONE_HOUR: ONE_HOUR,
                 AVAILABLE_ONLY: AVAILABLE_ONLY,
                 BASE_SITE_URL: BASE_SITE_URL,
                 LANGUAGE: LANGUAGE
@@ -2579,7 +2585,7 @@ models.onReady(function() {
                             casper.waitUntilVisible('#secondGrid .x-grid3-scroller', function () {
                                 console.log("DOM available");
                                 var kitGroup = {};
-                                var ret = casper.evaluate(function () {
+                                var ret = casper.evaluate(function (ONE_HOUR) {
                                     try {
                                         var components = [];
                                         $('#secondGrid .x-grid3-scroller .x-grid3-row').each(function (index, row) {
@@ -2587,8 +2593,8 @@ models.onReady(function() {
                                             component.rank = parseInt($(this).find('div.x-grid3-cell-inner.x-grid3-col-0').html());
                                             component.product = $(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html();
                                             component.productId = component.product;
-                                            component.startDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-4').html(), 'MM/DD/YYYY').unix() * 1000);
-                                            component.endDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-5').html(), 'MM/DD/YYYY').unix() * 1000);
+                                            component.startDate = new Date((moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-4').html(), 'MM/DD/YYYY').unix()+ONE_HOUR) * 1000);
+                                            component.endDate = new Date((moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-5').html(), 'MM/DD/YYYY').unix()+ONE_HOUR) * 1000);
                                             components.push(component);
                                         });
 
@@ -2600,7 +2606,7 @@ models.onReady(function() {
                                     } catch (ex) {
                                         console.error("error parsing kit group detail", JSON.stringify(ex));
                                     }
-                                });
+                                }, ONE_HOUR);
 
                                 // set the group systemRef as the ID
                                 kitGroup._id = systemRef;
