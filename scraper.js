@@ -54,6 +54,7 @@ models.onReady(function() {
     var completedImageFetches = 0;
 
     var processingProductComplete = {};
+    var productGroupListingComplete = false;
 
     var updatedProductIds = [];
 
@@ -186,7 +187,7 @@ models.onReady(function() {
             });
 
             // MANAGE SKUS
-            var manage_skus_url = BASE_SITE_URL + '/csr-admin-4/productcatalog/product.listing?adminUserId=86&language=' + LANGUAGE;
+            var manage_skus_url = BASE_SITE_URL + '/csr-admin-4/productcatalog/product.listing?adminUserId=87&language=' + LANGUAGE;
 
             casper.thenOpen(manage_skus_url, function (response) {
                 if (response.status !== 200) {
@@ -1693,11 +1694,15 @@ models.onReady(function() {
 
                 // map of all products
                 var productGroupMap = {};
+                var productGroupsSeen = 0;
 
                 // PRODUCT GROUP LISTING
-                function getProductGroupListing(pageNum) {
+                function getProductGroupListing(pageNum, productGroupsSeen) {
                     if (pageNum == null) {
                         pageNum = 1;
+                    }
+                    if (productGroupsSeen == null) {
+                        productGroupsSeen = 0;
                     }
 
                     // GET PRODUCT GROUP LISTING
@@ -1756,7 +1761,6 @@ models.onReady(function() {
                                                     });
                                                 } else {
                                                     console.error("failed to parse product group line", c2);
-                                                    return;
                                                 }
                                             } catch (ex) {
                                                 console.error("error parsing product group listing item", JSON.stringify(ex));
@@ -1774,6 +1778,8 @@ models.onReady(function() {
                                             productGroups: productGroups
                                         };
                                     }, pageNum);
+
+                                    console.log("returned from group listing page", "groups", result.productGroups.length, "hasNext", result.hasNext);
 
                                     var productGroups = result.productGroups;
                                     if (IMAGES_ONLY) {
@@ -1846,14 +1852,17 @@ models.onReady(function() {
                                         }
                                     }
 
+				    productGroupsSeen += productGroups.length;
+
                                     // continue if we have more pages, else we're done
                                     if (hasNext) {
                                         // uncomment to enable multiple product group page scraping
                                         // we have another page
                                         console.log("have more group listings");
-                                        getProductGroupListing(pageNum + 1);
+                                        getProductGroupListing(pageNum + 1, productGroupsSeen);
                                     } else {
-                                        console.log("no more group listings");
+                                        console.log("no more group listings, scanned", productGroupsSeen, "product groups");
+					this.emit("productGroupListingComplete");
                                     }
                                 });
                             } catch (ex) {
@@ -2835,10 +2844,19 @@ models.onReady(function() {
         }
     });
 
+    spooky.on('productGroupListingComplete', function() {
+        console.log('productGroupListingComplete');
+        productGroupListingComplete = true;
+        this.emit('doneCheck');
+    });
+
     spooky.on('doneCheck', function() {
         //console.log('doneCheck');
 
         var done = true;
+	if (!options["skipGroups"] && productGroupListingComplete == false) {
+	    done = false;
+	}
         for (var id in processingProductComplete) {
             if (processingProductComplete.hasOwnProperty(id)) {
                 if (processingProductComplete[id] == false) {
