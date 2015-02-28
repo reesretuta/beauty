@@ -36,6 +36,8 @@ angular.module('app.controllers.main').controller('MainController', function ($s
                 path = $location.path(),
                 params = $location.search();
 
+            $log.debug("MainController(): changeListener(): locationChangeSuccess", url, params);
+
             // if we have a store page
             if (path == STORE_BASE_URL + "/products" && (urlSearch != localSearch)) {
                 $log.debug("MainController(): changeListener(): location change event in projects page", url, params);
@@ -50,6 +52,24 @@ angular.module('app.controllers.main').controller('MainController', function ($s
                 Search.search(urlSearch);
             } else {
                 $log.debug("MainController(): changeListener(): ignoring");
+            }
+
+            // keep cid / source in URL
+            if (params.cid == null || params.source == null) {
+                Session.get().then(function(session) {
+                   if (session.cid != null || session.source != null) {
+                       $log.debug("MainController(): changeListener(): preserving cid/source in URL");
+                       if (session.consultantId != null) {
+                           params["consultantId"] = session.consultantId;
+                           params["source"] = session.source;
+                       } else {
+                           delete params["consultantId"];
+                           delete params["source"];
+                       }
+                       $location.$$search = params;
+                       $location.$$compose();
+                   }
+                });
             }
         });
     }
