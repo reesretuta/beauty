@@ -560,21 +560,6 @@ angular.module('app.controllers.checkout')
             });
         }
 
-        // select language based on product
-        function selectConsultantLanguage(sku) {
-            switch (sku) {
-                case "19634":
-                case "19636":
-                    $scope.profile.language = "en_US";
-                    break;
-                case "19635":
-                case "19637":
-                    $scope.profile.language = "es_US";
-                    break;
-            }
-            return $scope.profile.language;
-        }
-
         function verifyAge() {
             $log.debug("CheckoutController(): verifyAge(): ", $scope.profile.dob)
             $scope.invalidDOB = false;
