@@ -32,7 +32,7 @@ input[type=number].hide-arrows::-webkit-inner-spin-button {
   -webkit-appearance: none;
 }
 
-.primary-color { color: #b51a8a; }
+.primary-color { color: rgba(195,0,47,1); }
 .secondary-color { color: rgba(74,13,102,1); }
 
 html {
@@ -267,7 +267,7 @@ a.checkout-link {
 .navbar-nav>li>a:focus,
 .navbar-nav>li.active>a {
   color: #fff;
-  background-color: #95519E;
+  background-color: rgba(52, 11, 72, 1);
   border-color: #85418E;
   /*margin-right: -25px;*/
 }
@@ -421,7 +421,7 @@ a:hover cart-item-image {
 .store-cart .qty-input {
   font-weight: bold;
   color: #222;
-  border-color: #b51a8a;
+  border-color: rgba(195,0,47,1);
 }
 .btn {
   border: none;
@@ -430,19 +430,19 @@ a:hover cart-item-image {
   background: #fff;
 }
 .btn-default {
-  background: rgba(74,13,102,1);
+  background: rgba(195,0,47,1);
   color: #fff;
-  border-color: rgba(74,13,102,1);
+  border-color: rgba(195,0,47,1);
 }
 .btn-primary {
-  background: #b51a8a;
+  background: rgba(195,0,47,1);
   color: #fff;
-  border-color: #b51a8a;
+  border-color: rgba(195,0,47,1);
 }
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary,
 .btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open .dropdown-toggle.btn-default {
-  background: #8c146a;
-  border-color: #8c146a;
+  background: rgba(195,0,47,1);
+  border-color: rgba(195,0,47,1);
   color: #fff;
 }
 .input-group-addon {
@@ -460,7 +460,7 @@ a:hover cart-item-image {
 }
 .form-control:focus {
   border-color: #53366C;
-  box-shadow: 0 0 3px #b51a8a
+  box-shadow: 0 0 3px rgba(195,0,47,1)
 }
 .store-heading-nav {
   border-bottom: 1px solid #eee;
@@ -497,10 +497,10 @@ a:hover cart-item-image {
 .store-group-colors .store-group-colors-swatch:hover,
 .store-group-colors .store-group-colors-swatch:focus,
 .store-group-colors .store-group-colors-swatch.active {
-  border-color: #b51a8a;
+  border-color: rgba(195,0,47,1);
 }
 .store-group-colors .store-group-colors-swatch.active {
-  box-shadow: 0 0 3px #b51a8a
+  box-shadow: 0 0 3px rgba(195,0,47,1)
 }
 .store-group-colors .store-group-colors-swatch img {
   max-width: 56px;
@@ -525,7 +525,7 @@ a:hover cart-item-image {
 .store-dropdown .dropdown-menu>li>a:hover,
 .store-dropdown .dropdown-menu>li>a:focus,
 .store-dropdown .dropdown-menu>li>a.active {
-  color: #b51a8a;
+  color: rgba(195,0,47,1);
   background: rgba(170,115,177,.1);
 }
 .store-dropdown .dropdown-menu>li>a.active {
@@ -705,7 +705,7 @@ a, .btn {
   font-size: 18px;
 }
 .forgot-password-link {
-  color: #b51a8a;
+  color: rgba(195,0,47,1);
   text-transform: none;
 }
 .form-info-link {
@@ -756,7 +756,7 @@ a, .btn {
 /*  max-height: 136px;
 */  background: #FBF8FB;
   border-radius: 9px;
-  border: 2px solid #b51a8a;
+  border: 2px solid rgba(195,0,47,1);
   font-family: "Courier New", "Courier", monospace;
   font-size: 15px;
   font-weight: bold;
@@ -861,7 +861,7 @@ a:focus {
 }
 
 #shop_menu a.active, #shop_menu > ul > li > a:hover, #shop_menu > ul > li.active > a, #shop_menu > ul > li.open > a {
-    color: #b51a8a;
+    color: rgba(195,0,47,1);
 }
 
 #shop_menu a.active {
@@ -895,12 +895,12 @@ a:focus {
 }
 
 #shop_menu ul ul li a.active, #shop_menu ul ul li a:hover {
-    color: #b51a8a;
-    background: rgba(170,115,177,.1);
+    color: rgba(195,0,47,1);
+    background: rgba(74,13,102,.1);
 }
 
 #shop_menu ul ul li:hover > a, #shop_menu ul ul li.open > a, #shop_menu ul ul li.active > a {
-    color: #b51a8a;
+    color: rgba(195,0,47,1);
 }
 
 #shop_menu ul ul li.open > a, #shop_menu ul ul li.active > a {
@@ -1044,7 +1044,7 @@ a:focus {
   margin: 0 0 10px;
 }
 .kitSelectionList div.selected {
-    outline: 3px solid #b51a8a;
+    outline: 3px solid rgba(195,0,47,1);
 }
 
 .configureKitModal .modal-body .kitSelectionList .div.product-image.selected .kit-selection-check {
@@ -1066,7 +1066,7 @@ a:focus {
 .configureKitModal .modal-addon-item-title {
     font-size: 18px;
     font-weight: bold;
-    color: #b51a8a;
+    color: rgba(195,0,47,1);
 }
 .configureKitModal .modal-addon-item-description {
     font-size: 16px;
@@ -1077,12 +1077,12 @@ a:focus {
 
 .kit-selection-check, div.selected .kit-selection-plus {
   display: none;
-  color: #b51a8a;
+  color: rgba(195,0,47,1);
 }
 
 div.selected .kit-selection-check, .kit-selection-plus {
   display: inline-block;
-  color: #b51a8a;
+  color: rgba(195,0,47,1);
 }
 .configureKitModal aside a small.pull-right {
     line-height: 18px;
@@ -1160,7 +1160,7 @@ button.processing:before {
   margin-left: -10px;
 }
 .steps-indicator li.current a {
-  color: #b51a8a;
+  color: rgba(195,0,47,1);
 }
 .steps-indicator li.current a:before, 
 .steps-indicator li.editing a:before {
