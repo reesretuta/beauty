@@ -200,9 +200,17 @@ a.checkout-link {
   color:#fff;   
   z-index: 6;
 }
+.shop .carousel-control{
+  text-shadow: 0px 1px 1px rgba(255, 255, 255, 1);
+}
+
 .shop .carousel-control.right, .shop .carousel .left {
   height: 90%;
   background:none;
+  color: rgba(74, 13, 102, 0.6);
+}
+.shop .carousel-control.right:hover, .shop .carousel .left:hover {
+  color: rgba(195, 0, 47, 0.6);
 }
 
 .shop .carousel-inner .item {
