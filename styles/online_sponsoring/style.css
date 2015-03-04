@@ -552,6 +552,10 @@ section#why_jafra_lifestyle .leaders_col {
   position: relative;
   top: 5px;
 } 
+body.es section#why_jafra_lifestyle .leaders_col {
+position: relative;
+top: -23px;
+}
 
 section#why_jafra_lifestyle .team_sales {
   font-size:30px;
@@ -702,6 +706,10 @@ width: 475px;
 }
 
 /* more links */
+body.es div.modal-content section.royal_kit .more-link, body.es div.modal-content section.royal_kit .more-link.collapsed {
+  width: 70px;
+}
+
 .more-link, .more-link.collapsed {
   display: inline-block;
   position: relative;
