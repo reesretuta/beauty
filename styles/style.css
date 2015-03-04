@@ -1124,8 +1124,8 @@ a.processing:active,
 button.processing,
 button.processing:hover,
 button.processing:active {
-  background: rgba(74,13,102,1);
-  border-color: rgba(74,13,102,1);
+  background-color: rgba(165,0,27,0.2);
+  border-color: rgba(165,0,27,0.2);
   pointer-events: none;
 }
 a.processing:before,
