@@ -56,8 +56,8 @@ h1, .h1, a:hover, a:focus, .btn-link:hover, .btn-link:focus {
 .btn-primary.disabled:focus, .btn-primary[disabled]:focus, fieldset[disabled] .btn-primary:focus, 
 .btn-primary.disabled:active, .btn-primary[disabled]:active, fieldset[disabled] .btn-primary:active, 
 .btn-primary.disabled.active, .btn-primary[disabled].active, fieldset[disabled] {
-  background-color: #ccabd0;
-  border-color: #ccabd0;
+  background-color: rgba(195,0,47,0.2);
+  border-color: rgba(195,0,47,0.2);
 }
 a {
   cursor: pointer;
