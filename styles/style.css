@@ -56,8 +56,8 @@ h1, .h1, a:hover, a:focus, .btn-link:hover, .btn-link:focus {
 .btn-primary.disabled:focus, .btn-primary[disabled]:focus, fieldset[disabled] .btn-primary:focus, 
 .btn-primary.disabled:active, .btn-primary[disabled]:active, fieldset[disabled] .btn-primary:active, 
 .btn-primary.disabled.active, .btn-primary[disabled].active, fieldset[disabled] {
-  background-color: rgba(195,0,47,0.2);
-  border-color: rgba(195,0,47,0.2);
+  background-color: rgba(165,0,27,0.2);
+  border-color: rgba(165,0,27,0.2);
 }
 a {
   cursor: pointer;
@@ -441,8 +441,8 @@ a:hover cart-item-image {
 }
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary,
 .btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open .dropdown-toggle.btn-default {
-  background: rgba(195,0,47,1);
-  border-color: rgba(195,0,47,1);
+  background: rgba(165,0,27,1);
+  border-color: rgba(165,0,27,1);
   color: #fff;
 }
 .input-group-addon {
@@ -1124,8 +1124,8 @@ a.processing:active,
 button.processing,
 button.processing:hover,
 button.processing:active {
-  background: #8c146a;
-  border-color: #8c146a;
+  background: rgba(74,13,102,1);
+  border-color: rgba(74,13,102,1);
   pointer-events: none;
 }
 a.processing:before,
