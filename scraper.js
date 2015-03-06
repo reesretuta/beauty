@@ -961,7 +961,7 @@ models.onReady(function() {
                                 return;
                             }
 
-                            var promotionalMessages = casper.evaluate(function() {
+                            var promotionalMessages = casper.evaluate(function(ONE_HOUR) {
                                 try {
                                     var promotionalMessages = [];
 
@@ -982,7 +982,7 @@ models.onReady(function() {
                                 } catch (ex) {
                                     console.error('error processing promotionalMessages', JSON.stringify(ex));
                                 }
-                            });
+                            }, ONE_HOUR);
 
                             // create array of messages to keep & update as needed
                             var savedMessages = [];
@@ -1554,7 +1554,7 @@ models.onReady(function() {
                         casper.waitUntilVisible('#gridAccessories .x-grid3-scroller', function() {
                             var product = productMap[productId];
 
-                            product.sharedAssets = casper.evaluate(function() {
+                            product.sharedAssets = casper.evaluate(function(ONE_HOUR) {
                                 try {
                                     var sharedAssets = [];
                                     $('#gridAccessories .x-grid3-scroller table tr').each(function(index, row) {
@@ -1577,7 +1577,7 @@ models.onReady(function() {
                                 } catch (ex) {
                                     console.error("error processing shared asset item", JSON.stringify(ex));
                                 }
-                            });
+                            }, ONE_HOUR);
                             console.log("Shared Assets:", JSON.stringify(product.sharedAssets));
                         }, function() {
                             console.error("timed out waiting to get product shared assets");
