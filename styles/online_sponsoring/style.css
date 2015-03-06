@@ -544,14 +544,18 @@ section#why_jafra_lifestyle .percent {
 section#why_jafra_lifestyle .plus {
   position: relative;
   top: 30px;
-  right: 20px;
+  right: 51px;
   font-size: 72px;
 }
 
 section#why_jafra_lifestyle .leaders_col {
   position: relative;
-  top: 23px;
+  top: 5px;
 } 
+body.es section#why_jafra_lifestyle .leaders_col {
+position: relative;
+top: -23px;
+}
 
 section#why_jafra_lifestyle .team_sales {
   font-size:30px;
@@ -702,6 +706,10 @@ width: 475px;
 }
 
 /* more links */
+body.es div.modal-content section.royal_kit .more-link, body.es div.modal-content section.royal_kit .more-link.collapsed {
+  width: 70px;
+}
+
 .more-link, .more-link.collapsed {
   display: inline-block;
   position: relative;
@@ -999,13 +1007,15 @@ padding-top: 5px;
   bottom: 70px;
 }
 #testimonials-brush {
-position: absolute;
-left: -70px;
+  max-width:375px;
+  position: absolute;
+  left: -70px;
 }
 #pastelpatches {
+  max-width:340px;
   position: absolute;
   top: 10px;
-  right: -30px;
+  right: -10px;
 }
 #liner_black {
   position: absolute;

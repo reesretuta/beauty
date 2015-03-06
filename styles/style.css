@@ -56,8 +56,8 @@ h1, .h1, a:hover, a:focus, .btn-link:hover, .btn-link:focus {
 .btn-primary.disabled:focus, .btn-primary[disabled]:focus, fieldset[disabled] .btn-primary:focus, 
 .btn-primary.disabled:active, .btn-primary[disabled]:active, fieldset[disabled] .btn-primary:active, 
 .btn-primary.disabled.active, .btn-primary[disabled].active, fieldset[disabled] {
-  background-color: #ccabd0;
-  border-color: #ccabd0;
+  background-color: rgba(165,0,27,0.2);
+  border-color: rgba(165,0,27,0.2);
 }
 a {
   cursor: pointer;
@@ -200,9 +200,17 @@ a.checkout-link {
   color:#fff;   
   z-index: 6;
 }
+.shop .carousel-control{
+  text-shadow: 0px 1px 1px rgba(255, 255, 255, 1);
+}
+
 .shop .carousel-control.right, .shop .carousel .left {
   height: 90%;
   background:none;
+  color: rgba(74, 13, 102, 0.6);
+}
+.shop .carousel-control.right:hover, .shop .carousel .left:hover {
+  color: rgba(195, 0, 47, 0.6);
 }
 
 .shop .carousel-inner .item {
@@ -441,8 +449,8 @@ a:hover cart-item-image {
 }
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary,
 .btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open .dropdown-toggle.btn-default {
-  background: rgba(195,0,47,1);
-  border-color: rgba(195,0,47,1);
+  background: rgba(165,0,27,1);
+  border-color: rgba(165,0,27,1);
   color: #fff;
 }
 .input-group-addon {
@@ -869,7 +877,7 @@ a:focus {
 }
 
 #shop_menu > ul > li > a:hover {
-    box-shadow: inset 0 -1px 0 rgba(181,26,138,.1);
+    box-shadow: inset 0 -1px 0 rgba(74,13,102,.1);
 }
 
 #shop_menu > ul > li.open > a:nth-of-type(1) {
@@ -1124,8 +1132,8 @@ a.processing:active,
 button.processing,
 button.processing:hover,
 button.processing:active {
-  background: #8c146a;
-  border-color: #8c146a;
+  background-color: rgba(165,0,27,0.2);
+  border-color: rgba(165,0,27,0.2);
   pointer-events: none;
 }
 a.processing:before,
