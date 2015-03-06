@@ -57,7 +57,7 @@ var GridFS = Grid(models.mongoose.connection.db, models.mongoose.mongo);
 // SESSION CONFIG
 var hour = 3600000;
 
-var cookieStore = new MongoStore({
+var mongoStore = new MongoStore({
     mongoose_connection : models.db,
     db: config.db,
     stringify: false
@@ -71,10 +71,10 @@ var sess = {
         path: "/",
         httpOnly: false
     },
-    resave: true,
+    resave: false,
     saveUninitialized: true,
     unset: "destroy",
-    store: cookieStore
+    store: mongoStore
 };
 
 if (env === 'production' || env === 'staging') {
@@ -401,7 +401,7 @@ router.route('/logout')
             }
 
             // session saved
-            logger.debug('session updated', req.session);
+            logger.debug('session updated after logout', req.session);
             res.status(200);
             res.json(req.session);
             res.end();
@@ -487,7 +487,7 @@ router.route('/session')
             }
 
             // session saved
-            logger.debug('session updated', req.session);
+            logger.debug('session updated', req.sessionID, req.session);
             res.status(200);
             res.json(req.session);
             res.end();
@@ -510,7 +510,7 @@ router.route('/sessionCopy')
             // load up source session
             logger.debug("loading session", sessionId);
 
-            cookieStore.get(sessionId, function (err, sess) {
+            mongoStore.get(sessionId, function (err, sess) {
                 if (err) {
                     console.error("failed to load session");
                     logger.error('error saving session', err);
@@ -534,7 +534,7 @@ router.route('/sessionCopy')
                     }
 
                     // session saved
-                    logger.debug('session updated', req.session);
+                    logger.debug('session updated after sessionCopy', req.session);
                     res.status(204);
                     res.end();
                 });
