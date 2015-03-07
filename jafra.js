@@ -14,6 +14,7 @@ var mongoose = require('mongoose');
 var randomString = require('random-string');
 var moment = require('moment');
 var util = require('util');
+var toposort = require('toposort');
 
 var port = process.env.PORT || 8090;
 var BASE_URL = "https://" + (process.env.JCS_API_URL || config.jcs_api_ip) + "/cgidev2";
@@ -2431,6 +2432,46 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
                 // wait for order history to be complete if available
                 orderHistoryComplete.promise.then(function() {
                     try {
+                        // first, let's order processing of products best we can to shove dependencies earlier into the list
+
+                        //// build a map of deps for each product, which may affect it's inventory
+                        //logger.debug("processAvailabilityAndHiddenProducts(): building product dep map");
+                        //var productDeps = [];
+                        //var productMap = {};
+                        //for (var i = 0; i < products.length; i++) {
+                        //    var product = products[i];
+                        //    productMap[product.id] = product;
+                        //    var deps = [];
+                        //    if (product.contains) {
+                        //        for (var j=0; j < product.contains.length; j++) {
+                        //            productDeps.push([product.id, product.contains[j].product]);
+                        //        }
+                        //    }
+                        //    if (product.kitGroups) {
+                        //        for (var j=0; j < product.kitGroups.length; j++) {
+                        //            var kitGroup = product.kitGroups[j];
+                        //            if (kitGroup.kitGroup && kitGroup.kitGroup.components) {
+                        //                for (var k = 0; k < kitGroup.kitGroup.components.length; k++) {
+                        //                    var component = kitGroup.kitGroup.components[k];
+                        //                    productDeps.push([product.id, component.product]);
+                        //                }
+                        //            }
+                        //        }
+                        //    }
+                        //}
+                        //
+                        //// do the topological sort for deps, so we fetch items depended on before those
+                        //logger.debug("processAvailabilityAndHiddenProducts(): processing product dep map");
+                        //var sortedDeps = toposort(productDeps).reverse();
+                        //logger.debug("processAvailabilityAndHiddenProducts(): product deps", sortedDeps);
+                        //var productsSorted = [];
+                        //for (var i = 0; i < sortedDeps; i++) {
+                        //    var id = sortedDeps[i];
+                        //    var product = productMap[id]
+                        //    productsSorted.push(product);
+                        //}
+                        //products = productsSorted;
+
                         var updateCount = 0;
                         for (var i = 0; i < products.length; i++) {
                             var product = products[i];
@@ -2725,13 +2766,21 @@ function processAvailabilityAndHiddenProducts(allInventory, ids) {
     return deferred.promise;
 }
 
-function getAvailableProductCriteria(requireSearchable) {
+function getAvailableProductCriteria(loadComponents) {
+    console.log("getAvailableProductCriteria(", loadComponents, ")");
     var now = new Date();
+
+    var requireSearchable = !loadComponents;
+
+    var types = ["R"];
+    if (loadComponents) {
+        types.push("B");
+    }
 
     var availableProductCriteria = [
         {onHold: false, unavailableComponents: false},
         {$or: [
-            {masterType: "R"},
+            {masterType: {$in: types}},
             {$and: [
                 {type:"group"},
                 {$or: [{"startDate":{$eq:null}}, {"startDate":{$lte: now}}]},
@@ -2976,7 +3025,7 @@ function loadProductsById(productIds, loadComponents, loadUnavailable, loadStart
     ]};
 
     if (!loadUnavailable && !loadStarterKitsOnly) {
-        query["$and"] = query["$and"].concat(getAvailableProductCriteria(!loadComponents));
+        query["$and"] = query["$and"].concat(getAvailableProductCriteria(loadComponents));
     } else if (loadStarterKitsOnly) {
         query["$and"] = query["$and"].concat(getAvailableStarterKitCriteria());
     } else if (loadStarterKits) {
