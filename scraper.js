@@ -403,7 +403,7 @@ models.onReady(function() {
                                 var detail = casper.evaluate(function (LANGUAGE, ONE_HOUR) {
                                     try {
                                         var detail = {};
-                                        detail.startDate = new Date((moment($('input[name="category.startDate"]').val(), 'MM/DD/YYYY').unix()+ONE_HOUR) * 1000);
+                                        detail.startDate = new Date(moment($('input[name="category.startDate"]').val(), 'MM/DD/YYYY').unix() * 1000);
                                         detail.endDate = new Date((moment($('input[name="category.endDate"]').val(), 'MM/DD/YYYY').unix()+ONE_HOUR) * 1000);
 
                                         // description
@@ -457,7 +457,7 @@ models.onReady(function() {
                                                 try {
                                                     var image = {};
                                                     image.rank = parseInt($(this).find('div.x-grid3-cell-inner.x-grid3-col-1').html());
-                                                    image.startDate = new Date((moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html(), 'MM/DD/YYYY').unix()+ONE_HOUR) * 1000);
+                                                    image.startDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html(), 'MM/DD/YYYY').unix() * 1000);
                                                     image.endDate = new Date((moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-3').html(), 'MM/DD/YYYY').unix()+ONE_HOUR) * 1000);
                                                     image.imagePath = $(this).find('div.x-grid3-cell-inner.x-grid3-col-4 a').attr("href");
                                                     image.alt = $(this).find('div.x-grid3-cell-inner.x-grid3-col-5').html();
@@ -969,7 +969,7 @@ models.onReady(function() {
                                         try {
                                             var message = {};
                                             message.message = $(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html();
-                                            message.startDate = new Date((moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-3').html()).unix()+ONE_HOUR)*1000);
+                                            message.startDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-3').html()).unix()*1000);
                                             message.endDate = new Date((moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-4').html()).unix()+ONE_HOUR)*1000);
                                             promotionalMessages.push(message);
                                             console.log('Got message', JSON.stringify(message));
@@ -1102,7 +1102,7 @@ models.onReady(function() {
                                         try {
                                             var image = {};
                                             image.rank = parseInt($(this).find('div.x-grid3-cell-inner.x-grid3-col-1').html());
-                                            image.startDate = new Date((moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html(), 'MM/DD/YYYY').unix()+ONE_HOUR)*1000);
+                                            image.startDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html(), 'MM/DD/YYYY').unix()*1000);
                                             image.endDate = new Date((moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-3').html(), 'MM/DD/YYYY').unix()+ONE_HOUR)*1000);
                                             image.imagePath = $(this).find('div.x-grid3-cell-inner.x-grid3-col-4 a').attr("href");
                                             image.alt = $(this).find('div.x-grid3-cell-inner.x-grid3-col-5').html();
@@ -1286,7 +1286,7 @@ models.onReady(function() {
                                             p.instantProfit = parseFloat($('input[name="productPrice.instantProfit"]').val());
                                             p.rebate = parseFloat($('input[name="productPrice.rebate"]').val());
                                             p.shippingSurcharge = parseFloat($('input[name="productPrice.shippingSurcharge"]').val());
-                                            p.effectiveStartDate = new Date((moment($('input[name="productPrice.startDate"]').val(), 'MM/DD/YYYY').unix()+ONE_HOUR)*1000);
+                                            p.effectiveStartDate = new Date(moment($('input[name="productPrice.startDate"]').val(), 'MM/DD/YYYY').unix()*1000);
                                             p.effectiveEndDate = new Date((moment($('input[name="productPrice.endDate"]').val(), 'MM/DD/YYYY').unix()+ONE_HOUR)*1000);
 
                                             p.customerTypes = [];
@@ -1569,7 +1569,7 @@ models.onReady(function() {
                                         item.title = $(this).find('div.x-grid3-cell-inner.x-grid3-col-3').html();
                                         item.description = $(this).find('div.x-grid3-cell-inner.x-grid3-col-4').html();
                                         item.marketingText = $(this).find('div.x-grid3-cell-inner.x-grid3-col-5').html();
-                                        item.startDate = new Date((moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-6').html(), 'MM/DD/YYYY').unix()+ONE_HOUR)*1000);
+                                        item.startDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-6').html(), 'MM/DD/YYYY').unix()*1000);
                                         item.endDate = new Date((moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-7').html(), 'MM/DD/YYYY').unix()+ONE_HOUR)*1000);
                                         sharedAssets.push(item);
                                     });
@@ -1627,7 +1627,7 @@ models.onReady(function() {
                                             //console.log("startDateString", startDateString);
                                             //console.log("endDateString", endDateString);
 
-                                            item.startDate = new Date((moment(startDateString, 'MM/DD/YYYY').unix()+ONE_HOUR)*1000);
+                                            item.startDate = new Date(moment(startDateString, 'MM/DD/YYYY').unix()*1000);
                                             item.endDate = new Date((moment(endDateString, 'MM/DD/YYYY').unix()+ONE_HOUR)*1000);
 
                                             //console.log("startDate", item.startDate);
@@ -1931,7 +1931,7 @@ models.onReady(function() {
                                         product.searchable = $('input[name="group.searchable"]').attr('checked') || false;
                                         product.masterStatus = $('select[name="group.status"] > option:selected').val();
                                         product.launchId = $('input[name="group.launchId"]').val() || 0;
-                                        product.startDate = new Date((moment($('input[name="group.startDate"]').val(), 'MM/DD/YYYY').unix()+ONE_HOUR) * 1000);
+                                        product.startDate = new Date(moment($('input[name="group.startDate"]').val(), 'MM/DD/YYYY').unix() * 1000);
                                         product.endDate = new Date((moment($('input[name="group.endDate"]').val(), 'MM/DD/YYYY').unix()+ONE_HOUR) * 1000);
                                         return product;
                                     } catch (ex) {
@@ -2004,7 +2004,7 @@ models.onReady(function() {
                                             try {
                                                 var message = {};
                                                 message.message = $(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html();
-                                                message.startDate = new Date((moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-3').html()).unix()+ONE_HOUR)*1000);
+                                                message.startDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-3').html()).unix()*1000);
                                                 message.endDate = new Date((moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-4').html()).unix()+ONE_HOUR)*1000);
                                                 promotionalMessages.push(message);
                                                 console.log('Got message', JSON.stringify(message));
@@ -2128,7 +2128,7 @@ models.onReady(function() {
                                         try {
                                             var image = {};
                                             image.rank = parseInt($(this).find('div.x-grid3-cell-inner.x-grid3-col-1').html());
-                                            image.startDate = new Date((moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html(), 'MM/DD/YYYY').unix()+ONE_HOUR) * 1000);
+                                            image.startDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html(), 'MM/DD/YYYY').unix() * 1000);
                                             image.endDate = new Date((moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-3').html(), 'MM/DD/YYYY').unix()+ONE_HOUR) * 1000);
                                             image.imagePath = $(this).find('div.x-grid3-cell-inner.x-grid3-col-4 a').attr("href");
                                             image.alt = $(this).find('div.x-grid3-cell-inner.x-grid3-col-5').html();
@@ -2593,7 +2593,7 @@ models.onReady(function() {
                                             component.rank = parseInt($(this).find('div.x-grid3-cell-inner.x-grid3-col-0').html());
                                             component.product = $(this).find('div.x-grid3-cell-inner.x-grid3-col-2').html();
                                             component.productId = component.product;
-                                            component.startDate = new Date((moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-4').html(), 'MM/DD/YYYY').unix()+ONE_HOUR) * 1000);
+                                            component.startDate = new Date(moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-4').html(), 'MM/DD/YYYY').unix() * 1000);
                                             component.endDate = new Date((moment($(this).find('div.x-grid3-cell-inner.x-grid3-col-5').html(), 'MM/DD/YYYY').unix()+ONE_HOUR) * 1000);
                                             components.push(component);
                                         });
