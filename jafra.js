@@ -1738,37 +1738,64 @@ function getGeocodes(zipCode) {
         strictSSL: false,
         json: true
     }, function (error, response, body) {
-        logger.debug("getGeocodes()", error, response ? response.statusCode: null, body);
-        if (error || response == null || response.statusCode != 200) {
-            logger.error("getGeocodes(): error", error, response ? response.statusCode: null, body);
-            deferred.reject({
-                status: response.statusCode,
-                result: {
-                    statusCode: response.statusCode,
-                    errorCode: body.errorCode,
-                    message: body.message
+        try {
+            logger.debug("getGeocodes()", error, response ? response.statusCode: null, body);
+            if (error || response == null || response.statusCode != 200) {
+                logger.error("getGeocodes(): error", error, response ? response.statusCode: null, body);
+                deferred.reject({
+                    status: response.statusCode,
+                    result: {
+                        statusCode: response.statusCode,
+                        errorCode: body.errorCode,
+                        message: body.message
+                    }
+                });
+                return;
+            }
+
+            /* Example:
+            <?xml version="1.0" encoding='iso-8859-1'?>
+            <VERTEX>
+                <VERTEXLIST>
+                    <LIST ZIPCODE = "91361" GEOCODE = "050377000" CITYCODE = "" CITYDES = "WESTLAKE VILLAGE" COUNTYCODE = "" COUNTYDES = "LOS ANGELES" STATECODE = "CA" STATEDES = "CALIFORNIA" ZIPSTART = "91361" ZIPEND = "91361" ERROR = ""></LIST>
+                    <LIST ZIPCODE = "91361" GEOCODE = "051113590" CITYCODE = "" CITYDES = "THOUSAND OAKS" COUNTYCODE = "" COUNTYDES = "VENTURA" STATECODE = "CA" STATEDES = "CALIFORNIA" ZIPSTART = "91361" ZIPEND = "91361" ERROR = ""></LIST>
+                    <LIST ZIPCODE = "91361" GEOCODE = "051113590" CITYCODE = "" CITYDES = "WESTLAKE VILLAGE" COUNTYCODE = "" COUNTYDES = "VENTURA" STATECODE = "CA" STATEDES = "CALIFORNIA" ZIPSTART = "91361" ZIPEND = "91361" ERROR = ""></LIST>
+                </VERTEXLIST>
+            </VERTEX>
+            */
+
+            // parse the list of geocodes
+            parseString(body, function (err, result) {
+                logger.debug("err", err, "result", result);
+
+                if (err) {
+                    logger.debug("getGeocodes(): failure");
+                    deferred.reject({
+                        status: 500,
+                        result: {
+                            statusCode: 500,
+                            errorCode: "geocodeListFailed",
+                            message: "Failed to list geocodes"
+                        }
+                    });
+                    return;
                 }
-            });
-            return;
-        }
 
-        /* Example:
-        <?xml version="1.0" encoding='iso-8859-1'?>
-        <VERTEX>
-            <VERTEXLIST>
-                <LIST ZIPCODE = "91361" GEOCODE = "050377000" CITYCODE = "" CITYDES = "WESTLAKE VILLAGE" COUNTYCODE = "" COUNTYDES = "LOS ANGELES" STATECODE = "CA" STATEDES = "CALIFORNIA" ZIPSTART = "91361" ZIPEND = "91361" ERROR = ""></LIST>
-                <LIST ZIPCODE = "91361" GEOCODE = "051113590" CITYCODE = "" CITYDES = "THOUSAND OAKS" COUNTYCODE = "" COUNTYDES = "VENTURA" STATECODE = "CA" STATEDES = "CALIFORNIA" ZIPSTART = "91361" ZIPEND = "91361" ERROR = ""></LIST>
-                <LIST ZIPCODE = "91361" GEOCODE = "051113590" CITYCODE = "" CITYDES = "WESTLAKE VILLAGE" COUNTYCODE = "" COUNTYDES = "VENTURA" STATECODE = "CA" STATEDES = "CALIFORNIA" ZIPSTART = "91361" ZIPEND = "91361" ERROR = ""></LIST>
-            </VERTEXLIST>
-        </VERTEX>
-        */
+                if (result && result.VERTEX && Array.isArray(result.VERTEX.VERTEXLIST)) {
+                    var list = result.VERTEX.VERTEXLIST[0].LIST;
+                    var cities = [];
+                    for (var i=0; i < list.length; i++) {
+                        cities.push(list[i]["$"]);
+                    }
 
-        // parse the list of geocodes
-        parseString(body, function (err, result) {
-            logger.debug("err", err, "result", result);
+                    logger.debug("getGeocodes(): success");
+                    deferred.resolve({
+                        status: 200,
+                        result: cities
+                    });
+                    return;
+                }
 
-            if (err) {
-                logger.debug("getGeocodes(): failure");
                 deferred.reject({
                     status: 500,
                     result: {
@@ -1777,33 +1804,10 @@ function getGeocodes(zipCode) {
                         message: "Failed to list geocodes"
                     }
                 });
-                return;
-            }
-
-            if (result && result.VERTEX && Array.isArray(result.VERTEX.VERTEXLIST)) {
-                var list = result.VERTEX.VERTEXLIST[0].LIST;
-                var cities = [];
-                for (var i=0; i < list.length; i++) {
-                    cities.push(list[i]["$"]);
-                }
-
-                logger.debug("getGeocodes(): success");
-                deferred.resolve({
-                    status: 200,
-                    result: cities
-                });
-                return;
-            }
-
-            deferred.reject({
-                status: 500,
-                result: {
-                    statusCode: 500,
-                    errorCode: "geocodeListFailed",
-                    message: "Failed to list geocodes"
-                }
             });
-        });
+        } catch (ex) {
+            logger.error("getGeocodes(): error", ex);
+        }
     })
 
     return deferred.promise;
