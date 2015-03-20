@@ -26,8 +26,11 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
           templateUrl: BASE_URL + '/partials/products/products.html',
           controller: 'ProductsController'
         }).when(STORE_BASE_URL + '/products/:productId', {
-          templateUrl: BASE_URL + '/partials/products/product.html',
-          controller: 'ProductDetailsController'
+            templateUrl: BASE_URL + '/partials/products/product.html',
+            controller: 'ProductDetailsController'
+        }).when(STORE_BASE_URL + '/products/:productId/:productId2', {
+            templateUrl: BASE_URL + '/partials/products/product.html',
+            controller: 'ProductDetailsController'
         }).when(STORE_BASE_URL + '/objects', {
           templateUrl: BASE_URL + '/partials/objects/objects.html',
           controller: 'ObjectsController'

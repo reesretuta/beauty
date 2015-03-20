@@ -5,6 +5,12 @@ angular.module('app.controllers.products')
         $log.debug("ProductDetailsController()");
 
         $scope.productId = $routeParams.productId;
+        $scope.productId2 = $routeParams.productId2;
+
+        if ($scope.productId2 != null) {
+            $scope.productId = $scope.productId + "/" + $scope.productId2;
+        }
+
         $scope.categoryId = $routeParams.category;
         $log.debug("ProductDetailsController(): productId", $scope.productId, "categoryId", $scope.categoryId);
 
