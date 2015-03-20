@@ -60,10 +60,10 @@ angular.module('app.controllers.main').controller('MainController', function ($s
                    if (session.cid != null || session.source != null) {
                        $log.debug("MainController(): changeListener(): preserving cid/source in URL");
                        if (session.consultantId != null) {
-                           params["consultantId"] = session.consultantId;
+                           params["cid"] = session.consultantId;
                            params["source"] = session.source;
                        } else {
-                           delete params["consultantId"];
+                           delete params["cid"];
                            delete params["source"];
                        }
                        $location.$$search = params;
