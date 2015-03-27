@@ -12,6 +12,7 @@ angular.module('app.controllers', [
   'app.controllers.categories',
   'app.controllers.cart',
   'app.controllers.checkout',
+  'app.controllers.account',
   'app.controllers.recentlyViewed',
   'app.controllers.onlineSponsor',
   'app.controllers.scroll'
@@ -27,6 +28,7 @@ angular.module('app.controllers.recentlyViewed', ["hashKeyCopier"]);
 angular.module('app.controllers.home', []);
 angular.module('app.controllers.cart', []);
 angular.module('app.controllers.checkout', []);
+angular.module('app.controllers.account', []);
 
 angular.module('app.controllers.onlineSponsor', []);
 angular.module('app.controllers.scroll', ['duScroll']);

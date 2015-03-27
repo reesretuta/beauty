@@ -538,6 +538,57 @@ angular.module('app.services', ['ngResource'])
 
         return checkoutService;
     })
+    .factory('Account', function($resource, $http, $translate, API_URL, $rootScope, $log, $q, Session){
+        //api resource to be updated via .update() below
+        // var accountService = $resource(API_URL + '/clients/:clientId/addresses/:addressId', {addressId: '@id'}, {
+        var accountService = $resource(API_URL + '/clients/:clientId', '', {
+            'update': { method:'PUT' } //rest handled server side in server.js
+        });
+        //
+        accountService.test = function(){
+            return false;
+        }
+        
+        accountService.updateClient = function(client) {
+            var d = $q.defer();
+            $log.debug("accountService(): updateClient(): attempting to update client= ", client);
+            
+            Session.get().then(function(session){
+
+                if (session.client == null) {
+                    d.reject("Can't update client, client not authenticated");
+                    return;
+                }
+                
+                var clientId = session.client.id;
+
+                var payload = {
+                    email: client.email,
+                    firstName: 'asdf',
+                    lastName: client.lastName,
+                    password: 'asdf'
+                };
+                
+                accountService.update({clientId: clientId}, payload).$promise.then(function(r) {
+                        d.resolve(r);
+                    }, function(response) {
+                        d.reject(response);
+                    });
+                }, function(error) {
+
+                    $log.error("adjustedAddressService(): updateAddress(): failed to update address", error);
+                    $translate('ERROR-SAVING-ADDRESS').then(function (message) {
+                        d.reject(message);
+                    });
+
+                });
+                
+                
+            return d.promise;
+        }
+        
+        return accountService;
+    })
     .factory('Cart', function ($rootScope, $log, $timeout, $q, $translate, STORE_BASE_URL, Session, Product, growlNotifications) {
         var cartService = {};
         // fetch cart

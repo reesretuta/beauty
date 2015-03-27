@@ -740,8 +740,104 @@ router.route('/clients/:client_id').get(function (req, res) {
     }
 })
 
-// update a client
+// update a client profile
 .put(function (req, res) {
+    // res.json({});
+    //this will be called from the Account Factory in services via accountService.updateName. rees
+
+
+    console.log('req.body', req.body);
+    var clientId = req.params.client_id;
+    
+    
+    jafraClient.updateClient(clientId, req.body).then(function(r){
+        // req.body = { firstName : 'foo', lastName: 'bar'}
+        //success
+        console.log('response from updateClient: ', r);
+    }, function(r){
+        //error
+    });
+    
+    // res.json({'asdf': clientId});
+    res.status(400);
+    res.end();    
+    //
+    //
+    //
+    // // must be authenticated
+    // if (req.session.client == null) {
+    //     res.status(401);
+    //     res.end();
+    //     return;
+    // } else if (req.session.client.id != clientId) {
+    //     res.status(403);
+    //     res.end();
+    //     return;
+    // }
+    //
+    
+    // jafraClient.updateClient(clientId, req.body).then(function(r){
+    //     // req.body = { firstName : 'foo', lastName: 'bar'}
+    //     //success
+    //
+    // }, function(r){
+    //     //error
+    // });
+
+    
+    
+    //ignore below////////////////////////////////////////////////////////////
+    // update a client address
+    // .put(function (req, res) {
+    //     var clientId = req.params.client_id;
+    //     var addressId = req.params.address_id;
+    //
+    //     // must be authenticated
+    //     if (req.session.client == null) {
+    //         res.status(401);
+    //         res.end();
+    //         return;
+    //     } else if (req.session.client.id != clientId) {
+    //         res.status(403);
+    //         res.end();
+    //         return;
+    //     }
+    //
+    //     logger.debug("updating address", req.body);
+    //
+    //     jafraClient.updateAddress(clientId, addressId, req.body).then(function(r) {
+    //         logger.error("updated address", r.status, r.result);
+    //
+    //         // update this address in the session
+    //         if (req.session.checkout && req.session.checkout.shipping && req.session.checkout.shipping.id == addressId) {
+    //             req.session.checkout.shipping = req.body;
+    //         }
+    //         if (req.session.checkout && req.session.checkout.billing && req.session.checkout.billing.id == addressId) {
+    //             req.session.checkout.billing = req.body;
+    //         }
+    //
+    //         res.json(r.status);
+    //         res.json(r.result);
+    //     }, function(r) {
+    //         logger.error("failed to create cc", r.status, r.result);
+    //         res.status(r.status);
+    //         res.json(r.result);
+    //     });
+    // })
+    
+    
+    //////////////////////////////////////////////////////////////    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     res.json({});
 });
 
@@ -1488,6 +1584,13 @@ app.get('/join*', function (req, res) {
 
 // any URL without a dot or / should serve index.html, save for /api methods captured above
 app.get('/shop*', function (req, res) {
+    logger.debug('store path');
+    logger.debug('User-Agent: ' + req.headers['user-agent']);
+    res.sendFile(basepath + '/index.html'); // load the single view file (angular will handle the page changes on the front-end)
+});
+
+// any URL without a dot or / should serve index.html, save for /api methods captured above
+app.get('/account*', function (req, res) {
     logger.debug('store path');
     logger.debug('User-Agent: ' + req.headers['user-agent']);
     res.sendFile(basepath + '/index.html'); // load the single view file (angular will handle the page changes on the front-end)

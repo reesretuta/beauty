@@ -41,6 +41,10 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
           templateUrl: BASE_URL + '/partials/checkout/checkout.html',
           controller: 'CheckoutController',
           reloadOnSearch: false
+        }).when(BASE_URL + '/account', {
+          templateUrl: BASE_URL + '/partials/account/account.html',
+            controller: 'AccountController',
+          reloadOnSearch: false
         }).when(JOIN_BASE_URL + '/', {
           templateUrl: BASE_URL + '/partials/online_sponsoring/landing.html',
           controller: 'OnlineSponsorLandingController',

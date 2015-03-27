@@ -452,6 +452,131 @@ function createClient(client) {
     return deferred.promise;
 }
 
+//rees
+function updateClient(clientId, client) {
+    console.log(client);
+    var deferred = Q.defer();
+    
+    // request.post({
+    //     url: CREATE_CLIENT_URL,
+    //     form: {
+    //         email: client.email,
+    //         password: client.password,
+    //         firstName: client.firstName,
+    //         lastName: client.lastName,
+    //         // dateOfBirth: client.dateOfBirth,
+    //         // consultantId: client.consultantId,
+    //         // language: client.language
+    //     },
+    //     headers: {
+    //         'Content-Type' : 'application/x-www-form-urlencoded',
+    //         'Authorization': AUTH_STRING
+    //     },
+    //     agentOptions: agentOptions,
+    //     strictSSL: false,
+    //     json: true
+    // }, function (error, response, body) {
+    //
+    //     if (error || response.statusCode != 201) {
+    //         logger.error("updateClient(): error", response ? response.statusCode: null, body);
+    //
+    //         if (body && body.statusCode && body.errorCode && body.message) {
+    //             logger.error("updateClient(): error, returning server error");
+    //
+    //             if (response && response.statusCode) {
+    //                 logger.error("there");
+    //                 deferred.reject({
+    //                     status: response.statusCode,
+    //                     result: {
+    //                         statusCode: body.statusCode,
+    //                         errorCode: body.errorCode,
+    //                         message: body.message
+    //                     }
+    //                 });
+    //             } else {
+    //                 deferred.reject({
+    //                     status: 500,
+    //                     result: {
+    //                         statusCode: 500,
+    //                         errorCode: "updateClientInvalidResponse",
+    //                         message: "Failed to update client"
+    //                     }
+    //                 });
+    //             }
+    //         } else {
+    //             logger.error("updateClient(): error, returning generic error");
+    //             deferred.reject({
+    //                 status: 500,
+    //                 result: {
+    //                     statusCode: 500,
+    //                     errorCode: "updateClientFailed",
+    //                     message: "Failed to update client"
+    //                 }
+    //             });
+    //         }
+    //         return;
+    //     }
+    //
+    //     if (body == null || body.clientId == null) {
+    //         logger.debug("updateClient(): invalid return data", body, typeof body, "clientId", body.clientId);
+    //         deferred.reject({
+    //             status: 500,
+    //             result: {
+    //                 statusCode: 500,
+    //                 errorCode: "updateClientReturnDataInvalid",
+    //                 message: "Failed to get client ID from create"
+    //             }
+    //         });
+    //         return;
+    //     }
+    //
+    //     // we should get clientId back
+    //     logger.debug("createClient(): returning success");
+    //     var clientId = body.clientId;
+    //
+    //     // fetch the client information & return
+    //     getClient(clientId).then(function(r) {
+    //         if (r.status != 200) {
+    //             logger.error("server: createClient(): failed to load client", r.result);
+    //             deferred.reject({
+    //                 status: 500,
+    //                 result: {
+    //                     statusCode: 500,
+    //                     errorCode: "failedToLoadClient",
+    //                     errorMessage: "Failed to lookup newly created client"
+    //                 }
+    //             });
+    //             return;
+    //         }
+    //
+    //         deferred.resolve({
+    //             status: 201,
+    //             result: r.result
+    //         });
+    //     }, function (r) {
+    //         logger.error("server: createClient(): failed to load client", r.result);
+    //         deferred.reject({
+    //             status: 500,
+    //             result: {
+    //                 statusCode: 500,
+    //                 errorCode: "failedToLoadClient",
+    //                 errorMessage: "Failed to lookup newly created client"
+    //             }
+    //         });
+    //     });
+    //
+    // });
+
+    deferred.resolve({
+        status: 201,
+        result: 'r.result'
+    });
+
+
+
+    return deferred.promise;
+}
+
 //createClient({
 //    "email": "davidcastro@lavisual.com", // required
 //    "password": "testpass",      // required
@@ -1084,6 +1209,42 @@ function createAddress(clientId, address) {
         });
     });
 
+    return deferred.promise;
+}
+
+//rees
+function updateName(clientId, newName){
+    var deferred = Q.defer();
+    request.put({
+        url: UPDATE_CLIENT_URL,
+        qs: {
+            clientId: clientId
+        },
+        form: {
+            "firstName": name.firstName,
+            "lastName": name.lastName
+        },
+        headers: {
+            'Content-Type' : 'application/x-www-form-urlencoded',
+            'Accept': 'application/json, text/json',
+            'Authorization': AUTH_STRING
+        },
+        agentOptions: agentOptions,
+        strictSSL: false,
+        json: true        
+    }, function(error, response, body){
+        
+        
+        console.log(body);
+        
+        // we should get nothing back
+        logger.debug("updateAddress(): success");
+        deferred.resolve({
+            status: 204,
+            result: null
+        });
+    });
+        
     return deferred.promise;
 }
 
@@ -3389,6 +3550,8 @@ exports.preloadCategories = preloadCategories;
 exports.authenticate = authenticate;
 exports.getClient = getClient;
 exports.createClient = createClient;
+exports.updateClient = updateClient;
+
 exports.createConsultant = createConsultant;
 exports.getConsultant = getConsultant;
 exports.lookupConsultant = lookupConsultant;
