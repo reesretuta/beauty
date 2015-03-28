@@ -1352,3 +1352,13 @@ fieldset[disabled].fieldset-no-bg {
   margin-top: 0;
 }
 
+
+/* manage account styles*/
+#order-history h3{
+    padding:0;
+    margin:0;
+}
+#order-history table,
+#order-history table td{
+/*    border:none !important;*/
+}

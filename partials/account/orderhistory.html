@@ -1,0 +1,126 @@
+<!-- {
+  1234: {
+     tracking: "hghd8yg1gd81g718d1"
+     carrier: "UPS",
+     orderDate: "12/12/2020",
+     shipDate: "12/12/2020",
+     status: "Shipped"
+  }
+} -->
+<div id="order-history">
+    <div class="panel panel-default">
+      <!-- Default panel contents -->
+      <div class="panel-heading"><h3>Delivered Oct 14, 2015</h3> Your Package was delivered.</div>
+      <div class="panel-body">
+          <div class="row">
+              <div class="col-md-6">
+                  Bob Smith<br/>
+                  Shipping Info: 1235 street, city, 91335<br/>
+                  Order Date: 11/11/2015<br/>
+                  Shipped Date: 11/11/2015<br/>
+                  <button type="button" class="btn" ng-click="">
+                    <i class="fa fa-times-circle"></i> Cancel Order
+                  </button>
+                  <button type="button" class="btn" ng-click="">
+                    <i class="fa fa-pencil-square-o"></i> Edit Order
+                  </button>
+              </div>
+              <div class="col-md-6">
+                  
+              </div>
+          </div>
+      
+      </div>
+      <!-- Table -->
+      <table class="table table-bordered">
+          <tr>
+             <th>Item/SKU #</th>
+             <th>Quantity</th>
+          </tr>
+          <tr>
+             <td>19193</td>
+             <td>1</td>
+          </tr>
+          <tr>
+             <td>22222</td>
+             <td>1</td>
+          </tr>
+      </table>
+    </div>
+
+    <div class="panel panel-default">
+      <!-- Default panel contents -->
+      <div class="panel-heading"><h3>Delivered Oct 14, 2015</h3>Your Package was delivered.</div>
+      <div class="panel-body">
+          <div class="row">
+              <div class="col-md-9">
+                  Bob Smith<br/>
+                  Shipping Info: 1235 street, city, 91335<br/>
+                  Order Date: 11/11/2015<br/>
+                  Shipped Date: 11/11/2015<br/>
+              </div>
+              <div class="col-md-3">
+                  <button type="button" class="btn" ng-click="">
+                    <i class="fa fa-times-circle"></i> Cancel Order
+                  </button><br/>
+                  <button type="button" class="btn" ng-click="">
+                    <i class="fa fa-pencil-square-o"></i> Edit Order
+                  </button>
+              </div>
+          </div>
+      
+      </div>
+
+      <!-- Table -->
+      <table class="table table-bordered">
+          <tr>
+             <th>Item/SKU #</th>
+             <th>Quantity</th>
+          </tr>
+          <tr>
+             <td>19193</td>
+             <td>1</td>
+          </tr>
+          <tr>
+             <td>22222</td>
+             <td>1</td>
+          </tr>
+      </table>
+    </div>
+</div>
+
+
+<!-- DESIGN 2-->
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-striped table-bordered">
+            <tr>
+               <th>Item</th>
+               <th>Carrier</th>
+               <th>Order Date</th>
+               <th>Ship Date</th>
+               <th>Tracking #</th>
+               <th></th>
+            </tr>
+            <tr ng-repeat="cardData in session.client.creditCards">
+                <td>Make up</td>
+                <td>USPS</td>
+                <td>12/25/2015</td>
+                <td>12/25/2015</td>
+                <td>
+                    <!-- <span class="glyphicon glyphicon-ok"></span> -->
+                    1234 1234 1234 1234 1234
+                </td>
+                <td>
+                <button type="button" class="btn" ng-click="">
+                  <i class="fa fa-times-circle"></i> Cancel Order
+                </button>
+                <button type="button" class="btn" ng-click="">
+                  <i class="fa fa-pencil-square-o"></i> Edit Order
+                </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

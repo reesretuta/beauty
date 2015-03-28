@@ -7,7 +7,7 @@
             <li role="presentation"><a href="#payment" aria-controls="messages" role="tab" data-toggle="tab">Payment Options</a></li>
             <li role="presentation"><a href="#notifications" aria-controls="settings" role="tab" data-toggle="tab">Notifications</a></li>
             <li role="presentation"><a href="#changepassword" aria-controls="settings" role="tab" data-toggle="tab">Change Password</a></li>
-            <li role="presentation"><a href="#closeaccount" aria-controls="settings" role="tab" data-toggle="tab">Order History</a></li>
+            <li role="presentation"><a href="#orderhistory" aria-controls="settings" role="tab" data-toggle="tab">Order History</a></li>
             <li role="presentation"><a href="#closeaccount" aria-controls="settings" role="tab" data-toggle="tab">Close Account</a></li>
           </ul>
 
@@ -25,6 +25,9 @@
             </div>
             <div role="tabpanel" class="tab-pane fade" id="closeaccount">
                 <ng-include src="'/partials/account/close-account.html'"/>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="orderhistory">
+                <ng-include src="'/partials/account/orderhistory.html'"/>
             </div>
             <div role="tabpanel" class="tab-pane fade" id="notifications">
                 <ng-include src="'/partials/account/notifications.html'"/>
