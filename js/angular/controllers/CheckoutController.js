@@ -1218,6 +1218,23 @@ angular.module('app.controllers.checkout')
             // WizardHandler.wizard('checkoutWizard').goTo('Review');
         }
 
+        $scope.singlePageValidate = function() {
+            validateBasicInfo().then(function() {
+                addShippingAddress().then(function() {
+                    addPaymentMethod().then(function() {
+                        // NOW REVIEW
+                        WizardHandler.wizard('checkoutWizard').goTo('Review');
+                    }, function (err) {
+
+                    })
+                }, function (err) {
+
+                })
+            }, function (err) {
+
+            })
+        }
+
         $scope.addPaymentMethod = function() {
             $scope.processing = true;
 
@@ -1231,6 +1248,10 @@ angular.module('app.controllers.checkout')
             }
 
             if (!$scope.isOnlineSponsoring) {
+
+
+                var d = $q.deferred();
+
                 //$log.debug("CheckoutController(): addPaymentMethod(): adding card to account", $scope.profile.newCard);
                 $log.debug("CheckoutController(): addPaymentMethod(): adding card to account");
                 // we need to create a card and add to the account for client direct
@@ -1253,21 +1274,25 @@ angular.module('app.controllers.checkout')
 
 
                             $scope.processing = false;
-                            WizardHandler.wizard('checkoutWizard').goTo('Review');
+                            d.resolve();
                         }, function(err) {
                             $scope.billingAddressError = err;
                             $scope.processing = false;
+                            d.reject(err);
                         });
                     } else {
                         $scope.checkoutUpdated();
-                        WizardHandler.wizard('checkoutWizard').goTo('Review');
+                        d.resolve();
                         $scope.processing = false;
                     }
                 }, function(err) {
                     $log.error("CheckoutController(): addPaymentMethod(): error");
                     alert('error adding card: ' + err);
                     $scope.processing = false;
+                    d.reject(err);
                 });
+
+                return d.promise;
             } else {
                 // we just add to checkout for online sponsoring
                 $scope.profile.newCard.lastFour = $scope.profile.newCard.card.substr($scope.profile.newCard.card.length - 4);
