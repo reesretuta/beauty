@@ -271,6 +271,41 @@ section#why_jafra_lifestyle .subcontainer ul.golden_bullets li:before {
 	text-decoration: underline;
 }
 
+.hero-video-cta {
+	display: block;
+	font-size: 72px;
+	color: #fff;
+	color: rgba(255,255,255,.5);
+	margin: 10px 0 -20px;
+}
+.hero-video-cta:hover {
+	color: #c3002f;
+}
+/* responsive embed from bootstrap 3.2.0 */
+.embed-responsive {
+  position: relative;
+  display: block;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+}
+.embed-responsive .embed-responsive-item, 
+.embed-responsive embed, 
+.embed-responsive iframe, 
+.embed-responsive object, 
+.embed-responsive video {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.embed-responsive-16by9 {
+  padding-bottom: 56.25%;
+}
+
 /* responsive overides */
 @media (max-width: 767px) {
 	section h3.hero-header-title-freedom_flexibility {
