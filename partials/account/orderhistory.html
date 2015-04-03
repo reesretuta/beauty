@@ -1,3 +1,12 @@
+<a href="" ng-click="getOrderHistory()">load orders</a>
+<div ng-repeat="order in orderHistory" style="border: 1px; margin: 5px;">
+  order id: {{order.id}}<br>
+  total: {{order.total}}<br>
+  <div ng-repeat="product in order.products">
+    - {{product.sku}}, {{product.name}}, {{product.qty}}, <br>
+  </div>
+</div>
+
 <!-- {
   1234: {
      tracking: "hghd8yg1gd81g718d1"
