@@ -17,7 +17,8 @@ angular.module('app.controllers.onlineSponsor')
         $log.debug("OnlineSponsorLandingController(): get session source", source);
         return source;
     }
-
+    
+    //rees
     $scope.join = function(sku, language, name, price) {
         $('.modal').modal('hide');
         $('body').removeClass('modal-open');

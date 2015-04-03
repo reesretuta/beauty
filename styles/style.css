@@ -805,6 +805,39 @@ a, .btn {
     margin-top: 60px;
 }
 
+
+.kit-box{
+    border:1px solid #eee;
+    padding:10px;
+    
+}
+
+.kit-box.active{
+    border-color:rgba(195,0,47,1);
+    box-shadow:0 0 3px rgba(195,0,47,1);
+}
+
+.kit-box .kit-desc{
+    text-transform:uppercase;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*
  * Menu Styles
  * --------------------------------------------------

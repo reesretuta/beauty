@@ -1,0 +1,582 @@
+<div id="signin" class="col-sm-12">
+  <div class="col-md-offset-3">
+    <h1 class="checkouth1" ng-if="profile.customerStatus == 'existing' && !isOnlineSponsoring"><span ng-bind-html="'SIGN-IN-ALREADY-A-CUSTOMER' | translate | unsafe"></span></h1>
+    <h1 class="checkouth1" ng-if="profile.customerStatus == 'new' && !isOnlineSponsoring"><span ng-bind-html="'CREATE-ACCOUNT' | translate | unsafe"></span></h1>
+    <h1 class="checkouth1" ng-if="isOnlineSponsoring">
+      <span ng-bind-html="'OS-START-TITLE' | translate | unsafe"></span>
+      <span class="store-heading-description">
+        <span ng-bind-html="'OS-START-TAG' | translate | unsafe"></span>
+      </span>
+    </h1>
+    <div class="row">
+      <div class="col-sm-6">
+        <div ng-if="loginError" class="alert alert-danger" role="alert" data-ng-bind-html="loginError"></div>
+        <div ng-if="emailError" class="alert alert-danger" role="alert">
+          <span>{{ emailError }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <form name="signInForm" class="form-horizontal" role="form">
+
+    <div class="form-group" ng-if="!isOnlineSponsoring">
+      <div class="col-md-offset-3 col-sm-9">
+        <div class="row"><div class="col-sm-6"><hr></div></div>
+        <p ng-if="profile.customerStatus == 'new'" style="font-size: 1.5em;"><b class="control-label" ng-bind-html="'ALREADY-A-CUSTOMER' | translate | unsafe"></b> <a href="" ng-mousedown="profile.customerStatus = 'existing'" class="checkout-link"><b ng-bind-html="'SIGN-IN-ALREADY-A-CUSTOMER' | translate | unsafe"></b></a>.</p>
+        <p ng-if="profile.customerStatus == 'existing'" style="font-size: 1.5em;"><b><span ng-bind-html="'NOT-YET-A-CUSTOMER' | translate | unsafe"></span></b> <a href="" ng-click="profile.customerStatus = 'new'" class="checkout-link"><span ng-bind-html="'CREATE-ACCOUNT' | translate | unsafe"></span></a>.</p>
+      </div>
+    </div>
+
+    <div class="form-group" ng-if="profile.customerStatus == 'new' || isOnlineSponsoring">
+      <label for="firstName" class="col-md-3 control-label"><span ng-bind-html="'OS-NAME' | translate | unsafe"></span></label>
+      <div class="col-sm-3" ng-class="{ 'has-error' : signInForm.firstName.$invalid && (signInForm.firstName.$touched || signInForm.firstName.$dirty) }">
+        <input name="firstName" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model="profile.firstName" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" class="form-control" id="firstName" placeholder="{{'CHECKOUT-FIRST-PLACEHOLDER' | translate | unsafe}}" required="isOnlineSponsoring" autofocus="" maxlength="40">
+        <span ng-show="signInForm.firstName.$invalid && (signInForm.firstName.$touched || signInForm.firstName.$dirty)" class="help-block" ng-class="{ 'text-danger' : signInForm.firstName.$invalid }"><span ng-bind-html="'REQUIRE-FIRSTNAME-LENGTH' | translate | unsafe"></span></span>
+      </div>
+      <div class="col-sm-3" ng-class="{ 'has-error' : signInForm.lastName.$invalid && (signInForm.lastName.$dirty || signInForm.lastName.$touched) }">
+        <input name="lastName" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model="profile.lastName" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" class="form-control" id="lastName" placeholder="{{'CHECKOUT-LAST-PLACEHOLDER' | translate | unsafe}}" required="isOnlineSponsoring" maxlength="40">
+        <span ng-show="signInForm.lastName.$invalid && (signInForm.lastName.$dirty || signInForm.lastName.$touched)" class="help-block" ng-class="{ 'text-danger' : signInForm.lastName.$invalid }"><span ng-bind-html="'REQUIRE-LASTNAME-LENGTH' | translate | unsafe"></span></span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="loginEmail" class="col-md-3 control-label"><span ng-bind-html="'EMAIL_ADD' | translate | unsafe"></span></label>
+      <div class="col-sm-6" ng-class="{ 'has-error' : signInForm.loginEmail.$invalid && (signInForm.loginEmail.$dirty || signInForm.loginEmail.$touched) }">
+        <input name="loginEmail" ng-pattern="/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/" ng-model="profile.loginEmail" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" type="email" class="form-control" id="loginEmail" placeholder="{{ 'EXAMPLE-EMAIL-PLACEHOLDER' | translate | unsafe }}" required>
+        <span ng-show="signInForm.loginEmail.$invalid && (signInForm.loginEmail.$dirty || signInForm.loginEmail.$touched)" class="help-block" ng-class="{ 'text-danger' : signInForm.loginEmail.$invalid }">
+          <span ng-bind-html="'REQUIRES-VALID-EMAIL-ADDRESS' | translate | unsafe"></span>.
+        </span>
+      </div>
+    </div>
+
+    <div class="form-group" ng-if="isOnlineSponsoring">
+      <label for="phoneNumber" class="col-md-3 control-label"><span ng-bind-html="'PHONE-NUMBER' | translate | unsafe"></span></label>
+      <div class="col-sm-3" ng-class="{ 'has-error' :  signInForm.phoneNumber.$invalid && (signInForm.phoneNumber.$dirty || signInForm.phoneNumber.$touched) }">
+        <input name="phoneNumber" type="tel" ui-mask="(999) 999-9999" ng-model="profile.phoneNumber" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-minlength="10" class="form-control" id="phoneNumber" placeholder="(___) ___-____" required>
+        <span ng-show="signInForm.phoneNumber.$invalid && (signInForm.phoneNumber.$dirty || signInForm.phoneNumber.$touched)" class="help-block" ng-class="{ 'text-danger' : signInForm.phoneNumber.$invalid && (signInForm.phoneNumber.$touched || signInForm.phoneNumber.$dirty) }"><span ng-bind-html="'INVALID-TELEPHONE-NUMBER' | translate | unsafe"></span>.</span>
+      </div>
+    </div>
+
+    <div class="form-group" ng-if="!isOnlineSponsoring">
+      <label for="inputPassword3" class="col-md-3 control-label"><span ng-bind-html="'PASSWORD' | translate | unsafe"></span></label>
+      <div class="col-sm-4" ng-class="{ 'has-error' : signInForm.loginPassword.$dirty && signInForm.loginPassword.$invalid }">
+        <input name="loginPassword" ng-model="profile.loginPassword" type="password" class="form-control" id="inputPassword3" placeholder="{{ 'EXAMPLE-PASSWORD-PLACEHOLDER' | translate | unsafe }}" ng-minlength="8" minlength="8" required>
+        <span ng-show="signInForm.loginPassword.$invalid && (signInForm.loginPassword.$touched || signInForm.loginPassword.$dirty)" class="help-block" ng-class="{ 'text-danger' : signInForm.loginPassword.$dirty && signInForm.loginPassword.$invalid }">
+          <span ng-bind-html="'INVALID-PASSWORD-LENGTH' | translate | unsafe"></span>.
+        </span>
+      </div>
+    </div>
+
+    <div class="form-group" ng-if="!isOnlineSponsoring && profile.customerStatus !== 'existing'">
+      <label for="inputPassword4" class="col-md-3 control-label"><span ng-bind-html="'PASSWORD_VERIFY' | translate | unsafe"></span></label>
+      <div class="col-sm-4" ng-class="{ 'has-error' : signInForm.loginPasswordVerify.$invalid && (signInForm.loginPasswordVerify.$touched || signInForm.loginPasswordVerify.$dirty) }">
+        <input name="loginPasswordVerify" ng-model="profile.loginPasswordVerify" type="password" class="form-control" id="inputPassword4" placeholder="{{ 'EXAMPLE-PASSWORD-PLACEHOLDER-VERIFY' | translate | unsafe }}" data-ui-validate="'$value == profile.loginPassword'" required>
+        <span ng-show="signInForm.loginPasswordVerify.$invalid && (signInForm.loginPasswordVerify.$touched || signInForm.loginPasswordVerify.$dirty) && profile.loginPassword !== profile.loginPasswordVerify" class="help-block" ng-class="{ 'text-danger' : profile.loginPassword !== profile.loginPasswordVerify }">
+          <span ng-bind-html="'PASSWORDS-DONT-MATCH' | translate | unsafe"></span>
+        </span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-md-offset-3 col-sm-9">
+        <div class="row" ng-if="!isOnlineSponsoring"><div class="col-sm-8"><hr></div></div>
+        <p ng-if="!isOnlineSponsoring">
+          <small ng-bind-html="'OS-START-PRIVACY-AGREE' | translate | unsafe"></small> <small><a href ng-bind-html="'OS-START-PRIVACY-AGREE-2' | translate | unsafe" data-toggle="modal" data-target=".bs-privacy-modal-lg"></a> <small ng-bind-html="'OS-START-PRIVACY-AGREE-3' | translate | unsafe" class="ng-binding"></small>
+        </p>
+        <div class="input-group">
+          <span ng-if="!isOnlineSponsoring" class="input-group-addon"><i class="fa fa-lock"></i></span>
+          <button ng-if="!isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" ng-class="{ 'processing' : processing }" ng-click="loginOrCreateUser()" ng-disabled="!signInForm.$valid || processing">
+            <span ng-show="profile.customerStatus == 'new'" ng-bind-html="'CREATE-ACCOUNT' | translate | unsafe"></span>
+            <span ng-show="profile.customerStatus == 'existing'" ng-bind-html="'SIGN-IN-ALREADY-A-CUSTOMER' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i>
+          </button>
+          <!-- <button ng-if="isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" ng-class="{ 'processing' : processing }" ng-click="validateEmailAndContinue(profile.loginEmail)" ng-disabled="!signInForm.$valid || processing">
+            <span ng-bind-html="'BTN_CONTINUE' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i>
+          </button> -->
+        </div>
+      </div>
+    </div>
+
+   <div class="form-group" ng-if="!isOnlineSponsoring">
+      <div class="col-md-offset-3 col-sm-9">
+        <div class="row"><div class="col-sm-6"><hr></div></div>
+        <p ng-if="profile.customerStatus == 'existing'"><a href="" ng-click="forgotPassword()"><span ng-bind-html="'I-FORGOT-MY-PASSWORD' | translate | unsafe"></span></a><br><br></p>
+      </div>
+    </div>
+
+  </form>
+</div>
+
+
+
+
+
+
+<div ng-if="isOnlineSponsoring" id="profile" class="col-sm-12">
+
+
+  <!--valid={{signInForm.$valid}}-->
+  <form name="profileForm" class="form-horizontal" role="form">
+
+
+    <div class="form-group">
+      <label class="col-md-3 control-label"><span ng-bind-html="'SSN-LABEL' | translate | unsafe"></span></label>
+      <div class="col-md-3">
+        <div class="input-group">
+          <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+          <input name="ssn" type="text" class="form-control" ui-mask="999 - 99 - 9999" placeholder="xxx - xx - xxxx" ng-model="profile.ssn" required autofocus>
+        </div>
+        <span class="help-block"><small><span ng-bind-html="'SSN-NOTE' | translate | unsafe"></span></small></span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-md-3 control-label"><span ng-bind-html="'DOB-LABEL' | translate | unsafe"></span></label>
+      <div class="col-md-3" ng-class="{ 'has-error' : invalidDOB && (profileForm.dob.$touched || profileForm.dob.$dirty) && profile.dob.length == 8 }">
+        <input type="tel" name="dob" class="form-control" ui-mask="99/99/9999" placeholder="{{ 'DOB-PLACEHOLDER' | translate }}" ng-model="profile.dob" required>
+      </div>
+      <div class="col-md-offset-3 col-sm-9">
+        <span class="help-block"><small ng-class="{ 'text-danger' : invalidDOB && (profileForm.dob.$touched || profileForm.dob.$dirty) && profile.dob.length == 8 }">
+          <span ng-bind-html="'DOB-NOTE' | translate | unsafe"></span></small>
+        </span>
+      </div>
+
+
+    </div>
+
+    <div class="form-group">
+      <label class="col-md-3 control-label"><span ng-bind-html="'SPONSOR-ID-LABEL' | translate | unsafe"></span></label>
+      <div class="col-md-4" ng-class="{ 'has-error' : profileForm.sponsorId.$invalid && (profileForm.sponsorId.$touched || profileForm.sponsorId.$dirty) }">
+        <input name="sponsorId" type="text" class="form-control" ng-model="profile.sponsorId" ng-pattern="/^[0-9]+$/" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" placeholder="{{ 'SPONSOR-ID-PLACEHOLDER' | translate }}">
+        <span ng-show="profileForm.sponsorId.$invalid && (profileForm.sponsorId.$touched || profileForm.sponsorId.$dirty)" class="help-block" ng-class="{ 'text-danger' : profileForm.sponsorId.$invalid && (profileForm.sponsorId.$touched || profileForm.sponsorId.$dirty) }">
+          <span ng-bind-html="'CONSULTANT-PROFILE-INVALID-SPONSORID' | translate | unsafe"></span>
+        </span>
+        <span class="help-block"><small><span ng-bind-html="'SPONSOR-ID-NOTE' | translate | unsafe"></span></small></span>
+      </div>
+    </div>
+
+    <!-- <div class="form-group">
+      <div class="col-md-offset-3 col-sm-9">
+        <div class="input-group">
+          <button class="btn btn-primary btn-lg" type="button" ng-click="validateProfileAndContinue()" ng-disabled="!profileForm.$valid || processing || invalidDOB || invalidSSN" ng-class="{ 'processing' : processing }">
+            <span ng-bind-html="'CONSULTANT-PROFILE-CONTINUE-TO-SHIPPING' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i>
+          </button>
+        </div>
+      </div>
+    </div> -->
+  </form>
+
+  <!-- <div aria-hidden="false" aria-labelledby="myModalLabel" role="dialog" id="agreement_modal" class="modal fade in" style="">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <a class="pull-right" href="" onClick="printDiv('agreement-content');" ><i class="fa fa-print"></i> &nbsp;<span ng-bind-html="'CONSULTANT-AGREEMENT-PRINT' | translate | unsafe"></span></a>
+            <h4 id="myModalLabel" class="modal-title text-center"><span ng-bind-html="'CONSULTANT-AGREEMENT-TITLE' | translate | unsafe"></span></h4>
+          </div>
+          <div class="modal-body">
+            <div class="agreement-content" id="agreement-content">
+              <div ng-if="session.language" ng-include="'/partials/consultant-agreement-'+session.language+'.html'"></div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <a onclick="" href="/join/"><span ng-bind-html="'CONSULTANT-AGREEMENT-DONT-AGREE' | translate | unsafe"></span></a>&nbsp;&nbsp;
+            &nbsp;&nbsp;
+            <button ng-click="profile.agree = true" data-dismiss="modal" class="btn btn-primary btn-lg" type="button" id="agreement_agree" disabled="" onclick="$('#agreement_modal').css('display','none;');"><span ng-bind-html="'CONSULTANT-AGREEMENT-AGREE' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i></button>
+            <p class="pull-left form-control-static"><small><span ng-bind-html="'CONSULTANT-AGREEMENT-NOTE' | translate | unsafe"></span></small></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      $(function(){
+          $('.agreement-content').on('scroll', function() {
+              if($(this).scrollTop() + $(this).innerHeight() >= (this.scrollHeight - 20)) {
+                  // $('#agreement_agree').removeAttr('disabled');
+
+
+                  $('#agreement_agree').prop('disabled', false);
+              }
+          })
+      });
+    </script> -->
+    
+</div>
+
+
+
+<!--ONLINE SPONSORING-->
+<div class="col-md-12" ng-if="isOnlineSponsoring">
+    <div class="col-md-offset-3">
+        <h1><span ng-bind-html="'OS-KIT-MODAL-TITLE' | translate | unsafe"></span></h1>
+    </div>
+    <div class="col-md-offset-3">
+        
+        <div class="row">
+            <div class="col-md-5">
+                <div class="kit-box" data-sku="{{sku}}" ng-class="sku == 20494 || sku == 20495 ? 'active' : ''">
+                    <h3 ng-bind-html="'OS-KIT-PRODUCT1-NAME' | translate | unsafe"></h3>
+                    <p class="color-gold HelveticaNeueLTStd-BdCn kit-desc">
+                        <span ng-bind-html="'OS-KIT-PRODUCT1-TITLE1' | translate | unsafe"></span>
+                        <span ng-bind-html="'OS-KIT-PRODUCT1-TITLE2' | translate | unsafe"></span>
+                    </p>
+                    <p class="HelveticaNeueLTStd-Th kit-value" ng-bind-html="'OS-KIT-PRODUCT1-VALUE' | translate | unsafe"></p>
+                    <p ng-bind-html="'OS-KIT-PRODUCT1-TAG' | translate | unsafe"></p>
+                    <img class="img-responsive" src="/img/49kit-2x.jpg" />
+                    <a href="" data-toggle="collapse" data-target="#royalkit-details" ng-bind-html="'KIT-DETAILS-TOGGLE' | translate | unsafe"></a>
+                    <div id="royalkit-details" class="collapse">
+                        <p ng-bind-html="'OS-KIT-PRODUCT1-DESCRIPTION' | translate | unsafe"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+
+                <div class="kit-box" data-sku="{{sku}}" ng-class="sku == 20498 || sku == 20499 ? 'active' : ''">
+                    <h3 ng-bind-html="'OS-KIT-PRODUCT2-NAME' | translate | unsafe"></h3>
+                    <p class="color-gold HelveticaNeueLTStd-BdCn kit-desc">
+                        <span ng-bind-html="'OS-KIT-PRODUCT2-TITLE1' | translate | unsafe"></span>
+                        <span ng-bind-html="'OS-KIT-PRODUCT2-TITLE2' | translate | unsafe"></span>
+                    </p>
+                    <p class="HelveticaNeueLTStd-Th kit-value" ng-bind-html="'OS-KIT-PRODUCT2-VALUE' | translate | unsafe"></p>
+                    <p ng-bind-html="'OS-KIT-PRODUCT2-TAG' | translate | unsafe"></p>
+                    
+                    <img class="img-responsive" src="/img/99kit-2x.jpg" />
+                    <a href="" data-toggle="collapse" data-target="#specialkit-details" ng-bind-html="'KIT-DETAILS-TOGGLE' | translate | unsafe"></a>
+                    <div id="specialkit-details" class="collapse">
+                        <p ng-bind-html="'OS-KIT-PRODUCT2-DESCRIPTION' | translate | unsafe"></p>
+                    </div>
+                </div>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<!--SHIPPING -->
+
+<div class="col-sm-12">
+  <div class="col-md-offset-3">
+    <h1 ng-if="session.client.addresses.length > 0"><span ng-bind-html="'CHOOSE-SHIPPING-ADDRESS' | translate | unsafe"></span></h1>
+    <h1 ng-if="session.client.addresses == null || session.client.addresses.length == 0"><span ng-bind-html="'OS-SHIPPING-TITLE' | translate | unsafe"></span></h1>
+    <div class="row" ng-if="!isOnlineSponsoring">
+      <div class="col-xs-6 col-lg-4 checkout-address" ng-repeat="addressData in session.client.addresses">
+        <div class="address-block">
+          <span class="address-name block">{{ addressData.name || namePlaceholder }}</span>
+          <span class="address-street block">{{ addressData.address1 }} {{ addressData.address2 }}</span>
+          <span class="address-region block">{{ addressData.city }}, {{ addressData.state }} {{ addressData.zip }}</span>
+          <span class="phone-number block">{{ addressData.phone}}</span>
+        </div>
+        <div class="address-actions">
+          <a ng-click="editAddress(addressData)"><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'EDIT' | translate | unsafe"></span></a>
+          &nbsp;&nbsp;
+          <a ng-click="removeAddress(addressData.id)"><i class="fa fa-times-circle"></i> <span ng-bind-html="'REMOVE' | translate | unsafe"></span></a>
+        </div>
+        <button type="button" class="btn btn-primary" ng-disabled="processing" ng-click="selectShippingAddressAndContinue(addressData)">
+          <span ng-bind-html="'BTN_SHIP_ADD' | translate | unsafe"></span>
+        </button>
+      </div><!-- /address -->
+    </div>
+  </div><!-- /offset -->
+    <ng-include src="'/partials/checkout/shipping-form-include.html'"/>
+    <div class="col-md-offset-3">
+      <hr>
+    </div> <!-- /offset -->
+  </form>
+</div><!--/span-->
+
+
+
+
+
+
+<div class="col-sm-12">
+
+<div class="col-md-offset-3">
+  <h1 ng-show="session.client.creditCards && session.client.creditCards.length > 0">
+    <span ng-bind-html="'TIT_PAY_OPTION' | translate |unsafe"></span>
+    <span class="store-heading-description" ng-bind-html="'PAY_OPTION_DES' | translate | unsafe"></span>
+  </h1>
+  <h1 ng-show="!session.client.creditCards">
+    <span ng-bind-html="'ENTER-PAYMENT-INFO' | translate | unsafe"></span>
+    <span class="store-heading-description" ng-bind-html="'PAY_OPTION_DES' | translate | unsafe"></span>
+  </h1>
+</div>
+
+<div class="col-md-offset-3" ng-if="profile.customerStatus=='existing'">
+  <div class="row">
+
+    <div class="col-xs-6 col-lg-4" ng-repeat="ccData in session.client.creditCards">
+      <div class="checkout-card clearfix" ng-class="{active: ((ccData.id == profile.card.id) || profile.card.id == null)}">
+        <span class="pull-left">{{ccData.name}}</span>
+        <img class="pull-right img-responsive cardImg" src="/img/visa.png" ng-show="ccData.cardType=='Visa'">
+        <img class="pull-right img-responsive cardImg" src="/img/mastercard.png" ng-show="ccData.cardType=='MasterCard'">
+        <img class="pull-right img-responsive cardImg" src="/img/discover.png" ng-show="ccData.cardType=='Discover Card'">
+        <img class="pull-right img-responsive cardImg" src="/img/americanexpress.png" ng-show="ccData.cardType=='American Express'">
+        <p class="card-number">
+          <span>&bull;&bull;&bull;&bull;</span>
+          <span>&bull;&bull;&bull;&bull;</span>
+          <span>&bull;&bull;&bull;&bull;</span>
+          <span>{{ccData.lastFour|substr}}</span>
+        </p>
+        <p class="card-expiry pull-left">
+          <small>EXP:</small>
+          {{ccData.expMonth}}/{{ccData.expYear|substr:2:2}}
+        </p>
+        <button class="btn btn-primary pull-right card-use-btn" ng-disabled="processing" ng-click="selectCardAndContinue(ccData)">
+          <span ng-bind-html="'SELECT-OPTION-BUTTON' | translate | unsafe"></span> <i class="fa fa-caret-right"></i>
+        </button>
+      </div>
+      <div class="card-actions">
+        <a ng-click="removeCreditCard(ccData.id)"><i class="fa fa-times-circle"></i> <span ng-bind-html="'Remove' | translate | unsafe"></span></a>
+      </div>
+    </div><!-- /span -->
+
+  </div>
+</div>
+
+<div class="row" ng-if="profile.customerStatus=='existing'">
+  <div class="col-md-offset-3 col-lg-8">
+    <hr>
+    <h2 class=" "><span ng-bind-html="'ENTER-PAYMENT-INFORMATION' | translate | unsafe"></span></h2>
+  </div>
+</div>
+<form name="paymentForm" class="form-horizontal" role="form" novalidate>
+
+<!-- CARD INFO -->
+<div class="form-group" ng-class="{ 'has-error' : paymentForm.cardName.$invalid && (paymentForm.cardName.$touched || paymentForm.cardName.$dirty) }">
+  <label for=" " class="col-md-3 control-label"><span ng-bind-html="'IN_NAME_CARD' | translate |unsafe"></span></label>
+  <div class="col-sm-6 col-lg-4">
+    <input ng-model="profile.newCard.name" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-minlength="3" name="cardName" type="text" class="form-control" placeholder=" " required>
+    <span ng-show="paymentForm.cardName.$error.minlength && (paymentForm.cardName.$touched || paymentForm.cardName.$dirty)" class="help-block" ng-class="{ 'text-danger' : paymentForm.cardName.$invalid }"><span ng-bind-html="'NAME_ON_CARD_ERR' | translate | unsafe"></span></span>
+    <span ng-show="paymentForm.cardName.$invalid && (paymentForm.cardName.$touched || paymentForm.cardName.$dirty)" class="help-block" ng-class="{ 'text-danger' : paymentForm.cardName.$invalid }"><span ng-bind-html="'NAME_ON_CARD_INVALID_ERR' | translate | unsafe"></span></span>
+  </div>
+</div>
+
+<div class="form-group" ng-class="{ 'has-error' : paymentForm.number.$invalid && (paymentForm.number.$touched || paymentForm.number.$dirty) }">
+  <label for=" " class="col-md-3 control-label"><span ng-bind-html="'IN_CARD_NUMBER' | translate |unsafe"></span></label>
+  <div class="col-sm-6 col-lg-4">
+    <input ng-model="profile.newCard.card" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" data-ng-blur="visited=true" ng-minlength="13" ng-maxlength="16" maxlength="16" name="number" type="text" class="form-control" id=" " placeholder=" " data-ui-validate=" 'isValidCard($value)' " required>
+    <span ng-show="visited && (paymentForm.number.$error.minlength || paymentForm.number.$error.validator)" class="help-block" ng-class="{ 'text-danger' : paymentForm.number.$invalid && (paymentForm.number.$touched || paymentForm.number.$dirty) }"><span ng-bind-html="'INVALID-CARD-NUMBER' | translate | unsafe"></span></span>
+  </div>
+  <div class="col-sm-3 col-lg-4" ng-model="cardType" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-show="!paymentForm.number.$error.minlength && !paymentForm.number.$error.validator">
+    <img class="img-responsive cardImg" src="/img/visa.png" ng-show="profile.newCard.cardType=='Visa'">
+    <img class="img-responsive cardImg" src="/img/mastercard.png" ng-show="profile.newCard.cardType=='MasterCard'">
+    <img class="img-responsive cardImg" src="/img/discover.png" ng-show="profile.newCard.cardType=='Discover Card'">
+    <img class="img-responsive cardImg" src="/img/americanexpress.png" ng-show="profile.newCard.cardType=='American Express'">
+  </div>
+</div>
+<div class="form-group">
+  <label for=" " class="col-md-3 control-label"><span ng-bind-html="'IN_EXPIRATION' | translate | unsafe"></span></label>
+  <div class="col-sm-5" ng-class="{ 'has-error' : (invalidExpiration || paymentForm.expMonth.$invalid || paymentForm.expYear.$invalid) && (paymentForm.expMonth.$touched || paymentForm.expMonth.$dirty) && (paymentForm.expYear.$touched || paymentForm.expYear.$dirtyf
+  ) }">
+    <div class="row">
+      <div class="col-xs-4 col-sm-3 col-med-2">
+        <input ng-model="profile.newCard.expMonth" name="expMonth" type="text" class="form-control col-sm-1" ui-mask="99" placeholder="MM" required>
+        <!--valid={{paymentForm.expMonth.$valid}}-->
+      </div>
+      <div class="col-xs-1">
+        <label class="control-label">/</label>
+      </div>
+      <div class="col-xs-6 col-sm-4 col-med-3">
+        <input ng-model="profile.newCard.expYear" name="expYear" type="text" class="form-control col-sm-3" ui-mask="9999" placeholder="{{ 'YEAR-PLACEHOLDER' | translate }}" required>
+        <!--valid={{paymentForm.expYear.$valid}}-->
+      </div>
+    </div>
+    <span ng-show="(invalidExpiration || paymentForm.expMonth.$invalid || paymentForm.expYear.$invalid) && (paymentForm.expMonth.$touched || paymentForm.expMonth.$dirty) && (paymentForm.expYear.$touched || paymentForm.expYear.$dirty)" class="help-block text-danger" ng-bind-html="'INVALID_CC_EXPIRATION' | translate | unsafe"></span>
+  </div>
+</div>
+<div class="form-group">
+  <label for=" " class="col-md-3 control-label"><span ng-bind-html="'IN_SECURITY_CODE' | translate | unsafe"></span></label>
+  <div class="col-sm-5">
+    <div class="row">
+      <div class="col-xs-4 col-sm-4 col-med-2" ng-class="{ 'has-error' : paymentForm.cvv.$invalid && (paymentForm.cvv.$touched || paymentForm.cvv.$dirty) }">
+        <input ng-model="profile.newCard.cvv" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-pattern="/^[0-9]{3,4}$/" ng-minlength="3" ng-maxlength="4" maxlength="4" name="cvv" type="text" class="form-control col-sm-1 hide-arrows" placeholder="&bull;&bull;&bull;" required />
+        <span ng-show="paymentForm.cvv.$invalid && (paymentForm.cvv.$touched || paymentForm.cvv.$dirty)" class="help-block" ng-class="{ 'text-danger' : paymentForm.cvv.$invalid && (paymentForm.cvv.$touched || paymentForm.cvv.$dirty) }" ng-bind-html="'CVV-INVALID' | translate | unsafe"></span>
+      </div>
+      <div class="col-xs-6 col-sm-4 col-med-3">
+        <a popover="{{'CVV-POPOVER-CONTENT' | translate | unsafe}}" popover-title="{{'CVV-POPOVER-TITLE' | translate | unsafe}}" popover-trigger="hover" href="" tabindex="-1"><i class="fa fa-info-circle"></i>
+          <span ng-bind-html="'WHATS-THIS' | translate | unsafe"></span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BILLING SAME -->
+<div class="form-group">
+  <div class="col-md-offset-3 col-sm-9">
+    <div class="checkbox">
+      <label>
+        <input name="billSame" data-ng-init="profile.billSame=true" ng-model="profile.billSame" type="checkbox" tabindex="-2" checked="checked"> <span ng-bind-html="'IN_BILL_SHIP_SAME' | translate | unsafe"></span>
+        <!--valid={{paymentForm.billSame.$valid}}-->
+      </label>
+    </div>
+  </div>
+</div>
+
+<!-- BILLING -->
+
+<div class="cardAddressWrapper" ng-if="profile.billSame==false">
+
+  <div class="row form-group" ng-if="!isOnlineSponsoring">
+    <label for="billingFullName" class="col-md-3 control-label"><span ng-bind-html="'IN_FULL_NAME' | translate | unsafe"></span></label>
+    <div class="col-sm-8 col-lg-6">
+      <input id="billingFullName" name="name" ng-model="profile.newBillingAddress.name" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" type="text" class="form-control" placeholder="{{ namePlaceholder }}">
+    </div>
+  </div>
+
+  <div class="row form-group" ng-if="isOnlineSponsoring">
+    <label for="billingBusinessCO" class="col-md-3 control-label"><span ng-bind-html="'IN_BUSINESS_CO' | translate | unsafe"></span></label>
+    <div class="col-sm-8 col-lg-6">
+      <input id="billingBusinessCO" name="name" ng-model="profile.newBillingAddress.businessCO" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" type="text" class="form-control" placeholder="Business Name, c/o Someone, etc." autocomplete="off">
+    </div>
+  </div>
+
+  <div class="row form-group">
+    <label for="billingAddress1" class="col-md-3 control-label"><span ng-bind-html="'IN_ADD_LINE1' | translate | unsafe"></span></label>
+    <div class="col-sm-8 col-lg-6">
+      <input name="address1" ng-model="profile.newBillingAddress.address1" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-maxlength="40" maxlength="40" type="text" class="form-control" id="billingAddress1" placeholder="{{ 'IN_ADD_LINE1_DES' | translate }}" required />
+    </div>
+  </div>
+
+  <div class="row form-group">
+    <label for="billingAddress2" class="col-md-3 control-label"><span ng-bind-html="'IN_ADD_LINE2' | translate | unsafe"></span></label>
+    <div class="col-sm-8 col-lg-6">
+      <input name="address2" ng-model="profile.newBillingAddress.address2" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-maxlength="40" maxlength="40" type="text" class="form-control" id="billingAddress2" placeholder="{{ 'IN_ADD_LINE2_DES' | translate }} " >
+    </div>
+  </div>
+
+  <div class="row form-group">
+    <label for="billingCity" class="col-md-3 control-label"><span ng-bind-html="'IN_CITY' | translate | unsafe"></span></label>
+    <div class="col-sm-7 col-lg-5">
+      <input name="city" ng-model="profile.newBillingAddress.city" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" type="text" class="form-control" id="billingCity" placeholder=" " required>
+    </div>
+  </div>
+
+  <div class="row form-group">
+    <label for="billingStateProvinceRegion" class="col-md-3 control-label"><span ng-bind-html="'IN_STATE' | translate | unsafe"></span></label>
+    <!-- TO-DO: Fix CSS width of form control -->
+    <div class="col-sm-5 col-lg-3">
+        <div class="">
+          <select id="billingStateProvinceRegion" name="state" ng-model="profile.newBillingAddress.state" class="form-control" >
+            <option value="AL">Alabama</option>
+            <option value="AK">Alaska</option>
+            <option value="AZ">Arizona</option>
+            <option value="AR">Arkansas</option>
+            <option value="CA">California</option>
+            <option value="CO">Colorado</option>
+            <option value="CT">Connecticut</option>
+            <option value="DE">Delaware</option>
+            <option value="DC">District Of Columbia</option>
+            <option value="FL">Florida</option>
+            <option value="GA">Georgia</option>
+            <option value="HI">Hawaii</option>
+            <option value="ID">Idaho</option>
+            <option value="IL">Illinois</option>
+            <option value="IN">Indiana</option>
+            <option value="IA">Iowa</option>
+            <option value="KS">Kansas</option>
+            <option value="KY">Kentucky</option>
+            <option value="LA">Louisiana</option>
+            <option value="ME">Maine</option>
+            <option value="MD">Maryland</option>
+            <option value="MA">Massachusetts</option>
+            <option value="MI">Michigan</option>
+            <option value="MN">Minnesota</option>
+            <option value="MS">Mississippi</option>
+            <option value="MO">Missouri</option>
+            <option value="MT">Montana</option>
+            <option value="NE">Nebraska</option>
+            <option value="NV">Nevada</option>
+            <option value="NH">New Hampshire</option>
+            <option value="NJ">New Jersey</option>
+            <option value="NM">New Mexico</option>
+            <option value="NY">New York</option>
+            <option value="NC">North Carolina</option>
+            <option value="ND">North Dakota</option>
+            <option value="OH">Ohio</option>
+            <option value="OK">Oklahoma</option>
+            <option value="OR">Oregon</option>
+            <option value="PA">Pennsylvania</option>
+            <option value="PR">Puerto Rico</option>
+            <option value="RI">Rhode Island</option>
+            <option value="SC">South Carolina</option>
+            <option value="SD">South Dakota</option>
+            <option value="TN">Tennessee</option>
+            <option value="TX">Texas</option>
+            <option value="UT">Utah</option>
+            <option value="VT">Vermont</option>
+            <option value="VI">Virgin Islands</option>
+            <option value="VA">Virginia</option>
+            <option value="WA">Washington</option>
+            <option value="WV">West Virginia</option>
+            <option value="WI">Wisconsin</option>
+            <option value="WY">Wyoming</option>
+          </select>
+        </div>
+
+      <!-- Removed for now to add the Select tag for 50 states -->
+      <!--input id="shippingStateProvinceRegion" name="stateProvinceRegion" ng-model="profile.newShippingAddress.stateProvinceRegion" type="text" class="form-control" placeholder=" " required-->
+    </div>
+    <!--div class="col-sm-6 col-lg-4">
+      <input name="billingProvinceRegion" ng-model="profile.newBillingAddress.stateProvinceRegion" type="text" class="form-control" id="billingStateProvinceRegion" placeholder=" " required>
+    </div-->
+  </div>
+
+  <div class="row form-group">
+    <label for="billingZipPostalCode" class="col-md-3 control-label"><span ng-bind-html="'IN_ZIP' | translate | unsafe"></span></label>
+    <div class="col-sm-5 col-lg-3">
+      <input name="billingzipPostalCode" ng-model="profile.newBillingAddress.zip" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" type="text" class="form-control" id="billingZipPostalCode" placeholder=" " required>
+    </div>
+  </div>
+
+  <div class="row form-group">
+    <label for="billingCountry" class="col-md-3 control-label"><span ng-bind-html="'IN_COUNTRY' | translate | unsafe"></span></label>
+    <div class="col-sm-5 col-lg-3">
+      <select id="billingCountry" name="billingCountry" data-ng-init="profile.newBillingAddress.country='US'" ng-model="profile.newBillingAddress.country" class="form-control">
+        <option ng-selected="true" value="US" ng-bind-html="'COUNTRY-US' | translate | unsafe"></option>
+      </select>
+    </div>
+  </div>
+
+  <div class="row form-group" ng-if="!isOnlineSponsoring"  ng-class="{ 'has-error' : paymentForm.phoneNumber.$invalid && (paymentForm.phoneNumber.$touched || paymentForm.phoneNumber.$dirty) }">
+    <label for="billingPhoneNumber" class="col-md-3 control-label"><span ng-bind-html="'PHONE-NUMBER' | translate | unsafe"></span></label>
+    <div class="col-sm-6 col-lg-4">
+      <input id="billingPhoneNumber" name="phoneNumber" ng-model="profile.newBillingAddress.phone" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" type="text" ui-mask="(999) 999-9999" placeholder="(xxx) xxx-xxxx" class="form-control">
+      <span ng-show="paymentForm.phoneNumber.$error.pattern" class="help-block" ng-class="{ 'text-danger' : paymentForm.phoneNumber.$invalid && (paymentForm.phoneNumber.$touched || paymentForm.phoneNumber.$dirty) }"><span ng-bind-html="'PHONE-NUMBER-WRONG' | translate | unsafe"></span></span>
+    </div>
+    <a popover="{{'PHONE-NUMBER-DES' | translate | unsafe}}" popover-title="{{'PHONE-NUMBER' | translate | unsafe}}" href="" class="form-info-link"><i class="fa fa-info-circle"></i> <span ng-bind-html="'MORE-INFO' | translate | unsafe"></span></a>
+  </div>
+
+  <div class="col-md-offset-3">
+    <hr>
+  </div> <!-- /offset -->
+</div>
+
+<!-- <div class="form-group">
+  <div class="col-md-offset-3 col-sm-9">
+    <div class="error" ng-show="billingAddressError && !profile.billSame" ng-bind="billingAddressError"></div>
+      <button type="button" ng-click="addPaymentMethod()" class="btn btn-primary btn-lg" ng-class="{ 'processing' : processing }" ng-disabled="!paymentForm.$valid || invalidExpiration || processing">
+        <span>ADD PAYMENT</span> &nbsp;<i class="fa fa-caret-right"></i>
+      </button>
+  </div>
+</div> -->
+
+<div class="form-group">
+  <div class="col-md-offset-3 col-sm-9">
+      <button type="button" ng-click="validateStartAndReview(profile.loginEmail)" class="btn btn-primary btn-lg" ng-class="{ 'processing' : processing }">
+        <!-- <span ng-bind-html="'BTN_SAVE_PAYMENT' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i> -->
+        <span>CONTINUE</span> &nbsp;<i class="fa fa-caret-right"></i>
+      </button>
+  </div>
+</div>
+
+
+</form>
+
+</div><!--/span-->

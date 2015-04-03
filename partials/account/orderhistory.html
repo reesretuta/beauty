@@ -1,74 +1,53 @@
-<a href="" ng-click="getOrderHistory()">load orders</a>
+<!-- <a href="" ng-click="getOrderHistory()">load orders</a>
+
 <div ng-repeat="order in orderHistory" style="border: 1px; margin: 5px;">
   order id: {{order.id}}<br>
   total: {{order.total}}<br>
   <div ng-repeat="product in order.products">
     - {{product.sku}}, {{product.name}}, {{product.qty}}, <br>
   </div>
-</div>
+</div> -->
 
 <!-- {
-  1234: {
-     tracking: "hghd8yg1gd81g718d1"
-     carrier: "UPS",
-     orderDate: "12/12/2020",
-     shipDate: "12/12/2020",
-     status: "Shipped"
-  }
-} -->
+  "id": 12028344,
+  "firstName": "David",
+  "lastName": "Castro",
+  "clientId": 50000051,
+  "consultantId": 66556,
+  "language": "en_US",
+  "billingAddressId": 5000005101,
+  "shippingAddressId": 5000005101,
+  "creditCardId": 5000005103,
+  "source": "web",
+  "total": 43.50,
+  "products": [{"sku":"18893","name":"*NAVIGO FEMME DUO","qty": 1,"price":35.00,"components":[{"sku":"6983","name":"NAVIGO FEMME   1.7FL OZ","qty": 1},{"sku":"18748","name":"HAPPY MOTHER'S DAY TOTE","qty": 1},{"sku":"11737","name":"NAVIGO FEMME HAND CREAM","qty": 1}]}],
+  "tracking": "",
+  "carrier": "",
+  "orderDate": "01/29/2015",
+    "shipDate": "01/01/1970",
+    "shippingCost":} -->
+ 
 <div id="order-history">
-    <div class="panel panel-default">
-      <!-- Default panel contents -->
-      <div class="panel-heading"><h3>Delivered Oct 14, 2015</h3> Your Package was delivered.</div>
-      <div class="panel-body">
-          <div class="row">
-              <div class="col-md-6">
-                  Bob Smith<br/>
-                  Shipping Info: 1235 street, city, 91335<br/>
-                  Order Date: 11/11/2015<br/>
-                  Shipped Date: 11/11/2015<br/>
-                  <button type="button" class="btn" ng-click="">
-                    <i class="fa fa-times-circle"></i> Cancel Order
-                  </button>
-                  <button type="button" class="btn" ng-click="">
-                    <i class="fa fa-pencil-square-o"></i> Edit Order
-                  </button>
-              </div>
-              <div class="col-md-6">
-                  
-              </div>
-          </div>
-      
-      </div>
-      <!-- Table -->
-      <table class="table table-bordered">
-          <tr>
-             <th>Item/SKU #</th>
-             <th>Quantity</th>
-          </tr>
-          <tr>
-             <td>19193</td>
-             <td>1</td>
-          </tr>
-          <tr>
-             <td>22222</td>
-             <td>1</td>
-          </tr>
-      </table>
-    </div>
 
-    <div class="panel panel-default">
+
+
+    <div class="panel panel-default" ng-repeat="order in orderHistory">
       <!-- Default panel contents -->
-      <div class="panel-heading"><h3>Delivered Oct 14, 2015</h3>Your Package was delivered.</div>
+      <div class="panel-heading">
+          <h3 ng-if="order.shipDate == '01/01/1970'">Status: Not Yet Shipped</h3>
+          <h3 ng-if="order.shipDate != '01/01/1970'">Shipped on: {{order.shipDate}}</h3>
+          <span ng-if="order.tracking != ''">tracking #: {{order.tracking}}</span>
+          <!-- <h3>Delivered Oct 14, 2015</h3>Your Package was delivered. -->
+      </div>
       <div class="panel-body">
           <div class="row">
-              <div class="col-md-9">
-                  Bob Smith<br/>
+              <div class="col-md-10">
+                  {{order.firstName}} {{order.lastName}}<br/>
                   Shipping Info: 1235 street, city, 91335<br/>
-                  Order Date: 11/11/2015<br/>
-                  Shipped Date: 11/11/2015<br/>
+                  Order Date: {{order.orderDate}}<br/>
+                  Shipped Date: {{order.shipDate}}<br/>
               </div>
-              <div class="col-md-3">
+              <div class="col-md-2">
                   <button type="button" class="btn" ng-click="">
                     <i class="fa fa-times-circle"></i> Cancel Order
                   </button><br/>
@@ -78,58 +57,63 @@
               </div>
           </div>
       
+      
       </div>
-
       <!-- Table -->
       <table class="table table-bordered">
+          <!-- ng-src="{{getImagePath(product.images[0])}}" -->
+          <!-- '/assets/img/products/' + __ID__ +  '_0.jpg' -->
+          <thead>
           <tr>
-             <th>Item/SKU #</th>
-             <th>Quantity</th>
+            <th>Product</th>
+            <th class="text-right"><span ng-bind-html="'UNIT-PRICE' | translate | unsafe"></span></th>
+            <th class="text-right"><span ng-bind-html="'QTY' | translate | unsafe"></span></th>
           </tr>
-          <tr>
-             <td>19193</td>
-             <td>1</td>
+          </thead>
+
+
+          
+          <tr ng-repeat="item in order.products">
+            <td>
+              <div class="cart-item-info">
+                <a ng-href="{{STORE_BASE_URL}}/products/{{ item.sku}}#top" class="col-xs-5 col-sm-3 col-md-2 col-lg-2">
+                  <img class="img-responsive cart-item-image" ng-src="{{ getImagePath({ localPath: '/img/products/' + item.sku + '_0.jpg'})}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';">
+                </a>
+                
+                <div class="col-sm-9 col-md-8 col-lg-8">
+                  <h3>
+                    <a ng-href="{{STORE_BASE_URL}}/products/{{ item.sku }}#top">{{item.name}}</a>
+                  </h3>
+
+                  <p><label>{{ item.product.sku || item.sku }}</label></p>
+
+                  <!-- <p ng-if="item.product.kitGroups.length > 0"><span ng-bind-html="'KIT_INCLUDE' | translate | unsafe"></span>:</p> -->
+                  
+                  <ul ng-if="item.components.length > 0">
+                    <li ng-repeat="component in item.components">
+                      {{component.name}} - {{component.sku}} ({{component.qty}})
+                    </li>
+                  </ul>
+                  
+                  <p class="cart-item-actions">
+                    <a ng-if="item.product.type == 'kit' && item.product.kitGroups.length > 0" class="btn btn-primary btn-lg" ng-click="configureKit(item)">
+                      <i class="fa fa-cogs"></i> <span ng-bind-html="'BTN_CONFIGURE' | translate | unsafe"></span>
+                    </a>
+                  </p>
+                </div>
+              </div>
+            </td>
+            <td class="text-right">
+                {{item.price | currency}}
+            </td>
+            <td align=right>
+                {{item.qty}}
+              
+            </td>
           </tr>
-          <tr>
-             <td>22222</td>
-             <td>1</td>
-          </tr>
+      
+          
       </table>
     </div>
 </div>
 
-
-<!-- DESIGN 2-->
-
-<div class="row">
-    <div class="col-md-12">
-        <table class="table table-striped table-bordered">
-            <tr>
-               <th>Item</th>
-               <th>Carrier</th>
-               <th>Order Date</th>
-               <th>Ship Date</th>
-               <th>Tracking #</th>
-               <th></th>
-            </tr>
-            <tr ng-repeat="cardData in session.client.creditCards">
-                <td>Make up</td>
-                <td>USPS</td>
-                <td>12/25/2015</td>
-                <td>12/25/2015</td>
-                <td>
-                    <!-- <span class="glyphicon glyphicon-ok"></span> -->
-                    1234 1234 1234 1234 1234
-                </td>
-                <td>
-                <button type="button" class="btn" ng-click="">
-                  <i class="fa fa-times-circle"></i> Cancel Order
-                </button>
-                <button type="button" class="btn" ng-click="">
-                  <i class="fa fa-pencil-square-o"></i> Edit Order
-                </button>
-                </td>
-            </tr>
-        </table>
-    </div>
-</div>

@@ -1,7 +1,7 @@
 
-<section class="store-checkout container">
+<!--<section class="store-checkout container">
   <wizard name="checkoutWizard" hide-indicators="false" on-finish="finished()" current-step="currentStep">
-    <!--current step: {{checkout.currentStep}}-->
+
     <wz-step wz-title="Start" display-name="{{'WZ_START' | translate | unsafe}}">
       <ng-include src="'/partials/checkout/start.html'"/>
     </wz-step>
@@ -21,7 +21,38 @@
       <ng-include src="'/partials/checkout/finish.html'"/>
     </wz-step>
   </wizard>
-  
+
+  <div ng-if="isOnlineSponsoring" ng-include src="'/partials/checkout/modals/promo.html'"></div>
+
+  <div ng-if="debug">
+    <a ng-click="debugDumpProfile()">dump profile</a>
+  </div>
+
+</section> -->
+
+
+
+
+
+
+
+<section class="store-checkout container">
+  <wizard name="checkoutWizard" hide-indicators="false" on-finish="finished()" current-step="currentStep">
+
+    <wz-step wz-title="Start" display-name="{{'WZ_START' | translate | unsafe}}">
+      <ng-include src="'/partials/checkout/start-streamline.html'"/>
+
+
+    </wz-step>
+
+    <wz-step wz-title="Review" display-name="{{'WZ_REVIEW' | translate | unsafe}}">
+      <ng-include src="'/partials/checkout/review.html'"/>
+    </wz-step>
+    <wz-step wz-title="Finish" display-name="{{'WZ_FINISH' | translate | unsafe}}">
+      <ng-include src="'/partials/checkout/finish.html'"/>
+    </wz-step>
+  </wizard>
+
   <div ng-if="isOnlineSponsoring" ng-include src="'/partials/checkout/modals/promo.html'"></div>
 
   <div ng-if="debug">

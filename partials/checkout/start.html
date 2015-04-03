@@ -85,7 +85,7 @@
         <p>
           <small ng-bind-html="'OS-START-PRIVACY-AGREE' | translate | unsafe"></small> <small><a href ng-bind-html="'OS-START-PRIVACY-AGREE-2' | translate | unsafe" data-toggle="modal" data-target=".bs-privacy-modal-lg"></a> <small ng-bind-html="'OS-START-PRIVACY-AGREE-3' | translate | unsafe" class="ng-binding"></small>
         </p>
-        <div class="input-group">
+        <!-- <div class="input-group">
           <span class="input-group-addon"><i class="fa fa-lock"></i></span>
           <button ng-if="!isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" ng-class="{ 'processing' : processing }" ng-click="loginOrCreateUser()" ng-disabled="!signInForm.$valid || processing">
             <span ng-show="profile.customerStatus == 'new'" ng-bind-html="'CREATE-ACCOUNT' | translate | unsafe"></span>
@@ -94,7 +94,7 @@
           <button ng-if="isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" ng-class="{ 'processing' : processing }" ng-click="validateEmailAndContinue(profile.loginEmail)" ng-disabled="!signInForm.$valid || processing">
             <span ng-bind-html="'BTN_CONTINUE' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i>
           </button>
-        </div>
+        </div> -->
       </div>
     </div>
 
