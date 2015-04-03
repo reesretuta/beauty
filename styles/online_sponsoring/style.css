@@ -269,6 +269,7 @@ margin-right: -30px;
 }
 .jumbo-row .container {
   padding: 30px;
+  position: relative;
 }
 .jumbo-title{
 line-height: 0.8;
@@ -306,6 +307,15 @@ font-size: 76px;
 .jumbo-videobg {
   background: none;
   height: 100%;
+}
+.jumbo-scroll {
+  position: absolute;
+  bottom: -60px;
+  left: 50%;
+  margin-left: -54px;
+  color: #fff;
+  color: rgba(255,255,255,.5);
+  text-transform: uppercase;
 }
 
 #royal_starter_kit .kit-value {
