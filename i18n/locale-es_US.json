@@ -224,6 +224,7 @@
     "SELECT-STATE": "Selecciona un estado.",
 
     "ORDER-PROBLEM": "Hubo un error al procesar la orden",
+    "ORDER-HISTORY-PROBLEM": "Hubo un error al historial de pedidos de carga",
     "CONSULTANT-NOT-FOUND": "Incapaz de encontrar consultor",
     "INVALID-PASSWORD": "Contrase&ntilde;a no v&aacute;lida",
     "INVALID-PASSWORD-LENGTH": "La contraseña debe tener al menos 8 caracteres",

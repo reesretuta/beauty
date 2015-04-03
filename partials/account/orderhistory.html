@@ -1,51 +1,12 @@
-<!-- [
- {
-  "id": 12028949,
-  "firstName": "Rodolfo",
-  "lastName": "Vilchis",
-  "clientId": 50000066,
-  "consultantId": 66556,
-  "language": "en_US",
-  "billingAddressId": 5000006601,
-  "shippingAddressId": 5000006601,
-  "creditCardId": 5000006601,
-  "source": "web",
-  "total": 0,
-  "products": [
-   {
-     "sku": "19907",
-     "name": "*ALWAYS MAKEUP DUO",
-     "qty": 1,
-     "price": 26,
-     "components": [
-      {
-       "sku": "25147",
-       "name": "ALWAYS M/U SPF15- PORCELAIN",
-       "qty": 1
-      },
-      {
-       "sku": "15580",
-       "name": "PRESSED POWDER - MEDIUM",
-       "qty": 1
-      }
-     ]
-   },
-   {
-    "sku": "xxxxx",
-    "name": "Description",
-    "qty": 2,
-    "price": 48       // Price = unit price * qty
-   }
-  ],
-  "tracking": "",
-  "carrier": "",
-  "orderDate": "01/01/1970",
-  "shipDate": "01/01/1970",
-  "shippingCost": 0,
-  "taxCost": 0,
-  "status": "PF"
- }
-] -->
+<a href="" ng-click="getOrderHistory()">load orders</a>
+<div ng-repeat="order in orderHistory" style="border: 1px; margin: 5px;">
+  order id: {{order.id}}<br>
+  total: {{order.total}}<br>
+  <div ng-repeat="product in order.products">
+    - {{product.sku}}, {{product.name}}, {{product.qty}}, <br>
+  </div>
+</div>
+
 <!-- {
   1234: {
      tracking: "hghd8yg1gd81g718d1"
@@ -56,8 +17,45 @@
   }
 } -->
 <div id="order-history">
-
-    
+    <div class="panel panel-default">
+      <!-- Default panel contents -->
+      <div class="panel-heading"><h3>Delivered Oct 14, 2015</h3> Your Package was delivered.</div>
+      <div class="panel-body">
+          <div class="row">
+              <div class="col-md-6">
+                  Bob Smith<br/>
+                  Shipping Info: 1235 street, city, 91335<br/>
+                  Order Date: 11/11/2015<br/>
+                  Shipped Date: 11/11/2015<br/>
+                  <button type="button" class="btn" ng-click="">
+                    <i class="fa fa-times-circle"></i> Cancel Order
+                  </button>
+                  <button type="button" class="btn" ng-click="">
+                    <i class="fa fa-pencil-square-o"></i> Edit Order
+                  </button>
+              </div>
+              <div class="col-md-6">
+                  
+              </div>
+          </div>
+      
+      </div>
+      <!-- Table -->
+      <table class="table table-bordered">
+          <tr>
+             <th>Item/SKU #</th>
+             <th>Quantity</th>
+          </tr>
+          <tr>
+             <td>19193</td>
+             <td>1</td>
+          </tr>
+          <tr>
+             <td>22222</td>
+             <td>1</td>
+          </tr>
+      </table>
+    </div>
 
     <div class="panel panel-default">
       <!-- Default panel contents -->
@@ -84,48 +82,22 @@
 
       <!-- Table -->
       <table class="table table-bordered">
-          <thead>
-                <tr>
-                  <th>&nbsp;</th>
-                  <th class="text-right"><span ng-bind-html="'UNIT-PRICE' | translate | unsafe" class="ng-binding">Unit Price</span></th>
-                  <th class="text-right"><span ng-bind-html="'QTY' | translate | unsafe" class="ng-binding">Qty</span></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                              <div class="">
-                                <!-- ngIf: item.product.type != 'group' --><a ng-href="/shop/products/15668#top" class="col-xs-5 col-sm-3 col-md-2 col-lg-2 ng-scope" ng-if="item.product.type != 'group'" href="/shop/products/15668#top">
-                                  <img class="img-responsive cart-item-image" ng-src="https://jafra-prod-herokuapp-com.global.ssl.fastly.net/assets/img/products/15668_0.jpg" onerror="this.onerror=null;this.src='/img/product_placeholder.gif';" src="https://jafra-prod-herokuapp-com.global.ssl.fastly.net/assets/img/products/15668_0.jpg">
-                                </a><!-- end ngIf: item.product.type != 'group' -->
-                                <!-- ngIf: item.product.type == 'group' -->
-
-                                <div class="col-sm-9 col-md-8 col-lg-8">
-                                  <h3>
-                                    <a ng-href="/shop/products/15668#top" class="ng-binding" href="/shop/products/15668#top">Bronze - Powder Blush </a>
-                                  </h3>
-
-                                  <p><label class="ng-binding">15668</label></p>
-
-                                  <!-- ngIf: item.product.kitGroups.length > 0 -->
-                                  <!-- ngIf: item.product.kitGroups.length > 0 -->
-                                  <p class="cart-item-actions">
-                                    
-                                  </p>
-                                </div>
-                              </div>
-                            </td>
-                        <td class="text-right">
-                            $14.50
-                        <td align="right">
-                            1
-                        </td>
-                </tr>
-            </tbody>
+          <tr>
+             <th>Item/SKU #</th>
+             <th>Quantity</th>
+          </tr>
+          <tr>
+             <td>19193</td>
+             <td>1</td>
+          </tr>
+          <tr>
+             <td>22222</td>
+             <td>1</td>
+          </tr>
       </table>
     </div>
 </div>
-description/time bought
+
 
 <!-- DESIGN 2-->
 

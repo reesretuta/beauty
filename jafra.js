@@ -40,6 +40,7 @@ var LOOKUP_CONSULTANT_URL = BASE_URL + "/JOS05004P.pgm";
 var CREATE_LEAD_URL = BASE_URL + "/JOS05005P.pgm";
 
 var CREATE_ORDER_URL = BASE_URL + "/JCD05020P.pgm";
+var GET_ORDER_HISTORY_URL = BASE_URL + "/JCD05013P.pgm";
 
 var GET_ADDRESSES_URL = BASE_URL + "/JCD05005P.pgm";
 var GET_ADDRESS_URL = BASE_URL + "/JCD05005P.pgm";
@@ -984,6 +985,65 @@ function createOrder(data) {
             result: body
         });
     });
+
+    return deferred.promise;
+}
+
+function getOrderHistory(clientId) {
+    logger.debug("getOrderHistory()", clientId);
+    var deferred = Q.defer();
+
+    request.get({
+        url: GET_ORDER_HISTORY_URL,
+        qs: {
+            clientId: clientId
+        },
+        headers: {
+            'Accept': 'application/json, text/json',
+            'Authorization': AUTH_STRING
+        },
+        agentOptions: agentOptions,
+        strictSSL: false,
+        json: true
+    }, function (error, response, body) {
+        logger.debug("getOrderHistory()", error, response ? response.statusCode: null, body);
+        if (error || response == null || response.statusCode != 200) {
+            logger.error("getOrderHistory(): error", error, response ? response.statusCode: null, body);
+            if (response && response.statusCode) {
+                deferred.reject({
+                    status: response.statusCode,
+                    result: {
+                        statusCode: response.statusCode,
+                        errorCode: body.errorCode,
+                        message: body.message
+                    }
+                });
+            } else {
+                deferred.reject({
+                    status: 500,
+                    result: {
+                        statusCode: 500,
+                        errorCode: "getOrderHistoryInvalidResponse",
+                        message: "Failed to get order history"
+                    }
+                });
+            }
+            return;
+        }
+
+        if (Array.isArray(body)) {
+            //logger.debug("getOrderHistory(): success", body);
+            deferred.resolve({
+                status: 200,
+                result: body
+            });
+        } else {
+            deferred.resolve({
+                status: 200,
+                result: []
+            });
+        }
+    })
 
     return deferred.promise;
 }
@@ -3560,6 +3620,7 @@ exports.lookupClientByEmail = lookupClientByEmail;
 exports.createLead = createLead;
 
 exports.createOrder = createOrder;
+exports.getOrderHistory = getOrderHistory;
 
 exports.getAddresses = getAddresses;
 exports.getAddress = getAddress;

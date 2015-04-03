@@ -1278,6 +1278,23 @@ router.route('/orders')// create an order
         });
     });
 
+// ORDER HISTORY
+// ----------------------------------------------------
+router.route('/orderHistory')// create an order
+    .get(function (req, res) {
+        var client_id = req.session.client.id;
+
+        // fetch the consultant information & return
+        jafraClient.getOrderHistory(client_id).then(function(r) {
+            res.status(r.status);
+            res.json(r.result);
+        }, function (r) {
+            logger.error("server: getOrderHistory(): failed to load order history", r.result);
+            res.status(r.status);
+            res.json(r.result);
+        });
+    });
+
 //// VALIDATION
 router.route('/validate/address') // validate address
     .post(function (req, res) {

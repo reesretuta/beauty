@@ -222,6 +222,7 @@
     "SELECT-STATE": "Please select a state",
 
     "ORDER-PROBLEM": "There was an error processing the order",
+    "ORDER-HISTORY-PROBLEM": "There was an error loading order history",
     "CONSULTANT-NOT-FOUND": "Unable to find consultant",
     "INVALID-PASSWORD": "Invalid password",
     "INVALID-PASSWORD-LENGTH": "Password must be at least 8 characters",

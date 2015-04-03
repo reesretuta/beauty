@@ -6,7 +6,8 @@ angular.module('app.controllers.account')
             //change page title
             $rootScope.title = "Account";
             $rootScope.section = "account";
-            
+
+            $scope.orderHistory = [];
             $scope.profile = {};
             
             $scope.profile = {
@@ -246,9 +247,18 @@ angular.module('app.controllers.account')
 //                 }
 //                 return d.promise;
 //             }
-            
-            
-            
+
+
+        // get order history
+        $scope.getOrderHistory = function() {
+            $log.debug('CheckoutController(): getOrderHistory()');
+
+            Order.getHistory().then(function(orderHistory) {
+                $scope.orderHistory = orderHistory;
+            }, function (err) {
+                $log.error("CheckoutController(): getOrderHistory(): error loading order history", err);
+            })
+        };
             
             
             

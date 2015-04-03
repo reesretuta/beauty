@@ -1177,7 +1177,7 @@ angular.module('app.services', ['ngResource'])
         orderService.create = function(order) {
             var d = $q.defer();
 
-            $log.debug("Session(): create(): attempting to create order=", order);
+            $log.debug("Order(): create(): attempting to create order=", order);
 
             try{
                 orderService.save({}, order).$promise.then(function(c) {
@@ -1197,6 +1197,31 @@ angular.module('app.services', ['ngResource'])
                 });
             } catch (ex) {
                 $translate('ORDER-PROBLEM').then(function (message) {
+                    d.reject({
+                        errorCode: 500,
+                        message: message
+                    });
+                });
+            }
+
+            return d.promise;
+        }
+
+        orderService.getHistory = function() {
+            var d = $q.defer();
+
+            $log.debug("Order(): getHistory(): attempting to get order history");
+
+            try {
+                var a = $http.get(API_URL + '/orderHistory', {}).success(function(orderHistory, status, headers, config) {
+                    $log.debug("Order(): getHistory(): done");
+                    d.resolve(orderHistory);
+                }).error(function(data, status, headers, config) {
+                    $log.error("Order(): getHistory(): error", status, data);
+                    d.reject(data);
+                });
+            } catch (ex) {
+                $translate('ORDER-HISTORY-PROBLEM').then(function (message) {
                     d.reject({
                         errorCode: 500,
                         message: message
