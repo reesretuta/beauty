@@ -515,9 +515,9 @@ angular.module('app.controllers.checkout')
                         // fetch sales tax information here
                         fetchSalesTax().then(function(salesTaxInfo) {
                             $log.debug("CheckoutController(): loadCheckout(): got sales tax info", salesTaxInfo);
-
+                            
                             $scope.salesTaxInfo = salesTaxInfo;
-
+                            
                             $scope.checkoutUpdated();
                             d.resolve();
                         }, function(error) {
@@ -586,25 +586,16 @@ angular.module('app.controllers.checkout')
                 }
             });
         }
-        
+                //
         $scope.validateStartAndReview = function(email){
             
             if ($scope.isOnlineSponsoring) {
                 $scope.validateEmailAndContinue(email); //checks of email already in use
             }else{
                 //client direct
-                if (Session.isLoggedIn()) {
-                    //can skip validateEmailAndContinue
-                    if ($scope.checkout.shipping != null && $scope.checkout.billing != null && $scope.checkout.card != null) {
-                        WizardHandler.wizard('checkoutWizard').goTo('Review');
-                    }
-                }else{
-                    $scope.validateProfileAndContinue(); //new user
-                    
-                    
-                }
+                $scope.singlePageValidate();
             }
-            
+  
         }
         
         
@@ -895,9 +886,13 @@ angular.module('app.controllers.checkout')
             return d.promise;
         }
         
+        
+        
         $scope.submitStart = function() {
             WizardHandler.wizard('checkoutWizard').goTo('Profile');
         }
+        
+        
         
         $scope.validateProfileAndContinue = function() {
             //$log.debug("CheckoutController(): validateProfileAndContinue()", $scope.profile);
@@ -910,6 +905,7 @@ angular.module('app.controllers.checkout')
                 $scope.processing = false;
                 return;
             }
+            
             var ssn = $scope.profile.ssn.replace(/(\d{3})(\d{2})(\d{4})/, '$1-$2-$3');
             $scope.password = $scope.profile.ssn.replace(/(\d{3})(\d{2})(\d{4})/, '$3');
             Consultant.lookup(ssn).then(function(data) {
@@ -1045,11 +1041,12 @@ angular.module('app.controllers.checkout')
                 }
             });
         };
-
+        
         $scope.validateEmailAndContinue = function(email) {
+            var d = $q.defer();
             $scope.emailError = false;
             $scope.processing = true;
-            $log.debug("CheckoutController(): validateEmailAndContinue()");
+            $log.debug("CheckoutController(): validateEmailAndContinue()", email);
 
             if (debug) {
                 $log.debug("CheckoutController(): in debug, skipping validating email");
@@ -1098,9 +1095,13 @@ angular.module('app.controllers.checkout')
                     } else {
                         // move to next step
                         // WizardHandler.wizard('checkoutWizard').goTo('Profile');
+                        
+                        $log.error("CheckoutController(): resolving promise", r);
+                        d.resolve();
                         $scope.processing = false;
                     }
                 }, function(r) {
+                    d.reject(r);
                     $log.error("CheckoutController(): failed validating email", r);
                     $translate('INVALID-EMAIL').then(function (message) {
                         $scope.emailError = message;
@@ -1108,6 +1109,7 @@ angular.module('app.controllers.checkout')
                     $scope.processing = false;
                 })
             }
+            return d.promise;
         }
 
         $scope.loginOrCreateUser = function() {
@@ -1155,7 +1157,14 @@ angular.module('app.controllers.checkout')
                     $scope.checkoutUpdated();
                     // jump to Shipping
                     // WizardHandler.wizard('checkoutWizard').goTo($scope.isOnlineSponsoring ? 'Profile' : 'Shipping');
-                    $scope.validateProfileAndContinue();
+                    if (!$scope.isOnlineSponsoring) {
+                        $log.debug("CheckoutController(): loginOrCreateUser(): authenticated, $scope.profile.customerStatus:", $scope.profile.customerStatus);
+                        //do nothing let user fill out info
+                    }else{
+                        //existing OS user
+                        $scope.validateProfileAndContinue();
+                    }
+                    
                     $scope.processing = false;
                 }, function(error) {
                     $log.error("CheckoutController(): loginOrCreateUser(): failed to authenticate");
@@ -1206,38 +1215,103 @@ angular.module('app.controllers.checkout')
         }
 
         $scope.selectCardAndContinue = function(ccData) {
-            //$log.debug("CheckoutController(): selectCardAndContinue()", ccData);
-            $log.debug("CheckoutController(): selectCardAndContinue()");
-            // $scope.profile.card = angular.copy(ccData); rees
-            
-            $scope.checkout.card = angular.copy(ccData);
-            //$log.debug("CheckoutController(): selectCardAndContinue(): profile now", $scope.profile);
-
+            //button clicked. sets $scope.profile.card
+            $log.debug("CheckoutController(): selectCardAndContinue()", ccData);
+            $scope.profile.card = angular.copy(ccData);
+            $log.debug("CheckoutController(): selectCardAndContinue(): profile now", $scope.profile);
             $scope.checkoutUpdated();
             //do nothing but highlight the selected credit card 
             // WizardHandler.wizard('checkoutWizard').goTo('Review');
         }
 
-        $scope.singlePageValidate = function() {
-            validateBasicInfo().then(function() {
-                addShippingAddress().then(function() {
-                    addPaymentMethod().then(function() {
-                        // NOW REVIEW
-                        WizardHandler.wizard('checkoutWizard').goTo('Review');
-                    }, function (err) {
 
-                    })
+        
+        function addOrSelectPayment(){
+            var d = $q.defer();
+            $log.debug("CheckoutController(): addOrSelectPayment()");
+            if ($scope.profile.newCard.length != 0) {
+                $log.debug("CheckoutController(): new card ");
+                $scope.addPaymentMethod().then(function() { //assumes NEW card
+                    WizardHandler.wizard('checkoutWizard').goTo('Review');
+                });
+            }else{
+                //exisitng card choosen
+                $scope.selectCardAndContinue($scope.profile.card).then(function() { //assumes NEW card
+                    // NOW REVIEW
+                    WizardHandler.wizard('checkoutWizard').goTo('Review');
+
                 }, function (err) {
 
-                })
-            }, function (err) {
+                });
+            }
 
-            })
         }
+        
+        
+        
+        
+        
+        
+        $scope.singlePageValidate = function() {
+            $log.debug("CheckoutController(): singlePageValidate()");
 
+
+                if ($scope.profile.shipping == null) {
+                    //new shipping
+                    $log.debug("CheckoutController(): singlePageValidate(): new shipping");
+                    $scope.addShippingAddressAndContinue($scope.profile.newShippingAddress).then(function() { //return promise 
+                        
+                        $log.debug("CheckoutController(): singlePageValidate(): new shipping", $scope.profile.newShippingAddress);
+                        addOrSelectPayment(); //return promise
+                        
+                    });
+                }else{
+                    //selected existing shipping
+                    $log.debug("CheckoutController(): singlePageValidate(): existing shipping");
+                    $scope.addShippingAddressAndContinue($scope.profile.shipping).then(function() { //
+                        $log.debug("CheckoutController(): singlePageValidate(): select Shipping Address()");
+                        addOrSelectPayment();
+                    })
+                    
+                }
+
+        }
+        
+        
+        // $scope.singlePageValidate = function() {
+//             $log.debug("CheckoutController(): singlePageValidate()");
+//             $scope.validateEmailAndContinue($scope.profile.loginEmail).then(function() {
+//                 $log.debug("CheckoutController(): validateEmailAndContinue()");
+//                 if ($scope.profile.shipping == null) {
+//                     //new shipping
+//                     $log.debug("CheckoutController(): singlePageValidate(): new shipping");
+//                     $scope.addShippingAddressAndContinue($scope.profile.newShippingAddress).then(function() { //return promise
+//
+//                         $log.debug("CheckoutController(): singlePageValidate(): new shipping", $scope.profile.newShippingAddress);
+//                         addOrSelectPayment(); //return promise
+//
+//                     });
+//                 }else{
+//                     //selected existing shipping
+//                     $log.debug("CheckoutController(): singlePageValidate(): existing shipping");
+//                     $scope.addShippingAddressAndContinue($scope.profile.shipping).then(function() { //
+//                         $log.debug("CheckoutController(): singlePageValidate(): select Shipping Address()");
+//                         addOrSelectPayment();
+//                     })
+//
+//                 }
+//
+//             }, function (err) {
+//
+//             })
+//         }
+        
+        
+        
+        
         $scope.addPaymentMethod = function() {
             $scope.processing = true;
-
+            
             if (debug) {
                 //$log.debug("CheckoutController(): addPaymentMethod(): debug, adding card to checkout", $scope.profile.newCard);
                 $log.debug("CheckoutController(): addPaymentMethod(): debug, adding card to checkout");
@@ -1250,7 +1324,7 @@ angular.module('app.controllers.checkout')
             if (!$scope.isOnlineSponsoring) {
 
 
-                var d = $q.deferred();
+                var d = $q.defer();
 
                 //$log.debug("CheckoutController(): addPaymentMethod(): adding card to account", $scope.profile.newCard);
                 $log.debug("CheckoutController(): addPaymentMethod(): adding card to account");
@@ -1866,6 +1940,7 @@ angular.module('app.controllers.checkout')
         };
 
         $scope.addShippingAddressAndContinue = function(address) {
+            var d = $q.defer();
             $log.debug("CheckoutController(): addShippingAddressAndContinue()", address);
             $scope.processing = true;
             if (address.name === $rootScope.namePlaceholder) {
@@ -1881,12 +1956,17 @@ angular.module('app.controllers.checkout')
                     $scope.processing = false;
                     // save our name, remove everything else
                     // clear address in case of back/forward save action & set pristine
-                    $scope.forms.shippingForm.$setPristine();
+                    // $scope.forms.shippingForm.$setPristine(); //uncomment rees
                     $scope.profile.newShippingAddress = {
                         name : $scope.profile.newShippingAddress.name
                     };
                     
-                    $scope.addPaymentMethod(); //progressing to next step
+                    
+                    if (!$scope.isOnlineSponsoring) {
+                        d.resolve();
+                    }else{
+                        $scope.addPaymentMethod(); //progressing to next step
+                    }
                     
                     //if CD do nothing but create CC on backend do not progress
                     
@@ -1899,6 +1979,7 @@ angular.module('app.controllers.checkout')
                     });
                 });
             });
+            return d.promise;
         };
 
         $scope.addShippingAddress = function(address) {
