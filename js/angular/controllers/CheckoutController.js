@@ -586,16 +586,14 @@ angular.module('app.controllers.checkout')
                 }
             });
         }
-                //
+
         $scope.validateStartAndReview = function(email){
-            
             if ($scope.isOnlineSponsoring) {
                 $scope.validateEmailAndContinue(email); //checks of email already in use
             }else{
                 //client direct
                 $scope.singlePageValidate();
             }
-  
         }
         
         
@@ -1225,56 +1223,60 @@ angular.module('app.controllers.checkout')
         }
 
 
+        function addOrSelectShipping() {
+            var d = $q.defer();
+            if ($scope.profile.shipping == null) {
+                //new shipping
+                $log.debug("CheckoutController(): singlePageValidate(): new shipping");
+                $scope.addShippingAddressAndContinue($scope.profile.newShippingAddress).then(function(a) {
+                    $log.debug("CheckoutController(): singlePageValidate(): new shipping", $scope.profile.newShippingAddress);
+                    d.resolve(a);
+                }, function(err) {
+                    $log.err("CheckoutController(): singlePageValidate(): error", err);
+                    d.reject(err);
+                });
+            } else {
+                d.resolve();
+            }
+            return d.promise;
+        }
+
+        // FIXME - verify we have either billSame or billing address selected/entered
         
         function addOrSelectPayment(){
             var d = $q.defer();
             $log.debug("CheckoutController(): addOrSelectPayment()");
-            if ($scope.profile.newCard.length != 0) {
-                $log.debug("CheckoutController(): new card ");
+            if ($scope.profile.card == null) {
+                $log.debug("CheckoutController(): addOrSelectPayment(): new card");
+
+                // assume we have card in form, so add it
                 $scope.addPaymentMethod().then(function() { //assumes NEW card
-                    WizardHandler.wizard('checkoutWizard').goTo('Review');
+                    d.resolve();
+                }, function(err) {
+                    $log.err("CheckoutController(): addOrSelectPayment(): error adding payment", err)
+                    d.reject(err);
                 });
-            }else{
-                //exisitng card choosen
-                $scope.selectCardAndContinue($scope.profile.card).then(function() { //assumes NEW card
-                    // NOW REVIEW
-                    WizardHandler.wizard('checkoutWizard').goTo('Review');
-
-                }, function (err) {
-
-                });
+            } else {
+                // existing card choosen
+                d.resolve();
             }
-
+            return d.promise;
         }
-        
-        
-        
-        
-        
         
         $scope.singlePageValidate = function() {
             $log.debug("CheckoutController(): singlePageValidate()");
 
-
-                if ($scope.profile.shipping == null) {
-                    //new shipping
-                    $log.debug("CheckoutController(): singlePageValidate(): new shipping");
-                    $scope.addShippingAddressAndContinue($scope.profile.newShippingAddress).then(function() { //return promise 
-                        
-                        $log.debug("CheckoutController(): singlePageValidate(): new shipping", $scope.profile.newShippingAddress);
-                        addOrSelectPayment(); //return promise
-                        
-                    });
-                }else{
-                    //selected existing shipping
-                    $log.debug("CheckoutController(): singlePageValidate(): existing shipping");
-                    $scope.addShippingAddressAndContinue($scope.profile.shipping).then(function() { //
-                        $log.debug("CheckoutController(): singlePageValidate(): select Shipping Address()");
-                        addOrSelectPayment();
-                    })
-                    
-                }
-
+            addOrSelectShipping().then(function() {
+                addOrSelectPayment().then(function() {
+                    WizardHandler.wizard('checkoutWizard').goTo('Review');
+                }, function(err) {
+                    // FIXME - display error message here
+                    $log.err("CheckoutController(): singlePageValidate(): error adding/selecting payment", err)
+                });
+            }, function(err) {
+               // FIXME - display error message here
+                $log.err("CheckoutController(): singlePageValidate(): error adding/selecting shipment", err)
+            });
         }
         
         
@@ -1430,7 +1432,7 @@ angular.module('app.controllers.checkout')
         }
 
         $scope.modifyPayment = function() {
-            // WizardHandler.wizard('checkoutWizard').goTo('Payment');
+            WizardHandler.wizard('checkoutWizard').goTo('Start');
         }
 
         $scope.editCreditCard = function(card) {

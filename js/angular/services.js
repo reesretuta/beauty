@@ -442,10 +442,11 @@ angular.module('app.services', ['ngResource'])
 
         sessionService.isLoggedIn = function() {
             var session = getLocalSession();
-            if (session.client && session.client.id) {
+            var loggedIn = session.client != null && session.client.id;
+            //$log.debug("Session(): isLoggedIn(): ", loggedIn);
+            if (session.client != null && session.client.id) {
                 return true;
             }
-            //$log.debug("Session(): isLoggedIn(): ", session.authenticated);
             return false;
         }
 

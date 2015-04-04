@@ -1,76 +1,6 @@
 
-
-
-
-
-<!--CLIENT DIRECT INFO: IF SIGNED IN... SHOW NOTHING-->
-
-
-<!--CLIENT DIRECT INFO: NOT SIGNED IN: OPTION TO SIGN-IN *****ONLY*****-->
-<div ng-if="!isOnlineSponsoring && profile.customerStatus == 'new' && profile.showSignIn" id="signin" class="col-sm-12">
-    <div class="col-md-offset-3 col-sm-9">
-        <h1 class="checkouth1"><span ng-bind-html="'SIGN-IN-ALREADY-A-CUSTOMER' | translate | unsafe"></span></h1>
-        <div class="row">
-          <div class="col-sm-6">
-            <div ng-if="loginError" class="alert alert-danger" role="alert" data-ng-bind-html="loginError"></div>
-            <div ng-if="emailError" class="alert alert-danger" role="alert">
-              <span>{{ emailError }}</span>
-            </div>
-          </div>
-        </div>
-    </div>
-    
-    <form name="signInForm" class="form-horizontal" role="form">
-        <div class="col-md-offset-3">
-          <div class="row"><div class="col-sm-6"><hr></div></div>
-          <div class="form-group">
-            <label for="loginEmail" class="col-md-3 control-label"><span ng-bind-html="'EMAIL_ADD' | translate | unsafe"></span></label>
-            <div class="col-sm-6" ng-class="{ 'has-error' : signInForm.loginEmail.$invalid && (signInForm.loginEmail.$dirty || signInForm.loginEmail.$touched) }">
-              <input name="loginEmail" ng-pattern="/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/" ng-model="profile.loginEmail" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" type="email" class="form-control" id="loginEmail" placeholder="{{ 'EXAMPLE-EMAIL-PLACEHOLDER' | translate | unsafe }}" required>
-              <span ng-show="signInForm.loginEmail.$invalid && (signInForm.loginEmail.$dirty || signInForm.loginEmail.$touched)" class="help-block" ng-class="{ 'text-danger' : signInForm.loginEmail.$invalid }">
-                <span ng-bind-html="'REQUIRES-VALID-EMAIL-ADDRESS' | translate | unsafe"></span>.
-              </span>
-            </div>
-          </div>
-    
-          <!--PASSWORD-->
-          <div class="form-group" ng-if="!isOnlineSponsoring">
-            <label for="inputPassword3" class="col-md-3 control-label"><span ng-bind-html="'PASSWORD' | translate | unsafe"></span></label>
-            <div class="col-sm-4" ng-class="{ 'has-error' : signInForm.loginPassword.$dirty && signInForm.loginPassword.$invalid }">
-              <input name="loginPassword" ng-model="profile.loginPassword" type="password" class="form-control" id="inputPassword3" placeholder="{{ 'EXAMPLE-PASSWORD-PLACEHOLDER' | translate | unsafe }}" ng-minlength="8" minlength="8" required>
-              <span ng-show="signInForm.loginPassword.$invalid && (signInForm.loginPassword.$touched || signInForm.loginPassword.$dirty)" class="help-block" ng-class="{ 'text-danger' : signInForm.loginPassword.$dirty && signInForm.loginPassword.$invalid }">
-                <span ng-bind-html="'INVALID-PASSWORD-LENGTH' | translate | unsafe"></span>.
-              </span>
-            </div>
-          </div>
-
-
-    
-          <!--AGREE-->
-          <div class="form-group">
-            <div class="col-md-offset-3 col-sm-9">
-              <div class="row"><div class="col-sm-8"><hr></div></div>
-              <p>
-                <small ng-bind-html="'OS-START-PRIVACY-AGREE' | translate | unsafe"></small> <small><a href ng-bind-html="'OS-START-PRIVACY-AGREE-2' | translate | unsafe" data-toggle="modal" data-target=".bs-privacy-modal-lg"></a> <small ng-bind-html="'OS-START-PRIVACY-AGREE-3' | translate | unsafe" class="ng-binding"></small>
-              </p>
-              <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                <button ng-if="!isOnlineSponsoring" type="button" class="btn btn-primary btn-lg" ng-class="{ 'processing' : processing }" ng-click="loginOrCreateUser()" ng-disabled="!signInForm.$valid || processing">
-                  <span ng-show="profile.showSignIn" ng-bind-html="'SIGN-IN-ALREADY-A-CUSTOMER' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i>
-                </button>
-                
-              </div>
-            </div>
-          </div>
-
-        </div>
-    </form>
-    
-</div>
-
-
-<!--CLIENT DIRECT INFO: NOT SIGNED IN: OPTION TO SIGN-IN OR CREATE NEW-->
-<div ng-if="!isOnlineSponsoring && profile.customerStatus == 'new' && profile.showSignIn != true" id="signin" class="col-sm-12">
+<!-- CLIENT DIRECT INFO: NOT SIGNED IN: OPTION TO SIGN-IN OR CREATE NEW-->
+<div ng-if="!isOnlineSponsoring && !loggedIn()" id="signin" class="col-sm-12">
 
   <div class="col-md-offset-3">
     <h1 class="checkouth1" ng-if="profile.customerStatus == 'existing' && !isOnlineSponsoring"><span ng-bind-html="'SIGN-IN-ALREADY-A-CUSTOMER' | translate | unsafe"></span></h1>
@@ -96,7 +26,7 @@
     <div class="form-group" ng-if="!isOnlineSponsoring">
       <div class="col-md-offset-3 col-sm-9">
         <div class="row"><div class="col-sm-6"><hr></div></div>
-        <p ng-if="profile.customerStatus == 'new'" style="font-size: 1.5em;"><b class="control-label" ng-bind-html="'ALREADY-A-CUSTOMER' | translate | unsafe"></b> <a href="" ng-mousedown="profile.showSignIn = 'true'" class="checkout-link"><b ng-bind-html="'SIGN-IN-ALREADY-A-CUSTOMER' | translate | unsafe"></b></a>.</p>
+        <p ng-if="profile.customerStatus == 'new'" style="font-size: 1.5em;"><b class="control-label" ng-bind-html="'ALREADY-A-CUSTOMER' | translate | unsafe"></b> <a href="" ng-mousedown="profile.customerStatus = 'existing'" class="checkout-link"><b ng-bind-html="'SIGN-IN-ALREADY-A-CUSTOMER' | translate | unsafe"></b></a>.</p>
         <p ng-if="profile.customerStatus == 'existing'" style="font-size: 1.5em;"><b><span ng-bind-html="'NOT-YET-A-CUSTOMER' | translate | unsafe"></span></b> <a href="" ng-click="profile.customerStatus = 'new'" class="checkout-link"><span ng-bind-html="'CREATE-ACCOUNT' | translate | unsafe"></span></a>.</p>
       </div>
     </div>
@@ -154,8 +84,8 @@
     <div class="form-group">
       <div class="col-md-offset-3 col-sm-9">
         <div class="row"><div class="col-sm-8"><hr></div></div>
-        <p>
-          <small ng-bind-html="'OS-START-PRIVACY-AGREE' | translate | unsafe"></small> <small><a href ng-bind-html="'OS-START-PRIVACY-AGREE-2' | translate | unsafe" data-toggle="modal" data-target=".bs-privacy-modal-lg"></a> <small ng-bind-html="'OS-START-PRIVACY-AGREE-3' | translate | unsafe" class="ng-binding"></small>
+        <p ng-if="profile.customerStatus == 'new'">
+          <small ng-bind-html="'OS-START-PRIVACY-AGREE' | translate | unsafe"></small> <small><a href ng-bind-html="'OS-START-PRIVACY-AGREE-2' | translate | unsafe" data-toggle="modal" data-target=".bs-privacy-modal-lg"></a></small> <small ng-bind-html="'OS-START-PRIVACY-AGREE-3' | translate | unsafe" class="ng-binding"></small>
         </p>
         <div class="input-group">
           <span class="input-group-addon"><i class="fa fa-lock"></i></span>
@@ -180,40 +110,7 @@
   </form>
 </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!--ONLINE SPONSORING WORKS!-->
-
-
+<!-- ONLINE SPONSORING WORKS!-->
 
 <div ng-if="isOnlineSponsoring" id="signin" class="col-sm-12">
   <div class="col-md-offset-3">
@@ -417,8 +314,6 @@
 <!-- OS PROFILE END-->
 
 
-
-
 <!-- OS KIT SELECTION-->
 <div class="col-md-12" ng-if="isOnlineSponsoring">
     <div class="col-md-offset-3">
@@ -471,84 +366,15 @@
 <!-- OS KIT END-->
 
 
+<!-- SHIPPING -->
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!--SHIPPING -->
-
-<div class="col-sm-12">
+<div class="col-sm-12" ng-if="isOnlineSponsoring || loggedIn()">
   <div class="col-md-offset-3">
     <h1 ng-if="session.client.addresses.length > 0"><span ng-bind-html="'CHOOSE-SHIPPING-ADDRESS' | translate | unsafe"></span></h1>
     <h1 ng-if="session.client.addresses == null || session.client.addresses.length == 0"><span ng-bind-html="'OS-SHIPPING-TITLE' | translate | unsafe"></span></h1>
     <div class="row" ng-if="!isOnlineSponsoring">
       <div class="col-xs-6 col-lg-4 checkout-address" ng-repeat="addressData in session.client.addresses">
-        <div class="address-block">
+        <div class="address-block" ng-class="profile.shipping.id == addressData.id ? 'selectedShipping' : ''">
           <span class="address-name block">{{ addressData.name || namePlaceholder }}</span>
           <span class="address-street block">{{ addressData.address1 }} {{ addressData.address2 }}</span>
           <span class="address-region block">{{ addressData.city }}, {{ addressData.state }} {{ addressData.zip }}</span>
@@ -572,12 +398,9 @@
   </form>
 </div><!--/span-->
 
+<!-- PAYMENT -->
 
-
-
-
-
-<div class="col-sm-12">
+<div class="col-sm-12" ng-if="isOnlineSponsoring || loggedIn()">
 
 <div class="col-md-offset-3">
   <h1 ng-show="session.client.creditCards && session.client.creditCards.length > 0">
@@ -623,7 +446,7 @@
 </div>
 
 
-<div class="row" ng-if="profile.customerStatus=='existing'">
+<div class="row" ng-if="profile.customerStatus=='existing' && (profile.card == null || profile.card.id == null)">
   <div class="col-md-offset-3 col-lg-8">
     <hr>
     <h2><span ng-bind-html="'ENTER-PAYMENT-INFORMATION' | translate | unsafe"></span></h2>
@@ -849,8 +672,10 @@
         </button>
     </div>
   </div> -->
+  </form>
+</div>
 
-  
+<div class="row" ng-if="loggedIn()">
   <pre>{{$scope.profile.shipping.id}}</pre>
   <pre>{{$scope.profile.length}}</pre>
   <pre>{{profile.card.length == 0}}</pre>
@@ -859,30 +684,12 @@
   <pre>{{profile}}</pre>
   <div class="form-group">
     <div class="col-md-offset-3 col-sm-9">
-        <button type="button" ng-click="validateStartAndReview(profile.loginEmail)" class="btn btn-primary btn-lg" ng-class="{ 'processing' : processing }">
-          <!-- <span ng-bind-html="'BTN_SAVE_PAYMENT' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i> -->
-          <span>CONTINUE</span> &nbsp;<i class="fa fa-caret-right"></i>
-        </button>
+      <button type="button" ng-click="validateStartAndReview(profile.loginEmail)" class="btn btn-primary btn-lg" ng-class="{ 'processing' : processing }">
+        <!-- <span ng-bind-html="'BTN_SAVE_PAYMENT' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i> -->
+        <span>CONTINUE</span> &nbsp;<i class="fa fa-caret-right"></i>
+      </button>
     </div>
   </div>
-
-
-  </form>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 </div><!--/span-->

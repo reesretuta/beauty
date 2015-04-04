@@ -193,8 +193,10 @@ angular.module('app.controllers.main').controller('MainController', function ($s
         $location.path(STORE_BASE_URL);
     };
 
-    $scope.loggedIn = function() {
-        return Session.isLoggedIn();
+    $rootScope.loggedIn = function() {
+        var loggedIn = Session.isLoggedIn();
+        //$log.debug("MainController(): loggedIn(): ", loggedIn);
+        return loggedIn;
     };
 
     $scope.getUserEmail = function() {

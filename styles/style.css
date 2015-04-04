@@ -750,6 +750,10 @@ a, .btn {
 .checkout-address .btn {
   margin-bottom: 40px;
 }
+.selectedShipping {
+    border: 1px solid red;
+}
+
 .shippingSpeedModal.modal {
     overflow: hidden;
 }
