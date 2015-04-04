@@ -20,9 +20,6 @@
     <link rel="stylesheet" href="/styles/animate.css">
     <link rel="stylesheet" href="/lib/allmighty-autocomplete/style/autocomplete.css">
 
-    <!-- Google Font News Cycle (Similar to News Gothic) -->
-    <link href="//fonts.googleapis.com/css?family=News+Cycle:400,700" rel="stylesheet">
-
     <!-- JAFRA Custom CSS -->
     <link rel="stylesheet" href="/styles/style.css">
 
@@ -67,8 +64,8 @@
     <!-- Custom styles for Online Sponsoring -->
     <link rel="stylesheet" type="text/css"  href="/styles/online_sponsoring/fonts.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css"  href="/styles/online_sponsoring/style.css" rel="stylesheet">
-
     <link rel="stylesheet" type="text/css"  href="/styles/online_sponsoring/style-dk.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css"  href="/styles/jafrachat.css" rel="stylesheet">
 
   </head>
 
@@ -91,7 +88,7 @@
             <li ng-if="!inCheckout"><a href="#freedom_flexibility" analytics-on="click" analytics-event="Menu About" analytics-category="Content"><span ng-bind-html="'OS-NAV1' | translate | unsafe"></span></a></li>
             <li ng-if="!inCheckout"><a href="#starter_kits" analytics-on="click" analytics-event="Menu Kits" analytics-category="Content"><span ng-bind-html="'OS-NAV2' | translate | unsafe"></span></a></li>
             <li ng-if="!inCheckout"><a href="#FAQs" analytics-on="click" analytics-event="Menu FAQs" analytics-category="Content"><span ng-bind-html="'OS-NAV3' | translate | unsafe"></span></a></li>
-            <li ng-if="!inCheckout"><a href class="cta" data-toggle="modal" data-target=".bs-example-modal-lg" analytics-on="click" analytics-event="Menu CTA" analytics-category="Buttons"><span ng-bind-html="'OS-NAV4' | translate | unsafe"></span></a></li>
+            <li ng-if="!inCheckout"><a href class="cta" data-toggle="modal" data-target=".lead-modal-lg" analytics-on="click" analytics-event="Menu CTA" analytics-category="Buttons"><span ng-bind-html="'OS-NAV4' | translate | unsafe"></span></a></li>
             <li class="contact-dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown" analytics-on="click" analytics-event="Menu Contact" analytics-category="Content"><span ng-bind-html="'OS-NAV5' | translate | unsafe"></span></a>
               <ul class="dropdown-menu dropdown_jafra contact-header" role="menu">
@@ -194,6 +191,22 @@
           </p>
         </div>
       </footer>
+<!-- JOIN LEAD MODAL -->
+<div class="modal fade lead-modal-lg" id="leadModal" tabindex="-1" role="dialog" aria-labelledby="leadModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"><span ng-bind-html="'CLOSE' | translate | unsafe"></span></span></button>
+        <h4 class="modal-title text-center" id="myModalLabel"><span ng-bind-html="'JOIN-JAFRA-TODAY' | translate | unsafe" class="ng-binding">JOIN JAFRA TODAY</span></h4>
+      </div>
+      <!-- FIXME: figure out how to make this not crash -->
+      <div class="modal-body clearfix">
+        <ng-include src="'/partials/online_sponsoring/leadform.html'"/>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- terms modal -->
 <div class="modal fade bs-terms-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -213,6 +226,7 @@
     </div>
   </div>
 </div>
+<!-- privacy modal -->
 <div class="modal fade bs-privacy-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -234,9 +248,24 @@
   </div>
 </div>
 
+<!-- jafra chat widget -->
+<div id="jaf_chat">
+  <div class="jaf-chat-holder">
+    <div class="jaf-chat-header">
+      <h4 class="jaf-chat-title">Chat with us!</h4>
+      <button class="jaf-chat-showhide"></button>
+    </div>
+    <div class="jaf-chat-frame">
+      <iframe id="jaf_chat_frame" width="320" height="400" frameborder="0" src="http://chat.jafrausa.com/chat/chat.html"></iframe>
+    </div>
+  </div>
+</div>
+
     </div> <!-- /div #content -->
 
     <!-- JavaScript -->
+    <script src="/js/jafrachat.js"></script>
+
     <script src="/lib/newrelic-timing/newrelic-timing.min.js"></script>
     <script src="/lib/newrelic-timing/newrelic-timing-angular.min.js"></script>
     <script src="/lib/jquery-resize/jquery.ba-resize.min.js"></script>

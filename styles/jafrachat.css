@@ -1,0 +1,123 @@
+/* styles for jafra chat widget. requires jafra fonts */
+
+/* widget styles reset based on Eric Meyer's Reset CSS v2.0 - http://cssreset.com */
+#jaf_chat div, #jaf_chat span, #jaf_chat applet, #jaf_chat object, #jaf_chat iframe, #jaf_chat h1, #jaf_chat h2, #jaf_chat h3, #jaf_chat h4, #jaf_chat h5, #jaf_chat h6, #jaf_chat p, #jaf_chat blockquote, #jaf_chat pre, #jaf_chat a, #jaf_chat abbr, #jaf_chat acronym, #jaf_chat address, #jaf_chat big, #jaf_chat cite, #jaf_chat code, #jaf_chat del, #jaf_chat dfn, #jaf_chat em, #jaf_chat img, #jaf_chat ins, #jaf_chat kbd, #jaf_chat q, #jaf_chat s, #jaf_chat samp, #jaf_chat small, #jaf_chat strike, #jaf_chat strong, #jaf_chat sub, #jaf_chat sup, #jaf_chat tt, #jaf_chat var, #jaf_chat b, #jaf_chat u, #jaf_chat i, #jaf_chat center, #jaf_chat dl, #jaf_chat dt, #jaf_chat dd, #jaf_chat ol, #jaf_chat ul, #jaf_chat li, #jaf_chat fieldset, #jaf_chat form, #jaf_chat label, #jaf_chat legend, #jaf_chat table, #jaf_chat caption, #jaf_chat tbody, #jaf_chat tfoot, #jaf_chat thead, #jaf_chat tr, #jaf_chat th, #jaf_chat td, #jaf_chat article, #jaf_chat aside, #jaf_chat canvas, #jaf_chat details, #jaf_chat embed, #jaf_chat figure, #jaf_chat figcaption, #jaf_chat footer, #jaf_chat header, #jaf_chat hgroup, #jaf_chat menu, #jaf_chat nav, #jaf_chat output, #jaf_chat ruby, #jaf_chat section, #jaf_chat summary, #jaf_chat time, #jaf_chat mark, #jaf_chat audio, #jaf_chat video{border:0;font-size:100%;font:inherit;vertical-align:baseline;margin:0;padding:0}article, #jaf_chat aside, #jaf_chat details, #jaf_chat figcaption, #jaf_chat figure, #jaf_chat footer, #jaf_chat header, #jaf_chat hgroup, #jaf_chat menu, #jaf_chat nav, #jaf_chat section{display:block}body{line-height:1}ol, #jaf_chat ul{list-style:none}blockquote, #jaf_chat q{quotes:none}blockquote:before, #jaf_chat blockquote:after, #jaf_chat q:before, #jaf_chat q:after{content:none}table{border-collapse:collapse;border-spacing:0}
+
+/* base styles, positions chat at bottom-right of viewport */
+#jaf_chat {
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	position: fixed;
+	width: 322px;
+	height: 444px;
+	bottom: -400px;
+	right: 16px;
+	z-index: 9999;
+	box-shadow: 0 0 40px rgba(26,9,40,.75);
+	-webkit-transition: bottom 350ms ease;
+	-moz-transition: bottom 350ms ease;
+	-ms-transition: bottom 350ms ease;
+	-o-transition: bottom 350ms ease;
+	transition: bottom 350ms ease;
+}
+@media (max-width:350px){
+	#jaf_chat  {
+		right: -1px;
+	}
+}
+#jaf_chat.shown {
+	bottom: 0;
+}
+#jaf_chat div {
+	box-sizing: border-box;
+}
+#jaf_chat *, #jaf_chat *:before, #jaf_chat *:after {
+ 	box-sizing: inherit;
+}
+/* main widget container */
+#jaf_chat .jaf-chat-holder {
+	background:#460d66;
+	border: 1px solid #fff;
+	border-bottom: 0;
+}
+@media (max-width:350px){
+	#jaf_chat .jaf-chat-holder {
+		border-right:0;
+		border-left: 0;
+	}
+}
+#jaf_chat .jaf-chat-header {
+	padding: 10px 16px;
+}
+#jaf_chat .jaf-chat-title {
+	display: inline-block;
+	font-family: DidotLTPro-Italic;
+	font-weight: normal;
+	font-style: normal;
+	font-size: 24px;
+	text-transform: lowercase;
+	color: #fff;
+}
+#jaf_chat .jaf-chat-showhide {
+	display: block;
+	float: right;
+	background: none;
+	padding: 0;
+	border: 0;
+	color: #fff;
+	font-size: 11px;
+	line-height: 24px;
+	text-transform: uppercase;
+	outline: none;
+}
+#jaf_chat .jaf-chat-showhide:before {
+	content: "Show"
+}
+#jaf_chat.shown .jaf-chat-showhide:before {
+	content: "Hide"
+}
+#jaf_chat .jaf-chat-showhide:after {
+	content: "\f102";
+	display: inline-block;
+	font-family: FontAwesome;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 1.2em;
+	padding-left: 3px;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased;
+	margin-left: 3px;
+	-webkit-transition: all 200ms ease;
+	-moz-transition: all 200ms ease;
+	-ms-transition: all 200ms ease;
+	-o-transition: all 200ms ease;
+	transition: all 200ms ease;
+
+	-moz-transform-origin: 50% 50%;
+	-webkit-transform-origin: 55% 50%;
+	-o-transform-origin: 50% 50%;
+	-ms-transform-origin: 50% 50%;
+	transform-origin: 55% 50%;
+}
+#jaf_chat:not(.shown) .jaf-chat-showhide:after {
+	-moz-transform: rotate(0deg);
+	-webkit-transform: rotate(0deg);
+	-o-transform: rotate(0deg);
+	-ms-transform: rotate(0deg);
+	transform: rotate(0deg);
+}
+#jaf_chat.shown .jaf-chat-showhide:after {
+	-moz-transform: rotate(-180deg);
+	-webkit-transform: rotate(-180deg);
+	-o-transform: rotate(-180deg);
+	-ms-transform: rotate(-180deg);
+	transform: rotate(-180deg);
+}
+#jaf_chat .jaf-chat-showhide:hover {
+	text-decoration: underline;
+}
+#jaf_chat .jaf-chat-frame {
+
+}
+#jaf_chat #jaf_chat_frame {
+
+}
