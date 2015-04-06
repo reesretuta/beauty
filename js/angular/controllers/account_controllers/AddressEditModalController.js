@@ -1,4 +1,4 @@
-angular.module('app.controllers.account').controller('AddressEditModalController', function ($document, $modalInstance, $q, $scope, $window, $log, $translate, Addresses, address) {
+angular.module('app.controllers.account').controller('AddressEditModalController', function ($document, $modalInstance, $q, $scope, $window, $log, $translate, Addresses, address, addAddress) {
 
     $log.debug('AddressEditModalController()');
 
