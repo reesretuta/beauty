@@ -1,0 +1,69 @@
+<div id="signin" class="col-sm-12">
+
+  <div class="col-md-offset-3">
+    <h1 class="checkouth1">
+      <span ng-bind-html="'OS-START-TITLE' | translate | unsafe"></span>
+      <span class="store-heading-description">
+        <span ng-bind-html="'OS-START-TAG' | translate | unsafe"></span>
+      </span>
+    </h1>
+    <div class="row">
+      <div class="col-sm-8">
+        <div ng-if="loginError" class="alert alert-danger" role="alert" data-ng-bind-html="loginError"></div>
+        <div ng-if="emailError" class="alert alert-danger" role="alert">
+          <span>{{ emailError }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <form name="leadForm" class="form-horizontal" role="form">
+
+    <div class="form-group">
+      <label for="firstName" class="col-md-3 control-label"><span ng-bind-html="'OS-NAME' | translate | unsafe"></span></label>
+      <div class="col-sm-4" ng-class="{ 'has-error' : leadForm.firstName.$invalid && (leadForm.firstName.$touched || leadForm.firstName.$dirty) }">
+        <input name="firstName" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model="profile.firstName" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" class="form-control" id="firstName" placeholder="{{'CHECKOUT-FIRST-PLACEHOLDER' | translate | unsafe}}" required  autofocus="" maxlength="40">
+        <span ng-show="leadForm.firstName.$invalid && (leadForm.firstName.$touched || leadForm.firstName.$dirty)" class="help-block" ng-class="{ 'text-danger' : leadForm.firstName.$invalid }"><span ng-bind-html="'REQUIRE-FIRSTNAME-LENGTH' | translate | unsafe"></span></span>
+      </div>
+      <div class="col-sm-4" ng-class="{ 'has-error' : leadForm.lastName.$invalid && (leadForm.lastName.$dirty || leadForm.lastName.$touched) }">
+        <input name="lastName" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model="profile.lastName" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" class="form-control" id="lastName" placeholder="{{'CHECKOUT-LAST-PLACEHOLDER' | translate | unsafe}}" required maxlength="40">
+        <span ng-show="leadForm.lastName.$invalid && (leadForm.lastName.$dirty || leadForm.lastName.$touched)" class="help-block" ng-class="{ 'text-danger' : leadForm.lastName.$invalid }"><span ng-bind-html="'REQUIRE-LASTNAME-LENGTH' | translate | unsafe"></span></span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="loginEmail" class="col-md-3 control-label"><span ng-bind-html="'EMAIL_ADD' | translate | unsafe"></span></label>
+      <div class="col-sm-8" ng-class="{ 'has-error' : leadForm.loginEmail.$invalid && (leadForm.loginEmail.$dirty || leadForm.loginEmail.$touched) }">
+        <input name="loginEmail" ng-pattern="/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/" ng-model="profile.loginEmail" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" type="email" class="form-control" id="loginEmail" placeholder="{{ 'EXAMPLE-EMAIL-PLACEHOLDER' | translate | unsafe }}" required>
+        <span ng-show="leadForm.loginEmail.$invalid && (leadForm.loginEmail.$dirty || leadForm.loginEmail.$touched)" class="help-block" ng-class="{ 'text-danger' : leadForm.loginEmail.$invalid }">
+          <span ng-bind-html="'REQUIRES-VALID-EMAIL-ADDRESS' | translate | unsafe"></span>.
+        </span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="phoneNumber" class="col-md-3 control-label"><span ng-bind-html="'PHONE-NUMBER' | translate | unsafe"></span></label>
+      <div class="col-sm-4" ng-class="{ 'has-error' :  leadForm.phoneNumber.$invalid && (leadForm.phoneNumber.$dirty || leadForm.phoneNumber.$touched) }">
+        <input name="phoneNumber" type="tel" ui-mask="(999) 999-9999" ng-model="profile.phoneNumber" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-minlength="13" class="form-control" id="phoneNumber" placeholder="(___) ___-____" required>
+        <span ng-show="leadForm.phoneNumber.$invalid && (leadForm.phoneNumber.$dirty || leadForm.phoneNumber.$touched)" class="help-block" ng-class="{ 'text-danger' : leadForm.phoneNumber.$invalid && (leadForm.phoneNumber.$touched || leadForm.phoneNumber.$dirty) }"><span ng-bind-html="'INVALID-TELEPHONE-NUMBER' | translate | unsafe"></span>.</span>
+      </div>
+    </div>
+
+
+    <div class="form-group">
+      <div class="col-md-offset-3 col-sm-9">
+        <div class="row"><div class="col-sm-11"><hr></div></div>
+        <div class="input-group">
+          <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+          <button type="button" class="btn btn-primary btn-lg" ng-class="{ 'processing' : processing }" ng-click="validateEmailAndContinue(profile.loginEmail)" ng-disabled="!leadForm.$valid || processing">
+            <span ng-bind-html="'BTN_CONTINUE' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i>
+          </button>
+        </div>
+        <p><br>
+          <small><a href ng-bind-html="'OS-START-PRIVACY-AGREE-2' | translate | unsafe" data-toggle="modal" data-target=".bs-privacy-modal-lg"></a> <small ng-bind-html="'OS-START-PRIVACY-AGREE-3' | translate | unsafe" class="ng-binding"></small>
+        </p>
+      </div>
+    </div>
+
+  </form>
+</div>
