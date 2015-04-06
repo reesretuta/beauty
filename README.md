@@ -4,11 +4,11 @@ Installation Steps
 MongoDB
 -------
 * Download mongodb (http://www.mongodb.org/downloads)
-* Install phantomjs
+* Install phantomjs (SCRAPING ONLY)
   * Retrieve an appropriate package or download the binary (http://phantomjs.org/download.html) and place on the path
   * Run the phantomjs command to ensure there are no errors
 * Install npm
-* Install casperjs (sudo npm install -g casperjs)
+* Install casperjs (sudo npm install -g casperjs) (SCRAPING ONLY)
 * Install deps (from project dir: npm install)
 * Install mongodb (http://docs.mongodb.org/master/installation/)
   - OSX
@@ -20,12 +20,12 @@ MongoDB
 
 Jafra
 -----
-* In another term, unpack the jafra prototype app
-* Change directory into jafra
-* Import all mongodb data from ./mongo_dump (http://docs.mongodb.org/manual/tutorial/backup-with-mongodump/)
-  - Example: path_to_mongo/mongorestore ./mongo_dump
+* In another term, git clone jafra & jafra-data
+* Change directory into jafra-data
+* Import all mongodb data from ./dump (http://docs.mongodb.org/manual/tutorial/backup-with-mongodump/)
+  - Example: path_to_mongo/mongorestore ./dump
 * Verify data imported by connecting to MondoDB (mongo jafra) and doing a find (db.products.find().count())
-* If not running on CentOS 6, run 'npm install' to rebuild any platform specific modules
+* Run 'npm install' to rebuild any platform specific modules
 
 
 Running
@@ -38,7 +38,7 @@ Node installed
 
 Recommended
 -----------
-Postman (api tool for testing)
+Postman (Chrome api tool for testing)
 
 Prototype & API
 ---------------
@@ -49,6 +49,19 @@ node server.js
 </code>
 
 Then visit the site on port 8090 (e.g. http://localhost:8090)
+
+For extra debugging of server-side requests:
+
+<code>
+NODE_DEBUG=request node server.js
+</code>
+
+To use your local inventory cache & not hit JCS servers, use the following ENV
+variable.  This speeds things up considerably when restarting node frequently.
+
+<code>
+FORCE_INVENTORY_CACHE=true
+</code>
 
 Scraper
 -------
