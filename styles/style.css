@@ -1449,3 +1449,10 @@ fieldset[disabled].fieldset-no-bg {
 #order-history table td{
 /*    border:none !important;*/
 }
+
+.streamline-checkout {
+  padding-top: 30px;
+}
+.streamline-checkout h1, .streamline-checkout h2 {
+  margin-top: 30px;
+}

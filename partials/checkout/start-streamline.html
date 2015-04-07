@@ -1,3 +1,5 @@
+<div class="streamline-checkout"> <!-- style override wrapper for streamlined checkout -->
+
 <!-- CLIENT DIRECT INFO: NOT SIGNED IN: OPTION TO SIGN-IN OR CREATE NEW-->
 <div ng-if="!isOnlineSponsoring && !loggedIn()" id="signin" class="col-sm-12">
 
@@ -365,7 +367,7 @@
           <p class="HelveticaNeueLTStd-Th kit-value" ng-bind-html="'OS-KIT-PRODUCT1-VALUE' | translate | unsafe"></p>
 
           <p ng-bind-html="'OS-KIT-PRODUCT1-TAG' | translate | unsafe"></p>
-          <img class="img-responsive" src="/img/49kit-2x.jpg"/>
+          <img class="img-responsive" src="/img/99kit-2x.jpg"/>
 
           <div ng-if="session.language == 'en_US'" class="product-action">
             <span class="product-price"><small>Only<br></small> $99</span>
@@ -406,7 +408,7 @@
           <p class="HelveticaNeueLTStd-Th kit-value" ng-bind-html="'OS-KIT-PRODUCT2-VALUE' | translate | unsafe"></p>
 
           <p ng-bind-html="'OS-KIT-PRODUCT2-TAG' | translate | unsafe"></p>
-          <img class="img-responsive" src="/img/99kit-2x.jpg"/>
+          <img class="img-responsive" style="padding: 0 20px;" src="/img/49kit-2x.jpg"/>
 
           <div ng-if="session.language == 'en_US'" class="product-action">
             <span class="product-price"><small>Only<br></small> $49</span>
@@ -477,10 +479,10 @@
   </div>
   <!-- /offset -->
 
-  <div ng-show="profile.shipping != null" class="col-md-offset-3">
-    <a ng-click="showNewShipping()">+ADD SHIPPING</a>
+  <div ng-show="!isOnlineSponsoring && profile.shipping != null" class="col-md-offset-3">
+    <a class="btn btn-primary btn-lg" ng-click="showNewShipping()">+ ADD SHIPPING</a>
   </div>
-  <ng-include ng-if="profile.shipping == null" src="'/partials/checkout/shipping-form-include.html'"/>
+  <ng-include ng-if="isOnlineSponsoring || profile.shipping == null" src="'/partials/checkout/shipping-form-include.html'"/>
 
   <div class="col-md-offset-3">
     <hr>
@@ -829,3 +831,6 @@
   </div>
   <!-- <pre>{{profile}}</pre> -->
 </div><!--/span-->
+
+
+</div> <!-- end style override wrapper for streamlined checkout -->
