@@ -1249,6 +1249,12 @@ angular.module('app.controllers.checkout')
             return d.promise;
         }
         
+        $scope.selectBillingAddressAndContinue = function(address){
+            $log.debug("CheckoutController(): selectBillingAddressAndContinue(): address: ", address);
+            $scope.profile.billing = angular.copy(address);
+        }
+        
+        
         $scope.updateSku = function(sku){
             $scope.selectProduct(sku).then(function(){
                 $log.debug("CheckoutController(): updateSku(): ", $scope.cart[0].sku);
@@ -1267,11 +1273,15 @@ angular.module('app.controllers.checkout')
                 $scope.profile.billing = null;
             }
         }
-
+        
+        
+        
         function addPaymentIfNotSelected(){ //responding back to continue button click
             var d = $q.defer();
             $log.debug("CheckoutController(): addPaymentIfNotSelected(): $scope.profile.card: ", $scope.profile.card);
-            if ($scope.profile.card == null) {
+            $log.debug("CheckoutController(): addPaymentIfNotSelected(): $scope.profile.card: ", $scope.profile.card.id == null);
+            
+            if ($scope.profile.card.id == null) {
                 $log.debug("CheckoutController(): addPaymentIfNotSelected(): new card");
                 // assume we have card in form, so add it
                 $scope.addPaymentMethod().then(function(card) { //assumes NEW card, checks for profile.billSame
@@ -1282,6 +1292,15 @@ angular.module('app.controllers.checkout')
                     d.reject(err);
                 });
             } else {
+                
+                $log.debug("CheckoutController(): addPaymentIfNotSelected(): card is selected");
+                if ($scope.profile.billSame) {
+                    $scope.billSameChanged(true);
+                }else{
+                    // set billing to newBilling
+                    
+                }
+                
                 d.resolve();
             }
             return d.promise;
@@ -1289,7 +1308,6 @@ angular.module('app.controllers.checkout')
         
         $scope.singlePageValidate = function() {
             $log.debug("CheckoutController(): singlePageValidate()");
-
             addShippingIfNotSelected().then(function(a) {
                 $log.debug("CheckoutController(): singlePageValidate(): added?", a!=null)
                 addPaymentIfNotSelected().then(function() {
@@ -1379,6 +1397,7 @@ angular.module('app.controllers.checkout')
                         });
                     } else {
                         $log.debug("CheckoutController(): addPaymentMethod(): billSame");
+                        $scope.profile.billing = $scope.profile.shipping;
                         $scope.checkoutUpdated();
                         d.resolve(card);
                         $scope.processing = false;
