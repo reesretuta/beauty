@@ -793,7 +793,7 @@ h3.cart-item-prod-title{
 /*  max-height: 136px;
 */  background: #FBF8FB;
   border-radius: 9px;
-  border: 2px solid rgba(195,0,47,1);
+  border: 2px solid #ccc;
   font-family: "Courier New", "Courier", monospace;
   font-size: 15px;
   font-weight: bold;
@@ -805,6 +805,11 @@ h3.cart-item-prod-title{
   -o-transition: opacity 200ms ease;
   transition: opacity 200ms ease;
 }
+
+.checkout-card.active{
+    border: 2px solid rgba(195,0,47,1);
+}
+
 .card-number {
   clear: both;
   padding-top: 10px;
