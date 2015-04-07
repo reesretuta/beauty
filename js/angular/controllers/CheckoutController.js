@@ -2056,6 +2056,10 @@ angular.module('app.controllers.checkout')
                     
                     $scope.addPaymentMethod().then(function(){
                         d.resolve();
+                        if ($scope.isOnlineSponsoring) {
+                            $log.debug("CheckoutController(): addShippingAddressAndContinue(): going to review");
+                            WizardHandler.wizard('checkoutWizard').goTo('Review');
+                        }
                     }); //progressing to next step
                     
                     //if CD do nothing but create CC on backend do not progress
