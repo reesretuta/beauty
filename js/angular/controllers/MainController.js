@@ -245,20 +245,4 @@ angular.module('app.controllers.main').controller('MainController', function ($s
             $('#carousel-product-generic').carousel('next');
         });
     };
-
-    $scope.addLead = function(firstName, lastName, email, phoneNumber, type) {
-        Leads.save({
-            email: email,
-            firstName: firstName,
-            lastName: lastName,
-            phone: phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3'),
-            language: Session.get().language,
-            type: type
-        }).$promise.then(function(lead) {
-            $log.debug("MainController(): addLead(): lead created");
-        }, function(error) {
-            $log.error("MainController(): addLead(): failed to create lead", error);
-        });
-    }
-
 });

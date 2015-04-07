@@ -17,12 +17,12 @@
     </div>
   </div>
 
-  <form name="leadForm" class="form-horizontal" role="form">
+  <form name="leadForm" class="form-horizontal" role="form" ng-hide="showThanks">
 
     <div class="form-group">
       <label for="firstName" class="col-md-3 control-label"><span ng-bind-html="'OS-NAME' | translate | unsafe"></span></label>
       <div class="col-sm-4" ng-class="{ 'has-error' : leadForm.firstName.$invalid && (leadForm.firstName.$touched || leadForm.firstName.$dirty) }">
-        <input name="firstName" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model="profile.firstName" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" class="form-control" id="firstName" placeholder="{{'CHECKOUT-FIRST-PLACEHOLDER' | translate | unsafe}}" required  autofocus="" maxlength="40">
+        <input name="firstName" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model="profile.firstName " ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" class="form-control" id="firstName" placeholder="{{'CHECKOUT-FIRST-PLACEHOLDER' | translate | unsafe}}" required  autofocus="" maxlength="40">
         <span ng-show="leadForm.firstName.$invalid && (leadForm.firstName.$touched || leadForm.firstName.$dirty)" class="help-block" ng-class="{ 'text-danger' : leadForm.firstName.$invalid }"><span ng-bind-html="'REQUIRE-FIRSTNAME-LENGTH' | translate | unsafe"></span></span>
       </div>
       <div class="col-sm-4" ng-class="{ 'has-error' : leadForm.lastName.$invalid && (leadForm.lastName.$dirty || leadForm.lastName.$touched) }">
@@ -55,15 +55,30 @@
         <div class="row"><div class="col-sm-11"><hr></div></div>
         <div class="input-group">
           <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-          <button type="button" class="btn btn-primary btn-lg" ng-class="{ 'processing' : processing }" ng-click="validateEmailAndContinue(profile.loginEmail)" ng-disabled="!leadForm.$valid || processing">
+          <button type="button" class="btn btn-primary btn-lg" ng-class="{ 'processing' : processing }" ng-click="joinFirstStep()" ng-disabled="!leadForm.$valid || processing">
             <span ng-bind-html="'BTN_CONTINUE' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i>
           </button>
         </div>
         <p><br>
-          <small><a href ng-bind-html="'OS-START-PRIVACY-AGREE-2' | translate | unsafe" data-toggle="modal" data-target=".bs-privacy-modal-lg"></a> <small ng-bind-html="'OS-START-PRIVACY-AGREE-3' | translate | unsafe" class="ng-binding"></small>
+          <small><a href ng-bind-html="'OS-START-PRIVACY-AGREE-2' | translate | unsafe" data-toggle="modal" data-target=".bs-privacy-modal-lg"></a></small> <small ng-bind-html="'OS-START-PRIVACY-AGREE-3' | translate | unsafe" class="ng-binding"></small>
         </p>
       </div>
     </div>
 
   </form>
+
+  <div class="lead-thanks" ng-show="showThanks">
+    <h1>Thanks</h1>
+    <p>
+      Blah
+
+      <button type="button" class="btn btn-primary btn-lg" ng-class="{ 'processing' : processing }" ng-click="addLead()" ng-disabled="processing">
+        No Thanks
+      </button>
+      <button type="button" class="btn btn-primary btn-lg" ng-click="join('20495')">
+        Continue
+      </button>
+    </p>
+  </div>
+
 </div>
