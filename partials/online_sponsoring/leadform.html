@@ -1,7 +1,7 @@
 <div id="signin" class="col-sm-12">
 
   <div class="col-md-offset-3">
-    <h1 class="checkouth1">
+    <h1 class="checkouth1" ng-hide="showThanks">
       <span ng-bind-html="'OS-START-TITLE' | translate | unsafe"></span>
       <span class="store-heading-description">
         <span ng-bind-html="'OS-START-TAG' | translate | unsafe"></span>
@@ -67,18 +67,22 @@
 
   </form>
 
-  <div class="lead-thanks" ng-show="showThanks">
-    <h1>Thanks</h1>
-    <p>
-      Blah
-
-      <button type="button" class="btn btn-primary btn-lg" ng-class="{ 'processing' : processing }" ng-click="addLead()" ng-disabled="processing">
-        No Thanks
-      </button>
-      <button type="button" class="btn btn-primary btn-lg" ng-click="join('20495')">
-        Continue
-      </button>
-    </p>
+  <div class="col-md-offset-1 lead-thanks" ng-show="showThanks">
+    <div class="col-sm-11">
+      <h1>Continue to Sign Up &amp; Purchase</h1>
+      <p class="padbottom">
+        To complete the sign up process, you&rsquo;ll need to purchase a starter kit. Click continue to order yout starter kit today!
+      </p>
+      <p class="padbottom">
+        <button type="button" class="btn btn-primary btn-lg" ng-click="join('20495')">
+          Continue &amp; Purchase <i class="fa fa-caret-right"></i>
+        </button>
+        &nbsp;&nbsp;
+        <button type="button" class="btn btn-link" style="text-transform:none;" ng-class="{ 'processing' : processing }" ng-click="addLead()" ng-disabled="processing" data-dismiss="modal">
+          No Thanks, I'll come back later
+        </button>
+      </p>
+    </div>
   </div>
 
 </div>
