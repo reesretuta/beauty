@@ -1397,6 +1397,7 @@ angular.module('app.controllers.checkout')
         
         
         $scope.addPaymentMethod = function() {
+            var d = $q.defer();
             $scope.processing = true;
             
             if (debug) {
@@ -1409,8 +1410,6 @@ angular.module('app.controllers.checkout')
             }
 
             if (!$scope.isOnlineSponsoring) {
-                var d = $q.defer();
-
                 //$log.debug("CheckoutController(): addPaymentMethod(): adding card to account", $scope.profile.newCard);
                 $log.debug("CheckoutController(): addPaymentMethod(): adding card to account");
                 // we need to create a card and add to the account for client direct
@@ -1449,8 +1448,6 @@ angular.module('app.controllers.checkout')
                     $scope.processing = false;
                     d.reject(err);
                 });
-
-                return d.promise;
             } else {
                 // we just add to checkout for online sponsoring
                 $scope.profile.newCard.lastFour = $scope.profile.newCard.card.substr($scope.profile.newCard.card.length - 4);
@@ -1469,11 +1466,13 @@ angular.module('app.controllers.checkout')
                         $scope.profile.billing = angular.copy(a);
 
                         $scope.checkoutUpdated();
-                        WizardHandler.wizard('checkoutWizard').goTo('Review');
+                        //WizardHandler.wizard('checkoutWizard').goTo('Review');
+                        d.resolve();
                         $scope.processing = false;
                     }, function(r) {
                         $log.error("CheckoutController(): addPaymentMethod(): error validating address", r);
                         // FIXME - failed to add, show error
+                        d.reject(r);
                         $scope.processing = false;
                         $scope.billingAddressError = r.message;
                     });
@@ -1482,10 +1481,13 @@ angular.module('app.controllers.checkout')
                     $scope.profile.billing = angular.copy($scope.profile.shipping);
 
                     $scope.checkoutUpdated();
-                    WizardHandler.wizard('checkoutWizard').goTo('Review');
+                    //WizardHandler.wizard('checkoutWizard').goTo('Review');
+                    d.resolve();
                     $scope.processing = false;
                 }
             }
+
+            return d.promise;
         }
 
         $scope.removeCreditCard = function(creditCardId) {
