@@ -1121,7 +1121,7 @@ body.incheckout {
 /*  ------ RESPONSIVE BREAKPOINTS ------  */
 
 /* Extra-Small screens like handheld devices (iPhone/Android/etc) */
-@media (max-width:400px) {
+@media (max-width:414px) {
     .jumbo-title-span-1 {
       font-size: 50px; 
     }
@@ -1138,7 +1138,7 @@ body.incheckout {
       height: 100%;
     }
     p.jumbo-description {
-      font-size: 14px;
+      font-size: 13px;
     }
     p.jumbo-description br {
       display: none;
@@ -1208,7 +1208,7 @@ body.incheckout {
   }
 
 }
-@media (min-width:400px) and (max-width:767px) {
+@media (min-width:414px) and (max-width:767px) {
 /*	.jumbo-title-span-1 {
 	    font-size: 85px;
 	}

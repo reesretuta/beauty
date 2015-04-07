@@ -334,12 +334,15 @@ section#why_jafra_lifestyle .subcontainer ul.golden_bullets li:before {
 		font-size: 35px;
 	}
 	.legacy_wrapper {
-		margin: 90px 0;
+		margin: 46px 0;
 	}
 	.timeline-description {
-		padding-top: 63px;
-		width: 72%;
+		/*padding-top: 63px;*/
+		width: 52%;
 		font-size: 13px;
+	}
+	.timeline-photo {
+		margin-top: -64px;
 	}
 	.subrow {
 		margin: 0 20px !important;
@@ -500,13 +503,78 @@ section#why_jafra_lifestyle .subcontainer ul.golden_bullets li:before {
 		padding: 0;
 	}
 	.timeline-photo {
-	  margin-top: -30px;
+	  margin-top: -63px;
 	}
 	.legacy_wrapper {
-	  margin: 45px 0;
+	  margin: 87px 0;
 	}
 	.timeline-description {
-	  padding-top: 43px;
-	  width: 90%;
+	  display:none;
 	}
+}
+@media (max-width: 414px) {
+	.legacy_wrapper {
+	  margin: 56px 0;
+	}
+	.timeline-photo {
+	  margin-top: -44px;
+	  max-width: 110px !important;
+	}
+	.testimonial {
+	  padding: 0 0 40px;
+	}
+	.royal_kit .kit-value, #royal_starter_kit .kit-desc, #skincare_starter_kit .kit-desc {
+	  font-size: 28px;
+	}
+	#royal_starter_kit .kit-value, #skincare_starter_kit .kit-value {
+	  font-size: 18px;
+	}
+	.subcontainer .row {
+		width: auto;
+		margin-left: -15px;
+		margin-right: -15px;
+	}
+	#more_freedom {
+		padding-bottom: 30px;
+	}
+	section#why_jafra_products span.to_love {
+	  font-size: 62px;
+	}
+
+	section#why_jafra_lifestyle .subcontainer ul.golden_bullets {
+		width: auto;
+		max-width: 200%;
+		padding: 0 0 0 2.5em;
+  		top: 0;
+  		left: 0;
+  		margin-bottom: 40px;
+	}
+	section#why_jafra_lifestyle .subcontainer ul.golden_bullets li {
+		padding: .5em 0; 
+	}
+	section#why_jafra_lifestyle .subcontainer ul.golden_bullets li:before {
+		padding-right: 16px;
+	}
+	section#royal_starter_kit .kit-encapsulate, section#skincare_starter_kit .kit-encapsulate {
+		margin:0;
+	}
+	section#why_jafra_lifestyle .plus {
+		top: 0; right: 0;
+	}
+	section#why_jafra_lifestyle .invest-icons-bg,
+	section#why_jafra_lifestyle .training-icons-bg {
+		background:none;
+	}
+	#starter_kits_section .section-copy {
+		padding:0;
+	}
+	.royal_kit .product-action, #royal_starter_kit .product-action, #skincare_starter_kit .product-action, .skincare_kit .product-action {
+		margin: 20px 0 0 30px;
+	}
+
+	#more_freedom p, section#why_jafra_products .section-copy p, #more_products .freedom_flexibility_description,
+	#why_jafra_lifestyle .section-copy p, section#why_jafra_lifestyle #more_call p {
+		display: none;
+	}
+
 }
