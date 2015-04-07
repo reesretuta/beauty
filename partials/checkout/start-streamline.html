@@ -315,6 +315,7 @@
 
 
 <!-- OS KIT SELECTION-->
+
 <div class="col-md-12" ng-if="isOnlineSponsoring">
     <div class="col-md-offset-3">
         <h1><span ng-bind-html="'OS-KIT-MODAL-TITLE' | translate | unsafe"></span></h1>
@@ -323,8 +324,10 @@
         
         <div class="row">
             <div class="col-md-5">
-                <div class="kit-box" data-sku="{{sku}}" ng-class="sku == 20494 || sku == 20495 ? 'active' : ''">
+                <div class="kit-box" ng-class="cart[0].sku == 20494 || cart[0].sku == 20495 ? 'active' : ''">
                     <h3 ng-bind-html="'OS-KIT-PRODUCT1-NAME' | translate | unsafe"></h3>
+                
+                    
                     <p class="color-gold HelveticaNeueLTStd-BdCn kit-desc">
                         <span ng-bind-html="'OS-KIT-PRODUCT1-TITLE1' | translate | unsafe"></span>
                         <span ng-bind-html="'OS-KIT-PRODUCT1-TITLE2' | translate | unsafe"></span>
@@ -332,7 +335,19 @@
                     <p class="HelveticaNeueLTStd-Th kit-value" ng-bind-html="'OS-KIT-PRODUCT1-VALUE' | translate | unsafe"></p>
                     <p ng-bind-html="'OS-KIT-PRODUCT1-TAG' | translate | unsafe"></p>
                     <img class="img-responsive" src="/img/49kit-2x.jpg" />
-                    <a href="" data-toggle="collapse" data-target="#royalkit-details" ng-bind-html="'KIT-DETAILS-TOGGLE' | translate | unsafe"></a>
+                    
+                    <div ng-if="session.language == 'en_US'" class="product-action">
+                        <span class="product-price"><small>Only<br></small> $99</span>
+                        <button type="button" class="btn btn-primary btn-lg" ng-click="updateSku('20494')" analytics-on="click" analytics-event="In-Page Buy $99" analytics-category="Buttons">Buy <small>(english)</small></button>
+                        <a data-target="#" ng-click="updateSku('20495')" class="color-red text-left text-underline" style="display:block; margin-top:10px;">Buy $99 kit in spanish</a>
+                    </div>
+                    <div ng-if="session.language == 'es_US'" class="product-action">
+                        <span class="product-price"><small>Sólo<br></small> $99</span>
+                        <button type="button" class="btn btn-primary btn-lg" ng-click="updateSku('20495')" analytics-on="click" analytics-event="In-Page Buy $99" analytics-category="Buttons">Cómpralo <small>(español)</small></button>
+                        <a href="" ng-click="updateSku('20494')" class="color-red text-left" style="display:block; margin-top:10px;">Compra el Kit de $99 en Inglés</a>
+                    </div>
+                    
+                    <a href="" class="seemore" data-toggle="collapse" data-target="#royalkit-details" ng-bind-html="'KIT-DETAILS-TOGGLE' | translate | unsafe"></a>
                     <div id="royalkit-details" class="collapse">
                         <p ng-bind-html="'OS-KIT-PRODUCT1-DESCRIPTION' | translate | unsafe"></p>
                     </div>
@@ -340,7 +355,7 @@
             </div>
             <div class="col-md-5">
 
-                <div class="kit-box" data-sku="{{sku}}" ng-class="sku == 20498 || sku == 20499 ? 'active' : ''">
+                <div class="kit-box" ng-class="cart[0].sku == 20498 || cart[0].sku == 20499 ? 'active' : ''">
                     <h3 ng-bind-html="'OS-KIT-PRODUCT2-NAME' | translate | unsafe"></h3>
                     <p class="color-gold HelveticaNeueLTStd-BdCn kit-desc">
                         <span ng-bind-html="'OS-KIT-PRODUCT2-TITLE1' | translate | unsafe"></span>
@@ -348,9 +363,24 @@
                     </p>
                     <p class="HelveticaNeueLTStd-Th kit-value" ng-bind-html="'OS-KIT-PRODUCT2-VALUE' | translate | unsafe"></p>
                     <p ng-bind-html="'OS-KIT-PRODUCT2-TAG' | translate | unsafe"></p>
-                    
                     <img class="img-responsive" src="/img/99kit-2x.jpg" />
-                    <a href="" data-toggle="collapse" data-target="#specialkit-details" ng-bind-html="'KIT-DETAILS-TOGGLE' | translate | unsafe"></a>
+                    
+                    <div ng-if="session.language == 'en_US'" class="product-action">
+                        <span class="product-price"><small>Only<br></small> $49</span>
+                        <button type="button" class="btn btn-primary btn-lg" ng-click="updateSku('20498')" analytics-on="click" analytics-event="In-Page Buy $49" analytics-category="Buttons">Buy <small>(english)</small></button>
+                        <a data-target="#" ng-click="updateSku('20499')" class="color-red text-left" style="display:block;margin-top:10px;">Buy $49 kit in spanish</a>
+                    </div>
+                    <div ng-if="session.language == 'es_US'" class="product-action">
+                        <span class="product-price"><small>Sólo<br></small> $49</span>
+                        <button type="button" class="btn btn-primary btn-lg" ng-click="updateSku('20499')" analytics-on="click" analytics-event="In-Page Buy $49" analytics-category="Buttons">Cómpralo <small>(español)</small></button>
+                        <a href="" ng-click="updateSku('20498')" class="color-red text-left" style="display:block;margin-top:10px;">Compra el Kit de $49 en inglés</a>
+                    </div>
+                    
+                    
+                    
+                    
+                    
+                    <a href="" class="seemore" data-toggle="collapse" data-target="#specialkit-details" ng-bind-html="'KIT-DETAILS-TOGGLE' | translate | unsafe"></a>
                     <div id="specialkit-details" class="collapse">
                         <p ng-bind-html="'OS-KIT-PRODUCT2-DESCRIPTION' | translate | unsafe"></p>
                     </div>
@@ -367,6 +397,7 @@
 
 
 <!-- SHIPPING -->
+<!-- <pre>{{profile}}</pre> -->
 
 <div class="col-sm-12" ng-if="isOnlineSponsoring || loggedIn()">
   <div class="col-md-offset-3">
@@ -391,7 +422,13 @@
       </div><!-- /address -->
     </div>
   </div><!-- /offset -->
+    
+    <div ng-show="profile.shipping != null" class="col-md-offset-3">
+        <a ng-click="showNewShipping()">+ADD SHIPPING</a>
+    </div>
     <ng-include ng-if="profile.shipping == null" src="'/partials/checkout/shipping-form-include.html'"/>
+    
+
     <div class="col-md-offset-3">
       <hr>
     </div> <!-- /offset -->
@@ -399,6 +436,16 @@
 </div><!--/span-->
 
 <!-- PAYMENT -->
+<!-- <div class="col-sm-12" ng-if="!isOnlineSponsoring">
+    <div class="col-md-offset-3">
+      <h1>
+        <span ng-bind-html="'ENTER-PAYMENT-INFO' | translate | unsafe"></span>
+        <span class="store-heading-description" ng-bind-html="'PAY_OPTION_DES' | translate | unsafe"></span>
+      </h1>
+    </div>
+</div> -->
+<!-- CD ABOVE ONLY-->
+
 
 <div class="col-sm-12" ng-if="isOnlineSponsoring || loggedIn()">
 
@@ -415,7 +462,6 @@
 
 <div class="col-md-offset-3" ng-if="profile.customerStatus=='existing'">
   <div class="row">
-
     <div class="col-xs-6 col-lg-4" ng-repeat="ccData in session.client.creditCards">
       <div class="checkout-card clearfix" ng-class="{active: ((ccData.id == profile.card.id) || profile.card.id == null)}">
         <span class="pull-left">{{ccData.name}}</span>
@@ -441,15 +487,21 @@
         <a ng-click="removeCreditCard(ccData.id)"><i class="fa fa-times-circle"></i> <span ng-bind-html="'Remove' | translate | unsafe"></span></a>
       </div>
     </div><!-- /span -->
-
   </div>
 </div>
 
 
-<div class="row" ng-if="profile.customerStatus=='existing' && (profile.card == null || profile.card.id == null)">
+<div class="row" ng-if="profile.card != null || profile.card.id != null">
+    <div class="col-md-offset-3">
+        <a ng-click="showNewPayment()">+ADD PAYMENT</a>
+    </div>
+</div>
+
+
+<!-- <div class="row" ng-if="profile.customerStatus == 'existing' && (profile.card == null || profile.card.id == null)"> -->
+<div class="row" ng-if="profile.card == null || profile.card.id == null">
   <div class="col-md-offset-3 col-lg-8">
-    <hr>
-    <h2><span ng-bind-html="'ENTER-PAYMENT-INFORMATION' | translate | unsafe"></span></h2>
+    <h2><span ng-bind-html="'ADD-NEW-PAYMENT-METHOD' | translate | unsafe"></span></h2>
   </div>
   <form name="paymentForm" class="form-horizontal" role="form" novalidate>
 
@@ -513,22 +565,39 @@
     </div>
   </div>
 
-  <!-- BILLING SAME -->
-  <div class="form-group">
+
+ 
+    
+  <!-- <div class="form-group">
     <div class="col-md-offset-3 col-sm-9">
-      <div class="checkbox">
-        <label>
-          <input name="billSame" data-ng-init="profile.billSame=true" ng-model="profile.billSame" type="checkbox" tabindex="-2" checked="checked"> <span ng-bind-html="'IN_BILL_SHIP_SAME' | translate | unsafe"></span>
-          <!--valid={{paymentForm.billSame.$valid}}-->
-        </label>
-      </div>
+      <div class="error" ng-show="billingAddressError && !profile.billSame" ng-bind="billingAddressError"></div>
+        <button type="button" ng-click="addPaymentMethod()" class="btn btn-primary btn-lg" ng-class="{ 'processing' : processing }" ng-disabled="!paymentForm.$valid || invalidExpiration || processing">
+          <span>ADD PAYMENT</span> &nbsp;<i class="fa fa-caret-right"></i>
+        </button>
     </div>
-  </div>
+  </div> -->
+  </form>
+  
+</div>
+
+
+
 
   <!-- BILLING -->
 
   <div class="cardAddressWrapper" ng-if="profile.billSame==false">
-
+      
+      <div class="row">
+        <div class="col-md-offset-3 col-lg-8">
+          <h2 class=" "><span ng-bind-html="'OS-BILLING-TITLE' | translate | unsafe"></span></h2>
+        </div>
+      </div>
+      
+      
+      
+      
+      
+      
     <div class="row form-group" ng-if="!isOnlineSponsoring">
       <label for="billingFullName" class="col-md-3 control-label"><span ng-bind-html="'IN_FULL_NAME' | translate | unsafe"></span></label>
       <div class="col-sm-8 col-lg-6">
@@ -659,37 +728,34 @@
       <a popover="{{'PHONE-NUMBER-DES' | translate | unsafe}}" popover-title="{{'PHONE-NUMBER' | translate | unsafe}}" href="" class="form-info-link"><i class="fa fa-info-circle"></i> <span ng-bind-html="'MORE-INFO' | translate | unsafe"></span></a>
     </div>
 
-    <div class="col-md-offset-3">
-      <hr>
-    </div> <!-- /offset -->
+
+
   </div>
-
-  <!-- <div class="form-group">
-    <div class="col-md-offset-3 col-sm-9">
-      <div class="error" ng-show="billingAddressError && !profile.billSame" ng-bind="billingAddressError"></div>
-        <button type="button" ng-click="addPaymentMethod()" class="btn btn-primary btn-lg" ng-class="{ 'processing' : processing }" ng-disabled="!paymentForm.$valid || invalidExpiration || processing">
-          <span>ADD PAYMENT</span> &nbsp;<i class="fa fa-caret-right"></i>
-        </button>
-    </div>
-  </div> -->
-  </form>
-</div>
-
-<div class="row" ng-if="loggedIn()">
-  <pre>{{$scope.profile.shipping.id}}</pre>
-  <pre>{{$scope.profile.length}}</pre>
-  <pre>{{profile.card.length == 0}}</pre>
-  <pre>{{loggedIn}}</pre>
-  <pre>{{profile.customerStatus}}</pre>
-  <pre>{{profile}}</pre>
+    
+   
+  <!-- BILLING SAME -->
+<div class="row">  
   <div class="form-group">
     <div class="col-md-offset-3 col-sm-9">
-      <button type="button" ng-click="validateStartAndReview(profile.loginEmail)" class="btn btn-primary btn-lg" ng-class="{ 'processing' : processing }">
+      <div class="checkbox">
+        <label>
+          <input name="billSame" data-ng-init="profile.billSame=true" ng-model="profile.billSame" type="checkbox" tabindex="-2" checked="checked"> <span ng-bind-html="'IN_BILL_SHIP_SAME' | translate | unsafe"></span>
+          <!--valid={{paymentForm.billSame.$valid}}-->
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="form-group">
+    <div class="col-md-offset-3 col-sm-9">
+      <button type="button" ng-click="validateStartAndReview(profile.loginEmail)" class="btn btn-primary btn-lg" ng-disabled="" ng-class="{ 'processing' : processing }">
         <!-- <span ng-bind-html="'BTN_SAVE_PAYMENT' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i> -->
+        <!-- (!forms.shippingForm.$valid || processing) -->
         <span>CONTINUE</span> &nbsp;<i class="fa fa-caret-right"></i>
       </button>
     </div>
   </div>
 </div>
-
+{{profile.newBillingAddress}}
 </div><!--/span-->

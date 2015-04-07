@@ -18,7 +18,6 @@ angular.module('app.controllers.onlineSponsor')
         return source;
     }
     
-    //rees
     $scope.join = function(sku, language, name, price) {
         $('.modal').modal('hide');
         $('body').removeClass('modal-open');

@@ -1222,7 +1222,15 @@ angular.module('app.controllers.checkout')
             // WizardHandler.wizard('checkoutWizard').goTo('Review');
         }
 
-
+        $scope.showNewShipping = function(){
+            $scope.profile.shipping = null;
+        }
+        
+        $scope.showNewPayment = function(){
+            $scope.profile.card = null;
+        }
+        
+        
         function addOrSelectShipping() {
             var d = $q.defer();
             if ($scope.profile.shipping == null) {
@@ -1240,28 +1248,48 @@ angular.module('app.controllers.checkout')
             }
             return d.promise;
         }
+        
+        $scope.updateSku = function(sku){
+            
+            
+            $scope.selectProduct(sku).then(function(){
+                $log.debug("CheckoutController(): updateSku(): ", $scope.cart[0].sku);
+            });
+        }
+
 
         // FIXME - verify we have either billSame or billing address selected/entered
-        
-        function addOrSelectPayment(){
+
+        function addOrSelectPayment(){ //responding back to continue button click
+            
             var d = $q.defer();
-            $log.debug("CheckoutController(): addOrSelectPayment()");
+            $log.debug("CheckoutController(): addOrSelectPayment(): $scope.profile.card: ", $scope.profile.card);
             if ($scope.profile.card == null) {
                 $log.debug("CheckoutController(): addOrSelectPayment(): new card");
-
                 // assume we have card in form, so add it
-                $scope.addPaymentMethod().then(function() { //assumes NEW card
+                $scope.addPaymentMethod().then(function() { //assumes NEW card, checks for profile.billSame
                     d.resolve();
                 }, function(err) {
                     $log.err("CheckoutController(): addOrSelectPayment(): error adding payment", err)
                     d.reject(err);
                 });
             } else {
-                // existing card choosen
-                d.resolve();
+                $log.debug("CheckoutController(): addOrSelectPayment(): existing card selected ");
+                if ($scope.profile.billSame) {
+                    $scope.addBillingAddress($scope.profile.shipping).then(function(){
+                        d.resolve();
+                    });
+                }else{
+                    $log.debug("CheckoutController(): addOrSelectPayment(): new card", $scope.profile.newBillingAddress);
+                    $scope.addBillingAddress($scope.profile.newBillingAddress).then(function(){
+                        d.resolve();
+                    });
+                }
             }
             return d.promise;
         }
+        
+        
         
         $scope.singlePageValidate = function() {
             $log.debug("CheckoutController(): singlePageValidate()");
@@ -1344,7 +1372,7 @@ angular.module('app.controllers.checkout')
                             // only do the clear
                             //$log.debug('CheckoutController(): addPaymentMethod(): profile:', $scope.profile);
                             $scope.profile.billing = angular.copy(a);
-                            $scope.profile.newBillingAddress = null;
+                            // $scope.profile.newBillingAddress = null;
                             $scope.checkoutUpdated();
                             $log.debug('CheckoutController(): addPaymentMethod()');
 
@@ -1963,12 +1991,9 @@ angular.module('app.controllers.checkout')
                         name : $scope.profile.newShippingAddress.name
                     };
                     
-                    
-                    if (!$scope.isOnlineSponsoring) {
+                    $scope.addPaymentMethod().then(function(){
                         d.resolve();
-                    }else{
-                        $scope.addPaymentMethod(); //progressing to next step
-                    }
+                    }); //progressing to next step
                     
                     //if CD do nothing but create CC on backend do not progress
                     
