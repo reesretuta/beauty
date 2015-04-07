@@ -1222,17 +1222,25 @@ angular.module('app.controllers.checkout')
             // WizardHandler.wizard('checkoutWizard').goTo('Review');
         }
 
-
-        function addOrSelectShipping() {
+        $scope.showNewShipping = function(){
+            $scope.profile.shipping = null;
+        }
+        
+        $scope.showNewPayment = function(){
+            $scope.profile.card = null;
+        }
+        
+        
+        function addShippingIfNotSelected() {
             var d = $q.defer();
             if ($scope.profile.shipping == null) {
                 //new shipping
-                $log.debug("CheckoutController(): singlePageValidate(): new shipping");
+                $log.debug("CheckoutController(): addShippingIfNotSelected(): new shipping");
                 $scope.addShippingAddressAndContinue($scope.profile.newShippingAddress).then(function(a) {
-                    $log.debug("CheckoutController(): singlePageValidate(): new shipping", $scope.profile.newShippingAddress);
+                    $log.debug("CheckoutController(): addShippingIfNotSelected(): new shipping", $scope.profile.newShippingAddress);
                     d.resolve(a);
                 }, function(err) {
-                    $log.err("CheckoutController(): singlePageValidate(): error", err);
+                    $log.error("CheckoutController(): addShippingIfNotSelected(): error", err);
                     d.reject(err);
                 });
             } else {
@@ -1240,24 +1248,40 @@ angular.module('app.controllers.checkout')
             }
             return d.promise;
         }
+        
+        $scope.updateSku = function(sku){
+            $scope.selectProduct(sku).then(function(){
+                $log.debug("CheckoutController(): updateSku(): ", $scope.cart[0].sku);
+            });
+        }
+
 
         // FIXME - verify we have either billSame or billing address selected/entered
-        
-        function addOrSelectPayment(){
-            var d = $q.defer();
-            $log.debug("CheckoutController(): addOrSelectPayment()");
-            if ($scope.profile.card == null) {
-                $log.debug("CheckoutController(): addOrSelectPayment(): new card");
 
+        $scope.billSameChanged = function(billSame) {
+            if (billSame) {
+                $log.debug("CheckoutController(): billSameChanged(): setting billing = shipping");
+                $scope.profile.billing = angular.copy($scope.profile.shipping);
+            } else {
+                $log.debug("CheckoutController(): billSameChanged(): setting billing = null");
+                $scope.profile.billing = null;
+            }
+        }
+
+        function addPaymentIfNotSelected(){ //responding back to continue button click
+            var d = $q.defer();
+            $log.debug("CheckoutController(): addPaymentIfNotSelected(): $scope.profile.card: ", $scope.profile.card);
+            if ($scope.profile.card == null) {
+                $log.debug("CheckoutController(): addPaymentIfNotSelected(): new card");
                 // assume we have card in form, so add it
-                $scope.addPaymentMethod().then(function() { //assumes NEW card
-                    d.resolve();
+                $scope.addPaymentMethod().then(function(card) { //assumes NEW card, checks for profile.billSame
+                    $log.debug("CheckoutController(): addPaymentIfNotSelected(): added", card);
+                    d.resolve(card);
                 }, function(err) {
-                    $log.err("CheckoutController(): addOrSelectPayment(): error adding payment", err)
+                    $log.error("CheckoutController(): addPaymentIfNotSelected(): error adding payment", err)
                     d.reject(err);
                 });
             } else {
-                // existing card choosen
                 d.resolve();
             }
             return d.promise;
@@ -1266,16 +1290,18 @@ angular.module('app.controllers.checkout')
         $scope.singlePageValidate = function() {
             $log.debug("CheckoutController(): singlePageValidate()");
 
-            addOrSelectShipping().then(function() {
-                addOrSelectPayment().then(function() {
+            addShippingIfNotSelected().then(function(a) {
+                $log.debug("CheckoutController(): singlePageValidate(): added?", a!=null)
+                addPaymentIfNotSelected().then(function() {
+                    $log.debug("CheckoutController(): singlePageValidate(): going to review")
                     WizardHandler.wizard('checkoutWizard').goTo('Review');
                 }, function(err) {
                     // FIXME - display error message here
-                    $log.err("CheckoutController(): singlePageValidate(): error adding/selecting payment", err)
+                    $log.error("CheckoutController(): singlePageValidate(): error adding/selecting payment", err)
                 });
             }, function(err) {
                // FIXME - display error message here
-                $log.err("CheckoutController(): singlePageValidate(): error adding/selecting shipment", err)
+                $log.error("CheckoutController(): singlePageValidate(): error adding/selecting shipment", err)
             });
         }
         
@@ -1290,7 +1316,7 @@ angular.module('app.controllers.checkout')
 //                     $scope.addShippingAddressAndContinue($scope.profile.newShippingAddress).then(function() { //return promise
 //
 //                         $log.debug("CheckoutController(): singlePageValidate(): new shipping", $scope.profile.newShippingAddress);
-//                         addOrSelectPayment(); //return promise
+//                         addPaymentIfNotSelected(); //return promise
 //
 //                     });
 //                 }else{
@@ -1298,7 +1324,7 @@ angular.module('app.controllers.checkout')
 //                     $log.debug("CheckoutController(): singlePageValidate(): existing shipping");
 //                     $scope.addShippingAddressAndContinue($scope.profile.shipping).then(function() { //
 //                         $log.debug("CheckoutController(): singlePageValidate(): select Shipping Address()");
-//                         addOrSelectPayment();
+//                         addPaymentIfNotSelected();
 //                     })
 //
 //                 }
@@ -1324,8 +1350,6 @@ angular.module('app.controllers.checkout')
             }
 
             if (!$scope.isOnlineSponsoring) {
-
-
                 var d = $q.defer();
 
                 //$log.debug("CheckoutController(): addPaymentMethod(): adding card to account", $scope.profile.newCard);
@@ -1342,23 +1366,21 @@ angular.module('app.controllers.checkout')
                         // we need to create an address to add to the account for client direct
                         $scope.addBillingAddress($scope.profile.newBillingAddress).then(function(a) {
                             // only do the clear
-                            //$log.debug('CheckoutController(): addPaymentMethod(): profile:', $scope.profile);
+                            $log.debug('CheckoutController(): addPaymentMethod(): added billing address, profile', $scope.profile);
                             $scope.profile.billing = angular.copy(a);
                             $scope.profile.newBillingAddress = null;
                             $scope.checkoutUpdated();
-                            $log.debug('CheckoutController(): addPaymentMethod()');
-
-
                             $scope.processing = false;
-                            d.resolve();
+                            d.resolve(card);
                         }, function(err) {
                             $scope.billingAddressError = err;
                             $scope.processing = false;
                             d.reject(err);
                         });
                     } else {
+                        $log.debug("CheckoutController(): addPaymentMethod(): billSame");
                         $scope.checkoutUpdated();
-                        d.resolve();
+                        d.resolve(card);
                         $scope.processing = false;
                     }
                 }, function(err) {
@@ -1963,12 +1985,9 @@ angular.module('app.controllers.checkout')
                         name : $scope.profile.newShippingAddress.name
                     };
                     
-                    
-                    if (!$scope.isOnlineSponsoring) {
+                    $scope.addPaymentMethod().then(function(){
                         d.resolve();
-                    }else{
-                        $scope.addPaymentMethod(); //progressing to next step
-                    }
+                    }); //progressing to next step
                     
                     //if CD do nothing but create CC on backend do not progress
                     

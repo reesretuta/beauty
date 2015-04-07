@@ -35,6 +35,11 @@ section#freedom_flexibility_section div.subcontainer {
 	background: none;
 	border-color: #460d66;
 }
+@media (max-width: 992px) {
+	section#freedom_flexibility_section .section-copy_bound_box {
+		margin: 0 -30px;
+	}
+}
 .freedom_flexibility_description {
 	font-size: 22px;
 	line-height: 1.6em;
@@ -488,5 +493,20 @@ section#why_jafra_lifestyle .subcontainer ul.golden_bullets li:before {
 	}
 	.promo .more-link:after {
 	  top: 5px;
+	}
+}
+@media (max-width: 500px) {
+	.freedom_flexibility_description {
+		padding: 0;
+	}
+	.timeline-photo {
+	  margin-top: -30px;
+	}
+	.legacy_wrapper {
+	  margin: 45px 0;
+	}
+	.timeline-description {
+	  padding-top: 43px;
+	  width: 90%;
 	}
 }

@@ -765,13 +765,18 @@ h3.cart-item-prod-title{
   display: inline-block;
 }
 .address-block {
-  min-height: 91px;
+  min-height: 110px;
+  border: 2px solid #ccc;
+  padding: 15px;
+  border-radius: 9px;
 }
 .checkout-address .btn {
   margin-bottom: 40px;
 }
 .selectedShipping {
-    border: 1px solid red;
+    border: 2px solid rgba(195,0,47,1);
+    padding: 15px;
+    border-radius: 9px;
 }
 
 .shippingSpeedModal.modal {
@@ -844,6 +849,14 @@ h3.cart-item-prod-title{
 .kit-box .kit-desc{
     text-transform:uppercase;
 }
+
+.kit-box a.seemore{
+    display:block;
+    font-size:14px;
+    margin-top:10px;
+    text-align: right;
+}
+
 
 
 
