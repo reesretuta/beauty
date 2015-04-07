@@ -249,8 +249,6 @@
           <span ng-bind-html="'DOB-NOTE' | translate | unsafe"></span></small>
         </span>
       </div>
-
-
     </div>
 
     <div class="form-group">
@@ -264,51 +262,7 @@
       </div>
     </div>
 
-    <!-- <div class="form-group">
-      <div class="col-md-offset-3 col-sm-9">
-        <div class="input-group">
-          <button class="btn btn-primary btn-lg" type="button" ng-click="validateProfileAndContinue()" ng-disabled="!profileForm.$valid || processing || invalidDOB || invalidSSN" ng-class="{ 'processing' : processing }">
-            <span ng-bind-html="'CONSULTANT-PROFILE-CONTINUE-TO-SHIPPING' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i>
-          </button>
-        </div>
-      </div>
-    </div> -->
   </form>
-
-  <!-- <div aria-hidden="false" aria-labelledby="myModalLabel" role="dialog" id="agreement_modal" class="modal fade in" style="">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <a class="pull-right" href="" onClick="printDiv('agreement-content');" ><i class="fa fa-print"></i> &nbsp;<span ng-bind-html="'CONSULTANT-AGREEMENT-PRINT' | translate | unsafe"></span></a>
-            <h4 id="myModalLabel" class="modal-title text-center"><span ng-bind-html="'CONSULTANT-AGREEMENT-TITLE' | translate | unsafe"></span></h4>
-          </div>
-          <div class="modal-body">
-            <div class="agreement-content" id="agreement-content">
-              <div ng-if="session.language" ng-include="'/partials/consultant-agreement-'+session.language+'.html'"></div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <a onclick="" href="/join/"><span ng-bind-html="'CONSULTANT-AGREEMENT-DONT-AGREE' | translate | unsafe"></span></a>&nbsp;&nbsp;
-            &nbsp;&nbsp;
-            <button ng-click="profile.agree = true" data-dismiss="modal" class="btn btn-primary btn-lg" type="button" id="agreement_agree" disabled="" onclick="$('#agreement_modal').css('display','none;');"><span ng-bind-html="'CONSULTANT-AGREEMENT-AGREE' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i></button>
-            <p class="pull-left form-control-static"><small><span ng-bind-html="'CONSULTANT-AGREEMENT-NOTE' | translate | unsafe"></span></small></p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <script>
-      $(function(){
-          $('.agreement-content').on('scroll', function() {
-              if($(this).scrollTop() + $(this).innerHeight() >= (this.scrollHeight - 20)) {
-                  // $('#agreement_agree').removeAttr('disabled');
-
-
-                  $('#agreement_agree').prop('disabled', false);
-              }
-          })
-      });
-    </script> -->
-    
 </div>
 
 <!-- OS PROFILE END-->
@@ -327,7 +281,6 @@
                 <div class="kit-box" ng-class="cart[0].sku == 20494 || cart[0].sku == 20495 ? 'active' : ''">
                     <h3 ng-bind-html="'OS-KIT-PRODUCT1-NAME' | translate | unsafe"></h3>
                 
-                    
                     <p class="color-gold HelveticaNeueLTStd-BdCn kit-desc">
                         <span ng-bind-html="'OS-KIT-PRODUCT1-TITLE1' | translate | unsafe"></span>
                         <span ng-bind-html="'OS-KIT-PRODUCT1-TITLE2' | translate | unsafe"></span>
@@ -375,18 +328,12 @@
                         <button type="button" class="btn btn-primary btn-lg" ng-click="updateSku('20499')" analytics-on="click" analytics-event="In-Page Buy $49" analytics-category="Buttons">Cómpralo <small>(español)</small></button>
                         <a href="" ng-click="updateSku('20498')" class="color-red text-left" style="display:block;margin-top:10px;">Compra el Kit de $49 en inglés</a>
                     </div>
-                    
-                    
-                    
-                    
-                    
+
                     <a href="" class="seemore" data-toggle="collapse" data-target="#specialkit-details" ng-bind-html="'KIT-DETAILS-TOGGLE' | translate | unsafe"></a>
                     <div id="specialkit-details" class="collapse">
                         <p ng-bind-html="'OS-KIT-PRODUCT2-DESCRIPTION' | translate | unsafe"></p>
                     </div>
                 </div>
-                
-                
                 
             </div>
         </div>
@@ -427,25 +374,12 @@
         <a ng-click="showNewShipping()">+ADD SHIPPING</a>
     </div>
     <ng-include ng-if="profile.shipping == null" src="'/partials/checkout/shipping-form-include.html'"/>
-    
 
     <div class="col-md-offset-3">
       <hr>
     </div> <!-- /offset -->
   </form>
 </div><!--/span-->
-
-<!-- PAYMENT -->
-<!-- <div class="col-sm-12" ng-if="!isOnlineSponsoring">
-    <div class="col-md-offset-3">
-      <h1>
-        <span ng-bind-html="'ENTER-PAYMENT-INFO' | translate | unsafe"></span>
-        <span class="store-heading-description" ng-bind-html="'PAY_OPTION_DES' | translate | unsafe"></span>
-      </h1>
-    </div>
-</div> -->
-<!-- CD ABOVE ONLY-->
-
 
 <div class="col-sm-12" ng-if="isOnlineSponsoring || loggedIn()">
 
@@ -565,38 +499,42 @@
     </div>
   </div>
 
-
- 
-    
-  <!-- <div class="form-group">
-    <div class="col-md-offset-3 col-sm-9">
-      <div class="error" ng-show="billingAddressError && !profile.billSame" ng-bind="billingAddressError"></div>
-        <button type="button" ng-click="addPaymentMethod()" class="btn btn-primary btn-lg" ng-class="{ 'processing' : processing }" ng-disabled="!paymentForm.$valid || invalidExpiration || processing">
-          <span>ADD PAYMENT</span> &nbsp;<i class="fa fa-caret-right"></i>
-        </button>
-    </div>
-  </div> -->
   </form>
   
 </div>
 
 
 
-
   <!-- BILLING -->
-
   <div class="cardAddressWrapper" ng-if="profile.billSame==false">
       
-      <div class="row">
-        <div class="col-md-offset-3 col-lg-8">
-          <h2 class=" "><span ng-bind-html="'OS-BILLING-TITLE' | translate | unsafe"></span></h2>
-        </div>
+    <div class="col-md-offset-3">
+      <h1 ng-if="session.client.addresses.length > 0"><span ng-bind-html="'CHOOSE-BILLING-ADDRESS' | translate | unsafe"></span></h1>
+      <h1 ng-if="session.client.addresses == null || session.client.addresses.length == 0"><span ng-bind-html="'OS-BILLING-TITLE' | translate | unsafe"></span></h1>
+      <div class="row" ng-if="!isOnlineSponsoring">
+        <div class="col-xs-6 col-lg-4 checkout-address" ng-repeat="addressData in session.client.addresses">
+          <div class="address-block" ng-class="profile.billing.id == addressData.id ? 'selectedShipping' : ''">
+            <span class="address-name block">{{ addressData.name || namePlaceholder }}</span>
+            <span class="address-street block">{{ addressData.address1 }} {{ addressData.address2 }}</span>
+            <span class="address-region block">{{ addressData.city }}, {{ addressData.state }} {{ addressData.zip }}</span>
+            <span class="phone-number block">{{ addressData.phone}}</span>
+          </div>
+          <div class="address-actions">
+            <a ng-click="editAddress(addressData)"><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'EDIT' | translate | unsafe"></span></a>
+            &nbsp;&nbsp;
+            <a ng-click="removeAddress(addressData.id)"><i class="fa fa-times-circle"></i> <span ng-bind-html="'REMOVE' | translate | unsafe"></span></a>
+          </div>
+          <button type="button" class="btn btn-primary" ng-disabled="processing" ng-click="selectBillingAddressAndContinue(addressData)">
+            <span ng-bind-html="'BTN_SHIP_ADD' | translate | unsafe"></span>
+          </button>
+        </div><!-- /address -->
       </div>
-      
-      
-      
-      
-      
+    </div><!-- /offset -->
+
+
+
+
+
       
     <div class="row form-group" ng-if="!isOnlineSponsoring">
       <label for="billingFullName" class="col-md-3 control-label"><span ng-bind-html="'IN_FULL_NAME' | translate | unsafe"></span></label>
@@ -739,7 +677,7 @@
     <div class="col-md-offset-3 col-sm-9">
       <div class="checkbox">
         <label>
-          <input name="billSame" data-ng-init="profile.billSame=true" ng-model="profile.billSame" type="checkbox" tabindex="-2" checked="checked"> <span ng-bind-html="'IN_BILL_SHIP_SAME' | translate | unsafe"></span>
+          <input name="billSame" data-ng-init="profile.billSame=true" ng-model="profile.billSame" ng-change="billSameChanged(profile.billSame)" type="checkbox" tabindex="-2" checked="checked"> <span ng-bind-html="'IN_BILL_SHIP_SAME' | translate | unsafe"></span>
           <!--valid={{paymentForm.billSame.$valid}}-->
         </label>
       </div>

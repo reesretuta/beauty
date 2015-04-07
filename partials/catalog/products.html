@@ -1,0 +1,21 @@
+    <div >
+        <!-- Product -->
+        <article ng-repeat="product in filteredProduct = (products | filter:searchFunction | orderBy:(search.query != '' ? '-score' : (session.language=='en_US'?'name':'name_es_US')))" ng-if="product.productflag.isgroup !=1">
+            
+          <div class="store-item-wrapper" ng-if="product.sku != '' && product.type != 'group'">
+            <a ng-href="{{STORE_BASE_URL}}/products/{{product.sku}}#top">
+              <span class="responsive-container img-responsive">
+                <img class="responsive-element img-responsive" ng-src="{{getImagePath(product.images[0])}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';">
+              </span>
+            </a>
+            <div class="store-item-info">
+              <p class="store-item-sku"><span ng-bind-html="'ITEM' | translate | unsafe"></span> #{{product.sku}}</p>
+              <p class="store-item-title"><a ng-href="{{STORE_BASE_URL}}/products/{{product.sku}}#top">{{getTranslated(product).name}}</a></p>
+            </div>
+          </div>
+        </article>
+
+    </div> <!-- /infinite scroll -->
+
+
+
