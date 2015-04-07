@@ -838,7 +838,10 @@ h3.cart-item-prod-title{
 .kit-box{
     border:1px solid #eee;
     padding:10px;
-    
+}
+
+.kit-box .product-action{
+    transform:scale(1);
 }
 
 .kit-box.active{
@@ -848,15 +851,24 @@ h3.cart-item-prod-title{
 
 .kit-box .kit-desc{
     text-transform:uppercase;
+    font-size: 23px;
 }
+
+.kit-box p.kit-value{
+    font-size:20px;
+}
+
 
 .kit-box a.seemore{
     display:block;
     font-size:14px;
-    margin-top:10px;
+    margin:10px 0;
     text-align: right;
 }
 
+.kit-box ul li{
+    margin-bottom: 5px;
+}
 
 
 
