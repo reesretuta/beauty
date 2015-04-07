@@ -90,6 +90,18 @@ angular.module('app.controllers.checkout')
 
         $scope.processingOrder = false;
 
+        // join addition params
+        $scope.profile.firstName=params.firstName;
+        $scope.profile.lastName=params.lastName;
+        $scope.profile.loginEmail=params.loginEmail;
+        $scope.profile.phoneNumber=params.phoneNumber;
+
+        delete $location.$$search.firstName;
+        delete $location.$$search.lastName;
+        delete $location.$$search.loginEmail;
+        delete $location.$$search.phoneNumber;
+        $location.$$compose();
+
         // initially verify
         verifyAge();
 
