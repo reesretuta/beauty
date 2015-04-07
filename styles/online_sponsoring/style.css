@@ -89,7 +89,7 @@ a:link.text-underline {
 a {
   position: relative;
 }
-#videoModal .modal-body {
+.video-modal-lg .modal-body {
   padding: 0;
 }
 .jaf-modal-close {
