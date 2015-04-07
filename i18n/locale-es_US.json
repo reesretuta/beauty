@@ -191,6 +191,7 @@
     "REQUIRE-LASTNAME-LENGTH": "Apellidos debe contener 2-40 letras",
 
     "VIEW_CART": "Ver Carrito",
+    "MY_ACCOUNT": "Mi Cuenta",
     "SIGN-IN": "Registrarse",
     "SIGN-IN-ALREADY-A-CUSTOMER": "Ingresar",
     "CREATE-ACCOUNT": "Crear una Cuenta",
@@ -224,6 +225,7 @@
     "SELECT-STATE": "Selecciona un estado.",
 
     "ORDER-PROBLEM": "Hubo un error al procesar la orden",
+    "ORDER-HISTORY": "Su Historial De Pedidos",
     "ORDER-HISTORY-PROBLEM": "Hubo un error al historial de pedidos de carga",
     "CONSULTANT-NOT-FOUND": "Incapaz de encontrar consultor",
     "INVALID-PASSWORD": "Contrase&ntilde;a no v&aacute;lida",

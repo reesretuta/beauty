@@ -189,6 +189,7 @@
     "REQUIRE-LASTNAME-LENGTH": "Last name must contain 2-40 letters",
 
     "VIEW_CART": "View Cart",
+    "MY_ACCOUNT": "My Account",
     "SIGN-IN": "Sign In",
     "SIGN-IN-ALREADY-A-CUSTOMER": "Sign In",
     "CREATE-ACCOUNT": "Create Account",
@@ -222,6 +223,7 @@
     "SELECT-STATE": "Please select a state",
 
     "ORDER-PROBLEM": "There was an error processing the order",
+    "ORDER-HISTORY": "Your Order History",
     "ORDER-HISTORY-PROBLEM": "There was an error loading order history",
     "CONSULTANT-NOT-FOUND": "Unable to find consultant",
     "INVALID-PASSWORD": "Invalid password",
