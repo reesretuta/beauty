@@ -3,19 +3,29 @@
 <!-- CLIENT DIRECT INFO: NOT SIGNED IN: OPTION TO SIGN-IN OR CREATE NEW-->
 <div ng-if="!isOnlineSponsoring && !loggedIn()" id="signin" class="col-sm-12">
 
-  <div class="col-md-offset-3">
-    <h1 class="checkouth1" ng-if="profile.customerStatus == 'existing' && !isOnlineSponsoring">
+  <div class="col-md-offset-3" style="padding-top:30px">
+
+    <p ng-if="profile.customerStatus == 'new'" style="font-size: 1.5em;">
+      <b class="control-label" ng-bind-html="'ALREADY-A-CUSTOMER' | translate | unsafe"></b>
+      <a href="" ng-mousedown="profile.customerStatus = 'existing'" class="checkout-link" style="color:#c3002f"><b ng-bind-html="'SIGN-IN-ALREADY-A-CUSTOMER' | translate | unsafe"></b></a>.
+    </p>
+
+    <p ng-if="profile.customerStatus == 'existing'" style="font-size: 1.5em;">
+      <b><span ng-bind-html="'NOT-YET-A-CUSTOMER' | translate | unsafe"></span></b>
+      <a href="" ng-click="profile.customerStatus = 'new'" class="checkout-link" style="color:#c3002f"><span ng-bind-html="'CREATE-ACCOUNT' | translate | unsafe"></span></a>.
+    </p>
+
+    <div class="row">
+      <div class="col-sm-6">
+        <hr>
+      </div>
+    </div>
+
+    <h1 class="checkouth1" style="margin-top:0" ng-if="profile.customerStatus == 'existing' && !isOnlineSponsoring">
       <span ng-bind-html="'SIGN-IN-ALREADY-A-CUSTOMER' | translate | unsafe"></span></h1>
 
-    <h1 class="checkouth1" ng-if="profile.customerStatus == 'new' && !isOnlineSponsoring">
+    <h1 class="checkouth1" style="margin-top:0" ng-if="profile.customerStatus == 'new' && !isOnlineSponsoring">
       <span ng-bind-html="'CREATE-ACCOUNT' | translate | unsafe"></span></h1>
-
-    <h1 class="checkouth1" ng-if="isOnlineSponsoring">
-      <span ng-bind-html="'OS-START-TITLE' | translate | unsafe"></span>
-      <span class="store-heading-description">
-        <span ng-bind-html="'OS-START-TAG' | translate | unsafe"></span>
-      </span>
-    </h1>
 
     <div class="row">
       <div class="col-sm-6">
@@ -28,25 +38,6 @@
   </div>
 
   <form name="signInForm" class="form-horizontal" role="form">
-
-    <div class="form-group" ng-if="!isOnlineSponsoring">
-      <div class="col-md-offset-3 col-sm-9">
-        <div class="row">
-          <div class="col-sm-6">
-            <hr>
-          </div>
-        </div>
-        <p ng-if="profile.customerStatus == 'new'" style="font-size: 1.5em;">
-          <b class="control-label" ng-bind-html="'ALREADY-A-CUSTOMER' | translate | unsafe"></b>
-          <a href="" ng-mousedown="profile.customerStatus = 'existing'" class="checkout-link"><b ng-bind-html="'SIGN-IN-ALREADY-A-CUSTOMER' | translate | unsafe"></b></a>.
-        </p>
-
-        <p ng-if="profile.customerStatus == 'existing'" style="font-size: 1.5em;">
-          <b><span ng-bind-html="'NOT-YET-A-CUSTOMER' | translate | unsafe"></span></b>
-          <a href="" ng-click="profile.customerStatus = 'new'" class="checkout-link"><span ng-bind-html="'CREATE-ACCOUNT' | translate | unsafe"></span></a>.
-        </p>
-      </div>
-    </div>
 
     <div class="form-group" ng-if="profile.customerStatus == 'new' || isOnlineSponsoring">
       <label for="firstName" class="col-md-3 control-label"><span ng-bind-html="'OS-NAME' | translate | unsafe"></span></label>
