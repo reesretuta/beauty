@@ -1060,7 +1060,8 @@ function createLead(lead) {
             firstName: lead.firstName,
             lastName: lead.lastName,
             phone: lead.phone,
-            language: lead.language
+            language: lead.language,
+            type: lead.type
         },
         headers: {
             'Content-Type' : 'application/x-www-form-urlencoded',

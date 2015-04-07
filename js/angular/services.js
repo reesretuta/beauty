@@ -868,7 +868,13 @@ angular.module('app.services', ['ngResource'])
         return $resource(API_URL + '/geocodes', {});
     })
     .factory('Leads', function ($resource, $http, $log, $q, API_URL) {
-        return $resource(API_URL + '/leads', {});
+        var leadService = $resource(API_URL + '/leads', {});
+        var origSave = leadService.save;
+        leadService.save = function(params) {
+            $log.debug('leadService(): save()', params);
+            return origSave(params);
+        }
+        return leadService;
     })
     .factory('SalesTax', function ($resource, $http, $log, $q, API_URL) {
         var salesTaxService = {};

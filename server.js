@@ -562,7 +562,8 @@ router.route('/leads')// create a lead
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             phone: req.body.phone,
-            language: req.body.language
+            language: req.body.language,
+            type: req.body.type
         }, function (err, lead) {
             if (err) {
                 logger.error("failed to create lead", err);
@@ -1662,7 +1663,8 @@ models.onReady(function () {
                     firstName: lead.firstName,
                     lastName: lead.lastName,
                     phone: lead.phone,
-                    language: lead.language
+                    language: lead.language,
+                    type: lead.type
                 }).then(function(r) {
                     logger.debug("created lead on server", r.result.statusCode, "body", r.result, "removing from local", lead._id);
                     lead.sent = true;

@@ -52,15 +52,18 @@ angular.module('app.controllers.onlineSponsor')
     }
 
     $scope.addLead = function() {
-        Leads.save({
+        var leadData = {
             email: $scope.profile.loginEmail,
             firstName: $scope.profile.firstName,
             lastName: $scope.profile.lastName,
             phone: $scope.profile.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3'),
             language: Session.get().language,
             type: 'jj-moreinfo'
-        }).$promise.then(function(lead) {
-            $log.debug("MainController(): addLead(): lead created");
+        };
+        $log.debug("OnlineSponsorLandingController(): addLead(): creating lead", leadData);
+
+        Leads.save(leadData).$promise.then(function(lead) {
+            $log.debug("MainController(): addLead(): lead created", lead);
 
             // FIXME do something here
         }, function(error) {

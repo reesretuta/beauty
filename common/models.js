@@ -155,6 +155,7 @@ var leadSchema = Schema({
     "email" : String,
     "phone" : String,
     "language": String,
+    "type": {type: String},
     "created": { type: Date, default: Date.now },
     "sent": { type: Boolean, default: false },
     "completed": { type: Boolean, default: false }
