@@ -306,6 +306,15 @@ section#why_jafra_lifestyle .subcontainer ul.golden_bullets li:before {
   padding-bottom: 56.25%;
 }
 
+.product-action {
+	display: inline-block;
+	-moz-transform: scale(1.2);
+	-webkit-transform: scale(1.2);
+	-o-transform: scale(1.2);
+	-ms-transform: scale(1.2);
+	transform: scale(1.2);
+}
+
 /* responsive overides */
 @media (max-width: 767px) {
 	section h3.hero-header-title-freedom_flexibility {
