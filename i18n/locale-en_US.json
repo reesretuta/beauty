@@ -395,7 +395,7 @@
     "TIT_ADD_NEW_ADDR":"Add a new address",
     "COUNTRY-US":"United States",
     "PHONE-NUMBER-WRONG":"Phone Number needs to be at least 10 numbers.",
-    "TIT_PAY_OPTION":"Select Payment Option",
+    "TIT_PAY_OPTION":"Select payment option",
     "PAY_OPTION_DES":"You&rsquo;ll be able to review the order before being charged.",
     "SELECT-OPTION-BUTTON":"Use this Option",
     "NAME_ON_CARD_ERR":"Name on card is too short.",

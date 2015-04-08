@@ -759,7 +759,7 @@ h3.cart-item-prod-title{
   font-size: 16px;
 }
 .checkout-address .address-actions {
-  padding: 15px 0;
+  padding: 8px 0 15px 0;
 }
 .checkout-address .address-actions span {
   display: inline-block;
@@ -770,7 +770,7 @@ h3.cart-item-prod-title{
   padding: 15px;
   border-radius: 9px;
   background:#FBF8FB;
-  opacity: .6;
+  opacity: .5;
   -webkit-transition: opacity 200ms ease;
   -moz-transition: opacity 200ms ease;
   -ms-transition: opacity 200ms ease;
@@ -832,7 +832,7 @@ h3.cart-item-prod-title{
 }
 .card-actions {
   clear: both;
-  padding-top: 10px;
+  padding: 10px 0 15px 0;
 }
 .checkout-card.active, .checkout-card:hover {
   opacity: 1;
