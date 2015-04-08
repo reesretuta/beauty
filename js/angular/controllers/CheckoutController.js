@@ -1163,7 +1163,12 @@ angular.module('app.controllers.checkout')
                     $scope.checkoutUpdated();
                     // jump to Shipping
                     // WizardHandler.wizard('checkoutWizard').goTo($scope.isOnlineSponsoring ? 'Profile' : 'Shipping');
-                    $scope.validateProfileAndContinue();
+                    
+                    if (!$scope.isOnlineSponsoring) {
+                        $log.debug("CheckoutController(): loginOrCreateUser(): created client for CD, set status = existing");
+                    }else{
+                        $scope.validateProfileAndContinue();
+                    }
                     $scope.processing = false;
                 }, function(error) {
                     $log.error("CheckoutController(): loginOrCreateUser(): failed to create client", error);
