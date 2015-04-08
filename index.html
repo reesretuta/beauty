@@ -398,7 +398,18 @@
     <script src="/js/offcanvas.js"></script>
     
     <!-- AddThis widgets for social media sharing -->
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5435adb94c0d228e"></script>
+    <!--<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5435adb94c0d228e"></script>-->
+
+    <!-- load AddThis widgets asynchronously -->
+    <script type="text/javascript">
+    var addthisScript = document.createElement('script');
+    addthisScript.setAttribute('src', 'http://s7.addthis.com/js/300/addthis_widget.js#domready=1')
+    document.body.appendChild(addthisScript)
+
+      var addthis_config = addthis_config||{};
+      addthis_config.pubid = 'ra-5435adb94c0d228e';
+    </script>
+
 
     <!-- Google Analytics -->
     <script>

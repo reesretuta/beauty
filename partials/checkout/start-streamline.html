@@ -448,11 +448,14 @@
 
     <div class="row" ng-if="!isOnlineSponsoring">
       <div class="col-xs-6 col-lg-4 checkout-address" ng-repeat="addressData in session.client.addresses">
-        <div class="address-block" ng-class="profile.shipping.id == addressData.id ? 'selectedShipping' : ''">
+        <div class="address-block clearfix" ng-class="profile.shipping.id == addressData.id ? 'selectedShipping' : ''">
           <span class="address-name block">{{ addressData.name || namePlaceholder }}</span>
           <span class="address-street block">{{ addressData.address1 }} {{ addressData.address2 }}</span>
           <span class="address-region block">{{ addressData.city }}, {{ addressData.state }} {{ addressData.zip }}</span>
           <span class="phone-number block">{{ addressData.phone}}</span>
+          <button type="button" class="btn btn-primary" ng-disabled="processing" ng-click="selectShippingAddressAndContinue(addressData)">
+            <span ng-bind-html="'BTN_SHIP_ADD' | translate | unsafe"></span>&nbsp;<i class="fa fa-caret-right"></i>
+          </button>
         </div>
         <div class="address-actions">
           <a ng-click="editAddress(addressData)"><i class="fa fa-pencil-square-o"></i>
@@ -461,9 +464,7 @@
           <a ng-click="removeAddress(addressData.id)"><i class="fa fa-times-circle"></i>
             <span ng-bind-html="'REMOVE' | translate | unsafe"></span></a>
         </div>
-        <button type="button" class="btn btn-primary" ng-disabled="processing" ng-click="selectShippingAddressAndContinue(addressData)">
-          <span ng-bind-html="'BTN_SHIP_ADD' | translate | unsafe"></span>
-        </button>
+        
       </div>
       <!-- /address -->
     </div>
@@ -471,7 +472,7 @@
   <!-- /offset -->
 
   <div ng-show="!isOnlineSponsoring && profile.shipping != null" class="col-md-offset-3">
-    <a class="btn btn-primary btn-lg" ng-click="showNewShipping()">+ ADD SHIPPING</a>
+    <a class="btn btn-primary" ng-click="showNewShipping()">+ ADD SHIPPING</a>
   </div>
   <ng-include ng-if="isOnlineSponsoring || profile.shipping == null" src="'/partials/checkout/shipping-form-include.html'"/>
 

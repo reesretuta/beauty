@@ -771,7 +771,7 @@ h3.cart-item-prod-title{
   border-radius: 9px;
 }
 .checkout-address .btn {
-  margin-bottom: 40px;
+  margin: 10px 0 0 0;
 }
 .selectedShipping {
     border: 2px solid rgba(195,0,47,1);
