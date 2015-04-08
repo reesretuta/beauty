@@ -472,7 +472,7 @@
   <!-- /offset -->
 
   <div ng-show="!isOnlineSponsoring && profile.shipping != null" class="col-md-offset-3">
-    <a class="btn btn-primary" ng-click="showNewShipping()">+ ADD SHIPPING</a>
+    <a class="" ng-click="showNewShipping()">+ ADD SHIPPING</a>
   </div>
   <ng-include ng-if="isOnlineSponsoring || profile.shipping == null" src="'/partials/checkout/shipping-form-include.html'"/>
 
@@ -500,7 +500,7 @@
   <div class="col-md-offset-3" ng-if="profile.customerStatus=='existing'">
     <div class="row">
       <div class="col-xs-6 col-lg-4" ng-repeat="ccData in session.client.creditCards">
-        <div class="checkout-card clearfix" ng-class="{active: ((ccData.id == profile.card.id) || profile.card.id == null)}">
+        <div class="checkout-card clearfix" ng-class="{active: ((ccData.id == profile.card.id))}">
           <span class="pull-left">{{ccData.name}}</span>
           <img class="pull-right img-responsive cardImg" src="/img/visa.png" ng-show="ccData.cardType=='Visa'">
           <img class="pull-right img-responsive cardImg" src="/img/mastercard.png" ng-show="ccData.cardType=='MasterCard'">
@@ -633,6 +633,9 @@
             <span class="address-street block">{{ addressData.address1 }} {{ addressData.address2 }}</span>
             <span class="address-region block">{{ addressData.city }}, {{ addressData.state }} {{ addressData.zip }}</span>
             <span class="phone-number block">{{ addressData.phone}}</span>
+            <button type="button" class="btn btn-primary" ng-disabled="processing" ng-click="selectBillingAddressAndContinue(addressData)">
+              <span ng-bind-html="'BTN_BILL_ADD' | translate | unsafe"></span>
+            </button>
           </div>
           <div class="address-actions">
             <a ng-click="editAddress(addressData)"><i class="fa fa-pencil-square-o"></i>
@@ -641,9 +644,7 @@
             <a ng-click="removeAddress(addressData.id)"><i class="fa fa-times-circle"></i>
               <span ng-bind-html="'REMOVE' | translate | unsafe"></span></a>
           </div>
-          <button type="button" class="btn btn-primary" ng-disabled="processing" ng-click="selectBillingAddressAndContinue(addressData)">
-            <span ng-bind-html="'BTN_BILL_ADD' | translate | unsafe"></span>
-          </button>
+          
         </div>
       </div>
     

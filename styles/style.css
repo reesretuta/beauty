@@ -769,6 +769,17 @@ h3.cart-item-prod-title{
   border: 2px solid #ccc;
   padding: 15px;
   border-radius: 9px;
+  background:#FBF8FB;
+  opacity: .6;
+  -webkit-transition: opacity 200ms ease;
+  -moz-transition: opacity 200ms ease;
+  -ms-transition: opacity 200ms ease;
+  -o-transition: opacity 200ms ease;
+  transition: opacity 200ms ease;
+}
+
+.address-block.selectedShipping{
+    opacity: 1;
 }
 .checkout-address .btn {
   margin: 10px 0 0 0;
@@ -878,16 +889,9 @@ h3.cart-item-prod-title{
 
 
 
-
-
-
-
-
-
-
-
-
-
+.category-header img{
+    width:100%;
+}
 
 
 
