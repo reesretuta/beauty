@@ -1143,6 +1143,24 @@ body.incheckout {
     p.jumbo-description br {
       display: none;
     }
+	.jumbo-title{
+		margin-top:50px;
+	}
+	
+	.jumbo-row .container {
+		padding: 12px;
+	}
+	
+	a.watch-video-link{
+		font-size:16px;
+		margin-top:0px;
+		padding: 6px 16px 8px 16px;
+	}
+
+	a.watch-video-link i{
+		font-size:12px;
+	}
+
     
     .jumbotron p.jumboget {
     text-align: center;
@@ -1225,9 +1243,28 @@ body.incheckout {
   .jumbo-title-span-4 {
       font-size: 60px;
   }
+  p.jumbo-description {
+      font-size: 13px;
+    }
   p.jumbo-description br {
       display: none;
     }
+	.jumbo-title{
+		margin-top:60px;
+	}
+	.jumbo-row .container {
+		padding: 12px;
+	}
+	
+	a.watch-video-link{
+		font-size:16px;
+		margin-top:0px;
+		padding: 6px 16px 8px 16px;
+	}
+
+	a.watch-video-link i{
+		font-size:12px;
+	}
 
     ul.menu_language li a {
       color: #fff;
@@ -1325,10 +1362,35 @@ body.incheckout {
   body.es #pagenav #navbar-sections ul.join_nav {
     font-size: 73%; /*Fixing overflowing navbar text for Spanish navigation*/
   }
+  .jumbo-title-span-1 {
+      font-size: 85px;
+  }
+  .jumbo-title-span-2, .jumbo-title-span-3 {
+    font-size: 40px
+  }
+  .jumbo-title-span-4 {
+      font-size: 60px;
+  }
+  p.jumbo-description {
+      font-size: 13px;
+    }
+	a.watch-video-link{
+		font-size:16px;
+		margin-top:0px;
+		padding: 6px 16px 8px 16px;
+	}
+
+	a.watch-video-link i{
+		font-size:12px;
+	}
+	.jumbo-title{
+		margin-top:50px;
+	}
 }
 
 /* Medium screens like laptops and smaller desktop monitors */
 @media (min-width:992px) {
+
     .jumbotron {
         padding-top: 100px;
     }
@@ -1341,6 +1403,7 @@ body.incheckout {
     section#why_jafra_testimonials span.and_more {
       padding-left: 400px;
     }
+	
 }
 
 @media (min-width:992px) and (max-width:1199px) {
