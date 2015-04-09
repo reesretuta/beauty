@@ -44,6 +44,21 @@ angular.module('app.controllers.cart')
             Cart.get().then(function(cart) {
                 $log.debug("CartController(): loadCart(): SKU loaded & added to cart", cart);
                 $scope.cart = cart;
+                
+                //remove all starter kits from cart if in CD
+                if (S($location.path()).startsWith(STORE_BASE_URL)) {
+                    for (var i = 0; i < $scope.cart.length; i++) {
+                        var kits = ['20494', '20495', '20498','20499'];
+                        if (kits.indexOf($scope.cart[i].sku) > -1) {
+                            var item = {sku : $scope.cart[i].sku};
+                            Cart.removeFromCart(item).then(function(cart){
+                                $scope.cart = cart;
+                            });
+                        }
+                    }
+                }
+                
+                
             }, function(error) {
                 $log.error("CartController(): loadCart(): failed to add to cart, redirecting", error);
                 $scope.orderError = "Failed to add product to cart";
@@ -51,6 +66,7 @@ angular.module('app.controllers.cart')
                 $location.path(STORE_BASE_URL);
                 d.reject(error);
             });
+            
             return d.promise;
         }
 
