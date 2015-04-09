@@ -62,6 +62,16 @@
                           
                         </div>
                       </div>
+                        <script>
+                          $(function(){ 
+                            // stop video from playing when modal closes
+                            $('#prodvideoModal').on('hide.bs.modal', function (e) {
+                              $("#prodvideoModal iframe").attr("src", $("#prodvideoModal iframe").attr("src"));
+                            })
+
+                          });
+                        </script>
+
                     </div> <!-- end video modal -->
                 </div><!-- /.col -->
             </div><!-- /.row -->
