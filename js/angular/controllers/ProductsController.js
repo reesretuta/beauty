@@ -29,7 +29,8 @@ angular.module('app.controllers.products')
         $scope.products = [];
         $scope.loadedProductCount = 0;
         $scope.noMoreToLoad = false;
-
+        $scope.displayHero = false;
+        
         $scope.addToCart = function(product) {
             $log.debug("ProductsController(): addToCart(): adding product", product);
             var qty = $scope.quantities[product.sku];
@@ -108,6 +109,12 @@ angular.module('app.controllers.products')
                 $scope.errorMessage = "An error occurred while retrieving category data. Please refresh the page to try again, or contact your system administrator if the error persists.";
 
             });
+            var heroCategories = ['9999999999'];
+            
+            if (heroCategories.indexOf($scope.categoryId) > -1) {
+                $scope.displayHero = true;
+            }
+            
         };
         if ($scope.categoryId) {
             loadCategory();

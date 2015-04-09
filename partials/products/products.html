@@ -1,3 +1,24 @@
+    <section ng-if="displayHero" class="row store-section">
+        <div class="col-xs-12 col-sm-8 col-lg-8">
+          <div ng-if="session.language" ng-include="'/partials/products/carousel-product-'+session.language+'.html'"></div>              
+          <p>&nbsp;</p>
+        </div>
+        <div class="col-xs-12 col-sm-4 col-lg-4 pull-right">
+            <a ng-href="{{STORE_BASE_URL}}/products?category=8439" ng-bind-html="'JAFRA-color' | translate | unsafe"></a>
+            <br><br>
+            <!--<a href="http://www.jafra.com/corporate/products/skin-care-test" target="_blank" ng-bind-html="'skincare_profile' | translate | unsafe"></a>-->
+        </div>
+        <div class="col-xs-12 col-sm-8 col-lg-8">
+          <p class="lead">
+            <span ng-bind-html="'HOME-BOTTOM-TAGLINE' | translate | unsafe"></span>
+          </p>
+          <p>
+            <span ng-bind-html="'HOME-BOTTOM-TAGLINE-BODY' | translate | unsafe"></span>
+          </p>
+        </div><!--/span-->
+    </section><!--/row-->
+        
+        
     <!-- <div class="category-header col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <img class="img-responsive" src="http://www.jafrausa.com/sharedfiles/websites/Corporate-US/pages/home/zones/Zone1/zoneContents/default/content[4]/en_US/resources/main/file/150401_usa_banner_s4_en.jpg" />
     </div>
