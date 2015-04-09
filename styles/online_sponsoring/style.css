@@ -1372,12 +1372,12 @@ body.incheckout {
       font-size: 60px;
   }
   p.jumbo-description {
-      font-size: 13px;
+      font-size: 15px;
     }
 	a.watch-video-link{
-		font-size:16px;
+		font-size:22px;
 		margin-top:0px;
-		padding: 6px 16px 8px 16px;
+		padding: 8px 18px 8px 18px;
 	}
 
 	a.watch-video-link i{
