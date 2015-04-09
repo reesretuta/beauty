@@ -399,15 +399,23 @@
     
     <!-- AddThis widgets for social media sharing -->
     <!--<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5435adb94c0d228e"></script>-->
-
+    
     <!-- load AddThis widgets asynchronously -->
+    <!--<script type="text/javascript">
+        var addthisScript = document.createElement('script');
+        addthisScript.setAttribute('src', 'http://s7.addthis.com/js/300/addthis_widget.js#domready=1')
+        document.body.appendChild(addthisScript)
+    
+          var addthis_config = addthis_config||{};
+          addthis_config.pubid = 'ra-5435adb94c0d228e';
+    </script>-->
+    
+    <script src="http://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5435adb94c0d228e&async=1" type="text/javascript"></script>
     <script type="text/javascript">
-    var addthisScript = document.createElement('script');
-    addthisScript.setAttribute('src', 'http://s7.addthis.com/js/300/addthis_widget.js#domready=1')
-    document.body.appendChild(addthisScript)
-
-      var addthis_config = addthis_config||{};
-      addthis_config.pubid = 'ra-5435adb94c0d228e';
+    // Call this function once the rest of the document is loaded
+    function loadAddThis() {
+        addthis.init()
+    }
     </script>
 
 
