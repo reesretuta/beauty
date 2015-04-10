@@ -1,5 +1,5 @@
 angular.module('app.controllers.products')
-    .controller('ProductsController', function ($sce, HashKeyCopier, Cart, Categories, Product, Search, $scope, $rootScope, $routeParams, $q, $location, $timeout, $window, $log, $modal, $document, BreadcrumbsHelper, $translate) {
+    .controller('ProductsController', function ($sce, HashKeyCopier, Cart, Categories, Product, Session, Search, $scope, $rootScope, $routeParams, $q, $location, $timeout, $window, $log, $modal, $document, BreadcrumbsHelper, $translate) {
         $log.debug("ProductsController");
 
         $rootScope.title = 'ALL-PRODUCTS';
