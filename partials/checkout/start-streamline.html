@@ -494,8 +494,8 @@
       <span class="store-heading-description" ng-bind-html="'PAY_OPTION_DES' | translate | unsafe"></span>
     </h1>
   </div>
-
-  <div class="col-md-offset-3" ng-if="session.client.creditCards && session.client.creditCards.length > 0">
+  
+  <div class="col-md-offset-3" ng-if="!isOnlineSponsoring">
     <div class="row">
       <div class="col-xs-6 col-lg-4" ng-repeat="ccData in session.client.creditCards">
         <div class="checkout-card clearfix" ng-class="{active: ((ccData.id == profile.card.id))}">
@@ -531,7 +531,7 @@
   </div>
 
 
-  <div class="row" ng-if="!isOnlineSponsoring && profile.card.id != null || session.client.creditCards.length > 0">
+  <div class="row" ng-if="!isOnlineSponsoring && profile.card.id != null">
     <div class="col-md-offset-3">
       <a ng-click="showNewPayment()">+ADD PAYMENT</a>
     </div>
@@ -539,10 +539,12 @@
 
 
   <!-- <div class="row" ng-if="profile.customerStatus == 'existing' && (profile.card == null || profile.card.id == null)"> -->
-  <div class="row" ng-if="profile.card == null || session.client.creditCards.length == 0">
+  <div class="row" ng-if="profile.card.id == null">
     <!-- <div class="col-md-offset-3 col-lg-8">
       <h2 ng-if="!isOnlineSponsoring"><span ng-bind-html="'ADD-NEW-PAYMENT-METHOD' | translate | unsafe"></span></h2>
     </div> -->
+        
+    
     <form name="paymentForm" class="form-horizontal" role="form" novalidate>
 
       <!-- CARD INFO -->
@@ -793,7 +795,6 @@
 
 
   </div>
-
 
   <!-- BILLING SAME -->
   <div class="row">
