@@ -99,7 +99,11 @@ angular.module('app.controllers.products')
 
                 $log.debug("ProductsController(): loaded category", category);
 
-                $rootScope.title = category.name;
+                if (Session.getLanguage() == 'es_US') {
+                    $rootScope.title = category.name_es_US;
+                } else {
+                    $rootScope.title = category.name;
+                }
                 categoriesLoadedPromise.resolve(category);
             }, function(data, status, headers) {
                 $log.error("error loading category", data, status);
