@@ -67,7 +67,7 @@
 
   </form>
 
-  <div class="col-md-offset-1 lead-thanks" ng-show="showThanks">
+  <div ng-if="session.language == 'en_US'" class="col-md-offset-1 lead-thanks" ng-show="showThanks">
     <div class="col-sm-11">
       <h1>Continue to Sign Up &amp; Purchase</h1>
       <p class="padbottom">
@@ -80,6 +80,24 @@
         &nbsp;&nbsp;
         <button type="button" class="btn btn-link" style="text-transform:none;" ng-class="{ 'processing' : processing }" ng-click="addLead()" ng-disabled="processing" data-dismiss="modal">
           No Thanks, I'll come back later
+        </button>
+      </p>
+    </div>
+  </div>
+
+  <div ng-if="session.language == 'es_US'" class="col-md-offset-1 lead-thanks" ng-show="showThanks">
+    <div class="col-sm-11">
+      <h1>Contin&uacute;a tu Proceso de Ingreso y Compra</h1>
+      <p class="padbottom">
+        Para completar el proceso de ingreso, necesitar&aacute;s comprar un Kit de Inicio. Haz clic en CONTIN&Uacute;A Y COMPRA para ordenar tu Kit hoy mismo. 
+      </p>
+      <p class="padbottom">
+        <button type="button" class="btn btn-primary btn-lg" ng-click="join('20495')">
+          CONTIN&Uacute;A Y COMPRA <i class="fa fa-caret-right"></i>
+        </button>
+        &nbsp;&nbsp;
+        <button type="button" class="btn btn-link" style="text-transform:none;" ng-class="{ 'processing' : processing }" ng-click="addLead()" ng-disabled="processing" data-dismiss="modal">
+          No, gracias.  Regresar&eacute; m&aacute;s tarde.
         </button>
       </p>
     </div>

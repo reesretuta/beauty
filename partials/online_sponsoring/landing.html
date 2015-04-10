@@ -23,7 +23,7 @@
               <!-- <a href="#" class="hero-video-cta"><i class="fa fa-play-circle"></i></a> -->
             </p>
             <p class="jumboget">
-              <a class="watch-video-link DidotLTPro-Italic" href="#" data-toggle="modal" data-target="#videoModal" analytics-on="click" analytics-event="Hero Video" analytics-category="Content"><i class="fa fa-play"></i> <span>Watch Video</span></a>
+              <a class="watch-video-link DidotLTPro-Italic" href="#" data-toggle="modal" data-target="#videoModal" analytics-on="click" analytics-event="Hero Video" analytics-category="Content"><i class="fa fa-play"></i> <span ng-bind-html="'BTN_WATCH_VIDEO' | translate | unsafe">Watch Video</span></a>
               <!-- <a data-target="#" class="watch-video-link" data-toggle="modal" data-target=".bs-video-modal-lg"><span class="glyphicon glyphicon-play"></span> WATCH VIDEO</a> -->
             </p>
             <small class="jumbo-scroll"><i class="fa fa-angle-down"></i> Scroll Down <i class="fa fa-angle-down"></i></small>
@@ -43,7 +43,8 @@
       
       <div class="modal-body">
         <div class="embed-responsive embed-responsive-16by9">
-          <iframe class="embed-responsive-item" width="853" height="480" src="https://www.youtube.com/embed/KR2iQob2G5c" frameborder="0" allowfullscreen></iframe>
+          <iframe ng-if="session.language == 'en_US'" class="embed-responsive-item" width="853" height="480" src="https://www.youtube.com/embed/KR2iQob2G5c" frameborder="0" allowfullscreen></iframe>
+          <iframe ng-if="session.language == 'es_US'" class="embed-responsive-item" width="853" height="480" src="https://www.youtube.com/embed/z5Zan7pIv5A" frameborder="0" allowfullscreen></iframe>
         </div>
       </div>
       
