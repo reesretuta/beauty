@@ -856,15 +856,20 @@ h3.cart-item-prod-title{
 .kit-box{
     border:1px solid #eee;
     padding:10px;
+    opacity: 0.5;
+    text-align:center;
 }
 
 .kit-box .product-action{
     transform:scale(1);
+    text-align:center;
 }
 
+.kit-box:hover,
 .kit-box.active{
     border-color:rgba(195,0,47,1);
     box-shadow:0 0 3px rgba(195,0,47,1);
+    opacity: 1;
 }
 
 .kit-box .kit-desc{
@@ -886,6 +891,15 @@ h3.cart-item-prod-title{
 
 .kit-box ul li{
     margin-bottom: 5px;
+    text-align:left;
+}
+
+.kit-box .more-link-alt.collapsed:after{
+    -moz-transform: rotate(-180deg) !important;
+    -webkit-transform: rotate(-180deg) !important;
+    -o-transform: rotate(-180deg) !important;
+    -ms-transform: rotate(-180deg) !important;
+    transform: rotate(-180deg) !important;
 }
 
 

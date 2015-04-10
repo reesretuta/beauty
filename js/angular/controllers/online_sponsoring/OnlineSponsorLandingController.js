@@ -7,6 +7,8 @@ angular.module('app.controllers.onlineSponsor')
     $rootScope.inCheckout = false;
     $scope.profile = {};
     $scope.showThanks = false;
+    
+    $scope.fromLead = false;
 
     $scope.getSessionLanguage = function() {
         var lang = Session.getLanguage();
@@ -47,7 +49,7 @@ angular.module('app.controllers.onlineSponsor')
 
     $scope.joinFirstStep = function() {
         $log.debug("OnlineSponsorLandingController(): joinFirstStep()", $scope.profile.firstName, $scope.profile.lastName, $scope.profile.loginEmail, $scope.profile.phoneNumber);
-
+        $scope.fromLead = true;
         $scope.showThanks = true;
     }
 
