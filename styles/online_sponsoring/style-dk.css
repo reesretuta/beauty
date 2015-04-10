@@ -2,6 +2,14 @@
 
 a:link { text-decoration: none; } /* internet explorer is dumb */
 
+p {
+	font-size: 18px;
+	line-height: 1.6em;
+}
+.testimonial p {
+	font-size: 16px;
+}
+
 .nav li a {
 	letter-spacing: normal;
 }
@@ -322,6 +330,9 @@ section#why_jafra_lifestyle .subcontainer ul.golden_bullets li:before {
 
 /* responsive overides */
 @media (max-width: 767px) {
+	p {
+		font-size: 16px;
+	}
 	section h3.hero-header-title-freedom_flexibility {
 		font-size: 23px;
 	}
@@ -428,6 +439,45 @@ section#why_jafra_lifestyle .subcontainer ul.golden_bullets li:before {
 		left: 140px; REMOVED FOR RESPONSIVENESS*/
 	}
 }
+@media (max-width: 992px) {
+	.testimonials {
+		position: relative;
+		white-space: nowrap;
+		width: 80%;
+		overflow-x: scroll;
+		overflow-y: hidden;
+	}
+	.testimonials > div {
+		white-space: normal;
+		display: inline-block;
+		max-width: 300px;
+		vertical-align: top;
+	}
+	.testimonial p {
+		font-size: 14px;
+	}
+/*	.testimonials:after, .testimonials:before {
+		display: block;
+		position: absolute;
+		font-size: 44px;
+		font-family: FontAwesome;
+		font-style: normal;
+		font-weight: normal;
+		line-height: 1;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	}
+	.testimonials:before {
+		content: "\f105";
+		top: 50%;
+		left: 0;
+	}
+	.testimonials:after {
+		content: "\f104";
+		top: 50%;
+		right: 0;
+	}*/
+}
 @media (min-width: 768px) and (max-width: 992px) {
 	.subrow {
 		margin: 0 20px !important;
@@ -513,6 +563,9 @@ section#why_jafra_lifestyle .subcontainer ul.golden_bullets li:before {
 	}
 }
 @media (max-width: 414px) {
+	p {
+		font-size: 14px;
+	}
 	.legacy_wrapper {
 	  margin: 56px 0;
 	}
