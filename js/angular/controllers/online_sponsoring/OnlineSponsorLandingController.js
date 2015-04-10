@@ -34,16 +34,16 @@ angular.module('app.controllers.onlineSponsor')
           $window.open(JOIN_BASE_URL + "/checkout?sku=" + sku +
             "&language=" + $scope.getSessionLanguage() +
             "&source=" + $scope.getSessionSource() +
-            "&firstName=" + $scope.profile.firstName +
-            "&lastName=" + $scope.profile.lastName +
-            "&loginEmail=" + $scope.profile.loginEmail +
-            "&phoneNumber=" + $scope.profile.phoneNumber);
+            ($scope.profile.firstName != null ? "&firstName=" + $scope.profile.firstName : "") +
+            ($scope.profile.lastName != null ? "&lastName=" + $scope.profile.lastName : "") +
+            ($scope.profile.loginEmail != null ? "&loginEmail=" + $scope.profile.loginEmail : "") +
+            ($scope.profile.phoneNumber != null ? "&phoneNumber=" + $scope.profile.phoneNumber : ""));
         } else {
           $location.url(JOIN_BASE_URL + "/checkout?sku=" + sku +
-            "&firstName=" + $scope.profile.firstName +
-            "&lastName=" + $scope.profile.lastName +
-            "&loginEmail=" + $scope.profile.loginEmail +
-            "&phoneNumber=" + $scope.profile.phoneNumber);
+            ($scope.profile.firstName != null ? "&firstName=" + $scope.profile.firstName : "") +
+            ($scope.profile.lastName != null ? "&lastName=" + $scope.profile.lastName : "") +
+            ($scope.profile.loginEmail != null ? "&loginEmail=" + $scope.profile.loginEmail : "") +
+            ($scope.profile.phoneNumber != null ? "&phoneNumber=" + $scope.profile.phoneNumber : ""));
         }
     };
 
