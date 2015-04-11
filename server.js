@@ -376,6 +376,8 @@ router.route('/authenticate')// authenticate a user (accessed at POST http://loc
             // set the client in the session
             req.session.client = r.result;
 
+
+
             res.status(r.status);
             res.json(req.session);
         }, function(r) {
@@ -1268,7 +1270,7 @@ router.route('/orders')// create an order
     .post(function (req, res) {
         logger.debug("create order: got data", req.body);
 
-        jafraClient.createOrder(req.body).then(function(r) {
+        jafraClient.createOrder(req.body, req.session).then(function(r) {
             logger.debug("success", r)
             res.status(r.status);
             res.json(r.result);

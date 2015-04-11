@@ -78,6 +78,27 @@ angular.module('app.controllers.checkout')
             urlStep = "Start";
         }
 
+        // set default shipping address
+        if ($rootScope.session.client.lastUsedShippingAddressId) {
+            $log.debug("CheckoutController(): have last shipping address id");
+            $.each($rootScope.session.client.addresses, function(i, a) {
+                if (a.id == $rootScope.session.client.lastUsedShippingAddressId) {
+                    $log.debug("CheckoutController(): setting shipping/billing address");
+                    $scope.profile.shipping = a;
+                    $scope.profile.billing = a;
+                }
+            });
+        }
+        if ($rootScope.session.client.lastUsedCreditCardId) {
+            $log.debug("CheckoutController(): have last credit card id");
+            $.each($rootScope.session.client.creditCards, function(i, c) {
+                if (c.id == $rootScope.session.client.lastUsedCreditCardId) {
+                    $log.debug("CheckoutController(): setting cc");
+                    $scope.profile.card = c;
+                }
+            });
+        }
+
         $scope.shippingAddressError = null;
         $scope.billingAddressError = null;
 
@@ -1172,7 +1193,11 @@ angular.module('app.controllers.checkout')
                     $scope.processing = false;
                 }, function(error) {
                     $log.error("CheckoutController(): loginOrCreateUser(): failed to create client", error);
-                    $scope.loginError = "Error creating client";
+                    if (error.statusCode == 409) {
+                        $scope.loginError = "This email address is already in use";
+                    } else {
+                        $scope.loginError = "Error creating client";
+                    }
                     $scope.processing = false;
                 });
             } else {
@@ -2010,6 +2035,10 @@ angular.module('app.controllers.checkout')
                 // FIXME - handle multiple consultant IDs - dialog?
                 if ($rootScope.session.client.consultantIds && $rootScope.session.client.consultantIds.length > 0) {
                     consultantId = $rootScope.session.client.consultantIds[0];
+                }
+
+                if ($rootScope.session.client.lastConsultantId && consultantId == null) {
+                    consultantId = $rootScope.session.client.lastConsultantId;
                 }
             }
             return consultantId;

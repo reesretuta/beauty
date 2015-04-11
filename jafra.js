@@ -224,9 +224,27 @@ function authenticate(email, password) {
                 r.result.creditCards = [];
             }
 
-            deferred.resolve({
-                status: r.status,
-                result: r.result
+            // get order history
+            models.OrderHistory.find({clientId: clientId})
+            .sort({created:-1})
+            .limit(1)
+            .exec(function (err, orders) {
+                if (err) {
+                    logger.debug("error getting order history by client id", err);
+                }
+
+                orders = orders ? orders : [];
+
+                if (orders[0]) {
+                    r.result.lastUsedCreditCardId = orders[0].creditCardId;
+                    r.result.lastUsedShippingAddressId = orders[0].shippingAddressId;
+                    r.result.lastUsedBillingAddressId = orders[0].billingAddressId;
+                    r.result.lastUsedConsultantId = orders[0].consultantId;
+                }
+
+                deferred.resolve({
+                    status: r.status, result: r.result
+                });
             });
         }, function (r) {
             logger.error("authenticate(): failed to load client", r.result);
@@ -895,7 +913,7 @@ function lookupByEmail(email, type) {
     return deferred.promise;
 }
 
-function createOrder(data) {
+function createOrder(data, session) {
     //logger.debug("createOrder", data);
     var deferred = Q.defer();
 
@@ -973,6 +991,12 @@ function createOrder(data) {
 
             orderHistory.save(function (err) {
                 if (err) return logger.error("createOrder(): error saving order history record", err);
+
+                // else update the latest session data
+                session.client.lastUsedCreditCardId = data.creditCardId;
+                session.client.lastUsedShippingAddressId = data.shippingAddressId;
+                session.client.lastUsedBillingAddressId = data.billingAddressId;
+                session.client.lastUsedConsultantId = data.consultantId;
             })
         } catch (ex) {
             logger.error("error saving order history record", ex);
