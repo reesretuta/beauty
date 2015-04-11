@@ -440,27 +440,33 @@
 
 <div class="col-sm-12" ng-if="isOnlineSponsoring || loggedIn()">
   <div class="col-md-offset-3">
-    <h1 ng-if="!isOnlineSponsoring && session.client.addresses.length > 0"><span ng-bind-html="'CHOOSE-SHIPPING-ADDRESS' | translate | unsafe"></span></h1>
+    <h1 ng-if="!isOnlineSponsoring && profile.shipping != null"><span ng-bind-html="'CHOOSE-SHIPPING-ADDRESS' | translate | unsafe"></span></h1>
 
-    <h1 ng-if="isOnlineSponsoring || session.client.addresses == null || session.client.addresses.length == 0"><span ng-bind-html="'OS-SHIPPING-TITLE' | translate | unsafe"></span></h1>
-
-    <div class="row" ng-if="!isOnlineSponsoring && session.client.addresses.length > 0">
-      <div class="col-xs-6 col-lg-4 checkout-address" ng-repeat="addressData in session.client.addresses">
+    <h1 ng-if="isOnlineSponsoring || profile.shipping == null"><span ng-bind-html="'OS-SHIPPING-TITLE' | translate | unsafe"></span></h1>
+  </div>
+  <div class="row">
+    <div class="col-md-offset-3 col-md-7" ng-if="!isOnlineSponsoring && profile.shipping != null">
+      <div class="checkout-address" ng-repeat="addressData in session.client.addresses">
         <div class="address-block clearfix" ng-class="profile.shipping.id == addressData.id ? 'selectedShipping' : ''">
-          <span class="address-name block">{{ addressData.name || namePlaceholder }}</span>
-          <span class="address-street block">{{ addressData.address1 }} {{ addressData.address2 }}</span>
-          <span class="address-region block">{{ addressData.city }}, {{ addressData.state }} {{ addressData.zip }}</span>
-          <span class="phone-number block">{{ addressData.phone}}</span>
-          <button type="button" class="btn btn-primary" ng-disabled="processing" ng-click="selectShippingAddressAndContinue(addressData)">
-            <span ng-bind-html="'BTN_SHIP_ADD' | translate | unsafe"></span>&nbsp;<i class="fa fa-caret-right"></i>
-          </button>
-        </div>
-        <div class="address-actions">
-          <a ng-click="editAddress(addressData)"><i class="fa fa-pencil-square-o"></i>
-            <span ng-bind-html="'EDIT' | translate | unsafe"></span></a>
-          &nbsp;&nbsp;
-          <a ng-click="removeAddress(addressData.id)"><i class="fa fa-times-circle"></i>
-            <span ng-bind-html="'REMOVE' | translate | unsafe"></span></a>
+
+          <div class="address-info col-md-5">
+            <span class="address-name block">{{ addressData.name || namePlaceholder }}</span>
+            <span class="address-street block">{{ addressData.address1 }} {{ addressData.address2 }}</span>
+            <span class="address-region block">{{ addressData.city }}, {{ addressData.state }} {{ addressData.zip }}</span>
+            <span class="phone-number block">{{ addressData.phone}}</span>
+          </div>
+
+          <div class="address-actions col-md-7 text-right">
+            <a class="btn btn-link" ng-click="editAddress(addressData)"><i class="fa fa-pencil-square-o"></i>
+              <span ng-bind-html="'EDIT' | translate | unsafe"></span></a>
+            &nbsp;&nbsp;
+            <a class="btn btn-link" ng-click="removeAddress(addressData.id)"><i class="fa fa-times-circle"></i>
+              <span ng-bind-html="'REMOVE' | translate | unsafe"></span></a>
+            &nbsp;&nbsp;
+            <button type="button" class="btn btn-primary" ng-disabled="processing" ng-click="selectShippingAddressAndContinue(addressData)">
+              <span ng-bind-html="'GEO_CHOOSE' | translate | unsafe"></span>
+            </button>
+          </div>
         </div>
         
       </div>
@@ -469,10 +475,10 @@
   </div>
   <!-- /offset -->
 
-  <div ng-show="!isOnlineSponsoring && session.client.addresses.length > 0" class="col-md-offset-3">
+  <div ng-show="!isOnlineSponsoring && profile.shipping != null" class="col-md-offset-3">
     <a class="" ng-click="showNewShipping()">+ ADD SHIPPING</a>
   </div>
-  <ng-include ng-if="isOnlineSponsoring || session.client.addresses.length == 0" src="'/partials/checkout/shipping-form-include.html'"/>
+  <ng-include ng-if="isOnlineSponsoring || profile.shipping == null" src="'/partials/checkout/shipping-form-include.html'"/>
 
   <div class="col-md-offset-3">
     <hr>
@@ -484,18 +490,18 @@
 <div class="col-sm-12" ng-if="isOnlineSponsoring || loggedIn()">
 
   <div class="col-md-offset-3">
-    <h1 ng-show="!isOnlineSponsoring && session.client.creditCards.length > 0">
+    <h1 ng-show="!isOnlineSponsoring && profile.card.id != null">
       <span ng-bind-html="'TIT_PAY_OPTION' | translate |unsafe"></span>
       <span class="store-heading-description" ng-bind-html="'PAY_OPTION_DES' | translate | unsafe"></span>
     </h1>
 
-    <h1 ng-show="isOnlineSponsoring || session.client.creditCards.length == 0">
+    <h1 ng-show="isOnlineSponsoring || profile.card.id == null">
       <span ng-bind-html="'ENTER-PAYMENT-INFO' | translate | unsafe"></span>
       <span class="store-heading-description" ng-bind-html="'PAY_OPTION_DES' | translate | unsafe"></span>
     </h1>
   </div>
 
-  <div class="col-md-offset-3" ng-if="!isOnlineSponsoring && session.client.creditCards.length > 0">
+  <div class="col-md-offset-3" ng-if="!isOnlineSponsoring && profile.card.id != null">
     <div class="row">
       <div class="col-xs-6 col-lg-4" ng-repeat="ccData in session.client.creditCards">
         <div class="checkout-card clearfix" ng-class="{active: ((ccData.id == profile.card.id))}">
@@ -531,7 +537,7 @@
   </div>
 
 
-  <div class="row" ng-if="(!isOnlineSponsoring && session.client.creditCards.length > 0) || (!isOnlineSponsoring && profile.card.id != null)">
+  <div class="row" ng-if="!isOnlineSponsoring && profile.card.id != null">
 
     <div class="col-md-offset-3">
       <a ng-click="showNewPayment()">+ADD PAYMENT</a>

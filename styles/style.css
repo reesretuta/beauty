@@ -744,6 +744,9 @@ h3.cart-item-prod-title{
   display: inline-block;
   padding-top: 7px;
 }
+.checkout-address {
+  margin-bottom: 10px;
+}
 .checkout-address span.block {
   display: block;
 }
