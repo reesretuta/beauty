@@ -1172,7 +1172,11 @@ angular.module('app.controllers.checkout')
                     $scope.processing = false;
                 }, function(error) {
                     $log.error("CheckoutController(): loginOrCreateUser(): failed to create client", error);
-                    $scope.loginError = "Error creating client";
+                    if (error.statusCode == 409) {
+                        $scope.loginError = "This email address is already in use";
+                    } else {
+                        $scope.loginError = "Error creating client";
+                    }
                     $scope.processing = false;
                 });
             } else {
