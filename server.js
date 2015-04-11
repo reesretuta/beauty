@@ -1270,7 +1270,7 @@ router.route('/orders')// create an order
     .post(function (req, res) {
         logger.debug("create order: got data", req.body);
 
-        jafraClient.createOrder(req.body).then(function(r) {
+        jafraClient.createOrder(req.body, req.session).then(function(r) {
             logger.debug("success", r)
             res.status(r.status);
             res.json(r.result);

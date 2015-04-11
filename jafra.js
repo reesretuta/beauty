@@ -913,7 +913,7 @@ function lookupByEmail(email, type) {
     return deferred.promise;
 }
 
-function createOrder(data) {
+function createOrder(data, session) {
     //logger.debug("createOrder", data);
     var deferred = Q.defer();
 
@@ -993,10 +993,10 @@ function createOrder(data) {
                 if (err) return logger.error("createOrder(): error saving order history record", err);
 
                 // else update the latest session data
-                r.result.lastUsedCreditCardId = data.creditCardId;
-                r.result.lastUsedShippingAddressId = data.shippingAddressId;
-                r.result.lastUsedBillingAddressId = data.billingAddressId;
-                r.result.lastUsedConsultantId = data.consultantId;
+                session.client.lastUsedCreditCardId = data.creditCardId;
+                session.client.lastUsedShippingAddressId = data.shippingAddressId;
+                session.client.lastUsedBillingAddressId = data.billingAddressId;
+                session.client.lastUsedConsultantId = data.consultantId;
             })
         } catch (ex) {
             logger.error("error saving order history record", ex);

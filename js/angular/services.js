@@ -1193,7 +1193,7 @@ angular.module('app.services', ['ngResource'])
                     $log.debug("sessionService(): create(): created order", savedOrder, order);
 
                     // update the session
-                    var session = getLocalSession();
+                    var session = $rootScope.session;
                     session.client.lastUsedCreditCardId = order.creditCardId;
                     session.client.lastUsedShippingAddressId = order.shippingAddressId;
                     session.client.lastUsedBillingAddressId = order.billingAddressId;
