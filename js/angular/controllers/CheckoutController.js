@@ -79,7 +79,7 @@ angular.module('app.controllers.checkout')
         }
 
         // set default shipping address
-        if ($rootScope.session.client.lastUsedShippingAddressId) {
+        if ($rootScope.session.client && $rootScope.session.client.lastUsedShippingAddressId) {
             $log.debug("CheckoutController(): have last shipping address id");
             $.each($rootScope.session.client.addresses, function(i, a) {
                 if (a.id == $rootScope.session.client.lastUsedShippingAddressId) {
@@ -89,7 +89,7 @@ angular.module('app.controllers.checkout')
                 }
             });
         }
-        if ($rootScope.session.client.lastUsedCreditCardId) {
+        if ($rootScope.session.client && $rootScope.session.client.lastUsedCreditCardId) {
             $log.debug("CheckoutController(): have last credit card id");
             $.each($rootScope.session.client.creditCards, function(i, c) {
                 if (c.id == $rootScope.session.client.lastUsedCreditCardId) {
