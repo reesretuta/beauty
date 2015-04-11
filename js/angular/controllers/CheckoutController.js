@@ -1279,6 +1279,10 @@ angular.module('app.controllers.checkout')
         $scope.showNewShipping = function(){
             $scope.profile.shipping = null;
         }
+
+        $scope.showNewBilling = function(){
+            $scope.profile.billing = null;
+        }
         
         $scope.showNewPayment = function(){
             $scope.profile.card = null;
