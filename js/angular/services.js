@@ -1176,7 +1176,7 @@ angular.module('app.services', ['ngResource'])
 
         return consultantService;
     })
-    .factory('Order', function ($resource, $http, $log, $q, $translate, Session, Cart, PGP, API_URL) {
+    .factory('Order', function ($resource, $http, $rootScope, $log, $q, $translate, Session, Cart, PGP, API_URL) {
         var orderService = $resource(API_URL + '/orders/:orderId', {orderId: '@_id'});
 
         var key = PGP.getKey();
@@ -1187,16 +1187,27 @@ angular.module('app.services', ['ngResource'])
             $log.debug("Order(): create(): attempting to create order=", order);
 
             try{
-                orderService.save({}, order).$promise.then(function(c) {
-                    $log.debug("sessionService(): create(): created order");
+                orderService.save({}, order).$promise.then(function(savedOrder) {
+                    order.id = savedOrder.orderId;
+                    order.orderId = savedOrder.orderId;
+                    $log.debug("sessionService(): create(): created order", savedOrder, order);
+
+                    // update the session
+                    var session = getLocalSession();
+                    session.client.lastUsedCreditCardId = order.creditCardId;
+                    session.client.lastUsedShippingAddressId = order.shippingAddressId;
+                    session.client.lastUsedBillingAddressId = order.billingAddressId;
+                    session.client.lastUsedConsultantId = order.consultantId;
+
+                    $log.debug("sessionService(): create(): session now", session);
 
                     // remove the items from cart
                     Cart.clear().then(function() {
                         $log.debug("sessionService(): create(): cleared cart");
-                        d.resolve(c);
+                        d.resolve(order);
                     }, function(err) {
                         $log.error("sessionService(): create(): failed to clear cart");
-                        d.resolve(c);
+                        d.resolve(order);
                     });
                 }, function(response) {
                     $log.error("sessionService(): create(): failed to create order", response.data);

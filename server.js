@@ -376,6 +376,8 @@ router.route('/authenticate')// authenticate a user (accessed at POST http://loc
             // set the client in the session
             req.session.client = r.result;
 
+
+
             res.status(r.status);
             res.json(req.session);
         }, function(r) {
