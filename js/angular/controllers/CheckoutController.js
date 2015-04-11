@@ -79,19 +79,21 @@ angular.module('app.controllers.checkout')
         }
 
         // set default shipping address
-        if ($rootScope.session.client.lastShippingAddressId || a.id == $rootScope.session.client.lastBillingAddressId) {
+        if ($rootScope.session.client.lastUsedShippingAddressId) {
+            $log.debug("CheckoutController(): have last shipping address id");
             $.each($rootScope.session.client.addresses, function(i, a) {
-                if (a.id == $rootScope.session.client.lastShippingAddressId) {
+                if (a.id == $rootScope.session.client.lastUsedShippingAddressId) {
+                    $log.debug("CheckoutController(): setting shipping/billing address");
                     $scope.profile.shipping = a;
-                }
-                if (a.id == $rootScope.session.client.lastBillingAddressId) {
                     $scope.profile.billing = a;
                 }
             });
         }
-        if ($rootScope.session.client.lastCreditCardId) {
+        if ($rootScope.session.client.lastUsedCreditCardId) {
+            $log.debug("CheckoutController(): have last credit card id");
             $.each($rootScope.session.client.creditCards, function(i, c) {
-                if (c.id == $rootScope.session.client.lastCreditCardId) {
+                if (c.id == $rootScope.session.client.lastUsedCreditCardId) {
+                    $log.debug("CheckoutController(): setting cc");
                     $scope.profile.card = c;
                 }
             });
