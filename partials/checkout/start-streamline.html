@@ -809,7 +809,7 @@
   <div class="row">
     <div class="form-group">
       <div class="col-md-offset-3 col-sm-9">
-        <button type="button" ng-disabled="profile.ssn == null" ng-click="validateStartAndReview(profile.loginEmail)" class="btn btn-primary btn-lg" ng-class="{ 'processing' : processing }">
+        <button type="button" ng-disabled="profile.ssn == null && isOnlineSponsoring" ng-click="validateStartAndReview(profile.loginEmail)" class="btn btn-primary btn-lg" ng-class="{ 'processing' : processing }">
           <!-- <span ng-bind-html="'BTN_SAVE_PAYMENT' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i> -->
           <!-- (!forms.shippingForm.$valid || processing) -->
           <span ng-bind-html="'BTN_CONTINUE' | translate | unsafe">CONTINUE</span> &nbsp;<i class="fa fa-caret-right"></i>
