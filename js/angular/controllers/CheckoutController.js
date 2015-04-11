@@ -78,6 +78,25 @@ angular.module('app.controllers.checkout')
             urlStep = "Start";
         }
 
+        // set default shipping address
+        if ($rootScope.session.client.lastShippingAddressId || a.id == $rootScope.session.client.lastBillingAddressId) {
+            $.each($rootScope.session.client.addresses, function(i, a) {
+                if (a.id == $rootScope.session.client.lastShippingAddressId) {
+                    $scope.profile.shipping = a;
+                }
+                if (a.id == $rootScope.session.client.lastBillingAddressId) {
+                    $scope.profile.billing = a;
+                }
+            });
+        }
+        if ($rootScope.session.client.lastCreditCardId) {
+            $.each($rootScope.session.client.creditCards, function(i, c) {
+                if (c.id == $rootScope.session.client.lastCreditCardId) {
+                    $scope.profile.card = c;
+                }
+            });
+        }
+
         $scope.shippingAddressError = null;
         $scope.billingAddressError = null;
 
@@ -2014,6 +2033,10 @@ angular.module('app.controllers.checkout')
                 // FIXME - handle multiple consultant IDs - dialog?
                 if ($rootScope.session.client.consultantIds && $rootScope.session.client.consultantIds.length > 0) {
                     consultantId = $rootScope.session.client.consultantIds[0];
+                }
+
+                if ($rootScope.session.client.lastConsultantId && consultantId == null) {
+                    consultantId = $rootScope.session.client.lastConsultantId;
                 }
             }
             return consultantId;
