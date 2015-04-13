@@ -44,11 +44,11 @@
       <label for="firstName" class="col-md-3 control-label"><span ng-bind-html="'OS-NAME' | translate | unsafe"></span></label>
 
       <div class="col-sm-3" ng-class="{ 'has-error' : signInForm.firstName.$invalid && (signInForm.firstName.$touched || signInForm.firstName.$dirty) }">
-        <input name="firstName" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model="profile.firstName" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" class="form-control" id="firstName" placeholder="{{'CHECKOUT-FIRST-PLACEHOLDER' | translate | unsafe}}" required="isOnlineSponsoring" autofocus="" maxlength="40">
+        <input name="firstName" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model="profile.firstName" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" class="form-control" id="firstName" placeholder="{{'CHECKOUT-FIRST-PLACEHOLDER' | translate | unsafe}}" required="isOnlineSponsoring" autofocus="" maxlength="40" tabindex='1' />
         <span ng-show="signInForm.firstName.$invalid && (signInForm.firstName.$touched || signInForm.firstName.$dirty)" class="help-block" ng-class="{ 'text-danger' : signInForm.firstName.$invalid }"><span ng-bind-html="'REQUIRE-FIRSTNAME-LENGTH' | translate | unsafe"></span></span>
       </div>
       <div class="col-sm-3" ng-class="{ 'has-error' : signInForm.lastName.$invalid && (signInForm.lastName.$dirty || signInForm.lastName.$touched) }">
-        <input name="lastName" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model="profile.lastName" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" class="form-control" id="lastName" placeholder="{{'CHECKOUT-LAST-PLACEHOLDER' | translate | unsafe}}" required="isOnlineSponsoring" maxlength="40">
+        <input name="lastName" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model="profile.lastName" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" class="form-control" id="lastName" placeholder="{{'CHECKOUT-LAST-PLACEHOLDER' | translate | unsafe}}" required="isOnlineSponsoring" maxlength="40" tabindex='2' />
         <span ng-show="signInForm.lastName.$invalid && (signInForm.lastName.$dirty || signInForm.lastName.$touched)" class="help-block" ng-class="{ 'text-danger' : signInForm.lastName.$invalid }"><span ng-bind-html="'REQUIRE-LASTNAME-LENGTH' | translate | unsafe"></span></span>
       </div>
     </div>
@@ -57,7 +57,7 @@
       <label for="loginEmail" class="col-md-3 control-label"><span ng-bind-html="'EMAIL_ADD' | translate | unsafe"></span></label>
 
       <div class="col-sm-6" ng-class="{ 'has-error' : signInForm.loginEmail.$invalid && (signInForm.loginEmail.$dirty || signInForm.loginEmail.$touched) }">
-        <input name="loginEmail" ng-pattern="/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/" ng-model="profile.loginEmail" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" type="email" class="form-control" id="loginEmail" placeholder="{{ 'EXAMPLE-EMAIL-PLACEHOLDER' | translate | unsafe }}" required>
+        <input name="loginEmail" ng-pattern="/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/" ng-model="profile.loginEmail" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" type="email" class="form-control" id="loginEmail" placeholder="{{ 'EXAMPLE-EMAIL-PLACEHOLDER' | translate | unsafe }}" required tabindex='3' />
         <span ng-show="signInForm.loginEmail.$invalid && (signInForm.loginEmail.$dirty || signInForm.loginEmail.$touched)" class="help-block" ng-class="{ 'text-danger' : signInForm.loginEmail.$invalid }">
           <span ng-bind-html="'REQUIRES-VALID-EMAIL-ADDRESS' | translate | unsafe"></span>.
         </span>
@@ -68,7 +68,7 @@
       <label for="phoneNumber" class="col-md-3 control-label"><span ng-bind-html="'PHONE-NUMBER' | translate | unsafe"></span></label>
 
       <div class="col-sm-3" ng-class="{ 'has-error' :  signInForm.phoneNumber.$invalid && (signInForm.phoneNumber.$dirty || signInForm.phoneNumber.$touched) }">
-        <input name="phoneNumber" type="tel" ui-mask="(999) 999-9999" ng-model="profile.phoneNumber" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-minlength="13" class="form-control" id="phoneNumber" placeholder="(___) ___-____" required>
+        <input name="phoneNumber" type="tel" ui-mask="(999) 999-9999" ng-model="profile.phoneNumber" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-minlength="13" class="form-control" id="phoneNumber" placeholder="(___) ___-____" required tabindex='4' />
         <span ng-show="signInForm.phoneNumber.$invalid && (signInForm.phoneNumber.$dirty || signInForm.phoneNumber.$touched)" class="help-block" ng-class="{ 'text-danger' : signInForm.phoneNumber.$invalid && (signInForm.phoneNumber.$touched || signInForm.phoneNumber.$dirty) }"><span ng-bind-html="'INVALID-TELEPHONE-NUMBER' | translate | unsafe"></span>.</span>
       </div>
     </div>
@@ -77,7 +77,7 @@
       <label for="inputPassword3" class="col-md-3 control-label"><span ng-bind-html="'PASSWORD' | translate | unsafe"></span></label>
 
       <div class="col-sm-4" ng-class="{ 'has-error' : signInForm.loginPassword.$dirty && signInForm.loginPassword.$invalid }">
-        <input name="loginPassword" ng-model="profile.loginPassword" type="password" class="form-control" id="inputPassword3" placeholder="{{ 'EXAMPLE-PASSWORD-PLACEHOLDER' | translate | unsafe }}" ng-minlength="8" minlength="8" required>
+        <input name="loginPassword" ng-model="profile.loginPassword" type="password" class="form-control" id="inputPassword3" placeholder="{{ 'EXAMPLE-PASSWORD-PLACEHOLDER' | translate | unsafe }}" ng-minlength="8" minlength="8" required tabindex='5' />
         <span ng-show="signInForm.loginPassword.$invalid && (signInForm.loginPassword.$touched || signInForm.loginPassword.$dirty)" class="help-block" ng-class="{ 'text-danger' : signInForm.loginPassword.$dirty && signInForm.loginPassword.$invalid }">
           <span ng-bind-html="'INVALID-PASSWORD-LENGTH' | translate | unsafe"></span>.
         </span>
@@ -88,7 +88,7 @@
       <label for="inputPassword4" class="col-md-3 control-label"><span ng-bind-html="'PASSWORD_VERIFY' | translate | unsafe"></span></label>
 
       <div class="col-sm-4" ng-class="{ 'has-error' : signInForm.loginPasswordVerify.$invalid && (signInForm.loginPasswordVerify.$touched || signInForm.loginPasswordVerify.$dirty) }">
-        <input name="loginPasswordVerify" ng-model="profile.loginPasswordVerify" type="password" class="form-control" id="inputPassword4" placeholder="{{ 'EXAMPLE-PASSWORD-PLACEHOLDER-VERIFY' | translate | unsafe }}" data-ui-validate="'$value == profile.loginPassword'" required>
+        <input name="loginPasswordVerify" ng-model="profile.loginPasswordVerify" type="password" class="form-control" id="inputPassword4" placeholder="{{ 'EXAMPLE-PASSWORD-PLACEHOLDER-VERIFY' | translate | unsafe }}" data-ui-validate="'$value == profile.loginPassword'" required tabindex='6' />
         <span ng-show="signInForm.loginPasswordVerify.$invalid && (signInForm.loginPasswordVerify.$touched || signInForm.loginPasswordVerify.$dirty) && profile.loginPassword !== profile.loginPasswordVerify" class="help-block" ng-class="{ 'text-danger' : profile.loginPassword !== profile.loginPasswordVerify }">
           <span ng-bind-html="'PASSWORDS-DONT-MATCH' | translate | unsafe"></span>
         </span>
@@ -190,11 +190,11 @@
       <label for="firstName" class="col-md-3 control-label"><span ng-bind-html="'OS-NAME' | translate | unsafe"></span></label>
 
       <div class="col-sm-3" ng-class="{ 'has-error' : signInForm.firstName.$invalid && (signInForm.firstName.$touched || signInForm.firstName.$dirty) }">
-        <input name="firstName" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model="profile.firstName" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" class="form-control" id="firstName" placeholder="{{'CHECKOUT-FIRST-PLACEHOLDER' | translate | unsafe}}" required="isOnlineSponsoring" autofocus="" maxlength="40">
+        <input name="firstName" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model="profile.firstName" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" class="form-control" id="firstName" placeholder="{{'CHECKOUT-FIRST-PLACEHOLDER' | translate | unsafe}}" required="isOnlineSponsoring" autofocus="" maxlength="40" tabindex='7' />
         <span ng-show="signInForm.firstName.$invalid && (signInForm.firstName.$touched || signInForm.firstName.$dirty)" class="help-block" ng-class="{ 'text-danger' : signInForm.firstName.$invalid }"><span ng-bind-html="'REQUIRE-FIRSTNAME-LENGTH' | translate | unsafe"></span></span>
       </div>
       <div class="col-sm-3" ng-class="{ 'has-error' : signInForm.lastName.$invalid && (signInForm.lastName.$dirty || signInForm.lastName.$touched) }">
-        <input name="lastName" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model="profile.lastName" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" class="form-control" id="lastName" placeholder="{{'CHECKOUT-LAST-PLACEHOLDER' | translate | unsafe}}" required="isOnlineSponsoring" maxlength="40">
+        <input name="lastName" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model="profile.lastName" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" class="form-control" id="lastName" placeholder="{{'CHECKOUT-LAST-PLACEHOLDER' | translate | unsafe}}" required="isOnlineSponsoring" maxlength="40" tabindex='8' />
         <span ng-show="signInForm.lastName.$invalid && (signInForm.lastName.$dirty || signInForm.lastName.$touched)" class="help-block" ng-class="{ 'text-danger' : signInForm.lastName.$invalid }"><span ng-bind-html="'REQUIRE-LASTNAME-LENGTH' | translate | unsafe"></span></span>
       </div>
     </div>
@@ -203,7 +203,7 @@
       <label for="loginEmail" class="col-md-3 control-label"><span ng-bind-html="'EMAIL_ADD' | translate | unsafe"></span></label>
 
       <div class="col-sm-6" ng-class="{ 'has-error' : signInForm.loginEmail.$invalid && (signInForm.loginEmail.$dirty || signInForm.loginEmail.$touched) }">
-        <input name="loginEmail" ng-pattern="/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/" ng-model="profile.loginEmail" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" type="email" class="form-control" id="loginEmail" placeholder="{{ 'EXAMPLE-EMAIL-PLACEHOLDER' | translate | unsafe }}" required>
+        <input name="loginEmail" ng-pattern="/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/" ng-model="profile.loginEmail" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" type="email" class="form-control" id="loginEmail" placeholder="{{ 'EXAMPLE-EMAIL-PLACEHOLDER' | translate | unsafe }}" required tabindex='9' />
         <span ng-show="signInForm.loginEmail.$invalid && (signInForm.loginEmail.$dirty || signInForm.loginEmail.$touched)" class="help-block" ng-class="{ 'text-danger' : signInForm.loginEmail.$invalid }">
           <span ng-bind-html="'REQUIRES-VALID-EMAIL-ADDRESS' | translate | unsafe"></span>.
         </span>
@@ -214,7 +214,7 @@
       <label for="phoneNumber" class="col-md-3 control-label"><span ng-bind-html="'PHONE-NUMBER' | translate | unsafe"></span></label>
 
       <div class="col-sm-3" ng-class="{ 'has-error' :  signInForm.phoneNumber.$invalid && (signInForm.phoneNumber.$dirty || signInForm.phoneNumber.$touched) }">
-        <input name="phoneNumber" type="tel" ui-mask="(999) 999-9999" ng-model="profile.phoneNumber" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-minlength="10" class="form-control" id="phoneNumber" placeholder="(___) ___-____" required>
+        <input name="phoneNumber" type="tel" ui-mask="(999) 999-9999" ng-model="profile.phoneNumber" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-minlength="10" class="form-control" id="phoneNumber" placeholder="(___) ___-____" required tabindex='10' />
         <span ng-show="signInForm.phoneNumber.$invalid && (signInForm.phoneNumber.$dirty || signInForm.phoneNumber.$touched)" class="help-block" ng-class="{ 'text-danger' : signInForm.phoneNumber.$invalid && (signInForm.phoneNumber.$touched || signInForm.phoneNumber.$dirty) }"><span ng-bind-html="'INVALID-TELEPHONE-NUMBER' | translate | unsafe"></span>.</span>
       </div>
     </div>
@@ -223,7 +223,7 @@
       <label for="inputPassword3" class="col-md-3 control-label"><span ng-bind-html="'PASSWORD' | translate | unsafe"></span></label>
 
       <div class="col-sm-4" ng-class="{ 'has-error' : signInForm.loginPassword.$dirty && signInForm.loginPassword.$invalid }">
-        <input name="loginPassword" ng-model="profile.loginPassword" type="password" class="form-control" id="inputPassword3" placeholder="{{ 'EXAMPLE-PASSWORD-PLACEHOLDER' | translate | unsafe }}" ng-minlength="8" minlength="8" required>
+        <input name="loginPassword" ng-model="profile.loginPassword" type="password" class="form-control" id="inputPassword3" placeholder="{{ 'EXAMPLE-PASSWORD-PLACEHOLDER' | translate | unsafe }}" ng-minlength="8" minlength="8" required tabindex='11' />
         <span ng-show="signInForm.loginPassword.$invalid && (signInForm.loginPassword.$touched || signInForm.loginPassword.$dirty)" class="help-block" ng-class="{ 'text-danger' : signInForm.loginPassword.$dirty && signInForm.loginPassword.$invalid }">
           <span ng-bind-html="'INVALID-PASSWORD-LENGTH' | translate | unsafe"></span>.
         </span>
@@ -234,7 +234,7 @@
       <label for="inputPassword4" class="col-md-3 control-label"><span ng-bind-html="'PASSWORD_VERIFY' | translate | unsafe"></span></label>
 
       <div class="col-sm-4" ng-class="{ 'has-error' : signInForm.loginPasswordVerify.$invalid && (signInForm.loginPasswordVerify.$touched || signInForm.loginPasswordVerify.$dirty) }">
-        <input name="loginPasswordVerify" ng-model="profile.loginPasswordVerify" type="password" class="form-control" id="inputPassword4" placeholder="{{ 'EXAMPLE-PASSWORD-PLACEHOLDER-VERIFY' | translate | unsafe }}" data-ui-validate="'$value == profile.loginPassword'" required>
+        <input name="loginPasswordVerify" ng-model="profile.loginPasswordVerify" type="password" class="form-control" id="inputPassword4" placeholder="{{ 'EXAMPLE-PASSWORD-PLACEHOLDER-VERIFY' | translate | unsafe }}" data-ui-validate="'$value == profile.loginPassword'" required tabindex='12' />
         <span ng-show="signInForm.loginPasswordVerify.$invalid && (signInForm.loginPasswordVerify.$touched || signInForm.loginPasswordVerify.$dirty) && profile.loginPassword !== profile.loginPasswordVerify" class="help-block" ng-class="{ 'text-danger' : profile.loginPassword !== profile.loginPasswordVerify }">
           <span ng-bind-html="'PASSWORDS-DONT-MATCH' | translate | unsafe"></span>
         </span>
@@ -297,7 +297,7 @@
       <div class="col-md-3">
         <div class="input-group">
           <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-          <input name="ssn" type="text" class="form-control" ui-mask="999 - 99 - 9999" placeholder="xxx - xx - xxxx" ng-model="profile.ssn" required autofocus>
+          <input name="ssn" type="text" class="form-control" ui-mask="999 - 99 - 9999" placeholder="xxx - xx - xxxx" ng-model="profile.ssn" required autofocus tabindex='13' />
         </div>
         <span class="help-block"><small><span ng-bind-html="'SSN-NOTE' | translate | unsafe"></span>
         </small></span>
@@ -307,7 +307,7 @@
     <div class="form-group">
       <label class="col-md-3 control-label"><span ng-bind-html="'DOB-LABEL' | translate | unsafe"></span></label>
       <div class="col-md-3" ng-class="{ 'has-error' : (profileForm.dob.$touched || profileForm.dob.$dirty) && (profile.dob.$invalid || invalidDOB) }">
-        <input type="tel" name="dob" class="form-control" ui-mask="99/99/9999" placeholder="{{ 'DOB-PLACEHOLDER' | translate }}" ng-model="profile.dob" required>
+        <input type="tel" name="dob" class="form-control" ui-mask="99/99/9999" placeholder="{{ 'DOB-PLACEHOLDER' | translate }}" ng-model="profile.dob" tabindex='99' required>
       </div>
       <div class="col-md-offset-3 col-sm-9">
         <span class="help-block"><small ng-class="{ 'text-danger' : (profileForm.dob.$touched || profileForm.dob.$dirty) && (profile.dob.$invalid || invalidDOB) }">
@@ -319,7 +319,7 @@
     <div class="form-group">
       <label class="col-md-3 control-label"><span ng-bind-html="'SPONSOR-ID-LABEL' | translate | unsafe"></span></label>
       <div class="col-md-4" ng-class="{ 'has-error' : profileForm.sponsorId.$invalid && (profileForm.sponsorId.$touched || profileForm.sponsorId.$dirty) }">
-        <input name="sponsorId" type="text" class="form-control" ng-model="profile.sponsorId" ng-pattern="/^[0-9]+$/" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" placeholder="{{ 'SPONSOR-ID-PLACEHOLDER' | translate }}">
+        <input name="sponsorId" type="text" class="form-control" ng-model="profile.sponsorId" ng-pattern="/^[0-9]+$/" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" placeholder="{{ 'SPONSOR-ID-PLACEHOLDER' | translate }}" tabindex='100'>
         <span ng-show="profileForm.sponsorId.$invalid && (profileForm.sponsorId.$touched || profileForm.sponsorId.$dirty)" class="help-block" ng-class="{ 'text-danger' : profileForm.sponsorId.$invalid && (profileForm.sponsorId.$touched || profileForm.sponsorId.$dirty) }">
           <span ng-bind-html="'CONSULTANT-PROFILE-INVALID-SPONSORID' | translate | unsafe"></span>
         </span>
@@ -544,7 +544,7 @@
         <label for=" " class="col-md-3 control-label"><span ng-bind-html="'IN_NAME_CARD' | translate |unsafe"></span></label>
 
         <div class="col-sm-6 col-lg-4">
-          <input ng-model="profile.newCard.name" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-minlength="3" name="cardName" type="text" class="form-control" placeholder=" " required>
+          <input ng-model="profile.newCard.name" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-minlength="3" name="cardName" type="text" class="form-control" placeholder=" " required tabindex='109' />
           <span ng-show="paymentForm.cardName.$error.minlength && (paymentForm.cardName.$touched || paymentForm.cardName.$dirty)" class="help-block" ng-class="{ 'text-danger' : paymentForm.cardName.$invalid }"><span ng-bind-html="'NAME_ON_CARD_ERR' | translate | unsafe"></span></span>
           <span ng-show="paymentForm.cardName.$invalid && (paymentForm.cardName.$touched || paymentForm.cardName.$dirty)" class="help-block" ng-class="{ 'text-danger' : paymentForm.cardName.$invalid }"><span ng-bind-html="'NAME_ON_CARD_INVALID_ERR' | translate | unsafe"></span></span>
         </div>
@@ -554,7 +554,7 @@
         <label for=" " class="col-md-3 control-label"><span ng-bind-html="'IN_CARD_NUMBER' | translate |unsafe"></span></label>
 
         <div class="col-sm-6 col-lg-4">
-          <input ng-model="profile.newCard.card" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" data-ng-blur="visited=true" ng-minlength="13" ng-maxlength="16" maxlength="16" name="number" type="text" class="form-control" id=" " placeholder=" " data-ui-validate=" 'isValidCard($value)' " required>
+          <input ng-model="profile.newCard.card" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" data-ng-blur="visited=true" ng-minlength="13" ng-maxlength="16" maxlength="16" name="number" type="text" class="form-control" id=" " placeholder=" " data-ui-validate=" 'isValidCard($value)' " required tabindex='110' />
           <span ng-show="visited && (paymentForm.number.$error.minlength || paymentForm.number.$error.validator)" class="help-block" ng-class="{ 'text-danger' : paymentForm.number.$invalid && (paymentForm.number.$touched || paymentForm.number.$dirty) }"><span ng-bind-html="'INVALID-CARD-NUMBER' | translate | unsafe"></span></span>
         </div>
         <div class="col-sm-3 col-lg-4" ng-model="cardType" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-show="!paymentForm.number.$error.minlength && !paymentForm.number.$error.validator">
@@ -567,18 +567,17 @@
       <div class="form-group">
         <label for=" " class="col-md-3 control-label"><span ng-bind-html="'IN_EXPIRATION' | translate | unsafe"></span></label>
 
-        <div class="col-sm-5" ng-class="{ 'has-error' : (invalidExpiration || paymentForm.expMonth.$invalid || paymentForm.expYear.$invalid) && (paymentForm.expMonth.$touched || paymentForm.expMonth.$dirty) && (paymentForm.expYear.$touched || paymentForm.expYear.$dirtyf
-    ) }">
+        <div class="col-sm-5" ng-class="{ 'has-error' : (invalidExpiration || paymentForm.expMonth.$invalid || paymentForm.expYear.$invalid) && (paymentForm.expMonth.$touched || paymentForm.expMonth.$dirty) && (paymentForm.expYear.$touched || paymentForm.expYear.$dirty) }">
           <div class="row">
             <div class="col-xs-4 col-sm-3 col-med-2">
-              <input ng-model="profile.newCard.expMonth" name="expMonth" type="text" class="form-control col-sm-1" ui-mask="99" placeholder="MM" required>
+              <input ng-model="profile.newCard.expMonth" name="expMonth" type="text" class="form-control col-sm-1" ui-mask="99" placeholder="MM" required tabindex='111' />
               <!--valid={{paymentForm.expMonth.$valid}}-->
             </div>
             <div class="col-xs-1">
               <label class="control-label">/</label>
             </div>
             <div class="col-xs-6 col-sm-4 col-med-3">
-              <input ng-model="profile.newCard.expYear" name="expYear" type="text" class="form-control col-sm-3" ui-mask="9999" placeholder="{{ 'YEAR-PLACEHOLDER' | translate }}" required>
+              <input ng-model="profile.newCard.expYear" name="expYear" type="text" class="form-control col-sm-3" ui-mask="9999" placeholder="{{ 'YEAR-PLACEHOLDER' | translate }}" required tabindex='112' />
               <!--valid={{paymentForm.expYear.$valid}}-->
             </div>
           </div>
@@ -591,7 +590,7 @@
         <div class="col-sm-5">
           <div class="row">
             <div class="col-xs-4 col-sm-4 col-med-2" ng-class="{ 'has-error' : paymentForm.cvv.$invalid && (paymentForm.cvv.$touched || paymentForm.cvv.$dirty) }">
-              <input ng-model="profile.newCard.cvv" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-pattern="/^[0-9]{3,4}$/" ng-minlength="3" ng-maxlength="4" maxlength="4" name="cvv" type="text" class="form-control col-sm-1 hide-arrows" placeholder="&bull;&bull;&bull;" required/>
+              <input ng-model="profile.newCard.cvv" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-pattern="/^[0-9]{3,4}$/" ng-minlength="3" ng-maxlength="4" maxlength="4" name="cvv" type="text" class="form-control col-sm-1 hide-arrows" placeholder="&bull;&bull;&bull;" required tabindex='113' />
               <span ng-show="paymentForm.cvv.$invalid && (paymentForm.cvv.$touched || paymentForm.cvv.$dirty)" class="help-block" ng-class="{ 'text-danger' : paymentForm.cvv.$invalid && (paymentForm.cvv.$touched || paymentForm.cvv.$dirty) }" ng-bind-html="'CVV-INVALID' | translate | unsafe"></span>
             </div>
             <div class="col-xs-6 col-sm-4 col-med-3">
@@ -602,9 +601,7 @@
           </div>
         </div>
       </div>
-
     </form>
-
   </div>
 
   <!-- BILLING -->
@@ -653,7 +650,7 @@
       <label for="billingFullName" class="col-md-3 control-label"><span ng-bind-html="'IN_FULL_NAME' | translate | unsafe"></span></label>
 
       <div class="col-sm-8 col-lg-6">
-        <input id="billingFullName" name="name" ng-model="profile.newBillingAddress.name" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" type="text" class="form-control" placeholder="{{ namePlaceholder }}">
+        <input id="billingFullName" name="name" ng-model="profile.newBillingAddress.name" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" type="text" class="form-control" placeholder="{{ namePlaceholder }}" />
       </div>
     </div>
 
@@ -669,7 +666,7 @@
       <label for="billingAddress1" class="col-md-3 control-label"><span ng-bind-html="'IN_ADD_LINE1' | translate | unsafe"></span></label>
 
       <div class="col-sm-8 col-lg-6">
-        <input name="address1" ng-model="profile.newBillingAddress.address1" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-maxlength="40" maxlength="40" type="text" class="form-control" id="billingAddress1" placeholder="{{ 'IN_ADD_LINE1_DES' | translate }}" required/>
+        <input name="address1" ng-model="profile.newBillingAddress.address1" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-maxlength="40" maxlength="40" type="text" class="form-control" id="billingAddress1" placeholder="{{ 'IN_ADD_LINE1_DES' | translate }}" required tabindex='114' />
       </div>
     </div>
 
@@ -677,7 +674,7 @@
       <label for="billingAddress2" class="col-md-3 control-label"><span ng-bind-html="'IN_ADD_LINE2' | translate | unsafe"></span></label>
 
       <div class="col-sm-8 col-lg-6">
-        <input name="address2" ng-model="profile.newBillingAddress.address2" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-maxlength="40" maxlength="40" type="text" class="form-control" id="billingAddress2" placeholder="{{ 'IN_ADD_LINE2_DES' | translate }} ">
+        <input name="address2" ng-model="profile.newBillingAddress.address2" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-maxlength="40" maxlength="40" type="text" class="form-control" id="billingAddress2" placeholder="{{ 'IN_ADD_LINE2_DES' | translate }} " tabindex='115' />
       </div>
     </div>
 
@@ -685,7 +682,7 @@
       <label for="billingCity" class="col-md-3 control-label"><span ng-bind-html="'IN_CITY' | translate | unsafe"></span></label>
 
       <div class="col-sm-7 col-lg-5">
-        <input name="city" ng-model="profile.newBillingAddress.city" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" type="text" class="form-control" id="billingCity" placeholder=" " required>
+        <input name="city" ng-model="profile.newBillingAddress.city" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" type="text" class="form-control" id="billingCity" placeholder=" " required tabindex='116' />
       </div>
     </div>
 
@@ -694,7 +691,7 @@
       <!-- TO-DO: Fix CSS width of form control -->
       <div class="col-sm-5 col-lg-3">
         <div class="">
-          <select id="billingStateProvinceRegion" name="state" ng-model="profile.newBillingAddress.state" class="form-control">
+          <select id="billingStateProvinceRegion" name="state" ng-model="profile.newBillingAddress.state" class="form-control" tabindex='117'>
             <option value="AL">Alabama</option>
             <option value="AK">Alaska</option>
             <option value="AZ">Arizona</option>
@@ -763,7 +760,7 @@
       <label for="billingZipPostalCode" class="col-md-3 control-label"><span ng-bind-html="'IN_ZIP' | translate | unsafe"></span></label>
 
       <div class="col-sm-5 col-lg-3">
-        <input name="billingzipPostalCode" ng-model="profile.newBillingAddress.zip" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" type="text" class="form-control" id="billingZipPostalCode" placeholder=" " required>
+        <input name="billingzipPostalCode" ng-model="profile.newBillingAddress.zip" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" type="text" class="form-control" id="billingZipPostalCode" placeholder=" " required tabindex='118' />
       </div>
     </div>
 
@@ -771,7 +768,7 @@
       <label for="billingCountry" class="col-md-3 control-label"><span ng-bind-html="'IN_COUNTRY' | translate | unsafe"></span></label>
 
       <div class="col-sm-5 col-lg-3">
-        <select id="billingCountry" name="billingCountry" data-ng-init="profile.newBillingAddress.country='US'" ng-model="profile.newBillingAddress.country" class="form-control">
+        <select id="billingCountry" name="billingCountry" data-ng-init="profile.newBillingAddress.country='US'" ng-model="profile.newBillingAddress.country" class="form-control" tabindex='119'>
           <option ng-selected="true" value="US" ng-bind-html="'COUNTRY-US' | translate | unsafe"></option>
         </select>
       </div>
@@ -781,7 +778,7 @@
       <label for="billingPhoneNumber" class="col-md-3 control-label"><span ng-bind-html="'PHONE-NUMBER' | translate | unsafe"></span></label>
 
       <div class="col-sm-6 col-lg-4">
-        <input id="billingPhoneNumber" name="phoneNumber" ng-model="profile.newBillingAddress.phone" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" type="text" ui-mask="(999) 999-9999" placeholder="(xxx) xxx-xxxx" class="form-control">
+        <input id="billingPhoneNumber" name="phoneNumber" ng-model="profile.newBillingAddress.phone" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" type="text" ui-mask="(999) 999-9999" placeholder="(xxx) xxx-xxxx" class="form-control" tabindex='120' />
         <span ng-show="paymentForm.phoneNumber.$error.pattern" class="help-block" ng-class="{ 'text-danger' : paymentForm.phoneNumber.$invalid && (paymentForm.phoneNumber.$touched || paymentForm.phoneNumber.$dirty) }"><span ng-bind-html="'PHONE-NUMBER-WRONG' | translate | unsafe"></span></span>
       </div>
       <a popover="{{'PHONE-NUMBER-DES' | translate | unsafe}}" popover-title="{{'PHONE-NUMBER' | translate | unsafe}}" href="" class="form-info-link"><i class="fa fa-info-circle"></i>
