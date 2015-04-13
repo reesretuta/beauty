@@ -581,7 +581,40 @@ angular.module('app.services', ['ngResource'])
             });     
             return d.promise;
         };
+        
+        
+        
+        accountService.setDefaultAddress = function(address){
+            var d = $q.defer();
+            $log.debug("accountService(): setDefaultAddress(): attempting to update client shipping = ", address);
+            Session.get().then(function (session) {
+                var payload;
+                if (session.client == null) {
+                    d.reject("Can't update client, client not authenticated");
+                    return;
+                }
+                payload = {
+                    address : address
+                };
+                accountService.update({ 
+                    clientId: session.client.id
+                }, payload).$promise.then(function (r) {
+                    d.resolve(r);
+                }, function(response) {
+                    d.reject(response);
+                });
+            }, function(error) {
+                $log.error("adjustedAddressService(): setDefaultAddress(): failed to update address", error);
+                $translate('ERROR-SAVING-ADDRESS').then(function (message) {
+                    d.reject(message);
+                });
+            });     
+            return d.promise;
+            
+        }
+        
         return accountService;
+        
     })
 
     .factory('Cart', function ($rootScope, $log, $timeout, $q, $translate, STORE_BASE_URL, Session, Product, growlNotifications) {

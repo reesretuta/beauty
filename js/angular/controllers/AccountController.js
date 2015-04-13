@@ -108,6 +108,10 @@ angular.module('app.controllers.account')
                 Account.updateClient($scope.profile);
             }
             
+            $scope.setDefaultAddress = function(address){
+                Account.setDefaultAddress($scope.profile);
+            }
+            
             $scope.editCards = function(profile){
                 
                 var d, body, dd = $q.defer();

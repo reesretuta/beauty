@@ -333,6 +333,7 @@
     "GEO_COUNTY":"Condado",
     "GEO_CITY":"Ciudad",
     "GEO_DES":"Seleccionar opcion y guardar",
+    "MAKE_DEFAULT":"Make default",
     "BTN_CLOSE":"Cerrar",
     "CLOSE":"Cerrar",
     "BTN_SAVE":"Guardar",

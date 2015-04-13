@@ -1334,6 +1334,14 @@ angular.module('app.controllers.checkout')
         
         
         $scope.updateSku = function(sku){
+            if (sku === '20495' || sku === '20499') {
+                // var d = $modal.open({
+                //     backdrop: true,
+                //     keyboard: true, // we will handle ESC in the modal for cleanup
+                //     windowClass: "editCreditCardModal",
+                //     template: 'test test',
+                //
+            }
             $scope.selectProduct(sku).then(function(){
                 $log.debug("CheckoutController(): updateSku(): ", $scope.cart[0].sku);
             });
