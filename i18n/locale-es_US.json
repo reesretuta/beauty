@@ -239,6 +239,7 @@
     "MUST-SELECT-ADDRESS": "Debe seleccionar una direcci&oacute;n",
     "UNABLE-TO-VERIFY-ADDRESS": "No se puede verificar la direcci&oacute;n",
     "ERROR-SAVING-ADDRESS": "Error al guardar la direcci&oacute;n",
+    "ERROR-UPDATING-PROFILE": "Error al actualizar perfil",
     "ERROR-REMOVING-ADDRESS": "Error mientras se quita la direcci&oacute;n",
 
     "CHOOSE-OPTION-AND-SAVE-TITLE": "Seleccionar opcion y guardar",

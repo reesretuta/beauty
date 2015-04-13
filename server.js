@@ -744,104 +744,31 @@ router.route('/clients/:client_id').get(function (req, res) {
 })
 
 // update a client profile
-.put(function (req, res) {
-    // res.json({});
-    //this will be called from the Account Factory in services via accountService.updateName. rees
-
-
+.post(function (req, res) {
     console.log('req.body', req.body);
     var clientId = req.params.client_id;
-    
-    
-    jafraClient.updateClient(clientId, req.body).then(function(r){
-        // req.body = { firstName : 'foo', lastName: 'bar'}
-        //success
-        console.log('response from updateClient: ', r);
-    }, function(r){
-        //error
+    // must be authenticated
+    if (req.session.client === null) {
+        res.status(400);
+        res.end();
+        return;
+    } else if (req.session.client.id != clientId) {
+        res.status(403);
+        res.end();
+        return;
+    }
+    // checked if authenticated, now update
+    jafraClient.updateClient(clientId, req.body).then(function (data) {
+        console.log('response from updateClient (success):', data);
+        res.json(data);
+        res.status(204);
+        res.end(); 
+    }, function(data){
+        console.log('response from updateClient (error):', data);
+        res.json(data);
+        res.status(400);
+        res.end();
     });
-    
-    // res.json({'asdf': clientId});
-    res.status(400);
-    res.end();    
-    //
-    //
-    //
-    // // must be authenticated
-    // if (req.session.client == null) {
-    //     res.status(401);
-    //     res.end();
-    //     return;
-    // } else if (req.session.client.id != clientId) {
-    //     res.status(403);
-    //     res.end();
-    //     return;
-    // }
-    //
-    
-    // jafraClient.updateClient(clientId, req.body).then(function(r){
-    //     // req.body = { firstName : 'foo', lastName: 'bar'}
-    //     //success
-    //
-    // }, function(r){
-    //     //error
-    // });
-
-    
-    
-    //ignore below////////////////////////////////////////////////////////////
-    // update a client address
-    // .put(function (req, res) {
-    //     var clientId = req.params.client_id;
-    //     var addressId = req.params.address_id;
-    //
-    //     // must be authenticated
-    //     if (req.session.client == null) {
-    //         res.status(401);
-    //         res.end();
-    //         return;
-    //     } else if (req.session.client.id != clientId) {
-    //         res.status(403);
-    //         res.end();
-    //         return;
-    //     }
-    //
-    //     logger.debug("updating address", req.body);
-    //
-    //     jafraClient.updateAddress(clientId, addressId, req.body).then(function(r) {
-    //         logger.error("updated address", r.status, r.result);
-    //
-    //         // update this address in the session
-    //         if (req.session.checkout && req.session.checkout.shipping && req.session.checkout.shipping.id == addressId) {
-    //             req.session.checkout.shipping = req.body;
-    //         }
-    //         if (req.session.checkout && req.session.checkout.billing && req.session.checkout.billing.id == addressId) {
-    //             req.session.checkout.billing = req.body;
-    //         }
-    //
-    //         res.json(r.status);
-    //         res.json(r.result);
-    //     }, function(r) {
-    //         logger.error("failed to create cc", r.status, r.result);
-    //         res.status(r.status);
-    //         res.json(r.result);
-    //     });
-    // })
-    
-    
-    //////////////////////////////////////////////////////////////    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    res.json({});
 });
 
 // CONSULTANTS
