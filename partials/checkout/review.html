@@ -88,7 +88,7 @@
 
           <input type="checkbox" value="" ng-model="profile.agree" required>
 
-          <span ng-bind-html="'IN_AGREE' | translate | unsafe"></span> <a href="" data-toggle="modal" data-target=".bs-terms-modal-lg"><span ng-bind-html="'BTN_IN_AGREE' | translate | unsafe"></span></a>
+          <span ng-bind-html="'IN_AGREE' | translate | unsafe"></span> <a href="" data-toggle="modal" data-target=".bs-terms-modal-lg"><span ng-bind-html="'BTN_IN_AGREE' | translate | unsafe"></span></a>&nbsp;&amp;&nbsp;<a href="" data-toggle="modal" data-target=".agreement-modal-lg"><span ng-bind-html="'CONSULTANT-AGREEMENT-TITLE' | translate | unsafe"></span></a>
           &nbsp;&nbsp;&nbsp;&nbsp;
         </label>
         <button ng-if="!isOnlineSponsoring" type="button" class="btn-link pull-left" ng-disabled="processing" ng-click="confirmAlert('Are you sure you\'d like to cancel your order?')">

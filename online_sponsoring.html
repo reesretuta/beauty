@@ -217,6 +217,26 @@
           </p>
         </div>
       </footer>
+<!-- CONSULTANT AGREEMENT MODAL -->
+<div class="modal fade agreement-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"><span ng-bind-html="'CLOSE' | translate | unsafe"></span></span></button>
+        <h4 class="modal-title" id="myModalLabel"><span ng-bind-html="'CONSULTANT-AGREEMENT-TITLE' | translate | unsafe"></span></h4>
+      </div>
+      <div class="modal-body">
+          <div class="agreement-content">
+             <!--terms partial goes here-->
+              <div ng-if="session.language" ng-include="'/partials/consultant-agreement-'+session.language+'.html'"></div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button data-dismiss="modal" class="btn btn-primary" type="button"><span ng-bind-html="'CLOSE' | translate | unsafe"></span></button> 
+      </div>
+    </div>
+  </div>
+</div>
 <!-- JOIN LEAD MODAL -->
 <div class="modal fade lead-modal-lg" id="leadModal" tabindex="-1" role="dialog" aria-labelledby="leadModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
