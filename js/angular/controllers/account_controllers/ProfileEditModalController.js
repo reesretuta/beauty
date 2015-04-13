@@ -1,33 +1,36 @@
-angular.module('app.controllers.account').controller('ProfileEditModalController', function ($document, $modalInstance, $q, $scope, $window, $log, $translate) {
+
+angular.module('app.controllers.account').controller('ProfileEditModalController', function ($document, $window, $modalInstance, $q, $scope, $log, profile, Account) {
     
+  $log.debug('ProfileEditModalController(): open(): address:', profile);
+
+  $scope.profile = angular.copy(profile);
+    
+  $scope.close = function () {
     $log.debug('ProfileEditModalController()');
-    
-
-    $scope.close = function () {
-        $log.debug('ProfileEditModalController()');
-        $modalInstance.close({
-            address  : null,
-            canceled : true
-        });
-    };
-
-    $scope.save = function () {
-        $log.debug('ProfileEditModalController(): save(): saving...');
-        // addAddress($scope.address).then(function (data) {
-        //     $log.debug('ProfileEditModalController(): editAddress() [strikeiron]: addAddress success:', data);
-        //     $modalInstance.close({
-        //         address  : $scope.profile,
-        //         canceled : false
-        //     });
-        // }, function(error) {
-        //     $log.error('ProfileEditModalController(): save(): error!', error);
-        //     $scope.addressError = error;
-        // });
-    };
-
-    $scope.$on('$destroy', function () {
-        $log.debug('ProfileEditModalController(): cleaning up');
-        var body = $document.find('html, body');
-        body.css('overflow-y', 'auto');
+    $modalInstance.close({
+      profile  : null,
+      canceled : true
     });
+  };
+
+  $scope.save = function () {
+    $log.debug('ProfileEditModalController(): save(): saving...');
+    Account.updateClient($scope.profile).then(function (data) {
+      $log.debug('ProfileEditModalController(): save(): success data:', data);
+      $modalInstance.close({
+        profile  : $scope.profile,
+        canceled : false
+      });
+    }, function(error) {
+      $log.error('ProfileEditModalController(): save(): error!', error);
+      $scope.profileEditError = error;
+    });
+  };
+
+  $scope.$on('$destroy', function () {
+    $log.debug('ProfileEditModalController(): cleaning up');
+    var body = $document.find('html, body');
+    body.css('overflow-y', 'auto');
+  });
+  
 });

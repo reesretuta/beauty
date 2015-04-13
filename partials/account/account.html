@@ -1,47 +1,47 @@
+
 <div id="editprofile" class="col-sm-12">
-    <div role="tabpanel">
-          <!-- Nav tabs -->
-          <ul class="nav nav-tabs" role="tablist">
-            <!-- <li role="presentation" class="active"><a href="#profile" aria-controls="home" role="tab" data-toggle="tab">Profile</a></li>
-            <li role="presentation"><a href="#addresses" aria-controls="profile" role="tab" data-toggle="tab">Addresses</a></li>
-            <li role="presentation"><a href="#payment" aria-controls="messages" role="tab" data-toggle="tab">Payment Options</a></li>
-            <li role="presentation"><a href="#notifications" aria-controls="settings" role="tab" data-toggle="tab">Notifications</a></li>
-            <li role="presentation"><a href="#changepassword" aria-controls="settings" role="tab" data-toggle="tab">Change Password</a></li> -->
-            <li role="presentation"><a href="#orderhistory" aria-controls="settings" role="tab" data-toggle="tab">Order History</a></li>
-            <!-- <li role="presentation"><a href="#closeaccount" aria-controls="settings" role="tab" data-toggle="tab">Close Account</a></li> -->
-          </ul>
-
-          <!-- Tab panes -->
-          <div class="tab-content">
-            <!-- <div role="tabpanel" class="tab-pane" id="profile">
-                <ng-include src="'/partials/account/profile.html'"/>
-            </div>
-            <div role="tabpanel" class="tab-pane fade" id="addresses">
-                <ng-include src="'/partials/account/addresses.html'"/>
-            </div>
-            <div role="tabpanel" class="tab-pane fade" id="payment">
-                <ng-include src="'/partials/account/payment.html'"/>
-            </div>
-            <div role="tabpanel" class="tab-pane fade" id="closeaccount">
-                <ng-include src="'/partials/account/close-account.html'"/>
-            </div> -->
-            <div role="tabpanel" class="tab-pane fade active" id="orderhistory">
-                <h1 ng-bind-html="'ORDER-HISTORY' | translate | unsafe"></h1>
-                <ng-include src="'/partials/account/orderhistory.html'"/>
-            </div>
-            <!-- <div role="tabpanel" class="tab-pane fade" id="notifications">
-                <ng-include src="'/partials/account/notifications.html'"/>
-            </div>
-            <div role="tabpanel" class="tab-pane fade" id="changepassword">
-                <ng-include src="'/partials/account/changepassword.html'"/>
-            </div> -->
-          </div><!-- End Tab panes -->
-
-    </div><!--end tab panel-->
+  <div role="tabpanel">
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+      <li role="presentation" class="active"><a href="#profile" aria-controls="home" role="tab" data-toggle="tab">Profile</a></li>
+      <!--<li role="presentation"><a href="#addresses" aria-controls="profile" role="tab" data-toggle="tab">Addresses</a></li>
+      <li role="presentation"><a href="#payment" aria-controls="messages" role="tab" data-toggle="tab">Payment Options</a></li>
+      <li role="presentation"><a href="#notifications" aria-controls="settings" role="tab" data-toggle="tab">Notifications</a></li>
+      <li role="presentation"><a href="#changepassword" aria-controls="settings" role="tab" data-toggle="tab">Change Password</a></li>-->
+      <li role="presentation"><a href="#orderhistory" aria-controls="settings" role="tab" data-toggle="tab">Order History</a></li>
+      <!--<li role="presentation"><a href="#closeaccount" aria-controls="settings" role="tab" data-toggle="tab">Close Account</a></li>-->
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane" id="profile">
+        <ng-include src="'/partials/account/profile.html'"/>
+      </div>
+      <div role="tabpanel" class="tab-pane fade" id="addresses">
+        <ng-include src="'/partials/account/addresses.html'"/>
+      </div>
+      <div role="tabpanel" class="tab-pane fade" id="payment">
+        <ng-include src="'/partials/account/payment.html'"/>
+      </div>
+      <div role="tabpanel" class="tab-pane fade" id="closeaccount">
+        <ng-include src="'/partials/account/close-account.html'"/>
+      </div>
+      <div role="tabpanel" class="tab-pane fade active" id="orderhistory">
+        <h1 ng-bind-html="'ORDER-HISTORY' | translate | unsafe"></h1>
+        <ng-include src="'/partials/account/orderhistory.html'"/>
+      </div>
+      <div role="tabpanel" class="tab-pane fade" id="notifications">
+        <ng-include src="'/partials/account/notifications.html'"/>
+      </div>
+      <div role="tabpanel" class="tab-pane fade" id="changepassword">
+        <ng-include src="'/partials/account/changepassword.html'"/>
+      </div>
+    </div><!-- End Tab panes -->
+  </div><!--end tab panel-->
 </div>
+
 <script type="text/javascript">
-    $('.nav-tabs').on('click',function(e){
-        e.preventDefault();
-    });
-    $("a[href='#orderhistory']").click();
+  $('.nav-tabs').on('click',function(e){
+    e.preventDefault();
+  });
+  $("a[href='#orderhistory']").click();
 </script>

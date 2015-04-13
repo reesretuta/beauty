@@ -1,3 +1,4 @@
+
 angular.module('app.controllers.account')
     .controller('AccountController', function ($location, $scope, $document, $timeout, $rootScope, $anchorScroll, $routeParams, $modal, $log, $q, $translate, $analytics, STORE_BASE_URL, JOIN_BASE_URL, focus, Geocodes, Session, Consultant, Addresses, Order, OrderHelper, Checkout, Cart, Product, SalesTax, CreditCards, Leads, PasswordResetHelper, HashKeyCopier, WizardHandler, Account) {
             
@@ -138,7 +139,9 @@ angular.module('app.controllers.account')
             }
             
             
-            $scope.editProfile = function(profile){
+            $scope.editProfile = function (profile) {
+
+                $log.debug('AccountController(): editProfile(): profile:', profile);
 
                 var d, body, dd = $q.defer();
                 d = $modal.open({
@@ -152,7 +155,7 @@ angular.module('app.controllers.account')
                             return {
                                 firstName   : $scope.profile.firstName,
                                 lastName    : $scope.profile.lastName,
-                                loginEmail  : $scope.profile.loginEmail,
+                                email       : $scope.profile.email,
                                 phoneNumber : $scope.profile.phoneNumber
                             }
                         }

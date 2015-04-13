@@ -1,61 +1,20 @@
-<!-- <input type="text" name="some_name" ng-model="profile.firstName" id="">
-<input type="text" name="some_name" ng-model="profile.lastName" id="">
-<input type="text" name="some_name" ng-model="profile.email" value="" id="">
-<button ng-click="debugMe()">debug</button>
-<button ng-click="updateClient()">updateClient</button> -->
 
-    <div class="col-sm-12">
-      <div class="col-md-offset-3">
-          <h1 ng-if="session.client.addresses.length > 0"><span>Profile Info</span></h1>
-      </div>
-      
-      <div class="row">
-          <div class="col-sm-offset-3 col-md-3">Name: {{profile.firstName}} {{profile.lastName}}</div>
-      </div>
-      <div class="row">
-          <div class="col-sm-offset-3 col-md-3">Email: {{profile.email}}</div>
-      </div>
-      <div class="row">
-          <div class="col-sm-offset-3 col-md-3">Phone: {{profile.phone}}</div>
-      </div>
-      <div class="row">
-          <div class="col-sm-offset-3 col-sm-5">
-              <a ng-click="editProfile(addressData)"><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'EDIT' | translate | unsafe"></span></a>
-          </div>
-      </div>
-      
+<div class="col-sm-12">
+  <div class="col-md-offset-3">
+    <h1 ng-if="session.client.addresses.length > 0"><span>Profile Info</span></h1>
   </div>
-    
-
-    
-    <!-- <form name="" class="form-horizontal" role="form">
-        <div class="form-group">
-            <label for="firstName" class="col-md-3 control-label"><span ng-bind-html="'OS-NAME' | translate | unsafe"></span></label>
-            <div class="col-sm-3" ng-class="{ 'has-error' : signInForm.firstName.$invalid && (signInForm.firstName.$touched || signInForm.firstName.$dirty) }">
-              <input name="firstName" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model="profile.firstName" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" class="form-control" id="firstName" placeholder="{{'CHECKOUT-FIRST-PLACEHOLDER' | translate | unsafe}}" required="isOnlineSponsoring" autofocus="" maxlength="40">
-              <span ng-show="signInForm.firstName.$invalid && (signInForm.firstName.$touched || signInForm.firstName.$dirty)" class="help-block" ng-class="{ 'text-danger' : signInForm.firstName.$invalid }"><span ng-bind-html="'REQUIRE-FIRSTNAME-LENGTH' | translate | unsafe"></span></span>
-            </div>
-
-            <div class="col-sm-3" ng-class="{ 'has-error' : signInForm.lastName.$invalid && (signInForm.lastName.$dirty || signInForm.lastName.$touched) }">
-              <input name="lastName" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model="profile.lastName" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" class="form-control" id="lastName" placeholder="{{'CHECKOUT-LAST-PLACEHOLDER' | translate | unsafe}}" required="isOnlineSponsoring" maxlength="40">
-              <span ng-show="signInForm.lastName.$invalid && (signInForm.lastName.$dirty || signInForm.lastName.$touched)" class="help-block" ng-class="{ 'text-danger' : signInForm.lastName.$invalid }"><span ng-bind-html="'REQUIRE-LASTNAME-LENGTH' | translate | unsafe"></span></span>
-            </div>
-        </div>
-        <div class="form-group">
-          <label for="loginEmail" class="col-md-3 control-label"><span ng-bind-html="'EMAIL_ADD' | translate | unsafe"></span></label>
-          <div class="col-sm-6" ng-class="{ 'has-error' : signInForm.loginEmail.$invalid && (signInForm.loginEmail.$dirty || signInForm.loginEmail.$touched) }">
-            <input name="loginEmail" ng-pattern="/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/" ng-model="profile.email" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" type="email" class="form-control" id="loginEmail" placeholder="{{ 'EXAMPLE-EMAIL-PLACEHOLDER' | translate | unsafe }}" required>
-            <span ng-show="signInForm.loginEmail.$invalid && (signInForm.loginEmail.$dirty || signInForm.loginEmail.$touched)" class="help-block" ng-class="{ 'text-danger' : signInForm.loginEmail.$invalid }">
-              <span ng-bind-html="'REQUIRES-VALID-EMAIL-ADDRESS' | translate | unsafe"></span>.
-            </span>
-          </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-sm-offset-3 col-sm-5">
-                <button type="button" class="btn btn-primary" ng-disabled="processing" ng-click="updateClient()">
-                  <span>UPDATE INFO</span>
-                </button>
-            </div>
-        </div>
-    </form> -->
+  <div class="row">
+    <div class="col-sm-offset-3 col-md-3">Name: {{ profile.firstName }} {{ profile.lastName }}</div>
+  </div>
+  <div class="row">
+    <div class="col-sm-offset-3 col-md-3">Email: {{ profile.email }}</div>
+  </div>
+  <div class="row">
+    <div class="col-sm-offset-3 col-md-3">Phone: {{ profile.phone || '' }}</div>
+  </div>
+  <div class="row">
+    <div class="col-sm-offset-3 col-sm-5">
+      <a ng-click="editProfile(profile)"><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'EDIT' | translate | unsafe"></span></a>
+    </div>
+  </div>
+</div>
