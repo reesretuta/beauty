@@ -541,41 +541,29 @@ angular.module('app.services', ['ngResource'])
     })
 
     .factory('Account', function($resource, $http, $translate, API_URL, $rootScope, $log, $q, Session){
-        //api resource to be updated via .update() below
-        // var accountService = $resource(API_URL + '/clients/:clientId/addresses/:addressId', {addressId: '@id'}, {
         var accountService = $resource(API_URL + '/clients/:clientId', '', {
-            'update': { method:'PUT' } //rest handled server side in server.js
+            update : { method:'POST' }
         });
-        //
-        accountService.test = function () {
-            return false;
-        }
-        
+        // update client data, exposed as Account.updateClient(client)
         accountService.updateClient = function(client) {
             var d = $q.defer();
-            $log.debug("accountService(): updateClient(): attempting to update client= ", client);
+            $log.debug('accountService(): updateClient(): attempting to update client:', client);
             Session.get().then(function (session) {
-                var payload;
-                if (session.client == null) {
-                    d.reject("Can't update client, client not authenticated");
+                if (!session.client) {
+                    d.reject('Can\'t update client, client not authenticated');
                     return;
                 }
-                payload = {
-                    email     : client.email,
-                    firstName : client.firstName,
-                    lastName  : client.lastName,
-                    language  : session.language
-                };
+                client.clientId = session.client.id;
                 accountService.update({ 
-                    clientId: session.client.id
-                }, payload).$promise.then(function (r) {
-                    d.resolve(r);
+                    clientId : session.client.id
+                }, client).$promise.then(function (data) {
+                    d.resolve(data);
                 }, function(response) {
                     d.reject(response);
                 });
             }, function(error) {
-                $log.error("adjustedAddressService(): updateAddress(): failed to update address", error);
-                $translate('ERROR-SAVING-ADDRESS').then(function (message) {
+                $log.error('Account(): updateClient(): failed to update account profile: error:', error);
+                $translate('ERROR-UPDATING-PROFILE').then(function (message) {
                     d.reject(message);
                 });
             });     
