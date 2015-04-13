@@ -1,7 +1,9 @@
 <div class="streamline-checkout"> <!-- style override wrapper for streamlined checkout -->
 
-<!-- CLIENT DIRECT INFO: NOT SIGNED IN: OPTION TO SIGN-IN OR CREATE NEW-->
-<div ng-if="!isOnlineSponsoring && !loggedIn()" id="signin" class="col-sm-12">
+<ng-form name='parentForm'>
+
+  <!-- CLIENT DIRECT INFO: NOT SIGNED IN: OPTION TO SIGN-IN OR CREATE NEW-->
+  <div ng-if="!isOnlineSponsoring && !loggedIn()" id="signin" class="col-sm-12">
 
   <div class="col-md-offset-3" style="padding-top:30px">
 
@@ -134,13 +136,11 @@
         </p>
       </div>
     </div>
-
   </form>
-</div>
+  </div>
 
-<!-- ONLINE SPONSORING WORKS!-->
-
-<div ng-if="isOnlineSponsoring" id="signin" class="col-sm-12">
+  <!-- ONLINE SPONSORING WORKS!-->
+  <div ng-if="isOnlineSponsoring" id="signin" class="col-sm-12">
   <div class="col-md-offset-3">
     <h1 class="checkouth1" ng-if="profile.customerStatus == 'existing' && !isOnlineSponsoring">
       <span ng-bind-html="'SIGN-IN-ALREADY-A-CUSTOMER' | translate | unsafe"></span></h1>
@@ -282,9 +282,9 @@
     </div>
 
   </form>
-</div>
+  </div>
 
-<div ng-if="isOnlineSponsoring" id="profile" class="col-sm-12">
+  <div ng-if="isOnlineSponsoring" id="profile" class="col-sm-12">
 
 
   <!--valid={{signInForm.$valid}}-->
@@ -329,13 +329,13 @@
     </div>
 
   </form>
-</div>
+  </div>
 
-<!-- OS PROFILE END-->
+  <!-- OS PROFILE END-->
 
-<!-- OS KIT SELECTION-->
+  <!-- OS KIT SELECTION-->
 
-<div class="col-md-12" ng-if="isOnlineSponsoring && fromLead == true">
+  <div class="col-md-12" ng-if="isOnlineSponsoring && fromLead == true">
   <div class="col-md-offset-3">
     <h1><span ng-bind-html="'OS-KIT-MODAL-TITLE' | translate | unsafe"></span></h1>
   </div>
@@ -426,14 +426,14 @@
       </div>
     </div>
   </div>
-</div>
+  </div>
 
-<!-- OS KIT END-->
+  <!-- OS KIT END-->
 
-<!-- SHIPPING -->
-<!-- <pre>{{profile}}</pre> -->
+  <!-- SHIPPING -->
+  <!-- <pre>{{profile}}</pre> -->
 
-<div class="col-sm-12" ng-if="isOnlineSponsoring || loggedIn()">
+  <div class="col-sm-12" ng-if="isOnlineSponsoring || loggedIn()">
   <div class="col-md-offset-3">
     <h1 ng-if="!isOnlineSponsoring && session.client.addresses.length > 0"><span ng-bind-html="'CHOOSE-SHIPPING-ADDRESS' | translate | unsafe"></span></h1>
 
@@ -469,16 +469,16 @@
   <div ng-show="!isOnlineSponsoring && session.client.addresses.length > 0" class="col-md-offset-3">
     <a class="" ng-click="showNewShipping()">+ ADD SHIPPING</a>
   </div>
-  <ng-include ng-if="isOnlineSponsoring || profile.shipping == null" src="'/partials/checkout/shipping-form-include.html'"/>
+  <ng-include ng-if="isOnlineSponsoring || profile.shipping == null" src="'/partials/checkout/shipping-form-include.html'"></ng-include>
 
   <div class="col-md-offset-3">
     <hr>
   </div>
   <!-- /offset -->
   </form>
-</div><!--/span-->
+  </div><!--/span-->
 
-<div class="col-sm-12" ng-if="isOnlineSponsoring || loggedIn()">
+  <div class="col-sm-12" ng-if="isOnlineSponsoring || loggedIn()">
 
   <div class="col-md-offset-3">
     <h1 ng-show="!isOnlineSponsoring && session.client.creditCards.length > 0">
@@ -808,7 +808,7 @@
   <div class="row">
     <div class="form-group">
       <div class="col-md-offset-3 col-sm-9">
-        <button type="button" ng-disabled="isOnlineSponsoring && (profile.ssn == null || signInForm.$invalid || paymentForm.$invalid || forms.shippingForm.$invalid || profileForm.$invalid)" ng-click="validateStartAndReview(profile.loginEmail)" class="btn btn-primary btn-lg" ng-class="{ 'processing' : processing }">
+        <button type="button" ng-disabled="isOnlineSponsoring && (profile.ssn == null || parentForm.$invalid)" ng-click="validateStartAndReview(profile.loginEmail)" class="btn btn-primary btn-lg" ng-class="{ 'processing' : processing }">
           <!-- <span ng-bind-html="'BTN_SAVE_PAYMENT' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i> -->
           <!-- (!forms.shippingForm.$valid || processing) -->
           <span ng-bind-html="'BTN_CONTINUE' | translate | unsafe">CONTINUE</span> &nbsp;<i class="fa fa-caret-right"></i>
@@ -817,7 +817,8 @@
     </div>
   </div>
   <!-- <pre>{{profile}}</pre> -->
-</div><!--/span-->
+  </div><!--/span-->
 
+</ng-form>
 
 </div> <!-- end style override wrapper for streamlined checkout -->
