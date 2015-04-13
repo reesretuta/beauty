@@ -38,7 +38,6 @@
   </div>
 
   <form name="signInForm" class="form-horizontal" role="form">
-
     <div class="form-group" ng-if="profile.customerStatus == 'new' || isOnlineSponsoring">
       <label for="firstName" class="col-md-3 control-label"><span ng-bind-html="'OS-NAME' | translate | unsafe"></span></label>
 
@@ -307,12 +306,11 @@
 
     <div class="form-group">
       <label class="col-md-3 control-label"><span ng-bind-html="'DOB-LABEL' | translate | unsafe"></span></label>
-
-      <div class="col-md-3" ng-class="{ 'has-error' : invalidDOB && (profileForm.dob.$touched || profileForm.dob.$dirty) && profile.dob.length == 8 }">
+      <div class="col-md-3" ng-class="{ 'has-error' : (profileForm.dob.$touched || profileForm.dob.$dirty) && (profile.dob.$invalid || invalidDOB) }">
         <input type="tel" name="dob" class="form-control" ui-mask="99/99/9999" placeholder="{{ 'DOB-PLACEHOLDER' | translate }}" ng-model="profile.dob" required>
       </div>
       <div class="col-md-offset-3 col-sm-9">
-        <span class="help-block"><small ng-class="{ 'text-danger' : invalidDOB && (profileForm.dob.$touched || profileForm.dob.$dirty) && profile.dob.length == 8 }">
+        <span class="help-block"><small ng-class="{ 'text-danger' : (profileForm.dob.$touched || profileForm.dob.$dirty) && (profile.dob.$invalid || invalidDOB) }">
           <span ng-bind-html="'DOB-NOTE' | translate | unsafe"></span></small>
         </span>
       </div>
@@ -320,14 +318,13 @@
 
     <div class="form-group">
       <label class="col-md-3 control-label"><span ng-bind-html="'SPONSOR-ID-LABEL' | translate | unsafe"></span></label>
-
       <div class="col-md-4" ng-class="{ 'has-error' : profileForm.sponsorId.$invalid && (profileForm.sponsorId.$touched || profileForm.sponsorId.$dirty) }">
         <input name="sponsorId" type="text" class="form-control" ng-model="profile.sponsorId" ng-pattern="/^[0-9]+$/" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" placeholder="{{ 'SPONSOR-ID-PLACEHOLDER' | translate }}">
         <span ng-show="profileForm.sponsorId.$invalid && (profileForm.sponsorId.$touched || profileForm.sponsorId.$dirty)" class="help-block" ng-class="{ 'text-danger' : profileForm.sponsorId.$invalid && (profileForm.sponsorId.$touched || profileForm.sponsorId.$dirty) }">
           <span ng-bind-html="'CONSULTANT-PROFILE-INVALID-SPONSORID' | translate | unsafe"></span>
         </span>
         <span class="help-block"><small>
-          <span ng-bind-html="'SPONSOR-ID-NOTE' | translate | unsafe"></span></small></span>
+        <span ng-bind-html="'SPONSOR-ID-NOTE' | translate | unsafe"></span></small></span>
       </div>
     </div>
 
@@ -335,7 +332,6 @@
 </div>
 
 <!-- OS PROFILE END-->
-
 
 <!-- OS KIT SELECTION-->
 
@@ -433,7 +429,6 @@
 </div>
 
 <!-- OS KIT END-->
-
 
 <!-- SHIPPING -->
 <!-- <pre>{{profile}}</pre> -->
@@ -540,10 +535,9 @@
     </div>
   </div>
 
-
   <div class="row" ng-if="isOnlineSponsoring || profile.card.id == null">
-        
-    <form name="paymentForm" class="form-horizontal" role="form" novalidate>
+    
+    <form name="paymentForm" class="form-horizontal" role="form">
 
       <!-- CARD INFO -->
       <div class="form-group" ng-class="{ 'has-error' : paymentForm.cardName.$invalid && (paymentForm.cardName.$touched || paymentForm.cardName.$dirty) }">
@@ -613,7 +607,6 @@
 
   </div>
 
-
   <!-- BILLING -->
   <div class="cardAddressWrapper" ng-if="profile.billSame==false">
 
@@ -653,13 +646,6 @@
     
     </div>
     <!-- /offset -->
-
-    <!-- <div class="row" ng-if="!isOnlineSponsoring && session.client.addresses.length > 0">
-
-      <div class="col-md-offset-3">
-        <a ng-click="showNewBilling()">+ADD BILLING</a>
-      </div>
-    </div> -->
 
   <div ng-if="isOnlineSponsoring || profile.billing == null">
 
@@ -822,7 +808,7 @@
   <div class="row">
     <div class="form-group">
       <div class="col-md-offset-3 col-sm-9">
-        <button type="button" ng-disabled="profile.ssn == null && isOnlineSponsoring" ng-click="validateStartAndReview(profile.loginEmail)" class="btn btn-primary btn-lg" ng-class="{ 'processing' : processing }">
+        <button type="button" ng-disabled="isOnlineSponsoring && (profile.ssn == null || signInForm.$invalid || paymentForm.$invalid || forms.shippingForm.$invalid || profileForm.$invalid)" ng-click="validateStartAndReview(profile.loginEmail)" class="btn btn-primary btn-lg" ng-class="{ 'processing' : processing }">
           <!-- <span ng-bind-html="'BTN_SAVE_PAYMENT' | translate | unsafe"></span> &nbsp;<i class="fa fa-caret-right"></i> -->
           <!-- (!forms.shippingForm.$valid || processing) -->
           <span ng-bind-html="'BTN_CONTINUE' | translate | unsafe">CONTINUE</span> &nbsp;<i class="fa fa-caret-right"></i>
