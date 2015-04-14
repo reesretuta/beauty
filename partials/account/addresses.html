@@ -1,6 +1,6 @@
 <div class="row">
     <h1 ng-if="session.client.addresses.length > 0"><span ng-bind-html="'CHOOSE-SHIPPING-ADDRESS' | translate | unsafe"></span></h1>
-    <h1 ng-if="session.client.addresses == null || session.client.addresses.length == 0"><span ng-bind-html="'OS-SHIPPING-TITLE' | translate | unsafe"></span></h1>
+    
 </div>
 <div class="row">
     
@@ -30,8 +30,8 @@
         </button> -->
       </div><!-- /address -->
     </div>
-
+    <!-- <h1><span ng-bind-html="'OS-SHIPPING-TITLE' | translate | unsafe"></span></h1>
+    <ng-include src="'/partials/checkout/shipping-form-include.html'"/> -->
     
-    <ng-include src="'/partials/checkout/shipping-form-include.html'"/>
-
 </div><!--/span-->
+    
