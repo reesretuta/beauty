@@ -1,193 +1,101 @@
-<div class="row">
-        <h1><span>Payment Info</span></h1>
 
+<div class='row'>
+  <h1><span>Payment Info</span></h1>
 </div>
-  <div class="col-md-offset-3" ng-if="session.client.creditCards.length > 0">
-    <div class="row">
-      <div class="col-xs-6 col-lg-4" ng-repeat="ccData in session.client.creditCards">
-        <div class="checkout-card clearfix" ng-class="{active: ((ccData.id == profile.card.id))}">
-          <span class="pull-left">{{ccData.name}}</span>
-          <img class="pull-right img-responsive cardImg" src="/img/visa.png" ng-show="ccData.cardType=='Visa'">
-          <img class="pull-right img-responsive cardImg" src="/img/mastercard.png" ng-show="ccData.cardType=='MasterCard'">
-          <img class="pull-right img-responsive cardImg" src="/img/discover.png" ng-show="ccData.cardType=='Discover Card'">
-          <img class="pull-right img-responsive cardImg" src="/img/americanexpress.png" ng-show="ccData.cardType=='American Express'">
 
-          <p class="card-number">
-            <span>&bull;&bull;&bull;&bull;</span>
-            <span>&bull;&bull;&bull;&bull;</span>
-            <span>&bull;&bull;&bull;&bull;</span>
-            <span>{{ccData.lastFour|substr}}</span>
-          </p>
-
-          <p class="card-expiry pull-left">
-            <small>EXP:</small>
-            {{ccData.expMonth}}/{{ccData.expYear|substr:2:2}}
-          </p>
-          <button class="btn btn-primary pull-right card-use-btn" ng-disabled="processing" ng-click="selectCardAndContinue(ccData)">
-            <span ng-bind-html="'SELECT-OPTION-BUTTON' | translate | unsafe"></span>
-            <i class="fa fa-caret-right"></i>
-          </button>
-        </div>
-        <div class="card-actions">
-          <a ng-click="removeCreditCard(ccData.id)"><i class="fa fa-times-circle"></i>
-            <span ng-bind-html="'Remove' | translate | unsafe"></span></a>
-        </div>
+<div class='col-md-offset-3' ng-if='session.client.creditCards.length > 0'>
+  <div class='row'>
+    <div class='col-xs-6 col-lg-4' ng-repeat='ccData in session.client.creditCards'>
+      <div class='checkout-card clearfix' ng-class='{ active: ((ccData.id == profile.card.id)) }'>
+        <span class='pull-left'>{{ ccData.name }}</span>
+        <img class='pull-right img-responsive cardImg' src='/img/visa.png' ng-show='ccData.cardType == "Visa"'>
+        <img class='pull-right img-responsive cardImg' src='/img/mastercard.png' ng-show='ccData.cardType == "MasterCard"'>
+        <img class='pull-right img-responsive cardImg' src='/img/discover.png' ng-show='ccData.cardType == "Discover Card"'>
+        <img class='pull-right img-responsive cardImg' src='/img/americanexpress.png' ng-show='ccData.cardType == "American Express"'>
+        <p class='card-number'>
+          <span>&bull;&bull;&bull;&bull;</span>
+          <span>&bull;&bull;&bull;&bull;</span>
+          <span>&bull;&bull;&bull;&bull;</span>
+          <span>{{ ccData.lastFour | substr }}</span>
+        </p>
+        <p class='card-expiry pull-left'>
+          <small>EXP:</small>
+          {{ ccData.expMonth }}/{{ ccData.expYear | substr:2:2 }}
+        </p>
+        <button class='btn btn-primary pull-right card-use-btn' ng-disabled='processing' ng-click='selectCardAndContinue(ccData)'>
+          <span ng-bind-html="'SELECT-OPTION-BUTTON' | translate | unsafe"></span>
+          <i class='fa fa-caret-right'></i>
+        </button>
       </div>
-      <!-- /span -->
-    </div>
-  </div>
-
-<!-- <div class="row">
-    <div class="col-md-12">
-        <table class="table table-striped table-bordered">
-            <tr>
-               <th>Type</th>
-               <th>Name on Card</th>
-               <th>Card</th>
-               <th>Expires</th>
-               <th>Primary</th>
-               <th></th>
-            </tr>
-            <tr ng-repeat="cardData in session.client.creditCards">
-                <td>
-                    <img class="img-responsive cardImg" src="/img/visa.png" ng-show="cardData.cardType=='Visa'">
-                    <img class="img-responsive cardImg" src="/img/mastercard.png" ng-show="cardData.cardType=='MasterCard'">
-                    <img class="img-responsive cardImg" src="/img/discover.png" ng-show="cardData.cardType=='Discover Card'">
-                    <img class="img-responsive cardImg" src="/img/americanexpress.png" ng-show="cardData.cardType=='American Express'">
-                </td>
-                <td>{{ cardData.name}}</td>
-                <td>{{ cardData.expMonth}}/{{ cardData.expYear}}</td>
-                <td>************{{cardData.lastFour}}</td>
-                <td><span class="glyphicon glyphicon-ok"></span></td>
-                <td>
-                <button type="button" class="btn" ng-click="removeCreditCard(cardData.id)">
-                  <i class="fa fa-times-circle"></i> Remove
-                </button>
-                <button type="button" class="btn" ng-click="editCards(cardData.id)">
-                  <i class="fa fa-pencil-square-o"></i> Edit
-                </button>
-
-                </td>
-            </tr>
-        </table>
-    </div>
-</div> -->
-
-
-
-
-<!-- <div class="col-sm-12">
-  <div class="col-md-offset-3">
-    <h1 ng-if="session.client.creditCards.length > 0"><span>Edit Payment</span></h1>
-    <h1 ng-if="session.client.creditCards == null || session.client.addresses.length == 0"><span>credit card length == 0</span></h1>
-    <div class="row" ng-if="!isOnlineSponsoring">
-      <div class="col-xs-6 col-lg-4 checkout-address" ng-repeat="cardData in session.client.creditCards">
-        <div class="address-block">
-          <span class="block">{{ cardData.name}}</span>
-          <span class="block">{{ cardData.cardType }}</span>
-          <span class="block">{{ cardData.expMonth }}, {{ cardData.expYear }} ***-***-***-{{ cardData.lastFour }}</span>
-        </div>
-        <div class="address-actions">
-          <a ng-click="editAddress(addressData)"><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'EDIT' | translate | unsafe"></span></a>
-          &nbsp;&nbsp;
-          <a ng-click="removeAddress(addressData.id)"><i class="fa fa-times-circle"></i> <span ng-bind-html="'REMOVE' | translate | unsafe"></span></a>
-        </div>
+      <div class='card-actions'>
+        <a ng-click='removeCreditCard(ccData.id)'><i class='fa fa-times-circle'></i>
+          <span ng-bind-html="'Remove' | translate | unsafe"></span></a>
       </div>
     </div>
   </div>
+</div>
 
-    <div class="col-md-offset-3">
+<div class='row'>
+  <div class='col-md-offset-3 col-lg-8'>
+    <h2><span ng-bind-html="'ENTER-PAYMENT-INFO' | translate |unsafe"></span></h2>
+  </div>
+</div>
 
+<div class='row' ng-if='isOnlineSponsoring || profile.card.id == null'>  
+  <form name='paymentForm' class='form-horizontal' role='form'>
+    <div class='form-group' ng-class="{ 'has-error' : paymentForm.cardName.$invalid && (paymentForm.cardName.$touched || paymentForm.cardName.$dirty) }">
+      <label for='cardName' class='col-md-3 control-label'><span ng-bind-html="'IN_NAME_CARD' | translate |unsafe"></span></label>
+      <div class='col-sm-6 col-lg-4'>
+        <input ng-model='profile.newCard.name' ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-minlength='3' name='cardName' type='text' class='form-control' required tabindex='109' />
+        <span ng-show='paymentForm.cardName.$error.minlength && (paymentForm.cardName.$touched || paymentForm.cardName.$dirty)' class='help-block' ng-class="{ 'text-danger' : paymentForm.cardName.$invalid }"><span ng-bind-html="'NAME_ON_CARD_ERR' | translate | unsafe"></span></span>
+        <span ng-show='paymentForm.cardName.$invalid && (paymentForm.cardName.$touched || paymentForm.cardName.$dirty)' class='help-block' ng-class="{ 'text-danger' : paymentForm.cardName.$invalid }"><span ng-bind-html="'NAME_ON_CARD_INVALID_ERR' | translate | unsafe"></span></span>
+      </div>
     </div>
-
-
-
+    <div class='form-group' ng-class="{ 'has-error' : paymentForm.number.$invalid && (paymentForm.number.$touched || paymentForm.number.$dirty) }">
+      <label for='number' class='col-md-3 control-label'><span ng-bind-html="'IN_CARD_NUMBER' | translate |unsafe"></span></label>
+      <div class='col-sm-6 col-lg-4'>
+        <input ng-model='profile.newCard.card' ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" data-ng-blur='visited = true' ng-minlength='13' ng-maxlength='16' maxlength='16' name='number' type='text' class='form-control' id='number' data-ui-validate=" 'isValidCard($value)' " required tabindex='110' />
+        <span ng-show='visited && (paymentForm.number.$error.minlength || paymentForm.number.$error.validator)' class='help-block' ng-class="{ 'text-danger' : paymentForm.number.$invalid && (paymentForm.number.$touched || paymentForm.number.$dirty) }"><span ng-bind-html="'INVALID-CARD-NUMBER' | translate | unsafe"></span></span>
+      </div>
+      <div class='col-sm-3 col-lg-4' ng-model='cardType' ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-show='!paymentForm.number.$error.minlength && !paymentForm.number.$error.validator'>
+        <img class'img-responsive cardImg' src='/img/visa.png' ng-show="profile.newCard.cardType == 'Visa'">
+        <img class='img-responsive cardImg' src='/img/mastercard.png' ng-show="profile.newCard.cardType == 'MasterCard'">
+        <img class='img-responsive cardImg' src='/img/discover.png' ng-show="profile.newCard.cardType == 'Discover Card'">
+        <img class='img-responsive cardImg' src='/img/americanexpress.png' ng-show="profile.newCard.cardType == 'American Express'">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for='expMonth' class='col-md-3 control-label'><span ng-bind-html="'IN_EXPIRATION' | translate | unsafe"></span></label>
+      <div class='col-sm-5' ng-class="{ 'has-error' : (invalidExpiration || paymentForm.expMonth.$invalid || paymentForm.expYear.$invalid) && (paymentForm.expMonth.$touched || paymentForm.expMonth.$dirty) && (paymentForm.expYear.$touched || paymentForm.expYear.$dirty) }">
+        <div class='row'>
+          <div class='col-xs-4 col-sm-3 col-med-2'>
+            <input ng-model='profile.newCard.expMonth' name='expMonth' type='text' class='form-control col-sm-1' ui-mask='99' placeholder='MM' required tabindex='111' />
+          </div>
+          <div class='col-xs-1'>
+            <label class='control-label'>/</label>
+          </div>
+          <div class='col-xs-6 col-sm-4 col-med-3'>
+            <input ng-model='profile.newCard.expYear' name='expYear' type='text' class='form-control col-sm-3' ui-mask='9999' placeholder="{{ 'YEAR-PLACEHOLDER' | translate }}" required tabindex='112' />
+          </div>
+        </div>
+        <span ng-show='(invalidExpiration || paymentForm.expMonth.$invalid || paymentForm.expYear.$invalid) && (paymentForm.expMonth.$touched || paymentForm.expMonth.$dirty) && (paymentForm.expYear.$touched || paymentForm.expYear.$dirty)' class='help-block text-danger' ng-bind-html="'INVALID_CC_EXPIRATION' | translate | unsafe"></span>
+      </div>
+    </div>
+    <div class='form-group'>
+      <label for='cvv' class='col-md-3 control-label'><span ng-bind-html="'IN_SECURITY_CODE' | translate | unsafe"></span></label>
+      <div class='col-sm-5'>
+        <div class='row'>
+          <div class='col-xs-4 col-sm-4 col-med-2' ng-class="{ 'has-error' : paymentForm.cvv.$invalid && (paymentForm.cvv.$touched || paymentForm.cvv.$dirty) }">
+            <input ng-model='profile.newCard.cvv' ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-pattern="/^[0-9]{3,4}$/" ng-minlength='3' ng-maxlength='4' maxlength='4' name='cvv' type='text' class='form-control col-sm-1 hide-arrows' placeholder='&bull;&bull;&bull;' required tabindex='113' />
+            <span ng-show='paymentForm.cvv.$invalid && (paymentForm.cvv.$touched || paymentForm.cvv.$dirty)' class='help-block' ng-class="{ 'text-danger' : paymentForm.cvv.$invalid && (paymentForm.cvv.$touched || paymentForm.cvv.$dirty) }" ng-bind-html="'CVV-INVALID' | translate | unsafe"></span>
+          </div>
+          <div class='col-xs-6 col-sm-4 col-med-3'>
+            <a popover="{{'CVV-POPOVER-CONTENT' | translate | unsafe}}" popover-title="{{'CVV-POPOVER-TITLE' | translate | unsafe}}" popover-trigger='hover' href='' tabindex='-1'><i class='fa fa-info-circle'></i>
+              <span ng-bind-html="'WHATS-THIS' | translate | unsafe"></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
   </form>
-</div> -->
-
-
-
-
-<div class="row">
-  <div class="col-md-offset-3 col-lg-8">
-    <h2 class=""><span ng-bind-html="'ENTER-PAYMENT-INFO' | translate |unsafe"></span></h2>
-  </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-  <div class="row" ng-if="isOnlineSponsoring || profile.card.id == null">
-    
-    <form name="paymentForm" class="form-horizontal" role="form">
-
-      <!-- CARD INFO -->
-      <div class="form-group" ng-class="{ 'has-error' : paymentForm.cardName.$invalid && (paymentForm.cardName.$touched || paymentForm.cardName.$dirty) }">
-        <label for=" " class="col-md-3 control-label"><span ng-bind-html="'IN_NAME_CARD' | translate |unsafe"></span></label>
-
-        <div class="col-sm-6 col-lg-4">
-          <input ng-model="profile.newCard.name" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-minlength="3" name="cardName" type="text" class="form-control" placeholder=" " required tabindex='109' />
-          <span ng-show="paymentForm.cardName.$error.minlength && (paymentForm.cardName.$touched || paymentForm.cardName.$dirty)" class="help-block" ng-class="{ 'text-danger' : paymentForm.cardName.$invalid }"><span ng-bind-html="'NAME_ON_CARD_ERR' | translate | unsafe"></span></span>
-          <span ng-show="paymentForm.cardName.$invalid && (paymentForm.cardName.$touched || paymentForm.cardName.$dirty)" class="help-block" ng-class="{ 'text-danger' : paymentForm.cardName.$invalid }"><span ng-bind-html="'NAME_ON_CARD_INVALID_ERR' | translate | unsafe"></span></span>
-        </div>
-      </div>
-
-      <div class="form-group" ng-class="{ 'has-error' : paymentForm.number.$invalid && (paymentForm.number.$touched || paymentForm.number.$dirty) }">
-        <label for=" " class="col-md-3 control-label"><span ng-bind-html="'IN_CARD_NUMBER' | translate |unsafe"></span></label>
-
-        <div class="col-sm-6 col-lg-4">
-          <input ng-model="profile.newCard.card" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" data-ng-blur="visited=true" ng-minlength="13" ng-maxlength="16" maxlength="16" name="number" type="text" class="form-control" id=" " placeholder=" " data-ui-validate=" 'isValidCard($value)' " required tabindex='110' />
-          <span ng-show="visited && (paymentForm.number.$error.minlength || paymentForm.number.$error.validator)" class="help-block" ng-class="{ 'text-danger' : paymentForm.number.$invalid && (paymentForm.number.$touched || paymentForm.number.$dirty) }"><span ng-bind-html="'INVALID-CARD-NUMBER' | translate | unsafe"></span></span>
-        </div>
-        <div class="col-sm-3 col-lg-4" ng-model="cardType" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-show="!paymentForm.number.$error.minlength && !paymentForm.number.$error.validator">
-          <img class="img-responsive cardImg" src="/img/visa.png" ng-show="profile.newCard.cardType=='Visa'">
-          <img class="img-responsive cardImg" src="/img/mastercard.png" ng-show="profile.newCard.cardType=='MasterCard'">
-          <img class="img-responsive cardImg" src="/img/discover.png" ng-show="profile.newCard.cardType=='Discover Card'">
-          <img class="img-responsive cardImg" src="/img/americanexpress.png" ng-show="profile.newCard.cardType=='American Express'">
-        </div>
-      </div>
-      <div class="form-group">
-        <label for=" " class="col-md-3 control-label"><span ng-bind-html="'IN_EXPIRATION' | translate | unsafe"></span></label>
-
-        <div class="col-sm-5" ng-class="{ 'has-error' : (invalidExpiration || paymentForm.expMonth.$invalid || paymentForm.expYear.$invalid) && (paymentForm.expMonth.$touched || paymentForm.expMonth.$dirty) && (paymentForm.expYear.$touched || paymentForm.expYear.$dirty) }">
-          <div class="row">
-            <div class="col-xs-4 col-sm-3 col-med-2">
-              <input ng-model="profile.newCard.expMonth" name="expMonth" type="text" class="form-control col-sm-1" ui-mask="99" placeholder="MM" required tabindex='111' />
-              <!--valid={{paymentForm.expMonth.$valid}}-->
-            </div>
-            <div class="col-xs-1">
-              <label class="control-label">/</label>
-            </div>
-            <div class="col-xs-6 col-sm-4 col-med-3">
-              <input ng-model="profile.newCard.expYear" name="expYear" type="text" class="form-control col-sm-3" ui-mask="9999" placeholder="{{ 'YEAR-PLACEHOLDER' | translate }}" required tabindex='112' />
-              <!--valid={{paymentForm.expYear.$valid}}-->
-            </div>
-          </div>
-          <span ng-show="(invalidExpiration || paymentForm.expMonth.$invalid || paymentForm.expYear.$invalid) && (paymentForm.expMonth.$touched || paymentForm.expMonth.$dirty) && (paymentForm.expYear.$touched || paymentForm.expYear.$dirty)" class="help-block text-danger" ng-bind-html="'INVALID_CC_EXPIRATION' | translate | unsafe"></span>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for=" " class="col-md-3 control-label"><span ng-bind-html="'IN_SECURITY_CODE' | translate | unsafe"></span></label>
-
-        <div class="col-sm-5">
-          <div class="row">
-            <div class="col-xs-4 col-sm-4 col-med-2" ng-class="{ 'has-error' : paymentForm.cvv.$invalid && (paymentForm.cvv.$touched || paymentForm.cvv.$dirty) }">
-              <input ng-model="profile.newCard.cvv" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-pattern="/^[0-9]{3,4}$/" ng-minlength="3" ng-maxlength="4" maxlength="4" name="cvv" type="text" class="form-control col-sm-1 hide-arrows" placeholder="&bull;&bull;&bull;" required tabindex='113' />
-              <span ng-show="paymentForm.cvv.$invalid && (paymentForm.cvv.$touched || paymentForm.cvv.$dirty)" class="help-block" ng-class="{ 'text-danger' : paymentForm.cvv.$invalid && (paymentForm.cvv.$touched || paymentForm.cvv.$dirty) }" ng-bind-html="'CVV-INVALID' | translate | unsafe"></span>
-            </div>
-            <div class="col-xs-6 col-sm-4 col-med-3">
-              <a popover="{{'CVV-POPOVER-CONTENT' | translate | unsafe}}" popover-title="{{'CVV-POPOVER-TITLE' | translate | unsafe}}" popover-trigger="hover" href="" tabindex="-1"><i class="fa fa-info-circle"></i>
-                <span ng-bind-html="'WHATS-THIS' | translate | unsafe"></span>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </form>
-  </div>

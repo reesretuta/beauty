@@ -114,7 +114,6 @@ angular.module('app.controllers.account')
             };
 
             $scope.updatePassword = function (password) {
-                $log.debug('AccountController(): updatedPassword(): ')
                 $scope.profile.password = password;
                 Account.updateClient($scope.profile);
             };
