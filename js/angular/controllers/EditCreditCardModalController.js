@@ -1,12 +1,9 @@
 
 angular.module('app.controllers.checkout').controller('EditCreditCardModalController', function ($document, HashKeyCopier, $modalInstance, $q, $scope, $location, $log, CreditCards, creditCard, JOIN_BASE_URL) {
 
-    $log.debug("EditCreditCardModalController(): editing creditCard", creditCard);
-
+    $log.debug('EditCreditCardModalController(): editing creditCard', creditCard);
     $scope.creditCard = angular.copy(creditCard);
-
     $scope.isOnlineSponsoring = false;
-
     var path = $location.path();
     $log.debug("EditCreditCardModalController(): path", path);
     if (path && path.match(JOIN_BASE_URL)) {
@@ -34,9 +31,7 @@ angular.module('app.controllers.checkout').controller('EditCreditCardModalContro
     $scope.save = function () {
         $scope.saveError = null;
         $scope.processing = true;
-
         $log.debug("EditCreditCardModalController(): save(): saving creditCard correction");
-
         if ($scope.isOnlineSponsoring) {
             $modalInstance.close({
                 creditCard: $scope.creditCard,
@@ -44,7 +39,7 @@ angular.module('app.controllers.checkout').controller('EditCreditCardModalContro
             });
         } else {
             CreditCards.saveCreditCard($scope.creditCard).then(function(card) {
-                $log.debug("EditCreditCardModalController(): save(): saved");
+                $log.debug('EditCreditCardModalController(): save(): saved: card:', card);
                 $scope.processing = false;
                 $modalInstance.close({
                     creditCard: card,
@@ -59,9 +54,9 @@ angular.module('app.controllers.checkout').controller('EditCreditCardModalContro
     };
 
     $scope.$on('$destroy', function() {
-        $log.debug("EditCreditCardModalController(): cleaning up");
+        $log.debug('EditCreditCardModalController(): cleaning up');
         var body = $document.find('html, body');
-        body.css("overflow-y", "auto");
+        body.css('overflow-y', 'auto');
     });
 
 });

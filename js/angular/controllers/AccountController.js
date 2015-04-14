@@ -104,39 +104,36 @@ angular.module('app.controllers.account')
                     cardType: "Visa"
                 }
             };
-            
-            
-            
+             
             $scope.profile = $rootScope.session.client; //populates view
 
             $scope.updateClient = function(){
                 Account.updateClient($scope.profile);
             };
 
+            // account => update profile password
             $scope.updatePassword = function (password) {
                 $scope.profile.password = password;
                 Account.updateClient($scope.profile);
             };
             
-            $scope.setDefaultAddress = function(address){
+            $scope.setDefaultAddress = function(address) {
                 Account.setDefaultAddress($scope.profile);
-            }
+            };
             
-            $scope.addAddress = function(address){
+            $scope.addAddress = function(address) {
                 Account.setDefaultAddress($scope.profile);
-            }
+            };
             
-            
-            
-            $scope.editCards = function(profile){
-                
+            // account => add new cards
+            $scope.editCards = function (profile) {
                 var d, body, dd = $q.defer();
                 d = $modal.open({
                     backdrop: true,
                     keyboard: true,
-                    windowClass: 'editCreditCardModal',
-                    templateUrl: '/partials/checkout/card-edit-modal.html',
-                    controller: 'EditCreditCardModalController',
+                    windowClass : 'editCreditCardModal',
+                    templateUrl : '/partials/checkout/card-edit-modal.html',
+                    controller  : 'EditCreditCardModalController',
                     resolve: {
                         profile: function() {
                             return {
@@ -150,13 +147,13 @@ angular.module('app.controllers.account')
                 });
                 body = $document.find('html, body');
                 d.result.then(function(result) {
-                    $log.debug('CheckoutController(): editAddress(): edit address modal: saved');
+                    $log.debug('AccountController(): editCards(): edit card modal: saved');
                     dd.resolve();
                     body.css('overflow-y', 'auto');
                 });
                 $('html, body').css('overflow-y', 'hidden');
                 return dd.promise;
-            }
+            };
             
             
             $scope.editProfile = function (profile) {
@@ -276,46 +273,7 @@ angular.module('app.controllers.account')
                 d.reject(r.errorMessage);
             });
             return d.promise;
-        }
-            
-            // addAddressToBackend(a).then(function(aa) {
-            //     d.resolve(aa);
-            // }, function(error) {
-            //     d.reject(error);
-            // });
-            
-            // function addAddressToBackend(a) {
-//                 $log.debug("CheckoutController(): addAddressToBackend()", a);
-//                 var d = $q.defer();
-//                 if ($scope.isOnlineSponsoring || isGuest) {
-//                     // online sponsoring, we have it in mem
-//                     d.resolve(a);
-//                 } else {
-//                     $log.debug("CheckoutController(): addAddressToBackend(): adding address", a);
-//                     // client direct, we add it
-//                     if (a.id) {
-//                         Addresses.updateAddress(a).then(function(a) {
-//                             $log.debug("CheckoutController(): addAddressToBackend(): address updated", a);
-//                             d.resolve(a);
-//                         }, function(error) {
-//                             $log.error("CheckoutController(): addAddressToBackend(): failed to update address", error);
-//                             $scope.shippingAddressError = error;
-//                             d.reject(error);
-//                         });
-//                     } else {
-//                         Addresses.addAddress(a).then(function(a) {
-//                             $log.debug("CheckoutController(): addAddressToBackend(): address added", a);
-//                             d.resolve(a);
-//                         }, function(error) {
-//                             $log.error("CheckoutController(): addAddressToBackend(): failed to add address", error);
-//                             $scope.shippingAddressError = error;
-//                             d.reject(error);
-//                         });
-//                     }
-//                 }
-//                 return d.promise;
-//             }
-
+        };
         
         // get order history
         $scope.getOrderHistory = function() {
@@ -473,14 +431,11 @@ angular.module('app.controllers.account')
             // add name here since we're not allowing user to input a name for shipping address manually;
             address.name = $scope.profile.firstName + " " + $scope.profile.lastName;
             address.phone = $scope.profile.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
-
             $log.debug("CheckoutController(): populateDebugShippingData(): setting consultant shipping/billing address", address);
             $scope.profile.shipping = angular.copy(address);
             $scope.profile.billing = angular.copy(address);
-
             // set the addresses
             $scope.profile.newShippingAddress = angular.copy(address);
-
             $scope.checkoutUpdated();
         }
             
