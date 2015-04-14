@@ -156,6 +156,16 @@ angular.module('app.controllers.account')
 
             $scope.addNewCreditCard = function (cardData) {
                 $log.debug('AccountController(): addNewCreditCard: cardData:', cardData);
+                $scope.processing = true;
+                CreditCards.addCreditCard(cardData).then(function(card) {
+                    $log.debug('AccountController(): addPaymentMethod(): success, card:', card);
+                    $scope.profile.creditCards.push(card);
+                    $scope.profile.newCard = null;
+                    $scope.processing = false;
+                }, function(error) {
+                    $log.error('AccountController(): addPaymentMethod(): error:', error);
+                    $scope.processing = false;
+                });
             };
             
             $scope.editProfile = function (profile) {

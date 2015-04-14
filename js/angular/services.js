@@ -1720,6 +1720,7 @@ angular.module('app.services', ['ngResource'])
 
         return pgpService;
     })
+    
     .factory('CreditCards', function ($resource, $http, $log, $q, Session, PGP, API_URL) {
         var creditCardService = $resource(API_URL + '/clients/:clientId/creditCards/:creditCardId', {creditCardId: '@_id'}, {
             'update': { method:'PUT' }
