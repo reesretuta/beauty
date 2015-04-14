@@ -112,6 +112,12 @@ angular.module('app.controllers.account')
                 Account.setDefaultAddress($scope.profile);
             }
             
+            $scope.addAddress = function(address){
+                Account.setDefaultAddress($scope.profile);
+            }
+            
+            
+            
             $scope.editCards = function(profile){
                 
                 var d, body, dd = $q.defer();
@@ -175,6 +181,35 @@ angular.module('app.controllers.account')
                 return dd.promise;
             }
             
+            $scope.removeAddress = function(addressId) {
+                var d = $q.defer();
+                $log.debug('CheckoutController(): removeAddress(): address data', addressId);
+                $scope.processing = true;
+                $scope.removingAddress = true;
+                $scope.removingAddressId = addressId;
+                Addresses.removeAddress(addressId).then(function() {
+                    $log.debug("CheckoutController(): removeAddress(): address removed", addressId);
+                    if ($scope.profile.shipping != null && $scope.profile.shipping.id == addressId) {
+                        $scope.profile.shipping = null;
+                    }
+                    if ($scope.profile.billing != null && $scope.profile.billing.id == addressId) {
+                        $scope.profile.billing = null;
+                    }
+                    $scope.processing = false;
+                    $scope.removingAddress = false;
+                    $scope.removingAddressId = null;
+                    d.resolve();
+                    $scope.checkoutUpdated();
+                }, function(err) {
+                    $log.error("CheckoutController(): removeAddress()", err);
+                    $scope.processing = false;
+                    $scope.removingAddress = false;
+                    $scope.removingAddressId = null;
+                    d.reject(err);
+                });
+                return d.promise;
+            };
+            
             // edit an address via a standard modal
             $scope.editAddress = function(address) {
                 $log.debug('CheckoutController(): editAddress: got address:', address);
@@ -184,16 +219,8 @@ angular.module('app.controllers.account')
                     keyboard: true,
                     windowClass: 'editAddressModal',
                     templateUrl: '/partials/account/modals/address-edit.html',
-                    controller: '',
+                    controller: 'AddressEditModalController',
                     resolve: {
-                        // profile: function() {
-                        //     return {
-                        //         firstName   : $scope.profile.firstName,
-                        //         lastName    : $scope.profile.lastName,
-                        //         loginEmail  : $scope.profile.loginEmail,
-                        //         phoneNumber : $scope.profile.phoneNumber
-                        //     }
-                        // }
                         address: function() {
                             return address; //coming from modal view ng-click="editAddress(address)"
                         }
