@@ -467,7 +467,7 @@
   <!-- /offset -->
 
   <div ng-show="!isOnlineSponsoring && session.client.addresses.length > 0" class="col-md-offset-3">
-    <a class="" ng-click="showNewShipping()">+ ADD SHIPPING</a>
+    <a class="addnew" ng-click="showNewShipping()">+ <span ng-bind-html="'ADD-SHIPPING' | translate | unsafe"></span></a>
   </div>
   <ng-include ng-if="isOnlineSponsoring || profile.shipping == null" src="'/partials/checkout/shipping-form-include.html'"></ng-include>
 
@@ -531,7 +531,7 @@
   <div class="row" ng-if="!isOnlineSponsoring && session.client.creditCards.length > 0">
 
     <div class="col-md-offset-3">
-      <a ng-click="showNewPayment()">+ADD PAYMENT</a>
+        <a class="addnew" ng-click="showNewPayment()">+ <span ng-bind-html="'ADD-NEW-PAYMENT-METHOD' | translate | unsafe"></span></a>
     </div>
   </div>
 
