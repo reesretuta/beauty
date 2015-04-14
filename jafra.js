@@ -457,9 +457,19 @@ function createClient(client) {
 function updateClient(clientId, client) {
     logger.debug('updateClientclient(): client:', client);
     var deferred = Q.defer();
+    
+    var data = {};
+    data.clientId = clientId;
+    client.password ? data.password = client.password : null;
+    client.firstName ? data.firstName = client.firstName : null;
+    client.lastName ? data.lastName = client.lastName : null;
+    client.email ? data.email = client.email : null;
+    client.language ? data.language = client.language : null;
+    client.phone ? data.phone = client.phone : null;
+    
     request.post({
         url: UPDATE_CLIENT_URL,
-        form: client,
+        form: data,
         headers: {
             'Content-Type'  : 'application/x-www-form-urlencoded',
             'Authorization' : AUTH_STRING

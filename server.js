@@ -757,12 +757,25 @@ router.route('/clients/:client_id').get(function (req, res) {
         res.end();
         return;
     }
+
+    var client = req.body;
+
     // checked if authenticated, now update
-    jafraClient.updateClient(clientId, req.body).then(function (data) {
+    jafraClient.updateClient(clientId, client).then(function (data) {
         console.log('response from updateClient (success):', data);
-        res.json(data);
-        res.status(204);
-        res.end(); 
+
+        // update the session with the updated client data
+        client.password ? req.session.client.password = client.password : null;
+        client.firstName ? req.session.client.firstName = client.firstName : null;
+        client.lastName ? req.session.client.lastName = client.lastName : null;
+        client.email ? req.session.client.email = client.email : null;
+        client.language ? req.session.client.language = client.language : null;
+        client.phone ? req.session.client.phone = client.phone : null;
+
+        res.json(req.session.client);
+        res.status(200);
+
+        res.end();
     }, function(data){
         console.log('response from updateClient (error):', data);
         res.json(data);
