@@ -7,13 +7,15 @@ angular.module('app.controllers.account')
             }
 
             //change page title
-            $rootScope.title = "Account";
-            $rootScope.section = "account";
+            $rootScope.title = 'Account';
+            $rootScope.section = 'account';
 
             var params = $location.search();
             var debug = params.debug;
             $scope.debug = debug;
 
+            // forms object for referencing via controller
+            $scope.forms = {};
 
             $scope.orderHistory = [];
             $scope.profile = {};
@@ -128,7 +130,10 @@ angular.module('app.controllers.account')
 
             // monitor input for credit card numbers, then determine type
             $scope.$watch('profile.newCard.card', function(newVal, oldVal) {
-                if (newVal !== null) {
+                console.log('newVal:', newVal, 'oldVal:', oldVal);
+                if (newVal === '') {
+                    return true;
+                } else if (newVal !== null) {
                     var res = CreditCards.validateCard($scope.profile.newCard.card);
                     $scope.profile.newCard.cardType = res.type;
                 } else if ($scope.profile.newCard) {
@@ -138,8 +143,10 @@ angular.module('app.controllers.account')
 
             // helper for validating a credit card number
             $scope.isValidCard = function(card) {
-                if (card == null || S(card).isEmpty()) {
+                if (card === null) {
                     return false;
+                } else if (card === '') {
+                    return true;
                 }
                 var res = CreditCards.validateCard(card);
                 return res.valid;
@@ -171,6 +178,21 @@ angular.module('app.controllers.account')
                 $scope.processing = true;
                 CreditCards.addCreditCard(cardData).then(function(card) {
                     $log.debug('AccountController(): addPaymentMethod(): success, card:', card);
+                    $scope.profile.newCard.name = '';
+                    $scope.forms.paymentForm.cardName.$setPristine();
+                    $scope.forms.paymentForm.cardName.$setUntouched();
+                    $scope.profile.newCard.card = '';
+                    $scope.forms.paymentForm.number.$setPristine();
+                    $scope.forms.paymentForm.number.$setUntouched();
+                    $scope.profile.newCard.expMonth = '';
+                    $scope.forms.paymentForm.expMonth.$setPristine();
+                    $scope.forms.paymentForm.expMonth.$setUntouched();
+                    $scope.profile.newCard.expYear = '';
+                    $scope.forms.paymentForm.expYear.$setPristine();
+                    $scope.forms.paymentForm.expYear.$setUntouched();
+                    $scope.profile.newCard.cvv = '';
+                    $scope.forms.paymentForm.cvv.$setPristine();
+                    $scope.forms.paymentForm.cvv.$setUntouched();
                     $scope.processing = false;
                 }, function(error) {
                     $log.error('AccountController(): addPaymentMethod(): error:', error);
