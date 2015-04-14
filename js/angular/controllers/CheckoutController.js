@@ -103,6 +103,13 @@ angular.module('app.controllers.checkout')
         $scope.shippingAddressError = null;
         $scope.billingAddressError = null;
 
+        // method on blur for company field. blur causes focus to address line 1
+        $scope.blurCompanyField = function ($event) {
+            $event.preventDefault();
+            $log.debug('CheckoutController(): blurCompanyField(): $event:', $event);
+            angular.element('#shippingAddress1').trigger('focus');
+        };
+
         $scope.setCustomerStatus = function(status) {
             $scope.profile.customerStatus = status;
         }
