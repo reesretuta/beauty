@@ -33,6 +33,7 @@ var AUTH_STRING = "Basic " + new Buffer(USERNAME + ":" + PASSWORD).toString("bas
 var AUTHENTICATE_URL = BASE_URL + "/JCD05001P.pgm";
 var GET_CLIENT_URL = BASE_URL + "/JCD05007P.pgm";
 var CREATE_CLIENT_URL = BASE_URL + "/JCD05002P.pgm";
+var UPDATE_CLIENT_URL = BASE_URL + '/JCD05003P.pgm';
 
 var GET_CONSULTANT_URL = BASE_URL + "/JOS05007P.pgm";
 var CREATE_CONSULTANT_URL = BASE_URL + "/JOS05002P.pgm";
@@ -338,27 +339,8 @@ function getClient(clientId) {
 
     return deferred.promise;
 }
-//getClient(50000023).then(function(r) {
-//    logger.debug(r.status, r.result);
-//});
-//getClient(50000019).then(function(r) {
-//    logger.debug(r.body);
-//});
 
-/**
-{
-    "email": "jsmith@gmail.com", // required
-    "password": "some password", // required
-    "firstName": "John",         // required
-    "lastName": "Smith",         // required
-    "phone": "555-555-4432",     // required
-    "dateOfBirth": "12/01/1978", // required  (optional)
-    "consultantId": 4657323,     // optional
-    "language": "en_US"          // optional
-}
-*/
 function createClient(client) {
-    //logger.debug("createClient", email, password);
     var deferred = Q.defer();
 
     request.post({
@@ -471,145 +453,66 @@ function createClient(client) {
     return deferred.promise;
 }
 
-//rees
+// update existing client on jafra servers
 function updateClient(clientId, client) {
-    console.log(client);
+    logger.debug('updateClientclient(): client:', client);
     var deferred = Q.defer();
-    
-    // request.post({
-    //     url: CREATE_CLIENT_URL,
-    //     form: {
-    //         email: client.email,
-    //         password: client.password,
-    //         firstName: client.firstName,
-    //         lastName: client.lastName,
-    //         // dateOfBirth: client.dateOfBirth,
-    //         // consultantId: client.consultantId,
-    //         // language: client.language
-    //     },
-    //     headers: {
-    //         'Content-Type' : 'application/x-www-form-urlencoded',
-    //         'Authorization': AUTH_STRING
-    //     },
-    //     agentOptions: agentOptions,
-    //     strictSSL: false,
-    //     json: true
-    // }, function (error, response, body) {
-    //
-    //     if (error || response.statusCode != 201) {
-    //         logger.error("updateClient(): error", response ? response.statusCode: null, body);
-    //
-    //         if (body && body.statusCode && body.errorCode && body.message) {
-    //             logger.error("updateClient(): error, returning server error");
-    //
-    //             if (response && response.statusCode) {
-    //                 logger.error("there");
-    //                 deferred.reject({
-    //                     status: response.statusCode,
-    //                     result: {
-    //                         statusCode: body.statusCode,
-    //                         errorCode: body.errorCode,
-    //                         message: body.message
-    //                     }
-    //                 });
-    //             } else {
-    //                 deferred.reject({
-    //                     status: 500,
-    //                     result: {
-    //                         statusCode: 500,
-    //                         errorCode: "updateClientInvalidResponse",
-    //                         message: "Failed to update client"
-    //                     }
-    //                 });
-    //             }
-    //         } else {
-    //             logger.error("updateClient(): error, returning generic error");
-    //             deferred.reject({
-    //                 status: 500,
-    //                 result: {
-    //                     statusCode: 500,
-    //                     errorCode: "updateClientFailed",
-    //                     message: "Failed to update client"
-    //                 }
-    //             });
-    //         }
-    //         return;
-    //     }
-    //
-    //     if (body == null || body.clientId == null) {
-    //         logger.debug("updateClient(): invalid return data", body, typeof body, "clientId", body.clientId);
-    //         deferred.reject({
-    //             status: 500,
-    //             result: {
-    //                 statusCode: 500,
-    //                 errorCode: "updateClientReturnDataInvalid",
-    //                 message: "Failed to get client ID from create"
-    //             }
-    //         });
-    //         return;
-    //     }
-    //
-    //     // we should get clientId back
-    //     logger.debug("createClient(): returning success");
-    //     var clientId = body.clientId;
-    //
-    //     // fetch the client information & return
-    //     getClient(clientId).then(function(r) {
-    //         if (r.status != 200) {
-    //             logger.error("server: createClient(): failed to load client", r.result);
-    //             deferred.reject({
-    //                 status: 500,
-    //                 result: {
-    //                     statusCode: 500,
-    //                     errorCode: "failedToLoadClient",
-    //                     errorMessage: "Failed to lookup newly created client"
-    //                 }
-    //             });
-    //             return;
-    //         }
-    //
-    //         deferred.resolve({
-    //             status: 201,
-    //             result: r.result
-    //         });
-    //     }, function (r) {
-    //         logger.error("server: createClient(): failed to load client", r.result);
-    //         deferred.reject({
-    //             status: 500,
-    //             result: {
-    //                 statusCode: 500,
-    //                 errorCode: "failedToLoadClient",
-    //                 errorMessage: "Failed to lookup newly created client"
-    //             }
-    //         });
-    //     });
-    //
-    // });
-
-    deferred.resolve({
-        status: 201,
-        result: 'r.result'
+    request.post({
+        url: UPDATE_CLIENT_URL,
+        form: client,
+        headers: {
+            'Content-Type'  : 'application/x-www-form-urlencoded',
+            'Authorization' : AUTH_STRING
+        },
+        agentOptions: agentOptions,
+        strictSSL: false,
+        json: true
+    }, function (error, response, body) {
+        logger.debug('jafraClient(): updateClient(): response.statusCode:', response.statusCode);
+        if (error || response.statusCode !== 204) {
+            logger.error('updateClient(): error:', response ? response.statusCode: null, body);
+            if (body && body.statusCode && body.errorCode && body.message) {
+                if (response && response.statusCode) {
+                    deferred.reject({
+                        status: response.statusCode,
+                        result: {
+                            statusCode: body.statusCode,
+                            errorCode: body.errorCode,
+                            message: body.message
+                        }
+                    });
+                } else {
+                    deferred.reject({
+                        status: 500,
+                        result: {
+                            statusCode: 500,
+                            errorCode: 'updateClientInvalidResponse',
+                            message: 'Failed to update client'
+                        }
+                    });
+                }
+            } else {
+                logger.error('updateClient(): error, returning generic error', error, body);
+                deferred.reject({
+                    status: 500,
+                    result: {
+                        statusCode: 500,
+                        errorCode: 'updateClientFailed',
+                        message: 'Failed to update client'
+                    }
+                });
+            }
+            return;
+        }
+        deferred.resolve({
+            status : 204,
+            result : {}
+        });
     });
-
-
-
     return deferred.promise;
 }
 
-//createClient({
-//    "email": "davidcastro@lavisual.com", // required
-//    "password": "testpass",      // required
-//    "firstName": "David",        // required
-//    "lastName": "Castro",        // required
-//    "phone": "949-242-0169",     // required
-//    "dateOfBirth": "12/12/1978", // optional
-//    "language": "en_US"          // optional
-//}).then(function(r) {
-//    logger.debug("response", r.response.statusCode, "body", r.body);
-//}, function(r) {
-//    logger.error("response", r.response.statusCode, "body", r.body);
-//});
-
+// ...
 function getConsultant(consultantId) {
     //logger.debug("getConsultant()", clientId);
     var deferred = Q.defer();
