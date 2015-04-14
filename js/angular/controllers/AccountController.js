@@ -111,7 +111,13 @@ angular.module('app.controllers.account')
 
             $scope.updateClient = function(){
                 Account.updateClient($scope.profile);
-            }
+            };
+
+            $scope.updatePassword = function (password) {
+                $log.debug('AccountController(): updatedPassword(): ')
+                $scope.profile.password = password;
+                Account.updateClient($scope.profile);
+            };
             
             $scope.setDefaultAddress = function(address){
                 Account.setDefaultAddress($scope.profile);
