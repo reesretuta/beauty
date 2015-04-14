@@ -1,4 +1,3 @@
-
 angular.module('app.controllers.account').controller('ProfileEditModalController', function ($document, $window, $modalInstance, $q, $scope, $log, profile, Account) {
     
   $log.debug('ProfileEditModalController(): open(): address:', profile);
