@@ -417,7 +417,7 @@ a:hover cart-item-image {
   border-color: #B15823 transparent transparent transparent;
 }
 
-.cardImg
+.cardImg, .cardimg
 {
   max-height:40px;
   float:left;

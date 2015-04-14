@@ -106,6 +106,7 @@ angular.module('app.controllers.account')
             };
              
             $scope.profile = $rootScope.session.client; //populates view
+            $scope.profile.newCard = {};
 
             $scope.updateClient = function(){
                 Account.updateClient($scope.profile);
@@ -124,6 +125,16 @@ angular.module('app.controllers.account')
             $scope.addAddress = function(address) {
                 Account.setDefaultAddress($scope.profile);
             };
+
+            // monitor input for credit card numbers, then determine type
+            $scope.$watch('profile.newCard.card', function(newVal, oldVal) {
+                if (newVal !== null) {
+                    var res = CreditCards.validateCard($scope.profile.newCard.card);
+                    $scope.profile.newCard.cardType = res.type;
+                } else if ($scope.profile.newCard) {
+                    $scope.profile.newCard.cardType = null;
+                }
+            });
 
             // helper for validating a credit card number
             $scope.isValidCard = function(card) {
@@ -154,13 +165,12 @@ angular.module('app.controllers.account')
                 return d.promise;
             };
 
+            // add new credit card / payment method to users profile
             $scope.addNewCreditCard = function (cardData) {
                 $log.debug('AccountController(): addNewCreditCard: cardData:', cardData);
                 $scope.processing = true;
                 CreditCards.addCreditCard(cardData).then(function(card) {
                     $log.debug('AccountController(): addPaymentMethod(): success, card:', card);
-                    $scope.profile.creditCards.push(card);
-                    $scope.profile.newCard = null;
                     $scope.processing = false;
                 }, function(error) {
                     $log.error('AccountController(): addPaymentMethod(): error:', error);

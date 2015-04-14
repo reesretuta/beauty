@@ -887,7 +887,7 @@ line-height: 1.2em; /*0.8em;*/
   color: #460d66;
 }
 
-.cardImg 
+.cardImg, .cardimg  
 {
 	max-height:40px; 
 	float:left; 
