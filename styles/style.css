@@ -1479,3 +1479,7 @@ fieldset[disabled].fieldset-no-bg {
 .streamline-checkout h1, .streamline-checkout h2 {
   margin-top: 30px;
 }
+
+.addnew{
+    text-transform:uppercase;
+}

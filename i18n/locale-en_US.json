@@ -479,6 +479,8 @@
     "OS-BILLING-TITLE":"Enter a billing address",
     "OS-BILLING-EDIT-TITLE":"Edit billing address",
     "OS-SHIPPING-EDIT-TITLE":"Edit shipping address",
+    "ADD-SHIPPING":"Add new shipping address",
+    
     "OS-EDIT-CONTACT-INFO":"Edit contact info",
     "OS-NAME":"Name",
     "PRIVACY-TITLE":"JoinJAFRA Website Privacy Policy",
