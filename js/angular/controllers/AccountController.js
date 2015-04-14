@@ -125,61 +125,41 @@ angular.module('app.controllers.account')
                 Account.setDefaultAddress($scope.profile);
             };
 
+            // helper for validating a credit card number
+            $scope.isValidCard = function(card) {
+                if (card == null || S(card).isEmpty()) {
+                    return false;
+                }
+                var res = CreditCards.validateCard(card);
+                return res.valid;
+            };
+
             // account => remove credit card from profile (delete)
-            $scope.removeCreditCard = function(creditCardId) {
+            $scope.removeCreditCard = function (creditCardId) {
                 var d = $q.defer();
-                $log.debug('CheckoutController(): removePaymentMethod(): cc data', creditCardId);
+                $log.debug('AccountController(): removePaymentMethod(): cc data', creditCardId);
                 $scope.processing = true;
                 CreditCards.removeCreditCard(creditCardId).then(function() {
-                    $log.debug('CheckoutController(): removePaymentMethod(): cc removed', creditCardId);
+                    $log.debug('AccountController(): removePaymentMethod(): cc removed', creditCardId);
                     if ($scope.profile.card && $scope.profile.card.id == creditCardId) {
                         $scope.profile.card = {};
                     }
                     $scope.processing = false;
                     d.resolve();
                 }, function(error) {
-                    $log.error('CheckoutController(): removePaymentMethod()', error);
+                    $log.error('AccountController(): removePaymentMethod()', error);
                     d.reject(error);
                     $scope.processing = false;
                 });
                 return d.promise;
             };
-            
-            // account => add new cards
-            $scope.editCards = function (profile) {
-                var d, body, dd = $q.defer();
-                d = $modal.open({
-                    backdrop: true,
-                    keyboard: true,
-                    windowClass : 'editCreditCardModal',
-                    templateUrl : '/partials/checkout/card-edit-modal.html',
-                    controller  : 'EditCreditCardModalController',
-                    resolve: {
-                        profile: function() {
-                            return {
-                                firstName   : $scope.profile.firstName,
-                                lastName    : $scope.profile.lastName,
-                                loginEmail  : $scope.profile.loginEmail,
-                                phoneNumber : $scope.profile.phoneNumber
-                            }
-                        }
-                    }
-                });
-                body = $document.find('html, body');
-                d.result.then(function(result) {
-                    $log.debug('AccountController(): editCards(): edit card modal: saved');
-                    dd.resolve();
-                    body.css('overflow-y', 'auto');
-                });
-                $('html, body').css('overflow-y', 'hidden');
-                return dd.promise;
+
+            $scope.addNewCreditCard = function (cardData) {
+                $log.debug('AccountController(): addNewCreditCard: cardData:', cardData);
             };
             
-            
             $scope.editProfile = function (profile) {
-
                 $log.debug('AccountController(): editProfile(): profile:', profile);
-
                 var d, body, dd = $q.defer();
                 d = $modal.open({
                     backdrop: true,
@@ -206,7 +186,7 @@ angular.module('app.controllers.account')
                 });
                 $('html, body').css('overflow-y', 'hidden');
                 return dd.promise;
-            }
+            };
             
             $scope.removeAddress = function(addressId) {
                 var d = $q.defer();

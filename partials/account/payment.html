@@ -22,10 +22,11 @@
           <small>EXP:</small>
           {{ ccData.expMonth }}/{{ ccData.expYear | substr:2:2 }}
         </p>
+        <!-- make default?
         <button class='btn btn-primary pull-right card-use-btn' ng-disabled='processing' ng-click='selectCardAndContinue(ccData)'>
           <span ng-bind-html="'SELECT-OPTION-BUTTON' | translate | unsafe"></span>
           <i class='fa fa-caret-right'></i>
-        </button>
+        </button>-->
       </div>
       <div class='card-actions'>
         <a ng-click='removeCreditCard(ccData.id)'><i class='fa fa-times-circle'></i>
@@ -41,7 +42,7 @@
   </div>
 </div>
 
-<div class='row' ng-if='isOnlineSponsoring || profile.card.id == null'>  
+<div class='row'>  
   <form name='paymentForm' class='form-horizontal' role='form'>
     <div class='form-group' ng-class="{ 'has-error' : paymentForm.cardName.$invalid && (paymentForm.cardName.$touched || paymentForm.cardName.$dirty) }">
       <label for='cardName' class='col-md-3 control-label'><span ng-bind-html="'IN_NAME_CARD' | translate |unsafe"></span></label>
@@ -95,6 +96,13 @@
             </a>
           </div>
         </div>
+      </div>
+    </div>
+    <div class='form-group'>
+      <div class='col-lg-4 col-lg-offset-3'>
+        <button ng-click='addNewCreditCard(paymentForm)' class='btn btn-primary' ng-disabled='paymentForm.$invalid'>
+          <span>{{ 'BTN_ADD_CARD' | translate }}</span>
+        </button>
       </div>
     </div>
   </form>
