@@ -1368,28 +1368,23 @@ angular.module('app.controllers.checkout')
 
         $scope.removeCreditCard = function(creditCardId) {
             var d = $q.defer();
-
             $log.debug('CheckoutController(): removePaymentMethod(): cc data', creditCardId);
             $scope.processing = true;
-
             CreditCards.removeCreditCard(creditCardId).then(function() {
                 $log.debug("CheckoutController(): removePaymentMethod(): cc removed", creditCardId);
-
                 if ($scope.profile.card && $scope.profile.card.id == creditCardId) {
                     $scope.profile.card = {};
                 }
-
                 $scope.processing = false;
                 d.resolve();
                 $scope.checkoutUpdated();
-            }, function(err) {
-                $log.error("CheckoutController(): removePaymentMethod()", err);
-                d.reject(err);
+            }, function(error) {
+                $log.error('CheckoutController(): removePaymentMethod()', error);
+                d.reject(error);
                 $scope.processing = false;
             });
-
             return d.promise;
-        }
+        };
 
         $scope.modifyPayment = function() {
             WizardHandler.wizard('checkoutWizard').goTo('Start');
