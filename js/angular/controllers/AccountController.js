@@ -10,6 +10,11 @@ angular.module('app.controllers.account')
             $rootScope.title = "Account";
             $rootScope.section = "account";
 
+            var params = $location.search();
+            var debug = params.debug;
+            $scope.debug = debug;
+
+
             $scope.orderHistory = [];
             $scope.profile = {};
             
@@ -223,17 +228,17 @@ angular.module('app.controllers.account')
                     resolve: {
                         address: function() {
                             return address; //coming from modal view ng-click="editAddress(address)"
+                        },
+                        addAddress: function() {
+                            return addAddress;
                         }
                     }
                 });
                 body = $document.find('html, body');
                 d.result.then(function(result) {
                     $log.debug('CheckoutController(): editAddress(): edit address modal: saved');
-                    $log.debug('CheckoutController(): editAddress(): checking for addressType: (%s)', addressType);
-                    if (addressType && !result.canceled) {
-                        $log.debug('CheckoutController(): editAddress()', addressType);
-                        $scope.profile[addressType] = angular.copy(result.address);
-                        $log.debug('CheckoutController(): editAddress(): FINISHED');
+                    if (!result.canceled) {
+                        $log.debug('CheckoutController(): editAddress()');
                     }
                     dd.resolve();
                     body.css('overflow-y', 'auto');
@@ -244,7 +249,29 @@ angular.module('app.controllers.account')
             };
             
             var a = '';
-            
+
+        function addAddress(address) {
+            var d = $q.defer();
+            $log.debug("CheckoutController(): addAddress()", address);
+            $scope.shippingAddressError = "";
+            if (debug) {
+                populateDebugShippingData(address);
+                // WizardHandler.wizard('checkoutWizard').goTo('Payment');
+                d.resolve();
+                return d.promise;
+            }
+            $log.debug("CheckoutController(): addAddress(): validating address", address);
+
+            Addresses.addAddressWithChecks(address, $scope.isOnlineSponsoring).then(function(a) {
+                $log.debug("CheckoutController(): addAddress(): success", a);
+                d.resolve(a);
+            }, function(r) {
+                $log.error("CheckoutController(): addAddress(): error validating address", r);
+                $scope.shippingAddressError = r.message;
+                d.reject(r.errorMessage);
+            });
+            return d.promise;
+        }
             
             // addAddressToBackend(a).then(function(aa) {
             //     d.resolve(aa);
@@ -299,6 +326,157 @@ angular.module('app.controllers.account')
             })
         };
             
-        $scope.getOrderHistory();    
+        $scope.getOrderHistory();
+
+        /*==== DEBUG ====*/
+        function populateDebugData() {
+            // in debug, we just populate everything for testing
+
+            $scope.profile = {
+                source: "web",
+                customerStatus: 'new',
+                language: 'en_US',
+                firstName: 'Joe',
+                lastName: 'Test',
+                loginEmail: 'arimus@gmail.com',
+                loginPassword: 'password',
+                dob: '01/01/1978',
+                ssn: '111111111',
+                phoneNumber: '5554448888',
+                agree : true,
+                newShippingAddress : {
+                    "address1" : "7661 Indian Canyon Cir",
+                    "address2" : "",
+                    "city" : "Eastvale",
+                    "county" : "Riverside",
+                    "state" : "CA",
+                    "stateDescription" : "CA",
+                    "zip" : "92880",
+                    "country" : "US",
+                    "geocode" : "040609",
+                    "name" : "David Castro",
+                    "phone" : "987-983-7259",
+                    "businessCO": "Someone c/o Jafra"
+                },
+                shipping : {
+                    "address1" : "7661 Indian Canyon Cir",
+                    "address2" : "",
+                    "city" : "Eastvale",
+                    "county" : "Riverside",
+                    "state" : "CA",
+                    "stateDescription" : "CA",
+                    "zip" : "92880",
+                    "country" : "US",
+                    "geocode" : "040609",
+                    "name" : "David Castro",
+                    "phone" : "987-983-7259",
+                    "businessCO": "Someone c/o Jafra"
+                },
+                newBillingAddress : {
+                    "address1" : "7661 Indian Canyon Cir",
+                    "address2" : "",
+                    "city" : "Eastvale",
+                    "county" : "Riverside",
+                    "state" : "CA",
+                    "stateDescription" : "CA",
+                    "zip" : "92880",
+                    "country" : "US",
+                    "geocode" : "040609",
+                    "name" : "David Castro",
+                    "phone" : "987-983-7259",
+                    "businessCO": "Someone c/o Jafra"
+                },
+                billing : {
+                    "address1" : "7661 Indian Canyon Cir",
+                    "address2" : "",
+                    "city" : "Eastvale",
+                    "county" : "Riverside",
+                    "state" : "CA",
+                    "stateDescription" : "CA",
+                    "zip" : "92880",
+                    "country" : "US",
+                    "geocode" : "040609",
+                    "name" : "David Castro",
+                    "phone" : "987-983-7259",
+                    "businessCO": "Someone c/o Jafra    "
+                },
+                "billSame" : true,
+                newCard: {
+                    name: "Test Name",
+                    card: "4111111111111111",
+                    expMonth: "12",
+                    expYear: "2020",
+                    cvv: "987",
+                    cardType: "Visa"
+                },
+                card: {
+                    name: "Test Name",
+                    card: "4111111111111111",
+                    expMonth: "12",
+                    expYear: "2020",
+                    cvv: "987",
+                    cardType: "Visa"
+                }
+            };
+
+            $scope.checkout = {
+            };
+
+            $scope.confirmation = {
+                orderId: '123345678',
+                consultantId: '11111111',
+                "sponsor": {
+                    "id": 1,
+                    "email": "jsmith@gmail.com",
+                    "firstName": "John",
+                    "lastName": "Smith"
+                }
+            }
+
+            $scope.salesTaxInfo = {
+                "SubTotal": "99.00",
+                "SH": "5.00",
+                "TaxRate": "7.75",
+                "TotalBeforeTax": "104.00",
+                "TaxAmount": "17.00",
+                "Total": "121.00"
+            }
+
+            // clear & add a product to the cart
+            Cart.clear().then(function(cart) {
+                $log.debug("CheckoutController(): populateDebugData(): previous cart cleared");
+
+                Cart.addToCart({
+                    name: "Royal Starter Kit (English)",
+                    name_es_US: "Royal Starter Kit (Ingl&eacute;s)",
+                    sku: "19634",
+                    quantity: 1,
+                    kitSelections: {},
+                    components: []
+                }).then(function(cart) {
+                    $log.debug("CheckoutController(): populateDebugData(): online sponsoring SKU loaded & added to cart", cart);
+                    $scope.cart = cart;
+                }, function(error) {
+                    $log.error("CheckoutController(): populateDebugData(): failed to update cart");
+                });
+            }, function(error) {
+                $log.error("CheckoutController(): populateDebugData(): failed to update cart");
+            });
+        }
+
+        function populateDebugShippingData(address) {
+            // add name here since we're not allowing user to input a name for shipping address manually;
+            address.name = $scope.profile.firstName + " " + $scope.profile.lastName;
+            address.phone = $scope.profile.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+
+            $log.debug("CheckoutController(): populateDebugShippingData(): setting consultant shipping/billing address", address);
+            $scope.profile.shipping = angular.copy(address);
+            $scope.profile.billing = angular.copy(address);
+
+            // set the addresses
+            $scope.profile.newShippingAddress = angular.copy(address);
+
+            $scope.checkoutUpdated();
+        }
             
     });

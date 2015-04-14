@@ -1272,7 +1272,7 @@ angular.module('app.services', ['ngResource'])
 
         return orderService;
     })
-    .factory('Addresses', function ($resource, $http, $log, $q, $translate, Session, API_URL) {
+    .factory('Addresses', function ($resource, $http, $log, $q, $translate, Session, Geocodes, API_URL, $modal, $document) {
         var addressService = $resource(API_URL + '/clients/:clientId/addresses/:addressId', {addressId: '@id'}, {
             'update': { method:'PUT' }
         });
@@ -1453,6 +1453,258 @@ angular.module('app.services', ['ngResource'])
                 d.reject(data);
             });
 
+            return d.promise;
+        }
+
+        function addressesEqual(a, b) {
+            if (!addressFieldsEqual(a.address1, b.address1) ||
+                !addressFieldsEqual(a.address2, b.address2) ||
+                !addressFieldsEqual(a.city, b.city) ||
+                !addressFieldsEqual(a.state, b.state) ||
+                !addressFieldsEqual(a.zip, b.zip))
+            {
+                $log.debug("addressService(): addressesEqual(): false", a, b);
+                return false;
+            }
+
+            $log.debug("addressService(): addressesEqual(): true", a, b);
+            return true;
+        }
+
+        function showAddressCorrectionModal(address) {
+            var dd = $q.defer();
+            var d = $modal.open({
+                backdrop: true,
+                keyboard: true, // we will handle ESC in the modal for cleanup
+                windowClass: "addressCorrectionModal",
+                templateUrl: '/partials/checkout/address-correction-modal.html',
+                controller: 'AddressCorrectionModalController',
+                resolve: {
+                    address: function() {
+                        return angular.copy(address);
+                    }
+                }
+            });
+            var body = $document.find('html, body');
+            d.result.then(function(result) {
+                $log.debug("addressService(): showAddressCorrectionModal(): address correction modal closed");
+                body.css("overflow-y", "auto");
+                dd.resolve(result);
+            });
+            $("html, body").css("overflow-y", "hidden");
+            return dd.promise;
+        }
+
+        function selectGeocodeModal(geocodes) {
+            var dd = $q.defer();
+
+            var d = $modal.open({
+                backdrop: true,
+                keyboard: true, // we will handle ESC in the modal for cleanup
+                windowClass: "selectGeocodeModal",
+                templateUrl: '/partials/checkout/tax-selection-modal.html',
+                controller: 'TaxSelectionModalController',
+                resolve: {
+                    geocodes: function() {
+                        return geocodes;
+                    }
+                }
+            });
+
+            var body = $document.find('html, body');
+
+            d.result.then(function(result) {
+                $log.debug("addressService(): selectGeocodeModal(): select geocode modal closed");
+
+                // re-enable scrolling on body
+                body.css("overflow-y", "auto");
+
+                dd.resolve(result);
+            });
+
+            // prevent page content from scrolling while modal is up
+            $("html, body").css("overflow-y", "hidden");
+
+            return dd.promise;
+        }
+
+        addressService.selectGeocodeAndAdd = function(a, dontSave) {
+            $log.debug("addressService(): selectGeocodeAndAdd()", a);
+            var d = $q.defer();
+
+            // check the zip for geocode for taxes
+            Geocodes.query({zipCode: a.zip}).$promise.then(function(geocodes) {
+                $log.debug("addressService(): selectGeocodeAndAdd(): got geocodes", geocodes);
+                // close any previous modals (e.g. address edit from review page)
+                angular.element('.modal').modal('hide');
+                // see if we have any exact matches
+                var matchedGeocode = null;
+                for (var i=0; i < geocodes.length; i++) {
+                    var zip = geocodes[i].ZIPCODE;
+                    var city = geocodes[i].CITYDES;
+
+                    if (a.zip == zip && a.city != null && a.city.toUpperCase() == city) {
+                        matchedGeocode = geocodes[i];
+                    }
+                }
+                if (geocodes.length == 1) {
+                    $log.debug("addressService(): selectGeocodeAndAdd(): selecting only geocode returned");
+                    a.geocode = geocodes[0].GEOCODE;
+                    if (dontSave) {
+                        d.resolve(a);
+                    } else {
+                        addressService.saveOrUpdateAddress(a).then(function(aa) {
+                            d.resolve(aa);
+                        }, function(error) {
+                            d.reject(error);
+                        });
+                    }
+                } else if (matchedGeocode) {
+                    $log.debug("addressService(): selectGeocodeAndAdd(): selecting exact match geocode");
+                    a.geocode = matchedGeocode.GEOCODE;
+                    if (dontSave) {
+                        d.resolve(a);
+                    } else {
+                        addressService.saveOrUpdateAddress(a).then(function(aa) {
+                            d.resolve(aa);
+                        }, function(error) {
+                            d.reject(error);
+                        });
+                    }
+                } else {
+                    // display a dialog for the user to choose the correct geocode here
+                    selectGeocodeModal(geocodes).then(function(result) {
+                        $log.debug("addressService(): selectGeocodeAndAdd(): geocode selection dialog closed", result);
+
+                        var geocode = result.geocode;
+                        var canceled = result.canceled;
+
+                        if (canceled) {
+                            $log.error("addressService(): selectGeocodeAndAdd(): geocode selection dialog canceled");
+                            d.reject({
+                                error_token: 'MUST-SELECT-ADDRESS'
+                            });
+                            return;
+                        }
+
+                        if (geocode) {
+                            a.geocode = geocode.GEOCODE;
+
+                            if (a.city.toUpperCase() != geocode.CITYDES && geocode.CITYDES) {
+                                a.city = geocode.CITYDES;
+                            }
+
+                            if (dontSave) {
+                                d.resolve(a);
+                            } else {
+                                addressService.saveOrUpdateAddress(a).then(function(aa) {
+                                    d.resolve(aa);
+                                }, function(error) {
+                                    d.reject(error);
+                                });
+                            }
+                        } else {
+                            $log.error("addressService(): selectGeocodeAndAdd(): empty geocode");
+                            d.reject({
+                                error_token: 'UNABLE-TO-VERIFY-ADDRESS'
+                            });
+                        }
+                    }, function(err) {
+                        $log.error("addressService(): selectGeocodeAndAdd(): failed to select geocode", err);
+                        d.reject({
+                            error_token: 'UNABLE-TO-VERIFY-ADDRESS'
+                        });
+                    });
+                }
+            }, function (r) {
+                $log.error("addressService(): selectGeocodeAndAdd(): error looking up geocode", r);
+                d.reject({
+                    error_token: 'UNABLE-TO-VERIFY-ADDRESS'
+                });
+            });
+
+            return d.promise;
+        }
+
+        function addressFieldsEqual(field1, field2) {
+            var f1 = field1 == null ? "" : field1.trim().toUpperCase();
+            var f2 = field2 == null ? "" : field2.trim().toUpperCase();
+
+            $log.debug("addressService(): addressFieldsEqual(): comparing", f1, f2);
+            if (f1 == f2) {
+                return true;
+            }
+            return false;
+        }
+
+        addressService.saveOrUpdateAddress = function(a) {
+            $log.debug("addressService(): addAddressToBackend()", a);
+            var d = $q.defer();
+
+            $log.debug("addressService(): addAddressToBackend(): adding address", a);
+            // client direct, we add it
+            if (a.id) {
+                addressService.updateAddress(a).then(function(a) {
+                    $log.debug("addressService(): addAddressToBackend(): address updated", a);
+                    d.resolve(a);
+                }, function(error) {
+                    $log.error("addressService(): addAddressToBackend(): failed to update address", error);
+                    d.reject(error);
+                });
+            } else {
+                addressService.addAddress(a).then(function(a) {
+                    $log.debug("addressService(): addAddressToBackend(): address added", a);
+                    d.resolve(a);
+                }, function(error) {
+                    $log.error("addressService(): addAddressToBackend(): failed to add address", error);
+                    d.reject(error);
+                });
+            }
+            return d.promise;
+        }
+
+        addressService.addAddressWithChecks = function(address, dontSave) {
+            var d = $q.defer();
+            $log.debug("addressService(): addAddressWithChecks()", address);
+
+            addressService.validateAddress(address).then(function(a) {
+                $log.debug("addressService(): addAddressWithChecks(): validated address", a);
+                // if this address was validated and corrected, then we need to inform the user
+                if (!addressesEqual(address, a)) {
+                    showAddressCorrectionModal(a).then(function(result) {
+                        var address = result.address;
+                        var canceled = result.canceled;
+                        $log.debug("addressService(): addAddressWithChecks(): address correction modal closed", address);
+                        if (canceled) {
+                            $log.debug("addressService(): addAddressWithChecks(): address correction canceled");
+                            d.reject("Address correction canceled");
+                            return;
+                        }
+
+                        addressService.selectGeocodeAndAdd(address, dontSave).then(function(aa) {
+                            $log.debug("addressService(): addAddressWithChecks(): selected geocode and added address", aa);
+                            d.resolve(aa);
+                        }, function(error) {
+                            $log.error("addressService(): addAddressWithChecks(): select geocode and add failed", error);
+                            d.reject(error);
+                        });
+                    }, function(error) {
+                        $log.error("addressService(): addAddressWithChecks(): address not corrected");
+                        d.reject(error);
+                    });
+                } else {
+                    addressService.selectGeocodeAndAdd(a, dontSave).then(function(aa) {
+                        $log.debug("addressService(): addAddressWithChecks(): selected geocode and added address", aa);
+                        d.resolve(aa);
+                    }, function(error) {
+                        $log.debug("addressService(): addAddressWithChecks(): select geocode and add failed", error);
+                        d.reject(error);
+                    });
+                }
+            }, function(r) {
+                $log.error("addressService(): addAddressWithChecks(): error validating address", r);
+                d.reject(r.errorMessage);
+            });
             return d.promise;
         }
 

@@ -93,8 +93,9 @@ angular.module('app.controllers.checkout')
             $log.debug("CheckoutController(): have last credit card id");
             $.each($rootScope.session.client.creditCards, function(i, c) {
                 if (c.id == $rootScope.session.client.lastUsedCreditCardId) {
-                    $log.debug("CheckoutController(): setting cc");
+                    $log.debug("CheckoutController(): setting card", c);
                     $scope.profile.card = c;
+                    $log.debug("CheckoutController(): DEBUG card", $scope.profile.card);
                 }
             });
         }
@@ -689,108 +690,6 @@ angular.module('app.controllers.checkout')
             }
         }
 
-        function selectGeocodeModal(geocodes) {
-            var dd = $q.defer();
-
-            var d = $modal.open({
-                backdrop: true,
-                keyboard: true, // we will handle ESC in the modal for cleanup
-                windowClass: "selectGeocodeModal",
-                templateUrl: '/partials/checkout/tax-selection-modal.html',
-                controller: 'TaxSelectionModalController',
-                resolve: {
-                    geocodes: function() {
-                        return geocodes;
-                    }
-                }
-            });
-
-            var body = $document.find('html, body');
-
-            d.result.then(function(result) {
-                $log.debug("CheckoutController(): selectGeocodeModal(): select geocode modal closed");
-
-                // re-enable scrolling on body
-                body.css("overflow-y", "auto");
-
-                dd.resolve(result);
-            });
-
-            // prevent page content from scrolling while modal is up
-            $("html, body").css("overflow-y", "hidden");
-
-            return dd.promise;
-        }
-
-        function showAddressCorrectionModal(address) {
-            var dd = $q.defer();
-
-            var d = $modal.open({
-                backdrop: true,
-                keyboard: true, // we will handle ESC in the modal for cleanup
-                windowClass: "addressCorrectionModal",
-                templateUrl: '/partials/checkout/address-correction-modal.html',
-                controller: 'AddressCorrectionModalController',
-                resolve: {
-                    address: function() {
-                        return address;
-                    }
-                }
-            });
-
-            var body = $document.find('html, body');
-
-            d.result.then(function(result) {
-                $log.debug("CheckoutController(): showAddressCorrectionModal(): address correction modal closed");
-
-                // move to next step
-                // WizardHandler.wizard('checkoutWizard').goTo('Profile');
-
-                // re-enable scrolling on body
-                body.css("overflow-y", "auto");
-
-                dd.resolve(result);
-            }, function(r) {
-                $log.debug("CheckoutController(): validated email");
-
-                // re-enable scrolling on body
-                body.css("overflow-y", "auto");
-
-                dd.resolve(result);
-            });
-
-            // prevent page content from scrolling while modal is up
-            $("html, body").css("overflow-y", "hidden");
-
-            return dd.promise;
-        }
-
-        function addressFieldsEqual (field1, field2) {
-            var f1 = field1 == null ? "" : field1.trim().toUpperCase();
-            var f2 = field2 == null ? "" : field2.trim().toUpperCase();
-
-            $log.debug("CheckoutController(): addressesEqual(): comparing", f1, f2);
-            if (f1 == f2) {
-                return true;
-            }
-            return false;
-        }
-
-        function addressesEqual(a, b) {
-            if (!addressFieldsEqual(a.address1, b.address1) ||
-                !addressFieldsEqual(a.address2, b.address2) ||
-                !addressFieldsEqual(a.city, b.city) ||
-                !addressFieldsEqual(a.state, b.state) ||
-                !addressFieldsEqual(a.zip, b.zip))
-            {
-                $log.debug("CheckoutController(): addressesEqual(): false", a, b);
-                return false;
-            }
-
-            $log.debug("CheckoutController(): addressesEqual(): true", a, b);
-            return true;
-        }
-
         function selectGeocodeAndAdd(a) {
             $log.debug("CheckoutController(): selectGeocodeAndAdd()", a);
             var d = $q.defer();
@@ -805,93 +704,20 @@ angular.module('app.controllers.checkout')
                 }
             }
 
-            // check the zip for geocode for taxes
-            Geocodes.query({zipCode: a.zip}).$promise.then(function(geocodes) {
-                $log.debug("CheckoutController(): selectGeocodeAndAdd(): got geocodes", geocodes);
-                // close any previous modals (e.g. address edit from review page)
-                angular.element('.modal').modal('hide');
-                // see if we have any exact matches
-                var matchedGeocode = null;
-                for (var i=0; i < geocodes.length; i++) {
-                    var zip = geocodes[i].ZIPCODE;
-                    var city = geocodes[i].CITYDES;
-
-                    if (a.zip == zip && a.city != null && a.city.toUpperCase() == city) {
-                        matchedGeocode = geocodes[i];
-                    }
-                }
-                if (geocodes.length == 1) {
-                    $log.debug("CheckoutController(): selectGeocodeAndAdd(): selecting only geocode returned");
-                    a.geocode = geocodes[0].GEOCODE;
-                    $scope.checkoutUpdated();
-
-                    addAddressToBackend(a).then(function(aa) {
-                        d.resolve(aa);
-                    }, function(error) {
-                        d.reject(error);
-                    });
-                } else if (matchedGeocode) {
-                    $log.debug("CheckoutController(): selectGeocodeAndAdd(): selecting exact match geocode");
-                    a.geocode = matchedGeocode.GEOCODE;
-                    $scope.checkoutUpdated();
-
-                    addAddressToBackend(a).then(function(aa) {
-                        d.resolve(aa);
-                    }, function(error) {
-                        d.reject(error);
+            // add geocode through service
+            Addresses.selectGeocodeAndAdd(a).then(function(a) {
+                d.resolve(a);
+                $scope.checkoutUpdated();
+            }, function(err) {
+                $log.error("CheckoutController(): selectGeocodeAndAdd(): error looking up geocode", r);
+                if (err.token) {
+                    $translate(err.token).then(function (message) {
+                        $scope.shippingAddressError = message;
                     });
                 } else {
-                    // display a dialog for the user to choose the correct geocode here
-                    selectGeocodeModal(geocodes).then(function(result) {
-                        $log.debug("CheckoutController(): selectGeocodeAndAdd(): geocode selection dialog closed", result);
-
-                        var geocode = result.geocode;
-                        var canceled = result.canceled;
-
-                        if (canceled) {
-                            $log.error("CheckoutController(): selectGeocodeAndAdd(): geocode selection dialog canceled");
-                            $translate('MUST-SELECT-ADDRESS').then(function (message) {
-                                $scope.shippingAddressError = message;
-                            });
-
-                            d.reject('Must select an address');
-                            return;
-                        }
-
-                        if (geocode) {
-                            a.geocode = geocode.GEOCODE;
-
-                            if (a.city.toUpperCase() != geocode.CITYDES && geocode.CITYDES) {
-                                a.city = geocode.CITYDES;
-                            }
-                            $scope.checkoutUpdated();
-
-                            addAddressToBackend(a).then(function(aa) {
-                                d.resolve(aa);
-                            }, function(error) {
-                                d.reject(error);
-                            });
-                        } else {
-                            $log.error("CheckoutController(): selectGeocodeAndAdd(): empty geocode");
-                            $translate('UNABLE-TO-VERIFY-ADDRESS').then(function (message) {
-                                $scope.shippingAddressError = message;
-                            });
-                            d.reject('Unable to verify address');
-                        }
-                    }, function(err) {
-                        $log.error("CheckoutController(): selectGeocodeAndAdd(): failed to select geocode", err);
-                        $translate('UNABLE-TO-VERIFY-ADDRESS').then(function (message) {
-                            $scope.shippingAddressError = message;
-                        });
-                        d.reject(err);
-                    });
+                    $scope.shippingAddressError = err;
                 }
-            }, function (r) {
-                $log.error("CheckoutController(): selectGeocodeAndAdd(): error looking up geocode", r);
-                $translate('UNABLE-TO-VERIFY-ADDRESS').then(function (message) {
-                    $scope.shippingAddressError = message;
-                });
-                d.reject(r.errorMessage);
+                d.reject(err);
             });
 
             return d.promise;
@@ -905,37 +731,22 @@ angular.module('app.controllers.checkout')
                 d.resolve(a);
             } else {
                 $log.debug("CheckoutController(): addAddressToBackend(): adding address", a);
-                // client direct, we add it
-                if (a.id) {
-                    Addresses.updateAddress(a).then(function(a) {
-                        $log.debug("CheckoutController(): addAddressToBackend(): address updated", a);
-                        d.resolve(a);
-                    }, function(error) {
-                        $log.error("CheckoutController(): addAddressToBackend(): failed to update address", error);
-                        $scope.shippingAddressError = error;
-                        d.reject(error);
-                    });
-                } else {
-                    Addresses.addAddress(a).then(function(a) {
-                        $log.debug("CheckoutController(): addAddressToBackend(): address added", a);
-                        d.resolve(a);
-                    }, function(error) {
-                        $log.error("CheckoutController(): addAddressToBackend(): failed to add address", error);
-                        $scope.shippingAddressError = error;
-                        d.reject(error);
-                    });
-                }
+
+                Addresses.saveOrUpdateAddress(function(a) {
+                    $log.debug("CheckoutController(): addAddressToBackend(): address added", a);
+                    d.resolve(a);
+                }, function(error) {
+                    $log.error("CheckoutController(): addAddressToBackend(): failed to add address", error);
+                    $scope.shippingAddressError = error;
+                    d.reject(error);
+                });
             }
             return d.promise;
         }
-        
-        
-        
+
         $scope.submitStart = function() {
             WizardHandler.wizard('checkoutWizard').goTo('Profile');
         }
-        
-        
         
         $scope.validateProfileAndContinue = function() {
             //$log.debug("CheckoutController(): validateProfileAndContinue()", $scope.profile);
@@ -957,10 +768,19 @@ angular.module('app.controllers.checkout')
                     // set the name on the shipping address
                     $scope.profile.newShippingAddress.name = $scope.profile.firstName + " " + $scope.profile.lastName;
                     $rootScope.namePlaceholder = $scope.profile.firstName + " " + $scope.profile.lastName;
+
                     // do the sales tax calculations before moving to the next page
-                    // WizardHandler.wizard('checkoutWizard').goTo('Shipping');
-                    // $scope.selectShippingAddressAndContinue();
-                    $scope.addShippingAddressAndContinue($scope.profile.newShippingAddress);
+                    $scope.addShippingAddressAndContinue($scope.profile.newShippingAddress).then(function() {
+
+                        $scope.addPaymentMethod().then(function(){
+                            if ($scope.isOnlineSponsoring) {
+                                $log.debug("CheckoutController(): addShippingAddressAndContinue(): going to review");
+                                WizardHandler.wizard('checkoutWizard').goTo('Review');
+                            }
+                        }); //progressing to next step
+
+                    });
+
                     $scope.processing = false;
                 } else {
                     // profile error
@@ -1270,6 +1090,7 @@ angular.module('app.controllers.checkout')
             //button clicked. sets $scope.profile.card
             $log.debug("CheckoutController(): selectCardAndContinue()", ccData);
             $scope.profile.card = angular.copy(ccData);
+            $log.debug("CheckoutController(): DEBUG card", $scope.profile.card);
             $log.debug("CheckoutController(): selectCardAndContinue(): profile now", $scope.profile);
             $scope.checkoutUpdated();
             //do nothing but highlight the selected credit card 
@@ -1285,7 +1106,8 @@ angular.module('app.controllers.checkout')
         }
         
         $scope.showNewPayment = function(){
-            $scope.profile.card = null;
+            $scope.profile.card = {};
+            $log.debug("CheckoutController(): DEBUG card", $scope.profile.card);
         }
         
         
@@ -1367,7 +1189,7 @@ angular.module('app.controllers.checkout')
             $log.debug("CheckoutController(): addPaymentIfNotSelected(): $scope.profile.card: ", $scope.profile.card);
 
             $log.debug("CheckoutController(): addPaymentIfNotSelected(): profile now: ", $scope.profile);
-            
+
             if ($scope.profile.card.id == null) {
                 $log.debug("CheckoutController(): addPaymentIfNotSelected(): new card");
                 // assume we have card in form, so add it
@@ -1480,7 +1302,7 @@ angular.module('app.controllers.checkout')
                             // only do the clear
                             $log.debug('CheckoutController(): addPaymentMethod(): added billing address, profile', $scope.profile);
                             $scope.profile.billing = angular.copy(a);
-                            $scope.profile.newBillingAddress = null;
+                            $scope.profile.newBillingAddress = {};
                             $scope.checkoutUpdated();
                             $scope.processing = false;
                             d.resolve(card);
@@ -2071,7 +1893,7 @@ angular.module('app.controllers.checkout')
                 if ($scope.profile.billSame) {
                     $log.debug("CheckoutController(): selectShippingAddressAndContinue(): setting consultant billing address");
                     $scope.profile.billing = angular.copy(address);
-                    $scope.profile.newBillingAddress = null;
+                    $scope.profile.newBillingAddress = {};
                 }
 
                 // WizardHandler.wizard('checkoutWizard').goTo('Payment');
@@ -2097,7 +1919,17 @@ angular.module('app.controllers.checkout')
             if (address.name === $rootScope.namePlaceholder) {
                 delete address.name;
             }
-            $scope.addShippingAddress(address).then(function() {
+            $scope.addShippingAddress(address).then(function(aa) {
+
+                if ($scope.isOnlineSponsoring) {
+                    $scope.profile.shipping = angular.copy(aa);
+                    if ($scope.profile.billSame) {
+                        $log.debug("CheckoutController(): addShippingAddressAndContinue(): setting billing address", aa);
+                        $scope.profile.billing = angular.copy(aa);
+                        $scope.profile.newBillingAddress = {};
+                    }
+                }
+
                 fetchSalesTax().then(function(salesTaxInfo) {
                     $log.debug("CheckoutController(): addShippingAddressAndContinue(): got sales tax info", salesTaxInfo);
                     $scope.salesTaxInfo = salesTaxInfo;
@@ -2111,17 +1943,8 @@ angular.module('app.controllers.checkout')
                     $scope.profile.newShippingAddress = {
                         name : $scope.profile.newShippingAddress.name
                     };
-                    
-                    $scope.addPaymentMethod().then(function(){
-                        d.resolve();
-                        if ($scope.isOnlineSponsoring) {
-                            $log.debug("CheckoutController(): addShippingAddressAndContinue(): going to review");
-                            WizardHandler.wizard('checkoutWizard').goTo('Review');
-                        }
-                    }); //progressing to next step
-                    
-                    //if CD do nothing but create CC on backend do not progress
-                    
+
+                    d.resolve(address);
                 }, function(err) {
                     $log.error("CheckoutController(): addShippingAddressAndContinue(): failed to get sales tax info", err);
                     $translate('SALES-TAX-ERROR').then(function (message) {
@@ -2146,7 +1969,7 @@ angular.module('app.controllers.checkout')
                     if ($scope.profile.billSame) {
                         $log.debug("CheckoutController(): addShippingAddress(): setting consultant billing address", a);
                         $scope.profile.billing = angular.copy(a);
-                        $scope.profile.newBillingAddress = null;
+                        $scope.profile.newBillingAddress = {};
                     }
                     $scope.processing = false;
                     d.resolve(a);
@@ -2156,7 +1979,7 @@ angular.module('app.controllers.checkout')
                     if ($scope.profile.billSame) {
                         $log.debug("CheckoutController(): addShippingAddress(): setting client billing address", a);
                         $scope.profile.billing = angular.copy(a);
-                        $scope.profile.newBillingAddress = null;
+                        $scope.profile.newBillingAddress = {};
                     }
 
                     $scope.processing = false;
@@ -2192,7 +2015,7 @@ angular.module('app.controllers.checkout')
                     $scope.profile.billing = angular.copy(a);
 
                     // clear the form versions
-                    $scope.profile.newBillingAddress = null;
+                    $scope.profile.newBillingAddress = {};
 
                     $scope.processing = false;
                     d.resolve(a);
@@ -2203,89 +2026,6 @@ angular.module('app.controllers.checkout')
             });
 
             return d.promise;
-        }
-
-        function showAddressCorrectionModal(address) {
-            var dd = $q.defer();
-            var d = $modal.open({
-                backdrop: true,
-                keyboard: true, // we will handle ESC in the modal for cleanup
-                windowClass: "addressCorrectionModal",
-                templateUrl: '/partials/checkout/address-correction-modal.html',
-                controller: 'AddressCorrectionModalController',
-                resolve: {
-                    address: function() {
-                        return angular.copy(address);
-                    }
-                }
-            });
-            var body = $document.find('html, body');
-            d.result.then(function(result) {
-                $log.debug("CheckoutController(): showAddressCorrectionModal(): address correction modal closed");
-                body.css("overflow-y", "auto");
-                dd.resolve(result);
-            });
-            $("html, body").css("overflow-y", "hidden");
-            return dd.promise;
-        }
-
-        function selectGeocodeModal(geocodes) {
-            var dd = $q.defer();
-
-            var d = $modal.open({
-                backdrop: true,
-                keyboard: true, // we will handle ESC in the modal for cleanup
-                windowClass: "selectGeocodeModal",
-                templateUrl: '/partials/checkout/tax-selection-modal.html',
-                controller: 'TaxSelectionModalController',
-                resolve: {
-                    geocodes: function() {
-                        return geocodes;
-                    }
-                }
-            });
-
-            var body = $document.find('html, body');
-
-            d.result.then(function(result) {
-                $log.debug("CheckoutController(): selectGeocodeModal(): select geocode modal closed");
-
-                // re-enable scrolling on body
-                body.css("overflow-y", "auto");
-
-                dd.resolve(result);
-            });
-
-            // prevent page content from scrolling while modal is up
-            $("html, body").css("overflow-y", "hidden");
-
-            return dd.promise;
-        }
-
-        function addressFieldsEqual(field1, field2) {
-            var f1 = field1 == null ? "" : field1.trim().toUpperCase();
-            var f2 = field2 == null ? "" : field2.trim().toUpperCase();
-
-            $log.debug("CheckoutController(): addressesEqual(): comparing", f1, f2);
-            if (f1 == f2) {
-                return true;
-            }
-            return false;
-        }
-
-        function addressesEqual(a, b) {
-            if (!addressFieldsEqual(a.address1, b.address1) ||
-                !addressFieldsEqual(a.address2, b.address2) ||
-                !addressFieldsEqual(a.city, b.city) ||
-                !addressFieldsEqual(a.state, b.state) ||
-                !addressFieldsEqual(a.zip, b.zip))
-            {
-                $log.debug("CheckoutController(): addressesEqual(): false", a, b);
-                return false;
-            }
-
-            $log.debug("CheckoutController(): addressesEqual(): true", a, b);
-            return true;
         }
 
         function addAddress(address) {
@@ -2300,43 +2040,9 @@ angular.module('app.controllers.checkout')
             }
             $log.debug("CheckoutController(): addAddress(): validating address", address);
 
-            Addresses.validateAddress(address).then(function(a) {
-                $log.debug("CheckoutController(): addAddress(): validated address", a);
-                // if this address was validated and corrected, then we need to inform the user
-                if (!addressesEqual(address, a)) {
-                    showAddressCorrectionModal(a).then(function(result) {
-                        var address = result.address;
-                        var canceled = result.canceled;
-                        $log.debug("CheckoutController(): addAddress(): address correction modal closed", address);
-                        if (canceled) {
-                            $log.debug("CheckoutController(): addAddress(): address correction canceled");
-                            d.reject("Address correction canceled");
-                            return;
-                        }
-                        selectGeocodeAndAdd(address).then(function(aa) {
-                            $log.debug("CheckoutController(): addAddress(): selected geocode and added address", aa);
-                            d.resolve(aa);
-                        }, function(error) {
-                            $log.error("CheckoutController(): addAddress(): select geocode and add failed", error);
-                            $scope.shippingAddressError = error;
-                            $scope.addressError = error;
-                            d.reject(error);
-                        });
-                    }, function(error) {
-                        $log.error("CheckoutController(): addAddress(): address not corrected");
-                        $scope.shippingAddressError = error;
-                        d.reject(error);
-                    });
-                } else {
-                    selectGeocodeAndAdd(a).then(function(aa) {
-                        $log.debug("CheckoutController(): addAddress(): selected geocode and added address", aa);
-                        d.resolve(aa);
-                    }, function(error) {
-                        $log.debug("CheckoutController(): addAddress(): select geocode and add failed", error);
-                        $scope.shippingAddressError = error;
-                        d.reject(error);
-                    });
-                }
+            Addresses.addAddressWithChecks(address, $scope.isOnlineSponsoring).then(function(a) {
+                $log.debug("CheckoutController(): addAddress(): success", a);
+                d.resolve(a);
             }, function(r) {
                 $log.error("CheckoutController(): addAddress(): error validating address", r);
                 $scope.shippingAddressError = r.message;
