@@ -553,6 +553,11 @@ angular.module('app.services', ['ngResource'])
                     d.reject('Can\'t update client, client not authenticated');
                     return;
                 }
+                $log.debug('Account(): updateClient(): session.get(): session:', session);
+                // if email hasnt changed, delete key/val pair
+                if (session.client.email === client.email) {
+                    delete client.email;
+                }
                 client.clientId = session.client.id;
                 accountService.update({ 
                     clientId : session.client.id
