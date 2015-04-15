@@ -386,6 +386,15 @@ angular.module('app.controllers.checkout')
                         $scope.alert("No items in cart, redirecting");
                         return;
                     }
+                    // for (var i = 0; i < session.cart.length; i++) {
+                    //     var kits = ['20494', '20495', '20498','20499'];
+                    //     if (kits.indexOf(session.cart[i].sku) > -1) {
+                    //         var item = {sku : session.cart[i].sku};
+                    //         Cart.removeFromCart(item).then(function(cart){
+                    //             $scope.cart = cart;
+                    //         });
+                    //     }
+                    // }
 
                     // on a reload, ensure we've loaded session & moved to the correct step
                     // if (urlStep != null && urlStep != 'Start' && !Session.isLoggedIn()) {
