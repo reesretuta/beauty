@@ -1,22 +1,26 @@
 
-<div class="col-sm-12">
-  <div>
-    <h1 ng-if="session.client.addresses.length > 0"><span>Profile Info</span></h1>
-  </div>
-  <div class='row'>
-    <div class='col-sm-offset-3 col-md-5'>
-      <div ng-if='profileEditInfo' class='alert alert-info' role='alert' data-ng-bind-html='profileEditInfo'></div>
+<div class='row'>
+  <div class="col-sm-12">
+    <div class='row'>
+      <div class='col-md-6'>
+        <h1 ng-if="session.client.addresses.length > 0"><span>Profile Info</span></h1>
+      </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-offset-1">Name: {{ profile.firstName }} {{ profile.lastName }}</div>
-  </div>
-  <div class="row">
-    <div class="col-sm-offset-1">Email: {{ profile.email }}</div>
-  </div>
-  <div class="row">
-    <div class="col-sm-offset-1">
-      <a ng-click="editProfile(profile)"><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'EDIT' | translate | unsafe"></span></a>
+    <div class='row'>
+      <div class='col-md-6'>
+        <div ng-if='profileEditInfo' class='alert alert-info' role='alert' data-ng-bind-html='profileEditInfo'></div>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col-md-6'>Name: {{ profile.firstName }} {{ profile.lastName }}</div>
+    </div>
+    <div class='row'>
+      <div class='col-md-6'>Email: {{ profile.email }}</div>
+    </div>
+    <div class='row'>
+      <div class='col-md-6'>
+        <a ng-click="editProfile(profile)"><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'EDIT' | translate | unsafe"></span></a>
+      </div>
     </div>
   </div>
 </div>

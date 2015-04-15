@@ -33,11 +33,12 @@ angular.module('app.controllers.account')
                 Account.updateClient($scope.profile).then(function (result) {
                     $log.debug('AccountController(): updatePassword(): success: result:', result);
                     $scope.profile.password = '';
-                    //$scope.forms.changePasswordForm.password.$setPristine();
-                    //$scope.forms.changePasswordForm.password.$setUntouched();
+                    console.log($scope.forms.changePasswordForm);
+                    $scope.forms.changePasswordForm.password.$setPristine();
+                    $scope.forms.changePasswordForm.password.$setUntouched();
                     $scope.profile.verifyPassword = '';
-                    //$scope.forms.changePasswordForm.verifyPassword.$setPristine();
-                    //$scope.forms.changePasswordForm.verifyPassword.$setUntouched();
+                    $scope.forms.changePasswordForm.verifyPassword.$setPristine();
+                    $scope.forms.changePasswordForm.verifyPassword.$setUntouched();
                     $translate('UPDATE-PASSWORD-SUCCESS').then(function (message) {
                         $scope.passwordUpdateSuccess = message;
                     });
