@@ -28,7 +28,7 @@
         <span ng-bind-html="'IN_BUSINESS_CO' | translate | unsafe"></span>
       </label>
       <div class="col-sm-8 col-lg-6">
-        <input id="shippingBusinessCO" name="businessCO" ng-model="profile.newShippingAddress.businessCO" ng-pattern="/^[a-zA-Z0-9\s,'-\/]+$/" type="text" class="form-control" placeholder="{{ 'IN_BUSINESS_CO_DES' | translate }}" autocomplete="off" />
+        <input id="shippingBusinessCO" name="businessCO" ng-model="profile.newShippingAddress.businessCO" ng-pattern="/^[a-zA-Z0-9\s,'-\/]+$/" type="text" class="form-control" placeholder="{{ 'IN_BUSINESS_CO_DES' | translate }}" autocomplete="off" ui-keydown="{ 'tab':'blurCompanyField($event)' }" />
         <span ng-show="forms.shippingForm.businessCO.$invalid && (forms.shippingForm.businessCO.$touched || forms.shippingForm.businessCO.$dirty)" class="text-danger">
           <span ng-bind-html="'ENTER-VALID-SHIPPING-NAME' | translate | unsafe"></span>
         </span>
