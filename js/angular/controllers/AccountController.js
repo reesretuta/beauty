@@ -107,7 +107,7 @@ angular.module('app.controllers.account')
                 }
             };
              
-            $scope.profile = $rootScope.session.client; //populates view
+            $scope.profile = angular.copy($rootScope.session.client); //populates view
             $scope.profile.newCard = {};
 
             $scope.updateClient = function(){
