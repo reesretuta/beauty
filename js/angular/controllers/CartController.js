@@ -46,17 +46,17 @@ angular.module('app.controllers.cart')
                 $scope.cart = cart;
                 
                 //remove all starter kits from cart if in CD
-                // if (S($location.path()).startsWith(STORE_BASE_URL)) {
-                //     for (var i = 0; i < $scope.cart.length; i++) {
-                //         var kits = ['20494', '20495', '20498','20499'];
-                //         if (kits.indexOf($scope.cart[i].sku) > -1) {
-                //             var item = {sku : $scope.cart[i].sku};
-                //             Cart.removeFromCart(item).then(function(cart){
-                //                 $scope.cart = cart;
-                //             });
-                //         }
-                //     }
-                // }
+                if (S($location.path()).startsWith(STORE_BASE_URL)) {
+                    for (var i = 0; i < $scope.cart.length; i++) {
+                        var kits = ['20494', '20495', '20498','20499'];
+                        if (kits.indexOf($scope.cart[i].sku) > -1) {
+                            var item = {sku : $scope.cart[i].sku};
+                            Cart.removeFromCart(item).then(function(cart){
+                                $scope.cart = cart;
+                            });
+                        }
+                    }
+                }
                 
                 
             }, function(error) {

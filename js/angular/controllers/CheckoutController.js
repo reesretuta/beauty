@@ -103,13 +103,6 @@ angular.module('app.controllers.checkout')
         $scope.shippingAddressError = null;
         $scope.billingAddressError = null;
 
-        // method on blur for company field. blur causes focus to address line 1
-        $scope.blurCompanyField = function ($event) {
-            $event.preventDefault();
-            $log.debug('CheckoutController(): blurCompanyField(): $event:', $event);
-            angular.element('#shippingAddress1').trigger('focus');
-        };
-
         $scope.setCustomerStatus = function(status) {
             $scope.profile.customerStatus = status;
         }
@@ -393,12 +386,14 @@ angular.module('app.controllers.checkout')
                         $scope.alert("No items in cart, redirecting");
                         return;
                     }
+                    
+                    //remove all starter kits from cart if in CD
+                    // var kits = ['20494', '20495', '20498','20499'];
                     // for (var i = 0; i < session.cart.length; i++) {
-                    //     var kits = ['20494', '20495', '20498','20499'];
                     //     if (kits.indexOf(session.cart[i].sku) > -1) {
                     //         var item = {sku : session.cart[i].sku};
                     //         Cart.removeFromCart(item).then(function(cart){
-                    //             $scope.cart = cart;
+                    //             // $scope.cart = cart;
                     //         });
                     //     }
                     // }
@@ -1112,6 +1107,8 @@ angular.module('app.controllers.checkout')
             //do nothing but highlight the selected credit card 
             // WizardHandler.wizard('checkoutWizard').goTo('Review');
         }
+        
+        
 
         $scope.showNewShipping = function(){
             $scope.profile.shipping = null;
