@@ -1,6 +1,6 @@
 
 <div class="col-sm-12">
-  <div class="col-md-offset-3">
+  <div>
     <h1 ng-if="session.client.addresses.length > 0"><span>Profile Info</span></h1>
   </div>
   <div class='row'>
@@ -9,13 +9,13 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-sm-offset-3 col-md-3">Name: {{ profile.firstName }} {{ profile.lastName }}</div>
+    <div class="col-sm-offset-1">Name: {{ profile.firstName }} {{ profile.lastName }}</div>
   </div>
   <div class="row">
-    <div class="col-sm-offset-3 col-md-3">Email: {{ profile.email }}</div>
+    <div class="col-sm-offset-1">Email: {{ profile.email }}</div>
   </div>
   <div class="row">
-    <div class="col-sm-offset-3 col-sm-5">
+    <div class="col-sm-offset-1">
       <a ng-click="editProfile(profile)"><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'EDIT' | translate | unsafe"></span></a>
     </div>
   </div>

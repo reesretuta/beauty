@@ -28,7 +28,6 @@
     "shippingCost":} -->
  
 <div id="order-history">
-    
     <div ng-if="orderHistory.length == 0"><span ng-bind-html="'NO-ORDERS-FOUND' | translate | unsafe"></span></div>
     <div ng-if="orderHistory.length > 0" id="order-{{order.id}}" class="panel panel-default" ng-repeat="order in orderHistory">
 	  <!-- Default panel contents -->

@@ -1,8 +1,7 @@
-<div class="row">
-    <h1 ng-if="session.client.addresses.length > 0"><span ng-bind-html="'CHOOSE-SHIPPING-ADDRESS' | translate | unsafe"></span></h1>
-    
-</div>
 <div class="col-sm-12">
+    <div>
+      <h1 ng-if="session.client.addresses.length > 0"><span ng-bind-html="'CHOOSE-SHIPPING-ADDRESS' | translate | unsafe"></span></h1>
+    </div>
     <div class="row" ng-if="session.client.addresses.length > 0">
       <div class="col-xs-6 col-lg-4 checkout-address" ng-repeat="addressData in session.client.addresses">
         <div class="address-block">

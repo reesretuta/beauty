@@ -235,6 +235,7 @@
     "SALES-TAX-ERROR": "Error while processing shipping information",
 
     "ENTER-PAYMENT-INFO": "Enter Payment Information",
+    "PAYMENT-INFO": "Payment Information",
     "INVALID-CARD-NUMBER": "Invalid credit card number",
 
     "MUST-SELECT-ADDRESS": "You must select an address",
