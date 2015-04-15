@@ -221,7 +221,8 @@
     "ENTER-VALID-SHIPPING-NAME": "Please enter a valid shipping name",
     "ENTER-VALID-CITY": "Please enter a valid city name",
     "SELECT-STATE": "Please select a state",
-
+    
+    "NO-ORDERS-FOUND": "No orders found.",
     "ORDER-PROBLEM": "There was an error processing the order",
     "ORDER-HISTORY": "Your Order History",
     "ORDER-HISTORY-PROBLEM": "There was an error loading order history",
@@ -239,6 +240,7 @@
     "ERROR-SAVING-ADDRESS": "Error while saving address",
     "ERROR-UPDATING-PROFILE": "Error while update profile",
     "ERROR-REMOVING-ADDRESS": "Error while removing address",
+    "PROFILE-SAVE-SUCCESS": "Profile successfully updated",
 
     "CHOOSE-OPTION-AND-SAVE-TITLE": "Choose an option and save",
 

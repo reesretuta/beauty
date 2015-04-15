@@ -135,9 +135,8 @@ angular.module('app.controllers.account')
                 body = $document.find('html, body');
                 d.result.then(function(result) {
                     $log.debug('AccountController(): editAddress(): edit profile modal: saved');
-
+                    $scope.profileEditInfo = result.profileEditInfo;
                     $scope.profile = result.profile;
-
                     dd.resolve();
                     body.css('overflow-y', 'auto');
                 });

@@ -28,9 +28,9 @@
     "shippingCost":} -->
  
 <div id="order-history">
-
-    <div id="order-{{order.id}}" class="panel panel-default" ng-repeat="order in orderHistory">
-      
+    
+    <div ng-if="orderHistory.length == 0"><span ng-bind-html="'NO-ORDERS-FOUND' | translate | unsafe"></span></div>
+    <div ng-if="orderHistory.length > 0" id="order-{{order.id}}" class="panel panel-default" ng-repeat="order in orderHistory">
 	  <!-- Default panel contents -->
       <div class="panel-heading">
 			<button type="button" class="close jaf-collapse" aria-label="Close" data-toggle="collapse" data-target="#collapse-{{$index + 1}}" aria-expanded="true" aria-controls="collapse-{{$index + 1}}"><i class="fa"></i></button>

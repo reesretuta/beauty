@@ -223,7 +223,9 @@
     "ENTER-VALID-SHIPPING-NAME": "Por favor ingrese un nombre de embarque v&#225;lida",
     "ENTER-VALID-CITY": "Por favor, introduzca un nombre de ciudad v&aacute;lida",
     "SELECT-STATE": "Selecciona un estado.",
-
+    
+    
+    "NO-ORDERS-FOUND": "No hay pedidos encontrados.",
     "ORDER-PROBLEM": "Hubo un error al procesar la orden",
     "ORDER-HISTORY": "Su Historial De Pedidos",
     "ORDER-HISTORY-PROBLEM": "Hubo un error al historial de pedidos de carga",
@@ -241,6 +243,7 @@
     "ERROR-SAVING-ADDRESS": "Error al guardar la direcci&oacute;n",
     "ERROR-UPDATING-PROFILE": "Error al actualizar perfil",
     "ERROR-REMOVING-ADDRESS": "Error mientras se quita la direcci&oacute;n",
+    "PROFILE-SAVE-SUCCESS": "Perfil actualizado correctamente",
 
     "CHOOSE-OPTION-AND-SAVE-TITLE": "Seleccionar opcion y guardar",
 
