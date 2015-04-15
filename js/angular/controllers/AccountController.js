@@ -29,7 +29,24 @@ angular.module('app.controllers.account')
             // account => update profile password
             $scope.updatePassword = function (password) {
                 $scope.profile.password = password;
-                Account.updateClient($scope.profile);
+                $log.log('AccountController(): updatePassword(): updating password to:', password);
+                Account.updateClient($scope.profile).then(function (result) {
+                    $log.debug('AccountController(): updatePassword(): success: result:', result);
+                    $scope.profile.password = '';
+                    //$scope.forms.changePasswordForm.password.$setPristine();
+                    //$scope.forms.changePasswordForm.password.$setUntouched();
+                    $scope.profile.verifyPassword = '';
+                    //$scope.forms.changePasswordForm.verifyPassword.$setPristine();
+                    //$scope.forms.changePasswordForm.verifyPassword.$setUntouched();
+                    $translate('UPDATE-PASSWORD-SUCCESS').then(function (message) {
+                        $scope.passwordUpdateSuccess = message;
+                    });
+                }, function (error) {
+                    $log.error('AccountController(): updatePassword(): error:', error);
+                    $translate('UPDATE-PASSWORD-ERROR').then(function (message) {
+                        $scope.passwordUpdateError = message;
+                    });
+                });
             };
             
             $scope.setDefaultAddress = function(address) {

@@ -208,6 +208,8 @@
     "RESET-PASSWORD": "Restablecer la contrase&ntilde;a",
     "RESET-PASSWORD-INSTRUCTIONS": "Por favor, consultar su correo electr&oacute;nico y haga clic en el enlace",
     "RESET-PASSWORD-RESEND": "Reenviar correo electr&oacute;nico",
+    "UPDATE-PASSWORD-SUCCESS": "Contraseña actualizado correctamente",
+    "UPDATE-PASSWORD-ERROR": "Error contraseña actualización",
     "BACK-TO-CART": "Volver a la cesta",
     "THANK-YOU":"Gracias!",
     "ORDER-DETAILS":"Detalles del Pedido",

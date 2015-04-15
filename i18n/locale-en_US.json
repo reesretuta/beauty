@@ -206,6 +206,8 @@
     "RESET-PASSWORD": "Reset Password",
     "RESET-PASSWORD-INSTRUCTIONS": "Please check your email and click on the link",
     "RESET-PASSWORD-RESEND": "Resend Email",
+    "UPDATE-PASSWORD-SUCCESS": "Password updated successfully",
+    "UPDATE-PASSWORD-ERROR": "Error updating password",
     "BACK-TO-CART": "Back to cart",
     "THANK-YOU":"Thank you!",
     "ORDER-DETAILS":"Order Details",
