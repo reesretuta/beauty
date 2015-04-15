@@ -495,6 +495,8 @@
     "INVALID_CC_EXPIRATION":"Fecha de vencimiento inv&aacute;lida",
     "MULTIPLE_ADDRESSES":"Varias direcciones encontradas",
     "SELECT_ADDRESS_OPTION":"Varias direcciones coinciden",
+    "INVALID_ADDRESS":"Dirección Inválida",
+    "PROBLEM_VALIDATING_ADDRESS":"Problema dirección de validación",
     "SELECT_ADDRESS_OPTION_DESC":"Elija de la siguiente lista",
     "OS-ADDRESS_EDIT":"Editar dirección",
     "OS-ADDRESS_CORRECTION_TITLE":"Domicilio encontrado",
