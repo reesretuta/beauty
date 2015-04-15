@@ -1581,13 +1581,10 @@ angular.module('app.services', ['ngResource'])
 
                         if (canceled) {
                             $log.error("addressService(): selectGeocodeAndAdd(): geocode selection dialog canceled");
-                            d.reject({
-                                error_token: 'MUST-SELECT-ADDRESS'
+                            $translate('MUST-SELECT-ADDRESS').then(function (message) {
+                                d.reject(message);
                             });
-                            return;
-                        }
-
-                        if (geocode) {
+                        } else if (geocode) {
                             a.geocode = geocode.GEOCODE;
 
                             if (a.city.toUpperCase() != geocode.CITYDES && geocode.CITYDES) {
@@ -1605,21 +1602,21 @@ angular.module('app.services', ['ngResource'])
                             }
                         } else {
                             $log.error("addressService(): selectGeocodeAndAdd(): empty geocode");
-                            d.reject({
-                                error_token: 'UNABLE-TO-VERIFY-ADDRESS'
+                            $translate('UNABLE-TO-VERIFY-ADDRESS').then(function (message) {
+                                d.reject(message);
                             });
                         }
                     }, function(err) {
                         $log.error("addressService(): selectGeocodeAndAdd(): failed to select geocode", err);
-                        d.reject({
-                            error_token: 'UNABLE-TO-VERIFY-ADDRESS'
+                        $translate('UNABLE-TO-VERIFY-ADDRESS').then(function (message) {
+                            d.reject(message);
                         });
                     });
                 }
             }, function (r) {
                 $log.error("addressService(): selectGeocodeAndAdd(): error looking up geocode", r);
-                d.reject({
-                    error_token: 'UNABLE-TO-VERIFY-ADDRESS'
+                $translate('UNABLE-TO-VERIFY-ADDRESS').then(function (message) {
+                    d.reject(message);
                 });
             });
 
@@ -1682,6 +1679,7 @@ angular.module('app.services', ['ngResource'])
                                 message: error,
                                 errorCode: 'addressCorrectionCanceled'
                             });
+                            return;
                         }
 
                         addressService.selectGeocodeAndAdd(address, dontSave).then(function(aa) {
@@ -1705,11 +1703,11 @@ angular.module('app.services', ['ngResource'])
                     addressService.selectGeocodeAndAdd(a, dontSave).then(function(aa) {
                         $log.debug("addressService(): addAddressWithChecks(): selected geocode and added address", aa);
                         d.resolve(aa);
-                    }, function(error) {
-                        $log.debug("addressService(): addAddressWithChecks(): select geocode and add failed", error);
+                    }, function(err) {
+                        $log.debug("addressService(): addAddressWithChecks(): select geocode and add failed", err);
                         d.reject({
                             message: error,
-                            errorCode: 'invalidGeocode'
+                            errorCode: 'geocodeSelectionFailed'
                         });
                     });
                 }

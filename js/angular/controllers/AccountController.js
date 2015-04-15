@@ -233,6 +233,10 @@ angular.module('app.controllers.account')
                 d.resolve(a);
             }, function(r) {
                 $log.error("AccountController(): addAddress(): error validating address", r);
+
+                // FIXME - we need to translate the error code into an error message
+                // validateAddressFailed - invalid address
+                // invalidGeocode, geocodeSelectionFailed, addressCorrectionFailed, addressCorrectionCanceled - problem validating address
                 $scope.shippingAddressError = r.message;
                 d.reject(r.message);
             });
