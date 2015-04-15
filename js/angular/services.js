@@ -1678,7 +1678,10 @@ angular.module('app.services', ['ngResource'])
                         if (canceled) {
                             $log.debug("addressService(): addAddressWithChecks(): address correction canceled");
                             d.reject("Address correction canceled");
-                            return;
+                            d.reject({
+                                message: error,
+                                errorCode: 'addressCorrectionCanceled'
+                            });
                         }
 
                         addressService.selectGeocodeAndAdd(address, dontSave).then(function(aa) {
@@ -1686,11 +1689,17 @@ angular.module('app.services', ['ngResource'])
                             d.resolve(aa);
                         }, function(error) {
                             $log.error("addressService(): addAddressWithChecks(): select geocode and add failed", error);
-                            d.reject(error);
+                            d.reject({
+                                message: error,
+                                errorCode: 'geocodeSelectionFailed'
+                            });
                         });
                     }, function(error) {
                         $log.error("addressService(): addAddressWithChecks(): address not corrected");
-                        d.reject(error);
+                        d.reject({
+                            message: error,
+                            errorCode: 'addressCorrectionFailed'
+                        });
                     });
                 } else {
                     addressService.selectGeocodeAndAdd(a, dontSave).then(function(aa) {
@@ -1698,12 +1707,15 @@ angular.module('app.services', ['ngResource'])
                         d.resolve(aa);
                     }, function(error) {
                         $log.debug("addressService(): addAddressWithChecks(): select geocode and add failed", error);
-                        d.reject(error);
+                        d.reject({
+                            message: error,
+                            errorCode: 'invalidGeocode'
+                        });
                     });
                 }
             }, function(r) {
                 $log.error("addressService(): addAddressWithChecks(): error validating address", r);
-                d.reject(r.errorMessage);
+                d.reject(r); // validateAddressFailed
             });
             return d.promise;
         }

@@ -235,7 +235,7 @@ angular.module('app.controllers.account')
             }, function(r) {
                 $log.error("AccountController(): addAddress(): error validating address", r);
                 $scope.shippingAddressError = r.message;
-                d.reject(r.errorMessage);
+                d.reject(r.message);
             });
             return d.promise;
         };

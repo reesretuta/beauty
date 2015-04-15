@@ -861,10 +861,10 @@ angular.module('app.controllers.checkout')
                 controller: 'AddressEditModalController',
                 resolve: {
                     address: function() {
-                        return address;
+                        return angular.copy(address);
                     },
                     addAddress: function() {
-                        return addAddress;
+                        return angular.copy(addAddress);
                     },
                     namePlaceholder: function () {
                         return $scope.namePlaceholder;
@@ -2053,8 +2053,11 @@ angular.module('app.controllers.checkout')
                 d.resolve(a);
             }, function(r) {
                 $log.error("CheckoutController(): addAddress(): error validating address", r);
+
+                // FIXME - we need to translate the error code into an error message
+                // validateAddressFailed, invalidGeocode, addressCorrectionFailed, geocodeSelectionFailed, addressCorrectionCanceled
                 $scope.shippingAddressError = r.message;
-                d.reject(r.errorMessage);
+                d.reject(r.message);
             });
             return d.promise;
         }
