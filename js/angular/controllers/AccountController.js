@@ -222,7 +222,10 @@ angular.module('app.controllers.account')
                 });
                 body = $document.find('html, body');
                 d.result.then(function(result) {
-                    $log.debug('CheckoutController(): editAddress(): edit address modal: saved');
+                    $log.debug('AccountController(): editAddress(): edit profile modal: saved');
+
+                    $scope.profile = result.profile;
+
                     dd.resolve();
                     body.css('overflow-y', 'auto');
                 });
@@ -232,12 +235,12 @@ angular.module('app.controllers.account')
             
             $scope.removeAddress = function(addressId) {
                 var d = $q.defer();
-                $log.debug('CheckoutController(): removeAddress(): address data', addressId);
+                $log.debug('AccountController(): removeAddress(): address data', addressId);
                 $scope.processing = true;
                 $scope.removingAddress = true;
                 $scope.removingAddressId = addressId;
                 Addresses.removeAddress(addressId).then(function() {
-                    $log.debug("CheckoutController(): removeAddress(): address removed", addressId);
+                    $log.debug("AccountController(): removeAddress(): address removed", addressId);
                     if ($scope.profile.shipping != null && $scope.profile.shipping.id == addressId) {
                         $scope.profile.shipping = null;
                     }
@@ -250,7 +253,7 @@ angular.module('app.controllers.account')
                     d.resolve();
                     $scope.checkoutUpdated();
                 }, function(err) {
-                    $log.error("CheckoutController(): removeAddress()", err);
+                    $log.error("AccountController(): removeAddress()", err);
                     $scope.processing = false;
                     $scope.removingAddress = false;
                     $scope.removingAddressId = null;
@@ -261,7 +264,7 @@ angular.module('app.controllers.account')
             
             // edit an address via a standard modal
             $scope.editAddress = function(address) {
-                $log.debug('CheckoutController(): editAddress: got address:', address);
+                $log.debug('AccountController(): editAddress: got address:', address);
                 var d, body, dd = $q.defer();
                 d = $modal.open({
                     backdrop: true,
@@ -280,9 +283,9 @@ angular.module('app.controllers.account')
                 });
                 body = $document.find('html, body');
                 d.result.then(function(result) {
-                    $log.debug('CheckoutController(): editAddress(): edit address modal: saved');
+                    $log.debug('AccountController(): editAddress(): edit address modal: saved');
                     if (!result.canceled) {
-                        $log.debug('CheckoutController(): editAddress()');
+                        $log.debug('AccountController(): editAddress()');
                     }
                     dd.resolve();
                     body.css('overflow-y', 'auto');
@@ -296,7 +299,7 @@ angular.module('app.controllers.account')
 
         function addAddress(address) {
             var d = $q.defer();
-            $log.debug("CheckoutController(): addAddress()", address);
+            $log.debug("AccountController(): addAddress()", address);
             $scope.shippingAddressError = "";
             if (debug) {
                 populateDebugShippingData(address);
@@ -304,13 +307,13 @@ angular.module('app.controllers.account')
                 d.resolve();
                 return d.promise;
             }
-            $log.debug("CheckoutController(): addAddress(): validating address", address);
+            $log.debug("AccountController(): addAddress(): validating address", address);
 
             Addresses.addAddressWithChecks(address, $scope.isOnlineSponsoring).then(function(a) {
-                $log.debug("CheckoutController(): addAddress(): success", a);
+                $log.debug("AccountController(): addAddress(): success", a);
                 d.resolve(a);
             }, function(r) {
-                $log.error("CheckoutController(): addAddress(): error validating address", r);
+                $log.error("AccountController(): addAddress(): error validating address", r);
                 $scope.shippingAddressError = r.message;
                 d.reject(r.errorMessage);
             });
@@ -319,15 +322,15 @@ angular.module('app.controllers.account')
         
         // get order history
         $scope.getOrderHistory = function() {
-            $log.debug('CheckoutController(): getOrderHistory()');
+            $log.debug('AccountController(): getOrderHistory()');
 
             Order.getHistory().then(function(orderHistory) {
                 
                 $scope.orderHistory = orderHistory;
 
-                $log.debug("CheckoutController(): getOrderHistory(): ", $scope.orderHistory);
+                $log.debug("AccountController(): getOrderHistory(): ", $scope.orderHistory);
             }, function (err) {
-                $log.error("CheckoutController(): getOrderHistory(): error loading order history", err);
+                $log.error("AccountController(): getOrderHistory(): error loading order history", err);
             })
         };
             
@@ -449,7 +452,7 @@ angular.module('app.controllers.account')
 
             // clear & add a product to the cart
             Cart.clear().then(function(cart) {
-                $log.debug("CheckoutController(): populateDebugData(): previous cart cleared");
+                $log.debug("AccountController(): populateDebugData(): previous cart cleared");
 
                 Cart.addToCart({
                     name: "Royal Starter Kit (English)",
@@ -459,13 +462,13 @@ angular.module('app.controllers.account')
                     kitSelections: {},
                     components: []
                 }).then(function(cart) {
-                    $log.debug("CheckoutController(): populateDebugData(): online sponsoring SKU loaded & added to cart", cart);
+                    $log.debug("AccountController(): populateDebugData(): online sponsoring SKU loaded & added to cart", cart);
                     $scope.cart = cart;
                 }, function(error) {
-                    $log.error("CheckoutController(): populateDebugData(): failed to update cart");
+                    $log.error("AccountController(): populateDebugData(): failed to update cart");
                 });
             }, function(error) {
-                $log.error("CheckoutController(): populateDebugData(): failed to update cart");
+                $log.error("AccountController(): populateDebugData(): failed to update cart");
             });
         }
 
@@ -473,7 +476,7 @@ angular.module('app.controllers.account')
             // add name here since we're not allowing user to input a name for shipping address manually;
             address.name = $scope.profile.firstName + " " + $scope.profile.lastName;
             address.phone = $scope.profile.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
-            $log.debug("CheckoutController(): populateDebugShippingData(): setting consultant shipping/billing address", address);
+            $log.debug("AccountController(): populateDebugShippingData(): setting consultant shipping/billing address", address);
             $scope.profile.shipping = angular.copy(address);
             $scope.profile.billing = angular.copy(address);
             // set the addresses
