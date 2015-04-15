@@ -239,6 +239,7 @@
     "ERROR-SAVING-ADDRESS": "Error while saving address",
     "ERROR-UPDATING-PROFILE": "Error while update profile",
     "ERROR-REMOVING-ADDRESS": "Error while removing address",
+    "PROFILE-SAVE-SUCCESS": "Profile successfully updated",
 
     "CHOOSE-OPTION-AND-SAVE-TITLE": "Choose an option and save",
 

@@ -13,6 +13,11 @@
   <div class="row">
     <div class="col-sm-12">
       <form name="updateProfileForm" class="form-horizontal" role="form">
+        <div class='form-group'>
+          <div class='col-sm-6'>
+            <div ng-if='profileEditError' class='alert alert-danger' role='alert' data-ng-bind-html='profileEditError'></div>
+          </div>
+        </div>
         <div class="form-group">
           <label for="firstName" class="col-md-3 control-label"><span ng-bind-html="'OS-NAME' | translate | unsafe"></span></label>
           <div class="col-sm-3" ng-class="{ 'has-error' : updateProfileForm.firstName.$invalid && (updateProfileForm.firstName.$touched || updateProfileForm.firstName.$dirty) }">
