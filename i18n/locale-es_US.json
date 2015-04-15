@@ -236,6 +236,7 @@
     "SALES-TAX-ERROR": "Error al procesamiento de la informaci&oacute;n del env&iacute;o",
 
     "ENTER-PAYMENT-INFO": "Ingrese Informaci&oacute;n sobre el pago",
+    "PAYMENT-INFO": "Información Del Pago",
     "INVALID-CARD-NUMBER": "N&aacute;mero de tarjeta inv&aacute;lido",
 
     "MUST-SELECT-ADDRESS": "Debe seleccionar una direcci&oacute;n",

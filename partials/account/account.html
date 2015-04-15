@@ -13,7 +13,7 @@
     </ul>
     <!-- Tab panes -->
     <div class="tab-content">
-      <div role="tabpanel" class="tab-pane" id="profile">
+      <div role="tabpanel" class="tab-pane active" id="profile">
         <ng-include src="'/partials/account/profile.html'"/>
       </div>
       <div role="tabpanel" class="tab-pane fade" id="addresses">
@@ -43,5 +43,5 @@
   $('.nav-tabs').on('click',function(e){
     e.preventDefault();
   });
-  $("a[href='#orderhistory']").click();
+  $("a[href='#profile']").click();
 </script>
