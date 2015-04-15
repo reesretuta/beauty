@@ -10,9 +10,9 @@
           <span class="address-street block">{{ addressData.address1 }} {{ addressData.address2 }}</span>
           <span class="address-region block">{{ addressData.city }}, {{ addressData.state }} {{ addressData.zip }}</span>
           <span class="phone-number block">{{ addressData.phone}}</span>
-          <button type="button" class="btn btn-primary" ng-disabled="processing" ng-click="setDefaultAddress(addressData)">
+          <!-- <button type="button" class="btn btn-primary" ng-disabled="processing" ng-click="setDefaultAddress(addressData)">
             <span ng-bind-html="'MAKE_DEFAULT' | translate | unsafe"></span>
-          </button>
+          </button> -->
         </div>
         <div class="address-actions">
           <a ng-click="editAddress(addressData)"><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'EDIT' | translate | unsafe"></span></a>
