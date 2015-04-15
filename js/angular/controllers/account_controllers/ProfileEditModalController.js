@@ -1,5 +1,5 @@
 
-angular.module('app.controllers.account').controller('ProfileEditModalController', function ($document, $window, $modalInstance, $q, $scope, $log, profile, Account) {
+angular.module('app.controllers.account').controller('ProfileEditModalController', function ($document, $window, $modalInstance, $q, $scope, $log, $translate, Addresses, Account, profile) {
     
   $log.debug('ProfileEditModalController(): open(): address:', profile);
 
@@ -15,15 +15,28 @@ angular.module('app.controllers.account').controller('ProfileEditModalController
 
   $scope.save = function () {
     $log.debug('ProfileEditModalController(): save(): saving...');
-    Account.updateClient($scope.profile).then(function (data) {
-      $log.debug('ProfileEditModalController(): save(): success data:', data);
-      $modalInstance.close({
-        profile  : $scope.profile,
-        canceled : false
+    // validate email first
+    Addresses.validateEmail($scope.profile.email).then(function(result) {
+      $log.debug("ProfileEditModalController(): validated email: result", result);
+      Account.updateClient($scope.profile).then(function (data) {
+        $log.debug('ProfileEditModalController(): save(): success data:', data);
+        $translate('PROFILE-SAVE-SUCCESS').then(function (message) {
+          $modalInstance.close({
+            profileEditInfo : message,
+            profile         : $scope.profile,
+            canceled        : false
+          });
+        });
+      }, function(error) {
+        $log.error('ProfileEditModalController(): save(): error!', error);
+        $scope.profileEditError = error;
       });
-    }, function(error) {
-      $log.error('ProfileEditModalController(): save(): error!', error);
-      $scope.profileEditError = error;
+    }, function(r) {
+      $log.error("ProfileEditModalController(): failed validating email", r);
+      $translate('INVALID-EMAIL').then(function (message) {
+        $scope.profileEditError = message;
+      });
+      $scope.processing = false;
     });
   };
 
