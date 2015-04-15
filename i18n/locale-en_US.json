@@ -221,7 +221,8 @@
     "ENTER-VALID-SHIPPING-NAME": "Please enter a valid shipping name",
     "ENTER-VALID-CITY": "Please enter a valid city name",
     "SELECT-STATE": "Please select a state",
-
+    
+    "NO-ORDERS-FOUND": "No orders found.",
     "ORDER-PROBLEM": "There was an error processing the order",
     "ORDER-HISTORY": "Your Order History",
     "ORDER-HISTORY-PROBLEM": "There was an error loading order history",

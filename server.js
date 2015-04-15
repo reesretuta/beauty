@@ -963,14 +963,33 @@ router.route('/clients/:client_id/addresses/:address_id')// get a client address
         logger.debug("updating address", req.body);
 
         jafraClient.updateAddress(clientId, addressId, req.body).then(function(r) {
-            logger.error("updated address", r.status, r.result);
+            logger.debug("updated address", r.status, r.result);
 
             // update this address in the session
-            if (req.session.checkout && req.session.checkout.shipping && req.session.checkout.shipping.id == addressId) {
-                req.session.checkout.shipping = req.body;
-            }
-            if (req.session.checkout && req.session.checkout.billing && req.session.checkout.billing.id == addressId) {
-                req.session.checkout.billing = req.body;
+            try {
+                if (req.session.checkout && req.session.checkout.shipping && req.session.checkout.shipping.id == addressId) {
+                    req.session.checkout.shipping = req.body;
+                }
+                if (req.session.checkout && req.session.checkout.billing && req.session.checkout.billing.id == addressId) {
+                    req.session.checkout.billing = req.body;
+                }
+
+                if (req.session.client && req.session.client.addresses) {
+                    for (var i=0; i < req.session.client.addresses.length; i++) {
+                        var address = req.session.client.addresses[i];
+                        if (address.id == addressId) {
+                            // update the original address
+                            for (var key in req.body) {
+                                if (req.body.hasOwnProperty(key)) {
+                                    address[key] = req.body[key];
+                                }
+                            }
+                        }
+                    }
+                    logger.debug("updated address in session", req.body);
+                }
+            } catch (ex) {
+                logger.error("error updating addresses in session", ex);
             }
 
             res.json(r.status);

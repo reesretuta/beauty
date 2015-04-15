@@ -185,10 +185,10 @@ angular.module('app.controllers.account')
                     controller: 'AddressEditModalController',
                     resolve: {
                         address: function() {
-                            return address; //coming from modal view ng-click="editAddress(address)"
+                            return angular.copy(address); //coming from modal view ng-click="editAddress(address)"
                         },
                         addAddress: function() {
-                            return addAddress;
+                            return angular.copy(addAddress);
                         }
                     }
                 });
@@ -197,7 +197,15 @@ angular.module('app.controllers.account')
                     $log.debug('AccountController(): editAddress(): edit address modal: saved');
                     if (!result.canceled) {
                         $log.debug('AccountController(): editAddress()');
+
+                        // update the original address
+                        for (var key in result.address) {
+                            if (result.hasOwnProperty(key)) {
+                                address[key] = result.address[key];
+                            }
+                        }
                     }
+
                     dd.resolve();
                     body.css('overflow-y', 'auto');
                 });
