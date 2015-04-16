@@ -1,12 +1,11 @@
+
 <div class="col-sm-12">
   <div>
     <h1><span ng-bind-html="'PAYMENT-INFO' | translate |unsafe"></span></h1>
   </div>
 </div>
   
-  
-  
-<div class='col-md-offset-3' ng-if='session.client.creditCards.length > 0'>
+<div ng-if='session.client.creditCards.length > 0'>
   <div class='row'>
     <div class='col-xs-6 col-lg-4' ng-repeat='ccData in session.client.creditCards'>
       <div class='checkout-card clearfix' ng-class='{ active: ((ccData.id == profile.card.id)) }'>
@@ -35,7 +34,7 @@
 </div>
 
 <div class='row'>
-  <div class='col-md-offset-3 col-lg-8'>
+  <div class='col-md-offset-2 col-md-8'>
     <h2><span ng-bind-html="'ENTER-PAYMENT-INFO' | translate |unsafe"></span></h2>
   </div>
 </div>
@@ -43,7 +42,7 @@
 <div class='row'>  
   <form name='forms.paymentForm' class='form-horizontal' role='form'>
     <div class='form-group' ng-class="{ 'has-error' : forms.paymentForm.cardName.$invalid && (forms.paymentForm.cardName.$touched || forms.paymentForm.cardName.$dirty) }">
-      <label for='cardName' class='col-md-3 control-label'><span ng-bind-html="'IN_NAME_CARD' | translate |unsafe"></span></label>
+      <label for='cardName' class='col-md-2'><span ng-bind-html="'IN_NAME_CARD' | translate |unsafe"></span></label>
       <div class='col-sm-6 col-lg-4'>
         <input ng-model='profile.newCard.name' ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-minlength='3' name='cardName' type='text' class='form-control' required tabindex='109' />
         <span ng-show='forms.paymentForm.cardName.$error.minlength && (forms.paymentForm.cardName.$touched || forms.paymentForm.cardName.$dirty)' class='help-block' ng-class="{ 'text-danger' : forms.paymentForm.cardName.$invalid }"><span ng-bind-html="'NAME_ON_CARD_ERR' | translate | unsafe"></span></span>
@@ -51,7 +50,7 @@
       </div>
     </div>
     <div class='form-group' ng-class="{ 'has-error' : forms.paymentForm.number.$invalid && (forms.paymentForm.number.$touched || forms.paymentForm.number.$dirty) }">
-      <label for='number' class='control-label col-sm-6 col-lg-3'><span ng-bind-html="'IN_CARD_NUMBER' | translate |unsafe"></span></label>
+      <label for='number' class='col-sm-2 col-md-2 col-lg-2'><span ng-bind-html="'IN_CARD_NUMBER' | translate |unsafe"></span></label>
       <div class='col-sm-6 col-lg-4'>
         <input ng-model='profile.newCard.card' ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" data-ng-blur='visited = true' ng-minlength='13' ng-maxlength='16' maxlength='16' name='number' type='text' class='form-control' id='number' data-ui-validate=" 'isValidCard($value)' " required tabindex='110' />
         <span ng-show='visited && (forms.paymentForm.number.$error.minlength || forms.paymentForm.number.$error.validator)' class='help-block' ng-class="{ 'text-danger' : forms.paymentForm.number.$invalid && (forms.paymentForm.number.$touched || forms.paymentForm.number.$dirty) }"><span ng-bind-html="'INVALID-CARD-NUMBER' | translate | unsafe"></span></span>
@@ -64,16 +63,16 @@
       </div>
     </div>
     <div class="form-group">
-      <label for='expMonth' class='col-md-3 control-label'><span ng-bind-html="'IN_EXPIRATION' | translate | unsafe"></span></label>
-      <div class='col-sm-5' ng-class="{ 'has-error' : (invalidExpiration || forms.paymentForm.expMonth.$invalid || forms.paymentForm.expYear.$invalid) && (forms.paymentForm.expMonth.$touched || forms.paymentForm.expMonth.$dirty) && (forms.paymentForm.expYear.$touched || forms.paymentForm.expYear.$dirty) }">
+      <label for='expMonth' class='col-md-2'><span ng-bind-html="'IN_EXPIRATION' | translate | unsafe"></span></label>
+      <div class='col-md-4' ng-class="{ 'has-error' : (invalidExpiration || forms.paymentForm.expMonth.$invalid || forms.paymentForm.expYear.$invalid) && (forms.paymentForm.expMonth.$touched || forms.paymentForm.expMonth.$dirty) && (forms.paymentForm.expYear.$touched || forms.paymentForm.expYear.$dirty) }">
         <div class='row'>
-          <div class='col-xs-4 col-sm-3 col-med-2'>
+          <div class='col-md-4'>
             <input ng-model='profile.newCard.expMonth' name='expMonth' type='text' class='form-control col-sm-1' ui-mask='99' placeholder='MM' required tabindex='111' />
           </div>
-          <div class='col-xs-1'>
-            <label class='control-label'>/</label>
+          <div class='col-md-1'>
+            <label class=''>/</label>
           </div>
-          <div class='col-xs-6 col-sm-4 col-med-3'>
+          <div class='col-md-7'>
             <input ng-model='profile.newCard.expYear' name='expYear' type='text' class='form-control col-sm-3' ui-mask='9999' placeholder="{{ 'YEAR-PLACEHOLDER' | translate }}" required tabindex='112' />
           </div>
         </div>
@@ -81,7 +80,7 @@
       </div>
     </div>
     <div class='form-group'>
-      <label for='cvv' class='col-md-3 control-label'><span ng-bind-html="'IN_SECURITY_CODE' | translate | unsafe"></span></label>
+      <label for='cvv' class='col-md-2'><span ng-bind-html="'IN_SECURITY_CODE' | translate | unsafe"></span></label>
       <div class='col-sm-5'>
         <div class='row'>
           <div class='col-xs-4 col-sm-4 col-med-2' ng-class="{ 'has-error' : forms.paymentForm.cvv.$invalid && (forms.paymentForm.cvv.$touched || forms.paymentForm.cvv.$dirty) }">
@@ -97,8 +96,8 @@
       </div>
     </div>
     <div class='form-group'>
-      <div class='col-lg-4 col-lg-offset-3'>
-        <button ng-click='addNewCreditCard(profile.newCard)' class='btn btn-primary' ng-disabled='forms.paymentForm.$invalid'>
+      <div class='col-md-6'>
+        <button ng-click='addNewCreditCard(profile.newCard)' class='btn btn-primary pull-right' ng-disabled='forms.paymentForm.$invalid'>
           <span>{{ 'BTN_ADD_CARD' | translate }}</span>
         </button>
       </div>

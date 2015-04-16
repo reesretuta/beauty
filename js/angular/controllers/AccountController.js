@@ -33,11 +33,12 @@ angular.module('app.controllers.account')
                 Account.updateClient($scope.profile).then(function (result) {
                     $log.debug('AccountController(): updatePassword(): success: result:', result);
                     $scope.profile.password = '';
-                    //$scope.forms.changePasswordForm.password.$setPristine();
-                    //$scope.forms.changePasswordForm.password.$setUntouched();
+                    console.log($scope.forms.changePasswordForm);
+                    $scope.forms.changePasswordForm.password.$setPristine();
+                    $scope.forms.changePasswordForm.password.$setUntouched();
                     $scope.profile.verifyPassword = '';
-                    //$scope.forms.changePasswordForm.verifyPassword.$setPristine();
-                    //$scope.forms.changePasswordForm.verifyPassword.$setUntouched();
+                    $scope.forms.changePasswordForm.verifyPassword.$setPristine();
+                    $scope.forms.changePasswordForm.verifyPassword.$setUntouched();
                     $translate('UPDATE-PASSWORD-SUCCESS').then(function (message) {
                         $scope.passwordUpdateSuccess = message;
                     });
@@ -254,8 +255,19 @@ angular.module('app.controllers.account')
                 // FIXME - we need to translate the error code into an error message
                 // validateAddressFailed - invalid address
                 // invalidGeocode, geocodeSelectionFailed, addressCorrectionFailed, addressCorrectionCanceled - problem validating address
-                $scope.shippingAddressError = r.message;
-                d.reject(r.message);
+                if (r.errorCode == 'validateAddressFailed') {
+                    $translate('INVALID_ADDRESS').then(function (message) {
+                        $scope.shippingAddressError = message;
+                        d.reject(message);
+                    });
+                }else{
+                    $translate('PROBLEM_VALIDATING_ADDRESS').then(function (message) {
+                        $scope.shippingAddressError = message;
+                        d.reject(message);
+                    });
+                }
+                
+                
             });
             return d.promise;
         };
@@ -263,17 +275,15 @@ angular.module('app.controllers.account')
         // get order history
         $scope.getOrderHistory = function() {
             $log.debug('AccountController(): getOrderHistory()');
-
             Order.getHistory().then(function(orderHistory) {
-                
                 $scope.orderHistory = orderHistory;
-
                 $log.debug("AccountController(): getOrderHistory(): ", $scope.orderHistory);
             }, function (err) {
                 $log.error("AccountController(): getOrderHistory(): error loading order history", err);
-            })
+            });
         };
-            
+    
+        // fetch on init
         $scope.getOrderHistory();
 
         /*==== DEBUG ====*/

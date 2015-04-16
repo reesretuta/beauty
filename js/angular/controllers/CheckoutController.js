@@ -2057,8 +2057,18 @@ angular.module('app.controllers.checkout')
                 // FIXME - we need to translate the error code into an error message
                 // validateAddressFailed - invalid address
                 // invalidGeocode, geocodeSelectionFailed, addressCorrectionFailed, addressCorrectionCanceled - problem validating address
-                $scope.shippingAddressError = r.message;
-                d.reject(r.message);
+                if (r.errorCode == 'validateAddressFailed') {
+                    $translate('INVALID_ADDRESS').then(function (message) {
+                        $scope.shippingAddressError = message;
+                        d.reject(message);
+                    });
+                }else{
+                    $translate('PROBLEM_VALIDATING_ADDRESS').then(function (message) {
+                        $scope.shippingAddressError = message;
+                        d.reject(message);
+                    });
+                }
+                
             });
             return d.promise;
         }

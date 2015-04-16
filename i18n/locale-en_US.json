@@ -216,6 +216,8 @@
     "ADD-NEW-PAYMENT-METHOD":"Add a new payment method",
     "REVIEW-CONFIRM-ORDER":"Review & Confirm Order",
     "CHOOSE-SHIPPING-ADDRESS":"Choose a shipping address",
+    "INVALID_ADDRESS":"Invalid Address",
+    "PROBLEM_VALIDATING_ADDRESS":"Problem validating address",
     "CHECKOUT":"Checkout",
     "PRODUCT-DETAILS":"Product Details",
     "ALL-PRODUCTS":"All Products",
