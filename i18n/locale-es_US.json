@@ -234,7 +234,7 @@
     "CONSULTANT-NOT-FOUND": "Incapaz de encontrar consultor",
     "INVALID-PASSWORD": "Contrase&ntilde;a no v&aacute;lida",
     "INVALID-PASSWORD-LENGTH": "La contraseña debe tener al menos 8 caracteres",
-    "INVALID-EMAIL": "Direcci&oacute;n de correo electr&oacute;nico no es v&aacute;lido",
+    "INVALID-EMAIL": "Dirección de correo electrónico no es válida",
     "SALES-TAX-ERROR": "Error al procesamiento de la informaci&oacute;n del env&iacute;o",
 
     "ENTER-PAYMENT-INFO": "Ingrese Informaci&oacute;n sobre el pago",
