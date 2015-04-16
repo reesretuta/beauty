@@ -197,6 +197,8 @@
     "INVALID-EMAIL-ADDRESS-IN-USE": "The email address provided is already being used",
     "INVALID-TELEPHONE-NUMBER": "Invalid telephone number",
     "REQUIRES-VALID-EMAIL-ADDRESS": "Must be a valid email address",
+    "EMAIL-DUPLICATE": "This email address is already in use",
+    "CLIENT-CREATE-ERROR": "Error creating client",
     "PASSWORDS-DONT-MATCH": "Passwords must match",
     "ALREADY-A-CUSTOMER": "Already a customer?",
     "NOT-YET-A-CUSTOMER": "Not yet a customer?",
