@@ -1045,9 +1045,13 @@ angular.module('app.controllers.checkout')
                 }, function(error) {
                     $log.error("CheckoutController(): loginOrCreateUser(): failed to create client", error);
                     if (error.statusCode == 409) {
-                        $scope.loginError = "This email address is already in use";
+                        $translate('EMAIL-DUPLICATE').then(function (message) {
+                            $scope.loginError = message;
+                        });
                     } else {
-                        $scope.loginError = "Error creating client";
+                        $translate('CLIENT-CREATE-ERROR').then(function (message) {
+                            $scope.loginError = message;
+                        });
                     }
                     $scope.processing = false;
                 });
