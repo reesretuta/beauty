@@ -893,16 +893,18 @@ h3.cart-item-prod-title{
 }
 
 .kit-box ul li{
-    margin-bottom: 5px;
+    font-size:14px;
+    margin-bottom: 3px;
     text-align:left;
+    line-height:18px;
 }
 
 .kit-box .more-link-alt.collapsed:after{
-    -moz-transform: rotate(-180deg) !important;
-    -webkit-transform: rotate(-180deg) !important;
-    -o-transform: rotate(-180deg) !important;
-    -ms-transform: rotate(-180deg) !important;
-    transform: rotate(-180deg) !important;
+    -moz-transform: rotate(-90deg) !important;
+    -webkit-transform: rotate(-90deg) !important;
+    -o-transform: rotate(-90deg) !important;
+    -ms-transform: rotate(-90deg) !important;
+    transform: rotate(-90deg) !important;
 }
 
 
