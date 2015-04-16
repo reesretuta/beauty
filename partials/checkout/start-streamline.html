@@ -437,7 +437,6 @@
   <div class="col-sm-12" ng-if="isOnlineSponsoring || loggedIn()">
   <div class="col-md-offset-3">
     <h1 ng-if="!isOnlineSponsoring && session.client.addresses.length > 0"><span ng-bind-html="'CHOOSE-SHIPPING-ADDRESS' | translate | unsafe"></span></h1>
-
     <h1 ng-if="isOnlineSponsoring || session.client.addresses.length == 0"><span ng-bind-html="'OS-SHIPPING-TITLE' | translate | unsafe"></span></h1>
   </div>
   <div class="row">
@@ -782,7 +781,8 @@
         <span ng-show="paymentForm.phoneNumber.$error.pattern" class="help-block" ng-class="{ 'text-danger' : paymentForm.phoneNumber.$invalid && (paymentForm.phoneNumber.$touched || paymentForm.phoneNumber.$dirty) }"><span ng-bind-html="'PHONE-NUMBER-WRONG' | translate | unsafe"></span></span>
       </div>
       <a popover="{{'PHONE-NUMBER-DES' | translate | unsafe}}" popover-title="{{'PHONE-NUMBER' | translate | unsafe}}" href="" class="form-info-link"><i class="fa fa-info-circle"></i>
-        <span ng-bind-html="'MORE-INFO' | translate | unsafe"></span></a>
+        <span ng-bind-html="'MORE-INFO' | translate | unsafe"></span>
+      </a>
     </div>
   </div>
 

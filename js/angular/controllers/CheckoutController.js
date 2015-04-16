@@ -46,7 +46,13 @@ angular.module('app.controllers.checkout')
             shipping: null,
             billing: null,
             card: null
-        }
+        };
+
+        // orderBy function for ordering address data
+        $scope.filterAddresses = function (obj) {
+            console.log('obj:', obj);
+            return true;
+        };
 
         // in memory on client only
         $scope.profile = {
@@ -78,23 +84,37 @@ angular.module('app.controllers.checkout')
             urlStep = "Start";
         }
 
+        // on blur of name field focus address line 1
+        $scope.blurCompanyField = function ($evt) {
+            $evt.preventDefault();
+            angular.element('#shippingAddress1').trigger('focus');
+        };
+
+        Array.prototype.move = function(from, to) {
+            this.splice(to, 0, this.splice(from, 1)[0]);
+        };
+
         // set default shipping address
         if ($rootScope.session.client && $rootScope.session.client.lastUsedShippingAddressId) {
             $log.debug("CheckoutController(): have last shipping address id");
-            $.each($rootScope.session.client.addresses, function(i, a) {
-                if (a.id == $rootScope.session.client.lastUsedShippingAddressId) {
-                    $log.debug("CheckoutController(): setting shipping/billing address");
-                    $scope.profile.shipping = a;
-                    $scope.profile.billing = a;
+            $.each($rootScope.session.client.addresses, function(index, address) {
+                if (address.id === $rootScope.session.client.lastUsedShippingAddressId) {
+                    $log.debug("CheckoutController(): setting shipping/billing address", address);
+                    $rootScope.session.client.addresses.move(index, 0);
+                    $scope.profile.shipping = address;
+                    $scope.profile.billing = address;
                 }
             });
         }
+
+        // set default payment method
         if ($rootScope.session.client && $rootScope.session.client.lastUsedCreditCardId) {
             $log.debug("CheckoutController(): have last credit card id");
-            $.each($rootScope.session.client.creditCards, function(i, c) {
-                if (c.id == $rootScope.session.client.lastUsedCreditCardId) {
-                    $log.debug("CheckoutController(): setting card", c);
-                    $scope.profile.card = c;
+            $.each($rootScope.session.client.creditCards, function(index, creditCard) {
+                if (creditCard.id == $rootScope.session.client.lastUsedCreditCardId) {
+                    $log.debug("CheckoutController(): setting card", creditCard);
+                    $rootScope.session.client.creditCards.move(index, 0);
+                    $scope.profile.card = creditCard;
                     $log.debug("CheckoutController(): DEBUG card", $scope.profile.card);
                 }
             });
@@ -1568,12 +1588,123 @@ angular.module('app.controllers.checkout')
 
                 // generate the components
                 var components = [];
+
                 var productComponentMap = {
-                    "20494": [{"sku":"25192","qty":1},{"sku":"25195","qty":1},{"sku":"25193","qty":1},{"sku":"25194","qty":1},{"sku":"25628","qty":1},{"sku":"25625","qty":1},{"sku":"25627","qty":1},{"sku":"25629","qty":1},{"sku":"12032","qty":1},{"sku":"25620","qty":1},{"sku":"15522","qty":1},{"sku":"25063","qty":1},{"sku":"12253","qty":1},{"sku":"9289","qty":1},{"sku":"2062","qty":1},{"sku":"11286","qty":1},{"sku":"124","qty":1},{"sku":"19862","qty":1},{"sku":"16725","qty":1},{"sku":"19038","qty":1},{"sku":"19496","qty":1},{"sku":"17865","qty":1},{"sku":"20402","qty":1},{"sku":"19975","qty":1},{"sku":"19865","qty":1},{"sku":"19980","qty":1},{"sku":"20378","qty":1},{"sku":"20456","qty":1},{"sku":"19952","qty":1},{"sku":"20385","qty":1},{"sku":"20381","qty":1},{"sku":"20383","qty":1},{"sku":"20401","qty":1},{"sku":"19536","qty":1},{"sku":"20083","qty":1}],
-                    "20495": [{"sku":"25192","qty":1},{"sku":"25195","qty":1},{"sku":"25193","qty":1},{"sku":"25194","qty":1},{"sku":"25628","qty":1},{"sku":"25625","qty":1},{"sku":"25627","qty":1},{"sku":"25629","qty":1},{"sku":"12032","qty":1},{"sku":"25620","qty":1},{"sku":"15522","qty":1},{"sku":"25542","qty":1},{"sku":"12253","qty":1},{"sku":"9289","qty":1},{"sku":"2062","qty":1},{"sku":"11286","qty":1},{"sku":"124","qty":1},{"sku":"19862","qty":1},{"sku":"16725","qty":1},{"sku":"19039","qty":1},{"sku":"19061","qty":1},{"sku":"20403","qty":1},{"sku":"19976","qty":1},{"sku":"19867","qty":1},{"sku":"18996","qty":1},{"sku":"19244","qty":1},{"sku":"18373","qty":1},{"sku":"20382","qty":1},{"sku":"19953","qty":1},{"sku":"20386","qty":1},{"sku":"20384","qty":1},{"sku":"20401","qty":1},{"sku":"19537","qty":1},{"sku":"20085","qty":1}],
-                    "20498": [{"sku":"25192","qty":1},{"sku":"25195","qty":1},{"sku":"25193","qty":1},{"sku":"25194","qty":1},{"sku":"15522","qty":1},{"sku":"25625","qty":1},{"sku":"19861","qty":1},{"sku":"19038","qty":1},{"sku":"19496","qty":1},{"sku":"20402","qty":1},{"sku":"19975","qty":1},{"sku":"19865","qty":1},{"sku":"19980","qty":1},{"sku":"20378","qty":1},{"sku":"20456","qty":1},{"sku":"20385","qty":1},{"sku":"20381","qty":1},{"sku":"20383","qty":1},{"sku":"20401","qty":1},{"sku":"19952","qty":1},{"sku":"19536","qty":1},{"sku":"20083","qty":1}],
-                    "20499": [{"sku":"25192","qty":1},{"sku":"25195","qty":1},{"sku":"25193","qty":1},{"sku":"25194","qty":1},{"sku":"15522","qty":1},{"sku":"25625","qty":1},{"sku":"19861","qty":1},{"sku":"19039","qty":1},{"sku":"19035","qty":1},{"sku":"20403","qty":1},{"sku":"19976","qty":1},{"sku":"19867","qty":1},{"sku":"18991","qty":1},{"sku":"19244","qty":1},{"sku":"18373","qty":1},{"sku":"20382","qty":1},{"sku":"19953","qty":1},{"sku":"20386","qty":1},{"sku":"20384","qty":1},{"sku":"20401","qty":1},{"sku":"19953","qty":1},{"sku":"19537","qty":1},{"sku":"20085","qty":1}]
-                };
+                   "20498" : [
+                      { "sku" : "25192", "qty" : 1 },
+                      { "sku" : "25195", "qty" : 1 },
+                      { "sku" : "25193", "qty" : 1 },
+                      { "sku" : "25194", "qty" : 1 },
+                      { "sku" : "15522", "qty" : 1 },
+                      { "sku" : "25625", "qty" : 1 },
+                      { "sku" : "19861", "qty" : 1 },
+                      { "sku" : "19038", "qty" : 1 },
+                      { "sku" : "19496", "qty" : 1 },
+                      { "sku" : "20402", "qty" : 1 },
+                      { "sku" : "19975", "qty" : 1 },
+                      { "sku" : "19865", "qty" : 1 },
+                      { "sku" : "20378", "qty" : 1 },
+                      { "sku" : "20456", "qty" : 1 },
+                      { "sku" : "20385", "qty" : 1 },
+                      { "sku" : "20381", "qty" : 1 },
+                      { "sku" : "20383", "qty" : 1 },
+                      { "sku" : "19952", "qty" : 1 },
+                      { "sku" : "19538", "qty" : 1 },
+                      { "sku" : "20083", "qty" : 1 }
+                   ],
+                   "20495" : [
+                      { "sku" : "25192", "qty" : 1 },
+                      { "sku" : "25195", "qty" : 1 },
+                      { "sku" : "25193", "qty" : 1 },
+                      { "sku" : "25194", "qty" : 1 },
+                      { "sku" : "25628", "qty" : 1 },
+                      { "sku" : "25625", "qty" : 1 },
+                      { "sku" : "25627", "qty" : 1 },
+                      { "sku" : "25629", "qty" : 1 },
+                      { "sku" : "12032", "qty" : 1 },
+                      { "sku" : "25620", "qty" : 1 },
+                      { "sku" : "15522", "qty" : 1 },
+                      { "sku" : "25542", "qty" : 1 },
+                      { "sku" : "12253", "qty" : 1 },
+                      { "sku" : "9289", "qty" : 1 },
+                      { "sku" : "2062", "qty" : 1 },
+                      { "sku" : "11286", "qty" : 1 },
+                      { "sku" : "124", "qty" : 1 },
+                      { "sku" : "19862", "qty" : 1 },
+                      { "sku" : "16725", "qty" : 1 },
+                      { "sku" : "19039", "qty" : 1 },
+                      { "sku" : "19061", "qty" : 1 },
+                      { "sku" : "20403", "qty" : 1 },
+                      { "sku" : "19976", "qty" : 1 },
+                      { "sku" : "18996", "qty" : 1 },
+                      { "sku" : "19244", "qty" : 1 },
+                      { "sku" : "18373", "qty" : 1 },
+                      { "sku" : "20382", "qty" : 1 },
+                      { "sku" : "19953", "qty" : 1 },
+                      { "sku" : "20386", "qty" : 1 },
+                      { "sku" : "20384", "qty" : 1 },
+                      { "sku" : "19539", "qty" : 1 },
+                      { "sku" : "20085", "qty" : 1 }
+                   ],
+                   "20494" : [
+                      { "sku" : "25192", "qty" : 1 },
+                      { "sku" : "25195", "qty" : 1 },
+                      { "sku" : "25193", "qty" : 1 },
+                      { "sku" : "25194", "qty" : 1 },
+                      { "sku" : "25628", "qty" : 1 },
+                      { "sku" : "25625", "qty" : 1 },
+                      { "sku" : "25627", "qty" : 1 },
+                      { "sku" : "25629", "qty" : 1 },
+                      { "sku" : "12032", "qty" : 1 },
+                      { "sku" : "25620", "qty" : 1 },
+                      { "sku" : "15522", "qty" : 1 },
+                      { "sku" : "25542", "qty" : 1 },
+                      { "sku" : "12253", "qty" : 1 },
+                      { "sku" : "9289", "qty" : 1 },
+                      { "sku" : "2062", "qty" : 1 },
+                      { "sku" : "11286", "qty" : 1 },
+                      { "sku" : "124", "qty" : 1 },
+                      { "sku" : "19862", "qty" : 1 },
+                      { "sku" : "16725", "qty" : 1 },
+                      { "sku" : "19038", "qty" : 1 },
+                      { "sku" : "19496", "qty" : 1 },
+                      { "sku" : "20528", "qty" : 1 },
+                      { "sku" : "20402", "qty" : 1 },
+                      { "sku" : "19975", "qty" : 1 },
+                      { "sku" : "19980", "qty" : 1 },
+                      { "sku" : "20378", "qty" : 1 },
+                      { "sku" : "20456", "qty" : 1 },
+                      { "sku" : "19952", "qty" : 1 },
+                      { "sku" : "20385", "qty" : 1 },
+                      { "sku" : "20381", "qty" : 1 },
+                      { "sku" : "20383", "qty" : 1 },
+                      { "sku" : "19538", "qty" : 1 },
+                      { "sku" : "20083", "qty" : 1 }
+                   ],
+                   "20499" : [
+                      { "sku" : "25192", "qty" : 1 },
+                      { "sku" : "25195", "qty" : 1 },
+                      { "sku" : "25193", "qty" : 1 },
+                      { "sku" : "25194", "qty" : 1 },
+                      { "sku" : "15522", "qty" : 1 },
+                      { "sku" : "25625", "qty" : 1 },
+                      { "sku" : "19861", "qty" : 1 },
+                      { "sku" : "19039", "qty" : 1 },
+                      { "sku" : "19035", "qty" : 1 },
+                      { "sku" : "20403", "qty" : 1 },
+                      { "sku" : "19976", "qty" : 1 },
+                      { "sku" : "18991", "qty" : 1 },
+                      { "sku" : "19244", "qty" : 1 },
+                      { "sku" : "18373", "qty" : 1 },
+                      { "sku" : "20382", "qty" : 1 },
+                      { "sku" : "19953", "qty" : 1 },
+                      { "sku" : "20386", "qty" : 1 },
+                      { "sku" : "20384", "qty" : 1 },
+                      { "sku" : "19539", "qty" : 1 },
+                      { "sku" : "20085", "qty" : 1 }
+                   ]
+                }
+
                 // 25214, 25208, 25212, and 25210 - qty 3
                 
                 // var productComponents = productComponentMap[$scope.cart[0].product.sku];
