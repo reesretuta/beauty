@@ -97,12 +97,11 @@ angular.module('app.services', ['ngResource'])
 
         function deleteLocalSession() {
             if ($rootScope.session != null) {
-                $rootScope.session = {
-                    language: 'en_US',
-                    cart: [],
-                    checkout: {}
-                };
-                $rootScope.consultant = null;
+                if ($rootScope.session != null) {
+                    $rootScope.session.cart = [];
+                    $rootScope.session.client = null;
+                    $rootScope.session.checkout = {};
+                }
             }
         }
 
