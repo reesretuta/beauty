@@ -275,17 +275,15 @@ angular.module('app.controllers.account')
         // get order history
         $scope.getOrderHistory = function() {
             $log.debug('AccountController(): getOrderHistory()');
-
             Order.getHistory().then(function(orderHistory) {
-                
                 $scope.orderHistory = orderHistory;
-
                 $log.debug("AccountController(): getOrderHistory(): ", $scope.orderHistory);
             }, function (err) {
                 $log.error("AccountController(): getOrderHistory(): error loading order history", err);
-            })
+            });
         };
-            
+    
+        // fetch on init
         $scope.getOrderHistory();
 
         /*==== DEBUG ====*/
