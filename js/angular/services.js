@@ -97,12 +97,11 @@ angular.module('app.services', ['ngResource'])
 
         function deleteLocalSession() {
             if ($rootScope.session != null) {
-                $rootScope.session = {
-                    language: 'en_US',
-                    cart: [],
-                    checkout: {}
-                };
-                $rootScope.consultant = null;
+                if ($rootScope.session != null) {
+                    $rootScope.session.cart = [];
+                    $rootScope.session.client = null;
+                    $rootScope.session.checkout = {};
+                }
             }
         }
 
@@ -1247,9 +1246,7 @@ angular.module('app.services', ['ngResource'])
 
         orderService.getHistory = function() {
             var d = $q.defer();
-
             $log.debug("Order(): getHistory(): attempting to get order history");
-
             try {
                 var a = $http.get(API_URL + '/orderHistory', {}).success(function(orderHistory, status, headers, config) {
                     $log.debug("Order(): getHistory(): done");

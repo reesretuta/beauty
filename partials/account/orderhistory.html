@@ -1,14 +1,10 @@
-<!-- <a href="" ng-click="getOrderHistory()">load orders</a>
 
-<div ng-repeat="order in orderHistory" style="border: 1px; margin: 5px;">
-  order id: {{order.id}}<br>
-  total: {{order.total}}<br>
-  <div ng-repeat="product in order.products">
-    - {{product.sku}}, {{product.name}}, {{product.qty}}, <br>
-  </div>
-</div> -->
+<!--
 
-<!-- {
+EXAMPLE ORDER HISTORY DATA:
+===========================
+
+{
   "id": 12028344,
   "firstName": "David",
   "lastName": "Castro",
@@ -25,39 +21,37 @@
   "carrier": "",
   "orderDate": "01/29/2015",
     "shipDate": "01/01/1970",
-    "shippingCost":} -->
+    "shippingCost":}
+
+-->
  
 <div id="order-history">
-    <div ng-if="orderHistory.length == 0"><span ng-bind-html="'NO-ORDERS-FOUND' | translate | unsafe"></span></div>
-    <div ng-if="orderHistory.length > 0" id="order-{{order.id}}" class="panel panel-default" ng-repeat="order in orderHistory">
-	  <!-- Default panel contents -->
-      <div class="panel-heading">
-			<button type="button" class="close jaf-collapse" aria-label="Close" data-toggle="collapse" data-target="#collapse-{{$index + 1}}" aria-expanded="true" aria-controls="collapse-{{$index + 1}}"><i class="fa"></i></button>
-          
-			<div class="row">
-				<div class="col-md-3">
-					<h3 class="cart-item-prod-title">ORDER#: {{order.id}}</h3>
-					<strong>Order Date:</strong> {{order.orderDate}}
-				</div>
-				<div class="col-md-3">
-					<h3 class="cart-item-prod-title">TOTAL: {{order.total | currency}}</h3>
-					<strong>Status:</strong> {{order.status}}
-				</div>
+  <div ng-if="orderHistory.length == 0"><span ng-bind-html="'NO-ORDERS-FOUND' | translate | unsafe"></span></div>
+  <div ng-if="orderHistory.length > 0" id="order-{{order.id}}" class="panel panel-default" ng-repeat="order in orderHistory">
+    <div class="panel-heading">
+		<button type="button" class="close jaf-collapse" aria-label="Close" data-toggle="collapse" data-target="#collapse-{{$index + 1}}" aria-expanded="true" aria-controls="collapse-{{$index + 1}}"><i class="fa"></i></button>        
+		<div class="row">
+			<div class="col-md-3">
+				<h3 class="cart-item-prod-title">ORDER#: {{order.id}}</h3>
+				<strong>Order Date:</strong> {{order.orderDate}}
 			</div>
-	  </div>		
-	  <div id="collapse-{{$index + 1}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="collapse-{{$index + 1}}">
-      <div class="panel-body">
-          <div class="row">
-              <div class="col-md-12">
+			<div class="col-md-3">
+				<h3 class="cart-item-prod-title">TOTAL: {{order.total | currency}}</h3>
+				<strong>Status:</strong> {{order.status}}
+			</div>
+		</div>
+	</div>		
+	<div id="collapse-{{$index + 1}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="collapse-{{$index + 1}}">
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-md-12">
 				  <strong>Ship To:</strong> {{order.firstName}} {{order.lastName}}, 1235 Street, City, 91335
-              </div>
-          </div>
+        </div>
+      </div>
 		  <br/>
 		  <div class="panel panel-default">
 			<div class="panel-body cart-item-orders">
 				<table class="table">
-				  <!-- ng-src="{{getImagePath(product.images[0])}}" -->
-				  <!-- '/assets/img/products/' + __ID__ +  '_0.jpg' -->
 				  <thead>
 				  <tr>
 					<th>Product</th>
@@ -72,22 +66,16 @@
 						<a ng-href="{{STORE_BASE_URL}}/products/{{ item.sku}}#top" class="col-xs-5 col-sm-3 col-md-2 col-lg-2">
 						  <img class="cart-item-image" ng-src="{{ getImagePath({ localPath: '/img/products/' + item.sku + '_0.jpg'})}}" onError="this.onerror=null;this.src='/img/product_placeholder.gif';">
 						</a>
-						
 						<div class="col-sm-9 col-md-8 col-lg-8">
 						  <h3 class="cart-item-prod-title">
 							<a ng-href="{{STORE_BASE_URL}}/products/{{ item.sku }}#top">{{item.name}}</a>
 						  </h3>
-
-						  <p><label>{{ item.product.sku || item.sku }}</label></p>
-
-						  <!-- <p ng-if="item.product.kitGroups.length > 0"><span ng-bind-html="'KIT_INCLUDE' | translate | unsafe"></span>:</p> -->
-						  
+						  <p><label>{{ item.product.sku || item.sku }}</label></p>						  
 						  <ul class="cart-item-description" ng-if="item.components.length > 0">
 							<li ng-repeat="component in item.components">
 							  {{component.name}} - {{component.sku}} ({{component.qty}})
 							</li>
 						  </ul>
-						  
 						  <p class="cart-item-actions">
 							<a ng-if="item.product.type == 'kit' && item.product.kitGroups.length > 0" class="btn btn-primary btn-lg" ng-click="configureKit(item)">
 							  <i class="fa fa-cogs"></i> <span ng-bind-html="'BTN_CONFIGURE' | translate | unsafe"></span>
@@ -98,13 +86,11 @@
 					</td>
 					<td align=right>
 						{{item.qty}}
-					  
 					</td>
 					<td class="text-right" nowrap="true">
 						{{item.price | currency}}
 					</td>
 				  </tr>
-				  
 				  <tr>
 					<td>&nbsp;</td>
 					<td colspan="2" align="right">
@@ -115,14 +101,10 @@
 						</table>
 					</td>
 				</tr>
-				  
 				</tbody>
-				  
-			  </table>
-			</div>
-		  </div>
-		  
-      </div>
-      
-    </div>
+			</table>
+		</div>
+	</div>	  
+  </div>    
+  </div>
 </div>
