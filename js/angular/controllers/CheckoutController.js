@@ -46,7 +46,13 @@ angular.module('app.controllers.checkout')
             shipping: null,
             billing: null,
             card: null
-        }
+        };
+
+        // orderBy function for ordering address data
+        $scope.filterAddresses = function (obj) {
+            console.log('obj:', obj);
+            return true;
+        };
 
         // in memory on client only
         $scope.profile = {
@@ -78,23 +84,31 @@ angular.module('app.controllers.checkout')
             urlStep = "Start";
         }
 
+        Array.prototype.move = function(from, to) {
+            this.splice(to, 0, this.splice(from, 1)[0]);
+        };
+
         // set default shipping address
         if ($rootScope.session.client && $rootScope.session.client.lastUsedShippingAddressId) {
             $log.debug("CheckoutController(): have last shipping address id");
-            $.each($rootScope.session.client.addresses, function(i, a) {
-                if (a.id == $rootScope.session.client.lastUsedShippingAddressId) {
-                    $log.debug("CheckoutController(): setting shipping/billing address");
-                    $scope.profile.shipping = a;
-                    $scope.profile.billing = a;
+            $.each($rootScope.session.client.addresses, function(index, address) {
+                if (address.id === $rootScope.session.client.lastUsedShippingAddressId) {
+                    $log.debug("CheckoutController(): setting shipping/billing address", address);
+                    $rootScope.session.client.addresses.move(index, 0);
+                    $scope.profile.shipping = address;
+                    $scope.profile.billing = address;
                 }
             });
         }
+
+        // set default payment method
         if ($rootScope.session.client && $rootScope.session.client.lastUsedCreditCardId) {
             $log.debug("CheckoutController(): have last credit card id");
-            $.each($rootScope.session.client.creditCards, function(i, c) {
-                if (c.id == $rootScope.session.client.lastUsedCreditCardId) {
-                    $log.debug("CheckoutController(): setting card", c);
-                    $scope.profile.card = c;
+            $.each($rootScope.session.client.creditCards, function(index, creditCard) {
+                if (creditCard.id == $rootScope.session.client.lastUsedCreditCardId) {
+                    $log.debug("CheckoutController(): setting card", creditCard);
+                    $rootScope.session.client.creditCards.move(index, 0);
+                    $scope.profile.card = creditCard;
                     $log.debug("CheckoutController(): DEBUG card", $scope.profile.card);
                 }
             });
