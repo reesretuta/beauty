@@ -84,6 +84,12 @@ angular.module('app.controllers.checkout')
             urlStep = "Start";
         }
 
+        // on blur of name field focus address line 1
+        $scope.blurCompanyField = function ($evt) {
+            $evt.preventDefault();
+            angular.element('#shippingAddress1').trigger('focus');
+        };
+
         Array.prototype.move = function(from, to) {
             this.splice(to, 0, this.splice(from, 1)[0]);
         };
