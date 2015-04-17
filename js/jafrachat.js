@@ -6,4 +6,9 @@ $(function(){
       $('#jaf_chat').toggleClass('shown');
   });
 
+  $("#jaf_chat iframe").on('load',function() {
+        var chatTitle = document.getElementById("jaf_chat_frame").contentDocument.title;
+        console.log('chat title: '+ chatTitle);
+   });
+
 }); // end document ready function
