@@ -48,7 +48,11 @@
     <span class="text-muted pull-left"></span>
   </div>
   <div class="col-lg-6 col-md-6 col-sm-6">
-    <button ng-click="close()" class="btn btn-link"><span ng-bind-html="'BTN_CANCEL' | translate | unsafe"></span></button>
-    <button ng-click="save()" class="btn btn-primary" ng-disabled="updateProfileForm.$invalid"><span>Update Profile</span></button>
+    <button ng-click="close()" class="btn btn-link" ng-disabled='processing' ng-class='{ "processing" : processing }'>
+      <span ng-bind-html="'BTN_CANCEL' | translate | unsafe"></span>
+    </button>
+    <button ng-click="save()" class="btn btn-primary" ng-disabled="updateProfileForm.$invalid">
+      <span>Update Profile</span>
+    </button>
   </div>
 </div>
