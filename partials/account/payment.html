@@ -97,7 +97,7 @@
     </div>
     <div class='form-group'>
       <div class='col-md-6'>
-        <button ng-click='addNewCreditCard(profile.newCard)' class='btn btn-primary pull-right' ng-disabled='forms.paymentForm.$invalid'>
+        <button ng-click='addNewCreditCard(profile.newCard)' class='btn btn-primary pull-right' ng-disabled='forms.paymentForm.$invalid || processing' ng-class='{ "processing" : processing }'>
           <span>{{ 'BTN_ADD_CARD' | translate }}</span>
         </button>
       </div>
