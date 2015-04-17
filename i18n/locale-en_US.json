@@ -480,6 +480,8 @@
     "DOB-LABEL":"Your Date of Birth",
     "SSN-LABEL":"Your SSN",
     "SSN-NOTE":"A U.S. Social Security Number is required to receive payment checks.",
+    "SSN-DUPLICATE": "Duplicate Social Security number",
+    "SSN-INVALID": "Invalid Social Security number",
     "SPONSOR-ID-LABEL":"Sponsor ID (optional)",
     "DOB-NOTE":"You must be 18 or older to join.",
     "SPONSOR-ID-PLACEHOLDER": "#-digit ID of your JAFRA Consultant Sponsor",

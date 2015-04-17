@@ -799,30 +799,36 @@ angular.module('app.controllers.checkout')
                     // set the name on the shipping address
                     $scope.profile.newShippingAddress.name = $scope.profile.firstName + " " + $scope.profile.lastName;
                     $rootScope.namePlaceholder = $scope.profile.firstName + " " + $scope.profile.lastName;
-
                     // do the sales tax calculations before moving to the next page
                     $scope.addShippingAddressAndContinue($scope.profile.newShippingAddress).then(function() {
-
                         $scope.addPaymentMethod().then(function(){
                             if ($scope.isOnlineSponsoring) {
                                 $log.debug("CheckoutController(): addShippingAddressAndContinue(): going to review");
                                 WizardHandler.wizard('checkoutWizard').goTo('Review');
                             }
                         }); //progressing to next step
-
                     });
-
                     $scope.processing = false;
+                    $scope.profileSSNError = false;
+                    $scope.profileSSNErrorDuplicate = false;
+                    $scope.profileSSNErrorInvalid = false;
                 } else {
                     // profile error
-                    $log.debug("CheckoutController(): validateProfileAndContinue(): error with SSN");
+                    $log.debug("CheckoutController(): validateProfileAndContinue(): error with SSN: duplicate");
                     $scope.processing = false;
                     $scope.profileSSNError = true;
+                    $scope.profileSSNErrorDuplicate = true;
+                    $scope.profile.ssn = '';
+                    $('html, body').animate({ scrollTop: ($('#errors-container').offset().top - 100) }, 750);
+
                 }
             }, function(error) {
-               $log.error("CheckoutController(): validateProfileAndContinue()", error);
+               $log.error("CheckoutController(): validateProfileAndContinue(): error with SSN: generic:", error);
                 $scope.processing = false;
-               $scope.profileSSNError = true;
+                $scope.profileSSNError = true;
+                $scope.profileSSNErrorInvalid = true;
+                $scope.profile.ssn = '';
+                $('html, body').animate({ scrollTop: ($('#errors-container').offset().top - 100) }, 750);
             });
         };
 
