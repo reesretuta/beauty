@@ -1713,9 +1713,8 @@ angular.module('app.controllers.checkout')
                 
                 // var productComponents = productComponentMap[$scope.cart[0].product.sku];
                 //$scope.cart[0].product.sku is not part of productCompnentMap? 
-
-                var productComponents = productComponentMap[$scope.cart[0].product.sku];
-                $log.debug("CheckoutController(): processOrder(): cart item", $scope.cart[0].product.sku, $scope.cart[0], "components", productComponents);
+                var productComponents = productComponentMap[sku];
+                $log.debug("CheckoutController(): processOrder(): cart item", sku, $scope.cart[0], "components", productComponents);
 
                 for (var i=0; i < productComponents.length; i++) {
                     components.push({
