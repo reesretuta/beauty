@@ -1191,15 +1191,13 @@ angular.module('app.controllers.checkout')
             $scope.profile.billing = angular.copy(address);
         }
         
-        
+        $scope.selectedKitSku = null;
+
         $scope.updateSku = function(sku){
-            if (sku === '20495' || sku === '20499') {
-                // var d = $modal.open({
-                //     backdrop: true,
-                //     keyboard: true, // we will handle ESC in the modal for cleanup
-                //     windowClass: "editCreditCardModal",
-                //     template: 'test test',
-                //
+            if ($scope.selectedKitSku && $scope.selectedKitSku === sku) {
+                return false;
+            } else {
+                $scope.selectedKitSku = sku;
             }
             $scope.selectProduct(sku).then(function(){
                 $log.debug("CheckoutController(): updateSku(): ", $scope.cart[0].sku);
