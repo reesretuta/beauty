@@ -180,7 +180,6 @@ angular.module('app.controllers.account')
                     $scope.removingAddress = false;
                     $scope.removingAddressId = null;
                     d.resolve();
-                    $scope.checkoutUpdated();
                 }, function(err) {
                     $log.error("AccountController(): removeAddress()", err);
                     $scope.processing = false;
