@@ -63,11 +63,14 @@ angular.module('app.controllers.main').controller('MainController', function ($s
                            params["cid"] = session.consultantId;
                            params["source"] = session.source;
                        } else {
-                           delete params["cid"];
+                           //delete params["cid"];
                            delete params["source"];
                        }
+                       //var cid = params.cid;
+                       //$log.debug('params:', params);
                        $location.$$search = params;
-                       $location.$$compose();
+                       //$log.debug('compose................');
+                       //$location.$$compose();
                    }
                 });
             }

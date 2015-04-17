@@ -27,10 +27,17 @@
       <div class="col-md-offset-3 col-sm-9">
         <div class="row"><div class="col-sm-8"><hr></div></div>
       </div>
-      <div class="col-md-offset-3 col-sm-9">
+      <!--<div class="col-md-offset-3 col-sm-9">
         <div class="row">
           <div class="col-sm-6">
             <div ng-if="profileSSNError" class="alert alert-danger" role="alert"><span ng-bind-html="'CONSULTANT-PROFILE-ERROR' | translate | unsafe"></span></div>
+          </div>
+        </div>
+      </div>-->
+      <div class="col-md-offset-3 col-sm-9">
+        <div class="row">
+          <div class="col-sm-6">
+            <div ng-if="profileSSNErrorMessage" class="alert alert-danger" role="alert"><span ng-bind-html="'CONSULTANT-PROFILE-ERROR' | translate | unsafe"></span></div>
           </div>
         </div>
       </div>

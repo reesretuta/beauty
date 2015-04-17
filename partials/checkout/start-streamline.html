@@ -156,14 +156,23 @@
       </span>
     </h1>
 
-    <div class="row">
+    <div id='errors-container' class="row">
       <div class="col-sm-6">
         <div ng-if="loginError" class="alert alert-danger" role="alert" data-ng-bind-html="loginError"></div>
         <div ng-if="emailError" class="alert alert-danger" role="alert">
           <span>{{ emailError }}</span>
         </div>
+        <div ng-if="profileSSNErrorDuplicate" class="alert alert-danger" role="alert">
+          <span>{{ 'SSN-DUPLICATE' | translate }}</span>
+        </div>
+        <div ng-if="profileSSNErrorInvalid &&" class="alert alert-danger" role="alert">
+          <span>{{ 'SSN-INVALID' | translate }}</span>
+        </div>
       </div>
     </div>
+
+
+
   </div>
 
   <form name="signInForm" class="form-horizontal" role="form">
@@ -298,7 +307,7 @@
       <div class="col-md-3">
         <div class="input-group">
           <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-          <input name="ssn" type="text" class="form-control" ui-mask="999 - 99 - 9999" placeholder="xxx - xx - xxxx" ng-model="profile.ssn" required autofocus tabindex='13' />
+          <input id='profileSSN' name="ssn" type="text" class="form-control" ui-mask="999 - 99 - 9999" placeholder="xxx - xx - xxxx" ng-model="profile.ssn" required autofocus tabindex='13' />
         </div>
         <span class="help-block"><small><span ng-bind-html="'SSN-NOTE' | translate | unsafe"></span>
         </small></span>

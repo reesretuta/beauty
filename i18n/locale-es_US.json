@@ -481,6 +481,8 @@
     "DOB-LABEL":"Fecha de nacimiento",
     "SSN-LABEL":"Tu No. de Seguro Social",
     "SSN-NOTE":"Es necesario un No. de Seguro Social de Estados Unidos para recibir pagos",
+    "SSN-DUPLICATE": "Duplicar el número de Seguro Social",
+    "SSN-INVALID": "Número de Seguro Social válido",
     "SPONSOR-ID-LABEL":"No. de ID de tu Patrocinadora (opcional)",
     "DOB-NOTE":"Debes tener por lo menos 18 a&ntilde;os de edad",
     "SPONSOR-ID-PLACEHOLDER": "# de Identifición de tu Patrocinadora",
