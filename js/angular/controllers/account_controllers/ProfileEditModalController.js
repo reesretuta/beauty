@@ -23,7 +23,7 @@ angular.module('app.controllers.account').controller('ProfileEditModalController
         $translate('PROFILE-SAVE-SUCCESS').then(function (message) {
           $modalInstance.close({
             profileEditInfo : message,
-            profile         : $scope.profile,
+            profile         : data,
             canceled        : false
           });
         });
