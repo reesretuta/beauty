@@ -1156,8 +1156,8 @@ angular.module('app.services', ['ngResource'])
                     var consultantData = JSON.stringify(consultant);
                     var encrypted = openpgp.encryptMessage(publicKey.keys, consultantData);
                     encrypted = encrypted.trim();
-                    $log.debug("consultant", consultantData);
-                    $log.debug("encrypted consultant data", encrypted);
+                    // $log.debug("consultant", consultantData);
+                    // $log.debug("encrypted consultant data", encrypted);
 
                     try {
                         consultantService.save({}, {
