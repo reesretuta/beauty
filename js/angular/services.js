@@ -1703,7 +1703,7 @@ angular.module('app.services', ['ngResource'])
                     }, function(err) {
                         $log.debug("addressService(): addAddressWithChecks(): select geocode and add failed", err);
                         d.reject({
-                            message: error,
+                            message: err,
                             errorCode: 'geocodeSelectionFailed'
                         });
                     });

@@ -18,7 +18,7 @@
         <div class="row form-group" ng-if="!isOnlineSponsoring">
           <label for="name" class="col-md-3 control-label"><span ng-bind-html="'IN_FULL_NAME' | translate | unsafe"></span></label>
           <div class="col-sm-8 col-lg-6">
-            <input id="shippingFullName" name="name" ng-model="address.name" ng-pattern="/^[a-zA-Z0-9\s,'-\/]*$/" type="text" class="form-control" placeholder="{{ namePlaceholder }}">
+            <input id="shippingFullName" name="name" ng-model="address.name" ng-pattern="/^[a-zA-Z0-9\s,'-\/]*$/" type="text" class="form-control" placeholder="{{ namePlaceholder }}" value='{{ address.firstName + address.lastName }}' />
             <span ng-show="addressForm.name.$invalid && (addressForm.name.$touched || addressForm.name.$dirty)" class="help-block text-danger"><span ng-bind-html="'ENTER-VALID-SHIPPING-NAME' | translate | unsafe"></span></span>
           </div>
         </div>
