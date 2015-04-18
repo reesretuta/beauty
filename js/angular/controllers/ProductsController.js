@@ -113,7 +113,7 @@ angular.module('app.controllers.products')
                 $scope.errorMessage = "An error occurred while retrieving category data. Please refresh the page to try again, or contact your system administrator if the error persists.";
 
             });
-            var heroCategories = ['9999999999'];
+            var heroCategories = ['104'];
             
             if (heroCategories.indexOf($scope.categoryId) > -1) {
                 $scope.displayHero = true;
