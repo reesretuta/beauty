@@ -22,12 +22,14 @@
             <div class="carousel-inner">
               <div class="item active">
                 <a href="/shop/products?category=105">
-                  <img class="img-responsive" src="/img/blends_carousel_1.jpg">
+                  <img ng-if="session.language == 'en_US'" class="img-responsive" src="/img/blends_carousel_1.jpg">
+                  <img ng-if="session.language == 'es_US'" class="img-responsive" src="/img/blends_carousel_1_es.jpg">
                 </a>
               </div>
               <div class="item">
                 <a href="/shop/products/20013">
-                  <img class="img-responsive" src="/img/blends_carousel_2.jpg">
+                  <img ng-if="session.language == 'en_US'" class="img-responsive" src="/img/blends_carousel_2.jpg">
+                  <img ng-if="session.language == 'es_US'" class="img-responsive" src="/img/blends_carousel_2_es.jpg">
                 </a>
               </div>
               <div class="item">
