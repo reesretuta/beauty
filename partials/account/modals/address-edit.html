@@ -168,6 +168,8 @@
   </div>
   <div class="col-lg-6 col-md-6 col-sm-6">
     <button ng-click="close()" class="btn btn-link"><span ng-bind-html="'BTN_CANCEL' | translate | unsafe"></span></button>
-    <button ng-click="save()" class="btn btn-primary" ng-disabled="!addressForm.$valid"><span ng-bind-html="'BTN_UPDATE_ADDRESS' | translate | unsafe"></span></button>
+    <button ng-click="save()" class="btn btn-primary" ng-disabled="addressForm.$invalid || processing" ng-style='{ "processing" : processing }'>
+      <span ng-bind-html="'BTN_UPDATE_ADDRESS' | translate | unsafe"></span>
+    </button>
   </div>
 </div>

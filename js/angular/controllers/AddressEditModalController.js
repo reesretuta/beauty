@@ -20,15 +20,18 @@ angular.module('app.controllers.checkout').controller('AddressEditModalControlle
 
     $scope.save = function () {
         $log.debug('AddressEditModalController(): save(): saving...');
+        $scope.processing = true;
         addAddress($scope.address).then(function (data) {
             $log.debug('AddressEditModalController(): editAddress() [strikeiron]: addAddress success:', data);
             $modalInstance.close({
                 address  : $scope.address,
                 canceled : false
             });
+            $scope.processing = false;
         }, function(error) {
             $log.error('AddressEditModalController(): save(): error!', error);
             $scope.addressError = error;
+            $scope.processing = false;
         });
     };
 

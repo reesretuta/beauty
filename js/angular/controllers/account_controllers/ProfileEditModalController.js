@@ -15,6 +15,7 @@ angular.module('app.controllers.account').controller('ProfileEditModalController
 
   $scope.save = function () {
     $log.debug('ProfileEditModalController(): save(): saving...');
+    $scope.processing = true;
     // validate email first
     Addresses.validateEmail($scope.profile.email).then(function(result) {
       $log.debug("ProfileEditModalController(): validated email: result", result);
@@ -26,10 +27,12 @@ angular.module('app.controllers.account').controller('ProfileEditModalController
             profile         : data,
             canceled        : false
           });
+          $scope.processing = false;
         });
       }, function(error) {
         $log.error('ProfileEditModalController(): save(): error!', error);
         $scope.profileEditError = error;
+        $scope.processing = false;
       });
     }, function(r) {
       $log.error("ProfileEditModalController(): failed validating email", r);
