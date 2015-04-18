@@ -1485,3 +1485,40 @@ fieldset[disabled].fieldset-no-bg {
 .addnew{
     text-transform:uppercase;
 }
+
+
+
+
+
+/*video modal for CD and OS*/
+.video-modal-lg .modal-body {
+  padding: 0;
+}
+.jaf-modal-close {
+  display: block;
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  top: -22px;
+  right: -22px;
+  font-family: HelveticaNeueLTStd-Th;
+  font-size: 22px;
+  text-align: center;
+  line-height: 40px;
+  border:1px solid #fff;
+  border-radius: 50%;
+  color: #fff;
+  background: #460d66;
+  z-index: 999;
+}
+.jaf-modal-close:hover {
+  background: #c3002f;
+  border-color: #c3002f;
+  color: #fff;
+  text-decoration: none;
+}
+
+
+.modal-content{
+    background-color:transparent;
+}
