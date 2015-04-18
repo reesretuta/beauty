@@ -542,6 +542,7 @@
     "QTY-ERROR-INVENTORY": "currently in stock",
 
     "UNKNOWN_ERROR_HEADER": "OOPS!",
-    "UNKNOWN_ERROR_BODY": "Something went wrong, please try again later"
+    "UNKNOWN_ERROR_BODY": "Something went wrong, please try again later",
     
+    "CATEGORY-HEADER-2" : "Spritz to uplift your senses with innovative scents. Blend to layer for a dynamic duo or trio. Create your own customized scent."
 }
