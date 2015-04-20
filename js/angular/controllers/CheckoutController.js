@@ -158,7 +158,6 @@ angular.module('app.controllers.checkout')
             }
         });
 
-
         // watch current step for changes
         $scope.$watch('currentStep', function(newVal, oldVal) {
             if (newVal != oldVal && newVal != '' && newVal != null) {
@@ -169,6 +168,7 @@ angular.module('app.controllers.checkout')
 
                 // check if consultant is on final confirmation, if back redirect to initial
                 if (S(oldVal).trim() == 'Finish') {
+
                     $log.debug('CheckoutController(): has already completed purchase, redirect');
                     $location.path(JOIN_BASE_URL);
                     return;
@@ -1810,7 +1810,15 @@ angular.module('app.controllers.checkout')
                             consultantId: data.consultantId,
                             sponsor: data.sponsor
                         };
-
+                        // set quantcast data for order
+                        $log.debug('---------------------------');
+                        $log.debug('CheckoutController(): processOrder(): setting quant data:', 'orderId:', data.orderId, 'total:', consultant.total, 'consultant:', consultant);
+                        $log.debug('---------------------------');
+                        if ($scope.isOnlineSponsoring) {
+                            qcdata.orderid = data.orderId;
+                            qcdata.revenue = data.total;
+                        }
+                        // go to finish
                         WizardHandler.wizard('checkoutWizard').goTo('Finish');
 
                         //make modal appear on Finish
