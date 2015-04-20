@@ -1,27 +1,71 @@
 
 <!--
 
-EXAMPLE ORDER HISTORY DATA:
+SAMPLE ORDER HISTORY DATA:
 ===========================
 
 {
-  "id": 12028344,
-  "firstName": "David",
-  "lastName": "Castro",
-  "clientId": 50000051,
+  "id": 12029275,
+  "firstName": "edward",
+  "lastName": "hotchkisssss",
+  "clientId": 50000098,
   "consultantId": 66556,
   "language": "en_US",
-  "billingAddressId": 5000005101,
-  "shippingAddressId": 5000005101,
-  "creditCardId": 5000005103,
+  "billingAddressId": {
+    "id": 0,
+    "name": "edward hotchkisssss",
+    "address1": "306 S El Molino Ave",
+    "address2": "Apt 303",
+    "city": "Pasadena",
+    "state": "CA",
+    "stateDescription": "CA",
+    "zip": "91101",
+    "geocode": "",
+    "county": "Los Angeles",
+    "country": "US",
+    "phone": ""
+  },
+  "shippingAddressId": {
+    "id": 0,
+    "name": "Edward H Hotchkiss",
+    "address1": "306 S El Molino Ave",
+    "address2": "Apt 303",
+    "city": "Pasadena",
+    "state": "CA",
+    "stateDescription": "CA",
+    "zip": "91101",
+    "geocode": "050372570",
+    "county": "Los Angeles",
+    "country": "US",
+    "phone": "213-333-3333"
+  },
+  "creditCardId": {
+    "id": 0,
+    "name": "TEST NAME",
+    "lastFour": "1111",
+    "cardType": "VISA",
+    "expMonth": "2",
+    "expYear": "2019"
+  },
   "source": "web",
-  "total": 43.50,
-  "products": [{"sku":"18893","name":"* FEMME DUO","qty": 1,"price":35.00,"components":[{"sku":"6983","name":"NAVIGO FEMME   1.7FL OZ","qty": 1},{"sku":"18748","name":"HAPPY MOTHER'S DAY TOTE","qty": 1},{"sku":"11737","name":"NAVIGO FEMME HAND CREAM","qty": 1}]}],
+  "total": 32.93,
+  "products": [
+    {
+      "sku": "25631",
+      "name": "BRIGHTENING DYN BRGH LTN SPF15",
+      "qty": 1,
+      "price": 25,
+      "extendedprice": 25
+    }
+  ],
   "tracking": "",
   "carrier": "",
-  "orderDate": "01/29/2015",
-    "shipDate": "01/01/1970",
-    "shippingCost":}
+  "orderDate": "04/17/2015",
+  "shipDate": "01/01/1970",
+  "shippingCost": 5,
+  "taxCost": 2.93,
+  "status": "Ordered"
+}
 
 -->
  
@@ -32,12 +76,12 @@ EXAMPLE ORDER HISTORY DATA:
 		<button type="button" class="close jaf-collapse" aria-label="Close" data-toggle="collapse" data-target="#collapse-{{$index + 1}}" aria-expanded="true" aria-controls="collapse-{{$index + 1}}"><i class="fa"></i></button>        
 		<div class="row">
 			<div class="col-md-3">
-				<h3 class="cart-item-prod-title">ORDER#: {{order.id}}</h3>
-				<strong>Order Date:</strong> {{order.orderDate}}
+				<h3 class="cart-item-prod-title">ORDER#: {{ order.id }}</h3>
+				<strong>Order Date:</strong> {{ order.orderDate }}
 			</div>
 			<div class="col-md-3">
-				<h3 class="cart-item-prod-title">TOTAL: {{order.total | currency}}</h3>
-				<strong>Status:</strong> {{order.status}}
+				<h3 class="cart-item-prod-title">TOTAL: {{ order.total | currency }}</h3>
+				<strong>Status:</strong> {{ order.status }}
 			</div>
 		</div>
 	</div>		
@@ -45,7 +89,13 @@ EXAMPLE ORDER HISTORY DATA:
     <div class="panel-body">
       <div class="row">
         <div class="col-md-12">
-				  <strong>Ship To:</strong> {{order.firstName}} {{order.lastName}}<!-- COMMENTED WHILE WAITING FOR JCS API ADDRESS! --><!--, 1235 Street, City, 91335 -->
+				  <strong>Ship To:</strong> 
+          <span ng-bind='order.billingAddressId.name'></span>
+          <span ng-bind='order.shippingAddressId.address1'></span>,
+          <span ng-bind='order.shippingAddressId.address2 + ","' ng-if='order.shippingAddressId.address2 && order.shippingAddressId.address2 !== ""'></span>
+          <span ng-bind='order.shippingAddressId.city + ","'></span> 
+          <span ng-bind='order.shippingAddressId.state'></span> 
+          <span ng-bind='order.shippingAddressId.zip'></span>
         </div>
       </div>
 		  <br/>
