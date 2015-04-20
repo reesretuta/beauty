@@ -1134,25 +1134,21 @@ angular.module('app.controllers.checkout')
             $log.debug("CheckoutController(): DEBUG card", $scope.profile.card);
             $log.debug("CheckoutController(): selectCardAndContinue(): profile now", $scope.profile);
             $scope.checkoutUpdated();
-            //do nothing but highlight the selected credit card 
-            // WizardHandler.wizard('checkoutWizard').goTo('Review');
         }
         
-        
-
-        $scope.showNewShipping = function(){
+        $scope.showNewShipping = function () {
             $scope.profile.shipping = null;
-        }
+            $scope.profile.newShippingAddress.name = $rootScope.session.client.firstName + ' ' + $rootScope.session.client.lastName;
+        };
 
         $scope.showNewBilling = function(){
             $scope.profile.billing = null;
-        }
+        };
         
         $scope.showNewPayment = function(){
             $scope.profile.card = {};
             $log.debug("CheckoutController(): DEBUG card", $scope.profile.card);
-        }
-        
+        };
         
         function addShippingIfNotSelected() {
             $log.debug("CheckoutController(): addShippingIfNotSelected()");
@@ -1524,7 +1520,7 @@ angular.module('app.controllers.checkout')
                         defer.reject(err);
                     });
                 } else {
-                    SalesTax.calculate($rootScope.session.client.id, getConsultantId(), $scope.profile.shipping.geocode, 1510, "Y", products).then(function(info) {
+                    SalesTax.calculate( $rootScope.session.client.id, getConsultantId(), $scope.profile.shipping.geocode, 1510, "Y", products).then(function(info) {
                         $log.debug("CheckoutController(): fetchSalesTax()", info);
                         defer.resolve(info);
                     }, function(err) {
