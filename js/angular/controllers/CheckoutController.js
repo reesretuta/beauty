@@ -144,6 +144,10 @@ angular.module('app.controllers.checkout')
         delete $location.$$search.phoneNumber;
         $location.$$compose();
 
+        $scope.profile.newShippingAddress.businessCO = $scope.profile.newShippingAddress.businessCO || (function() {
+            return ($rootScope.session.client.firstName + ' ' + $rootScope.session.client.lastName);
+        }())
+
         // initially verify
         verifyAge();
 
