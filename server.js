@@ -1605,20 +1605,19 @@ models.onReady(function () {
         var olderThan = new Date(now.getTime() - LEAD_MAX_AGE);
         //logger.debug("now", now, "olderThan", olderThan);
 
-        models.Lead.find({created: {$lte: olderThan}, sent: false, completed: false}, function(err, leads) {
-            if (err) {
-                logger.error("failed looking up leads from server", err);
+        models.Lead.find({ created: {$lte: olderThan}, sent: false, completed: false }, function(error, leads) {
+            if (error) {
+                logger.error("failed looking up leads from server", error);
                 return;
             }
-
-            if (leads == null) {
+            if (leads == null || (leads && leads.length === 0)) {
                 logger.debug("no leads to send to server");
                 return;
             }
-
-            logger.debug("found old leads to send to server", leads);
-            for (var i=0; i < leads.length; i++) {
+            logger.debug("found old leads to send to server", leads.length);
+            for (var i = 0; i < leads.length; i++) {
                 var lead = leads[i];
+
                 jafraClient.createLead({
                     email: lead.email,
                     firstName: lead.firstName,
@@ -1627,18 +1626,18 @@ models.onReady(function () {
                     language: lead.language,
                     type: lead.type
                 }).then(function(r) {
-                    logger.debug("created lead on server", r.result.statusCode, "body", r.result, "removing from local", lead._id);
+                    logger.debug("created lead on server", r.status, "body", r.result, "removing from local", lead._id);
                     lead.sent = true;
                     lead.save(function (err, product, numberAffected) {
                         if (err) {
                             logger.error("failed to mark lead sent", err);
                             return;
                         }
-                    })
+                    });
                 }, function(r) {
                     if (r.status == 409) {
                         // lead already created, mark sent
-                        logger.debug("created already on server", r.result.statusCode, "body", r.result, "marking sent", lead._id);
+                        logger.debug("created already on server", r.status, "body", r.result, "marking sent", lead._id);
                         lead.sent = true;
                         lead.save(function (err, product, numberAffected) {
                             if (err) {

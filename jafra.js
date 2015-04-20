@@ -988,18 +988,20 @@ function getOrderHistory(clientId) {
 
 function createLead(lead) {
     //logger.debug("createLead", email, password);
-    var deferred = Q.defer();
-
+    var data, deferred = Q.defer();
+    data = {
+        email: lead.email,
+        firstName: lead.firstName,
+        lastName: lead.lastName,
+        phone: lead.phone,
+        language: lead.language,
+    };
+    if (lead.type) {
+        data.type = lead.type;
+    }
     request.post({
         url: CREATE_LEAD_URL,
-        form: {
-            email: lead.email,
-            firstName: lead.firstName,
-            lastName: lead.lastName,
-            phone: lead.phone,
-            language: lead.language,
-            type: lead.type
-        },
+        form: data,
         headers: {
             'Content-Type' : 'application/x-www-form-urlencoded',
             'Accept': 'application/json, text/json',
