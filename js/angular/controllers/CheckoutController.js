@@ -1765,7 +1765,7 @@ angular.module('app.controllers.checkout')
                     shipping.address1 = shipping.businessCO.toUpperCase();
                 }
 
-                var sponsorId = $scope.profile.sponsorId ? $scope.profile.sponsorId : 66556;
+                var sponsorId = $scope.profile.sponsorId ? $scope.profile.sponsorId + '' : 0;
 
                 var consultant = {
                     ssn: ssn,
