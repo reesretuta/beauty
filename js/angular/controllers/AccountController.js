@@ -192,7 +192,7 @@ angular.module('app.controllers.account')
             
             // edit an address via a standard modal
             $scope.editAddress = function(address) {
-                $log.debug('AccountController(): editAddress: got address:', address);
+                $log.debug('AccountController(): editAddress: got address:', address, 'namePlaceholder:', $scope.namePlaceholder);
                 var d, body, dd = $q.defer();
                 d = $modal.open({
                     backdrop: true,
@@ -206,6 +206,9 @@ angular.module('app.controllers.account')
                         },
                         addAddress: function() {
                             return angular.copy(addAddress);
+                        },
+                        isOnlineSponsoring: function () {
+                            return $scope.isOnlineSponsoring;
                         }
                     }
                 });

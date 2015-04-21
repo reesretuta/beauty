@@ -144,10 +144,6 @@ angular.module('app.controllers.checkout')
         delete $location.$$search.phoneNumber;
         $location.$$compose();
 
-        $scope.profile.newShippingAddress.businessCO = $scope.profile.newShippingAddress.businessCO || (function() {
-            return ($rootScope.session.client.firstName + ' ' + $rootScope.session.client.lastName);
-        }())
-
         // initially verify
         verifyAge();
 
@@ -157,7 +153,6 @@ angular.module('app.controllers.checkout')
                 verifyAge();
             }
         });
-
 
         // watch current step for changes
         $scope.$watch('currentStep', function(newVal, oldVal) {
@@ -169,6 +164,7 @@ angular.module('app.controllers.checkout')
 
                 // check if consultant is on final confirmation, if back redirect to initial
                 if (S(oldVal).trim() == 'Finish') {
+
                     $log.debug('CheckoutController(): has already completed purchase, redirect');
                     $location.path(JOIN_BASE_URL);
                     return;
@@ -881,7 +877,7 @@ angular.module('app.controllers.checkout')
 
         // edit an address via a standard modal
         $scope.editAddress = function(address, addressType) {
-            $log.debug('CheckoutController(): editAddress: got address:', address, addressType);
+            $log.debug('CheckoutController(): editAddress: got address:', address, addressType, 'namePlaceholder:', $scope.namePlaceholder);
             var d, body, dd = $q.defer();
             d = $modal.open({
                 backdrop: true,
@@ -896,8 +892,8 @@ angular.module('app.controllers.checkout')
                     addAddress: function() {
                         return angular.copy(addAddress);
                     },
-                    namePlaceholder: function () {
-                        return $scope.namePlaceholder;
+                    isOnlineSponsoring: function () {
+                        return $scope.isOnlineSponsoring;
                     }
                 }
             });
@@ -1810,7 +1806,15 @@ angular.module('app.controllers.checkout')
                             consultantId: data.consultantId,
                             sponsor: data.sponsor
                         };
-
+                        // set quantcast data for order
+                        $log.debug('---------------------------');
+                        $log.debug('CheckoutController(): processOrder(): setting quant data:', 'orderId:', data.orderId, 'total:', consultant.total, 'consultant:', consultant);
+                        $log.debug('---------------------------');
+                        if ($scope.isOnlineSponsoring) {
+                            qcdata.orderid = data.orderId;
+                            qcdata.revenue = data.total;
+                        }
+                        // go to finish
                         WizardHandler.wizard('checkoutWizard').goTo('Finish');
 
                         //make modal appear on Finish
@@ -2063,9 +2067,7 @@ angular.module('app.controllers.checkout')
             var d = $q.defer();
             $log.debug("CheckoutController(): addShippingAddressAndContinue()", address);
             $scope.processing = true;
-            if (address.name === $rootScope.namePlaceholder) {
-                delete address.name;
-            }
+            
             $scope.addShippingAddress(address).then(function(aa) {
 
                 if ($scope.isOnlineSponsoring) {
