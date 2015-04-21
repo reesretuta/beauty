@@ -16,7 +16,6 @@ angular.module('app.controllers.account').controller('ProfileEditModalController
   $scope.save = function () {
     $log.debug('ProfileEditModalController(): save(): saving...');
     $scope.processing = true;
-    // validate email first
     Addresses.validateEmail($scope.profile.email).then(function(result) {
       $log.debug("ProfileEditModalController(): validated email: result", result);
       Account.updateClient($scope.profile).then(function (data) {
@@ -24,7 +23,7 @@ angular.module('app.controllers.account').controller('ProfileEditModalController
         $translate('PROFILE-SAVE-SUCCESS').then(function (message) {
           $modalInstance.close({
             profileEditInfo : message,
-            profile         : data,
+            profile         : $scope.profile,
             canceled        : false
           });
           $scope.processing = false;

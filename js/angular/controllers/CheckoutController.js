@@ -180,22 +180,7 @@ angular.module('app.controllers.checkout')
                         $log.debug("CheckoutController(): focusing address1 field");
                         focus('shipping-address1-focus');
                     });
-                // do focuses here
-                // if (S(urlStep).trim() == "Shipping") {
-                //     $("#shippingAddress1").onAvailable(function () {
-                //         if (!$scope.isOnlineSponsoring) {
-                //             var accountName = ($rootScope.session.client.firstName + ' ' + $rootScope.session.client.lastName);
-                //             $log.debug('CheckoutController(): NOT Online Sponsoring: setting shipping name (default):', accountName);
-                //             $scope.profile.newShippingAddress.name = accountName;
-                //             $rootScope.namePlaceholder = accountName;
-                //         }
-                //         $log.debug("CheckoutController(): focusing address1 field");
-                //         focus('shipping-address1-focus');
-                //     });
-                // } else {
-                //     $log.debug("CheckoutController(): new step is not shipping", newVal);
-                // }
-
+                    
                 if (newVal != 'Start') {
                     $location.search("step", newVal);
                 } else if (newVal == 'Finish') {
@@ -877,7 +862,6 @@ angular.module('app.controllers.checkout')
 
         // edit an address via a standard modal
         $scope.editAddress = function(address, addressType) {
-            $log.debug('CheckoutController(): editAddress: got address:', address, addressType, 'namePlaceholder:', $scope.namePlaceholder);
             var d, body, dd = $q.defer();
             d = $modal.open({
                 backdrop: true,
@@ -894,6 +878,9 @@ angular.module('app.controllers.checkout')
                     },
                     isOnlineSponsoring: function () {
                         return $scope.isOnlineSponsoring;
+                    },
+                    namePlaceholder: function () {
+                        return $rootScope.session.client.firstName + ' ' + $rootScope.session.client.lastName;
                     }
                 }
             });
@@ -961,6 +948,8 @@ angular.module('app.controllers.checkout')
                     // set the user name on shipping address
                     $scope.profile.newShippingAddress.name = $scope.profile.firstName + " " + $scope.profile.lastName;
                     $scope.profile.newBillingAddress.name = $scope.profile.firstName + " " + $scope.profile.lastName;
+
+                    $log.debug('CheckoutController(): line 965: $scope.profile:', $scope.profile);
 
                     if ($scope.isOnlineSponsoring) {
                         Session.consultantEmailAvailable(email, $scope.ignoreExists).then(function (available) {
@@ -1173,7 +1162,6 @@ angular.module('app.controllers.checkout')
             $log.debug("CheckoutController(): addBillingIfNotSelected()");
             var d = $q.defer();
             if ($scope.profile.billing == null) {
-                //new billing
                 $log.debug("CheckoutController(): addBillingIfNotSelected(): new billing");
                 $scope.addBillingAddress($scope.profile.newBillingAddress).then(function(a) {
                     $log.debug("CheckoutController(): addBillingIfNotSelected(): new billing", $scope.profile.newBillingAddress);
@@ -1206,20 +1194,17 @@ angular.module('app.controllers.checkout')
             });
         }
 
-
-        // FIXME - verify we have either billSame or billing address selected/entered
-
         $scope.billSameChanged = function(billSame) {
+            $log.debug('CheckoutController(): billSameChanged: $scope.profile.newBillingAddress:', $scope.profile.newBillingAddress);
             if (billSame) {
                 $log.debug("CheckoutController(): billSameChanged(): setting billing = shipping");
                 $scope.profile.billing = angular.copy($scope.profile.shipping);
             } else {
                 $log.debug("CheckoutController(): billSameChanged(): setting billing = null");
                 $scope.profile.billing = null;
+                $scope.profile.newBillingAddress.name = $rootScope.session.client.firstName + ' ' + $rootScope.session.client.lastName;
             }
         }
-        
-        
         
         function addPaymentIfNotSelected(){ //responding back to continue button click
             var d = $q.defer();
@@ -1765,7 +1750,7 @@ angular.module('app.controllers.checkout')
                     shipping.address1 = shipping.businessCO.toUpperCase();
                 }
 
-                var sponsorId = $scope.profile.sponsorId ? $scope.profile.sponsorId : 66556;
+                var sponsorId = $scope.profile.sponsorId ? $scope.profile.sponsorId + '' : 0;
 
                 var consultant = {
                     ssn: ssn,

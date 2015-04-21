@@ -29,7 +29,7 @@ angular.module('app.controllers.main').controller('MainController', function ($s
 
     // this page will watch for URL changes for back/forward that require it to change anything needed (like search)
     var cancelChangeListener;
-    function createListener() { 
+    function createListener() {
         $log.debug("MainController(): createListener(): creating change listener");
         cancelChangeListener = $rootScope.$on('$locationChangeSuccess', function(event, absNewUrl, absOldUrl){
             var url = $location.url(),
@@ -60,17 +60,13 @@ angular.module('app.controllers.main').controller('MainController', function ($s
                    if (session.cid != null || session.source != null) {
                        $log.debug("MainController(): changeListener(): preserving cid/source in URL");
                        if (session.consultantId != null) {
+                           $log.debug("MainController(): changeListener(): using session cid", session.consultantId);
                            params["cid"] = session.consultantId;
                            params["source"] = session.source;
-                       } else {
-                           //delete params["cid"];
-                           delete params["source"];
+                           $location.search(params);
+                           $location.replace();
+                           $log.debug("MainController(): changeListener(): replace URL");
                        }
-                       //var cid = params.cid;
-                       //$log.debug('params:', params);
-                       $location.$$search = params;
-                       //$log.debug('compose................');
-                       //$location.$$compose();
                    }
                 });
             }

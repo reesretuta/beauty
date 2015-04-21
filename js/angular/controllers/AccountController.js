@@ -19,8 +19,11 @@ angular.module('app.controllers.account')
 
             $scope.orderHistory = [];
 
-            $scope.profile = angular.copy($rootScope.session.client); //populates view
+            $scope.profile = angular.copy($rootScope.session.client);
             $scope.profile.newCard = {};
+            $log.debug('AccountController(): $scope.profile:', $scope.profile);
+
+            $scope.namePlaceholder = $scope.profile.firstName + " " + $scope.profile.lastName;
 
             $scope.updateClient = function(){
                 Account.updateClient($scope.profile);
@@ -141,12 +144,7 @@ angular.module('app.controllers.account')
                     controller: 'ProfileEditModalController',
                     resolve: {
                         profile: function() {
-                            return {
-                                firstName   : $scope.profile.firstName,
-                                lastName    : $scope.profile.lastName,
-                                email       : $scope.profile.email,
-                                phoneNumber : $scope.profile.phoneNumber
-                            }
+                            return angular.copy($scope.profile);
                         }
                     }
                 });
@@ -154,7 +152,8 @@ angular.module('app.controllers.account')
                 d.result.then(function(result) {
                     $log.debug('AccountController(): editAddress(): edit profile modal: saved');
                     $scope.profileEditInfo = result.profileEditInfo;
-                    $scope.profile = result.profile;
+                    $scope.profile = angular.copy(result.profile);
+                    $rootScope.session.client = angular.copy(result.profile);
                     dd.resolve();
                     body.css('overflow-y', 'auto');
                 });
@@ -192,7 +191,6 @@ angular.module('app.controllers.account')
             
             // edit an address via a standard modal
             $scope.editAddress = function(address) {
-                $log.debug('AccountController(): editAddress: got address:', address, 'namePlaceholder:', $scope.namePlaceholder);
                 var d, body, dd = $q.defer();
                 d = $modal.open({
                     backdrop: true,
@@ -202,13 +200,16 @@ angular.module('app.controllers.account')
                     controller: 'AddressEditModalController',
                     resolve: {
                         address: function() {
-                            return angular.copy(address); //coming from modal view ng-click="editAddress(address)"
+                            return angular.copy(address);
                         },
                         addAddress: function() {
                             return angular.copy(addAddress);
                         },
                         isOnlineSponsoring: function () {
                             return $scope.isOnlineSponsoring;
+                        },
+                        namePlaceholder: function () {
+                            return $rootScope.session.client.firstName + ' ' + $rootScope.session.client.lastName;
                         }
                     }
                 });
@@ -225,13 +226,11 @@ angular.module('app.controllers.account')
                             }
                         }
                     }
-
                     dd.resolve();
                     body.css('overflow-y', 'auto');
                 });
                 $('html, body').css('overflow-y', 'hidden');
-                return dd.promise
-                ;
+                return dd.promise;
             };
             
             var a = '';

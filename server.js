@@ -558,15 +558,16 @@ router.route('/sessionCopy')
 // ----------------------------------------------------
 router.route('/leads')// create a lead
     .post(function (req, res) {
-
-        models.Lead.create({
+        var leadData = {
             email: req.body.email,
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             phone: req.body.phone,
             language: req.body.language,
             type: req.body.type
-        }, function (err, lead) {
+        };
+        logger.debug('server: createLead: lead:', leadData);
+        models.Lead.create(leadData, function (err, lead) {
             if (err) {
                 logger.error("failed to create lead", err);
                 res.status(500);
@@ -578,12 +579,7 @@ router.route('/leads')// create a lead
                 res.end();
                 return;
             }
-
-            // any leads that are created will get pushed to JCS on an interval, if they haven't been
-            // closed by the user completing the online sponsoring process
-
-            //logger.error("created lead", lead);
-
+            logger.log('server: createLead: created lead:', lead);
             res.status(201);
             res.json(lead);
             res.end();
@@ -1283,22 +1279,20 @@ router.route('/validate/address') // validate address
         });
     });
 
-router.route('/validate/email') // validate email address
-    .get(function (req, res) {
-        var email = req.param('email');
-
-        logger.debug("validating email", email);
-        jafraClient.validateEmail(email).then(function(r) {
-            logger.debug("validated email", r.status, "result", r.result);
-            // return response
-            res.status(r.status);
-            res.json(r.result);
-        }, function(r) {
-            logger.error("failed to validate email", r.status, "result", r.result);
-            res.status(r.status);
-            res.json(r.result);
-        });
+// validate email
+router.route('/validate/email').get(function (req, res) {
+    var email = req.param('email');
+    logger.debug('validating email', email);
+    jafraClient.validateEmail(email).then(function(r) {
+        logger.debug('validated email', r.status, 'result', r.result);
+        res.status(r.status);
+        res.json(r.result);
+    }, function(r) {
+        logger.error('failed to validate email', r.status, 'result', r.result);
+        res.status(r.status);
+        res.json(r.result);
     });
+});
 
 router.route('/geocodes')
     .get(function (req, res) {
@@ -1617,7 +1611,7 @@ models.onReady(function () {
             logger.debug("found old leads to send to server", leads.length);
             for (var i = 0; i < leads.length; i++) {
                 var lead = leads[i];
-
+                logger.log('server: found old lead, attempting to create in jcs:', lead);
                 jafraClient.createLead({
                     email: lead.email,
                     firstName: lead.firstName,
@@ -1635,6 +1629,7 @@ models.onReady(function () {
                         }
                     });
                 }, function(r) {
+                    logger.debug('server: create lead on jcs error: response:', r);
                     if (r.status == 409) {
                         // lead already created, mark sent
                         logger.debug("created already on server", r.status, "body", r.result, "marking sent", lead._id);

@@ -10,6 +10,37 @@ angular.module('app.controllers.onlineSponsor')
     
     $scope.fromLead = false;
 
+    // this page will watch for URL changes for back/forward that require it to change anything needed (like search)
+    var cancelChangeListener;
+    function createListener() {
+        $log.debug("OnlineSponsorLandingController(): createListener(): creating change listener");
+        cancelChangeListener = $rootScope.$on('$locationChangeSuccess', function(event, absNewUrl, absOldUrl){
+            var url = $location.url(),
+                path = $location.path(),
+                params = $location.search();
+
+            $log.debug("OnlineSponsorLandingController(): changeListener(): locationChangeSuccess", url, params);
+
+            // keep cid / source in URL
+            if (params.cid == null || params.source == null) {
+                Session.get().then(function(session) {
+                    if (session.cid != null || session.source != null) {
+                        $log.debug("OnlineSponsorLandingController(): changeListener(): preserving cid/source in URL");
+                        if (session.consultantId != null) {
+                            $log.debug("OnlineSponsorLandingController(): changeListener(): using session cid", session.consultantId);
+                            params["cid"] = session.consultantId;
+                            params["source"] = session.source;
+                            $location.search(params);
+                            $location.replace();
+                            $log.debug("OnlineSponsorLandingController(): changeListener(): replace URL");
+                        }
+                    }
+                });
+            }
+        });
+    }
+    createListener();        
+        
     $scope.getSessionLanguage = function() {
         var lang = Session.getLanguage();
         $log.debug("OnlineSponsorLandingController(): get session language", lang);
@@ -65,11 +96,12 @@ angular.module('app.controllers.onlineSponsor')
         $log.debug("OnlineSponsorLandingController(): addLead(): creating lead", leadData);
 
         Leads.save(leadData).$promise.then(function(lead) {
-            $log.debug("MainController(): addLead(): lead created", lead);
-
+            $log.debug("OnlineSponsorLandingController(): addLead(): lead created", lead);
+            $log.debug('OnlineSponsorLandingController() addLead(): analytics:');
+            $analytics.pageTrack('/leads/collected');
             // FIXME do something here
         }, function(error) {
-            $log.error("MainController(): addLead(): failed to create lead", error);
+            $log.error("OnlineSponsorLandingController(): addLead(): failed to create lead", error);
             // FIXME show error here
         });
     }
