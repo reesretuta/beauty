@@ -2067,9 +2067,7 @@ angular.module('app.controllers.checkout')
             var d = $q.defer();
             $log.debug("CheckoutController(): addShippingAddressAndContinue()", address);
             $scope.processing = true;
-            if (address.name === $rootScope.namePlaceholder) {
-                delete address.name;
-            }
+            
             $scope.addShippingAddress(address).then(function(aa) {
 
                 if ($scope.isOnlineSponsoring) {

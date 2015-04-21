@@ -90,7 +90,7 @@ SAMPLE ORDER HISTORY DATA:
       <div class="row">
         <div class="col-md-12">
 				  <strong>Ship To:</strong> 
-          <span ng-bind='order.billingAddressId.name'></span>
+          <span ng-bind='order.shippingAddressId.name'></span>
           <span ng-bind='order.shippingAddressId.address1'></span>,
           <span ng-bind='order.shippingAddressId.address2 + ","' ng-if='order.shippingAddressId.address2 && order.shippingAddressId.address2 !== ""'></span>
           <span ng-bind='order.shippingAddressId.city + ","'></span> 
