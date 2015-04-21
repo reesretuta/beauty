@@ -6,7 +6,7 @@
     <div class="row form-group" ng-if="!isOnlineSponsoring">
       <label for="shippingFullName" class="col-md-3 control-label"><span ng-bind-html="'IN_FULL_NAME' | translate | unsafe"></span></label>
       <div class="col-sm-8 col-lg-6">
-        <input id="shippingFullName" name="name" ng-model="profile.newShippingAddress.name" ng-pattern="/^[a-zA-Z0-9\s,'-\/]*$/" type="text" class="form-control" />
+        <input id="shippingFullName" name="name" ng-model="profile.newShippingAddress.name" ng-init='profile.newShippingAddress.name = profile.newShippingAddress.name || (session.client.firstName + " " + session.client.lastName)' ng-pattern="/^[a-zA-Z0-9\s,'-\/]*$/" type="text" class="form-control" />
         <span ng-show="forms.shippingForm.name.$invalid && (forms.shippingForm.name.$touched || forms.shippingForm.name.$dirty)" class="help-block text-danger">
           <span ng-bind-html="'ENTER-VALID-SHIPPING-NAME' | translate | unsafe"></span>
         </span>
