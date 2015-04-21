@@ -1519,6 +1519,41 @@ fieldset[disabled].fieldset-no-bg {
 }
 
 
-.modal-content{
-/*    background-color:transparent;*/
+#promo{
+    background:#007ba4;
+    color:#cfe3ec;
+    font-size:20px;
+    z-index:999;
+/*    box-shadow:0 2px 8px rgba(31,0,60,.4);*/
+}
+
+#promo.navbar{
+    margin-bottom:0;
+    height: 56px;
+    line-height: 56px;
+    
+}
+
+#promo.navbar span{
+    font-size:37px;
+    vertical-align:middle;
+    margin:0 4px;
+}
+#promo.navbar a{
+    background:#cfe3ec;
+    color:#007ba4;
+    padding: 5px 10px;
+    text-decoration:none;
+    vertical-align:middle;
+    margin-left:15px;
+}
+
+#promo.navbar a:hover{
+    background:#fff;
+}
+
+@media screen and (max-width: 460px){
+    #promo{
+        font-size:12px;
+    }
 }
