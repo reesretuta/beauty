@@ -180,22 +180,7 @@ angular.module('app.controllers.checkout')
                         $log.debug("CheckoutController(): focusing address1 field");
                         focus('shipping-address1-focus');
                     });
-                // do focuses here
-                // if (S(urlStep).trim() == "Shipping") {
-                //     $("#shippingAddress1").onAvailable(function () {
-                //         if (!$scope.isOnlineSponsoring) {
-                //             var accountName = ($rootScope.session.client.firstName + ' ' + $rootScope.session.client.lastName);
-                //             $log.debug('CheckoutController(): NOT Online Sponsoring: setting shipping name (default):', accountName);
-                //             $scope.profile.newShippingAddress.name = accountName;
-                //             $rootScope.namePlaceholder = accountName;
-                //         }
-                //         $log.debug("CheckoutController(): focusing address1 field");
-                //         focus('shipping-address1-focus');
-                //     });
-                // } else {
-                //     $log.debug("CheckoutController(): new step is not shipping", newVal);
-                // }
-
+                    
                 if (newVal != 'Start') {
                     $location.search("step", newVal);
                 } else if (newVal == 'Finish') {

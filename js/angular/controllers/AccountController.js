@@ -144,12 +144,7 @@ angular.module('app.controllers.account')
                     controller: 'ProfileEditModalController',
                     resolve: {
                         profile: function() {
-                            return {
-                                firstName   : $scope.profile.firstName,
-                                lastName    : $scope.profile.lastName,
-                                email       : $scope.profile.email,
-                                phoneNumber : $scope.profile.phoneNumber
-                            }
+                            return angular.copy($scope.profile);
                         }
                     }
                 });
@@ -157,7 +152,8 @@ angular.module('app.controllers.account')
                 d.result.then(function(result) {
                     $log.debug('AccountController(): editAddress(): edit profile modal: saved');
                     $scope.profileEditInfo = result.profileEditInfo;
-                    $scope.profile = result.profile;
+                    $scope.profile = angular.copy(result.profile);
+                    $rootScope.session.client = angular.copy(result.profile);
                     dd.resolve();
                     body.css('overflow-y', 'auto');
                 });

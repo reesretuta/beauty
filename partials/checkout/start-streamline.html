@@ -627,7 +627,7 @@
         <div class="checkout-address" ng-repeat="addressData in session.client.addresses">
           <div class="address-block" ng-class="profile.billing.id == addressData.id ? 'selectedShipping' : ''">
             <div class="address-info col-md-5">
-              <span class="address-name block">{{ addressData.name || namePlaceholder }}</span>
+              <span class="address-name block">{{ addressData.name || (session.client.firstName + " " + session.client.lastName) }}</span>
               <span class="address-street block">{{ addressData.address1 }} {{ addressData.address2 }}</span>
               <span class="address-region block">{{ addressData.city }}, {{ addressData.state }} {{ addressData.zip }}</span>
               <span class="phone-number block">{{ addressData.phone}}</span>
