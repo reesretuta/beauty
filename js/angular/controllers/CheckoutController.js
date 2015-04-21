@@ -962,6 +962,8 @@ angular.module('app.controllers.checkout')
                     $scope.profile.newShippingAddress.name = $scope.profile.firstName + " " + $scope.profile.lastName;
                     $scope.profile.newBillingAddress.name = $scope.profile.firstName + " " + $scope.profile.lastName;
 
+                    $log.debug('CheckoutController(): line 965: $scope.profile:', $scope.profile);
+
                     if ($scope.isOnlineSponsoring) {
                         Session.consultantEmailAvailable(email, $scope.ignoreExists).then(function (available) {
                             $log.debug('CheckoutController(): Session: $scope.ignoreExists:?????', $scope.ignoreExists);
@@ -1210,12 +1212,14 @@ angular.module('app.controllers.checkout')
         // FIXME - verify we have either billSame or billing address selected/entered
 
         $scope.billSameChanged = function(billSame) {
+            $log.debug('CheckoutController(): billSameChanged: $scope.profile.newBillingAddress:', $scope.profile.newBillingAddress);
             if (billSame) {
                 $log.debug("CheckoutController(): billSameChanged(): setting billing = shipping");
                 $scope.profile.billing = angular.copy($scope.profile.shipping);
             } else {
                 $log.debug("CheckoutController(): billSameChanged(): setting billing = null");
                 $scope.profile.billing = null;
+                $scope.profile.newBillingAddress.name = $rootScope.namePlaceholder;
             }
         }
         
