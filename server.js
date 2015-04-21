@@ -1279,22 +1279,20 @@ router.route('/validate/address') // validate address
         });
     });
 
-router.route('/validate/email') // validate email address
-    .get(function (req, res) {
-        var email = req.param('email');
-
-        logger.debug("validating email", email);
-        jafraClient.validateEmail(email).then(function(r) {
-            logger.debug("validated email", r.status, "result", r.result);
-            // return response
-            res.status(r.status);
-            res.json(r.result);
-        }, function(r) {
-            logger.error("failed to validate email", r.status, "result", r.result);
-            res.status(r.status);
-            res.json(r.result);
-        });
+// validate email
+router.route('/validate/email').get(function (req, res) {
+    var email = req.param('email');
+    logger.debug('validating email', email);
+    jafraClient.validateEmail(email).then(function(r) {
+        logger.debug('validated email', r.status, 'result', r.result);
+        res.status(r.status);
+        res.json(r.result);
+    }, function(r) {
+        logger.error('failed to validate email', r.status, 'result', r.result);
+        res.status(r.status);
+        res.json(r.result);
     });
+});
 
 router.route('/geocodes')
     .get(function (req, res) {
