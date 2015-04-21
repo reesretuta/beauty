@@ -1456,7 +1456,7 @@ function validateEmail(email) {
                 var statusNbr = parseInt(body.WebServiceResponse.VerifyEmailResponse.VerifyEmailResult.ServiceStatus.StatusNbr);
                 logger.debug("validateEmail(): statusNbr", statusNbr);
 
-                if (statusNbr == 310 || statusNbr == 311 || statusNbr == 200 || statusNbr == 202 || statusNbr == 203 || statusNbr == 210) {
+                if (statusNbr == 310 || statusNbr == 311 || statusNbr == 200 || statusNbr == 202 || statusNbr == 203 || statusNbr == 210 || statusNbr == 260) {
                     logger.debug("validateEmail(): valid");
                     deferred.resolve({
                         status: 200,
