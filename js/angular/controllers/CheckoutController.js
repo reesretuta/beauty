@@ -877,7 +877,7 @@ angular.module('app.controllers.checkout')
 
         // edit an address via a standard modal
         $scope.editAddress = function(address, addressType) {
-            $log.debug('CheckoutController(): editAddress: got address:', address, addressType);
+            $log.debug('CheckoutController(): editAddress: got address:', address, addressType, 'namePlaceholder:', $scope.namePlaceholder);
             var d, body, dd = $q.defer();
             d = $modal.open({
                 backdrop: true,
@@ -892,8 +892,8 @@ angular.module('app.controllers.checkout')
                     addAddress: function() {
                         return angular.copy(addAddress);
                     },
-                    namePlaceholder: function () {
-                        return $scope.namePlaceholder;
+                    isOnlineSponsoring: function () {
+                        return $scope.isOnlineSponsoring;
                     }
                 }
             });

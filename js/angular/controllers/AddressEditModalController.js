@@ -1,14 +1,16 @@
 
-angular.module('app.controllers.checkout').controller('AddressEditModalController', function ($document, $modalInstance, $q, $scope, $window, $log, $translate, Addresses, address, addAddress) {
+angular.module('app.controllers.checkout').controller('AddressEditModalController', function ($document, $modalInstance, $q, $scope, $window, $log, $translate, $rootScope, Addresses, address, addAddress, isOnlineSponsoring) {
 
     $log.debug('AddressEditModalController()');
-
-    console.log(address);
     
     $scope.address = angular.copy(address);
+
     $scope.addressError = false;
+    $scope.isOnlineSponsoring = isOnlineSponsoring;
 
     $log.debug('AddressEditModalController(): open(): $scope.address:', $scope.address);
+
+    $log.debug('AddressEditModalController(): open(): $scope.address.name:', $scope.address.name, '$rootScope.namePlaceholder:', $rootScope.namePlaceholder);
 
     $scope.close = function () {
         $log.debug('AddressEditModalController()');
