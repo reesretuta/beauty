@@ -877,7 +877,6 @@ angular.module('app.controllers.checkout')
 
         // edit an address via a standard modal
         $scope.editAddress = function(address, addressType) {
-            $log.debug('CheckoutController(): editAddress: got address:', address, addressType, 'namePlaceholder:', $scope.namePlaceholder);
             var d, body, dd = $q.defer();
             d = $modal.open({
                 backdrop: true,
@@ -894,6 +893,9 @@ angular.module('app.controllers.checkout')
                     },
                     isOnlineSponsoring: function () {
                         return $scope.isOnlineSponsoring;
+                    },
+                    namePlaceholder: function () {
+                        return $rootScope.session.client.firstName + ' ' + $rootScope.session.client.lastName;
                     }
                 }
             });
@@ -1175,7 +1177,6 @@ angular.module('app.controllers.checkout')
             $log.debug("CheckoutController(): addBillingIfNotSelected()");
             var d = $q.defer();
             if ($scope.profile.billing == null) {
-                //new billing
                 $log.debug("CheckoutController(): addBillingIfNotSelected(): new billing");
                 $scope.addBillingAddress($scope.profile.newBillingAddress).then(function(a) {
                     $log.debug("CheckoutController(): addBillingIfNotSelected(): new billing", $scope.profile.newBillingAddress);
@@ -1208,9 +1209,6 @@ angular.module('app.controllers.checkout')
             });
         }
 
-
-        // FIXME - verify we have either billSame or billing address selected/entered
-
         $scope.billSameChanged = function(billSame) {
             $log.debug('CheckoutController(): billSameChanged: $scope.profile.newBillingAddress:', $scope.profile.newBillingAddress);
             if (billSame) {
@@ -1219,11 +1217,9 @@ angular.module('app.controllers.checkout')
             } else {
                 $log.debug("CheckoutController(): billSameChanged(): setting billing = null");
                 $scope.profile.billing = null;
-                $scope.profile.newBillingAddress.name = $rootScope.namePlaceholder;
+                $scope.profile.newBillingAddress.name = $rootScope.session.client.firstName + ' ' + $rootScope.session.client.lastName;
             }
         }
-        
-        
         
         function addPaymentIfNotSelected(){ //responding back to continue button click
             var d = $q.defer();

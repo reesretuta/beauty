@@ -204,7 +204,7 @@ angular.module('app.controllers.account')
                     controller: 'AddressEditModalController',
                     resolve: {
                         address: function() {
-                            return angular.copy(address); //coming from modal view ng-click="editAddress(address)"
+                            return angular.copy(address);
                         },
                         addAddress: function() {
                             return angular.copy(addAddress);
@@ -213,7 +213,7 @@ angular.module('app.controllers.account')
                             return $scope.isOnlineSponsoring;
                         },
                         namePlaceholder: function () {
-                            return $scope.namePlaceholder;
+                            return $rootScope.session.client.firstName + ' ' + $rootScope.session.client.lastName;
                         }
                     }
                 });
