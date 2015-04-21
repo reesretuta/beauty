@@ -19,8 +19,11 @@ angular.module('app.controllers.account')
 
             $scope.orderHistory = [];
 
-            $scope.profile = angular.copy($rootScope.session.client); //populates view
+            $scope.profile = angular.copy($rootScope.session.client);
             $scope.profile.newCard = {};
+            $log.debug('AccountController(): $scope.profile:', $scope.profile);
+
+            $scope.namePlaceholder = $scope.profile.firstName + " " + $scope.profile.lastName;
 
             $scope.updateClient = function(){
                 Account.updateClient($scope.profile);
@@ -192,7 +195,6 @@ angular.module('app.controllers.account')
             
             // edit an address via a standard modal
             $scope.editAddress = function(address) {
-                $log.debug('AccountController(): editAddress: got address:', address, 'namePlaceholder:', $scope.namePlaceholder);
                 var d, body, dd = $q.defer();
                 d = $modal.open({
                     backdrop: true,
@@ -209,6 +211,9 @@ angular.module('app.controllers.account')
                         },
                         isOnlineSponsoring: function () {
                             return $scope.isOnlineSponsoring;
+                        },
+                        namePlaceholder: function () {
+                            return $scope.namePlaceholder;
                         }
                     }
                 });
@@ -225,13 +230,11 @@ angular.module('app.controllers.account')
                             }
                         }
                     }
-
                     dd.resolve();
                     body.css('overflow-y', 'auto');
                 });
                 $('html, body').css('overflow-y', 'hidden');
-                return dd.promise
-                ;
+                return dd.promise;
             };
             
             var a = '';
