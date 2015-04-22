@@ -2,7 +2,7 @@
 angular.module('app.controllers.account')
     .controller('AccountController', function ($location, $scope, $document, $timeout, $rootScope, $anchorScroll, $routeParams, $modal, $log, $q, $translate, $analytics, STORE_BASE_URL, JOIN_BASE_URL, focus, Geocodes, Session, Consultant, Addresses, Order, OrderHelper, Checkout, Cart, Product, SalesTax, CreditCards, Leads, PasswordResetHelper, HashKeyCopier, WizardHandler, Account) {
             
-            if (!Session.isLoggedIn()) {
+            if (!Session.isLoggedIn() || true) { //temp disable my account
                 $location.path(STORE_BASE_URL);
             }
 

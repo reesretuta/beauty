@@ -124,7 +124,7 @@
                 <div class="navbar-right navbar-clientdirect_logins">
                   <span ng-show="loggedIn()" href="" ng-cloak>{{ getUserEmail() }} (<a style="margin-right: 5px; margin-left: 5px;" href="" ng-click="logout()">Logout</a>)</span>
                   <a ng-href="{{STORE_BASE_URL}}/cart" ng-cloak><i class="fa fa-shopping-cart"></i> <span ng-bind-html="'VIEW_CART' | translate | unsafe"></span> ({{ countCartItems(session.cart) }})</a>
-                  <a ng-show="loggedIn()" ng-href="{{BASE_URL}}/account" ng-cloak><i class="glyphicon glyphicon-user"></i> <span ng-bind-html="'MY_ACCOUNT' | translate | unsafe"></span></a>
+                  <!-- <a ng-show="loggedIn()" ng-href="{{BASE_URL}}/account" ng-cloak><i class="glyphicon glyphicon-user"></i> <span ng-bind-html="'MY_ACCOUNT' | translate | unsafe"></span></a> -->
                 </div>
 
                 <div class="navbar-right navbar-clientdirect_logins" ng-controller="LanguageSwitcherController">
