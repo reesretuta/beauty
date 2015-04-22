@@ -466,6 +466,7 @@ function updateClient(clientId, client) {
     client.email ? data.email = client.email : null;
     client.language ? data.language = client.language : null;
     client.phone ? data.phone = client.phone : null;
+    client.notificationPreferences ? data.notificationPreferences = client.notificationPreferences : null;
     
     request.post({
         url: UPDATE_CLIENT_URL,
@@ -512,12 +513,12 @@ function updateClient(clientId, client) {
                     }
                 });
             }
-            return;
+        } else {
+            deferred.resolve({
+                status : 204,
+                result : {}
+            });
         }
-        deferred.resolve({
-            status : 204,
-            result : {}
-        });
     });
     return deferred.promise;
 }

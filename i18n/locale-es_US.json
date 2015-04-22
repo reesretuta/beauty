@@ -544,5 +544,16 @@
 
     "QTY-ERROR-INVENTORY": "actualmente en stock",
 
-    "CATEGORY-HEADER-2" : "Rocía para estimular tus sentidos con aromas innovadores. Mezcla y aplícalas en capas para un dúo o trío dramático. Crea tu propio aroma personalizado."
+    "CATEGORY-HEADER-2" : "Rocía para estimular tus sentidos con aromas innovadores. Mezcla y aplícalas en capas para un dúo o trío dramático. Crea tu propio aroma personalizado.",
+
+    "CLOSE-ACCOUNT-TITLE": "Cerrar Cuenta",
+    "CLOSE-ACCOUNT-INSTRUCTIONS": "Para cerrar su cuenta de Jafra , envíe un correo electrónico",
+    "NOTIFICATIONS-TITLE": "Notificaciones",
+    "NOTIFICATIONS-SMS": "Recibir notificaciones de SMS",
+    "NOTIFICATIONS-EMAIL": "Recibir notificaciones por correo electrónicos",
+    "NOTIFICATIONS-SAVED-MESSAGE": "Notifications Saved",
+    "NOTIFICATIONS-UPDATE-BTN": "Update",
+    "NOTIFICATIONS-SAVED-MESSAGE": "Notificaciones actualizado correctamente",
+    "NOTIFICATIONS-ERROR-MESSAGE": "Error al actualizar Notificaciones"
+
 }

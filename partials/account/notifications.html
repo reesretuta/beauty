@@ -1,1 +1,34 @@
-notifications
+
+<div class='row'>
+  <div class='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
+    <h1>{{ 'NOTIFICATIONS-TITLE' | translate }}</h1>
+  </div>
+</div>
+
+<div class='row'>
+  <div class='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
+    <form name='notifications'>
+      <div class='form-group'>
+        <div class='checkbox'>
+          <label>
+            <input name='sms' ng-model='profile.notificationPreferences.sms' type='checkbox' tabindex='0' />
+            {{ 'NOTIFICATIONS-SMS' | translate }}
+          </label>
+        </div>
+      </div>
+      <div class='form-group'>
+        <div class='checkbox'>
+          <label>
+            <input name='email' ng-model='profile.notificationPreferences.email' type='checkbox' tabindex='1' />
+            {{ 'NOTIFICATIONS-EMAIL' | translate }}
+          </label>
+        </div>
+      </div>
+      <div class='form-group'>
+        <button type='button' class='btn btn-primary pull-right' ng-disabled='processing || forms.notifications.$invalid' ng-click='updateNotifications(profile.notificationPreferences)'>
+          <span>{{ 'NOTIFICATIONS-UPDATE-BTN' | translate }}</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

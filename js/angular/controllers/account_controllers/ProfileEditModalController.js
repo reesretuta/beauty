@@ -17,20 +17,29 @@ angular.module('app.controllers.account').controller('ProfileEditModalController
     $log.debug('ProfileEditModalController(): save(): saving...');
     $scope.processing = true;
     Addresses.validateEmail($scope.profile.email).then(function(result) {
-      $log.debug("ProfileEditModalController(): validated email: result", result);
+      $log.debug('ProfileEditModalController(): validated email: result', result);
       Account.updateClient($scope.profile).then(function (data) {
-        $log.debug('ProfileEditModalController(): save(): success data:', data);
-        $translate('PROFILE-SAVE-SUCCESS').then(function (message) {
-          $modalInstance.close({
-            profileEditInfo : message,
-            profile         : $scope.profile,
-            canceled        : false
+        if (data.statusCode && data.statusCode === 409) {
+          $translate('EMAIL_EXISTS').then(function (message) {
+            $scope.profileEditError = message;
           });
           $scope.processing = false;
-        });
+        } else {
+          $log.debug('ProfileEditModalController(): save(): success data:', data, data.e);
+          $translate('PROFILE-SAVE-SUCCESS').then(function (message) {
+            $modalInstance.close({
+              profileEditInfo : message,
+              profile         : $scope.profile,
+              canceled        : false
+            });
+            $scope.processing = false;
+          });
+        }
       }, function(error) {
         $log.error('ProfileEditModalController(): save(): error!', error);
-        $scope.profileEditError = error;
+        $translate('ERROR-UPDATING-PROFILE').then(function (message) {
+          $scope.profileEditError = message;
+        });
         $scope.processing = false;
       });
     }, function(r) {

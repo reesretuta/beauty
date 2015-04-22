@@ -772,10 +772,10 @@ router.route('/clients/:client_id').get(function (req, res) {
         res.status(200);
 
         res.end();
-    }, function(data){
+    }, function (data) {
         console.log('response from updateClient (error):', data);
-        res.json(data);
-        res.status(400);
+        res.json(data.result);
+        res.status(data.result.statusCode);
         res.end();
     });
 });

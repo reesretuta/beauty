@@ -23,10 +23,24 @@ angular.module('app.controllers.account')
             $scope.profile.newCard = {};
             $log.debug('AccountController(): $scope.profile:', $scope.profile);
 
-            $scope.namePlaceholder = $scope.profile.firstName + " " + $scope.profile.lastName;
+            $scope.namePlaceholder = $scope.profile.firstName + ' ' + $scope.profile.lastName;
 
-            $scope.updateClient = function(){
-                Account.updateClient($scope.profile);
+            $log.debug('AccountController(): isProduction?', $rootScope.isProduction);
+
+            $scope.updateNotifications = function (preferences) {
+                $log.debug('AccountController(): updateNotifications(): preferences:', preferences);
+                Account.updateClient($scope.profile).then(function (result) {
+                    $log.debug('AccountController(): updateNotifications(): success: result:', result);
+                    $translate('NOTIFICATIONS-SAVED-MESSAGE').then(function (message) {
+                        $scope.notificationsSavedMessage = message;
+                    });
+                    $log.debug('AccountController(): updateNotifications(): profile:', $scope.profile);
+                }, function (error) {
+                    $log.error('AccountController(): updateNotifications(): error:', error);
+                    $translate('NOTIFICATIONS-ERROR-MESSAGE').then(function (message) {
+                        $scope.notificationsErrordMessage = message;
+                    });
+                });
             };
 
             // account => update profile password
@@ -151,7 +165,6 @@ angular.module('app.controllers.account')
                 body = $document.find('html, body');
                 d.result.then(function(result) {
                     $log.debug('AccountController(): editAddress(): edit profile modal: saved');
-                    $scope.profileEditInfo = result.profileEditInfo;
                     $scope.profile = angular.copy(result.profile);
                     $rootScope.session.client = angular.copy(result.profile);
                     dd.resolve();

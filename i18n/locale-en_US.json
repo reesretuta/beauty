@@ -544,5 +544,16 @@
     "UNKNOWN_ERROR_HEADER": "OOPS!",
     "UNKNOWN_ERROR_BODY": "Something went wrong, please try again later",
     
-    "CATEGORY-HEADER-2" : "Spritz to uplift your senses with innovative scents. Blend to layer for a dynamic duo or trio. Create your own customized scent."
+    "CATEGORY-HEADER-2" : "Spritz to uplift your senses with innovative scents. Blend to layer for a dynamic duo or trio. Create your own customized scent.",
+
+    "CLOSE-ACCOUNT-TITLE": "Close Account",
+    "CLOSE-ACCOUNT-INSTRUCTIONS": "To close your Jafra account, please email",
+    "NOTIFICATIONS-TITLE": "Notifications",
+    "NOTIFICATIONS-SMS": "Receive SMS Notifications",
+    "NOTIFICATIONS-EMAIL": "Receive Email Notifications",
+    "NOTIFICATIONS-SAVED-MESSAGE": "Notifications Saved",
+    "NOTIFICATIONS-UPDATE-BTN": "Update Notifications",
+    "NOTIFICATIONS-SAVED-MESSAGE": "Notifications successfully updated",
+    "NOTIFICATIONS-ERROR-MESSAGE": "Error updating Notifications"
+
 }
