@@ -11,7 +11,7 @@ angular.module('app.controllers.main').controller('MainController', function ($s
     });
 
     // determine if we are on either usa.jafra.com or joinjafra.com, we use this to hide elements from live production
-    $rootScope.isProduction = /jafra/.test($location.host()) ? true : false;
+    $rootScope.isProduction = /jafra\.com/.test($location.host()) ? true : false;
     $log.debug('MainController(): $rootScope.isProduction?:', $rootScope.isProduction);
 
     $scope.login = function() {
