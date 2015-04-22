@@ -158,8 +158,11 @@
     </div>
     <!-- start promo-->
     <div id="promo" class="navbar navbar-static-top" ng-if="!inCheckout">
-      <div class="container text-center DidotLTPro-Italic">
+      <div ng-if="session.language == 'en_US'" class="container text-center DidotLTPro-Italic">
           earn up to <span class="HelveticaNeueLTStd-BdCn">50%</span> commision <a class="HelveticaNeueLTStd-BdCn" href="#why_jafra_lifestyle">LEARN MORE</a>
+      </div>
+      <div ng-if="session.language == 'es_US'" class="container text-center DidotLTPro-Italic">
+          Gane hasta un <span class="HelveticaNeueLTStd-BdCn">50%</span> de comisíon <a class="HelveticaNeueLTStd-BdCn" href="#why_jafra_lifestyle">APRENDA MAS</a>
       </div>
     </div>
     <!-- end promo-->
