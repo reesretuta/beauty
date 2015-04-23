@@ -70,8 +70,17 @@ angular.module('app.controllers.account')
                 Account.setDefaultAddress($scope.profile);
             };
             
-            $scope.addAddress = function(address) {
-                Account.setDefaultAddress($scope.profile);
+            $scope.addShipping = function(newAddress) {
+                $scope.processing = true;
+                addAddress(newAddress).then(function (data) {
+                    $log.debug('AccountController(): addAddress(): addAddress success:', data);
+                    $scope.processing = false;
+                    // $scope.profile.newShippingAddress = {};
+                }, function(error) {
+                    $log.error('AccountController(): save(): error!', error);
+                    $scope.addressError = error;
+                    $scope.processing = false;
+                });
             };
 
             // monitor input for credit card numbers, then determine type
