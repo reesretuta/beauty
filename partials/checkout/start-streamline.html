@@ -519,7 +519,7 @@
             <span class="address-name block">{{ addressData.name || (session.client.firstName + " " + session.client.lastName) }}</span>
             <span class="address-street block">{{ addressData.address1 }} {{ addressData.address2 }}</span>
             <span class="address-region block">{{ addressData.city }}, {{ addressData.state }} {{ addressData.zip }}</span>
-            <span class="phone-number block">{{ addressData.phone}}</span>
+            <span class="phone-number block">{{ addressData.phone | phone }}</span>
           </div>
           <div class="address-actions col-md-7 text-right">
             <a class="btn btn-link" ng-click="editAddress(addressData)"><i class="fa fa-pencil-square-o"></i>
@@ -722,7 +722,7 @@
               <span class="address-name block">{{ addressData.name || (session.client.firstName + " " + session.client.lastName) }}</span>
               <span class="address-street block">{{ addressData.address1 }} {{ addressData.address2 }}</span>
               <span class="address-region block">{{ addressData.city }}, {{ addressData.state }} {{ addressData.zip }}</span>
-              <span class="phone-number block">{{ addressData.phone}}</span>
+              <span class="phone-number block">{{ addressData.phone | phone }}</span>
             </div>
             <div class="address-actions col-md-7 text-right">
               <a class="btn btn-link" ng-click="editAddress(addressData)"><i class="fa fa-pencil-square-o"></i>
