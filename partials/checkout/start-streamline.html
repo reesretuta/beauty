@@ -353,7 +353,7 @@
     <div class="row">
       <div class="col-md-5">
         <div class="kit-box" ng-class="cart[0].sku == 20494 || cart[0].sku == 20495 ? 'active' : ''">
-            <img class="img-responsive" src="/img/99kit-2x.jpg"/>
+            <img ng-click="updateSku('royal')" class="img-responsive" src="/img/99kit-2x.jpg"/>
             
           <h3 ng-bind-html="'OS-KIT-PRODUCT1-NAME' | translate | unsafe"></h3>
           <div ng-if="cart[0].sku == 20494 || cart[0].sku == 20495">
@@ -429,7 +429,7 @@
       <div class="col-md-5">
 
         <div class="kit-box" ng-class="cart[0].sku == 20498 || cart[0].sku == 20499 ? 'active' : ''">
-          <img class="img-responsive" style="padding: 0 20px;" src="/img/49kit-2x.jpg"/>
+          <img ng-click="updateSku('special')" class="img-responsive" style="padding: 0 20px;" src="/img/49kit-2x.jpg"/>
           <h3 ng-bind-html="'OS-KIT-PRODUCT2-NAME' | translate | unsafe"></h3>
 
           <div ng-if="cart[0].sku != 20498 && cart[0].sku != 20499">
