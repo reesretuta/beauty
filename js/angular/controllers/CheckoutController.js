@@ -30,7 +30,8 @@ angular.module('app.controllers.checkout')
 
         // get the sku, add the product to cart
         var sku = S($routeParams.sku != null ? $routeParams.sku : "").toString();
-        $scope.sku = sku; //rees
+        
+        
         $log.debug("CheckoutController(): loading sku=", sku);
         
         //change page title
@@ -336,9 +337,11 @@ angular.module('app.controllers.checkout')
                                 $log.debug("CheckoutController(): online sponsoring: sending non-logged in user to Start");
                                 $timeout(function() {
                                     WizardHandler.wizard('checkoutWizard').goTo('Start');
-                                    // make modal appear on start
-                                    // $log.debug("CheckoutController(): Show myPromoModal");
-                                    // $('#myPromoModal').modal('show');
+                                    if ($scope.profile.language == 'en_US') {
+                                        $scope.kitSelectorLanguage = 'english';
+                                    }else{
+                                        $scope.kitSelectorLanguage = 'spanish';
+                                    }
                                 }, 0);
                             }
                         }
@@ -1181,15 +1184,35 @@ angular.module('app.controllers.checkout')
             $scope.profile.billing = angular.copy(address);
         }
         
-        $scope.selectedKitSku = null;
-
         $scope.updateSku = function(sku){
-            if ($scope.selectedKitSku && $scope.selectedKitSku === sku) {
-                return false;
-            } else {
-                $scope.selectedKitSku = sku;
+            
+            var newSku = sku; //for downdown menu clicks
+            
+            //large red button clicked
+            if (sku == 'royal') {
+                if ($scope.kitSelectorLanguage == 'english') {
+                    newSku = '20494';
+                }else{
+                    newSku = '20495';
+                }
             }
-            $scope.selectProduct(sku).then(function(){
+            if (sku == 'special'){
+                if ($scope.kitSelectorLanguage == 'english') {
+                    newSku = '20498';
+                }else{
+                    newSku = '20499';
+                }
+            }
+            
+            //dropdown menu clicked
+            if (sku == '20494' || sku == '20498') { //english
+                $scope.kitSelectorLanguage = 'english';
+            }else{ //spanish
+                $scope.kitSelectorLanguage = 'spanish';
+            }
+            
+            
+            $scope.selectProduct(newSku).then(function(){ //sets $scope.cart[0].sku
                 $log.debug("CheckoutController(): updateSku(): ", $scope.cart[0].sku);
             });
         }

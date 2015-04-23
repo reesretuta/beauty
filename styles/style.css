@@ -868,11 +868,14 @@ h3.cart-item-prod-title{
     text-align:center;
 }
 
-.kit-box:hover,
+.kit-box:hover{
+    opacity: 1;
+}
 .kit-box.active{
+    opacity: 1;
     border-color:rgba(195,0,47,1);
     box-shadow:0 0 3px rgba(195,0,47,1);
-    opacity: 1;
+    
 }
 
 .kit-box .kit-desc{

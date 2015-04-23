@@ -343,7 +343,8 @@
 
   <!-- OS KIT SELECTION-->
 
-  <div class="col-md-12" ng-if="isOnlineSponsoring && fromLead == true">
+  <!-- <div class="col-md-12" ng-if="isOnlineSponsoring && fromLead == true"> -->
+<div class="col-md-12" ng-if="isOnlineSponsoring">
   <div class="col-md-offset-3">
     <h1><span ng-bind-html="'OS-KIT-MODAL-TITLE' | translate | unsafe"></span></h1>
   </div>
@@ -352,8 +353,39 @@
     <div class="row">
       <div class="col-md-5">
         <div class="kit-box" ng-class="cart[0].sku == 20494 || cart[0].sku == 20495 ? 'active' : ''">
+            <img class="img-responsive" src="/img/99kit-2x.jpg"/>
+            
           <h3 ng-bind-html="'OS-KIT-PRODUCT1-NAME' | translate | unsafe"></h3>
+          <div ng-if="cart[0].sku == 20494 || cart[0].sku == 20495">
+              <span class="product-price"><small>Only<br></small> $99</span>
 
+                  <button ng-if="cart[0].sku == 20494 || cart[0].sku == 20495" type="button" class="btn btn-primary btn-lg" analytics-on="click" analytics-event="In-Page Buy $99" analytics-category="Buttons">
+                            Selected <i class="fa fa-check"></i>
+                            </button>
+        </div>
+        <div ng-if="cart[0].sku != 20494 && cart[0].sku != 20495">
+              <button type="button" class="btn btn-primary btn-lg" ng-click="updateSku('royal')" analytics-on="click" analytics-event="In-Page Buy $99" analytics-category="Buttons">
+                  Select <i class="fa fa-square-o"></i>
+              </button>
+          </div>
+          
+          <div class="dropdown">
+            <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+              <span ng-if="kitSelectorLanguage == 'english'">English</span>
+              <span ng-if="kitSelectorLanguage == 'spanish'">Spanish</span>
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                <li role="presentation" ng-click="updateSku('20494')" ><a role="menuitem" tabindex="-1" href="#">ENGLISH</a></li>
+                <li role="presentation" ng-click="updateSku('20495')" ><a role="menuitem" tabindex="-1" href="#">SPANISH</a></li>
+              </ul>
+          </div>
+          
+          
+          
+          
+          
+          
           <p class="color-gold HelveticaNeueLTStd-BdCn kit-desc">
             <span ng-bind-html="'OS-KIT-PRODUCT1-TITLE1' | translate | unsafe"></span>
             <span ng-bind-html="'OS-KIT-PRODUCT1-TITLE2' | translate | unsafe"></span>
@@ -362,9 +394,9 @@
           <p class="HelveticaNeueLTStd-Th kit-value" ng-bind-html="'OS-KIT-PRODUCT1-VALUE' | translate | unsafe"></p>
 
           <p ng-bind-html="'OS-KIT-PRODUCT1-TAG' | translate | unsafe"></p>
-          <img class="img-responsive" src="/img/99kit-2x.jpg"/>
+          
 
-          <div ng-if="session.language == 'en_US'" class="product-action">
+<!--          <div ng-if="session.language == 'en_US'" class="product-action">
             <span class="product-price"><small>Only<br></small> $99</span>
             <button type="button" class="btn btn-primary btn-lg" ng-click="updateSku('20494')" analytics-on="click" analytics-event="In-Page Buy $99" analytics-category="Buttons">
               Buy
@@ -381,7 +413,9 @@
             </button>
             <a href="" ng-click="updateSku('20494')" class="color-red text-left" style="display:block; margin-top:10px;">Compra
               el Kit de $99 en Inglés</a>
-          </div>
+          </div> -->
+
+
 
           <a href="" class="seemore more-link more-link-alt collapsed" data-toggle="collapse" data-target="#royalkit-details" ng-bind-html="'KIT-DETAILS-TOGGLE' | translate | unsafe"></a>
 
@@ -390,10 +424,40 @@
           </div>
         </div>
       </div>
+      
       <div class="col-md-5">
 
         <div class="kit-box" ng-class="cart[0].sku == 20498 || cart[0].sku == 20499 ? 'active' : ''">
+          <img class="img-responsive" style="padding: 0 20px;" src="/img/49kit-2x.jpg"/>
           <h3 ng-bind-html="'OS-KIT-PRODUCT2-NAME' | translate | unsafe"></h3>
+
+          <div ng-if="cart[0].sku != 20498 && cart[0].sku != 20499">
+              <span class="product-price"><small>Only<br></small> $99</span>
+              <button type="button" class="btn btn-primary btn-lg" ng-click="updateSku('special')" analytics-on="click" analytics-event="In-Page Buy $99" analytics-category="Buttons">
+                  Select <i class="fa fa-square-o"></i>
+              </button>
+          </div>
+          <div ng-if="cart[0].sku == 20498 || cart[0].sku == 20499">
+              <span class="product-price"><small>Only<br></small> $99</span>
+              <button type="button" class="btn btn-primary btn-lg" analytics-on="click" analytics-event="In-Page Buy $99" analytics-category="Buttons">
+              Selected <i class="fa fa-check"></i>
+              </button>
+          </div>
+
+
+          <div class="dropdown">
+            <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+              <span ng-if="kitSelectorLanguage == 'english'">English</span>
+              <span ng-if="kitSelectorLanguage == 'spanish'">Spanish</span>
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                <li role="presentation" ng-click="updateSku('20498')" ><a role="menuitem" tabindex="-1" href="#">ENGLISH</a></li>
+                <li role="presentation" ng-click="updateSku('20499')" ><a role="menuitem" tabindex="-1" href="#">SPANISH</a></li>
+              </ul>
+          </div>
+          
+          
 
           <p class="color-gold HelveticaNeueLTStd-BdCn kit-desc">
             <span ng-bind-html="'OS-KIT-PRODUCT2-TITLE1' | translate | unsafe"></span>
@@ -403,9 +467,9 @@
           <p class="HelveticaNeueLTStd-Th kit-value" ng-bind-html="'OS-KIT-PRODUCT2-VALUE' | translate | unsafe"></p>
 
           <p ng-bind-html="'OS-KIT-PRODUCT2-TAG' | translate | unsafe"></p>
-          <img class="img-responsive" style="padding: 0 20px;" src="/img/49kit-2x.jpg"/>
+          
 
-          <div ng-if="session.language == 'en_US'" class="product-action">
+          <!-- <div ng-if="session.language == 'en_US'" class="product-action">
             <span class="product-price"><small>Only<br></small> $49</span>
             <button type="button" class="btn btn-primary btn-lg" ng-click="updateSku('20498')" analytics-on="click" analytics-event="In-Page Buy $49" analytics-category="Buttons">
               Buy
@@ -422,7 +486,7 @@
             </button>
             <a href="" ng-click="updateSku('20498')" class="color-red text-left" style="display:block;margin-top:10px;">Compra
               el Kit de $49 en inglés</a>
-          </div>
+          </div> -->
 
           <a href="" class="seemore more-link more-link-alt collapsed" data-toggle="collapse" data-target="#specialkit-details" ng-bind-html="'KIT-DETAILS-TOGGLE' | translate | unsafe"></a>
 
