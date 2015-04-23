@@ -337,7 +337,8 @@ angular.module('app.controllers.checkout')
                                 $log.debug("CheckoutController(): online sponsoring: sending non-logged in user to Start");
                                 $timeout(function() {
                                     WizardHandler.wizard('checkoutWizard').goTo('Start');
-                                    if ($scope.profile.language == 'en_US') {
+                                    
+                                    if ($scope.session.language == 'en_US') {
                                         $scope.kitSelectorLanguage = 'english';
                                     }else{
                                         $scope.kitSelectorLanguage = 'spanish';

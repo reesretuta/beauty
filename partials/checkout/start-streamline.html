@@ -361,9 +361,10 @@
 
                   <button ng-if="cart[0].sku == 20494 || cart[0].sku == 20495" type="button" class="btn btn-primary btn-lg" analytics-on="click" analytics-event="In-Page Buy $99" analytics-category="Buttons">
                             Selected <i class="fa fa-check"></i>
-                            </button>
+                    </button>
         </div>
         <div ng-if="cart[0].sku != 20494 && cart[0].sku != 20495">
+            <span class="product-price"><small>Only<br></small> $99</span>
               <button type="button" class="btn btn-primary btn-lg" ng-click="updateSku('royal')" analytics-on="click" analytics-event="In-Page Buy $99" analytics-category="Buttons">
                   Select <i class="fa fa-square-o"></i>
               </button>
@@ -432,13 +433,13 @@
           <h3 ng-bind-html="'OS-KIT-PRODUCT2-NAME' | translate | unsafe"></h3>
 
           <div ng-if="cart[0].sku != 20498 && cart[0].sku != 20499">
-              <span class="product-price"><small>Only<br></small> $99</span>
+              <span class="product-price"><small>Only<br></small> $49</span>
               <button type="button" class="btn btn-primary btn-lg" ng-click="updateSku('special')" analytics-on="click" analytics-event="In-Page Buy $99" analytics-category="Buttons">
                   Select <i class="fa fa-square-o"></i>
               </button>
           </div>
           <div ng-if="cart[0].sku == 20498 || cart[0].sku == 20499">
-              <span class="product-price"><small>Only<br></small> $99</span>
+              <span class="product-price"><small>Only<br></small> $49</span>
               <button type="button" class="btn btn-primary btn-lg" analytics-on="click" analytics-event="In-Page Buy $99" analytics-category="Buttons">
               Selected <i class="fa fa-check"></i>
               </button>
