@@ -34,7 +34,6 @@ angular.module('app.controllers.account')
                     $translate('NOTIFICATIONS-SAVED-MESSAGE').then(function (message) {
                         $scope.notificationsSavedMessage = message;
                     });
-                    $log.debug('AccountController(): updateNotifications(): profile:', $scope.profile);
                 }, function (error) {
                     $log.error('AccountController(): updateNotifications(): error:', error);
                     $translate('NOTIFICATIONS-ERROR-MESSAGE').then(function (message) {

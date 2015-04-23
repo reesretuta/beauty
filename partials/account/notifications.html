@@ -9,6 +9,10 @@
   <div class='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
     <form name='notifications'>
       <div class='form-group'>
+        <div ng-if='notificationsSavedMessage' class='alert alert-success' role='alert' data-ng-bind-html='notificationsSavedMessage'></div>
+        <div ng-if='notificationsErrorMessage' class='alert alert-danger' role='alert' data-ng-bind-html='notificationsErrorMessage'></div>
+      </div>
+      <div class='form-group'>
         <div class='checkbox'>
           <label>
             <input name='sms' ng-model='profile.notificationPreferences.sms' type='checkbox' tabindex='0' />
