@@ -303,8 +303,9 @@
   </div>
 </div>
 
-<!-- jafra chat widget (INACTIVE)
-<div id="jaf_chat">
+
+<!-- jafra chat widget -->
+<div ng-if='isChatAvailable' id="jaf_chat">
   <div class="jaf-chat-holder">
     <div class="jaf-chat-header">
       <h4 class="jaf-chat-title">Chat with us!</h4>
@@ -315,7 +316,7 @@
     </div>
   </div>
 </div>
--->
+
 
     </div> <!-- /div #content -->
 
@@ -328,6 +329,8 @@
 
     <script src="/lib/angular-bindonce/bindonce.js"></script>
     <script src="/lib/momentjs/moment.js"></script>
+    <script src="/lib/moment-timezone/builds/moment-timezone-with-data-2010-2020.js"></script>
+    <script src="/lib/moment-timezone/moment-timezone-utils.js"></script>
     <script src="/lib/angular-route/angular-route.min.js"></script>
     <script src="/lib/angular-animate/angular-animate.js"></script>
     <script src="/lib/angular-sanitize/angular-sanitize.min.js"></script>

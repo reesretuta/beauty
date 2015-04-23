@@ -21,6 +21,21 @@ angular.module('app.controllers.onlineSponsor')
 
             $log.debug("OnlineSponsorLandingController(): changeListener(): locationChangeSuccess", url, params);
 
+            // determine chat hour availability
+            $rootScope.isChatAvailable = (function () {
+                var pacificTime, hour;
+                pacificTime = moment().tz('America/Los_Angeles').format('HHmm');
+                hour = moment(pacificTime).get('hour');
+                $log.debug('OnlineSponsorLandingController(): isChatAvailable: hour:', hour);
+                if (hour >= 8 && hour < 18) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }());
+
+            $log.debug('OnlineSponsorLandingController(): isChatAvailable:', $rootScope.isChatAvailable); 
+
             // keep cid / source in URL
             if (params.cid == null || params.source == null) {
                 Session.get().then(function(session) {
