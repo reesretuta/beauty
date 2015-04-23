@@ -2000,6 +2000,7 @@ angular.module('app.controllers.checkout')
 
                 if (!debug) {
                     Order.create(order).then(function(result) {
+                        var product;
                         $log.debug("CheckoutController(): loginOrCreateUser(): created order, moving to next step", result);
 
                         // jump to Shipping
@@ -2007,6 +2008,35 @@ angular.module('app.controllers.checkout')
                             orderId: result.orderId,
                             consultantId: consultantId
                         };
+
+                        $log.debug('CheckoutController(): Google Analaytics: adding transaction...');
+                        ga('ecommerce:addTransaction', {
+                            id: result.orderId,
+                            affiliation: ($scope.isOnlineSponsoring ? 'Online Sponsoring' : 'Client Direct'),
+                            revenue: $scope.salesTaxInfo.SubTotal,
+                            shipping: $scope.salesTaxInfo.SH,
+                            tax: $scope.salesTaxInfo.TaxAmount
+                        });
+
+                        // order success, track with ga ecommerce
+                        for (var i = 0; i < $scope.cart.length; i++) {
+                            product = $scope.cart[i];
+
+                            $log.debug('CheckoutController(): cart product add to analytics:', product);
+
+                            // add item to ga ecommerce
+                            ga('ecommerce:addItem', {
+                              id: result.orderId,
+                              name: product.name,
+                              sku: product.sku,
+                              price: product.product.currentPrice.price,
+                              quantity: product.quantity
+                            });
+                        }
+
+                        // send & clear ga ecommerce data
+                        ga('ecommerce:send');
+                        ga('ecommerce:clear');
 
                         WizardHandler.wizard('checkoutWizard').goTo('Finish');
                         $scope.processing = false;
