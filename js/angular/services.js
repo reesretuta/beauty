@@ -408,7 +408,25 @@ angular.module('app.services', ['ngResource'])
             });
 
             return d.promise;
-        }
+        };
+
+        // TMP - waiting on JCS API. Once a client is authenticated, we want to request their ids an populate the info
+        sessionService.populateConsultants = function (consultantIds) {
+            var p, promise = $q.defer(), promises = [];
+            if (!consultantIds || consultantIds.length === 0) {
+                promise.resolve([]);
+            } else {
+                for (var i = 0; i < consultantIds.length; i++) {
+                    p = $q.defer();
+
+                    promises.push(p.promise);
+                }
+                 $q.all(promises).then(function (results) {
+                    promise.resolve(results);
+                 });
+            }
+            return promise.promise;
+        };
 
         // pull from locally cached session
         sessionService.getLanguage = function() {
