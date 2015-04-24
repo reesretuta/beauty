@@ -345,47 +345,40 @@ router.route('/products/:productId').get(function (req, res) {
     });
 });
 
-// AUTHENTICATION
+// AUTHENTICATION authenticate a user (accessed at POST http://localhost:8080/authenticate)
 // ----------------------------------------------------
-router.route('/authenticate')// authenticate a user (accessed at POST http://localhost:8080/authenticate)
-    .post(function (req, res) {
-        var username = req.body.username;
-        var password = req.body.password;
 
-        logger.debug("logging in with", username, password);
+router.route('/authenticate').post(function (req, res) {
+    var username = req.body.username;
+    var password = req.body.password;
 
-        // TODO - auth & get client ID
+    logger.debug('logging in with', username, password);
 
-        // associate the client with the session
-        if (req.session.cart == null) {
-            logger.debug('setting default cart');
-            req.session.cart = [];
-        }
-        if (req.session.checkout == null) {
-            logger.debug('setting default checkout');
-            req.session.checkout = {};
-        }
-        if (req.session.language == null) {
-            logger.debug('setting default language');
-            req.session.language = 'en_US';
-        }
+    // associate the client with the session
+    if (req.session.cart == null) {
+        logger.debug('setting default cart');
+        req.session.cart = [];
+    }
+    if (req.session.checkout == null) {
+        logger.debug('setting default checkout');
+        req.session.checkout = {};
+    }
+    if (req.session.language == null) {
+        logger.debug('setting default language');
+        req.session.language = 'en_US';
+    }
 
-        jafraClient.authenticate(username, password).then(function(r) {
-            logger.debug("authentication successful", r);
-
-            // set the client in the session
-            req.session.client = r.result;
-
-
-
-            res.status(r.status);
-            res.json(req.session);
-        }, function(r) {
-            logger.debug("authentication failed");
-            res.status(r.status);
-            res.json(r.result);
-        });
+    jafraClient.authenticate(username, password).then(function(r) {
+        logger.debug("authentication successful", r);
+        req.session.client = r.result;
+        res.status(r.status);
+        res.json(req.session);
+    }, function(r) {
+        logger.debug("authentication failed");
+        res.status(r.status);
+        res.json(r.result);
     });
+});
 
 router.route('/logout')
     .post(function (req, res) {
