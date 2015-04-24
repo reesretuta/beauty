@@ -5,6 +5,8 @@ angular.module('app.controllers.main').controller('MainController', function ($s
 
     $scope.username = '';
     $scope.password = '';
+    
+    $scope.processing = false;
 
     angular.element('.login-dropdown .dropdown-menu input, .login-dropdown .dropdown-menu button').on('click', function(evt) {
         evt.stopPropagation();
@@ -17,14 +19,17 @@ angular.module('app.controllers.main').controller('MainController', function ($s
     $log.debug('MainController(): $rootScope.isStaging?:', $rootScope.isStaging);
 
     $scope.login = function() {
+        $scope.processing = true;
         Session.login($scope.username, $scope.password).then(function(session) {
             $log.debug("MainController(): logged in", session);
             // check for start page, if so -> move to 
+            $scope.processing = false;
             if ($location.path() === '/shop/checkout') {
                 WizardHandler.wizard('checkoutWizard').goTo($scope.isOnlineSponsoring ? 'Profile' : 'Shipping');
             }
         }, function(error) {
             $log.debug("MainController(): failed to login", error);
+            $scope.processing = false;
         });
     };
 

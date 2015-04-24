@@ -106,7 +106,7 @@
                   <!--<a ng-show="!loggedIn()" href="" ng-click="login()" ng-cloak>Sign In</a>-->
                   <div class="login-dropdown" ng-show="!loggedIn()" class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" style="white-space: nowrap">
-                      <span ng-bind-html="'LOGIN' | translate | unsafe"></span>
+                      <span ng-bind-html="'LOGIN' | translate | unsafe" ></span>
                     </a>
                     <ul class="dropdown-menu" role="menu">
                       <li ngif="loginError">
@@ -124,8 +124,8 @@
                       </li>
                       <li>
                         <div>
-                          <a href="/shop/forgotPassword" class="forgot-password-link pull-left"><span ng-bind-html="'I-FORGOT-MY-PASSWORD' | translate | unsafe"></span></a>
-                          <button class="btn btn-primary" type="button" ng-click="login()"><span ng-bind-html="'LOGIN' | translate | unsafe"></span></button>
+                          <a href="/shop/forgotPassword" class="forgot-password-link pull-left"><span ng-bind-html="'I-FORGOT-MY-PASSWORD' | translate | unsafe"></span></a>&nbsp;
+                          <button class="btn btn-primary" type="button" ng-click="login()" ng-class="{ 'processing' : processing }"><span ng-bind-html="'LOGIN' | translate | unsafe"></span></button>
                         </div>
                       </li>
                     </ul>
