@@ -572,11 +572,27 @@
         </div>
       </div>
     </div>
+    <div class='col-md-offset-3'>
+      <hr />
+    </div>
   </div>
 
-  <div class="col-md-offset-3">
-    <hr>
+  <div ng-if='!consultant && !isOnlineSponsoring && !isProduction && !isStaging' class='row'>
+    <div class='col-lg-6 col-md-6 col-sm-6 col-xs-6 col-md-offset-3'>
+      <h1>{{ 'CONSULTANTS-TITLE' | translate }}</h1>
+    </div>
+    <div class='row form-group'>
+      <div class='col-sm-7 col-md-7 col-lg-7 col-md-offset-3 col-lg-offset-3'>
+        <select id='consultantIdSelection' name='consultantIdSelection' ng-model='profile.consultantIdSelection' class='form-control'>
+          <option ng-repeat='consultant in session.client.consultantIds' value='{{ session.client.consultantIds[$index] }}' ng-selected='{{ $index === 0 }}'>{{ session.client.consultantIds[$index] }}</option>
+        </select>
+      </div>
+    </div>
+    <div class='col-md-offset-3'>
+      <hr />
+    </div>
   </div>
+
 
   <div class="col-sm-12" ng-if="isOnlineSponsoring || loggedIn()">
 
