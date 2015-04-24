@@ -554,6 +554,9 @@
     "NOTIFICATIONS-SAVED-MESSAGE": "Notifications Saved",
     "NOTIFICATIONS-UPDATE-BTN": "Update",
     "NOTIFICATIONS-SAVED-MESSAGE": "Notificaciones actualizado correctamente",
-    "NOTIFICATIONS-ERROR-MESSAGE": "Error al actualizar Notificaciones"
+    "NOTIFICATIONS-ERROR-MESSAGE": "Error al actualizar Notificaciones",
+
+    "CONSULTANTS-TITLE": "Reffered por la Consultora?",
+    "CONSULTANT": "Consultora"
 
 }
