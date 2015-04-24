@@ -82,11 +82,9 @@ angular.module('app.controllers.main').controller('MainController', function ($s
 
     Session.get().then(function(session) {
         $log.debug("MainController(): loaded session", session);
-        // session should now be in the root scope
-
         if (session.consultantId) {
             Consultant.get({consultantId: session.consultantId}).$promise.then(function(consultant) {
-                $log.debug("MainController(): loaded consultant", consultant);
+                $log.debug('MainController(): loaded consultant', consultant);
                 $rootScope.consultant = consultant;
             });
         }
