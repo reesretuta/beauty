@@ -12,7 +12,7 @@
 
     <div class="col-xs-6 col-lg-4" ng-repeat="ccData in client.creditCards">
       <div class="checkout-card clearfix" ng-class="{active: $first}">
-        <img ng-src="{{ getImagePath({ localPath: '/img/46x30' }) }}" class="pull-right">
+        <img src="/img/46x30" class="pull-right">
 
         <p class="card-number">
           <span>&bull;&bull;&bull;&bull;</span>
@@ -65,10 +65,10 @@
     <span ng-show="visited && (paymentForm.number.$error.minlength || paymentForm.number.$error.validator)" class="help-block" ng-class="{ 'text-danger' : paymentForm.number.$invalid && (paymentForm.number.$touched || paymentForm.number.$dirty) }"><span ng-bind-html="'INVALID-CARD-NUMBER' | translate | unsafe"></span></span>
   </div>
   <div class="col-sm-4 col-lg-4" ng-model="cardType" ng-show="!paymentForm.number.$error.minlength && !paymentForm.number.$error.validator">
-    <img class="img-responsive cardImg" ng-src="{{ CDN_URL + '/img/visa.png' }}" ng-show="profile.newCard.cardType=='Visa'">
-    <img class="img-responsive cardImg" ng-src="{{ CDN_URL + '/img/mastercard.png' }}" ng-show="profile.newCard.cardType=='MasterCard'">
-    <img class="img-responsive cardImg" ng-src="{{ CDN_URL + '/img/discover.png' }}" ng-show="profile.newCard.cardType=='Discover Card'">
-    <img class="img-responsive cardImg" ng-src="{{ CDN_URL + '/img/americanexpress.png' }}" ng-show="profile.newCard.cardType=='American Express'">
+    <img class="img-responsive cardImg" src="/img/visa.png" ng-show="profile.newCard.cardType=='Visa'">
+    <img class="img-responsive cardImg" src="/img/mastercard.png" ng-show="profile.newCard.cardType=='MasterCard'">
+    <img class="img-responsive cardImg" src="/img/discover.png" ng-show="profile.newCard.cardType=='Discover Card'">
+    <img class="img-responsive cardImg" src="/img/americanexpress.png" ng-show="profile.newCard.cardType=='American Express'">
   </div>
 </div>
 <div class="form-group">
