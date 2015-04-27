@@ -559,6 +559,9 @@
     "NOTIFICATIONS-ERROR-MESSAGE": "Error updating Notifications",
 
     "CONSULTANTS-TITLE": "Reffered by Consultant?",
-    "CONSULTANT": "Consultant"
+    "CONSULTANT": "Consultant",
+
+    "OS-QNC-TITLE": "Qualified New Consultant",
+    "OS-QNC-DESCRIPTION": "Pay $50.00 more to become a Qualified New Consultant"
 
 }
