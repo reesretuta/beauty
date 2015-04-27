@@ -27,10 +27,10 @@
       </span>
     </div>
     <div class="col-sm-4 col-lg-4" ng-model="cardType" ng-show="!editCardForm.number.$error.minlength && !editCardForm.number.$error.validator">
-      <img class="img-responsive cardImg" ng-src="{{ getImagePath({ localPath: '/img/visa.png' }) }}" ng-show="creditCard.cardType=='Visa'">
-      <img class="img-responsive cardImg" ng-src="{{ getImagePath({ localPath: '/img/mastercard.png' }) }}" ng-show="creditCard.cardType=='MasterCard'">
-      <img class="img-responsive cardImg" ng-src="{{ getImagePath({ localPath: '/img/discover.png' }) }}" ng-show="creditCard.cardType=='Discover Card'">
-      <img class="img-responsive cardImg" ng-src="{{ getImagePath({ localPath: '/img/americanexpress.png' }) }}" ng-show="creditCard.cardType=='American Express'">
+      <img class="img-responsive cardImg" ng-src="{{ CDN_URL + '/img/visa.png' }}" ng-show="creditCard.cardType=='Visa'">
+      <img class="img-responsive cardImg" ng-src="{{ CDN_URL + '/img/mastercard.png' }}" ng-show="creditCard.cardType=='MasterCard'">
+      <img class="img-responsive cardImg" ng-src="{{ CDN_URL + '/img/discover.png' }}" ng-show="creditCard.cardType=='Discover Card'">
+      <img class="img-responsive cardImg" ng-src="{{ CDN_URL + '/img/americanexpress.png' }}" ng-show="creditCard.cardType=='American Express'">
     </div>
   </div>
   <div class="form-group">

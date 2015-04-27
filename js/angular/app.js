@@ -154,7 +154,7 @@ var app = angular.module('app', ['ngRoute', 'growlNotifications', 'ngSanitize', 
 //        });
     }]).run(function ($rootScope, $animate, $log, $window, $location, Session, Consultant, $translate, $templateCache, BASE_URL, CDN_URL) {
         $rootScope.BASE_URL = BASE_URL;
-        $rootScope.CDN_URL = CDN_URL;
+        $rootScope.CDN_URL = $rootScope.isLocalhost ? '' : CDN_URL;
         $rootScope.STORE_BASE_URL = BASE_URL + "/shop";
         $rootScope.JOIN_BASE_URL = BASE_URL + "/join";
         $animate.enabled(true);
