@@ -22,29 +22,29 @@
             <div class="carousel-inner">
               <div class="item active">
                 <a href="/shop/products/20012#top">
-                  <img ng-if="session.language == 'en_US'" class="img-responsive" src="/img/blends_carousel_1.jpg">
-                  <img ng-if="session.language == 'es_US'" class="img-responsive" src="/img/blends_carousel_1_es.jpg">
+                  <img ng-if="session.language == 'en_US'" class="img-responsive" ng-src="{{ CDN_URL }}/img/blends_carousel_1.jpg">
+                  <img ng-if="session.language == 'es_US'" class="img-responsive" ng-src="{{ CDN_URL }}/img/blends_carousel_1_es.jpg">
                 </a>
               </div>
               <div class="item">
                 <a href="/shop/products/20013#top">
-                  <img ng-if="session.language == 'en_US'" class="img-responsive" src="/img/blends_carousel_2.jpg">
-                  <img ng-if="session.language == 'es_US'" class="img-responsive" src="/img/blends_carousel_2_es.jpg">
+                  <img ng-if="session.language == 'en_US'" class="img-responsive" ng-src="{{ CDN_URL }}/img/blends_carousel_2.jpg">
+                  <img ng-if="session.language == 'es_US'" class="img-responsive" ng-src="{{ CDN_URL }}/img/blends_carousel_2_es.jpg">
                 </a>
               </div>
               <div class="item">
                 <a href="/shop/products/25428#top">
-                  <img class="img-responsive" src="/img/blends_carousel_3.jpg">
+                  <img class="img-responsive" ng-src="{{ CDN_URL }}/img/blends_carousel_3.jpg">
                 </a>
               </div>
               <div class="item">
                 <a href="/shop/products/25427#top">
-                  <img class="img-responsive" src="/img/blends_carousel_4.jpg">
+                  <img class="img-responsive" ng-src="{{ CDN_URL }}/img/blends_carousel_4.jpg">
                 </a>
               </div>
               <div class="item">
                 <a href="/shop/products/25426#top">
-                  <img class="img-responsive" src="/img/blends_carousel_5.jpg">
+                  <img class="img-responsive" ng-src="{{ CDN_URL }}/img/blends_carousel_5.jpg">
                 </a>
               </div>
             </div>
@@ -60,10 +60,9 @@
         </div>
         <div class="col-xs-12 col-sm-4 col-lg-4 pull-right">
             <a data-toggle="modal" data-target="#videoModal">
-                <img class="img-responsive" src="/img/blends_video_button.jpg">
+                <img class="img-responsive" ng-src="{{ CDN_URL }}/img/blends_video_button.jpg">
             </a>
             <br><br>
-            <!--<a href="http://www.jafra.com/corporate/products/skin-care-test" target="_blank" ng-bind-html="'skincare_profile' | translate | unsafe"></a>-->
         </div>
         <div class="col-xs-12 col-sm-8 col-lg-8">
           <p class="lead">
@@ -75,22 +74,7 @@
         </div>
         <!--/span-->
     </section><!--/row-->
-    
-    
-    
-    
-    
-        
-        
-    <!-- <div class="category-header col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <img class="img-responsive" src="http://www.jafrausa.com/sharedfiles/websites/Corporate-US/pages/home/zones/Zone1/zoneContents/default/content[4]/en_US/resources/main/file/150401_usa_banner_s4_en.jpg" />
-    </div>
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-    </div> 
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <hr />
-    </div>-->
+
     <div class="ccol-xs-12 col-sm-12 col-md-12 col-lg-12" ng-cloak ng-if="((products | filter:searchFunction).length == 0) && loading != true && search != null && search.query != null && search.query != ''">No products matched search:&nbsp;&nbsp;<b><i>{{query}}</i></b></div>
 
     <div infinite-scroll="loadMoreProducts()" infinite-scroll-distance="0" infinite-scroll-disabled="loading" class="clearfix">

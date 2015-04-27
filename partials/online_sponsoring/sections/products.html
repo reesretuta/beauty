@@ -19,26 +19,26 @@
                         <!-- Wrapper for slides -->
                         <div class="carousel-inner">
                             <div class="item active">
-                                <a ng-if="session.language == 'en_US'" data-toggle="modal" data-target="#prodvideoModal" analytics-on="click" analytics-event="Products Dynamics Video" analytics-category="Content"><img class="img-responsive" src="/img/products-dynamics-video.jpg"></a>
-                                <a ng-if="session.language == 'es_US'" data-toggle="modal" data-target="#prodvideoModal" analytics-on="click" analytics-event="Products Dynamics Video" analytics-category="Content"><img class="img-responsive" src="/img/products-dynamics-video_es.jpg"></a>
+                                <a ng-if="session.language == 'en_US'" data-toggle="modal" data-target="#prodvideoModal" analytics-on="click" analytics-event="Products Dynamics Video" analytics-category="Content"><img class="img-responsive" ng-src="{{ CDN_URL }}/img/products-dynamics-video.jpg"></a>
+                                <a ng-if="session.language == 'es_US'" data-toggle="modal" data-target="#prodvideoModal" analytics-on="click" analytics-event="Products Dynamics Video" analytics-category="Content"><img class="img-responsive" ng-src="{{ CDN_URL }}/img/products-dynamics-video_es.jpg"></a>
                             </div>
                             <div class="item">
-                                <img class="img-responsive" src="/img/products_royalJelly.jpg">
+                                <img class="img-responsive" ng-src="{{ CDN_URL }}/img/products_royalJelly.jpg">
                             </div>
                             <div class="item">
-                                <img class="img-responsive" src="/img/products_PRO.jpg">
+                                <img class="img-responsive" ng-src="{{ CDN_URL }}/img/products_PRO.jpg">
                             </div>
                             <div class="item">
-                                <img class="img-responsive" src="/img/products-toiletries.jpg">
+                                <img class="img-responsive" ng-src="{{ CDN_URL }}/img/products-toiletries.jpg">
                             </div>
                             <div class="item">
-                                <img class="img-responsive" src="/img/products_fragranceWomen.jpg">
+                                <img class="img-responsive" ng-src="{{ CDN_URL }}/img/products_fragranceWomen.jpg">
                             </div>
                             <div class="item">
-                                <img class="img-responsive" src="/img/products_fragranceMen.jpg">
+                                <img class="img-responsive" ng-src="{{ CDN_URL }}/img/products_fragranceMen.jpg">
                             </div>
                             <div class="item">
-                                <img class="img-responsive" src="/img/products_color.jpg">
+                                <img class="img-responsive" ng-src="{{ CDN_URL }}/img/products_color.jpg">
                             </div>
                         </div><!-- Controls -->
                          <a class="left carousel-control" data-target="#carousel-product-generic" role="button" data-slide="prev" analytics-on="click" analytics-event="Product Carousel Prev" analytics-category="Content">
@@ -87,7 +87,7 @@
 
                 <div class="row padtop padbottom subrow">
                     <div class="col-md-3">
-                        <img src="/img/products-skincare.png" class="img-responsive" />
+                        <img ng-src="{{ CDN_URL }}/img/products-skincare.png" class="img-responsive" />
                     </div>
                     <div class="col-md-8">
                         <h3 class="titlify color-gold HelveticaNeueLTStd-BdCn"><span ng-bind-html="'OS-PRODUCTS-SKINCARE' | translate | unsafe"></span></h3>
@@ -97,7 +97,7 @@
 
                 <div class="row padbottom subrow">
                     <div class="col-md-3">
-                        <img src="/img/products-fragrance.png" class="img-responsive" />
+                        <img ng-src="{{ CDN_URL }}/img/products-fragrance.png" class="img-responsive" />
                     </div>
                     <div class="col-md-5">
                         <h3 class="titlify color-gold HelveticaNeueLTStd-BdCn"><span ng-bind-html="'OS-PRODUCTS-FRAGRANCE' | translate | unsafe"></span></h3>
@@ -107,7 +107,7 @@
 
                 <div class="row padbottom subrow">
                     <div class="col-md-3">
-                        <img src="/img/products-color.png" class="img-responsive" />
+                        <img ng-src="{{ CDN_URL }}/img/products-color.png" class="img-responsive" />
                     </div>
                     <div class="col-md-5">
                         <h3 class="titlify color-gold HelveticaNeueLTStd-BdCn"><span ng-bind-html="'OS-PRODUCTS-COLOR' | translate | unsafe"></span></h3>
@@ -117,7 +117,7 @@
 
                 <div class="row subrow">
                     <div class="col-md-3">
-                        <img src="/img/products-toiletries.png" class="img-responsive" />
+                        <img ng-src="{{ CDN_URL }}/img/products-toiletries.png" class="img-responsive" />
                     </div>
                     <div class="col-md-5">
                         <h3 class="titlify color-gold HelveticaNeueLTStd-BdCn"><span ng-bind-html="'OS-PRODUCTS-TOILETRIES' | translate | unsafe"></h3>
