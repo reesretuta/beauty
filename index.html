@@ -280,12 +280,33 @@
 
         <div class="legalcopy">
           <p>
-            <a href="" data-toggle="modal" data-target=".bs-terms-modal-lg"><span ng-bind-html="'TERMS' | translate | unsafe"></span></a> | <a href="" data-toggle="modal" data-target=".bs-privacy-modal-lg"><span ng-bind-html="'PRIVACY' | translate | unsafe"></span></a>
+            <a href="" data-toggle="modal" data-target=".bs-terms-modal-lg"><span ng-bind-html="'TERMS' | translate | unsafe"></span></a> | 
+            <a href="" data-toggle="modal" data-target=".bs-privacy-modal-lg"><span ng-bind-html="'PRIVACY' | translate | unsafe"></span></a> | 
+            <a href="" data-toggle="modal" data-target=".bs-support-modal-lg"><span ng-bind-html="'SUPPORT' | translate | unsafe"></span></a>
           </p>
           <p><span ng-bind-html="'COPYRIGHT' | translate | unsafe"></span></p>
         </div>
 
 
+<div class="modal fade bs-support-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"><span ng-bind-html="'CLOSE' | translate | unsafe"></span></span></button>
+        <h4 class="modal-title" id="myModalLabel"><span ng-bind-html="'CONTACT-INFO-LABEL' | translate | unsafe"></span></h4>
+      </div>
+      <div class="modal-body">
+          <div class="agreement-content">
+             <!--terms partial goes here-->
+              <div>{{ 'SUPPORT-DESCRIPTION' | translate }}</div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button data-dismiss="modal" class="btn btn-primary" type="button"><span ng-bind-html="'CLOSE' | translate | unsafe"></span></button> 
+      </div>
+    </div>
+  </div>
+</div>
 <div class="modal fade bs-terms-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
