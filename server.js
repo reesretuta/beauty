@@ -1517,6 +1517,11 @@ app.get('/js/config.js', function(req, res) {
 //    next();
 //});
 
+// TODO: See JAFOS-8 - EH
+app.get('/:shortened/join', function (req, res, next) {
+    return res.redirect('https://usa.jafra.com/join');
+});
+
 app.get('/*', function (req, res, next) {
     try {
         if (req.headers['user-agent'].indexOf("MSIE") >= 0) {
@@ -1535,7 +1540,7 @@ app.get('/*', function (req, res, next) {
     } catch (e) {}
     next();
 });
-
+    
 app.get('/$', function (req, res) {
     logger.debug('root');
     res.redirect("http://www.jafra.com/");
