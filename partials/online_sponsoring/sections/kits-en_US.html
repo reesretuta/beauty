@@ -12,7 +12,7 @@
             <div class="row">
               <div class="kit-encapsulate clearfix">
                 <div class="hidden-md hidden-lg col-md-6">
-                    <img class="img-responsive" src="/img/99kit-2x.jpg">
+                    <img class="img-responsive" ng-src="{{ getImagePath({ localPath: '/img/99kit-2x.jpg' }) }}" />
                 </div>
                 <div class="col-md-6">
                     <div class="section-copy">
@@ -35,8 +35,8 @@
                     </div>
                 </div>
                 <div class="hidden-xs hidden-sm col-md-6">
-                    <img class="img-responsive" src="/img/99kit-2x.jpg">
-                    <span class="pull-right color-purple" style="margin-right: 15px;"><span style="text-decoration:none; margin-right: 10px;"><img src="/img/icons-video.gif" width="25px" /> <img src="/img/icons-booklets.gif" width="25px" /></span> TRAINING INCLUDED!</span>
+                    <img class="img-responsive" ng-src="{{ getImagePath({ localPath: '/img/99kit-2x.jpg' }) }}" />
+                    <span class="pull-right color-purple" style="margin-right: 15px;"><span style="text-decoration:none; margin-right: 10px;"><img ng-src="{{ getImagePath({ localPath: '/img/icons-video.gif' }) }}" width="25px" /> <img ng-src="{{ getImagePath({ localPath: '/img/icons-booklets.gif' }) }}" width="25px" /></span> TRAINING INCLUDED!</span>
                 </div><!-- collapsed section content (default collapsed) -->
                 <div id="more_royal" class="col-md-12 collapse">
                     <div class="section-copy">
@@ -53,35 +53,11 @@
         </div>
     </section>
 
-<!-- Modal 
-<div class="modal fade" id="more_promo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">FREE FOR A LIMITED TIME</h4>
-      </div>
-      <div class="modal-body">
-        <ul>
-            <li>Royal Jelly Milk Balm Original Formula in a Special Decanter</li>
-            <li>Advanced Dynamics Hydrating Sachet (3)</li>
-            <li>Advanced Dynamics Balancing Sachet (3)</li>
-            <li>Advanced Dynamics Mattifying Sachet (3)</li>
-            <li>Advanced Dynamics Soothing Sachet (3)</li>
-        </ul>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>-->
-
     <section id="skincare_starter_kit" class="subsection">
         <div class="container subcontainer">
             <div class="row mobile_tablet_centerfix">
                 <div class="col-md-5">
-                    <img class="img-responsive" src="/img/49kit-2x.jpg">
+                    <img class="img-responsive" ng-src="{{ getImagePath({ localPath: '/img/49kit-2x.jpg' }) }}" />
                 </div>
                 <div class="col-md-6">
                     <div class="section-copy">
@@ -94,7 +70,7 @@
 
                         <p>Start now and discover freedom with this Special Business Kit. Perfect for consultants on a budget who want to ramp up.</p>
 
-                        <span class="pull-right color-purple hidden-xs" style="margin: 30px 15px 0 0;"><span style="text-decoration:none; margin-right: 10px;"><img src="/img/icons-video.gif" width="25px" /> <img src="/img/icons-booklets.gif" width="25px" /></span> TRAINING INCLUDED!</span>
+                        <span class="pull-right color-purple hidden-xs" style="margin: 30px 15px 0 0;"><span style="text-decoration:none; margin-right: 10px;"><img ng-src="{{ getImagePath({ localPath: '/img/icons-video.gif' }) }}" width="25px" /> <img ng-src="{{ getImagePath({ localPath: '/img/icons-booklets.gif' }) }}" width="25px" /></span> TRAINING INCLUDED!</span>
 
                         <a data-target="#more_skincare" data-toggle="collapse" class="more-link more-link-alt collapsed" style="margin-top: 30px;" analytics-on="click" analytics-event="In-Page $49 Kit Details" analytics-category="Content"><span>SEE INSIDE</span></a>
 

@@ -23,11 +23,11 @@
 
                               <div class="legacy_wrapper text-center clearfix">
                                 <div class="timeline-photo pull-left">
-                                  <img src="/img/1956.jpg" class="img-circle img-responsive" /><br />
+                                  <img ng-src="{{ getImagePath({ localPath: '/img/1956.jpg' }) }}" class="img-circle img-responsive" /><br />
                                   <span class="biggify color-grey HelveticaNeueLTStd-BdCn">1956</span>
                                 </div>
                                 <div class="timeline-photo pull-right">
-                                  <img src="/img/today.jpg" class="img-circle img-responsive" /><br />
+                                  <img ng-src="{{ getImagePath({ localPath: '/img/today.jpg' }) }}" class="img-circle img-responsive" /><br />
                                   <span class="biggify color-grey HelveticaNeueLTStd-BdCn"><span ng-bind-html="'OS-ABOUT-TODAY' | translate | unsafe"></span></span>
                                 </div>
                               </div>

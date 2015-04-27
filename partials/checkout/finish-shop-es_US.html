@@ -72,10 +72,10 @@
       <h3><span ng-bind-html="'PAY_TIT1' | translate | unsafe"></span></h3>
       <div class="checkout-card clearfix active">
         <span class="pull-left">{{ profile.card.name }}</span>
-        <img class="pull-right img-responsive cardImg" src="/img/visa.png" ng-show="profile.card.cardType=='Visa'">
-        <img class="pull-right img-responsive cardImg" src="/img/mastercard.png" ng-show="profile.card.cardType=='MasterCard'">
-        <img class="pull-right img-responsive cardImg" src="/img/discover.png" ng-show="profile.card.cardType=='Discover Card'">
-        <img class="pull-right img-responsive cardImg" src="/img/americanexpress.png" ng-show="profile.card.cardType=='American Express'">
+        <img class="pull-right img-responsive cardImg" ng-src="{{ getImagePath({ localPath: '/img/visa.png' }) }}" ng-show="profile.card.cardType=='Visa'">
+        <img class="pull-right img-responsive cardImg" ng-src="{{ getImagePath({ localPath: '/img/mastercard.png' }) }}" ng-show="profile.card.cardType=='MasterCard'">
+        <img class="pull-right img-responsive cardImg" ng-src="{{ getImagePath({ localPath: '/img/discover.png' }) }}" ng-show="profile.card.cardType=='Discover Card'">
+        <img class="pull-right img-responsive cardImg" ng-src="{{ getImagePath({ localPath: '/img/americanexpress.png' }) }}" ng-show="profile.card.cardType=='American Express'">
         <p class="card-number">
           <span>&bull;&bull;&bull;&bull;</span>
           <span>&bull;&bull;&bull;&bull;</span>

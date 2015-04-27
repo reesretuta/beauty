@@ -105,10 +105,10 @@
       <h3><span ng-bind-html="'PAY_TIT1' | translate | unsafe"></span></h3>
       <div class="checkout-card clearfix active">
         <span class="pull-left">{{profile.card.name}}</span>
-        <img class="pull-right img-responsive cardImg" src="/img/visa.png" ng-show="profile.card.cardType=='Visa'">
-        <img class="pull-right img-responsive cardImg" src="/img/mastercard.png" ng-show="profile.card.cardType=='MasterCard'">
-        <img class="pull-right img-responsive cardImg" src="/img/discover.png" ng-show="profile.card.cardType=='Discover Card'">
-        <img class="pull-right img-responsive cardImg" src="/img/americanexpress.png" ng-show="profile.card.cardType=='American Express'">
+        <img class="pull-right img-responsive cardImg" ng-src="{{ getImagePath({ localPath: '/img/visa.png' }) }}" ng-show="profile.card.cardType=='Visa'">
+        <img class="pull-right img-responsive cardImg" ng-src="{{ getImagePath({ localPath: '/img/mastercard.png' }) }}" ng-show="profile.card.cardType=='MasterCard'">
+        <img class="pull-right img-responsive cardImg" ng-src="{{ getImagePath({ localPath: '/img/discover.png' }) }}" ng-show="profile.card.cardType=='Discover Card'">
+        <img class="pull-right img-responsive cardImg" ng-src="{{ getImagePath({ localPath: '/img/americanexpress.png' }) }}" ng-show="profile.card.cardType=='American Express'">
         <p class="card-number">
           <span>&bull;&bull;&bull;&bull;</span>
           <span>&bull;&bull;&bull;&bull;</span>
@@ -190,7 +190,7 @@
   <div class="row">
     <div class="col-md-5 col-md-offset-1">
       <div class="text-left">
-        <img src="/img/november-brochure-es.jpg" class="pull-left" style="padding: 0px 10px;" width="135px"/>
+        <img ng-src="{{ getImagePath({ localPath: 'november-brochure-es.jpg' }) }}" class="pull-left" style="padding: 0px 10px;" width="135px"/>
         <h3>Folleto de Temporada</h3>
         <p>Una versión digital de nuestro folleto de la temporada está ya disponible.</p>
         <a class="btn btn-primary HelveticaNeueLTStd-BdCn btn-med" role="button" href="http://virtualopportunity.jafrausa.com/flipbooks/2015/apr/2015-april-brochure-es/" target="_blank">Ver Folleto</a>
@@ -198,7 +198,7 @@
     </div>
     <div class="col-md-5 col-md-offset-1">
       <div class="text-left">
-        <img src="/img/productcatalog-brochure-es.jpg" class="pull-left" style="padding: 0px 10px;" width="135px"/>
+        <img ng-src="{{ getImagePath({ localPath: '/img/productcatalog-brochure-es.jpg' }) }}" class="pull-left" style="padding: 0px 10px;" width="135px"/>
         <h3>Catálogo de Productos</h3>
         <p>Más herramientas de ventas incluyendo nuestro catálogo en línea</p>
         <a class="btn btn-primary HelveticaNeueLTStd-BdCn btn-med" role="button" href="http://virtualopportunity.jafrausa.com/flipbooks/2015/mar/2015-mar-prod-catalog-es/" target="_blank">Ver Folleto</a>

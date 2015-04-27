@@ -10,10 +10,10 @@
     <div class='col-xs-6 col-lg-4' ng-repeat='ccData in session.client.creditCards'>
       <div class='checkout-card clearfix' ng-class='{ active: ((ccData.id == profile.card.id)) }'>
         <span class='pull-left'>{{ ccData.name }}</span>
-        <img class='pull-right img-responsive cardImg' src='/img/visa.png' ng-show='ccData.cardType == "Visa"'>
-        <img class='pull-right img-responsive cardImg' src='/img/mastercard.png' ng-show='ccData.cardType == "MasterCard"'>
-        <img class='pull-right img-responsive cardImg' src='/img/discover.png' ng-show='ccData.cardType == "Discover Card"'>
-        <img class='pull-right img-responsive cardImg' src='/img/americanexpress.png' ng-show='ccData.cardType == "American Express"'>
+        <img class='pull-right img-responsive cardImg' ng-src="{{ getImagePath({ localPath: '/img/visa.png' }) }}" ng-show='ccData.cardType == "Visa"'>
+        <img class='pull-right img-responsive cardImg' ng-src="{{ getImagePath({ localPath: '/img/mastercard.png' }) }}" ng-show='ccData.cardType == "MasterCard"'>
+        <img class='pull-right img-responsive cardImg' ng-src="{{ getImagePath({ localPath: '/img/discover.png' }) }}" ng-show='ccData.cardType == "Discover Card"'>
+        <img class='pull-right img-responsive cardImg' ng-src="{{ getImagePath({ localPath: '/img/americanexpress.png' }) }}" ng-show='ccData.cardType == "American Express"'>
         <p class='card-number'>
           <span>&bull;&bull;&bull;&bull;</span>
           <span>&bull;&bull;&bull;&bull;</span>
@@ -56,10 +56,10 @@
         <span ng-show='visited && (forms.paymentForm.number.$error.minlength || forms.paymentForm.number.$error.validator)' class='help-block' ng-class="{ 'text-danger' : forms.paymentForm.number.$invalid && (forms.paymentForm.number.$touched || forms.paymentForm.number.$dirty) }"><span ng-bind-html="'INVALID-CARD-NUMBER' | translate | unsafe"></span></span>
       </div>
       <div class='col-sm-3 col-lg-4' ng-model='cardType' ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-show='!forms.paymentForm.number.$error.minlength && !forms.paymentForm.number.$error.validator'>
-        <img class='img-responsive cardImg' src='/img/visa.png' ng-show="profile.newCard.cardType == 'Visa'">
-        <img class='img-responsive cardImg' src='/img/mastercard.png' ng-show="profile.newCard.cardType == 'MasterCard'">
-        <img class='img-responsive cardImg' src='/img/discover.png' ng-show="profile.newCard.cardType == 'Discover Card'">
-        <img class='img-responsive cardImg' src='/img/americanexpress.png' ng-show="profile.newCard.cardType == 'American Express'">
+        <img class='img-responsive cardImg' ng-src="{{ getImagePath({ localPath: '/img/visa.png' }) }}" ng-show="profile.newCard.cardType == 'Visa'">
+        <img class='img-responsive cardImg' ng-src="{{ getImagePath({ localPath: '/img/mastercard.png' }) }}" ng-show="profile.newCard.cardType == 'MasterCard'">
+        <img class='img-responsive cardImg' ng-src="{{ getImagePath({ localPath: '/img/discover.png' }) }}" ng-show="profile.newCard.cardType == 'Discover Card'">
+        <img class='img-responsive cardImg' ng-src="{{ getImagePath({ localPath: '/img/americanexpress.png' }) }}" ng-show="profile.newCard.cardType == 'American Express'">
       </div>
     </div>
     <div class="form-group">
