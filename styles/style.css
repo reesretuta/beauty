@@ -1490,7 +1490,9 @@ fieldset[disabled].fieldset-no-bg {
 }
 
 
-
+.lookupResults{
+    margin-top:20px;
+}
 
 
 /*video modal for CD and OS*/

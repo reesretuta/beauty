@@ -1161,6 +1161,23 @@ angular.module('app.services', ['ngResource'])
 
             return d.promise;
         }
+        
+        consultantService.search = function(zip) {
+            var d = $q.defer();
+            initialized.promise.then(function() {
+                $http.get(API_URL + '/searchconsultants/' + zip, {}).success(function(data, status, headers, config) {
+                    d.resolve(data);
+                }).error(function(data, status, headers, config) {
+                    if (status == 404) {
+                        d.resolve(true);
+                    } else {
+                        d.reject(false);
+                    }
+                });
+            });
+            return d.promise;
+        }
+        
 
         consultantService.create = function(consultant) {
             var d = $q.defer();
@@ -1745,7 +1762,7 @@ angular.module('app.services', ['ngResource'])
 
         return pgpService;
     })
-
+    
     .factory('CreditCards', function ($resource, $http, $log, $q, Session, PGP, API_URL) {
         var creditCardService = $resource(API_URL + '/clients/:clientId/creditCards/:creditCardId', {creditCardId: '@_id'}, {
             'update': { method:'PUT' }
