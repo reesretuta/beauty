@@ -2106,7 +2106,7 @@ angular.module('app.controllers.checkout')
             $log.debug('CheckoutController(): getConsultantId(): $scope.profile.consultantIdSelection:', $scope.profile.consultantIdSelection);
             if (!consultantId) {
                 if ($rootScope.session.client.consultantIds && $rootScope.session.client.consultantIds.length > 0) {
-                    consultantId = $rootScope.session.client.consultantIds[0];
+                    consultantId = $rootScope.session.client.consultantIds[0].id;
                 }
                 if ($rootScope.session.client.lastConsultantId && consultantId == null) {
                     consultantId = $rootScope.session.client.lastConsultantId;
