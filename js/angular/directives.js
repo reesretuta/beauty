@@ -194,6 +194,8 @@ angular.module('app.directives', [])// directives
             scope: true,
             restrict: 'A',
             link: function ($scope, element, attrs) {
+                addthis.init();
+                addthis.toolbox($(element).get());
                 addthis.counter();
             }
         }

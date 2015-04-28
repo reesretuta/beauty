@@ -1523,6 +1523,9 @@ fieldset[disabled].fieldset-no-bg {
   text-decoration: none;
 }
 
+.addthis-product{
+    display:inline-block;
+}
 
 #promo{
     background:#007ba4;
