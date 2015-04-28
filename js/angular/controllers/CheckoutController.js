@@ -31,7 +31,6 @@ angular.module('app.controllers.checkout')
         // get the sku, add the product to cart
         var sku = S($routeParams.sku != null ? $routeParams.sku : "").toString();
         
-        
         $log.debug("CheckoutController(): loading sku=", sku);
         
         //change page title
@@ -84,6 +83,10 @@ angular.module('app.controllers.checkout')
 
         // set current step
         $scope.currentStep = 'Start';
+
+        if ($rootScope.session.client.consultantIds && $rootScope.session.client.consultantIds.length > 0) {
+            $scope.consultantIdSelection = $rootScope.session.client.consultantIds[$rootScope.session.client.consultantIds.length - 1].id;
+        }
 
         if (urlStep == null || urlStep == "") {
             $location.search("step", 'Start');
@@ -2102,19 +2105,16 @@ angular.module('app.controllers.checkout')
 
         function getConsultantId() {
             var consultantId = $rootScope.session.consultantId;
-            $log.debug('CheckoutController(): getConsultantId(): $rootScope.session.consultantId:', $rootScope.session.consultantId);
-            $log.debug('CheckoutController(): getConsultantId(): $scope.profile.consultantIdSelection:', $scope.profile.consultantIdSelection);
             if (!consultantId) {
-                if ($rootScope.session.client.consultantIds && $rootScope.session.client.consultantIds.length > 0) {
+                if ($scope.consultantIdSelection) {
+                    consultantId = $scope.consultantIdSelection;
+                } else if ($rootScope.session.client.consultantIds && $rootScope.session.client.consultantIds.length > 0) {
                     consultantId = $rootScope.session.client.consultantIds[0].id;
-                }
-                if ($rootScope.session.client.lastConsultantId && consultantId == null) {
+                } else if ($rootScope.session.client.lastConsultantId && consultantId == null) {
                     consultantId = $rootScope.session.client.lastConsultantId;
                 }
-                if ($scope.profile.consultantIdSelection) {
-                    consultantId = $scope.profile.consultantIdSelection;
-                }
             }
+            $log.debug('CheckoutController(): getConsultantId(): consultantId:', consultantId);
             return consultantId;
         }
 
