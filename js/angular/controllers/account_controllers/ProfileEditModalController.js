@@ -1,5 +1,5 @@
 
-angular.module('app.controllers.account').controller('ProfileEditModalController', function ($document, $window, $modalInstance, $q, $scope, $log, $translate, Addresses, Account, profile) {
+angular.module('app.controllers.account').controller('ProfileEditModalController', function ($document, $window, $modalInstance, $q, $rootScope, $scope, $log, $translate, Addresses, Account, profile) {
     
   $log.debug('ProfileEditModalController(): open(): address:', profile);
 
@@ -25,11 +25,11 @@ angular.module('app.controllers.account').controller('ProfileEditModalController
           });
           $scope.processing = false;
         } else {
-          $log.debug('ProfileEditModalController(): save(): success data:', data, data.e);
+          $log.debug('ProfileEditModalController(): save(): success data:', data);
           $translate('PROFILE-SAVE-SUCCESS').then(function (message) {
             $modalInstance.close({
               profileEditInfo : message,
-              profile         : $scope.profile,
+              profile         : angular.copy(data),
               canceled        : false
             });
             $scope.processing = false;
