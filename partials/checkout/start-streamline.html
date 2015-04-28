@@ -504,6 +504,39 @@
 
   <!-- OS KIT END-->
 
+  <!-- qnc - qualified new consultant -->
+
+  <div ng-if='isOnlineSponsoring && !isProduction && !isStaging' class='col-md-12'>
+    <div class='row'>
+      <div class='col-md-offset-3 col-mg-7'>
+        <hr />
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col-md-offset-3 col-mg-7'>
+        <h1><span ng-bind-html="'OS-QNC-TITLE' | translate | unsafe"></span></h1>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col-md-offset-3 col-mg-7'>
+        <div class='form-group'>
+          <div class='checkbox'>
+            <label>
+              <input name='qnc' ng-model='profile.qnc' type='checkbox' />
+              {{ 'OS-QNC-DESCRIPTION' | translate }}
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col-md-offset-3 col-mg-7'>
+        <hr />
+      </div>
+    </div>
+  </div>
+
+
   <!-- SHIPPING -->
   <!-- <pre>{{profile}}</pre> -->
 
@@ -585,7 +618,7 @@
     <div class='row form-group'>
       <div class='col-sm-7 col-md-7 col-lg-7 col-md-offset-3 col-lg-offset-3'>
         <select id='consultantIdSelection' name='consultantIdSelection' ng-model='profile.consultantIdSelection' class='form-control'>
-          <option ng-repeat='consultant in session.client.consultantIds' value='{{ session.client.consultantIds[$index] }}' ng-selected='{{ $index === 0 }}'>{{ session.client.consultantIds[$index] }}</option>
+          <option ng-repeat='consultant in session.client.consultantIds' value='{{ session.client.consultantIds[$index] }}' ng-selected='{{ $index === (session.client.consultantIds.length - 1) }}'>{{ consultant.firstName + ' ' + consultant.lastName }}</option>
         </select>
       </div>
     </div>

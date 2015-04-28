@@ -58,7 +58,7 @@ angular.module('app.controllers.checkout')
         // in memory on client only
         $scope.profile = {
             sponsorId: '',
-            source: "web",
+            source: 'web',
             customerStatus: 'new',
             language: 'en_US',
             firstName: '',
@@ -71,10 +71,15 @@ angular.module('app.controllers.checkout')
             shipping: null,
             newShippingAddress: {},
             newBillingAddress: {},
+            notificationPreferences: {
+                sms   : false,
+                email : true
+            },
             billSame: true,
             agree: true,
             newCard: {},
-            card: {}
+            card: {},
+            qnc: false
         };
 
         // set current step
@@ -134,10 +139,10 @@ angular.module('app.controllers.checkout')
         $scope.processingOrder = false;
 
         // join addition params
-        $scope.profile.firstName=params.firstName;
-        $scope.profile.lastName=params.lastName;
-        $scope.profile.loginEmail=params.loginEmail;
-        $scope.profile.phoneNumber=params.phoneNumber;
+        $scope.profile.firstName = params.firstName;
+        $scope.profile.lastName = params.lastName;
+        $scope.profile.loginEmail = params.loginEmail;
+        $scope.profile.phoneNumber = params.phoneNumber;
 
         delete $location.$$search.firstName;
         delete $location.$$search.lastName;
@@ -1550,7 +1555,7 @@ angular.module('app.controllers.checkout')
             var defer = $q.defer();
 
             if ($scope.profile.shipping) {
-                $log.debug("CheckoutController(): fetchSalesTax(): fetching sales tax for item", $scope.cart, $scope.profile.shipping.geocode);
+                $log.debug("CheckoutController(): fetchSalesTax(): fetching sales tax for item", $scope.cart, $scope.profile.shipping.geocode, 'profile.qnc?', $scope.profile.qnc);
 
                 // build sales tax calculation
                 var products = [];
