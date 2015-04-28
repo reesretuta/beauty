@@ -194,12 +194,11 @@ angular.module('app.directives', [])// directives
             scope: true,
             restrict: 'A',
             link: function ($scope, element, attrs) {
-                $timeout(function() {
-                    addthis.init();
-                    addthis.toolbox($(element).get());
-                    addthis.counter();
-                }, 2000);
-
+                addthis.init();
+                addthis.toolbox($(element).get());
+                addthis.counter();
+                // $timeout(function() {
+                // }, 2000);
             }
         }
     }]);
