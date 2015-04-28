@@ -27,12 +27,16 @@ angular.module('app.controllers.account')
 
             $log.debug('AccountController(): isProduction?', $rootScope.isProduction);
 
-            $scope.updateNotifications = function (preferences) {
-                $log.debug('AccountController(): updateNotifications(): preferences:', preferences);
-                Account.updateClient($scope.profile).then(function (result) {
-                    $log.debug('AccountController(): updateNotifications(): success: result:', result);
+            $scope.updateNotifications = function () {
+                $scope.profile.notificationPreferences.email = $scope.profile.notificationPreferences.email ? 1 : 0;
+                $scope.profile.notificationPreferences.sms = $scope.profile.notificationPreferences.sms ? 1 : 0;
+                $log.debug('AccountController(): updateNotifications(): $scope.profile:', $scope.profile);
+                Account.updateClient($scope.profile).then(function (data) {
+                    $log.debug('AccountController(): updateNotifications(): success: data:', data);
                     $translate('NOTIFICATIONS-SAVED-MESSAGE').then(function (message) {
                         $scope.notificationsSavedMessage = message;
+                        $scope.profile = angular.copy(data);
+                        $rootScope.session.client = angular.copy(data);
                     });
                 }, function (error) {
                     $log.error('AccountController(): updateNotifications(): error:', error);
