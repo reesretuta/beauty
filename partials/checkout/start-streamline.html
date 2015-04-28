@@ -592,7 +592,7 @@
       <div class='form-group'>
         <div class='checkbox'>
           <label>
-            <input name='sms' ng-model='profile.notificationPreferences.sms' type='checkbox' tabindex='0' />
+            <input name='sms' ng-model='profile.notificationPreferences.sms' type='checkbox' ng-checked='profile.notificationPreferences.sms === 1' />
             {{ 'NOTIFICATIONS-SMS' | translate }}
           </label>
         </div>
@@ -600,7 +600,7 @@
       <div class='form-group'>
         <div class='checkbox'>
           <label>
-            <input name='email' ng-model='profile.notificationPreferences.email' type='checkbox' tabindex='1' />
+            <input name='email' ng-model='profile.notificationPreferences.email' type='checkbox' ng-checked='profile.notificationPreferences.email === 1' />
             {{ 'NOTIFICATIONS-EMAIL' | translate }}
           </label>
         </div>

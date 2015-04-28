@@ -71,8 +71,8 @@ angular.module('app.controllers.checkout')
             newShippingAddress: {},
             newBillingAddress: {},
             notificationPreferences: {
-                sms   : false,
-                email : true
+                sms   : 0,
+                email : 1
             },
             billSame: true,
             agree: true,
@@ -84,7 +84,7 @@ angular.module('app.controllers.checkout')
         // set current step
         $scope.currentStep = 'Start';
 
-        if ($rootScope.session.client.consultantIds && $rootScope.session.client.consultantIds.length > 0) {
+        if ($rootScope.session && $rootScope.session.client && $rootScope.session.client.consultantIds && $rootScope.session.client.consultantIds.length > 0) {
             $scope.consultantIdSelection = $rootScope.session.client.consultantIds[$rootScope.session.client.consultantIds.length - 1].id;
         }
 

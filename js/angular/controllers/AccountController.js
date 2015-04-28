@@ -21,9 +21,10 @@ angular.module('app.controllers.account')
 
             $scope.profile = angular.copy($rootScope.session.client);
             $scope.profile.newCard = {};
+            
             $scope.profile.notificationPreferences = $scope.profile.notificationPreferences || {
-                email : true,
-                sms   : false
+                sms   : 0,
+                email : 1
             };
 
             $log.debug('AccountController(): $scope.profile:', $scope.profile);
@@ -33,8 +34,8 @@ angular.module('app.controllers.account')
             $log.debug('AccountController(): isProduction?', $rootScope.isProduction);
 
             $scope.updateNotifications = function () {
-                $scope.profile.notificationPreferences.email = $scope.profile.notificationPreferences.email ? 1 : 0;
                 $scope.profile.notificationPreferences.sms = $scope.profile.notificationPreferences.sms ? 1 : 0;
+                $scope.profile.notificationPreferences.email = $scope.profile.notificationPreferences.email ? 1 : 0;
                 $log.debug('AccountController(): updateNotifications(): $scope.profile:', $scope.profile);
                 Account.updateClient($scope.profile).then(function (data) {
                     $log.debug('AccountController(): updateNotifications(): success: data:', data);
