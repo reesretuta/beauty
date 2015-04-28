@@ -21,6 +21,11 @@ angular.module('app.controllers.account')
 
             $scope.profile = angular.copy($rootScope.session.client);
             $scope.profile.newCard = {};
+            $scope.profile.notificationPreferences = $scope.profile.notificationPreferences || {
+                email : true,
+                sms   : false
+            };
+
             $log.debug('AccountController(): $scope.profile:', $scope.profile);
 
             $scope.namePlaceholder = $scope.profile.firstName + ' ' + $scope.profile.lastName;
