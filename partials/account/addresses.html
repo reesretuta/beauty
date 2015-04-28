@@ -10,12 +10,33 @@
         <span class='address-street block'>{{ addressData.address1 }} {{ addressData.address2 }}</span>
         <span class='address-region block'>{{ addressData.city }}, {{ addressData.state }} {{ addressData.zip }}</span>
         <span class='phone-number block'>{{ addressData.phone | phone }}</span>
+        <button type="button" class="btn btn-primary" ng-disabled="processing" ng-click="setDefaultAddress(addressData)">
+          {{'MAKE_DEFAULT' | translate}}
+        </button>
       </div>
       <div class='address-actions'>
         <a ng-click='editAddress(addressData)'><i class='fa fa-pencil-square-o'></i> <span ng-bind-html="'EDIT' | translate | unsafe"></span></a>
         &nbsp;&nbsp;
         <a ng-click='removeAddress(addressData.id)'><i class='fa fa-times-circle'></i> <span ng-bind-html="'REMOVE' | translate | unsafe"></span></a>
+        
       </div>
+      <!-- <div class='address-actions'>
+        <a ng-click='editAddress(addressData)'><i class='fa fa-pencil-square-o'></i> <span ng-bind-html="'EDIT' | translate | unsafe"></span></a>
+        &nbsp;&nbsp;
+        <a ng-click='removeAddress(addressData.id)'><i class='fa fa-times-circle'></i> <span ng-bind-html="'REMOVE' | translate | unsafe"></span></a>
+      </div> -->
+      
+      <!-- <div class="address-actions col-md-7 text-right">
+        <a class="btn btn-link" ng-click="editAddress(addressData)"><i class="fa fa-pencil-square-o"></i>
+          <span ng-bind-html="'EDIT' | translate | unsafe"></span></a>
+        <a class="btn btn-link" ng-click="removeAddress(addressData.id)"><i class="fa fa-times-circle"></i>
+          <span ng-bind-html="'REMOVE' | translate | unsafe"></span></a>
+        <button type="button" class="btn btn-primary" ng-disabled="processing" ng-click="selectShippingAddressAndContinue(addressData)">
+          <span ng-bind-html="'GEO_CHOOSE' | translate | unsafe"></span>
+        </button>
+      </div> -->
+      
+      
     </div>
   </div>
 </div>
