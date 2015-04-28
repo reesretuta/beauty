@@ -77,7 +77,12 @@ angular.module('app.controllers.account')
             };
             
             $scope.setDefaultAddress = function(address) {
-                Account.setDefaultAddress($scope.profile);
+                $log.log('AccountController(): updatePassword(): updating password to:', password);
+                Account.setDefaultAddress(address).then(function(data){
+                    
+                }, function(error){
+                    
+                });
             };
             
             $scope.addShipping = function(newAddress) {
