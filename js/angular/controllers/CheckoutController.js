@@ -70,10 +70,6 @@ angular.module('app.controllers.checkout')
             shipping: null,
             newShippingAddress: {},
             newBillingAddress: {},
-            notificationPreferences: {
-                sms   : 0,
-                email : 1
-            },
             billSame: true,
             agree: true,
             newCard: {},
@@ -1079,8 +1075,14 @@ angular.module('app.controllers.checkout')
                     // set the name on the shipping address
                     $scope.profile.newShippingAddress.name = $scope.profile.firstName + " " + $scope.profile.lastName;
                     $rootScope.namePlaceholder = $scope.profile.firstName + " " + $scope.profile.lastName;
-                    
+
                     $scope.profile.customerStatus = 'existing';
+
+                    // set to 
+                    $scope.profile.notificationPreferences = $scope.notificationPreferences || {};
+                    $scope.profile.notificationPreferences.email = session.client.notificationPreferences.email;
+                    $scope.profile.notificationPreferences.sms = session.client.notificationPreferences.sms;
+
                     $scope.checkoutUpdated();
                     // jump to Shipping
                     // WizardHandler.wizard('checkoutWizard').goTo($scope.isOnlineSponsoring ? 'Profile' : 'Shipping');
