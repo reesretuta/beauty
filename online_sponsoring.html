@@ -6,11 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <meta name="description" content="">
     <meta name="author" content="">
-
+    <meta property="og:title" content="{{'JOIN_JAFRA_TITLE' | translate }}"/>
+    <meta property="og:image" content="/img/logo-140x44.png"/>
+    <meta property="og:site_name" content="{{'JOIN_JAFRA_TITLE' | translate }}"/>
+    <meta property="og:description" content="{{'JOIN_JAFRA_TITLE' | translate }}"/>
+    
     <title ng-bind-html="'JOIN_JAFRA_TITLE' | translate | unsafe">Join JAFRA</title>
-
+    
+    
     <link type="image/x-icon" href="/img/favicon.ico" rel="shortcut icon">
-
     <link rel="stylesheet" type="text/css" href="/lib/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/lib/bootstrap/dist/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
@@ -36,6 +40,10 @@
           pubid : 'ra-5435adb94c0d228e',
           data_ga_property : 'UA-7560748-27'
       };
+      var addthis_share = {
+         url: "THE URL",
+         title: "THE TITLE"
+      }
       // Call this function once the rest of the document is loaded
       function loadAddThis() {
           addthis.init()
