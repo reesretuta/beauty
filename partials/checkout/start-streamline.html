@@ -584,7 +584,7 @@
   </form>
   </div>
 
-  <div ng-if='loggedIn() && !isProduction && !isStaging' class='row'>
+  <div ng-if='!isOnlineSponsoring && loggedIn() && !isProduction && !isStaging' class='row'>
     <div class='col-lg-6 col-md-6 col-sm-6 col-xs-6 col-md-offset-3'>
       <h1>{{ 'NOTIFICATIONS-TITLE' | translate }}</h1>
     </div>
@@ -592,7 +592,7 @@
       <div class='form-group'>
         <div class='checkbox'>
           <label>
-            <input name='sms' ng-model='profile.notificationPreferences.sms' type='checkbox' ng-checked='profile.notificationPreferences.sms === 1' />
+            <input name='sms' ng-model='profile.notificationPreferences.sms' type='checkbox' ng-checked='profile.notificationPreferences.sms === 1' ng-true-value='1' ng-false-value='0' />
             {{ 'NOTIFICATIONS-SMS' | translate }}
           </label>
         </div>
@@ -600,7 +600,7 @@
       <div class='form-group'>
         <div class='checkbox'>
           <label>
-            <input name='email' ng-model='profile.notificationPreferences.email' type='checkbox' ng-checked='profile.notificationPreferences.email === 1' />
+            <input name='email' ng-model='profile.notificationPreferences.email' type='checkbox' ng-checked='profile.notificationPreferences.email === 1' ng-true-value='1' ng-false-value='0' />
             {{ 'NOTIFICATIONS-EMAIL' | translate }}
           </label>
         </div>

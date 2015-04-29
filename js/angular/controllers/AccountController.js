@@ -38,11 +38,13 @@ angular.module('app.controllers.account')
                 $scope.profile.notificationPreferences.email = $scope.profile.notificationPreferences.email ? 1 : 0;
                 $log.debug('AccountController(): updateNotifications(): $scope.profile:', $scope.profile);
                 Account.updateClient($scope.profile).then(function (data) {
-                    $log.debug('AccountController(): updateNotifications(): success: data:', data);
                     $translate('NOTIFICATIONS-SAVED-MESSAGE').then(function (message) {
                         $scope.notificationsSavedMessage = message;
-                        $scope.profile = angular.copy(data);
+                        data.notificationPreferences.email = !!data.notificationPreferences.email;
+                        data.notificationPreferences.sms = !!data.notificationPreferences.sms;
                         $rootScope.session.client = angular.copy(data);
+                        $scope.profile = angular.copy(data);
+                        $log.debug('AccountController(): updateNotifications(): success: data:', $scope.profile);
                     });
                 }, function (error) {
                     $log.error('AccountController(): updateNotifications(): error:', error);
