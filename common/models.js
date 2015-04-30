@@ -379,12 +379,16 @@ exports.PasswordResetToken = PasswordResetToken;
 
 // available sponsors
 var sponsorsSchema = Schema({
-    id : { type : Number, required : true, unique: true },
+    id : { type : Number },
     firstName : { type : String, required : true },
     lastName : { type : String, required : true },
     zip : { type : String, required : true },
     geocode: { type : String, required : true },
     canSponsor: { type : Number, required : true }
+});
+
+categorySchema.virtual('id').get(function(){
+    return this._id;
 });
 
 var Sponsors = mongoose.model('Sponsors', sponsorsSchema);
