@@ -195,7 +195,7 @@ angular.module('app.controllers.cart')
             });
             // prevent page content from scrolling while modal is up
             $("html, body").css("overflow-y", "hidden");
-        }
+        };
 
         $scope.searchProductsList = new Array();
 
