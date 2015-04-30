@@ -169,7 +169,7 @@ angular.module('app.controllers.products').controller('ConfigureKitModalControll
             $log.debug("ConfigureKitModalController(): processing loaded kitSelections", selections);
             $.each(selections, function(index, selection) {
                 $log.debug("ConfigureKitModalController(): setting", kitId+"_"+(index+1), "to", selection);
-                kitSelections[kitId+"_"+(index+1)] = selection;
+                kitSelections[kitId+"_"+(index+1)] = $scope.productIdToProduct[selection];
             });
         });
     }
