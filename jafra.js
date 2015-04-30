@@ -64,6 +64,8 @@ var LOOKUP_CLIENT_CONSULTANT_URL = BASE_URL + "/JCD05011P.pgm";
 var PASSWORD_RESET_REQUEST_URL = BASE_URL + "/JCD05009P.pgm";
 var PASSWORD_RESET_CHANGE_URL = BASE_URL + "/JCD05010P.pgm";
 
+var SPONSORS_URL = BASE_URL + '/JCD05014P.pgm';
+
 var STRIKEIRON_VALIDATE = process.env.STRIKEIRON_VALIDATE == "false" ? false : true;
 var STRIKEIRON_EMAIL_URL = 'http://ws.strikeiron.com/StrikeIron/emv6Hygiene/EMV6Hygiene/VerifyEmail';
 var STRIKEIRON_EMAIL_LICENSE = "2086D15410C1B9F9FF89";
@@ -3542,7 +3544,66 @@ function getProducts(loadUnavailable, loadComponents, skip, limit, sort) {
     return d.promise;
 }
 
-
+// fetch sponsors modified since xxxxxxxx epoch
+function fetchSponsors(modifiedSince) {
+    var defer = Q.defer();
+    logger.debug('fetchSponsors(): modifiedSince:', modifiedSince);
+    request.get({
+        url: SPONSORS_URL,
+        qs: {
+            modifiedSince : modifiedSince
+        },
+        headers: {
+            'Accept': 'application/json, text/json'
+        },
+        json: true
+    }, function (error, response, body) {
+        logger.debug('fetchSponsors():')
+        logger.error(error);
+        logger.debug(response);
+        if (error || response === null) {
+            logger.error('getProducts(): error', error, response);
+            if (response) {
+                defer.reject({
+                    status: response.statusCode,
+                    result: {
+                        statusCode: response.statusCode,
+                        errorCode: body.errorCode,
+                        message: body.message
+                    }
+                });
+            } else {
+                defer.reject({
+                    status: 500,
+                    result: {
+                        statusCode: 500,
+                        errorCode: 'fetchSponsorsInvalidResponse',
+                        message: 'Failed to Fetch Sponsors'
+                    }
+                });
+            }
+            return;
+        }
+        if (body !== null) {
+            logger.debug('fetchSponsors(): success', body);
+            defer.resolve({
+                status : 200,
+                result : body
+            });
+        } else {
+            logger.debug('fetchSponsors(): no products!');
+            defer.reject({
+                status: 500,
+                result: {
+                    statusCode: 500,
+                    errorCode: 'fetchProductsFailed',
+                    message: 'Failed to get sponsors'
+                }
+            });
+        }
+    });
+    return defer.promise;
+}
 
 // EXPORTS
 exports.preloadCategories = preloadCategories;
@@ -3594,3 +3655,6 @@ exports.loadProductsById = loadProductsById;
 exports.loadProductById = loadProductById;
 
 exports.getProducts = getProducts;
+
+exports.fetchSponsors = fetchSponsors;
+
