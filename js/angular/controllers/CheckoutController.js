@@ -1729,7 +1729,7 @@ angular.module('app.controllers.checkout')
                         { "sku" : "20528", "qty" : 1 },
                         { "sku" : "20402", "qty" : 1 },
                         { "sku" : "19975", "qty" : 1 },
-                        { "sku" : "20083", "qty" : 1 }
+                        { "sku" : "20083", "qty" : 1 },
                         { "sku" : "19980", "qty" : 1 },
                         { "sku" : "20378", "qty" : 1 },
                         { "sku" : "20456", "qty" : 1 },
