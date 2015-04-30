@@ -51,8 +51,8 @@ var LEAD_PROCESSING_INTERVAL = process.env.LEAD_PROCESSING_INTERVAL || 5 * 60 * 
 var LEAD_MAX_AGE = process.env.LEAD_MAX_AGE || 60 * 60 * 1000; // default: 1 hour
 var INVENTORY_SCANNING_INTERVAL = process.env.INVENTORY_SCANNING_INTERVAL || 30 * 60 * 1000; // default: 30 minutes
 
-var SPONSOR_PROCESSING_INTERVAL = process.env.SPONSOR_PROCESSING_INTERVAL || 1 /*5*/ * 60 * 1000; // default: 5 min
-var SPONSOR_MODIFIED_SINCE = process.env.SPONSOR_MODIFIED_SINCE || 10000 /*60*/ * 60 * 1000; // default: 1 hour
+var SPONSOR_PROCESSING_INTERVAL = process.env.SPONSOR_PROCESSING_INTERVAL || /*5 * */ 60 * 1000; // default: 5 min
+var SPONSOR_MODIFIED_SINCE = process.env.SPONSOR_MODIFIED_SINCE || 1000000 /*60*/ * 60 * 1000; // default: 1 hour
 
 var models = require('./common/models.js');
 var GridFS = Grid(models.mongoose.connection.db, models.mongoose.mongo);
@@ -1651,14 +1651,25 @@ models.onReady(function () {
 
     // fetch sponsors for caching purposes
     setInterval(function () {
-        var modifiedSince = Math.floor((new Date().getTime() - SPONSOR_MODIFIED_SINCE) / 1000);
-        logger.debug('> fetching leads modified since:', modifiedSince);
-        // fetch sponsors from jcs
-        jafraClient.fetchSponsors(modifiedSince).then(function (sponsors) {
-            logger.debug('> fetched sponsors:', sponsors);
+        //var modifiedSince = Math.floor((new Date().getTime() - SPONSOR_MODIFIED_SINCE) / 1000);
+        jafraClient.fetchSponsors(0).then(function (data) {
+            var sponsors = data.result;
+            logger.debug('[SERVER] > promise resolved: fetched sponsors, got:', data.result.length);
+            if (sponsors.length > 0) {
+                logger.debug('[SERVER] > found more than one sponsor, inserting & updating');
+                models.Sponsor.collection.insert(sponsors, { upsert : true }, function (error, docs) {
+                    if (error) {
+                        logger.error('[SERVER] > error updating/creating sponsor:', error)
+                    } else {
+                        console.info('[SERVER] > %d sponsors were successfully stored.', docs.length);
+                    }
+                });
+            } else {
+                logger.debug('[SERVER] > found 0 sponsors, nothing to insert or update');
+            }
+
         }, function (error) {
-            logger.error('> fetched sponsors: error:');
-            logger.error(error);
+            logger.error('[SERVER] > promise resolved: fetched sponsors: error:', error);
         });
     }, SPONSOR_PROCESSING_INTERVAL);
 

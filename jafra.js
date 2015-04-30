@@ -3547,24 +3547,23 @@ function getProducts(loadUnavailable, loadComponents, skip, limit, sort) {
 // fetch sponsors modified since xxxxxxxx epoch
 function fetchSponsors(modifiedSince) {
     var defer = Q.defer();
-    logger.debug('fetchSponsors(): modifiedSince:', modifiedSince);
+    logger.debug('[JAFRA] > fetchSponsors(): modifiedSince:', modifiedSince);
     request.get({
         url: SPONSORS_URL,
         qs: {
             modifiedSince : modifiedSince
         },
         headers: {
-            'Accept': 'application/json, text/json'
+            'Accept': 'application/json, text/json',
+            'Authorization': AUTH_STRING
         },
+        agentOptions: agentOptions,
+        strictSSL: false,
         json: true
     }, function (error, response, body) {
-        logger.debug('fetchSponsors():')
-        logger.error(error);
-        logger.debug(response);
         if (error || response === null) {
-            logger.error('getProducts(): error', error, response);
             if (response) {
-                defer.reject({
+                return defer.reject({
                     status: response.statusCode,
                     result: {
                         statusCode: response.statusCode,
@@ -3573,7 +3572,7 @@ function fetchSponsors(modifiedSince) {
                     }
                 });
             } else {
-                defer.reject({
+                return defer.reject({
                     status: 500,
                     result: {
                         statusCode: 500,
@@ -3582,21 +3581,17 @@ function fetchSponsors(modifiedSince) {
                     }
                 });
             }
-            return;
-        }
-        if (body !== null) {
-            logger.debug('fetchSponsors(): success', body);
-            defer.resolve({
+        } else if (body !== null) {
+            return defer.resolve({
                 status : 200,
                 result : body
             });
         } else {
-            logger.debug('fetchSponsors(): no products!');
-            defer.reject({
+            return defer.reject({
                 status: 500,
                 result: {
                     statusCode: 500,
-                    errorCode: 'fetchProductsFailed',
+                    errorCode: 'fetchSponsorsFailed',
                     message: 'Failed to get sponsors'
                 }
             });

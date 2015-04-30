@@ -377,6 +377,18 @@ exports.PasswordResetToken = PasswordResetToken;
 //var Session = mongoose.model('Session', sessionSchema);
 //exports.Session = Session;
 
+// available sponsors
+var sponsorsSchema = Schema({
+    id : { type : Number, required : true, unique: true },
+    firstName : { type : String, required : true },
+    lastName : { type : String, required : true },
+    zip : { type : String, required : true },
+    geocode: { type : String, required : true },
+    canSponsor: { type : Number, required : true }
+});
+
+var Sponsors = mongoose.model('Sponsors', sponsorsSchema);
+exports.Sponsors = Sponsors;
 
 // DB HANDLERS
 
