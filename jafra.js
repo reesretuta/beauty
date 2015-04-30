@@ -996,7 +996,7 @@ function createLead(lead) {
         firstName: lead.firstName,
         lastName: lead.lastName,
         phone: lead.phone,
-        language: lead.language,
+        language: lead.language
     };
     if (lead.type) {
         data.type = lead.type;
