@@ -20,6 +20,7 @@ var port = process.env.PORT || 8090;
 var BASE_URL = "https://" + (process.env.JCS_API_URL || config.jcs_api_ip) + "/cgidev2";
 var BASE_URL2 = "https://" + (process.env.JCS_API_URL || config.jcs_api_ip) + "/WEBCGIPR";
 var FORCE_INVENTORY_CACHE = process.env.FORCE_INVENTORY_CACHE || false;
+var PULL_ALL_SPONSORS = process.env.PULL_ALL_SPONSORS || false;
 
 var agentOptions = {
     rejectUnauthorized: true,

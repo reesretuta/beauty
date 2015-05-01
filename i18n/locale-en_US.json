@@ -562,6 +562,8 @@
     "CONSULTANT": "Consultant",
 
     "OS-QNC-TITLE": "Qualified New Consultant",
-    "OS-QNC-DESCRIPTION": "Pay $50.00 more to become a Qualified New Consultant"
+    "OS-QNC-DESCRIPTION": "Pay $50.00 more to become a Qualified New Consultant",
+
+    "SPONSOR-SEARCH-INPUT-ERROR": "Search either by Zip Code OR Name"
 
 }

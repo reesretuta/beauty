@@ -3,19 +3,33 @@ angular.module('app.controllers.checkout').controller('LookupSponsorController',
 
     $log.debug('LookupSponsorController() loaded.');
 
-    $scope.query = {};
-
-    $scope.search = function () {
-        Sponsor.search($scope.query).then(function (results) {
+    function search (type) {
+        var payload;
+        $log.debug('LookupSponsorController(): search(): type:', type);
+        if (type === 'zip') {
+            payload = {
+                zip : $scope.zip
+            }
+        } else if (type === 'name') {
+            payload = {
+                firstName : $scope.firstName,
+                lastName  : $scope.lastName
+            }
+        }
+        $log.debug('LookupSponsorController(): search(): payload:', payload);
+        Sponsor.search(payload).then(function (results) {
             $scope.sponsors = results;
         }, function (error) {
-
+            $log.error('LookupSponsorController(): search(): error:', error);
         });
     };
 
-    $scope.checkValidSearchType = function () {
-        // TODO
-        return true;
+    $scope.searchByZip = function () {
+        search('zip');
+    };
+
+    $scope.searchByName = function () {
+        search('name');
     };
 
     $scope.close = function () {

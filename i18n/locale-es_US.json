@@ -562,6 +562,8 @@
     "CONSULTANT": "Consultora",
 
     "OS-QNC-TITLE": "Calificado Nueva Consultora",
-    "OS-QNC-DESCRIPTION": "Pague $ 50.00 más para convertirse en una Qualified Nueva Consultora"
+    "OS-QNC-DESCRIPTION": "Pague $ 50.00 más para convertirse en una Qualified Nueva Consultora",
+
+    "SPONSOR-SEARCH-INPUT-ERROR": "Buscar sea por código postal o nombre"
 
 }
