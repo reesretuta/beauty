@@ -695,8 +695,7 @@ angular.module('app.controllers.checkout')
         }
         
         $scope.lookupSponsor = function(){
-            $log.debug("CheckoutController(): lookupSponsor()");
-            
+            $log.debug('CheckoutController(): lookupSponsor()');
             var dd = $q.defer();
             var d = $modal.open({
                 backdrop: true,
@@ -704,37 +703,22 @@ angular.module('app.controllers.checkout')
                 windowClass: 'lookupSponsorModal',
                 templateUrl: '/partials/checkout/lookupsponsor-modal.html',
                 controller:  'LookupSponsorController',
-                resolve: {
-                    // profile: function() {
-                    //     return {
-                    //         firstName   : $scope.profile.firstName,
-                    //         lastName    : $scope.profile.lastName,
-                    //         loginEmail  : $scope.profile.loginEmail,
-                    //         phoneNumber : $scope.profile.phoneNumber
-                    //     }
-                    // }
-                }
+                resolve: {}
             });
             var body = $document.find('html, body');
             d.result.then(function(result) {
-                $log.debug("CheckoutController(): lookupSponsor(): lookupSponsor modal closed", result);
-                // save the profile information if not canceled
+                $log.debug('CheckoutController(): lookupSponsor(): lookupSponsor modal closed', result);
                 if (!result.canceled) {
-                    // result.profile
                     $scope.profile.sponsorId = result.sponsorId;
                     dd.resolve();
                 } else {
                     dd.resolve();
                 }
-                // re-enable scrolling on body
-                body.css("overflow-y", "auto");
+                body.css('overflow-y', 'auto');
             });
-            // prevent page content from scrolling while modal is up
-            $("html, body").css("overflow-y", "hidden");
+            $('html, body').css('overflow-y', 'hidden');
             return dd.promise;
-            
-            
-        }
+        };
 
         function cardExpirationChanged() {
             $scope.invalidExpiration = false;
