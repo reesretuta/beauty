@@ -1649,46 +1649,51 @@ models.onReady(function () {
         });
     }, LEAD_PROCESSING_INTERVAL);
 
+    // save fetched sponsors to database
+    function updateSponsors(sponsors) {
+        sponsors.forEach(function (sponsor, index) {
+            logger.debug('[SERVER] > trying to create or update sponsor:', sponsor);
+            // new/updated sponsors found, upsert
+            models.Sponsors.findOneAndUpdate({ id : sponsor.id }, sponsor, { upsert : true }).exec(function (error, doc) {
+                if (error) {
+                    logger.error('[SERVER] > error updating/creating sponsor:', error)
+                } else {
+                    logger.log('[SERVER] > saved sponsor:', doc.id);
+                }
+            });
+        });
+    }
     
     // fetch sponsors for caching purposes
-    function fetchSponsors (fetchAll) {
+    function fetchSponsors () {
         var modifiedSince;
-        if (fetchAll) {
-            modifiedSince = 0;
-        } else {
-            modifiedSince = Math.floor((new Date().getTime() - SPONSOR_MODIFIED_SINCE) / 1000);
-        }
-        // fetch sponsors modified since x date
-        jafraClient.fetchSponsors(modifiedSince).then(function (data) {
-            var sponsors = data.result;
-            logger.debug('[SERVER] > promise resolved: fetched sponsors, got:', data.result.length);
-            if (sponsors.length > 0) {
-                logger.debug('[SERVER] > found more than one sponsor, inserting & updating');
-                sponsors.forEach(function (sponsor, index) {
-                    logger.debug('[SERVER] > trying to create or update sponsor:', sponsor);
-                    // new/updated sponsors found, upsert
-                    models.Sponsors.findOneAndUpdate({ id : sponsor.id }, sponsor, { upsert : true }).exec(function (error, doc) {
-                        if (error) {
-                            logger.error('[SERVER] > error updating/creating sponsor:', error)
-                        } else {
-                            logger.log('[SERVER] > saved sponsor:', doc.id);
-                        }
-                    });
-                });
+        jafraClient.determineSponsorsLastFetched().then(function (val) {
+            logger.debug('[JAFRA] > determineSponsorsLastFetched: val:', val);
+            if (!val) {
+                logger.debug('[JAFRA] > determineSponsorsLastFetched: need full fetch, fetching...');
+                modifiedSince = 0;
             } else {
-                logger.debug('[SERVER] > found 0 sponsors, nothing to insert or update');
+                modifiedSince = Math.floor((new Date().getTime() - SPONSOR_MODIFIED_SINCE) / 1000);
             }
-        }, function (error) {
-            logger.error('[SERVER] > promise resolved: fetched sponsors: error:', error);
+            // fetch sponsors modified since x date
+            jafraClient.fetchSponsors(modifiedSince).then(function (data) {
+                var sponsors = data.result;
+                logger.debug('[SERVER] > promise resolved: fetched sponsors, got:', data.result.length);
+                if (sponsors.length > 0) {
+                    logger.debug('[SERVER] > found more than one sponsor, inserting & updating');
+                    updateSponsors(sponsors);
+                } else {
+                    logger.debug('[SERVER] > found 0 sponsors, nothing to insert or update');
+                }
+            }, function (error) {
+                logger.error('[SERVER] > promise resolved: fetched sponsors: error:', error);
+            });
         });
     }
 
-    // initiate interval for fetching sponsors, if FETCH_ALL_SPONSORS, set to 0 and grab all
-    if (process.env.FETCH_ALL_SPONSORS) {
-        fetchSponsors(true);
-    } else {
-        setInterval(fetchSponsors, SPONSOR_PROCESSING_INTERVAL);
-    }
+    // initiate interval and init for fetching sponsors
+    fetchSponsors();
+    setInterval(fetchSponsors, SPONSOR_PROCESSING_INTERVAL);
 
     // ...
     function updateInventory() {

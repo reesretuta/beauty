@@ -3544,6 +3544,24 @@ function getProducts(loadUnavailable, loadComponents, skip, limit, sort) {
     return d.promise;
 }
 
+// determine last sponsor fetch
+function determineSponsorsLastFetched () {
+    var defer = Q.defer()
+        , now = new Date()
+        , HOURS_1 = moment.duration(1, 'hours')
+        , HOURS_1_AGO = moment().subtract(HOURS_1);
+    getConfigValue('sponsorsLastFetched').then(function(lastUpdated) {
+        logger.debug('fetchSponsors(): sponsors lastUpdated:', moment.unix(lastUpdated).toDate(), 'now', now, '1 hour ago', HOURS_1_AGO.toDate());
+        // if we have lastUpdated and it's less than 1 hours ago return false
+        if (lastUpdated !== null && (moment.unix(lastUpdated).isAfter(HOURS_1_AGO))) {
+            return defer.resolve(true);
+        } else {
+            return defer.resolve(false);
+        }
+    });
+    return defer.promise;
+}
+
 // fetch sponsors modified since xxxxxxxx epoch
 function fetchSponsors(modifiedSince) {
     var defer = Q.defer();
@@ -3582,9 +3600,23 @@ function fetchSponsors(modifiedSince) {
                 });
             }
         } else if (body !== null) {
-            return defer.resolve({
-                status : 200,
-                result : body
+            var update = Math.floor(new Date().getTime() / 1000);
+            models.Config.update({ _id: 'sponsorsLastFetched' }, { value : update }, { upsert : true}, function (error, rows) {
+                if (error) {
+                    return defer.reject({
+                        status: 500,
+                        result: {
+                            statusCode: 500,
+                            errorCode: 'fetchSponsorsConfigUpdateFailed',
+                            message: 'Failed to update Sponsors Config'
+                        }
+                    });
+                } else {
+                    return defer.resolve({
+                        status : 200,
+                        result : body
+                    });
+                }
             });
         } else {
             return defer.reject({
@@ -3604,6 +3636,7 @@ function fetchSponsors(modifiedSince) {
 exports.preloadCategories = preloadCategories;
 
 exports.authenticate = authenticate;
+
 exports.getClient = getClient;
 exports.createClient = createClient;
 exports.updateClient = updateClient;
@@ -3652,4 +3685,6 @@ exports.loadProductById = loadProductById;
 exports.getProducts = getProducts;
 
 exports.fetchSponsors = fetchSponsors;
+
+exports.determineSponsorsLastFetched = determineSponsorsLastFetched;
 
