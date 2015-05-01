@@ -1371,13 +1371,14 @@ function deleteAddress(clientId, addressId) {
     return deferred.promise;
 }
 
-function findSponsorsByName (firstName, lastName) {
-    var query, deferred = Q.defer();
+function findSponsorsByName (data) {
+    var query, defer = Q.defer();
     query = { 
-        firstName : new RegExp(firstName, 'i'),
-        lastName  : new RegExp(firstName, 'i')
+        firstName  : new RegExp(data.firstName, 'i'),
+        lastName   : new RegExp(data.lastName, 'i'),
+        canSponsor : 1
     };
-    models.Sponsors.find(query).exec(function (error, docs) {
+    models.Sponsors.find(query, function (error, docs) {
         if (error) {
             logger.error('[JAFRA] > findSponsorsByName: error:', error);
             return defer.reject({
@@ -1392,7 +1393,7 @@ function findSponsorsByName (firstName, lastName) {
             });
         }
     });
-    return deferred.promise;
+    return defer.promise;
 }
 
 function validateEmail(email) {
@@ -3564,7 +3565,6 @@ function getProducts(loadUnavailable, loadComponents, skip, limit, sort) {
             });
         }
     })
-
     return d.promise;
 }
 
@@ -3638,7 +3638,7 @@ function fetchSponsors(modifiedSince) {
                 } else {
                     return defer.resolve({
                         status : 200,
-                        result : body
+                        result : body.consultants
                     });
                 }
             });

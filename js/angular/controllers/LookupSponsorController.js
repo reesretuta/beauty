@@ -1,14 +1,21 @@
 
-angular.module('app.controllers.checkout').controller('LookupSponsorController', function ($document, $modalInstance, $q, $scope, $log, $translate) {
+angular.module('app.controllers.checkout').controller('LookupSponsorController', function ($document, $modalInstance, $q, $scope, $log, $translate, Sponsor) {
 
     $log.debug('LookupSponsorController() loaded.');
 
+    $scope.query = {};
+
     $scope.search = function () {
-        $log.debug('LookupSponsorController(): search()');
-        $scope.sponsors = [
-            { name: 'test test', id: '123', city: 'city'},
-            { name: 'test test', id: '123', city: 'city'}
-        ];
+        Sponsor.search($scope.query).then(function (results) {
+            $scope.sponsors = results;
+        }, function (error) {
+
+        });
+    };
+
+    $scope.checkValidSearchType = function () {
+        // TODO
+        return true;
     };
 
     $scope.close = function () {

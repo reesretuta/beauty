@@ -1103,28 +1103,9 @@ angular.module('app.services', ['ngResource'])
                 });
 
             });
-
-
             return d.promise;
-        }
+        };
         
-        consultantService.search = function(zip) {
-            var d = $q.defer();
-            initialized.promise.then(function() {
-                $http.get(API_URL + '/searchconsultants/' + zip, {}).success(function(data, status, headers, config) {
-                    d.resolve(data);
-                }).error(function(data, status, headers, config) {
-                    if (status == 404) {
-                        d.resolve(true);
-                    } else {
-                        d.reject(false);
-                    }
-                });
-            });
-            return d.promise;
-        }
-        
-
         consultantService.create = function(consultant) {
             var d = $q.defer();
 
@@ -2276,6 +2257,29 @@ angular.module('app.services', ['ngResource'])
 
         return inventoryService;
     })
+
+    // sponsors (consults that can sponsor)
+    .factory('Sponsor', function ($resource, $http, $log, $q, $translate, API_URL) {
+        // configure empty factory object
+        var sponsorService = {};
+        // search for sponsors either based on zip code or first/last name
+        sponsorService.search = function(query) {
+            var defer = $q.defer();
+            $http.post(API_URL + '/sponsors/search', query).success(function(data, status, headers, config) {
+                defer.resolve(data);
+            }).error(function(data, status, headers, config) {
+                if (status == 404) {
+                    defer.resolve(data);
+                } else {
+                    defer.reject(false);
+                }
+            });
+            return defer.promise;
+        };
+        // object complete, return as factory
+        return sponsorService;
+    })
+
     .factory('focus', function ($rootScope, $timeout) {
         return function(name) {
             $timeout(function (){

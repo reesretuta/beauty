@@ -20,7 +20,7 @@
     <div class='form-group'>
       <label for='firstName' class='col-md-3 control-label'>By Zip</label>
       <div class='col-sm-3' ng-class="{ 'has-error' : searchForSponsorForm.firstName.$invalid && (searchForSponsorForm.firstName.$touched || searchForSponsorForm.firstName.$dirty) }">
-        <input name='zip' class='form-control' id='zip' ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-model='profile.zip' autofocus />
+        <input name='zip' class='form-control' id='zip' ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-model='query.zip' autofocus />
       </div>
     </div>
     <div class='row'>
@@ -29,10 +29,10 @@
     <div class='form-group'>
       <label for='firstName' class='col-md-3 control-label'>By Sponsor Name</label>
       <div class='col-sm-3' ng-class="{ 'has-error' : searchForSponsorForm.firstName.$invalid && (searchForSponsorForm.firstName.$touched || searchForSponsorForm.firstName.$dirty) }">
-        <input name='firstName' ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model='profile.firstName' class='form-control' id='firstName' ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" min='2' max='40' placeholder="{{ 'CHECKOUT-FIRST-PLACEHOLDER' | translate | unsafe }}" />
+        <input name='firstName' ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model='query.firstName' class='form-control' id='firstName' ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" min='2' max='40' placeholder="{{ 'CHECKOUT-FIRST-PLACEHOLDER' | translate | unsafe }}" />
       </div>
       <div class='col-sm-3' ng-class="{ 'has-error' : searchForSponsorForm.lastName.$invalid && (searchForSponsorForm.lastName.$touched || searchForSponsorForm.lastName.$dirty) }">
-        <input name='lastName' ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model='profile.lastName' ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" class='form-control' id='lastName' min='2' max='40' placeholder="{{ 'CHECKOUT-LAST-PLACEHOLDER' | translate | unsafe }}" />
+        <input name='lastName' ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model='query.lastName' ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" class='form-control' id='lastName' min='2' max='40' placeholder="{{ 'CHECKOUT-LAST-PLACEHOLDER' | translate | unsafe }}" />
       </div>
     </div>
     <div class='row' ng-if='(searchForSponsorForm.firstName.$invalid && (searchForSponsorForm.firstName.$touched || searchForSponsorForm.firstName.$dirty)) || (searchForSponsorForm.lastName.$invalid && (searchForSponsorForm.lastName.$touched || searchForSponsorForm.lastName.$dirty))'>
@@ -49,7 +49,7 @@
     <div class='form-group'>
       <div class='col-sm-3 col-md-3'></div>
       <div class='col-sm-6 col-md-6'>
-        <button ng-click='search()' ng-disabled='searchForSponsorForm.$invalid' class='btn btn-primary'>Lookup</button>
+        <button ng-click='search()' ng-disabled='searchForSponsorForm.$invalid || checkValidSearchType()' class='btn btn-primary'>Lookup</button>
       </div>
     </div>
   </form>
@@ -62,9 +62,9 @@
         <th>Action</th>
       </tr>
       <tr ng-repeat='sponsor in sponsors'>
-        <td>{{ sponsor.name }}</td>
+        <td>{{ sponsor.firstName + ' ' + sponsor.lastName }}</td>
         <td>{{ sponsor.id }}</td>
-        <td>{{ sponsor.city }}</td>
+        <td>{{ sponsor.city || ('TBD:' + sponsor.zip) }}</td>
         <td><a ng-click='selectSponsor(sponsor.id)'>Select</a></td>
       </tr>
     </table>
