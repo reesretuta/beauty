@@ -21,11 +21,6 @@ angular.module('app.controllers.account')
 
             $scope.profile = angular.copy($rootScope.session.client);
             $scope.profile.newCard = {};
-            
-            $scope.profile.notificationPreferences = $scope.profile.notificationPreferences || {
-                sms   : 0,
-                email : 1
-            };
 
             $log.debug('AccountController(): $scope.profile:', $scope.profile);
 
@@ -34,15 +29,10 @@ angular.module('app.controllers.account')
             $log.debug('AccountController(): isProduction?', $rootScope.isProduction);
 
             $scope.updateNotifications = function () {
-                $scope.profile.notificationPreferences.email = ($scope.profile.notificationPreferences.email && $scope.profile.notificationPreferences.email === true) ? 1 : 0;
-                $scope.profile.notificationPreferences.sms = ($scope.profile.notificationPreferences.sms && $scope.profile.notificationPreferences.sms === true) ? 1 : 0;
-                $log.debug('AccountController(): updateNotifications(): $scope.profile:', $scope.profile);
                 Account.updateClient($scope.profile).then(function (data) {
                     $translate('NOTIFICATIONS-SAVED-MESSAGE').then(function (message) {
-                        $log.debug('AccountController(): updateNotifications(): success: AFTER!! data:', $scope.profile);
+                        $log.debug('AccountController(): updateNotifications(): success: BEFORE!! data:', $scope.profile);
                         $scope.notificationsSavedMessage = message;
-                        data.notificationPreferences.email = !!data.notificationPreferences.email;
-                        data.notificationPreferences.sms = !!data.notificationPreferences.sms;
                         $rootScope.session.client = angular.copy(data);
                         $scope.profile = angular.copy(data);
                         $log.debug('AccountController(): updateNotifications(): success: AFTER!! data:', $scope.profile);

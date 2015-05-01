@@ -15,7 +15,7 @@
       <div class='form-group'>
         <div class='checkbox'>
           <label>
-            <input name='sms' ng-model='profile.notificationPreferences.sms' type='checkbox' tabindex='0' />
+            <input name='sms' ng-model='profile.notificationPreferences.sms' type='checkbox' tabindex='0' ng-checked='profile.notificationPreferences.sms === 1' ng-true-value='1' ng-false-value='0' />
             {{ 'NOTIFICATIONS-SMS' | translate }}
           </label>
         </div>
@@ -23,7 +23,7 @@
       <div class='form-group'>
         <div class='checkbox'>
           <label>
-            <input name='email' ng-model='profile.notificationPreferences.email' type='checkbox' tabindex='1' />
+            <input name='email' ng-model='profile.notificationPreferences.email' type='checkbox' tabindex='1' ng-checked='profile.notificationPreferences.email === 1' ng-true-value='1' ng-false-value='0' />
             {{ 'NOTIFICATIONS-EMAIL' | translate }}
           </label>
         </div>
