@@ -1,108 +1,83 @@
 
-<div class="modal-header">
-  <button type="button" class="close" ng-click="close()">&times;</button>
-  <h4 class="modal-title">Look Up Sponsor</h4>
+<div class='modal-header'>
+  <button type='button' class='close' ng-click='close()'>&times;</button>
+  <h4 class='modal-title'>Look Up Sponsor</h4>
 </div>
 
-<div class="modal-body queue-modal-body">
-  <div class="col-md-offset-3">
+<div class='modal-body queue-modal-body'>
+  <div class='col-md-offset-3'>
     <h1>Look Up Sponsor</h1>
   </div>
-
-
-  <div class="row">
-    <div class="col-sm-3 col-md-3"></div>
-    <div class="col-sm-6 col-md-6">
-      <div ng-if="emailError" class="alert alert-danger" role="alert">
-        <span>{{ emailError }}</span>
+  <div class='row'>
+    <div class='col-sm-3 col-md-3'></div>
+    <div class='col-sm-6 col-md-6'>
+      <div ng-if='searchError' class='alert alert-danger' role='alert'>
+        <span>{{ searchError }}</span>
       </div>
     </div>
   </div>
-
-  <form name="byZipForm" class="form-horizontal" role="form" novalidate>
-      <div class="form-group">
-        <label for="firstName" class="col-md-3 control-label">By Zip</label>
-        <div class="col-sm-3" ng-class="{ 'has-error' : contactForm.firstName.$invalid && (contactForm.firstName.$touched || contactForm.firstName.$dirty) }">
-          <input name="zip" class="form-control" id="zip" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-model="profile.zip" required autofocus min="2" max="40">
-        </div>
-      </div>
-  </form>
-  
-  <div class="row">
-    <div class="col-sm-3 col-md-3 text-right">- OR -</div>
-  </div>
-  
-  <form name="byNameForm" class="form-horizontal" role="form" novalidate>
-    <div class="form-group">
-      <label for="firstName" class="col-md-3 control-label">By Sponsor Name</label>
-      <div class="col-sm-3" ng-class="{ 'has-error' : contactForm.firstName.$invalid && (contactForm.firstName.$touched || contactForm.firstName.$dirty) }">
-        <input name="firstName" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model="profile.firstName" class="form-control" id="firstName" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" required autofocus min="2" max="40" placeholder="{{'CHECKOUT-FIRST-PLACEHOLDER' | translate | unsafe}}">
-      </div>
-      
-      <div class="col-sm-3" ng-class="{ 'has-error' : contactForm.lastName.$invalid && (contactForm.lastName.$touched || contactForm.lastName.$dirty) }">
-        <input name="lastName" ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model="profile.lastName" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" class="form-control" id="lastName" required min="2" max="40" placeholder="{{'CHECKOUT-LAST-PLACEHOLDER' | translate | unsafe}}">
+  <form name='searchForSponsorForm' class='form-horizontal' role='form' novalidate>
+    <div class='form-group'>
+      <label for='firstName' class='col-md-3 control-label'>By Zip</label>
+      <div class='col-sm-3' ng-class="{ 'has-error' : searchForSponsorForm.firstName.$invalid && (searchForSponsorForm.firstName.$touched || searchForSponsorForm.firstName.$dirty) }">
+        <input name='zip' class='form-control' id='zip' ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" ng-model='profile.zip' autofocus />
       </div>
     </div>
-    
-    
-
-    <div class="row" ng-if="(contactForm.firstName.$invalid && (contactForm.firstName.$touched || contactForm.firstName.$dirty)) || (contactForm.lastName.$invalid && (contactForm.lastName.$touched || contactForm.lastName.$dirty))">
-      <div class="col-md-3"></div>
-      <div class="col-sm-9 has-error">
-        <span ng-show="contactForm.firstName.$invalid && (contactForm.firstName.$touched || contactForm.firstName.$dirty)" class="help-block" ng-class="{ 'text-danger' : contactForm.firstName.$invalid }"><span ng-bind-html="'REQUIRE-FIRSTNAME-LENGTH' | translate | unsafe"></span></span>
-        <span ng-show="contactForm.lastName.$invalid && (contactForm.lastName.$touched || contactForm.lastName.$dirty) && !(contactForm.firstName.$invalid && (contactForm.firstName.$touched || contactForm.firstName.$dirty))" class="help-block" ng-class="{ 'text-danger' : contactForm.lastName.$invalid }">
+    <div class='row'>
+      <div class='col-sm-3 col-md-3 text-right'>- OR -</div>
+    </div>
+    <div class='form-group'>
+      <label for='firstName' class='col-md-3 control-label'>By Sponsor Name</label>
+      <div class='col-sm-3' ng-class="{ 'has-error' : searchForSponsorForm.firstName.$invalid && (searchForSponsorForm.firstName.$touched || searchForSponsorForm.firstName.$dirty) }">
+        <input name='firstName' ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model='profile.firstName' class='form-control' id='firstName' ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" min='2' max='40' placeholder="{{ 'CHECKOUT-FIRST-PLACEHOLDER' | translate | unsafe }}" />
+      </div>
+      <div class='col-sm-3' ng-class="{ 'has-error' : searchForSponsorForm.lastName.$invalid && (searchForSponsorForm.lastName.$touched || searchForSponsorForm.lastName.$dirty) }">
+        <input name='lastName' ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model='profile.lastName' ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" class='form-control' id='lastName' min='2' max='40' placeholder="{{ 'CHECKOUT-LAST-PLACEHOLDER' | translate | unsafe }}" />
+      </div>
+    </div>
+    <div class='row' ng-if='(searchForSponsorForm.firstName.$invalid && (searchForSponsorForm.firstName.$touched || searchForSponsorForm.firstName.$dirty)) || (searchForSponsorForm.lastName.$invalid && (searchForSponsorForm.lastName.$touched || searchForSponsorForm.lastName.$dirty))'>
+      <div class='col-md-3'></div>
+      <div class='col-sm-9 has-error'>
+        <span ng-show='searchForSponsorForm.firstName.$invalid && (searchForSponsorForm.firstName.$touched || searchForSponsorForm.firstName.$dirty)' class='help-block' ng-class="{ 'text-danger' : searchForSponsorForm.firstName.$invalid }">
+          <span ng-bind-html="'REQUIRE-FIRSTNAME-LENGTH' | translate | unsafe"></span>
+        </span>
+        <span ng-show='searchForSponsorForm.lastName.$invalid && (searchForSponsorForm.lastName.$touched || searchForSponsorForm.lastName.$dirty) && !(searchForSponsorForm.firstName.$invalid && (searchForSponsorForm.firstName.$touched || searchForSponsorForm.firstName.$dirty))' class='help-block' ng-class="{ 'text-danger' : searchForSponsorForm.lastName.$invalid }">
           <span ng-bind-html="'REQUIRE-LASTNAME-LENGTH' | translate | unsafe"></span>
         </span>
       </div>
     </div>
-    
-    <div class="form-group">
-      <div class="col-sm-3 col-md-3"></div>
-      <div class="col-sm-6 col-md-6">
-          <button ng-click="search()" ng-disabled="!byZipForm.$valid && !byNameForm.$valid" class="btn btn-primary">Lookup</button>
+    <div class='form-group'>
+      <div class='col-sm-3 col-md-3'></div>
+      <div class='col-sm-6 col-md-6'>
+        <button ng-click='search()' ng-disabled='searchForSponsorForm.$invalid' class='btn btn-primary'>Lookup</button>
       </div>
     </div>
   </form>
-  
-  
-  <div id="lookupResults" class="container-responsive">
-      <table class="table table-striped table-responsive">
-          <tr>
-              <th>Sponsor Name</th>
-              <th>Sponsor ID</th>
-              <th>City</th>
-              <th>Action</th>
-          </tr>
-          <tr ng-repeat="sponsor in sponsors">
-              <td>{{sponsor.name}}</td>
-              <td>{{sponsor.id}}</td>
-              <td>{{sponsor.city}}</td>
-              <td><a ng-click="selectSponsor(sponsor.id)">Select</a></td>
-          </tr>
-      </table>
-      <!-- <div class="row">
-          <div class="col-md-4">Name</div><div class="col-md-4">City</div><div class="col-md-4">Action</div>
-      </div>
-
-      <div class="row" ng-repeat="sponsor in sponsors">
-          <div class="col-md-4">{{sponsor.name}}</div>
-          <div class="col-md-4">{{sponsor.city}}</div>
-          <div class="col-md-4">select</div>
-      </div> -->
+  <div id='lookupResults' class='container-responsive'>
+    <table class='table table-striped table-responsive'>
+      <tr>
+        <th>Sponsor Name</th>
+        <th>Sponsor ID</th>
+        <th>City</th>
+        <th>Action</th>
+      </tr>
+      <tr ng-repeat='sponsor in sponsors'>
+        <td>{{ sponsor.name }}</td>
+        <td>{{ sponsor.id }}</td>
+        <td>{{ sponsor.city }}</td>
+        <td><a ng-click='selectSponsor(sponsor.id)'>Select</a></td>
+      </tr>
+    </table>
   </div>
-  
 </div>
 
-<div class="modal-footer">
-  <div class="col-lg-6 col-md-6 col-sm-6">
-    <span class="text-muted pull-left"></span>
+<div class='modal-footer'>
+  <div class='col-lg-6 col-md-6 col-sm-6'>
+    <span class='text-muted pull-left'></span>
   </div>
-  <div class="col-lg-6 col-md-6 col-sm-6">
-    <button ng-click="close()" class="btn btn-link">
+  <div class='col-lg-6 col-md-6 col-sm-6'>
+    <button ng-click='close()' class='btn btn-link'>
       <span ng-bind-html="'BTN_CANCEL' | translate | unsafe"></span>
     </button>
-    <!-- <button ng-click="save()" class="btn btn-primary" ng-disabled="!contactForm.$valid">
-      <span ng-bind-html="'BTN_SAVE' | translate | unsafe"></span>
-    </button> -->
   </div>
 </div>
