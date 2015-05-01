@@ -1371,6 +1371,30 @@ function deleteAddress(clientId, addressId) {
     return deferred.promise;
 }
 
+function findSponsorsByName (firstName, lastName) {
+    var query, deferred = Q.defer();
+    query = { 
+        firstName : new RegExp(firstName, 'i'),
+        lastName  : new RegExp(firstName, 'i')
+    };
+    models.Sponsors.find(query).exec(function (error, docs) {
+        if (error) {
+            logger.error('[JAFRA] > findSponsorsByName: error:', error);
+            return defer.reject({
+                result : null,
+                error  : error
+            });
+        } else {
+            logger.error('[JAFRA] > findSponsorsByName: success:', docs);
+            return defer.resolve({
+                result : docs,
+                error  : null
+            });
+        }
+    });
+    return deferred.promise;
+}
+
 function validateEmail(email) {
     var deferred = Q.defer();
 
@@ -3687,4 +3711,5 @@ exports.getProducts = getProducts;
 exports.fetchSponsors = fetchSponsors;
 
 exports.determineSponsorsLastFetched = determineSponsorsLastFetched;
+exports.findSponsorsByName = findSponsorsByName;
 

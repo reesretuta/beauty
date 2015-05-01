@@ -1290,6 +1290,29 @@ router.route('/validate/email').get(function (req, res) {
     });
 });
 
+router.route('/search/sponsors').get(function (req, res) {
+    var payload, searchType = (req.body.zip) ? 'zip' : 'name';
+    logger.debug('[SERVER] > searching for sponsor by:', searchType);
+    if (searchType === 'name') {
+        payload = {
+            firstName : req.body.firstName,
+            lastName  : req.body.lastName
+        };
+        logger.debug('[SERVER] > searching for sponsor:', payload);
+        jafraClient.findSponsorsByName(payload).then(function (data) {
+            logger.debug('[SERVER] > :findSponsorsByName: result:', data);
+            res.status(data.statusCode);
+            res.json(data.result);
+        }, function(error) {
+            logger.error('[SERVER] > :findSponsorsByName: error:', error);
+            res.status(error.statusCode);
+            res.json(error.result);
+        });
+    } else if (searchType === 'zip') {
+        // ...
+    }
+});
+
 router.route('/geocodes')
     .get(function (req, res) {
         var zipCode = req.param('zipCode');
