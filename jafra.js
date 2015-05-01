@@ -3577,7 +3577,7 @@ function determineSponsorsLastFetched () {
     getConfigValue('sponsorsLastFetched').then(function(lastUpdated) {
         logger.debug('fetchSponsors(): sponsors lastUpdated:', moment.unix(lastUpdated).toDate(), 'now', now, '1 hour ago', HOURS_1_AGO.toDate());
         // if we have lastUpdated and it's less than 1 hours ago return false
-        if (lastUpdated !== null && (moment.unix(lastUpdated).isAfter(HOURS_1_AGO))) {
+        if (!lastUpdated || (moment.unix(lastUpdated).isAfter(HOURS_1_AGO))) {
             return defer.resolve(true);
         } else {
             return defer.resolve(false);
