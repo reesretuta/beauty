@@ -1002,7 +1002,7 @@ function createLead(lead) {
     if (lead.type) {
         data.type = lead.type;
     } else {
-        lead.type = 'jcd-signup'
+        lead.type = 'cd-signup'
     }
     logger.debug('[JAFRA] > createLead: lead.type adjusted:', lead.type);
     request.post({
