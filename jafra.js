@@ -998,7 +998,9 @@ function createLead(lead) {
         phone: lead.phone,
         language: lead.language
     };
+    logger.debug('[JAFRA] > createLead: attempting to create lead, lead:', lead);
     if (lead.type) {
+        logger.debug('[JAFRA] > createLead: lead.type adjusted:', lead.type);
         data.type = lead.type;
     }
     request.post({
@@ -1015,10 +1017,9 @@ function createLead(lead) {
     }, function (error, response, body) {
         if (error || response.statusCode != 200) {
             logger.error("createLead(): error", response ? response.statusCode: null, body);
-
             if (body && body.statusCode && body.errorCode && body.message && response && response.statusCode) {
                 logger.error("createLead(): error, returning server error");
-                deferred.reject({
+                return deferred.reject({
                     status: response.statusCode,
                     result: {
                         statusCode: body.statusCode,
@@ -1028,7 +1029,7 @@ function createLead(lead) {
                 });
             } else {
                 logger.error("createLead(): error, returning generic error");
-                deferred.reject({
+                return deferred.reject({
                     status: 500,
                     result: {
                         statusCode: 500,
@@ -1037,12 +1038,10 @@ function createLead(lead) {
                     }
                 });
             }
-            return;
         }
-
         if (body == null || body.leadId == null) {
             logger.debug("createLead(): invalid return data", body, typeof body, "leadId", body.leadId);
-            deferred.reject({
+            return deferred.reject({
                 status: 500,
                 result: {
                     statusCode: 500,
@@ -1050,18 +1049,15 @@ function createLead(lead) {
                     message: "Failed to get lead ID from create"
                 }
             });
-            return;
         }
-
         // we should get leadId back
         logger.debug("createLead(): returning success");
         var leadId = body.leadId;
-        deferred.resolve({
+        return deferred.resolve({
             status: 201,
             result: body
         });
     });
-
     return deferred.promise;
 }
 

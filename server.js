@@ -42,9 +42,6 @@ var http = require('http');
 var mockserver = require('mockserver');
 var Grid = require('gridfs-stream');
 
-// configure app
-//app.use(bodyParser());
-
 var port = process.env.PORT || 8090; // set our port
 var mock_port = process.env.MOCK_PORT || 9001; // set our port
 var LEAD_PROCESSING_INTERVAL = process.env.LEAD_PROCESSING_INTERVAL || 5 * 60 * 1000; // default: 5 min
@@ -1674,6 +1671,8 @@ models.onReady(function () {
                             if (err) {
                                 logger.error("failed to mark lead sent", err);
                                 return;
+                            } else {
+                                logger.debug('lead successfully sent to jcs');
                             }
                         })
                     } else {
