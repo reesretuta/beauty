@@ -75,6 +75,13 @@
 #jaf_chat.shown .jaf-chat-showhide:before {
 	content: "Hide"
 }
+/* add class "es" to any parent element when using spanish */
+.es #jaf_chat .jaf-chat-showhide:before {
+	content: "Abierto"
+}
+.es #jaf_chat.shown .jaf-chat-showhide:before {
+	content: "Ocultar"
+}
 #jaf_chat .jaf-chat-showhide:after {
 	content: "\f102";
 	display: inline-block;

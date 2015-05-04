@@ -311,7 +311,8 @@
 <div ng-if='isChatAvailable' id="jaf_chat">
   <div class="jaf-chat-holder">
     <div class="jaf-chat-header">
-      <h4 class="jaf-chat-title">Chat with us!</h4>
+      <h4 ng-if="session.language == 'en_US'" class="jaf-chat-title">Chat with us!</h4>
+      <h4 ng-if="session.language == 'es_US'" class="jaf-chat-title">podemos ayudarte?</h4>
       <button class="jaf-chat-showhide"></button>
     </div>
     <div id="jaf_chat_frame" class="jaf-chat-frame">
