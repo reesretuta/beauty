@@ -1644,7 +1644,8 @@ models.onReady(function () {
             logger.debug("found old leads to send to server", leads.length);
             for (var i = 0; i < leads.length; i++) {
                 var lead = leads[i];
-                logger.log('server: found old lead, attempting to create in jcs:', lead);
+                logger.log('server: found old lead, attempting to create in jcs:');
+                logger.debug(lead);
                 jafraClient.createLead({
                     email: lead.email,
                     firstName: lead.firstName,
