@@ -1000,9 +1000,11 @@ function createLead(lead) {
     };
     logger.debug('[JAFRA] > createLead: attempting to create lead, lead:', lead);
     if (lead.type) {
-        logger.debug('[JAFRA] > createLead: lead.type adjusted:', lead.type);
         data.type = lead.type;
+    } else {
+        lead.type = 'jcd-signup'
     }
+    logger.debug('[JAFRA] > createLead: lead.type adjusted:', lead.type);
     request.post({
         url: CREATE_LEAD_URL,
         form: data,

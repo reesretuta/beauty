@@ -109,7 +109,7 @@ angular.module('app.controllers.onlineSponsor')
             type: 'jj-moreinfo'
         };
         $log.debug("OnlineSponsorLandingController(): addLead(): creating lead", leadData);
-
+        
         Leads.save(leadData).$promise.then(function(lead) {
             $log.debug("OnlineSponsorLandingController(): addLead(): lead created", lead);
             $log.debug('OnlineSponsorLandingController() addLead(): analytics:');
