@@ -1299,7 +1299,7 @@ router.route('/sponsors/search').post(function (req, res) {
             firstName : req.body.firstName,
             lastName  : req.body.lastName
         };
-        logger.debug('[SERVER] > searching for sponsor:', payload);
+        logger.debug('[SERVER] > searching for sponsor by name:', payload);
         jafraClient.findSponsorsByName(payload).then(function (data) {
             logger.debug('[SERVER] > :findSponsorsByName: result:', data.result);
             res.status(200);
@@ -1310,7 +1310,18 @@ router.route('/sponsors/search').post(function (req, res) {
             res.json(data.error);
         });
     } else if (searchType === 'zip') {
-        // ...
+        payload = {
+            zip : req.body.zip
+        };
+        jafraClient.findSponsorsByZipCode(payload).then(function (data) {
+            logger.debug('[SERVER] > :findSponsorsByZipCode: result:', data.result);
+            res.status(200);
+            res.json(data.result);
+        }, function(error) {
+            logger.error('[SERVER] > :findSponsorsByZipCode: error:', data.error);
+            res.status(500);
+            res.json(data.error);
+        });
     }
 });
 

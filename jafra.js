@@ -72,11 +72,10 @@ var STRIKEIRON_EMAIL_URL = 'http://ws.strikeiron.com/StrikeIron/emv6Hygiene/EMV6
 var STRIKEIRON_EMAIL_LICENSE = "2086D15410C1B9F9FF89";
 var STRIKEIRON_EMAIL_TIMEOUT = 15;
 
-//console.log("STRIKEIRON_VALIDATE", STRIKEIRON_VALIDATE);
-
-//var STRIKEIRON_ADDRESS_URL = 'http://ws.strikeiron.com/StrikeIron/NAAddressVerification6/NorthAmericanAddressVerificationService/NorthAmericanAddressVerification';
 var STRIKEIRON_ADDRESS_SOAP_URL = 'http://ws.strikeiron.com/NAAddressVerification6?WSDL';
 var STRIKEIRON_ADDRESS_LICENSE = "0DA72EA3199C10ABDE0B";
+
+var STRIKEIRON_POSTAL_URL = 'http://ws.strikeiron.com/ZIPPostalCodeInfo5?WSDL';
 
 var API_BASE_URL = 'http://localhost:' + port + '/api';
 var API_PRODUCTS_URL = API_BASE_URL + "/products";
@@ -1395,6 +1394,28 @@ function findSponsorsByName (data) {
         }
     });
     return defer.promise;
+}
+
+function findSponsorsByZipCode (data) {
+    var deferred = Q.defer();
+    request.get({
+        url: STRIKEIRON_ADDRESS_SOAP_URL,
+        qs: {
+            'LicenseInfo.RegisteredUser.UserID': STRIKEIRON_ADDRESS_LICENSE,
+            'ZIPCodeLookup.ZIPOrPostalCode': data.zip,
+            'format': 'json'
+        },
+        headers: {
+            'Accept': 'application/json, text/json'
+        },
+        json: true
+    }, function (error, response, body) {
+        logger.debug('findSponsorsByZipCode():');
+        logger.error(error);
+        logger.debug(response);
+        logger.debug(body);
+    });
+    return deferred.promise;
 }
 
 function validateEmail(email) {
@@ -3714,4 +3735,5 @@ exports.fetchSponsors = fetchSponsors;
 
 exports.determineSponsorsLastFetched = determineSponsorsLastFetched;
 exports.findSponsorsByName = findSponsorsByName;
+exports.findSponsorsByZipCode = findSponsorsByZipCode;
 
