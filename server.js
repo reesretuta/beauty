@@ -1627,12 +1627,12 @@ models.onReady(function () {
 
     // Configure Lead Cleanup Interval
 
-    setInterval(function() {
+    setInterval(function () {
         var now = new Date();
         var olderThan = new Date(now.getTime() - LEAD_MAX_AGE);
         //logger.debug("now", now, "olderThan", olderThan);
 
-        models.Lead.find({ created: {$lte: olderThan}, sent: false, completed: false }, function(error, leads) {
+        models.Lead.find({ created: { $lte: olderThan }, sent: false, completed: false }, function (error, leads) {
             if (error) {
                 logger.error("failed looking up leads from server", error);
                 return;
@@ -1641,7 +1641,9 @@ models.onReady(function () {
                 logger.debug("no leads to send to server");
                 return;
             }
-            logger.debug("found old leads to send to server", leads.length);
+            logger.debug('found old leads to send to server:');
+            logger.debug(leads);
+            logger.debug(leads.length);
             for (var i = 0; i < leads.length; i++) {
                 var lead = leads[i];
                 logger.log('server: found old lead, attempting to create in jcs:');

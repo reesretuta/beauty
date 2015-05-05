@@ -1004,7 +1004,7 @@ function createLead(lead) {
     } else {
         data.type = 'cd-signup';
     }
-    logger.debug('[JAFRA] > createLead: lead.type adjusted:', lead.type);
+    logger.debug('[JAFRA] > createLead: lead.type adjusted:', data.type);
     request.post({
         url: CREATE_LEAD_URL,
         form: data,
