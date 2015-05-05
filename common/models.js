@@ -150,11 +150,11 @@ exports.KitGroup = KitGroup;
 // LEAD
 
 var leadSchema = Schema({
-    "firstName" : String,
-    "lastName" : String,
-    "email" : String,
-    "phone" : String,
-    "language": String,
+    "firstName" : { type : String, required: true },
+    "lastName" : { type : String, required: true },
+    "email" : { type : String, required: true },
+    "phone" : { type : String, required: true },
+    "language": { type : String, required: true },
     "type": {type: String},
     "created": { type: Date, default: Date.now },
     "sent": { type: Boolean, default: false },
