@@ -7,9 +7,9 @@
       <span class="store-heading-description" ng-bind-html="'CHECK_INST_PAY' | translate | unsafe">
       </span>
     </h1>
-    <div class="row center-block">
+    <div class="row">
       <div class="col-md-10 .col-md-offset-1">
-        <div class="clear-both"></div>
+        <!-- <div class="clear-both"></div>
         <div class="progress">
             <div class="progress-bar progress-bar-custom" style="min-width: 2em; width: 70%;">
                 $194.59
@@ -18,20 +18,64 @@
                 $105.41 UNTIL NEXT LEVEL
             </div>
         </div>
-
         <p class="pull-left"><strong>$0</strong></p>
         <p class="pull-right"><strong>$300</strong></p>
-        <div class="clear-both"></div>
+        <div class="clear-both"></div> -->
+
         <div ng-if="orderError" class="alert alert-danger" role="alert" ng-bind="orderError"></div>
       </div>
     </div>
-    <div class="row center-block">
-      <div class="col-md-2">
+    <!-- <div class="row center-block">
         <button type="button" class="btn btn-primary btn-lg" >
           <span>Get Qualified</span>
         </button>
+    </div> -->
+    <!-- <div class="row">
+      <div class="col-md-6">
+        <img class="img-responsive" src="/img/19982_fragrance_pack_en.jpg" />
+        <div class="store-item-info">
+          <p class="store-item-sku ng-binding"><span ng-bind-html="'ITEM' | translate | unsafe" class="ng-binding">Item</span> #19982</p>
+          <p class="store-item-title">
+            <a class="ng-binding" href="#"> Skin Care Pack - Save 40%</a>
+          </p>
+          <p class="store-item-price ng-scope">
+            <span class="ng-scope">
+              <span class="item-price ng-binding">
+                $300.00
+              </span>
+            </span>
+            &nbsp;&nbsp;<span class="item-measure ng-binding">Retail Value $496</span>
+          </p>
+        </div>
+        <p class="ng-scope">
+          <a class="btn btn-primary primary-cta add-to-cart ng-scope">
+            <span class="ng-binding">Add to Cart</span>
+          </a>
+        </p>
       </div>
-    </div>
+      <div class="col-md-6">
+        <img class="img-responsive" src="/img/19985_skin_care_pack_en.jpg" />
+        <div class="store-item-info">
+          <p class="store-item-sku ng-binding"><span ng-bind-html="'ITEM' | translate | unsafe" class="ng-binding">Item</span> #19985</p>
+          <p class="store-item-title">
+            <a class="ng-binding" href="#"> Fragrance Pack - Save 41%</a>
+          </p>
+          <p class="store-item-price ng-scope">
+            <span class="ng-scope">
+              <span class="item-price ng-binding">
+                $300.00
+              </span>
+            </span>
+            &nbsp;&nbsp;<span class="item-measure ng-binding">Retail Value $511</span>
+          </p>
+        </div>
+        <p class="ng-scope">
+          <a class="btn btn-primary primary-cta add-to-cart ng-scope">
+            <span class="ng-binding">Add to Cart</span>
+          </a>
+        </p>
+      </div>
+    </div> -->
   </div>
 
   <div class="col-md-offset-1 col-md-10">
