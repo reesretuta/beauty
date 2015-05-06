@@ -1953,29 +1953,28 @@ angular.module('app.controllers.checkout')
                         }
                     ]
                 }
-
-                
                 
                 //add starterkit to consultant.products
-                var starterKit = _.findWhere($scope.starterKits, {sku: $scope.cart[0].product.sku});
-                var components = [];
-                for (var i = 0; i < starterKit.contains.length; i++) {
-                    components.push(
-                        {sku: starterKit.contains[j].productId, qty: starterKit.contains[j].quantity}
-                    );
-                }
-                //need to change consultant start with empty array of products
-                consultant.products.push(
-                    {
-                    "sku": starterKit.sku,
-                    "qty": 1,
-                    "kitSelections": {},
-                    "components": components
-                    }
-                );
+                // var starterKit = _.findWhere($scope.starterKits, {sku: $scope.cart[0].product.sku});
+                // var components = [];
+                // for (var i = 0; i < starterKit.contains.length; i++) {
+                //     components.push(
+                //         {sku: starterKit.contains[j].productId, qty: starterKit.contains[j].quantity}
+                //     );
+                // }
+                // //need to change consultant start with empty array of products
+                // consultant.products.push(
+                //     {
+                //     "sku": starterKit.sku,
+                //     "qty": 1,
+                //     "kitSelections": {},
+                //     "components": components
+                //     }
+                // );
                 
                 //add qnc products to consultant.products
-                if ($scope.profile.qnc == true || true) {
+                $scope.profile.qnc = true;
+                if ($scope.profile.qnc == true) {
                     
                     console.log('$scope.cart.length',$scope.cart.length);
                     for (var i = 1; i < $scope.cart.length; i++) { //exclude first starter kit
