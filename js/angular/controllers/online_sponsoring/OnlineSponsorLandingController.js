@@ -23,10 +23,10 @@ angular.module('app.controllers.onlineSponsor')
 
             // determine chat hour availability
             $rootScope.isChatAvailable = (function () {
-                var pacificTime, hour;
-                pacificTime = moment().tz('America/Los_Angeles').format('HHmm');
-                hour = moment(pacificTime).get('hour');
-                $log.debug('OnlineSponsorLandingController(): isChatAvailable: hour:', hour);
+                var hour, m = moment.tz(new Date(), 'America/Los_Angeles'); 
+                m.format('HHmm');
+                hour = m.get('hour');
+                console.debug('OnlineSponsorLandingController(): isChatAvailable: hour:', hour);
                 if (hour >= 8 && hour < 18) {
                     return true;
                 } else {
