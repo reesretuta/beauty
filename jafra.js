@@ -1372,6 +1372,7 @@ function deleteAddress(clientId, addressId) {
     return deferred.promise;
 }
 
+// search by both first an last name, then fetch their city based on zip
 function findSponsorsByName (data) {
     var query, defer = Q.defer();
     query = { 
@@ -1384,8 +1385,17 @@ function findSponsorsByName (data) {
             logger.error('[JAFRA] > findSponsorsByName: error:', error);
             defer.reject(error);
         } else {
-            logger.log('[JAFRA] > findSponsorsByName: success:', docs);
-            defer.resolve(docs);
+            findNearbyPostalCodesByPostCode(docs[0].zip, 1).then(function (results) {
+                var sponsors = docs.map(function (sponsor) {
+                    sponsor = sponsor.toJSON();
+                    sponsor.placeName = _.findWhere(results.placeNames, { zip : sponsor.zip }).placeName;
+                    return sponsor;
+                });
+                defer.resolve(sponsors);
+            }, function (error) {
+                logger.error('[JAFRA] > findSponsorsByName: error:', error);
+                defer.reject(error);
+            });
         }
     });
     return defer.promise;
@@ -1398,15 +1408,12 @@ function findSponsorsByPostalCodes (locationData) {
         zip : { $in : locationData.zipCodes },
         canSponsor : 1
     };
-    logger.debug('[JAFRA] > findSponsorsByPostalCodes: searching for sponsors in zip area: query:', query);
     models.Sponsors.find(query, function (error, docs) {
         var sponsors;
         if (error) {
             logger.error('[JAFRA] > findSponsorsByPostalCodes: error:', error);
             deferred.reject(error);
         } else {
-            logger.debug('[JAFRA] > findSponsorsByPostalCodes: success: docs: (%d)', docs.length);
-            logger.log('[JAFRA] > findSponsorsByPostalCodes: parsed place names:');
             deferred.resolve({
                 sponsors   : docs,
                 placeNames : locationData.placeNames 
@@ -1419,9 +1426,7 @@ function findSponsorsByPostalCodes (locationData) {
 // use geonames.org closest zip codes to find a sponsor
 function findSponsorsByZipCode (data) {
     var deferred = Q.defer();
-    logger.debug('[JAFRA] > findSponsorsByZipCode: calling geonames...'); 
     findNearbyPostalCodesByPostCode(data.zip).then(function (results) {
-        logger.debug('[JAFRA] > findSponsorsByZipCode(): success: got zipCodes/ & place names: (%d)', results.zipCodes.length);
         findSponsorsByPostalCodes(results).then(function (data) {
             logger.log('[JAFRA] > findSponsorsByZipCode(): determine cities/placenames...');
             var sponsors = data.sponsors.map(function (sponsor) {
@@ -1441,11 +1446,12 @@ function findSponsorsByZipCode (data) {
 }
 
 // use geonames.org api to find closest zip codes, then zip codes of sponsors that match
-function findNearbyPostalCodesByPostCode (zip) {
+function findNearbyPostalCodesByPostCode (zip, rows) {
     var placeNames = [], zipCodes = [], deferred = Q.defer();
+    rows = rows || 20;
     geonameClient.findNearbyPostalCodesByPostCode({ 
         postalCode : zip,
-        maxRows    : 20,
+        maxRows    : rows,
         radius     : 30
     }, function (error, response) {
         if (error) {
