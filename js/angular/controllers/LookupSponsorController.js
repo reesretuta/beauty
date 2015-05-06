@@ -5,6 +5,8 @@ angular.module('app.controllers.checkout').controller('LookupSponsorController',
 
     function search (type) {
         var payload;
+        // clear current results, if any
+        $scope.sponsors = [];
         $log.debug('LookupSponsorController(): search(): type:', type);
         if (type === 'zip') {
             payload = {

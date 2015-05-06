@@ -72,7 +72,7 @@
       <tr ng-repeat='sponsor in sponsors'>
         <td>{{ sponsor.firstName + ' ' + sponsor.lastName }}</td>
         <td>{{ sponsor.id }}</td>
-        <td>{{ sponsor.city || ('TBD:' + sponsor.zip) }}</td>
+        <td>{{ sponsor.city || sponsor.zip }}</td>
         <td><a ng-click='selectSponsor(sponsor.id)'>Select</a></td>
       </tr>
     </table>

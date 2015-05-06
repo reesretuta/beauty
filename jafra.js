@@ -1381,19 +1381,34 @@ function findSponsorsByName (data) {
     models.Sponsors.find(query, function (error, docs) {
         if (error) {
             logger.error('[JAFRA] > findSponsorsByName: error:', error);
-            return defer.reject({
-                result : null,
-                error  : error
-            });
+            defer.reject(error);
         } else {
-            logger.error('[JAFRA] > findSponsorsByName: success:', docs);
-            return defer.resolve({
-                result : docs,
-                error  : null
-            });
+            logger.log('[JAFRA] > findSponsorsByName: success:', docs);
+            defer.resolve(docs);
         }
     });
     return defer.promise;
+}
+
+// use zip codes near potential consultant to match with sponsees
+function findSponsorsByPostalCodes (codes) {
+    var query, deferred = Q.defer();
+    query = { 
+        zip : { $in : [codes] },
+        canSponsor : 1
+    };
+    logger.debug('[JAFRA] > findSponsorsByPostalCodes: searching for sponsors in zip area: query:', query);
+    models.Sponsors.find(query, function (error, docs) {
+        if (error) {
+            logger.error('[JAFRA] > findSponsorsByPostalCodes: error:', error);
+            deferred.reject(error);
+        } else {
+            logger.debug('[JAFRA] > findSponsorsByPostalCodes: success: docs: (%d)', docs.length);
+            logger.debug('[JAFRA] > findSponsorsByPostalCodes: success:', docs);
+            deferred.resolve(docs);
+        }
+    });
+    return deferred.promise;
 }
 
 // use geonames.org closest zip codes to find a sponsor
@@ -1401,17 +1416,14 @@ function findSponsorsByZipCode (data) {
     var deferred = Q.defer();
     logger.debug('[JAFRA] > findSponsorsByZipCode: calling geonames...'); 
     findNearbyPostalCodesByPostCode(data.zip).then(function (zips) {
-        logger.debug('[JAFRA] > findSponsorsByZipCode(): success: got back zips:', zips);
         logger.debug('[JAFRA] > findSponsorsByZipCode(): success: got back zips (%d)', zips.length);
-        findSponsorsByPostalCodes.then(zips, function (sponsors) {
-            logger.debug('[JAFRA] > findSponsorsByPostalCodes(): error:', error.error);
-            deferred.reject(error);
+        findSponsorsByPostalCodes(zips).then(function (sponsors) {
+            deferred.resolve(sponsors);
         }, function (error) {
-            logger.error('[JAFRA] > findSponsorsByPostalCodes(): error:', error.error);
             deferred.reject(error);
         });
     }, function (error) {
-        logger.error('[JAFRA] > findSponsorsByZipCode(): error:', error.error);
+        logger.error('[JAFRA] > findSponsorsByZipCode(): error:', error);
         deferred.reject(error);
     });
     return deferred.promise;
@@ -1430,9 +1442,9 @@ function findNearbyPostalCodesByPostCode (zip) {
             deferred.reject(error);
         } else if (response && response.length) {
             response.forEach(function (location) {
+                logger.debug('location.postalCode typeof:', typeof(location.postalCode));
                 results.push(location.postalCode);
             });
-            logger.debug('[JAFRA] > findNearbyPostalCodesByPostCode(): got results:', results);
             logger.debug('[JAFRA] > findNearbyPostalCodesByPostCode(): got results: (%d)', results.length);
             deferred.resolve(results);
         } else {
