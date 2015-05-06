@@ -1435,7 +1435,7 @@ function findNearbyPostalCodesByPostCode (zip) {
     var results = [], deferred = Q.defer();
     geonameClient.findNearbyPostalCodesByPostCode({ 
         postalCode : zip,
-        maxRows    : 50,
+        maxRows    : 20,
         radius     : 30
     }, function (error, response) {
         if (error) {
