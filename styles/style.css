@@ -911,6 +911,22 @@ h3.cart-item-prod-title{
 }
 
 
+.progress {
+  background: rgba(245, 245, 245, 1); 
+  border: 1px solid #dedede; 
+  border-radius: 0px; 
+  height: 25px;
+  margin-bottom: 4px;
+  padding:2px;
+}
+.progress-bar-custom {
+  background: #867527;
+}
+.progress-bar-remainder{
+  background-color:#efefef;
+  color:#777777;
+  background-image: none;
+}
 
 
 .category-header img{
