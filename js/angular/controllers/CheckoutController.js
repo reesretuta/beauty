@@ -651,12 +651,31 @@ angular.module('app.controllers.checkout')
                 $log.error("CheckoutController(): selectQncProduct(): failed to add to cart, redirecting", error);
                 $scope.orderError = "Failed to add product to cart";
                 $scope.salesTaxInfo = null;
-
                 $scope.alert("ERR101: Error loading products in cart");
                 d.reject(error);
             });
 
             return d.promise;
+        }
+        
+        $scope.removeQncProduct = function(sku){
+            var d = $q.defer();
+            Card.removeFromCart({sku: sku}).then(function(cart){
+                $scope.cart = cart;
+                loadCheckout().then(function() { //this also updates new sales tax
+                    d.resolve(cart);
+                });
+            }, function(error){
+                $log.error("CheckoutController(): removeQncProduct(): failed to remove to cart, redirecting", error);
+                $scope.orderError = "Failed to add product to cart";
+                $scope.salesTaxInfo = null;
+                $scope.alert("ERR101: Error loading products in cart");
+                d.reject(error);
+            });
+            
+            return d.promise;
+            
+            
         }
         
         // load the checkout data from the session
