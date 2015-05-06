@@ -349,34 +349,6 @@ var passwordResetTokenSchema = Schema({
 var PasswordResetToken = mongoose.model('PasswordResetToken', passwordResetTokenSchema);
 exports.PasswordResetToken = PasswordResetToken;
 
-
-//
-//// SESSIONS
-//var sessionSchema = Schema({
-//    "_id" : { type: String, unique: true },
-//    "created": { type: Date, default: Date.now },
-//    "updated": { type: Date, default: Date.now },
-//    "cart": Schema.Types.Mixed,
-//    // parts of this are loaded from JCS and cached in session
-//    "client": Schema.Types.Mixed,
-//    "creditCards": Schema.Types.Mixed,
-//    "shippingAddresses": Schema.Types.Mixed,
-//    "billingAddresses": Schema.Types.Mixed
-//}, { id: false });
-//
-//// Duplicate the ID field.
-//sessionSchema.virtual('id').get(function(){
-//    return this._id;
-//});
-//
-//// Ensure virtual fields are serialised.
-//sessionSchema.set('toJSON', {
-//    virtuals: true
-//});
-//
-//var Session = mongoose.model('Session', sessionSchema);
-//exports.Session = Session;
-
 // available sponsors
 var sponsorsSchema = Schema({
     id : { type : Number },
@@ -384,7 +356,7 @@ var sponsorsSchema = Schema({
     lastName : { type : String, required : true },
     zip : { type : String, required : true },
     geocode: { type : String, required : true },
-    canSponsor: { type : Number, required : true }
+    isActive: { type : Number, required : true }
 });
 
 categorySchema.virtual('id').get(function(){

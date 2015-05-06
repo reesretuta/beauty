@@ -1376,9 +1376,9 @@ function deleteAddress(clientId, addressId) {
 function findSponsorsByName (data) {
     var query, defer = Q.defer();
     query = { 
-        firstName  : new RegExp(data.firstName, 'i'),
-        lastName   : new RegExp(data.lastName, 'i'),
-        canSponsor : 1
+        firstName : new RegExp(data.firstName, 'i'),
+        lastName  : new RegExp(data.lastName, 'i'),
+        isActive  : 1
     };
     models.Sponsors.find(query, function (error, docs) {
         if (error) {
@@ -1406,7 +1406,7 @@ function findSponsorsByPostalCodes (locationData) {
     var query, deferred = Q.defer();
     query = { 
         zip : { $in : locationData.zipCodes },
-        canSponsor : 1
+        isActive : 1
     };
     models.Sponsors.find(query, function (error, docs) {
         var sponsors;
@@ -3650,7 +3650,6 @@ function getProducts(loadUnavailable, loadComponents, skip, limit, sort) {
     })
     return d.promise;
 }
-
 // determine last sponsor fetch
 function determineSponsorsLastFetched () {
     var defer = Q.defer()
@@ -3659,9 +3658,8 @@ function determineSponsorsLastFetched () {
         , HOURS_1_AGO = moment().subtract(HOURS_1);
     getConfigValue('sponsorsLastFetched').then(function(lastUpdated) {
         logger.debug('fetchSponsors(): sponsors lastUpdated:', moment.unix(lastUpdated).toDate(), 'now', now, '1 hour ago', HOURS_1_AGO.toDate());
-        if (!lastUpdated) {
-            return defer.resolve(true);
-        } else if (lastUpdated && (moment.unix(lastUpdated).isAfter(HOURS_1_AGO))) {
+        // if we have lastUpdated and it's less than 1 hours ago return false
+        if (lastUpdated !== null && (moment.unix(lastUpdated).isAfter(HOURS_1_AGO))) {
             return defer.resolve(true);
         } else {
             return defer.resolve(false);
@@ -3720,6 +3718,7 @@ function fetchSponsors(modifiedSince) {
                         }
                     });
                 } else {
+                    logger.debug('[JAFRA] > fetchSponsors(): body.consultants:', body.consultants);
                     return defer.resolve({
                         status : 200,
                         result : body.consultants
