@@ -1385,17 +1385,21 @@ function findSponsorsByName (data) {
             logger.error('[JAFRA] > findSponsorsByName: error:', error);
             defer.reject(error);
         } else {
-            findNearbyPostalCodesByPostCode(docs[0].zip, 1).then(function (results) {
-                var sponsors = docs.map(function (sponsor) {
-                    sponsor = sponsor.toJSON();
-                    sponsor.placeName = _.findWhere(results.placeNames, { zip : sponsor.zip }).placeName;
-                    return sponsor;
+            if (docs && docs.length > 0) {
+                findNearbyPostalCodesByPostCode(docs[0].zip, 1).then(function (results) {
+                    var sponsors = docs.map(function (sponsor) {
+                        sponsor = sponsor.toJSON();
+                        sponsor.placeName = _.findWhere(results.placeNames, { zip : sponsor.zip }).placeName;
+                        return sponsor;
+                    });
+                    defer.resolve(sponsors);
+                }, function (error) {
+                    logger.error('[JAFRA] > findSponsorsByName: error:', error);
+                    defer.reject(error);
                 });
-                defer.resolve(sponsors);
-            }, function (error) {
-                logger.error('[JAFRA] > findSponsorsByName: error:', error);
-                defer.reject(error);
-            });
+            } else {
+                defer.resolve([]);
+            }
         }
     });
     return defer.promise;
