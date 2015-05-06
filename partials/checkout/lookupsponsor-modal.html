@@ -1,12 +1,12 @@
 
 <div class='modal-header'>
   <button type='button' class='close' ng-click='close()'>&times;</button>
-  <h4 class='modal-title'>Look Up Sponsor</h4>
+  <h4 class='modal-title'>{{ 'SPONSOR-LOOKUP' | translate }}</h4>
 </div>
 
 <div class='modal-body queue-modal-body'>
   <div class='col-md-offset-3'>
-    <h1>Look Up Sponsor</h1>
+    <h1>{{ 'SPONSOR-LOOKUP' | translate }}</h1>
   </div>
   <div class='row'>
     <div class='col-sm-3 col-md-3'></div>
@@ -16,40 +16,40 @@
       </div>
     </div>
   </div>
-  <form name='sponsorByZipForm' class='form-horizontal' role='form' novalidate>
+  <form name='forms.sponsorByZipForm' class='form-horizontal' role='form' novalidate>
     <div class='form-group'>
-      <label for='zip' class='col-md-3 control-label'>By Zip</label>
-      <div class='col-sm-3' ng-class="{ 'has-error' : sponsorByZipForm.zip.$invalid && (sponsorByZipForm.zip.$touched || sponsorByZipForm.zip.$dirty) }">
+      <label for='zip' class='col-md-3 control-label'>{{ 'SPONSOR-BY-ZIP-LABEL' | translate }}</label>
+      <div class='col-sm-3' ng-class="{ 'has-error' : forms.sponsorByZipForm.zip.$invalid && (forms.sponsorByZipForm.zip.$touched || forms.sponsorByZipForm.zip.$dirty) }">
         <input name='zip' class='form-control' id='zip' ng-pattern='/(^\d{5}$)|(^\d{5}-\d{4}$)/' ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" required ng-model='zip' tabindex='0' />
       </div>
     </div>
     <div class='form-group'>
       <div class='col-sm-3 col-md-3'></div>
       <div class='col-sm-6 col-md-6'>
-        <button ng-click='searchByZip()' ng-disabled='sponsorByZipForm.$invalid' class='btn btn-primary' tabindex='1'>Lookup By Zip Code</button>
+        <button ng-click='searchByZip()' ng-disabled='forms.sponsorByZipForm.$invalid' class='btn btn-primary' tabindex='1'>Lookup By Zip Code</button>
       </div>
     </div>
   </form>
   <div class='row'>
-    <div class='col-sm-3 col-md-3 text-right'>- OR -</div>
+    <div class='col-sm-3 col-md-3 text-right'>- {{ 'SPONSOR-OR' | translate }} -</div>
   </div>
-  <form name='sponsorByNameForm' class='form-horizontal' role='form' novalidate>
+  <form name='forms.sponsorByNameForm' class='form-horizontal' role='form' novalidate>
     <div class='form-group'>
-      <label for='firstName' class='col-md-3 control-label'>By Sponsor Name</label>
-      <div class='col-sm-3' ng-class="{ 'has-error' : sponsorByNameForm.firstName.$invalid && (sponsorByNameForm.firstName.$touched || sponsorByNameForm.firstName.$dirty) }">
+      <label for='firstName' class='col-md-3 control-label'>{{ 'SPONSOR-BY-NAME-LABEL' | translate }}</label>
+      <div class='col-sm-3' ng-class="{ 'has-error' : forms.sponsorByNameForm.firstName.$invalid && (forms.sponsorByNameForm.firstName.$touched || forms.sponsorByNameForm.firstName.$dirty) }">
         <input name='firstName' ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model='firstName' class='form-control' id='firstName' ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" min='2' max='40' required placeholder="{{ 'CHECKOUT-FIRST-PLACEHOLDER' | translate | unsafe }}" tabindex='2' />
       </div>
-      <div class='col-sm-3' ng-class="{ 'has-error' : sponsorByNameForm.lastName.$invalid && (sponsorByNameForm.lastName.$touched || sponsorByNameForm.lastName.$dirty) }">
+      <div class='col-sm-3' ng-class="{ 'has-error' : forms.sponsorByNameForm.lastName.$invalid && (forms.sponsorByNameForm.lastName.$touched || forms.sponsorByNameForm.lastName.$dirty) }">
         <input name='lastName' ng-pattern="/^[A-Za-z]'?[- a-zA-Z]+$/" ng-model='lastName' ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }" class='form-control' id='lastName' min='2' max='40' required placeholder="{{ 'CHECKOUT-LAST-PLACEHOLDER' | translate | unsafe }}" tabindex='3' />
       </div>
     </div>
-    <div class='row' ng-if='(sponsorByNameForm.firstName.$invalid && (sponsorByNameForm.firstName.$touched || sponsorByNameForm.firstName.$dirty)) || (sponsorByNameForm.lastName.$invalid && (searchForSponsorForm.lastName.$touched || searchForSponsorForm.lastName.$dirty))'>
+    <div class='row' ng-if='(forms.sponsorByNameForm.firstName.$invalid && (forms.sponsorByNameForm.firstName.$touched || forms.sponsorByNameForm.firstName.$dirty)) || (forms.sponsorByNameForm.lastName.$invalid && (searchForSponsorForm.lastName.$touched || searchForSponsorForm.lastName.$dirty))'>
       <div class='col-md-3'></div>
       <div class='col-sm-9 has-error'>
-        <span ng-show='sponsorByNameForm.firstName.$invalid && (sponsorByNameForm.firstName.$touched || sponsorByNameForm.firstName.$dirty)' class='help-block' ng-class="{ 'text-danger' : searchForSponsorForm.firstName.$invalid }">
+        <span ng-show='forms.sponsorByNameForm.firstName.$invalid && (forms.sponsorByNameForm.firstName.$touched || forms.sponsorByNameForm.firstName.$dirty)' class='help-block' ng-class="{ 'text-danger' : searchForSponsorForm.firstName.$invalid }">
           <span ng-bind-html="'REQUIRE-FIRSTNAME-LENGTH' | translate | unsafe"></span>
         </span>
-        <span ng-show='sponsorByNameForm.lastName.$invalid && (sponsorByNameForm.lastName.$touched || sponsorByNameForm.lastName.$dirty) && !(sponsorByNameForm.firstName.$invalid && (searchForSponsorForm.firstName.$touched || searchForSponsorForm.firstName.$dirty))' class='help-block' ng-class="{ 'text-danger' : searchForSponsorForm.lastName.$invalid }">
+        <span ng-show='forms.sponsorByNameForm.lastName.$invalid && (forms.sponsorByNameForm.lastName.$touched || forms.sponsorByNameForm.lastName.$dirty) && !(forms.sponsorByNameForm.firstName.$invalid && (searchForSponsorForm.firstName.$touched || searchForSponsorForm.firstName.$dirty))' class='help-block' ng-class="{ 'text-danger' : searchForSponsorForm.lastName.$invalid }">
           <span ng-bind-html="'REQUIRE-LASTNAME-LENGTH' | translate | unsafe"></span>
         </span>
       </div>
@@ -57,17 +57,27 @@
     <div class='form-group'>
       <div class='col-sm-3 col-md-3'></div>
       <div class='col-sm-6 col-md-6'>
-        <button ng-click='searchByName()' ng-disabled='sponsorByNameForm.$invalid' class='btn btn-primary' tabindex='4'>Lookup by Name</button>
+        <button ng-click='searchByName()' ng-disabled='forms.sponsorByNameForm.$invalid' class='btn btn-primary' tabindex='4'>Lookup by Name</button>
       </div>
     </div>
   </form>
+  <div id='lookupResultsMessage' class='container-responsive'>
+    <div class='row'>
+      <div ng-if='successMessage' class='col-sm-12 col-md-12 col-lg-12 has-success'>
+        <span>{{ successMessage }}</span>
+      </div>
+      <div ng-if='errorMessage' class='col-sm-12 col-md-12 col-lg-12 has-error'>
+        <span>{{ errorMessage }}</span>
+      </div>
+    </div>
+  </div>
   <div id='lookupResults' class='container-responsive'>
     <table class='table table-striped table-responsive'>
       <tr>
-        <th>Sponsor Name</th>
-        <th>Sponsor ID</th>
-        <th>City</th>
-        <th>Action</th>
+        <th>{{ 'SPONSOR-NAME-LABEL' | translate }}</th>
+        <th>{{ 'SPONSOR-ID-LABEL' | translate }}</th>
+        <th>{{ 'SPONSOR-CITY-LABEL' | translate }}</th>
+        <th>{{ 'SPONSOR-ACTION-LABEL' | translate }}</th>
       </tr>
       <tr ng-repeat='sponsor in sponsors'>
         <td>{{ sponsor.firstName + ' ' + sponsor.lastName }}</td>

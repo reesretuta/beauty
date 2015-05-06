@@ -564,6 +564,21 @@
     "OS-QNC-TITLE": "Qualified New Consultant",
     "OS-QNC-DESCRIPTION": "Pay $50.00 more to become a Qualified New Consultant",
 
-    "SPONSOR-SEARCH-INPUT-ERROR": "Search either by Zip Code OR Name"
+    "SPONSOR-LOOKUP": "Look Up Sponsor",
+
+    "SPONSOR-BY-ZIP-LABEL": "By Zip",
+    "SPONSOR-OR": "OR",
+    "SPONSOR-BY-NAME-LABEL": "By Sponsor Name",
+
+    "SPONSOR-NAME-LABEL": "Sponsor Name",
+    "SPONSOR-ID-LABEL": "Sponsor ID",
+    "SPONSOR-CITY-LABEL": "City",
+    "SPONSOR-ACTION-LABEL": "Action",
+
+    "SPONSOR-SEARCH-INPUT-ERROR": "Search either by Zip Code OR Name",
+    "SPONSORS-SEARCH-NO-SPONSORS-FOUND": "No Sponsors Found",
+    "SPONSORS-SEARCH-UNKNOWN-ERROR": "Error Searching for Sponsors",
+    "SPONSORS-SEARCH-FOUND-ZIP": "Found {{ count }} sponsors near {{ zip }} zip code",
+    "SPONSORS-SEARCH-FOUND-NAME": "Found {{ count }} sponsors matching \"{{ firstName }}\" \"{{ lastName }}\""
 
 }
