@@ -2,6 +2,7 @@
 
 var config = require('./config/config');
 
+var _ = require('lodash');
 var request = require('request');
 var SHA1 = require("crypto-js/sha1");
 var Q = require('q');
@@ -1391,22 +1392,25 @@ function findSponsorsByName (data) {
 }
 
 // use zip codes near potential consultant to match with sponsees
-function findSponsorsByPostalCodes (codes) {
+function findSponsorsByPostalCodes (locationData) {
     var query, deferred = Q.defer();
     query = { 
-        zip : { $in : codes },
+        zip : { $in : locationData.zipCodes },
         canSponsor : 1
     };
     logger.debug('[JAFRA] > findSponsorsByPostalCodes: searching for sponsors in zip area: query:', query);
     models.Sponsors.find(query, function (error, docs) {
+        var sponsors;
         if (error) {
             logger.error('[JAFRA] > findSponsorsByPostalCodes: error:', error);
             deferred.reject(error);
         } else {
             logger.debug('[JAFRA] > findSponsorsByPostalCodes: success: docs: (%d)', docs.length);
-            logger.log('[JAFRA] > findSponsorsByPostalCodes: success:');
-            logger.log(docs);
-            deferred.resolve(docs);
+            logger.log('[JAFRA] > findSponsorsByPostalCodes: parsed place names:');
+            deferred.resolve({
+                sponsors   : docs,
+                placeNames : locationData.placeNames 
+            });
         }
     });
     return deferred.promise;
@@ -1416,9 +1420,15 @@ function findSponsorsByPostalCodes (codes) {
 function findSponsorsByZipCode (data) {
     var deferred = Q.defer();
     logger.debug('[JAFRA] > findSponsorsByZipCode: calling geonames...'); 
-    findNearbyPostalCodesByPostCode(data.zip).then(function (zips) {
-        logger.debug('[JAFRA] > findSponsorsByZipCode(): success: got back zips (%d)', zips.length);
-        findSponsorsByPostalCodes(zips).then(function (sponsors) {
+    findNearbyPostalCodesByPostCode(data.zip).then(function (results) {
+        logger.debug('[JAFRA] > findSponsorsByZipCode(): success: got zipCodes/ & place names: (%d)', results.zipCodes.length);
+        findSponsorsByPostalCodes(results).then(function (data) {
+            logger.log('[JAFRA] > findSponsorsByZipCode(): determine cities/placenames...');
+            var sponsors = data.sponsors.map(function (sponsor) {
+                sponsor = sponsor.toJSON();
+                sponsor.placeName = _.findWhere(data.placeNames, { zip : sponsor.zip }).placeName;
+                return sponsor;
+            });
             deferred.resolve(sponsors);
         }, function (error) {
             deferred.reject(error);
@@ -1432,7 +1442,7 @@ function findSponsorsByZipCode (data) {
 
 // use geonames.org api to find closest zip codes, then zip codes of sponsors that match
 function findNearbyPostalCodesByPostCode (zip) {
-    var results = [], deferred = Q.defer();
+    var placeNames = [], zipCodes = [], deferred = Q.defer();
     geonameClient.findNearbyPostalCodesByPostCode({ 
         postalCode : zip,
         maxRows    : 20,
@@ -1442,11 +1452,19 @@ function findNearbyPostalCodesByPostCode (zip) {
             logger.error('[JAFRA] > findNearbyPostalCodesByPostCode(): error fetching geonames findNearbyPostalCodesByPostCode');
             deferred.reject(error);
         } else if (response && response.length) {
-            response.forEach(function (location) {
-                results.push(location.postalCode.toString());
+            response.forEach(function (location, index) {
+                zipCodes.push(location.postalCode);
+                placeNames[index] = {
+                    zip : location.postalCode,
+                    placeName : location.placeName
+                };
             });
-            logger.debug('[JAFRA] > findNearbyPostalCodesByPostCode(): got results: (%d)', results.length);
-            deferred.resolve(results);
+            logger.debug('[JAFRA] > findNearbyPostalCodesByPostCode(): got zipCodes (%d)', zipCodes.length);
+            logger.debug('[JAFRA] > findNearbyPostalCodesByPostCode(): got placenames (%d)', placeNames.length);
+            deferred.resolve({
+                placeNames : placeNames, 
+                zipCodes   : zipCodes
+            });
         } else {
             logger.error('[JAFRA] > findNearbyPostalCodesByPostCode(): unknown geonames error');
             deferred.reject(new Error('Unknown Geonames.org error!'));
