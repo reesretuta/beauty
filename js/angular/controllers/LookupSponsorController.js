@@ -18,20 +18,22 @@ angular.module('app.controllers.checkout').controller('LookupSponsorController',
                 lastName  : $scope.lastName
             }
         }
+        // perform actual search after payload setup
         $log.debug('LookupSponsorController(): search(): payload:', payload);
-        Sponsor.search(payload).then(function (results) {
-            $scope.sponsors = results;
+        Sponsor.search(payload).then(function (sponsors) {
+            $scope.sponsors = sponsors;
+            $log.debug('LookupSponsorController(): sponsors:', sponsors);
         }, function (error) {
             $log.error('LookupSponsorController(): search(): error:', error);
         });
     };
 
     $scope.searchByZip = function () {
-        search('zip');
+        return search('zip');
     };
 
     $scope.searchByName = function () {
-        search('name');
+        return search('name');
     };
 
     $scope.close = function () {
