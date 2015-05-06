@@ -306,7 +306,6 @@
   </div>
 </div>
 
-
 <!-- jafra chat widget -->
 <div ng-if='isChatAvailable' id="jaf_chat">
   <div class="jaf-chat-holder">
@@ -317,6 +316,16 @@
     </div>
     <div id="jaf_chat_frame" class="jaf-chat-frame">
       <iframe id="jaf_chat_frame" width="320" height="400" frameborder="0" src="https://chat.jafrausa.com/chat/chat.html"></iframe>
+    </div>
+  </div>
+</div>
+
+<!-- jafra chat is unavailable -->
+<div ng-if='!isChatAvailable' id="jaf_chat" class='jaf_chat_unavailable'>
+  <div class="jaf-chat-holder">
+    <div class="jaf-chat-header">
+      <h4 ng-if="session.language == 'en_US'" class="jaf-chat-title">Chat is available 8am-6pm PST</h4>
+      <h4 ng-if="session.language == 'es_US'" class="jaf-chat-title">Chat está disponible 08 a.m.-6 p.m. PST</h4>
     </div>
   </div>
 </div>

@@ -17,16 +17,19 @@
           <p class="pull-right"><strong>$300</strong></p>
           <div class="clear-both"></div>
 
-          <div ng-if="orderError" class="alert alert-danger" role="alert" ng-bind="orderError"></div>
-        </div>
+        <div ng-if="orderError" class="alert alert-danger" role="alert" ng-bind="orderError"></div>
       </div>
-      <div class="row center-block" ng-show="!profile.qnc">
-          <button type="button" ng-click="toggleQnc(1)" class="btn btn-primary btn-lg" >
-            <span>Get Qualified</span>
-          </button>
-      </div>
-      <div class="row" ng-show="profile.qnc">
-        <div class="col-md-6">
+    </div>
+    <div id="panel-1" class="row">
+        <button type="button" id="yes-order" class="btn btn-primary btn-lg center-block" >
+          <span>Get Qualified</span>
+        </button>
+    </div>
+
+    <!-- ADD-ON KIT SELECTION -->
+    <div id="panel-2" class="row" style="display:none;">
+      <div class="col-md-5 col-md-offset-1">
+        <div class="kit-box">
           <img class="img-responsive" src="/img/19982_fragrance_pack_en.jpg" />
           <div class="store-item-info">
             <p class="store-item-sku ng-binding"><span ng-bind-html="'ITEM' | translate | unsafe" class="ng-binding">Item</span> #19982</p>
@@ -44,11 +47,13 @@
           </div>
           <p class="ng-scope">
             <a class="btn btn-primary primary-cta add-to-cart ng-scope" ng-click="selectQncProduct('19982')">
-              <span class="ng-binding">Add to Cart</span>
+              <span class="ng-binding">Add to Order</span>
             </a>
           </p>
         </div>
-        <div class="col-md-6">
+      </div>
+      <div class="col-md-5">
+        <div class="kit-box">
           <img class="img-responsive" src="/img/19985_skin_care_pack_en.jpg" />
           <div class="store-item-info">
             <p class="store-item-sku ng-binding"><span ng-bind-html="'ITEM' | translate | unsafe" class="ng-binding">Item</span> #19985</p>
@@ -66,7 +71,7 @@
           </div>
           <p class="ng-scope">
             <a class="btn btn-primary primary-cta add-to-cart ng-scope" ng-click="selectQncProduct('19985')">
-              <span class="ng-binding">Add to Cart</span>
+              <span class="ng-binding">Add to Order</span>
             </a>
           </p>
         </div>
@@ -274,6 +279,12 @@
     </div>
     
     <script>
+        $(document).ready(function() {      
+           $( "#yes-order" ).click(function() {
+            $("#panel-1").hide();
+            $("#panel-2").show();
+          });
+        })
       $(function(){ 
           
           $('.agreement-content').on('scroll', function() {
