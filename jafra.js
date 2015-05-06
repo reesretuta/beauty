@@ -14,6 +14,8 @@ var mongoose = require('mongoose');
 var randomString = require('random-string');
 var moment = require('moment');
 var util = require('util');
+var geonames = require('node-geonames-client');
+var geonameClient = new geonames({ username : 'jafra' });
 //var toposort = require('toposort');
 
 var port = process.env.PORT || 8090;
@@ -1394,24 +1396,49 @@ function findSponsorsByName (data) {
     return defer.promise;
 }
 
+// use geonames.org closest zip codes to find a sponsor
 function findSponsorsByZipCode (data) {
     var deferred = Q.defer();
-    request.get({
-        url: STRIKEIRON_ADDRESS_SOAP_URL,
-        qs: {
-            'LicenseInfo.RegisteredUser.UserID': STRIKEIRON_ADDRESS_LICENSE,
-            'ZIPCodeLookup.ZIPOrPostalCode': data.zip,
-            'format': 'json'
-        },
-        headers: {
-            'Accept': 'application/json, text/json'
-        },
-        json: true
-    }, function (error, response, body) {
-        logger.debug('findSponsorsByZipCode():');
-        logger.error(error);
-        logger.debug(response);
-        logger.debug(body);
+    logger.debug('[JAFRA] > findSponsorsByZipCode: calling geonames...'); 
+    findNearbyPostalCodesByPostCode(data.zip).then(function (zips) {
+        logger.debug('[JAFRA] > findSponsorsByZipCode(): success: got back zips:', zips);
+        logger.debug('[JAFRA] > findSponsorsByZipCode(): success: got back zips (%d)', zips.length);
+        findSponsorsByPostalCodes.then(zips, function (sponsors) {
+            logger.debug('[JAFRA] > findSponsorsByPostalCodes(): error:', error.error);
+            deferred.reject(error);
+        }, function (error) {
+            logger.error('[JAFRA] > findSponsorsByPostalCodes(): error:', error.error);
+            deferred.reject(error);
+        });
+    }, function (error) {
+        logger.error('[JAFRA] > findSponsorsByZipCode(): error:', error.error);
+        deferred.reject(error);
+    });
+    return deferred.promise;
+}
+
+// use geonames.org api to find closest zip codes, then zip codes of sponsors that match
+function findNearbyPostalCodesByPostCode (zip) {
+    var results = [], deferred = Q.defer();
+    geonameClient.findNearbyPostalCodesByPostCode({ 
+        postalCode : zip,
+        maxRows    : 50,
+        radius     : 30
+    }, function (error, response) {
+        if (error) {
+            logger.error('[JAFRA] > findNearbyPostalCodesByPostCode(): error fetching geonames findNearbyPostalCodesByPostCode');
+            deferred.reject(error);
+        } else if (response && response.length) {
+            response.forEach(function (location) {
+                results.push(location.postalCode);
+            });
+            logger.debug('[JAFRA] > findNearbyPostalCodesByPostCode(): got results:', results);
+            logger.debug('[JAFRA] > findNearbyPostalCodesByPostCode(): got results: (%d)', results.length);
+            deferred.resolve(results);
+        } else {
+            logger.error('[JAFRA] > findNearbyPostalCodesByPostCode(): unknown geonames error');
+            deferred.reject(new Error('Unknown Geonames.org error!'));
+        }
     });
     return deferred.promise;
 }

@@ -1311,13 +1311,13 @@ router.route('/sponsors/search').post(function (req, res) {
             zip : req.body.zip
         };
         jafraClient.findSponsorsByZipCode(payload).then(function (data) {
-            logger.debug('[SERVER] > :findSponsorsByZipCode: result:', data.result);
+            logger.debug('[SERVER] > :findSponsorsByZipCode: result:', data);
             res.status(200);
-            res.json(data.result);
+            res.json(data);
         }, function(error) {
-            logger.error('[SERVER] > :findSponsorsByZipCode: error:', data.error);
+            logger.error('[SERVER] > :findSponsorsByZipCode: error:', error);
             res.status(500);
-            res.json(data.error);
+            res.json(error);
         });
     }
 });
