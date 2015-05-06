@@ -76,7 +76,13 @@ angular.module('app.controllers.checkout')
             card: {},
             qnc: false
         };
-
+        
+        $scope.qncProductsSkus = ['19982','19985'];
+        $scope.qncProducts = null;
+        
+        $scope.starterKitsSkus = ['20494','20495','20498','20499'];
+        $scope.starterKits = null;
+        
         // set current step
         $scope.currentStep = 'Start';
 
@@ -222,6 +228,7 @@ angular.module('app.controllers.checkout')
         // FIXME - Client Direct Only, ensure that if loading a step, all previous steps were completed
 
         Session.get().then(function(session) {
+            
             $log.debug("CheckoutController(): session initialized", session);
 
             $scope.session = session;
@@ -281,6 +288,7 @@ angular.module('app.controllers.checkout')
 
             // wait for any session copying that may be required
             sessionCopy.promise.then(function(session) {
+
                 // for debugging only
                 if (debug) {
                     if (path && path.match(JOIN_BASE_URL)) {
@@ -293,7 +301,7 @@ angular.module('app.controllers.checkout')
                     }
 
                     populateDebugData();
-
+                    
                     $timeout(function() {
                         WizardHandler.wizard('checkoutWizard').goTo(urlStep);
                     }, 0);
@@ -551,7 +559,106 @@ angular.module('app.controllers.checkout')
 
             return d.promise;
         }
+        
+        $scope.getKits = function(){
+            var d = $q.defer();
+            
+            //loadUnavailable for dev only
+            var p = Product.query({productIds: $scope.starterKitsSkus, loadUnavailable: true}).then(function(products) {
+                $log.debug("checkoutController(): getKits(): loaded products", products);
 
+                $scope.starterKits = products;
+                d.resolve(products);
+            }, function(error) {
+                $log.debug("checkoutController(): getKits(): error loading products", error);
+                d.reject(error);
+            });
+            
+            return d.promise;
+        }
+        $scope.getKits();
+        
+        $scope.getQncProducts = function(){
+            var d = $q.defer();
+            //fetch scope details assign to $scope.qncProducts.. use $scope.qncProducts in placeOrder() to populate components
+            
+            //loadUnavailable for dev only
+            var p = Product.query({productIds: $scope.qncProductsSkus, loadUnavailable: true}).then(function(products) {
+                $log.debug("checkoutController(): getQncProducts(): loaded products", products);
+                // $.each(products, function(index, product) {
+                //     // merge back in
+                //     $.each(items, function(index, item) {
+                //         if (item.sku == product.sku) {
+                //             item.product = product;
+                //         }
+                //     });
+                // });
+                
+                $scope.qncProducts = products;
+                d.resolve(products);
+            }, function(error) {
+                $log.debug("checkoutController(): getQncProducts(): error loading products", error);
+                d.reject(error);
+            });
+            
+            return d.promise;
+        }
+        $scope.getQncProducts();
+        
+        $scope.selectQncProduct = function(sku) {
+            $log.debug("CheckoutController(): selectQncProduct(): $scope.cart", $scope.cart);
+            var alreadyInCart = false;
+            for (var i = 0; i < $scope.cart.length; i++) {
+                if ($scope.cart[i].sku == sku) {
+                    alreadyInCart = true;
+                }
+            }
+            //if QNC products already in cart, do nothin
+            if (alreadyInCart) {
+                return false;
+            }else{
+                
+                for (var i = 0; i < $scope.qncProducts.length; i++) {
+                    if (sku == $scope.qncProducts[i].sku) {
+                        var qncProduct = $scope.qncProducts[i];
+                    }
+                    
+                }
+            }
+            
+            
+            var d = $q.defer();
+            
+            $scope.orderError = null;
+
+            $log.debug("CheckoutController(): selectQncProduct(): loading product with sku=", sku);
+
+            Cart.addToCart({
+                name: qncProduct.name,
+                name_es_US: qncProduct.name_es_US, //name_es_US does not get passed back from service
+                sku: qncProduct.sku,
+                kitSelections: qncProduct.kitSelections,
+                quantity: 1
+            }).then(function(cart) {
+                $log.debug("CheckoutController(): selectQncProduct(): SKU loaded & added to cart", cart);
+
+                $scope.cart = cart;
+
+                loadCheckout().then(function() { //this also updates new sales tax
+                    d.resolve(cart);
+                });
+            }, function(error) {
+                $log.error("CheckoutController(): selectQncProduct(): failed to add to cart, redirecting", error);
+                $scope.orderError = "Failed to add product to cart";
+                $scope.salesTaxInfo = null;
+
+                $scope.alert("ERR101: Error loading products in cart");
+                d.reject(error);
+            });
+
+            return d.promise;
+        }
+        
         // load the checkout data from the session
         function loadCheckout() {
             var d = $q.defer();
@@ -1743,7 +1850,8 @@ angular.module('app.controllers.checkout')
 
                     ]
                 }
-
+                
+                
                 // 25214, 25208, 25212, and 25210 - qty 3
                 
                 // var productComponents = productComponentMap[$scope.cart[0].product.sku];
@@ -1826,6 +1934,54 @@ angular.module('app.controllers.checkout')
                         }
                     ]
                 }
+
+                
+                
+                //add starterkit to consultant.products
+                var starterKit = _.findWhere($scope.starterKits, {sku: $scope.cart[0].product.sku});
+                var components = [];
+                for (var i = 0; i < starterKit.contains.length; i++) {
+                    components.push(
+                        {sku: starterKit.contains[j].productId, qty: starterKit.contains[j].quantity}
+                    );
+                }
+                //need to change consultant start with empty array of products
+                consultant.products.push(
+                    {
+                    "sku": starterKit.sku,
+                    "qty": 1,
+                    "kitSelections": {},
+                    "components": components
+                    }
+                );
+                
+                //add qnc products to consultant.products
+                if ($scope.profile.qnc == true || true) {
+                    
+                    console.log('$scope.cart.length',$scope.cart.length);
+                    for (var i = 1; i < $scope.cart.length; i++) { //exclude first starter kit
+                        var qncProduct = _.findWhere($scope.qncProducts, {sku: $scope.cart[i].product.sku});
+                        console.log('qncProduct',qncProduct);
+                        //create components of the product
+                        var components = [];
+                        for (var j = 0; j < qncProduct.contains.length; j++) {
+                            components.push(
+                                {sku: qncProduct.contains[j].productId, qty: qncProduct.contains[j].quantity}
+                            );
+                        }
+                        consultant.products.push(
+                            {
+                            "sku": qncProduct.sku,
+                            "qty": 1,
+                            "kitSelections": {},
+                            "components": components
+                            }
+                        );
+                    }
+                }
+                
+                $log.debug("CheckoutController(): processOrder(): consultant.products", consultant.products);
+
 
                 consultant.creditCard.cvv = parseInt(consultant.creditCard.cvv);
 
@@ -2495,7 +2651,7 @@ angular.module('app.controllers.checkout')
                 Cart.addToCart({
                     name: "Royal Starter Kit (English)",
                     name_es_US: "Royal Starter Kit (Ingl&eacute;s)",
-                    sku: "19634",
+                    sku: "20495",
                     quantity: 1,
                     kitSelections: {},
                     components: []
