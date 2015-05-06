@@ -1297,27 +1297,27 @@ router.route('/sponsors/search').post(function (req, res) {
             lastName  : req.body.lastName
         };
         logger.debug('[SERVER] > searching for sponsor by name:', payload);
-        jafraClient.findSponsorsByName(payload).then(function (data) {
-            logger.debug('[SERVER] > :findSponsorsByName: result:', data.result);
+        jafraClient.findSponsorsByName(payload).then(function (sponsor) {
+            logger.log('[SERVER] > :findSponsorsByName: sponsor:', sponsor);
             res.status(200);
-            res.json(data.result);
+            res.json(sponsor);
         }, function(error) {
-            logger.error('[SERVER] > :findSponsorsByName: error:', data.error);
+            logger.error('[SERVER] > :findSponsorsByName: error:', error);
             res.status(500);
-            res.json(data.error);
+            res.json(error);
         });
     } else if (searchType === 'zip') {
         payload = {
             zip : req.body.zip
         };
         jafraClient.findSponsorsByZipCode(payload).then(function (data) {
-            logger.debug('[SERVER] > :findSponsorsByZipCode: result:', data.result);
+            logger.log('[SERVER] > :findSponsorsByZipCode: result:', data);
             res.status(200);
-            res.json(data.result);
+            res.json(data);
         }, function(error) {
-            logger.error('[SERVER] > :findSponsorsByZipCode: error:', data.error);
+            logger.error('[SERVER] > :findSponsorsByZipCode: error:', error);
             res.status(500);
-            res.json(data.error);
+            res.json(error);
         });
     }
 });

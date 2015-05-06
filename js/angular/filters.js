@@ -28,20 +28,50 @@ angular.module('app.filters', [])// Navigation Item Filter
             }
             return string.substr(start, charNo)
         }
-    }).filter('phone', function () {
+    })
+
+    .filter('phone', function () {
         return function (tel) {
             if (!tel) { return ''; }
 
-            if (tel.length < 10) {
+            var value = tel.toString().trim().replace(/^\+/, '');
+
+            if (value.match(/[^0-9]/)) {
                 return tel;
             }
 
-            var value = tel.toString().trim().replace(/[^0-9]/, '');
-            var prefix = value.slice(0, 3);
-            var part1 = value.slice(3, 6);
-            var part2 = value.slice(6, 10);
+            var country, city, number;
 
-            return "(" + prefix + ") " + part1 + "-" + part2;
+            switch (value.length) {
+                case 10: // +1PPP####### -> C (PPP) ###-####
+                    country = 1;
+                    city = value.slice(0, 3);
+                    number = value.slice(3);
+                    break;
+
+                case 11: // +CPPP####### -> CCC (PP) ###-####
+                    country = value[0];
+                    city = value.slice(1, 4);
+                    number = value.slice(4);
+                    break;
+
+                case 12: // +CCCPP####### -> CCC (PP) ###-####
+                    country = value.slice(0, 3);
+                    city = value.slice(3, 5);
+                    number = value.slice(5);
+                    break;
+
+                default:
+                    return tel;
+            }
+
+            if (country == 1) {
+                country = "";
+            }
+
+            number = number.slice(0, 3) + '-' + number.slice(3);
+
+            return (country + " (" + city + ") " + number).trim();
         };
     });
 
