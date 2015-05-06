@@ -1394,7 +1394,7 @@ function findSponsorsByName (data) {
 function findSponsorsByPostalCodes (codes) {
     var query, deferred = Q.defer();
     query = { 
-        zip : { $in : [codes] },
+        zip : { $in : codes },
         canSponsor : 1
     };
     logger.debug('[JAFRA] > findSponsorsByPostalCodes: searching for sponsors in zip area: query:', query);
@@ -1404,7 +1404,8 @@ function findSponsorsByPostalCodes (codes) {
             deferred.reject(error);
         } else {
             logger.debug('[JAFRA] > findSponsorsByPostalCodes: success: docs: (%d)', docs.length);
-            logger.debug('[JAFRA] > findSponsorsByPostalCodes: success:', docs);
+            logger.log('[JAFRA] > findSponsorsByPostalCodes: success:');
+            logger.log(docs);
             deferred.resolve(docs);
         }
     });
@@ -1442,8 +1443,7 @@ function findNearbyPostalCodesByPostCode (zip) {
             deferred.reject(error);
         } else if (response && response.length) {
             response.forEach(function (location) {
-                logger.debug('location.postalCode typeof:', typeof(location.postalCode));
-                results.push(location.postalCode);
+                results.push(location.postalCode.toString());
             });
             logger.debug('[JAFRA] > findNearbyPostalCodesByPostCode(): got results: (%d)', results.length);
             deferred.resolve(results);
