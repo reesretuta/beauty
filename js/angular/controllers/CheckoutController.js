@@ -658,9 +658,9 @@ angular.module('app.controllers.checkout')
             return d.promise;
         }
         
-        $scope.removeQncProduct = function(sku){
+        $scope.removeQncProduct = function(item){
             var d = $q.defer();
-            Card.removeFromCart({sku: sku}).then(function(cart){
+            Cart.removeFromCart({sku: item.sku}).then(function(cart){
                 $scope.cart = cart;
                 loadCheckout().then(function() { //this also updates new sales tax
                     d.resolve(cart);
@@ -675,6 +675,16 @@ angular.module('app.controllers.checkout')
             
             return d.promise;
             
+            
+        }
+        
+        $scope.toggleQnc = function(value){
+            if (value === 1) {
+                $log.debug("CheckoutController(): toggleQnc(): value",value);
+                $scope.profile.qnc = true;
+            }else{
+                $scope.profile.qnc = false;
+            }
             
         }
         
@@ -1347,6 +1357,21 @@ angular.module('app.controllers.checkout')
             $scope.profile.billing = angular.copy(address);
         }
         
+        $scope.getQncProgressPercent = function(){
+            var percent = $scope.salesTaxInfo.SubTotal/300 * 100;
+            return ( percent < 100) ? percent : 100;
+        }
+        
+        
+        $scope.getQncProgressText = function(){
+            return (300 - $scope.salesTaxInfo.SubTotal > 0) ? '$' + $scope.salesTaxInfo.SubTotal : 'Qualified!';
+        }
+        
+        $scope.getUntilNextLevel = function(){
+            var orderTotal = $scope.salesTaxInfo.SubTotal;
+            return ((300 - orderTotal) > 0) ? (300 - orderTotal) : 0;
+        }
+        
         $scope.updateSku = function(sku){
             
             var newSku = sku; //for downdown menu clicks
@@ -1373,7 +1398,6 @@ angular.module('app.controllers.checkout')
             }else{ //spanish
                 $scope.kitSelectorLanguage = 'spanish';
             }
-            
             
             $scope.selectProduct(newSku).then(function(){ //sets $scope.cart[0].sku
                 $log.debug("CheckoutController(): updateSku(): ", $scope.cart[0].sku);
