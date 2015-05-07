@@ -12,9 +12,19 @@ module.exports = function(grunt) {
                     'imagemagick': true
                 }
             }
+        },
+        markdownpdf: {
+            options: {
+              // Task-specific options go here.
+            },
+            files: {
+              src: "api_example.md",
+              dest: "./"
+            }
         }
     });
 
     grunt.loadNpmTasks('grunt-spritesmith');
+    grunt.loadNpmTasks('grunt-markdown-pdf');
     grunt.registerTask('default', 'sprite');
 };
