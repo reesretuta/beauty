@@ -1,21 +1,21 @@
 <br/><br/><br/><br/>
 <div class="container">
-  <div class="col-md-offset-1 col-md-10">
+  <div class="col-md-12">
       
-      <div class="row">
-        <div class="col-md-10 .col-md-offset-1">
-          <div class="clear-both"></div>
-          <div class="progress">
-              <div class="progress-bar progress-bar-custom" style="min-width: 2em; width: {{getQncProgressPercent()}}%;">
-                  {{getQncProgressText()}}
-              </div>
-               <div class="progress-bar progress-bar-remainder" style="width: {{100 - getQncProgressPercent()}}%">
-                  &nbsp;{{getUntilNextLevel() | currency}} UNTIL NEXT LEVEL
-              </div>
-          </div>
-          <p class="pull-left"><strong>$0</strong></p>
-          <p class="pull-right"><strong>$300</strong></p>
-          <div class="clear-both"></div>
+    <div class="row">
+      <div class="col-md-10 col-md-offset-1">
+        <div class="clear-both"></div>
+        <div class="progress">
+            <div class="progress-bar progress-bar-custom" style="min-width: 2em; width: {{getQncProgressPercent()}}%;">
+                {{getQncProgressText()}}
+            </div>
+             <div class="progress-bar progress-bar-remainder" style="width: {{100 - getQncProgressPercent()}}%">
+                &nbsp;{{getUntilNextLevel() | currency}} UNTIL NEXT LEVEL
+            </div>
+        </div>
+        <p class="pull-left"><strong>$0</strong></p>
+        <p class="pull-right"><strong>$300</strong></p>
+        <div class="clear-both"></div>
 
         <div ng-if="orderError" class="alert alert-danger" role="alert" ng-bind="orderError"></div>
       </div>
@@ -76,14 +76,14 @@
           </p>
         </div>
       </div>
-    <h1><span ng-bind-html="'REVIEW-CONFIRM-ORDER' | translate | unsafe"></span>
-      <span class="store-heading-description" ng-bind-html="'CHECK_INST_PAY' | translate | unsafe">
-      </span>
-    </h1>
     
   </div>
 
   <div class="col-md-offset-1 col-md-10">
+    <h1><span ng-bind-html="'REVIEW-CONFIRM-ORDER' | translate | unsafe"></span>
+      <span class="store-heading-description" ng-bind-html="'CHECK_INST_PAY' | translate | unsafe">
+      </span>
+    </h1>
   <form class="form order-details" role="form" name="confirmForm">
       <a ng-href="{{STORE_BASE_URL}}/cart" ng-if="!isOnlineSponsoring" class="pull-right" style="margin-top:10px"><i class="fa fa-pencil-square-o"></i> <span ng-bind-html="'BTN_MAKE_CHANGES' | translate | unsafe"></span></a>
       <div class="form-group">
