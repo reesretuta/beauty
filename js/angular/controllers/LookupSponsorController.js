@@ -6,6 +6,11 @@ angular.module('app.controllers.checkout').controller('LookupSponsorController',
     // forms object for having access to form methods - initiate collection
     $scope.forms = {};
 
+    // searching?
+    $scope.processing = false;
+    $scope.processing_zip = false;
+    $scope.processing_name = false;
+
     // success message w/ results?
     $scope.successMessage = null;
 
@@ -18,6 +23,8 @@ angular.module('app.controllers.checkout').controller('LookupSponsorController',
         $scope.sponsors = [];
         $scope.successMessage = null;
         $scope.errorMessage = null;
+        // note in progress
+        $scope.processing = true;
         $log.debug('LookupSponsorController(): search(): type:', type);
         if (type === 'zip') {
             // clear search by name
@@ -54,6 +61,9 @@ angular.module('app.controllers.checkout').controller('LookupSponsorController',
                         count : $scope.sponsors.length
                     }).then(function (message) {
                         $scope.successMessage = message;
+                        $scope.processing = false;
+                        $scope.processing_zip = false;
+                        $scope.processing_name = false;
                     });
                 } else if (type === 'name') {
                     $translate('SPONSORS-SEARCH-FOUND-NAME', {
@@ -62,26 +72,37 @@ angular.module('app.controllers.checkout').controller('LookupSponsorController',
                         count    : $scope.sponsors.length
                     }).then(function (message) {
                         $scope.successMessage = message;
+                        $scope.processing = false;
+                        $scope.processing_zip = false;
+                        $scope.processing_name = false;
                     });
                 }
             } else {
                 $translate('SPONSORS-SEARCH-NO-SPONSORS-FOUND').then(function (message) {
                     $scope.errorMessage = message;
+                    $scope.processing = false;
+                    $scope.processing_zip = false;
+                    $scope.processing_name = false;
                 });
             }
         }, function (error) {
             $log.error('LookupSponsorController(): search(): error:', error);
             $translate('SPONSORS-SEARCH-UNKNOWN-ERROR').then(function (message) {
                 $scope.errorMessage = message;
+                $scope.processing = false;
+                $scope.processing_zip = false;
+                $scope.processing_name = false;
             });
         });
     };
 
     $scope.searchByZip = function () {
+        $scope.processing_zip = true;
         return search('zip');
     };
 
     $scope.searchByName = function () {
+        $scope.processing_name = true;
         return search('name');
     };
 

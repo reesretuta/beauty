@@ -26,7 +26,7 @@
     <div class='form-group'>
       <div class='col-sm-3 col-md-3'></div>
       <div class='col-sm-6 col-md-6'>
-        <button ng-click='searchByZip()' ng-disabled='forms.sponsorByZipForm.$invalid' class='btn btn-primary' tabindex='1'>{{ 'SPONSOR-SEARCH-BTN-ZIP' | translate }}</button>
+        <button ng-click='searchByZip()' class='btn btn-primary' tabindex='1' ng-disabled='forms.sponsorByZipForm.$invalid || processing' ng-class='{ "processing" : processing_zip }'>{{ 'SPONSOR-SEARCH-BTN-ZIP' | translate }}</button>
       </div>
     </div>
   </form>
@@ -57,7 +57,7 @@
     <div class='form-group'>
       <div class='col-sm-3 col-md-3'></div>
       <div class='col-sm-6 col-md-6'>
-        <button ng-click='searchByName()' ng-disabled='forms.sponsorByNameForm.$invalid' class='btn btn-primary' tabindex='4'>{{ 'SPONSOR-SEARCH-BTN-NAME' | translate }}</button>
+        <button ng-click='searchByName()' class='btn btn-primary' tabindex='4' ng-disabled='forms.sponsorByNameForm.$invalid || processing' ng-class='{ "processing" : processing_name }'>{{ 'SPONSOR-SEARCH-BTN-NAME' | translate }}</button>
       </div>
     </div>
   </form>
