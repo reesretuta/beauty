@@ -33,6 +33,8 @@
 <li><a href="#check-clientconsultant-email">Check Client/Consultant Email</a></li>
 </ul>
 
+
+
 <h1 id="introduction">Introduction</h1>
 
 <p>This document covers the APIs which are provided for:</p>
@@ -58,6 +60,8 @@
 <strong>URI</strong>: /api/clients/authenticate <br>
 <strong>JCS URI</strong>: /cgidev2/JCD05001P.pgm <br>
 <strong>Request</strong>:  </p>
+
+
 
 <pre class="prettyprint"><code class="language-json hljs ">{
   "<span class="hljs-attribute">email</span>": <span class="hljs-value"><span class="hljs-string">"jsmith@gmail.com"</span></span>, // required
@@ -292,10 +296,11 @@
 <p><strong>Method</strong>: POST <br>
 <strong>URI</strong>: /api/consultants <br>
 <strong>JCS URI</strong>: /cgidev2/JOS05002P.pgm <br>
-<strong>Info</strong>: This is similar to creating a Client, however a few more fields are required.  Create a consultant record, which can be used to authenticate into Jafra Biz &amp; eventually Client Direct/Online Ordering. <br>
-<strong>Request</strong>:  </p>
+<strong>Info</strong>: This is similar to creating a Client, however a few more fields are required.  Create a consultant record, which can be used to authenticate into Jafra Biz &amp; eventually Client Direct/Online Ordering. </p>
 
+<p>This request data is GPG encrypted with the public key on the client side in JavaScript and the entire encrypted packet is sent through the LVI Platform unaltered to the JCS API.  The JCS API decrypts the data and processes the request.</p>
 
+<p><strong>Request</strong>:  </p>
 
 <pre class="prettyprint"><code class="language-json hljs ">{
   "<span class="hljs-attribute">email</span>" : <span class="hljs-value"><span class="hljs-string">"example@example.com"</span></span>,// required
@@ -1502,6 +1507,8 @@
 <strong><em>token</em></strong>: used to link from email -&gt; db <br>
 <strong><em>url</em></strong>: the URL to submit the token to <br>
 <strong><em>language</em></strong>: language for reset email  </p>
+
+
 
 <h2 id="success-20">Success</h2>
 
