@@ -674,8 +674,27 @@ angular.module('app.controllers.checkout')
             });
             
             return d.promise;
+        }
+        
+        $scope.getQncProgressPercent = function(){
+            if ($scope.salesTaxInfo) {
+                var percent = $scope.salesTaxInfo.SubTotal/300 * 100;
+                return ( percent < 100) ? percent : 100;
+            }
             
-            
+        }
+        
+        $scope.getQncProgressText = function(){
+            if ($scope.salesTaxInfo) {
+                return (300 - $scope.salesTaxInfo.SubTotal > 0) ? '$' + $scope.salesTaxInfo.SubTotal : 'Qualified!';
+            }
+        }
+        
+        $scope.getUntilNextLevel = function(){
+            if ($scope.salesTaxInfo) {
+                var orderTotal = $scope.salesTaxInfo.SubTotal;
+                return ((300 - orderTotal) > 0) ? (300 - orderTotal) : 0;
+            }
         }
         
         $scope.toggleQnc = function(value){
@@ -1357,20 +1376,7 @@ angular.module('app.controllers.checkout')
             $scope.profile.billing = angular.copy(address);
         }
         
-        $scope.getQncProgressPercent = function(){
-            var percent = $scope.salesTaxInfo.SubTotal/300 * 100;
-            return ( percent < 100) ? percent : 100;
-        }
         
-        
-        $scope.getQncProgressText = function(){
-            return (300 - $scope.salesTaxInfo.SubTotal > 0) ? '$' + $scope.salesTaxInfo.SubTotal : 'Qualified!';
-        }
-        
-        $scope.getUntilNextLevel = function(){
-            var orderTotal = $scope.salesTaxInfo.SubTotal;
-            return ((300 - orderTotal) > 0) ? (300 - orderTotal) : 0;
-        }
         
         $scope.updateSku = function(sku){
             
@@ -1968,33 +1974,36 @@ angular.module('app.controllers.checkout')
                     creditCard: angular.copy($scope.profile.card),
                     agreementAccepted: $scope.profile.agree+"",
                     total: parseFloat($scope.salesTaxInfo.Total),
-                    products: [
-                        {
-                            "sku": $scope.cart[0].product.sku,
-                            "qty": 1,
-                            "kitSelections": {},
-                            "components": components
-                        }
-                    ]
+                    products: []
                 }
                 
-                //add starterkit to consultant.products
-                // var starterKit = _.findWhere($scope.starterKits, {sku: $scope.cart[0].product.sku});
-                // var components = [];
-                // for (var i = 0; i < starterKit.contains.length; i++) {
-                //     components.push(
-                //         {sku: starterKit.contains[j].productId, qty: starterKit.contains[j].quantity}
-                //     );
-                // }
-                // //need to change consultant start with empty array of products
-                // consultant.products.push(
-                //     {
-                //     "sku": starterKit.sku,
+                // {
+                //     "sku": $scope.cart[0].product.sku,
                 //     "qty": 1,
                 //     "kitSelections": {},
                 //     "components": components
-                //     }
-                // );
+                // }
+                
+                // add starterkit to consultant.products
+                var starterKit = _.findWhere($scope.starterKits, {sku: $scope.cart[0].product.sku});
+                console.log('starterKit',starterKit);
+                var components = [];
+                for (var i = 0; i < starterKit.contains.length; i++) {
+                    components.push(
+                        {sku: starterKit.contains[i].productId, qty: starterKit.contains[i].quantity}
+                    );
+                }
+                
+                
+                //need to change consultant start with empty array of products
+                consultant.products.push(
+                    {
+                    "sku": starterKit.sku,
+                    "qty": 1,
+                    "kitSelections": {},
+                    "components": components
+                    }
+                );
                 
                 //add qnc products to consultant.products
                 $scope.profile.qnc = true;
@@ -2023,8 +2032,8 @@ angular.module('app.controllers.checkout')
                 }
                 
                 $log.debug("CheckoutController(): processOrder(): consultant.products", consultant.products);
-
-
+                return false;
+                
                 consultant.creditCard.cvv = parseInt(consultant.creditCard.cvv);
 
                 $log.debug("CheckoutController(): processOrder(): creating consultant", consultant);
