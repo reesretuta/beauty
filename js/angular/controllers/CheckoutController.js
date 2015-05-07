@@ -611,6 +611,15 @@ angular.module('app.controllers.checkout')
             return d.promise;
         }
         
+        $scope.isInCart = function(sku){
+          var isInCart = false;
+          for (var i = 0; i < $scope.cart.length; i++) {
+              if ($scope.cart[i].sku == sku) {
+                  isInCart = true;
+              }
+          }
+          return isInCart;
+        }
         
         $scope.selectQncProduct = function(sku) {
             $log.debug("CheckoutController(): selectQncProduct(): $scope.cart", $scope.cart);
