@@ -564,6 +564,23 @@
     "OS-QNC-TITLE": "Calificado Nueva Consultora",
     "OS-QNC-DESCRIPTION": "Pague $ 50.00 más para convertirse en una Qualified Nueva Consultora",
 
-    "SPONSOR-SEARCH-INPUT-ERROR": "Buscar sea por código postal o nombre"
+    "SPONSOR-LOOKUP": "Busca Patrocinador",
+
+    "SPONSOR-BY-ZIP-LABEL": "Por Zip",
+    "SPONSOR-OR": "O",
+    "SPONSOR-BY-NAME-LABEL": "Por Patrocinador Nombre",
+
+
+    "SPONSOR-NAME-LABEL": "Patrocinador Nombre",
+    "SPONSOR-ID-LABEL": "Patrocinador ID",
+    "SPONSOR-CITY-LABEL": "Ciudad",
+    "SPONSOR-ACTION-LABEL": "Acción",
+
+    "SPONSOR-SEARCH-INPUT-ERROR": "Buscar sea por código postal o nombre",
+    "SPONSORS-SEARCH-NO-SPONSORS-FOUND": "No se han encontrado Patrocinadores",
+    "SPONSORS-SEARCH-UNKNOWN-ERROR": "Error Busca Patrocinadores",
+    "SPONSORS-SEARCH-FOUND-ZIP": "Encontradas {{ count }} patrocinadores cerca código postal {{ zip }}",
+    "SPONSORS-SEARCH-FOUND-NAME": "Encontradas {{ count }} patrocinadores vinculados \"{{ firstName }}\" \"{{ lastName }}\"",
+    "SPONSORS-SEARCH-FOUND-NAME": "Found {{ count }} sponsors matching \"{{ firstName }}\" \"{{ lastName }}\""
 
 }

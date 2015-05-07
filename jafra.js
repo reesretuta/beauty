@@ -992,7 +992,6 @@ function getOrderHistory(clientId) {
 }
 
 function createLead(lead) {
-    //logger.debug("createLead", email, password);
     var data, deferred = Q.defer();
     data = {
         email: lead.email,
@@ -1001,13 +1000,12 @@ function createLead(lead) {
         phone: lead.phone,
         language: lead.language
     };
-    logger.debug('[JAFRA] > createLead: attempting to create lead, lead:', lead);
     if (lead.type) {
         data.type = lead.type;
     } else {
         data.type = 'cd-signup';
     }
-    logger.debug('[JAFRA] > createLead: lead.type adjusted:', data.type);
+    logger.debug('[JAFRA] > createLead: attempting to create lead, lead:', lead);
     request.post({
         url: CREATE_LEAD_URL,
         form: data,
@@ -1067,7 +1065,6 @@ function createLead(lead) {
 }
 
 function getAddresses(clientId) {
-    //logger.debug("getAddresses()", clientId);
     var deferred = Q.defer();
 
     request.get({
@@ -1097,9 +1094,6 @@ function getAddresses(clientId) {
 
     return deferred.promise;
 }
-//getAddresses(12).then(function(r) {
-//    logger.debug(r.body);
-//});
 
 function getAddress(clientId, addressId) {
     //logger.debug("getAddress()", clientId);
@@ -1168,7 +1162,6 @@ function createAddress(clientId, address) {
     }, function (error, response, body) {
         if (error || response.statusCode != 201) {
             logger.error("createAddress(): error", response ? response.statusCode : null, body);
-
             if (body && body.statusCode && body.errorCode && body.message && response && response.statusCode) {
                 deferred.reject({
                     status: response.statusCode,
@@ -1385,17 +1378,21 @@ function findSponsorsByName (data) {
             logger.error('[JAFRA] > findSponsorsByName: error:', error);
             defer.reject(error);
         } else {
-            findNearbyPostalCodesByPostCode(docs[0].zip, 1).then(function (results) {
-                var sponsors = docs.map(function (sponsor) {
-                    sponsor = sponsor.toJSON();
-                    sponsor.placeName = _.findWhere(results.placeNames, { zip : sponsor.zip }).placeName;
-                    return sponsor;
+            if (docs && docs.length > 0) {
+                findNearbyPostalCodesByPostCode(docs[0].zip, 1).then(function (results) {
+                    var sponsors = docs.map(function (sponsor) {
+                        sponsor = sponsor.toJSON();
+                        sponsor.placeName = _.findWhere(results.placeNames, { zip : sponsor.zip }).placeName;
+                        return sponsor;
+                    });
+                    defer.resolve(sponsors);
+                }, function (error) {
+                    logger.error('[JAFRA] > findSponsorsByName: error:', error);
+                    defer.reject(error);
                 });
-                defer.resolve(sponsors);
-            }, function (error) {
-                logger.error('[JAFRA] > findSponsorsByName: error:', error);
-                defer.reject(error);
-            });
+            } else {
+                defer.resolve([]);
+            }
         }
     });
     return defer.promise;
