@@ -1562,9 +1562,22 @@ function validateEmail(email) {
                 body.WebServiceResponse.VerifyEmailResponse.VerifyEmailResult.ServiceStatus.StatusNbr)
             {
                 var statusNbr = parseInt(body.WebServiceResponse.VerifyEmailResponse.VerifyEmailResult.ServiceStatus.StatusNbr);
-                logger.debug("validateEmail(): statusNbr", statusNbr);
+                logger.debug('[STRIKEIRON] > validateEmail(): statusNbr:', statusNbr);
 
-                if (statusNbr == 310 || statusNbr == 311 || statusNbr == 200 || statusNbr == 202 || statusNbr == 203 || statusNbr == 210 || statusNbr == 260) {
+                var validNumbers = [
+                    // Email Valid
+                    200,
+                    // Catch All
+                    210,
+                    // Email Valid. Potentially Dangerous
+                    250,
+                    // Domain Confirmed. Potentially Dangerous
+                    260
+                ];
+
+                logger.debug('[STRIKEIRON] > validateEmail(): validNumbers.indexOf(statusNbr) !== -1:', validNumbers.indexOf(statusNbr) !== -1);
+
+                if (validNumbers.indexOf(statusNbr) !== -1) {
                     logger.debug("validateEmail(): valid");
                     deferred.resolve({
                         status: 200,
