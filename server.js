@@ -760,6 +760,7 @@ router.route('/clients/:client_id').get(function (req, res) {
         client.email ? req.session.client.email = client.email : null;
         client.language ? req.session.client.language = client.language : null;
         client.phone ? req.session.client.phone = client.phone : null;
+        client.notificationPreferences ? req.session.client.notificationPreferences = client.notificationPreferences : null;
 
         res.json(req.session.client);
         res.status(200);

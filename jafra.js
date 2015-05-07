@@ -463,6 +463,7 @@ function updateClient(clientId, client) {
     logger.debug('updateClientclient(): client:', client);
     var deferred = Q.defer();
     
+    console.log('client:', client);
     var data = {};
     data.clientId = clientId;
     client.password ? data.password = client.password : null;
@@ -471,8 +472,10 @@ function updateClient(clientId, client) {
     client.email ? data.email = client.email : null;
     client.language ? data.language = client.language : null;
     client.phone ? data.phone = client.phone : null;
-    client.notificationPreferences ? data.notificationPreferences = client.notificationPreferences : null;
-    
+    data.notificationPreferences = JSON.stringify(client.notificationPreferences);
+
+    console.log('data:', data);
+
     request.post({
         url: UPDATE_CLIENT_URL,
         form: data,
