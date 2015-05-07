@@ -321,7 +321,9 @@ angular.module('app.controllers.checkout')
                     $scope.isOnlineSponsoring = true;
                     $scope.APP_BASE_URL = JOIN_BASE_URL;
                     $log.debug("CheckoutController(): online sponsoring");
-
+                    
+                    $scope.getQncProducts();
+                    $scope.getKits();
                     // lock profile to new, since we're in online sponsoring
                     $scope.profile.customerStatus = 'new';
 
@@ -581,7 +583,7 @@ angular.module('app.controllers.checkout')
             
             return d.promise;
         }
-        $scope.getKits();
+        
         
         $scope.getQncProducts = function(){
             var d = $q.defer();
@@ -608,7 +610,7 @@ angular.module('app.controllers.checkout')
             
             return d.promise;
         }
-        $scope.getQncProducts();
+        
         
         $scope.selectQncProduct = function(sku) {
             $log.debug("CheckoutController(): selectQncProduct(): $scope.cart", $scope.cart);
@@ -1976,7 +1978,6 @@ angular.module('app.controllers.checkout')
                 );
                 
                 //add qnc products to consultant.products
-                $scope.profile.qnc = true;
                 if ($scope.profile.qnc == true) {
                     
                     console.log('$scope.cart.length',$scope.cart.length);
