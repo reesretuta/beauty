@@ -351,7 +351,7 @@ exports.PasswordResetToken = PasswordResetToken;
 
 // available sponsors
 var sponsorsSchema = Schema({
-    id : { type : Number },
+    id : { type : Number, unique: true },
     firstName : { type : String, required : true },
     lastName : { type : String, required : true },
     zip : { type : String, required : true },
