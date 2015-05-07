@@ -110,31 +110,31 @@ angular.module('app.controllers.checkout')
             this.splice(to, 0, this.splice(from, 1)[0]);
         };
 
-        // set default shipping address
-        if ($rootScope.session.client && $rootScope.session.client.lastUsedShippingAddressId) {
-            $log.debug("CheckoutController(): have last shipping address id");
-            $.each($rootScope.session.client.addresses, function(index, address) {
-                if (address.id === $rootScope.session.client.lastUsedShippingAddressId) {
-                    $log.debug("CheckoutController(): setting shipping/billing address", address);
-                    $rootScope.session.client.addresses.move(index, 0);
-                    $scope.profile.shipping = address;
-                    $scope.profile.billing = address;
-                }
-            });
+        function setDefaultPreviousCheckoutInfo () {
+            // set default shipping address
+            if ($rootScope.session.client && $rootScope.session.client.lastUsedShippingAddressId) {
+                $.each($rootScope.session.client.addresses, function(index, address) {
+                    if (address.id === $rootScope.session.client.lastUsedShippingAddressId) {
+                        $log.debug("CheckoutController(): setting shipping/billing address", address);
+                        $rootScope.session.client.addresses.move(index, 0);
+                        $scope.profile.shipping = address;
+                        $scope.profile.billing = address;
+                    }
+                });
+            }
+            // set default payment method
+            if ($rootScope.session.client && $rootScope.session.client.lastUsedCreditCardId) {
+                $.each($rootScope.session.client.creditCards, function(index, creditCard) {
+                    if (creditCard.id == $rootScope.session.client.lastUsedCreditCardId) {
+                        $log.debug("CheckoutController(): setting card", creditCard);
+                        $rootScope.session.client.creditCards.move(index, 0);
+                        $scope.profile.card = creditCard;
+                    }
+                });
+            }
         }
-
-        // set default payment method
-        if ($rootScope.session.client && $rootScope.session.client.lastUsedCreditCardId) {
-            $log.debug("CheckoutController(): have last credit card id");
-            $.each($rootScope.session.client.creditCards, function(index, creditCard) {
-                if (creditCard.id == $rootScope.session.client.lastUsedCreditCardId) {
-                    $log.debug("CheckoutController(): setting card", creditCard);
-                    $rootScope.session.client.creditCards.move(index, 0);
-                    $scope.profile.card = creditCard;
-                    $log.debug("CheckoutController(): DEBUG card", $scope.profile.card);
-                }
-            });
-        }
+        // call on init
+        setDefaultPreviousCheckoutInfo();
 
         $scope.shippingAddressError = null;
         $scope.billingAddressError = null;
@@ -321,7 +321,9 @@ angular.module('app.controllers.checkout')
                     $scope.isOnlineSponsoring = true;
                     $scope.APP_BASE_URL = JOIN_BASE_URL;
                     $log.debug("CheckoutController(): online sponsoring");
-
+                    
+                    $scope.getQncProducts();
+                    $scope.getKits();
                     // lock profile to new, since we're in online sponsoring
                     $scope.profile.customerStatus = 'new';
 
@@ -581,7 +583,7 @@ angular.module('app.controllers.checkout')
             
             return d.promise;
         }
-        $scope.getKits();
+        
         
         $scope.getQncProducts = function(){
             var d = $q.defer();
@@ -608,8 +610,7 @@ angular.module('app.controllers.checkout')
             
             return d.promise;
         }
-        $scope.getQncProducts();
-
+        
         $scope.isInCart = function(sku){
           var isInCart = false;
           for (var i = 0; i < $scope.cart.length; i++) {
@@ -673,9 +674,9 @@ angular.module('app.controllers.checkout')
             return d.promise;
         }
         
-        $scope.removeQncProduct = function(item){
+        $scope.removeQncProduct = function(sku){
             var d = $q.defer();
-            Cart.removeFromCart({sku: item.sku}).then(function(cart){
+            Cart.removeFromCart({sku: sku}).then(function(cart){
                 $scope.cart = cart;
                 loadCheckout().then(function() { //this also updates new sales tax
                     d.resolve(cart);
@@ -1410,7 +1411,7 @@ angular.module('app.controllers.checkout')
             }
             
             //dropdown menu clicked
-            if (sku == '20494' || sku == '20498') { //english
+            if (newSku == '20494' || newSku == '20498') { //english
                 $scope.kitSelectorLanguage = 'english';
             }else{ //spanish
                 $scope.kitSelectorLanguage = 'spanish';
@@ -1487,6 +1488,16 @@ angular.module('app.controllers.checkout')
                // FIXME - display error message here
                 $log.error("CheckoutController(): singlePageValidate(): error adding/selecting shipping", err)
             });
+        }
+        
+        $scope.isInCart = function(sku){
+              var isInCart = false;
+              for (var i = 0; i < $scope.cart.length; i++) {
+                  if ($scope.cart[i].sku == sku) {
+                      isInCart = true;
+                  }
+              }
+              return isInCart;
         }
         
         $scope.addPaymentMethod = function() {
@@ -1963,7 +1974,6 @@ angular.module('app.controllers.checkout')
                 //     "kitSelections": {},
                 //     "components": components
                 // }
-                
                 // add starterkit to consultant.products
                 var starterKit = _.findWhere($scope.starterKits, {sku: $scope.cart[0].product.sku});
                 console.log('starterKit',starterKit);
@@ -1974,42 +1984,32 @@ angular.module('app.controllers.checkout')
                     );
                 }
                 
-                
-                //need to change consultant start with empty array of products
-                consultant.products.push(
-                    {
-                    "sku": starterKit.sku,
-                    "qty": 1,
-                    "kitSelections": {},
-                    "components": components
-                    }
-                );
-                
-                //add qnc products to consultant.products
-                $scope.profile.qnc = true;
-                if ($scope.profile.qnc == true) {
-                    
-                    console.log('$scope.cart.length',$scope.cart.length);
-                    for (var i = 1; i < $scope.cart.length; i++) { //exclude first starter kit
-                        var qncProduct = _.findWhere($scope.qncProducts, {sku: $scope.cart[i].product.sku});
-                        console.log('qncProduct',qncProduct);
+                $log.debug('QNC DEBUG! consultant.products:', consultant.products);
+                // add qnc products to consultant.products
+                if ($scope.profile.qnc) {
+                    $log.debug('QNC: $scope.cart.length',$scope.cart.length);
+                    for (var i = 0; i < $scope.cart.length; i++) {
+                        var qncProduct = _.findWhere($scope.qncProducts, {
+                            sku : $scope.cart[i].product.sku
+                        });
+                        console.log('qncProduct', qncProduct);
                         //create components of the product
                         var components = [];
                         for (var j = 0; j < qncProduct.contains.length; j++) {
-                            components.push(
-                                {sku: qncProduct.contains[j].productId, qty: qncProduct.contains[j].quantity}
-                            );
+                            components.push({
+                                sku : qncProduct.contains[j].productId,
+                                qty : qncProduct.contains[j].quantity
+                            });
                         }
-                        consultant.products.push(
-                            {
-                            "sku": qncProduct.sku,
-                            "qty": 1,
-                            "kitSelections": {},
-                            "components": components
-                            }
-                        );
+                        consultant.products.push({
+                            qty: 1,
+                            sku: qncProduct.sku,
+                            kitSelections: {},
+                            components: components
+                        });
                     }
                 }
+                $log.debug('QNC DEBUG! consultant.products:', consultant.products);
                 
                 $log.debug("CheckoutController(): processOrder(): consultant.products", consultant.products);
 
