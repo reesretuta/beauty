@@ -1966,41 +1966,35 @@ angular.module('app.controllers.checkout')
                     );
                 }
                 
-                
                 //need to change consultant start with empty array of products
-                consultant.products.push(
-                    {
-                    "sku": starterKit.sku,
-                    "qty": 1,
-                    "kitSelections": {},
-                    "components": components
-                    }
-                );
+                consultant.products = [];
                 
-                //add qnc products to consultant.products
-                if ($scope.profile.qnc == true) {
-                    
-                    console.log('$scope.cart.length',$scope.cart.length);
-                    for (var i = 1; i < $scope.cart.length; i++) { //exclude first starter kit
-                        var qncProduct = _.findWhere($scope.qncProducts, {sku: $scope.cart[i].product.sku});
-                        console.log('qncProduct',qncProduct);
+                $log.debug('QNC DEBUG! consultant.products:', consultant.products);
+                // add qnc products to consultant.products
+                if ($scope.profile.qnc) {
+                    $log.debug('QNC: $scope.cart.length',$scope.cart.length);
+                    for (var i = 0; i < $scope.cart.length; i++) {
+                        var qncProduct = _.findWhere($scope.qncProducts, {
+                            sku : $scope.cart[i].product.sku
+                        });
+                        console.log('qncProduct', qncProduct);
                         //create components of the product
                         var components = [];
                         for (var j = 0; j < qncProduct.contains.length; j++) {
-                            components.push(
-                                {sku: qncProduct.contains[j].productId, qty: qncProduct.contains[j].quantity}
-                            );
+                            components.push({
+                                sku : qncProduct.contains[j].productId,
+                                qty : qncProduct.contains[j].quantity
+                            });
                         }
-                        consultant.products.push(
-                            {
-                            "sku": qncProduct.sku,
-                            "qty": 1,
-                            "kitSelections": {},
-                            "components": components
-                            }
-                        );
+                        consultant.products.push({
+                            qty: 1,
+                            sku: qncProduct.sku,
+                            kitSelections: {},
+                            components: components
+                        });
                     }
                 }
+                $log.debug('QNC DEBUG! consultant.products:', consultant.products);
                 
                 $log.debug("CheckoutController(): processOrder(): consultant.products", consultant.products);
 
