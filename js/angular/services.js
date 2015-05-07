@@ -174,11 +174,12 @@ angular.module('app.services', ['ngResource'])
                 $log.debug("Session(): saveToServer(): saving session");
 
                 var session = getLocalSession();
+                $log.debug('saveToServer(): session = getLocalSession();:', session);
                 var trimmedSession = angular.copy(session);
                 for (var i=0; i < trimmedSession.cart.length; i++) {
                     delete trimmedSession.cart[i].product;
                 }
-
+                $log.debug('saveToServer(): (BEFORE PUT!) trimmedSession:', trimmedSession);
                 $http.put(API_URL + '/session', trimmedSession).success(function(s, status, headers, config) {
                     $log.debug("sessionService(): saveToServer(): saved", s);
 
@@ -266,6 +267,7 @@ angular.module('app.services', ['ngResource'])
             var d = $q.defer();
             initialized.promise.then(function() {
                 $log.debug("Session(): createClient(): attempting to create user username=", client.email);
+                $log.debug("Session(): createClient(): attempting to create: client:", client);
                 $http.post(API_URL + '/clients', {
                     email: client.email,
                     password: client.password,
@@ -273,7 +275,8 @@ angular.module('app.services', ['ngResource'])
                     lastName: client.lastName,
                     dateOfBirth: client.dateOfBirth,
                     consultantId: client.consultantId,
-                    language: client.language
+                    language: client.language,
+                    notificationPreferences: JSON.stringify(client.notificationPreferences)
                 }, {}).success(function(client, status, headers, config) {
                     $log.debug("sessionService(): createClient()", client);
                     var session = getLocalSession();

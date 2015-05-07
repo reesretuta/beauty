@@ -347,7 +347,7 @@ function getClient(clientId) {
 
 function createClient(client) {
     var deferred = Q.defer();
-
+    logger.debug('[JAFRA] > createClient(): client (before POST):', client);
     request.post({
         url: CREATE_CLIENT_URL,
         form: {
@@ -357,7 +357,8 @@ function createClient(client) {
             lastName: client.lastName,
             dateOfBirth: client.dateOfBirth,
             consultantId: client.consultantId,
-            language: client.language
+            language: client.language,
+            notificationPreferences: client.notificationPreferences
         },
         headers: {
             'Content-Type' : 'application/x-www-form-urlencoded',
@@ -436,7 +437,7 @@ function createClient(client) {
                 });
                 return;
             }
-
+            logger.debug('[JAFRA] > createClient(): got client: client:', r.result);
             deferred.resolve({
                 status: 201,
                 result: r.result
@@ -463,6 +464,7 @@ function updateClient(clientId, client) {
     logger.debug('updateClientclient(): client:', client);
     var deferred = Q.defer();
     
+    console.log('client:', client);
     var data = {};
     data.clientId = clientId;
     client.password ? data.password = client.password : null;
@@ -471,8 +473,10 @@ function updateClient(clientId, client) {
     client.email ? data.email = client.email : null;
     client.language ? data.language = client.language : null;
     client.phone ? data.phone = client.phone : null;
-    client.notificationPreferences ? data.notificationPreferences = client.notificationPreferences : null;
-    
+    data.notificationPreferences = JSON.stringify(client.notificationPreferences);
+
+    console.log('data:', data);
+
     request.post({
         url: UPDATE_CLIENT_URL,
         form: data,
@@ -1562,9 +1566,22 @@ function validateEmail(email) {
                 body.WebServiceResponse.VerifyEmailResponse.VerifyEmailResult.ServiceStatus.StatusNbr)
             {
                 var statusNbr = parseInt(body.WebServiceResponse.VerifyEmailResponse.VerifyEmailResult.ServiceStatus.StatusNbr);
-                logger.debug("validateEmail(): statusNbr", statusNbr);
+                logger.debug('[STRIKEIRON] > validateEmail(): statusNbr:', statusNbr);
 
-                if (statusNbr == 310 || statusNbr == 311 || statusNbr == 200 || statusNbr == 202 || statusNbr == 203 || statusNbr == 210 || statusNbr == 260) {
+                var validNumbers = [
+                    // Email Valid
+                    200,
+                    // Catch All
+                    210,
+                    // Email Valid. Potentially Dangerous
+                    250,
+                    // Domain Confirmed. Potentially Dangerous
+                    260
+                ];
+
+                logger.debug('[STRIKEIRON] > validateEmail(): validNumbers.indexOf(statusNbr) !== -1:', validNumbers.indexOf(statusNbr) !== -1);
+
+                if (validNumbers.indexOf(statusNbr) !== -1) {
                     logger.debug("validateEmail(): valid");
                     deferred.resolve({
                         status: 200,

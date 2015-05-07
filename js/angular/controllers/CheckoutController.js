@@ -1214,7 +1214,8 @@ angular.module('app.controllers.checkout')
                     dateOfBirth: $scope.profile.dateOfBirth,
                     consultantId: $scope.profile.consultantId,
                     source: $scope.profile.source,
-                    language: $scope.profile.language
+                    language: $scope.profile.language,
+                    notificationPreferences: $scope.profile.notificationPreferences
                 }).then(function(session) {
                     $log.debug("CheckoutController(): loginOrCreateUser(): created client, moving to next step", session.client);
 
@@ -1223,11 +1224,6 @@ angular.module('app.controllers.checkout')
                     $rootScope.namePlaceholder = $scope.profile.firstName + " " + $scope.profile.lastName;
 
                     $scope.profile.customerStatus = 'existing';
-
-                    // set to 
-                    $scope.profile.notificationPreferences = $scope.notificationPreferences || {};
-                    $scope.profile.notificationPreferences.email = session.client.notificationPreferences.email;
-                    $scope.profile.notificationPreferences.sms = session.client.notificationPreferences.sms;
 
                     $scope.checkoutUpdated();
                     // jump to Shipping
@@ -1484,38 +1480,6 @@ angular.module('app.controllers.checkout')
                 $log.error("CheckoutController(): singlePageValidate(): error adding/selecting shipping", err)
             });
         }
-        
-        
-        // $scope.singlePageValidate = function() {
-//             $log.debug("CheckoutController(): singlePageValidate()");
-//             $scope.validateEmailAndContinue($scope.profile.loginEmail).then(function() {
-//                 $log.debug("CheckoutController(): validateEmailAndContinue()");
-//                 if ($scope.profile.shipping == null) {
-//                     //new shipping
-//                     $log.debug("CheckoutController(): singlePageValidate(): new shipping");
-//                     $scope.addShippingAddressAndContinue($scope.profile.newShippingAddress).then(function() { //return promise
-//
-//                         $log.debug("CheckoutController(): singlePageValidate(): new shipping", $scope.profile.newShippingAddress);
-//                         addPaymentIfNotSelected(); //return promise
-//
-//                     });
-//                 }else{
-//                     //selected existing shipping
-//                     $log.debug("CheckoutController(): singlePageValidate(): existing shipping");
-//                     $scope.addShippingAddressAndContinue($scope.profile.shipping).then(function() { //
-//                         $log.debug("CheckoutController(): singlePageValidate(): select Shipping Address()");
-//                         addPaymentIfNotSelected();
-//                     })
-//
-//                 }
-//
-//             }, function (err) {
-//
-//             })
-//         }
-        
-        
-        
         
         $scope.addPaymentMethod = function() {
             var d = $q.defer();
@@ -1981,7 +1945,8 @@ angular.module('app.controllers.checkout')
                     creditCard: angular.copy($scope.profile.card),
                     agreementAccepted: $scope.profile.agree+"",
                     total: parseFloat($scope.salesTaxInfo.Total),
-                    products: []
+                    products: [],
+                    notificationPreferences: $scope.profile.notificationPreferences
                 }
                 
                 // {
@@ -2232,8 +2197,9 @@ angular.module('app.controllers.checkout')
                     creditCardId: $scope.profile.card.id,
                     source: $scope.profile.source,
                     total: parseFloat($scope.salesTaxInfo.Total),
-                    products: products
-                }
+                    products: products,
+                    notificationPreferences: $scope.profile.notificationPreferences
+                };
 
                 $log.debug("CheckoutController(): processOrder(): creating order", order);
 
