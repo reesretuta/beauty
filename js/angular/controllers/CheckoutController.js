@@ -1402,7 +1402,7 @@ angular.module('app.controllers.checkout')
             }
             
             //dropdown menu clicked
-            if (sku == '20494' || sku == '20498') { //english
+            if (newSku == '20494' || newSku == '20498') { //english
                 $scope.kitSelectorLanguage = 'english';
             }else{ //spanish
                 $scope.kitSelectorLanguage = 'spanish';

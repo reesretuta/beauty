@@ -251,7 +251,10 @@ Create Consultant
 **Method**: POST  
 **URI**: /api/consultants  
 **JCS URI**: /cgidev2/JOS05002P.pgm  
-**Info**: This is similar to creating a Client, however a few more fields are required.  Create a consultant record, which can be used to authenticate into Jafra Biz & eventually Client Direct/Online Ordering.  
+**Info**: This is similar to creating a Client, however a few more fields are required.  Create a consultant record, which can be used to authenticate into Jafra Biz & eventually Client Direct/Online Ordering. 
+
+This request data is GPG encrypted with the public key on the client side in JavaScript and the entire encrypted packet is sent through the LVI Platform unaltered to the JCS API.  The JCS API decrypts the data and processes the request.
+ 
 **Request**:  
 ```json
 {
