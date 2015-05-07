@@ -636,7 +636,8 @@ router.route('/clients') // get current client
                 lastName: req.body.lastName,
                 dateOfBirth: req.body.dateOfBirth,
                 consultantId: req.body.consultantId,
-                language: req.body.language
+                language: req.body.language,
+                notificationPreferences: req.body.notificationPreferences
             }).then(function(r2) {
                 logger.debug("created client", r2.result.statusCode, "body", r2.result);
 
@@ -760,6 +761,7 @@ router.route('/clients/:client_id').get(function (req, res) {
         client.email ? req.session.client.email = client.email : null;
         client.language ? req.session.client.language = client.language : null;
         client.phone ? req.session.client.phone = client.phone : null;
+        client.notificationPreferences ? req.session.client.notificationPreferences = client.notificationPreferences : null;
 
         res.json(req.session.client);
         res.status(200);

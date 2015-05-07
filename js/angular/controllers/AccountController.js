@@ -68,7 +68,7 @@ angular.module('app.controllers.account')
                     });
                 });
             };
-            
+
             $scope.setDefaultAddress = function(address) {
                 $log.log('AccountController(): updatePassword(): updating password to:', password);
                 Account.setDefaultAddress(address).then(function(data){
@@ -77,7 +77,7 @@ angular.module('app.controllers.account')
                     
                 });
             };
-            
+
             $scope.addShipping = function(newAddress) {
                 $scope.processing = true;
                 addAddress(newAddress).then(function (data) {
