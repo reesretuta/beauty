@@ -665,9 +665,9 @@ angular.module('app.controllers.checkout')
             return d.promise;
         }
         
-        $scope.removeQncProduct = function(item){
+        $scope.removeQncProduct = function(sku){
             var d = $q.defer();
-            Cart.removeFromCart({sku: item.sku}).then(function(cart){
+            Cart.removeFromCart({sku: sku}).then(function(cart){
                 $scope.cart = cart;
                 loadCheckout().then(function() { //this also updates new sales tax
                     d.resolve(cart);
