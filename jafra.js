@@ -347,7 +347,7 @@ function getClient(clientId) {
 
 function createClient(client) {
     var deferred = Q.defer();
-
+    logger.debug('[JAFRA] > createClient(): client (before POST):', client);
     request.post({
         url: CREATE_CLIENT_URL,
         form: {
@@ -357,7 +357,8 @@ function createClient(client) {
             lastName: client.lastName,
             dateOfBirth: client.dateOfBirth,
             consultantId: client.consultantId,
-            language: client.language
+            language: client.language,
+            notificationPreferences: client.notificationPreferences
         },
         headers: {
             'Content-Type' : 'application/x-www-form-urlencoded',
@@ -436,7 +437,7 @@ function createClient(client) {
                 });
                 return;
             }
-
+            logger.debug('[JAFRA] > createClient(): got client: client:', r.result);
             deferred.resolve({
                 status: 201,
                 result: r.result
