@@ -1,10 +1,10 @@
-JCS / LVI APIs
-===========
+JCS API & LVI Platform API
+=======================
 
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents** 
+**Table of Contents**   
 
+- [Introduction](#introduction)
+- [Conventions](#conventions)
 - [Authenticate](#authenticate)
 - [Get Client](#get-client)
 - [Create Client](#create-client)
@@ -12,12 +12,12 @@ JCS / LVI APIs
 - [Create Consultant](#create-consultant)
 - [Lookup Consultant by SSN](#lookup-consultant-by-ssn)
 - [Create Lead](#create-lead)
-- [Get all Addresses by clientId](#get-all-addresses-by-clientid)
+- [Get Addresses](#get-addresses)
 - [Get Address](#get-address)
 - [Create Address](#create-address)
 - [Update Address](#update-address)
 - [Delete Address](#delete-address)
-- [Get all Credit Cards by clientId](#get-all-credit-cards-by-clientid)
+- [Get Credit Cards](#get-credit-cards)
 - [Get Credit Card](#get-credit-card)
 - [Create Credit Card](#create-credit-card)
 - [Update Credit Card](#update-credit-card)
@@ -32,14 +32,27 @@ JCS / LVI APIs
 - [Get Inventory for Item (JCS)](#get-inventory-for-item-jcs)
 - [Check Client/Consultant Email](#check-clientconsultant-email)
 
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+Introduction
+==========
+
+This document covers the APIs which are provided for:
+
+- LVI Platform communication with the Jafra JCS backend server running on the AS/400.
+- Online Sponsoring & Client Direct client-side requests to the LVI Platform backend
+
+Most of the request & response data, success and error codes from the JCS API are mirrored in the LVI API.  The LVI API serves as a proxy between the client and the Jafra system, providing some unique additions and caching to help with scaling.  Additional information on this can be found in the LVI Web Stack architecture documents.
+
+Conventions
+==========
+
+Where different, the LVI Platform URI (URI) will be listed separately from the corresponding JCS API URI (JCS URI).  This is also the case for the HTTP verb/method used for each service.
 
 Authenticate
 ============
-**Method**: POST
-**URL**: /api/clients/authenticate
-**JCS URL**: /cgidev2/JCD05001P.pgm
-**Request**:
+**Method**: POST  
+**URI**: /api/clients/authenticate  
+**JCS URI**: /cgidev2/JCD05001P.pgm  
+**Request**:  
 ```json
 {
   "email": "jsmith@gmail.com", // required
@@ -49,8 +62,8 @@ Authenticate
 ```
 Success
 -------
-**Status Code**: 200
-**Response**:
+**Status Code**: 200  
+**Response**:  
 ```json
 {
   "clientId": <clientId>
@@ -58,8 +71,8 @@ Success
 ```
 Errors
 ------
-**Status Code**: 401
-**Responses**:
+**Status Code**: 401  
+**Responses**:  
 
 ```json
 {
@@ -72,18 +85,18 @@ Errors
 Get Client
 ============
 
-**Method**: GET
-**URL**: /api/clients/{clientId}
-**JCS URL**: /cgidev2/JCD05007P.pgm?clientId={clientId}
-**Info**: Get client data
-**Request**:
+**Method**: GET  
+**URI**: /api/clients/{clientId}  
+**JCS URI**: /cgidev2/JCD05007P.pgm?clientId={clientId}  
+**Info**: Get client data  
+**Request**:  
 
-***clientId*** - this is the unique Jafra client ID
+***clientId*** - this is the unique Jafra client ID  
 
 Success
 -------
-**Status Code**: 200
-**Response**:
+**Status Code**: 200  
+**Response**:  
 ```json
 {
   "id": 1,
@@ -107,11 +120,11 @@ Success
 
 Errors
 ------
-**Status Code**: 404
-**Info**: The client was not found
-**Responses**:
+**Status Code**: 404  
+**Info**: The client was not found  
+**Responses**:  
 
-The client with the specified ***clientId*** was not found
+The client with the specified ***clientId*** was not found  
 ```json
 {
     "statusCode": 404,
@@ -122,11 +135,11 @@ The client with the specified ***clientId*** was not found
 
 Create Client
 =============
-**Method**: POST
-**URL**: /api/clients
-**JCS URL**: /cgidev2/JCD05002P.pgm
-**Info**: Create a new client record, which can be used to authenticate into Client Direct & future systems
-**Request**:
+**Method**: POST  
+**URI**: /api/clients  
+**JCS URI**: /cgidev2/JCD05002P.pgm  
+**Info**: Create a new client record, which can be used to authenticate into Client Direct & future systems  
+**Request**:  
 ```json
 {
   "email": "jsmith@gmail.com", // required
@@ -146,8 +159,8 @@ Create Client
 ```
 Success
 -------
-**Status Code**: 201
-**Response**:
+**Status Code**: 201  
+**Response**:  
 ```json
 {
   "clientId": <clientId>
@@ -156,9 +169,9 @@ Success
 ```
 Errors
 ------
-**Status Code**: 400
-**Info**: Specified data was invalid and should be rejected by the server
-**Responses**:
+**Status Code**: 400  
+**Info**: Specified data was invalid and should be rejected by the server  
+**Responses**:  
 
 Only respond with this when the optional consultant ID is provided and it isn't valid.  Ignore instead if empty
 ```json
@@ -185,8 +198,8 @@ Password that doesn't meet password requirements (length, variation, etc.)
 }
 ```
 
-**Status Code**: 409
-**Responses**:
+**Status Code**: 409  
+**Responses**:  
 
 There was a conflict creating an account with the specified email, because it is already in the system.
 ```json
@@ -200,18 +213,18 @@ There was a conflict creating an account with the specified email, because it is
 Get Consultant
 ============
 
-**Method**: GET
-**URL**: /api/consultants/{consultantId}
-**JCS URL**: /cgidev2/JOS05007P.pgm?consultantId={consultantId}
-**Info**: Get consultant data
-**Request**:
+**Method**: GET  
+**URI**: /api/consultants/{consultantId}  
+**JCS URI**: /cgidev2/JOS05007P.pgm?consultantId={consultantId}  
+**Info**: Get consultant data  
+**Request**:  
 
-***consultantId*** - this is the unique Jafra consultant ID
+***consultantId*** - this is the unique Jafra consultant ID  
 
 Success
 -------
-**Status Code**: 201
-**Response**:
+**Status Code**: 201  
+**Response**:  
 ```json
 {
     "consultantId": <consultantId>
@@ -220,9 +233,9 @@ Success
 
 Errors
 ------
-**Status Code**: 404
-**Info**: The consultant was not found
-**Responses**:
+**Status Code**: 404  
+**Info**: The consultant was not found  
+**Responses**:  
 
 ```json
 {
@@ -235,11 +248,11 @@ Errors
 Create Consultant
 =================
 
-**Method**: POST
-**URL**: /api/consultants
-**JCS URL**: /cgidev2/JOS05002P.pgm
-**Info**: This is similar to creating a Client, however a few more fields are required.  Create a consultant record, which can be used to authenticate into Jafra Biz & eventually Client Direct/Online Ordering.
-**Request**:
+**Method**: POST  
+**URI**: /api/consultants  
+**JCS URI**: /cgidev2/JOS05002P.pgm  
+**Info**: This is similar to creating a Client, however a few more fields are required.  Create a consultant record, which can be used to authenticate into Jafra Biz & eventually Client Direct/Online Ordering.  
+**Request**:  
 ```json
 {
   "email" : "example@example.com",// required
@@ -309,13 +322,13 @@ Create Consultant
 }
 ```
 
-***sponsorId*** - initially create as a house account when not specified, send information to CRT for contact and manual sponsor assignment.
-***source*** - can be one of {mb, pws}
+***sponsorId*** - initially create as a house account when not specified, send information to CRT for contact and manual sponsor assignment.  
+***source*** - can be one of {mb, pws}  
 
 Success
 -------
-**Status Code**: 201
-**Response**:
+**Status Code**: 201  
+**Response**:  
 ```json
 {
     "consultantId": <consultantId>
@@ -324,9 +337,9 @@ Success
 
 Errors
 ------
-**Status Code**: 400
-**Info**: Specified data was invalid and should be rejected by the server
-**Responses**:
+**Status Code**: 400  
+**Info**: Specified data was invalid and should be rejected by the server  
+**Responses**:  
 
 The SSN was not properly formatted or was otherwise invalid.
 ```json
@@ -362,8 +375,8 @@ Password that doesn't meet password requirements (length, variation, etc.)
 }
 ```
 
-**Status Code**: 402
-**Responses**:
+**Status Code**: 402  
+**Responses**:  
 
 The credit card specified is invalid.
 ```json
@@ -390,8 +403,8 @@ Call center error.
 }
 ```
 
-**Status Code**: 409
-**Responses**:
+**Status Code**: 409  
+**Responses**:  
 
 There was a conflict creating an account with the specified email, because it is already in the system.
 ```json
@@ -413,11 +426,11 @@ There was a conflict creating an account with the specified SSN, because it is a
 
 Lookup Consultant by SSN
 =====================
-**Method**: POST
-**URL**: /api/ssn
-**JCS URL**: /cgidev2/JOS05004P.pgm
-**Info**: Determine if a consultant with an SSN exists
-**Request**:
+**Method**: POST  
+**URI**: /api/ssn  
+**JCS URI**: /cgidev2/JOS05004P.pgm  
+**Info**: Determine if a consultant with an SSN exists  
+**Request**:  
 ```json
 {
   "ssn": <ssn>         // required, encrypted
@@ -428,7 +441,7 @@ This request is GPG (asymmetrically) encrypted and sent over to JCS, where it is
 
 Success
 -------
-**Status Code**: 200
+**Status Code**: 200  
 
 ```json
 {
@@ -438,8 +451,8 @@ Success
 
 Errors
 ------
-**Status Code**: 404
-**Responses**:
+**Status Code**: 404  
+**Responses**:  
 
 A generic message that simply tells us the server didn't like the data it received and the lead was not saved. 
 ```json
@@ -452,11 +465,11 @@ A generic message that simply tells us the server didn't like the data it receiv
 
 Create Lead
 ===========
-**Method**: POST
-**URL**: /api/leads
-**JCS URL**: /cgidev2/JOS05005P.pgm
-**Info**: Created from basic info provided as new consultant is signing up
-**Request**:
+**Method**: POST  
+**URI**: /api/leads  
+**JCS URI**: /cgidev2/JOS05005P.pgm  
+**Info**: Created from basic info provided as new consultant is signing up  
+**Request**:  
 ```json
 {
   "firstName": "John",         // required
@@ -470,15 +483,15 @@ Create Lead
 
 Success
 -------
-**Status Code**: 204
-**Response:**
+**Status Code**: 204  
+**Response:**  
 
 ```
 
 ```
 
-**JCS Status Code**: 200
-**JCS Response:**
+**JCS Status Code**: 200  
+**JCS Response:**  
 
 ```json
 {
@@ -488,8 +501,8 @@ Success
 
 Errors
 ------
-**Status Code**: 400
-**Responses**:
+**Status Code**: 400  
+**Responses**:  
 
 A generic message that simply tells us the server didn't like the data it received and the lead was not saved. 
 ```json
@@ -500,8 +513,8 @@ A generic message that simply tells us the server didn't like the data it receiv
 }
 ```
 
-**Status Code**: 409
-**Responses**:
+**Status Code**: 409  
+**Responses**:  
 
 The lead has already been saved in JCS
 ```json
@@ -512,18 +525,18 @@ The lead has already been saved in JCS
 }
 ```
 
-Get all Addresses by clientId
-=======================
+Get Addresses
+=============
 
-**Method**: GET
-**URI**: /api/clients/{clientId}/addresses
-**JCS URL**: /cgidev2/JCD05005P.pgm?clientId={clientId}
+**Method**: GET  
+**URI**: /api/clients/{clientId}/addresses  
+**JCS URI**: /cgidev2/JCD05005P.pgm?clientId={clientId}  
 
 Success
 -------
 
-**Status Code**: 200
-**Response Body**:
+**Status Code**: 200  
+**Response Body**:  
 ```json
 [{
   "id": 111,
@@ -544,8 +557,8 @@ Success
 Errors
 ------
 
-**Status Code**: 404
-**Response Body**:
+**Status Code**: 404  
+**Response Body**:  
 
 The client ID was not found
 ```json
@@ -568,16 +581,16 @@ Addresses not found
 Get Address
 ==========
 
-**Info**: Get a specific address for client by clientId and addressId
-**Method**: GET
-**URI**: /api/clients/{clientId}/addresses/{addressId}
-**JCS URL**:  /cgidev2/JCD05005P.pgm?clientId={clientId}&addressId={addressId}
+**Info**: Get a specific address for client by clientId and addressId  
+**Method**: GET  
+**URI**: /api/clients/{clientId}/addresses/{addressId}  
+**JCS URI**:  /cgidev2/JCD05005P.pgm?clientId={clientId}&addressId={addressId}  
 
 Success
 -------
 
-**Status Code**: 200
-**Response**:
+**Status Code**: 200  
+**Response**:  
 ```json
 {
   "id": 111,
@@ -598,8 +611,8 @@ Success
 Errors
 ------
 
-**Status Code**: 404
-**Response Body**:
+**Status Code**: 404  
+**Response Body**:  
 
 The client ID was not found
 ```json
@@ -622,10 +635,10 @@ The address ID was not found
 Create Address
 ==============
 
-**Method**: POST
-**URI**: /api/clients/{clientId}/addresses
-**JCS URI**: /cgidev2/JCD05005P.pgm?clientId={clientId}
-**Request:**
+**Method**: POST  
+**URI**: /api/clients/{clientId}/addresses  
+**JCS URI**: /cgidev2/JCD05005P.pgm?clientId={clientId}  
+**Request:**  
 ```json
 {
   "name": "Joe",              // optional
@@ -645,8 +658,8 @@ Create Address
 Success
 -------
 
-**Status Code**: 201
-**Response**:
+**Status Code**: 201  
+**Response**:  
 ```json
 {
   "addressId": <addressId>
@@ -656,8 +669,8 @@ Success
 Errors
 ------
 
-**Status Code**: 400
-**Response Body**:
+**Status Code**: 400  
+**Response Body**:  
 
 The address data was invalid or incomplete.
 
@@ -669,8 +682,8 @@ The address data was invalid or incomplete.
 }
 ```
 
-**Status Code**: 404
-**Response Body**:
+**Status Code**: 404  
+**Response Body**:  
 
 The client ID was not found
 
@@ -685,11 +698,11 @@ The client ID was not found
 Update Address
 ==============
 
-**Method**: PUT
-**URI**: /api/clients/{clientId}/addresses/{addressId}
-**JCS Method**: POST
-**JCS URI**: /cgidev2/JCD05005P.pgm?clientId={clientId}&addressId={addressId}
-**Request:**
+**Method**: PUT  
+**URI**: /api/clients/{clientId}/addresses/{addressId}  
+**JCS Method**: POST  
+**JCS URI**: /cgidev2/JCD05005P.pgm?clientId={clientId}&addressId={addressId}  
+**Request:**  
 ```json
 {
   "name": "Joe",                    // optional
@@ -709,15 +722,15 @@ Update Address
 Success
 -------
 
-**Status Code**: 204
-**Response Body**:
+**Status Code**: 204  
+**Response Body**:  
 
 ```
 
 ```
 
-**JCS Status Code**: 201
-**JCS Response Body**:
+**JCS Status Code**: 201  
+**JCS Response Body**:  
 ```json
 {
   "addressId": <addressId>
@@ -727,8 +740,8 @@ Success
 Errors
 ------
 
-**Status Code**: 404
-**Response Body**:
+**Status Code**: 404  
+**Response Body**:  
 
 The client ID was not found
 
@@ -740,8 +753,8 @@ The client ID was not found
 }
 ```
 
-**Status Code**: 400
-**Response Body**:
+**Status Code**: 400  
+**Response Body**:  
 
 The address data was invalid or incomplete.
 ```json
@@ -755,20 +768,20 @@ The address data was invalid or incomplete.
 Delete Address
 ==============
 
-**Method**: DELETE
-**URI**: /api/clients/{clientId}/addresses/{addressId}
-**JCS URI**: /cgidev2/JCD05005P.pgm?clientId={clientId}&addressId={addressId}
+**Method**: DELETE  
+**URI**: /api/clients/{clientId}/addresses/{addressId}  
+**JCS URI**: /cgidev2/JCD05005P.pgm?clientId={clientId}&addressId={addressId}  
 
 Success
 -------
 
-**Status Code**: 204
+**Status Code**: 204  
 
 Errors
 ------
 
-**Status Code**: 404
-**Response Body**:
+**Status Code**: 404  
+**Response Body**:  
 
 The client ID was not found
 
@@ -790,18 +803,18 @@ The address ID was not found
 }
 ```
 
-Get all Credit Cards by clientId
-=========================
+Get Credit Cards
+================
 
-**Method**: GET
-**URI**: /api/clients/{clientId}/creditCards
-**JCS URI**: /cgidev2/JCD05008P.pgm?clientId={clientId}
+**Method**: GET  
+**URI**: /api/clients/{clientId}/creditCards  
+**JCS URI**: /cgidev2/JCD05008P.pgm?clientId={clientId}  
 
 Success
 -------
 
-**Status Code**: 200
-**Response Body**:
+**Status Code**: 200  
+**Response Body**:  
 ```json
 [{
   "id": 123,
@@ -816,8 +829,8 @@ Success
 Errors
 ------
 
-**Status Code**: 404
-**Response Body**:
+**Status Code**: 404  
+**Response Body**:  
 
 The client ID is not found
 
@@ -832,16 +845,16 @@ The client ID is not found
 Get Credit Card
 ===============
 
-**Info**: Get a specific creditCard for client by clientId
-**Method**: GET
-**URI**: /api/clients/{clientId}/creditCards/{creditCardId}
-**JCS URI**: /cgidev2/JCD05008P.pgm?clientId={clientId}&cardId={cardId}
+**Info**: Get a specific creditCard for client by clientId  
+**Method**: GET  
+**URI**: /api/clients/{clientId}/creditCards/{creditCardId}  
+**JCS URI**: /cgidev2/JCD05008P.pgm?clientId={clientId}&cardId={cardId}  
 
 Success
 -------
 
-**Status Code**: 200
-**Response**:
+**Status Code**: 200  
+**Response**:  
 ```json
 {
   "id": 123,
@@ -856,8 +869,8 @@ Success
 Errors
 ------
 
-**Status Code**: 404
-**Response Body**:
+**Status Code**: 404  
+**Response Body**:  
 
 The client ID was not found
 
@@ -882,10 +895,10 @@ The creditCard ID was not found
 Create Credit Card
 ==================
 
-**Method**: POST
-**URI**: /api/clients/{clientId}/creditCards
-**JCS URI**: /cgidev2/JCD05008P.pgm?clientId={clientId}
-**Request:**
+**Method**: POST  
+**URI**: /api/clients/{clientId}/creditCards  
+**JCS URI**: /cgidev2/JCD05008P.pgm?clientId={clientId}  
+**Request:**  
 ```json
 {
   "name": "Joe Smith",               // required
@@ -900,8 +913,8 @@ Create Credit Card
 Success
 -------
 
-**Status Code**: 201
-**Response**:
+**Status Code**: 201  
+**Response**:  
 ```json
 {
   "creditCardId": <creditCardId>
@@ -911,8 +924,8 @@ Success
 Errors
 ------
 
-**Status Code**: 404
-**Response Body**:
+**Status Code**: 404  
+**Response Body**:  
 
 The client ID was not found
 
@@ -924,8 +937,8 @@ The client ID was not found
 }
 ```
 
-**Status Code**: 400
-**Response Body**:
+**Status Code**: 400  
+**Response Body**:  
 
 ```json
 {
@@ -938,11 +951,11 @@ The client ID was not found
 Update Credit Card
 ==================
 
-**Method**: PUT
-**URI**: /api/clients/{clientId}/creditCards/{creditCardId}
-**JCS Method**: POST
-**JCS URI**: /cgidev2/JCD05008P.pgm?clientId={clientId}&cardId={cardId}
-**Request:**
+**Method**: PUT  
+**URI**: /api/clients/{clientId}/creditCards/{creditCardId}  
+**JCS Method**: POST  
+**JCS URI**: /cgidev2/JCD05008P.pgm?clientId={clientId}&cardId={cardId}  
+**Request:**  
 ```json
 {
   "name": "Joe Smith",               // required
@@ -957,8 +970,8 @@ Update Credit Card
 Success
 -------
 
-**Status Code**: 200
-**Response Body**:
+**Status Code**: 200  
+**Response Body**:  
 
 ```json
 {
@@ -974,8 +987,8 @@ Success
 Errors
 ------
 
-**Status Code**: 404
-**Response Body**:
+**Status Code**: 404  
+**Response Body**:  
 
 The client ID was not found
 
@@ -1000,20 +1013,20 @@ The creditCard ID was not found
 Delete Credit Card
 ==================
 
-**Method**: DELETE
-**URI**: /api/clients/{clientId}/creditCards/{creditCardId}
-**JCS URI**: /cgidev2/JCD05008P.pgm?clientId={clientId}&cardId={cardId}
+**Method**: DELETE  
+**URI**: /api/clients/{clientId}/creditCards/{creditCardId}  
+**JCS URI**: /cgidev2/JCD05008P.pgm?clientId={clientId}&cardId={cardId}  
 
 Success
 -------
 
-**Status Code**: 204
+**Status Code**: 204  
 
 Errors
 ------
 
-**Status Code**: 404
-**Response Body**:
+**Status Code**: 404  
+**Response Body**:  
 
 The client ID was not found
 
@@ -1037,11 +1050,11 @@ The creditCard ID was not found
 
 Create Order
 ============
-**Method**: POST
-**URI**: /api/orders
-**JCS URI**: /cgidev2/JCD05020P.pgm
-**Info**: Process a client order for the specified SKUs (including any kit selections)
-**Request**:
+**Method**: POST  
+**URI**: /api/orders  
+**JCS URI**: /cgidev2/JCD05020P.pgm  
+**Info**: Process a client order for the specified SKUs (including any kit selections)  
+**Request**:  
 ```json
 {
   "firstName": "John",         // required
@@ -1075,20 +1088,20 @@ Create Order
   ]
 }
 ```
-***clientId*** - this field will be used to associate with a previously created client
-***products*** - list of products with optional configurations.  TBD: include quantity or simply have multiple items?
-***creditCardId*** - the ID of the credit card to use, as loaded in the client data
-***consultantId*** - the ID of the consultant to attribute this order to
-***billingAddressId*** - the ID of the billing address to use, as loaded in the client data
-***shippingAddressId*** - the ID of the shipping address to use, as loaded in the client data
-***source*** - fb, pws
-***total*** - used to compare the total the user sees on the front-end with what JCS processes.  The order should fail if the numbers do not match.  This number is retrieved via the calculateTax method from JCS
+***clientId*** - this field will be used to associate with a previously created client  
+***products*** - list of products with optional configurations.  TBD: include quantity or simply have multiple items?  
+***creditCardId*** - the ID of the credit card to use, as loaded in the client data  
+***consultantId*** - the ID of the consultant to attribute this order to  
+***billingAddressId*** - the ID of the billing address to use, as loaded in the client data  
+***shippingAddressId*** - the ID of the shipping address to use, as loaded in the client data  
+***source*** - fb, pws  
+***total*** - used to compare the total the user sees on the front-end with what JCS processes.  The order should fail if the numbers do not match.  This number is retrieved via the calculateTax method from JCS  
 
 
 Success
 -------
-**Status Code**: 201
-**Response**:
+**Status Code**: 201  
+**Response**:  
 ```json
 {
     "orderId": <orderId>
@@ -1097,9 +1110,9 @@ Success
 
 Errors
 ------
-**Status Code**: 400
-**Info**: Specified data was invalid and should be rejected by the server
-**Responses**:
+**Status Code**: 400  
+**Info**: Specified data was invalid and should be rejected by the server  
+**Responses**:  
 
 A client with clientId was not found.
 ```json
@@ -1202,11 +1215,11 @@ There was an error with the payment method used.  Invalid credit card data or un
 
 Calculate Tax & Shipping
 =====================
-**Method**: POST
-**URI** : /api/shippingTax
-**JCS URI**: /cgidev2/JCD05022P.pgm
-**Info**: Calculate the tax and shipping 
-**Request Body**:
+**Method**: POST  
+**URI** : /api/shippingTax  
+**JCS URI**: /cgidev2/JCD05022P.pgm  
+**Info**: Calculate the tax and shipping   
+**Request Body**:  
 
 ```json
 {
@@ -1220,17 +1233,17 @@ Calculate Tax & Shipping
 }
 ```
 
-***clientId***:  set clientId to zeros when typeOrder is online sponsoring
-***consultantId***: set consultantId to zeros when typeOrder is online sponsoring
-***geocode***: a geocode which matches the shipping address of the user (from StrikeIron)
-***typeOrder***: 1414 = Online sponsoring, 1510 = Order entry 
-***source***: "P"  =  Online sponsoring, "Y"  =  Order entry
-***products*** - an array of sku/qty items and any relevant kitSelections
+***clientId***:  set clientId to zeros when typeOrder is online sponsoring  
+***consultantId***: set consultantId to zeros when typeOrder is online sponsoring  
+***geocode***: a geocode which matches the shipping address of the user (from StrikeIron)  
+***typeOrder***: 1414 = Online sponsoring, 1510 = Order entry   
+***source***: "P"  =  Online sponsoring, "Y"  =  Order entry  
+***products*** - an array of sku/qty items and any relevant kitSelections  
 
 Success
 -------
-**Status Code**: 200
-**Response**:
+**Status Code**: 200  
+**Response**:  
 ```json
 {
   "SubTotal": 10.50,
@@ -1245,9 +1258,9 @@ Success
 
 Errors
 ------
-**Status Code**: 404
-**Info**: The specified product was not found.
-**Responses**:
+**Status Code**: 404  
+**Info**: The specified product was not found.  
+**Responses**:  
 
 ```json
 {
@@ -1259,13 +1272,13 @@ Errors
 
 Password Reset Request (LVI)
 ========================
-**Method**: GET
-**URI** : /api/clients/passwordReset
-**Info**:  Generates a reset link sent to the user's email address in the form: {baseUrl}?email={email}&token={token}.  See password reset sequence diagram for details.  No more than one password reset can be requested within a 15 minute period.
+**Method**: GET  
+**URI** : /api/clients/passwordReset  
+**Info**:  Generates a reset link sent to the user's email address in the form: {baseUrl}?email={email}&token={token}.  See password reset sequence diagram for details.  No more than one password reset can be requested within a 15 minute period.  
 
 Example: https://usa.jafra.com/reset?email=joe@jafra.com&token=a88hf87913g79f63g971g176381g6187
 
-**Request Body**:
+**Request Body**:  
 
 ```json
 {
@@ -1274,22 +1287,22 @@ Example: https://usa.jafra.com/reset?email=joe@jafra.com&token=a88hf87913g79f63g
 }
 ```
 
-***email***:  the email address of the user
-***token***: used to link from email -> db
+***email***:  the email address of the user  
+***token***: used to link from email -> db  
 
 Success
 -------
-**Status Code**: 204
-**Response**:
+**Status Code**: 204  
+**Response**:  
 ```json
 
 ```
 
 Errors
 ------
-**Status Code**: 400
-**Info**: The specified data was invalid
-**Responses**:
+**Status Code**: 400  
+**Info**: The specified data was invalid  
+**Responses**:  
 
 The password didn't meet the server requirements (8 characters long).
 ```json
@@ -1311,13 +1324,13 @@ The email address was not found in the user database.
 
 Password Reset Request (JCS)
 ========================
-**JCS Method**: POST
-**JCS URI**: /cgidev2/JCD05009P.pgm
-**Info**:  Generates a reset link sent to the user's email address in the form: {baseUrl}?email={email}&token={token}.  See password reset sequence diagram for details.  No more than one password reset can be requested within a 15 minute period.
+**JCS Method**: POST  
+**JCS URI**: /cgidev2/JCD05009P.pgm  
+**Info**:  Generates a reset link sent to the user's email address in the form: {baseUrl}?email={email}&token={token}.  See password reset sequence diagram for details.  No more than one password reset can be requested within a 15 minute period.  
 
 Example: https://usa.jafra.com/reset?email=joe@jafra.com&token=a88hf87913g79f63g971g176381g6187
 
-**Request Body**:
+**Request Body**:  
 
 ```json
 {
@@ -1328,24 +1341,24 @@ Example: https://usa.jafra.com/reset?email=joe@jafra.com&token=a88hf87913g79f63g
 }
 ```
 
-***email***:  the email address of the user
-***token***: used to link from email -> db
-***url***: the URL to submit the token to
-***language***: language for reset email
+***email***:  the email address of the user  
+***token***: used to link from email -> db  
+***url***: the URL to submit the token to  
+***language***: language for reset email  
 
 Success
 -------
-**Status Code**: 204
-**Response**:
+**Status Code**: 204  
+**Response**:  
 ```json
 
 ```
 
 Errors
 ------
-**Status Code**: 400
-**Info**: The specified data was invalid
-**Responses**:
+**Status Code**: 400  
+**Info**: The specified data was invalid  
+**Responses**:  
 
 The password didn't meet the server requirements (8 characters long).
 ```json
@@ -1367,11 +1380,11 @@ The email address was not found in the user database.
 
 Change Password (LVI)
 ===================
-**Method**: POST
-**URI** : /api/clients/passwordReset
-**Info**:  Set the user password
+**Method**: POST  
+**URI** : /api/clients/passwordReset  
+**Info**:  Set the user password  
 
-**Request Body**:
+**Request Body**:  
 
 ```json
 {
@@ -1381,23 +1394,23 @@ Change Password (LVI)
 }
 ```
 
-***email***:  the email address of the user
-***password***: the new password for the user
-***token***: the token from the password reset request
+***email***:  the email address of the user  
+***password***: the new password for the user  
+***token***: the token from the password reset request  
 
 Success
 -------
-**Status Code**: 204
-**Response**:
+**Status Code**: 204  
+**Response**:  
 ```json
 
 ```
 
 Errors
 ------
-**Status Code**: 400
-**Info**: The specified data was invalid
-**Responses**:
+**Status Code**: 400  
+**Info**: The specified data was invalid  
+**Responses**:  
 
 The password didn't meet the server requirements (8 characters long).
 ```json
@@ -1418,9 +1431,9 @@ The email address was not found in the user database.
 }
 ```
 
-**Status Code**: 500
-**Info**:  Internal error while processing password change.
-**Responses**:
+**Status Code**: 500  
+**Info**:  Internal error while processing password change.  
+**Responses**:  
 
 The specified token was expired.
 {
@@ -1431,11 +1444,11 @@ The specified token was expired.
 
 Change Password (JCS)
 ===================
-**Method**: POST
-**URI** : /api/clients/passwordReset
-**Info**:  Set the user password
+**Method**: POST  
+**URI** : /api/clients/passwordReset  
+**Info**:  Set the user password  
 
-**Request Body**:
+**Request Body**:  
 
 ```json
 {
@@ -1444,22 +1457,22 @@ Change Password (JCS)
 }
 ```
 
-***email***:  the email address of the user
-***password***: the new password for the user
+***email***:  the email address of the user  
+***password***: the new password for the user  
 
 Success
 -------
-**Status Code**: 204
-**Response**:
+**Status Code**: 204  
+**Response**:  
 ```json
 
 ```
 
 Errors
 ------
-**Status Code**: 400
-**Info**: The specified data was invalid
-**Responses**:
+**Status Code**: 400  
+**Info**: The specified data was invalid  
+**Responses**:  
 
 The password didn't meet the server requirements (8 characters long).
 ```json
@@ -1482,16 +1495,16 @@ The email address was not found in the user database.
 
 Get Inventory (JCS)
 ================
-**JCS Method**: GET
-**JCS URI**: /cgidev2/JCD05012P.pgm
-**Info**: Get the current full inventory from JCS.  This provides LVI with a way to determine current inventory levels and display out of stock messages in Client Direct. 
+**JCS Method**: GET  
+**JCS URI**: /cgidev2/JCD05012P.pgm  
+**Info**: Get the current full inventory from JCS.  This provides LVI with a way to determine current inventory levels and display out of stock messages in Client Direct.   
 
 Notes: the numbers returned have a built in reserved inventory deducted, which prevents frequent phone/order entry purchases from causing inventory availability issues at checkout.  JCS is updated nightly by JDE and occasionally will be updated manually. LVI polls this data every 4 hours by default, but can force a sync as needed.
 
 Success
 -------
-**Status Code**: 200
-**Response**:
+**Status Code**: 200  
+**Response**:  
 ```json
 {
     "inventory" : {
@@ -1507,9 +1520,9 @@ Success
 
 Errors
 ------
-**Status Code**: 500
-**Info**: Specified data was invalid and should be rejected by the server
-**Responses**:
+**Status Code**: 500  
+**Info**: Specified data was invalid and should be rejected by the server  
+**Responses**:  
 
 An unknown error occurred while retrieving inventory.
 ```json
@@ -1522,18 +1535,18 @@ An unknown error occurred while retrieving inventory.
 
 Get Inventory for Item (JCS)
 ======================
-**JCS Method**: GET
-**JCS URI**: /cgidev2/JCD05021P.pgm?productId={productId}
-**Info**: Get the current inventory for a specific product from JCS.  This provides LVI with a way to determine current inventory levels and display out of stock messages in Client Direct. 
+**JCS Method**: GET  
+**JCS URI**: /cgidev2/JCD05021P.pgm?productId={productId}  
+**Info**: Get the current inventory for a specific product from JCS.  This provides LVI with a way to determine current inventory levels and display out of stock messages in Client Direct.   
 
 Notes: the numbers returned have a built in reserved inventory deducted, which prevents frequent phone/order entry purchases from causing inventory availability issues at checkout.  JCS is updated nightly by JDE and occasionally will be updated manually. 
 
-***productId*** - the product ID of the product to get inventory levels for
+***productId*** - the product ID of the product to get inventory levels for  
 
 Success
 -------
-**Status Code**: 200
-**Response**:
+**Status Code**: 200  
+**Response**:  
 ```json
 {
   "availableInventory": 10
@@ -1542,9 +1555,9 @@ Success
 
 Errors
 ------
-**Status Code**: 404
-**Info**: The specified product was not found.
-**Responses**:
+**Status Code**: 404  
+**Info**: The specified product was not found.  
+**Responses**:  
 
 
 ```json
@@ -1557,15 +1570,15 @@ Errors
 
 Check Client/Consultant Email
 =========================
-**Method**: GET
-**URI** : /api/consultants/{consultantId} or /api/clients/{clientId}
-***JCS URI***: /cgidev2/JCD05011P.pgm?email={email}&type={type}
-**Info**:  Lookup consultant or client by email address
+**Method**: GET  
+**URI** : /api/consultants/{consultantId} or /api/clients/{clientId}  
+***JCS URI***: /cgidev2/JCD05011P.pgm?email={email}&type={type}  
+**Info**:  Lookup consultant or client by email address  
 
-***consultantId*** or ***clientId***: email address of the consultant or client, respectively
-***type***: 1 = Consultant email, 2 = Client email
+***consultantId*** or ***clientId***: email address of the consultant or client, respectively  
+***type***: 1 = Consultant email, 2 = Client email  
 
-**Request Body**:
+**Request Body**:  
 
 ```json
 {
@@ -1579,24 +1592,24 @@ Or
 }
 ```
 
-***email***:  the email address of the user
-***password***: the new password for the user
+***email***:  the email address of the user  
+***password***: the new password for the user  
 
 Success
 -------
-**Status Code**: 200
-**Response**:
+**Status Code**: 200  
+**Response**:  
 ```json
 
 ```
 
 Errors
 ------
-**Status Code**: 404
-**Info**: The client or consultant was not found
-***Info:*** 
+**Status Code**: 404  
+**Info**: The client or consultant was not found  
+***Info:***   
 
-**Responses**:
+**Responses**:  
 
 ```json
 {
