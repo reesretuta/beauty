@@ -2037,7 +2037,7 @@ angular.module('app.controllers.checkout')
                 }
                 
                 $log.debug("CheckoutController(): processOrder(): consultant.products", consultant.products);
-                return false;
+
                 
                 consultant.creditCard.cvv = parseInt(consultant.creditCard.cvv);
 
