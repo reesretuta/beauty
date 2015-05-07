@@ -174,11 +174,12 @@ angular.module('app.services', ['ngResource'])
                 $log.debug("Session(): saveToServer(): saving session");
 
                 var session = getLocalSession();
+                $log.debug('saveToServer(): session = getLocalSession();:', session);
                 var trimmedSession = angular.copy(session);
                 for (var i=0; i < trimmedSession.cart.length; i++) {
                     delete trimmedSession.cart[i].product;
                 }
-
+                $log.debug('saveToServer(): (BEFORE PUT!) trimmedSession:', trimmedSession);
                 $http.put(API_URL + '/session', trimmedSession).success(function(s, status, headers, config) {
                     $log.debug("sessionService(): saveToServer(): saved", s);
 

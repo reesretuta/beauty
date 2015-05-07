@@ -584,7 +584,7 @@
   </form>
   </div>
 
-  <div ng-if='!isProduction' class='row'>
+  <div ng-if="profile.customerStatus == 'existing'" class='row'>
     <div class='col-lg-6 col-md-6 col-sm-6 col-xs-6 col-md-offset-3'>
       <h1>{{ 'NOTIFICATIONS-TITLE' | translate }}</h1>
     </div>
