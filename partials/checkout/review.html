@@ -1,21 +1,21 @@
 <br/><br/><br/><br/>
 <div class="container">
-  <div class="col-md-offset-1 col-md-10">
+  <div class="col-md-12">
       
-      <div class="row">
-        <div class="col-md-10 col-md-offset-1">
-          <div class="clear-both"></div>
-          <div class="progress">
-              <div class="progress-bar progress-bar-custom" style="min-width: 2em; width: {{getQncProgressPercent()}}%;">
-                  {{getQncProgressText()}}
-              </div>
-               <div class="progress-bar progress-bar-remainder" style="width: {{100 - getQncProgressPercent()}}%">
-                  &nbsp;{{getUntilNextLevel() | currency}} UNTIL NEXT LEVEL
-              </div>
-          </div>
-          <p class="pull-left"><strong>$0</strong></p>
-          <p class="pull-right"><strong>$300</strong></p>
-          <div class="clear-both"></div>
+    <div class="row">
+      <div class="col-md-10 col-md-offset-1">
+        <div class="clear-both"></div>
+        <div class="progress">
+            <div class="progress-bar progress-bar-custom" style="min-width: 2em; width: {{getQncProgressPercent()}}%;">
+                {{getQncProgressText()}}
+            </div>
+             <div class="progress-bar progress-bar-remainder" style="width: {{100 - getQncProgressPercent()}}%">
+                &nbsp;{{getUntilNextLevel() | currency}} UNTIL NEXT LEVEL
+            </div>
+        </div>
+        <p class="pull-left"><strong>$0</strong></p>
+        <p class="pull-right"><strong>$300</strong></p>
+        <div class="clear-both"></div>
 
         <div ng-if="orderError" class="alert alert-danger" role="alert" ng-bind="orderError"></div>
       </div>
