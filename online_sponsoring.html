@@ -315,7 +315,8 @@
       <button class="jaf-chat-showhide"></button>
     </div>
     <div id="jaf_chat_frame" class="jaf-chat-frame">
-      <iframe id="jaf_chat_frame" width="320" height="400" frameborder="0" src="https://chat.jafrausa.com/chat/chat.html"></iframe>
+      <iframe ng-if="session.language == 'en_US'" id="jaf_chat_frame" width="320" height="400" frameborder="0" src="https://chat.jafrausa.com/chat/chat.html"></iframe>
+      <iframe ng-if="session.language == 'es_US'" id="jaf_chat_frame" width="320" height="400" frameborder="0" src="https://chat.jafrausa.com/chat/chat-es_US.html"></iframe>
     </div>
   </div>
 </div>

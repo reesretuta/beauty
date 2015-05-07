@@ -1,0 +1,298 @@
+<h1 id="lvi-jafra-data-models">LVI Jafra Data Models</h1>
+
+<p><strong>Table of Contents</strong></p>
+
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#models">Models</a> <br>
+– <a href="#images">Images</a> <br>
+– <a href="#categories">Categories</a> <br>
+– <a href="#shared-assets">Shared Assets</a> <br>
+– <a href="#shared-attributes">Shared Attributes</a> <br>
+– <a href="#kit-groups">Kit Groups</a> <br>
+– <a href="#leads">Leads</a> <br>
+– <a href="#order-history">Order History</a> <br>
+– <a href="#product-prices">Product Prices</a> <br>
+– <a href="#products">Products</a> <br>
+– <a href="#product-text-search">Product Text Search</a> <br>
+– <a href="#password-reset-token">Password Reset Token</a> <br>
+– <a href="#consultants">Consultants</a></li>
+</ul>
+
+<h1 id="introduction">Introduction</h1>
+
+<p>This document describes the LVI Platform models used for Jafra.  The format of these models follows a Mongoose MongoDB  schema structure and provides the basis for the Object Relational Mapping (ORM) used by the platform.  Although MongoDB is a schema-less database, schema is enforced on the database client side by Mongoose.</p>
+
+<h1 id="models">Models</h1>
+
+<h2 id="images">Images</h2>
+
+<pre class="prettyprint"><code class="language-JSON hljs javascript">{
+    <span class="hljs-string">"alt"</span> : <span class="hljs-built_in">String</span>,
+    <span class="hljs-string">"endDate"</span> : { type: <span class="hljs-built_in">Date</span>, <span class="hljs-keyword">default</span>: <span class="hljs-literal">null</span> },
+    <span class="hljs-string">"startDate"</span> : { type: <span class="hljs-built_in">Date</span>, <span class="hljs-keyword">default</span>: <span class="hljs-literal">null</span> },
+    <span class="hljs-string">"rank"</span> : <span class="hljs-built_in">Number</span>,
+    <span class="hljs-string">"imagePath"</span> : <span class="hljs-built_in">String</span>
+}</code></pre>
+
+
+
+<h2 id="categories">Categories</h2>
+
+<pre class="prettyprint"><code class="language-JSON hljs javascript">{
+    <span class="hljs-string">"_id"</span> : <span class="hljs-built_in">Number</span>,
+    <span class="hljs-string">"name"</span> : <span class="hljs-built_in">String</span>,
+    <span class="hljs-string">"name_es_US"</span> : <span class="hljs-built_in">String</span>,
+    <span class="hljs-string">"description"</span> : <span class="hljs-built_in">String</span>,
+    <span class="hljs-string">"description_es_US"</span> : <span class="hljs-built_in">String</span>,
+    <span class="hljs-string">"rank"</span> : <span class="hljs-built_in">Number</span>,
+    <span class="hljs-string">"onHold"</span> : <span class="hljs-built_in">Boolean</span>,
+    <span class="hljs-string">"showInMenu"</span> : <span class="hljs-built_in">Boolean</span>,
+    <span class="hljs-string">"searchable"</span> : <span class="hljs-built_in">Boolean</span>,
+    <span class="hljs-string">"parent"</span> : {type: <span class="hljs-built_in">Number</span>, ref: <span class="hljs-string">'Category'</span>},
+    <span class="hljs-string">"children"</span> : [{type: <span class="hljs-built_in">Number</span>, ref: <span class="hljs-string">'Category'</span>}],
+    <span class="hljs-string">"customerTypes"</span> : [<span class="hljs-built_in">String</span>],
+    <span class="hljs-string">"endDate"</span> : { type: <span class="hljs-built_in">Date</span>, <span class="hljs-keyword">default</span>: <span class="hljs-literal">null</span> },
+    <span class="hljs-string">"startDate"</span> : { type: <span class="hljs-built_in">Date</span>, <span class="hljs-keyword">default</span>: <span class="hljs-literal">null</span> },
+    <span class="hljs-string">"images"</span>: [imageSchema]
+}</code></pre>
+
+
+
+<h2 id="shared-assets">Shared Assets</h2>
+
+<pre class="prettyprint"><code class="language-JSON hljs javascript">{
+    <span class="hljs-string">"_id"</span> : <span class="hljs-built_in">Number</span>,
+    <span class="hljs-string">"systemRef"</span> : <span class="hljs-built_in">String</span>,
+    <span class="hljs-string">"rank"</span> : <span class="hljs-built_in">Number</span>,
+    <span class="hljs-string">"title"</span> : <span class="hljs-built_in">String</span>,
+    <span class="hljs-string">"description"</span> : <span class="hljs-built_in">String</span>,
+    <span class="hljs-string">"marketingText"</span> : <span class="hljs-built_in">String</span>,
+    <span class="hljs-string">"endDate"</span> : { type: <span class="hljs-built_in">Date</span>, <span class="hljs-keyword">default</span>: <span class="hljs-literal">null</span> },
+    <span class="hljs-string">"startDate"</span> : { type: <span class="hljs-built_in">Date</span>, <span class="hljs-keyword">default</span>: <span class="hljs-literal">null</span> }
+    <span class="hljs-comment">// FIXME - add image</span>
+}</code></pre>
+
+
+
+<h2 id="shared-attributes">Shared Attributes</h2>
+
+<pre class="prettyprint"><code class="language-JSON hljs javascript">{
+    <span class="hljs-string">"_id"</span> : <span class="hljs-built_in">Number</span>,
+    <span class="hljs-string">"systemRef"</span> : <span class="hljs-built_in">String</span>,
+    <span class="hljs-string">"name"</span> : <span class="hljs-built_in">String</span>,
+    <span class="hljs-string">"description"</span> : <span class="hljs-built_in">String</span>
+    <span class="hljs-comment">// FIXME - add image</span>
+}</code></pre>
+
+
+
+<h2 id="kit-groups">Kit Groups</h2>
+
+<pre class="prettyprint"><code class="language-JSON hljs javascript">{
+    <span class="hljs-string">"_id"</span> : { type: <span class="hljs-built_in">String</span> },
+    <span class="hljs-string">"name"</span> : <span class="hljs-built_in">String</span>,
+    <span class="hljs-string">"name_es_US"</span> : <span class="hljs-built_in">String</span>,
+    <span class="hljs-string">"selectQuantity"</span>: <span class="hljs-built_in">Number</span>,
+    <span class="hljs-comment">// kits groups have products they contain</span>
+    <span class="hljs-comment">// NOTE: to reduce complexity, kit groups cannot currently contain other kit groups</span>
+    <span class="hljs-string">"components"</span> : [{
+        <span class="hljs-string">"product"</span> : {type: <span class="hljs-built_in">String</span>, ref: <span class="hljs-string">'Product'</span>},
+        <span class="hljs-string">"productId"</span> : <span class="hljs-built_in">String</span>,
+        <span class="hljs-string">"rank"</span> : <span class="hljs-built_in">Number</span>,
+        <span class="hljs-string">"startDate"</span> : { type: <span class="hljs-built_in">Date</span>, <span class="hljs-keyword">default</span>: <span class="hljs-literal">null</span> },
+        <span class="hljs-string">"endDate"</span> : { type: <span class="hljs-built_in">Date</span>, <span class="hljs-keyword">default</span>: <span class="hljs-literal">null</span> }
+    }]
+}</code></pre>
+
+
+
+<h2 id="leads">Leads</h2>
+
+<pre class="prettyprint"><code class="language-JSON hljs lasso">{
+    <span class="hljs-string">"firstName"</span> : { <span class="hljs-keyword">type</span> : <span class="hljs-built_in">String</span>, required: <span class="hljs-literal">true</span> },
+    <span class="hljs-string">"lastName"</span> : { <span class="hljs-keyword">type</span> : <span class="hljs-built_in">String</span>, required: <span class="hljs-literal">true</span> },
+    <span class="hljs-string">"email"</span> : { <span class="hljs-keyword">type</span> : <span class="hljs-built_in">String</span>, required: <span class="hljs-literal">true</span> },
+    <span class="hljs-string">"phone"</span> : { <span class="hljs-keyword">type</span> : <span class="hljs-built_in">String</span>, required: <span class="hljs-literal">true</span> },
+    <span class="hljs-string">"language"</span>: { <span class="hljs-keyword">type</span> : <span class="hljs-built_in">String</span>, required: <span class="hljs-literal">true</span> },
+    <span class="hljs-string">"type"</span>: {<span class="hljs-keyword">type</span>: <span class="hljs-built_in">String</span>},
+    <span class="hljs-string">"created"</span>: { <span class="hljs-keyword">type</span>: <span class="hljs-built_in">Date</span>, default: <span class="hljs-built_in">Date</span><span class="hljs-built_in">.</span>now },
+    <span class="hljs-string">"sent"</span>: { <span class="hljs-keyword">type</span>: Boolean, default: <span class="hljs-literal">false</span> },
+    <span class="hljs-string">"completed"</span>: { <span class="hljs-keyword">type</span>: Boolean, default: <span class="hljs-literal">false</span> }
+}</code></pre>
+
+
+
+<h2 id="order-history">Order History</h2>
+
+<pre class="prettyprint"><code class="language-JSON hljs javascript">{
+    <span class="hljs-string">"orderId"</span>: <span class="hljs-built_in">Number</span>,
+    <span class="hljs-string">"firstName"</span>: <span class="hljs-built_in">String</span>,
+    <span class="hljs-string">"lastName"</span>: <span class="hljs-built_in">String</span>,
+    <span class="hljs-string">"clientId"</span>: <span class="hljs-built_in">Number</span>,
+    <span class="hljs-string">"consultantId"</span>: <span class="hljs-built_in">Number</span>,
+    <span class="hljs-string">"language"</span>: <span class="hljs-built_in">String</span>,
+    <span class="hljs-string">"billingAddressId"</span>: <span class="hljs-built_in">Number</span>,
+    <span class="hljs-string">"shippingAddressId"</span>: <span class="hljs-built_in">Number</span>,
+    <span class="hljs-string">"creditCardId"</span>: <span class="hljs-built_in">Number</span>,
+    <span class="hljs-string">"source"</span>: <span class="hljs-built_in">String</span>,
+    <span class="hljs-string">"total"</span>: <span class="hljs-built_in">Number</span>,
+    <span class="hljs-string">"products"</span> : [{
+        <span class="hljs-string">"product"</span> : {type: <span class="hljs-built_in">String</span>, ref: <span class="hljs-string">'Product'</span>},
+        <span class="hljs-string">"sku"</span> : <span class="hljs-built_in">String</span>,
+        <span class="hljs-string">"qty"</span> : <span class="hljs-built_in">Number</span>,
+        <span class="hljs-string">"kitSelections"</span>: Schema.Types.Mixed
+    }],
+    <span class="hljs-string">"created"</span>: { type: <span class="hljs-built_in">Date</span>, <span class="hljs-keyword">default</span>: <span class="hljs-built_in">Date</span>.now }
+}</code></pre>
+
+
+
+<h2 id="product-prices">Product Prices</h2>
+
+<pre class="prettyprint"><code class="language-JSON hljs javascript">{
+    <span class="hljs-string">"typeId"</span> : <span class="hljs-built_in">Number</span>,
+    <span class="hljs-string">"qualifyingVolume"</span> : <span class="hljs-built_in">Number</span>,
+    <span class="hljs-string">"shippingSurcharge"</span> : <span class="hljs-built_in">Number</span>,
+    <span class="hljs-string">"retailVolume"</span> : <span class="hljs-built_in">Number</span>,
+    <span class="hljs-string">"instantProfit"</span> : <span class="hljs-built_in">Number</span>,
+    <span class="hljs-string">"rebate"</span> : <span class="hljs-built_in">Number</span>,
+    <span class="hljs-string">"commissionableVolume"</span> : <span class="hljs-built_in">Number</span>,
+    <span class="hljs-string">"price"</span> : <span class="hljs-built_in">Number</span>,
+    <span class="hljs-string">"customerTypes"</span> : [<span class="hljs-built_in">String</span>],
+    <span class="hljs-string">"effectiveEndDate"</span> : { type: <span class="hljs-built_in">Date</span>, <span class="hljs-keyword">default</span>: <span class="hljs-literal">null</span> },
+    <span class="hljs-string">"effectiveStartDate"</span> : { type: <span class="hljs-built_in">Date</span>, <span class="hljs-keyword">default</span>: <span class="hljs-literal">null</span> }
+}</code></pre>
+
+
+
+<h2 id="products">Products</h2>
+
+<pre class="prettyprint"><code class="language-JSON hljs javascript">{
+    <span class="hljs-string">"_id"</span> : { type: <span class="hljs-built_in">String</span> },
+    <span class="hljs-string">"onHold"</span> : <span class="hljs-built_in">Boolean</span>,
+    <span class="hljs-string">"standardCost"</span> : <span class="hljs-built_in">Number</span>,
+    <span class="hljs-string">"productClass"</span> : <span class="hljs-built_in">Number</span>,
+    <span class="hljs-string">"masterStatus"</span> : <span class="hljs-built_in">String</span>,
+    <span class="hljs-string">"sharedAssets"</span> : [{type: <span class="hljs-built_in">Number</span>, ref: <span class="hljs-string">'SharedAsset'</span>}],
+    <span class="hljs-string">"taxCode"</span> : <span class="hljs-built_in">String</span>,
+    <span class="hljs-string">"promotionalMessages"</span> : [{
+        <span class="hljs-string">"message"</span> : <span class="hljs-built_in">String</span>,
+        <span class="hljs-string">"message_es_US"</span> : <span class="hljs-built_in">String</span>,
+        <span class="hljs-string">"startDate"</span> : { type: <span class="hljs-built_in">Date</span>, <span class="hljs-keyword">default</span>: <span class="hljs-literal">null</span> },
+        <span class="hljs-string">"endDate"</span> : { type: <span class="hljs-built_in">Date</span>, <span class="hljs-keyword">default</span>: <span class="hljs-literal">null</span> }
+    }],
+    <span class="hljs-string">"upsellItems"</span> : [{
+        <span class="hljs-string">"product"</span> : {type: <span class="hljs-built_in">String</span>, ref: <span class="hljs-string">'Product'</span>},
+        <span class="hljs-string">"productId"</span> : <span class="hljs-built_in">String</span>,
+        <span class="hljs-string">"rank"</span> : <span class="hljs-built_in">Number</span>,
+        <span class="hljs-string">"marketingText"</span> : <span class="hljs-built_in">String</span>,
+        <span class="hljs-string">"marketingText_es_US"</span> : <span class="hljs-built_in">String</span>,
+        <span class="hljs-string">"unavailable"</span>: {type: <span class="hljs-built_in">Boolean</span>, <span class="hljs-keyword">default</span>: <span class="hljs-literal">false</span>}
+    }],
+    <span class="hljs-string">"youMayAlsoLike"</span> : [{
+        <span class="hljs-string">"product"</span> : {type: <span class="hljs-built_in">String</span>, ref: <span class="hljs-string">'Product'</span>},
+        <span class="hljs-string">"productId"</span> : <span class="hljs-built_in">String</span>,
+        <span class="hljs-string">"rank"</span> : <span class="hljs-built_in">Number</span>,
+        <span class="hljs-string">"unavailable"</span>: {type: <span class="hljs-built_in">Boolean</span>, <span class="hljs-keyword">default</span>: <span class="hljs-literal">false</span>}
+    }],
+    <span class="hljs-string">"usage"</span> : <span class="hljs-built_in">String</span>,
+    <span class="hljs-string">"usage_es_US"</span> : <span class="hljs-built_in">String</span>,
+    <span class="hljs-string">"images"</span> : [imageSchema],
+    <span class="hljs-string">"name"</span> : <span class="hljs-built_in">String</span>,
+    <span class="hljs-string">"name_es_US"</span> : <span class="hljs-built_in">String</span>,
+    <span class="hljs-string">"quantity"</span> : <span class="hljs-built_in">String</span>,
+    <span class="hljs-string">"quantity_es_US"</span> : <span class="hljs-built_in">String</span>,
+    <span class="hljs-string">"categories"</span> : [{type: <span class="hljs-built_in">Number</span>, ref: <span class="hljs-string">'Category'</span>}],
+    <span class="hljs-string">"description"</span> : <span class="hljs-built_in">String</span>,
+    <span class="hljs-string">"description_es_US"</span> : <span class="hljs-built_in">String</span>,
+    <span class="hljs-string">"searchable"</span> : <span class="hljs-built_in">Boolean</span>,
+    <span class="hljs-string">"hazmatClass"</span> : <span class="hljs-built_in">Number</span>,
+    <span class="hljs-string">"ingredients"</span> : <span class="hljs-built_in">String</span>,
+    <span class="hljs-string">"ingredients_es_US"</span> : <span class="hljs-built_in">String</span>,
+    <span class="hljs-string">"masterType"</span> : <span class="hljs-built_in">String</span>,
+    <span class="hljs-string">"prices"</span> : [productPriceSchema],
+    <span class="hljs-string">"valueMessaging"</span> : <span class="hljs-built_in">String</span>,
+    <span class="hljs-string">"valueMessaging_es_US"</span> : <span class="hljs-built_in">String</span>,
+    <span class="hljs-string">"launchId"</span> : <span class="hljs-built_in">String</span>,
+    <span class="hljs-comment">// product, group, kit, kitGroup</span>
+    <span class="hljs-string">"type"</span> : <span class="hljs-built_in">String</span>,
+    <span class="hljs-comment">// NOTE: how many levels deep do we go for kits containing kits, etc.?</span>
+    <span class="hljs-comment">// for now, we'll just do first level down</span>
+    <span class="hljs-string">"hideWhenProductsUnavailable"</span> : {type : <span class="hljs-built_in">Boolean</span>, <span class="hljs-keyword">default</span> : <span class="hljs-literal">false</span>},
+    <span class="hljs-comment">// kits &amp; groups can be composed of other products &amp; kitGroups</span>
+    <span class="hljs-string">"contains"</span> : [{
+        <span class="hljs-string">"product"</span> : {type: <span class="hljs-built_in">String</span>, ref: <span class="hljs-string">'Product'</span>},
+        <span class="hljs-string">"productId"</span> : <span class="hljs-built_in">String</span>,
+        <span class="hljs-string">"quantity"</span> : <span class="hljs-built_in">Number</span>,
+        <span class="hljs-string">"rank"</span> : <span class="hljs-built_in">Number</span>,
+        <span class="hljs-string">"display"</span> : <span class="hljs-built_in">Boolean</span>,
+        <span class="hljs-string">"startDate"</span> : { type: <span class="hljs-built_in">Date</span>, <span class="hljs-keyword">default</span>: <span class="hljs-literal">null</span> },
+        <span class="hljs-string">"endDate"</span> : { type: <span class="hljs-built_in">Date</span>, <span class="hljs-keyword">default</span>: <span class="hljs-literal">null</span> },
+        <span class="hljs-string">"unavailable"</span>: { type: <span class="hljs-built_in">Boolean</span>, <span class="hljs-keyword">default</span>: <span class="hljs-literal">false</span>}
+    }],
+    <span class="hljs-string">"kitGroups"</span> : [{
+        <span class="hljs-string">"kitGroup"</span> : {type: <span class="hljs-built_in">String</span>, ref: <span class="hljs-string">'KitGroup'</span>},
+        <span class="hljs-string">"kitGroupId"</span> : <span class="hljs-built_in">String</span>,
+        <span class="hljs-string">"rank"</span> : <span class="hljs-built_in">Number</span>,
+        <span class="hljs-string">"quantity"</span> : <span class="hljs-built_in">Number</span>,
+        <span class="hljs-string">"startDate"</span> : { type: <span class="hljs-built_in">Date</span>, <span class="hljs-keyword">default</span>: <span class="hljs-literal">null</span> },
+        <span class="hljs-string">"endDate"</span> : { type: <span class="hljs-built_in">Date</span>, <span class="hljs-keyword">default</span>: <span class="hljs-literal">null</span> },
+        <span class="hljs-string">"unavailable"</span>: { type: <span class="hljs-built_in">Boolean</span>, <span class="hljs-keyword">default</span>: <span class="hljs-literal">false</span>}
+    }],
+    <span class="hljs-string">"availableInventory"</span>: { type: <span class="hljs-built_in">Number</span>, <span class="hljs-keyword">default</span>: <span class="hljs-number">0</span> },
+    <span class="hljs-string">"unavailableComponents"</span>: { type: <span class="hljs-built_in">Boolean</span>, <span class="hljs-keyword">default</span>: <span class="hljs-literal">false</span>},
+    <span class="hljs-string">"lastUpdated"</span>: { type: <span class="hljs-built_in">Date</span>, <span class="hljs-keyword">default</span>: <span class="hljs-built_in">Date</span>.now }
+}</code></pre>
+
+
+
+<h2 id="product-text-search">Product Text Search</h2>
+
+<p>Multi-Key Text Index &amp; Weights</p>
+
+<pre class="prettyprint"><code class="language-JSON hljs css"><span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">_id</span>:<span class="hljs-value"> <span class="hljs-string">"text"</span>,
+    name: <span class="hljs-string">"text"</span>,
+    name_es_US: <span class="hljs-string">"text"</span>,
+    description: <span class="hljs-string">"text"</span>,
+    description_es_US: <span class="hljs-string">"text"</span>,
+    usage: <span class="hljs-string">"text"</span>,
+    usage_es_US: <span class="hljs-string">"text"</span>,
+    ingredients: <span class="hljs-string">"text"</span>,
+    ingredients_es_US: <span class="hljs-string">"text"</span>,
+    valueMessaging: <span class="hljs-string">"text"</span>,
+    valueMessaging_es_US: <span class="hljs-string">"text"</span>
+</span></span></span>}, <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">name</span>:<span class="hljs-value"> <span class="hljs-string">"text_search_index"</span>,
+    weights: {
+        <span class="hljs-string">"name"</span>: <span class="hljs-number">3</span>,
+        <span class="hljs-string">"name_es_US"</span>: <span class="hljs-number">3</span>,
+        <span class="hljs-string">"description"</span>: <span class="hljs-number">2</span>,
+        <span class="hljs-string">"description_es_US"</span>: <span class="hljs-number">2</span>
+    </span></span></span>}
+}</code></pre>
+
+
+
+<h2 id="password-reset-token">Password Reset Token</h2>
+
+<pre class="prettyprint"><code class="language-JSON hljs lasso">{
+    <span class="hljs-string">"token"</span> : { <span class="hljs-keyword">type</span>: <span class="hljs-built_in">String</span>, unique: <span class="hljs-literal">true</span> },
+    <span class="hljs-string">"email"</span> : { <span class="hljs-keyword">type</span>: <span class="hljs-built_in">String</span>, unique: <span class="hljs-literal">false</span> },
+    <span class="hljs-string">"language"</span> : { language: <span class="hljs-built_in">String</span>, unique: <span class="hljs-literal">false</span> },
+    <span class="hljs-string">"created"</span> : { <span class="hljs-keyword">type</span>: <span class="hljs-built_in">Date</span>, default: <span class="hljs-built_in">Date</span><span class="hljs-built_in">.</span>now }
+}</code></pre>
+
+
+
+<h2 id="consultants">Consultants</h2>
+
+<pre class="prettyprint"><code class="language-JSON hljs css"><span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">id </span>:<span class="hljs-value"> { type : Number </span></span></span>},
+    <span class="hljs-tag">firstName</span> : <span class="hljs-rules">{ <span class="hljs-rule"><span class="hljs-attribute">type </span>:<span class="hljs-value"> String, required : true </span></span></span>},
+    <span class="hljs-tag">lastName</span> : <span class="hljs-rules">{ <span class="hljs-rule"><span class="hljs-attribute">type </span>:<span class="hljs-value"> String, required : true </span></span></span>},
+    <span class="hljs-tag">zip</span> : <span class="hljs-rules">{ <span class="hljs-rule"><span class="hljs-attribute">type </span>:<span class="hljs-value"> String, required : true </span></span></span>},
+    <span class="hljs-tag">geocode</span>: <span class="hljs-rules">{ <span class="hljs-rule"><span class="hljs-attribute">type </span>:<span class="hljs-value"> String, required : true </span></span></span>},
+    <span class="hljs-tag">isActive</span>: <span class="hljs-rules">{ <span class="hljs-rule"><span class="hljs-attribute">type </span>:<span class="hljs-value"> Number, required : true </span></span></span>}
+}</code></pre>
