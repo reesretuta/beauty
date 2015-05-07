@@ -1730,7 +1730,7 @@ models.onReady(function () {
 
     // initiate interval and init for fetching sponsors
     fetchSponsors();
-    setInterval(fetchSponsors, SPONSOR_PROCESSING_INTERVAL);
+    //setInterval(fetchSponsors, SPONSOR_PROCESSING_INTERVAL);
 
     // ...
     function updateInventory() {
