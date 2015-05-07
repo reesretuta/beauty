@@ -1481,6 +1481,16 @@ angular.module('app.controllers.checkout')
             });
         }
         
+        $scope.isInCart = function(sku){
+              var isInCart = false;
+              for (var i = 0; i < $scope.cart.length; i++) {
+                  if ($scope.cart[i].sku == sku) {
+                      isInCart = true;
+                  }
+              }
+              return isInCart;
+        }
+        
         $scope.addPaymentMethod = function() {
             var d = $q.defer();
             $scope.processing = true;
@@ -1955,7 +1965,6 @@ angular.module('app.controllers.checkout')
                 //     "kitSelections": {},
                 //     "components": components
                 // }
-                
                 // add starterkit to consultant.products
                 var starterKit = _.findWhere($scope.starterKits, {sku: $scope.cart[0].product.sku});
                 console.log('starterKit',starterKit);
@@ -1965,9 +1974,6 @@ angular.module('app.controllers.checkout')
                         {sku: starterKit.contains[i].productId, qty: starterKit.contains[i].quantity}
                     );
                 }
-                
-                //need to change consultant start with empty array of products
-                consultant.products = [];
                 
                 $log.debug('QNC DEBUG! consultant.products:', consultant.products);
                 // add qnc products to consultant.products
