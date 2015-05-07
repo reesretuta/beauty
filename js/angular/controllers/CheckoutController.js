@@ -110,31 +110,31 @@ angular.module('app.controllers.checkout')
             this.splice(to, 0, this.splice(from, 1)[0]);
         };
 
-        // set default shipping address
-        if ($rootScope.session.client && $rootScope.session.client.lastUsedShippingAddressId) {
-            $log.debug("CheckoutController(): have last shipping address id");
-            $.each($rootScope.session.client.addresses, function(index, address) {
-                if (address.id === $rootScope.session.client.lastUsedShippingAddressId) {
-                    $log.debug("CheckoutController(): setting shipping/billing address", address);
-                    $rootScope.session.client.addresses.move(index, 0);
-                    $scope.profile.shipping = address;
-                    $scope.profile.billing = address;
-                }
-            });
+        function setDefaultPreviousCheckoutInfo () {
+            // set default shipping address
+            if ($rootScope.session.client && $rootScope.session.client.lastUsedShippingAddressId) {
+                $.each($rootScope.session.client.addresses, function(index, address) {
+                    if (address.id === $rootScope.session.client.lastUsedShippingAddressId) {
+                        $log.debug("CheckoutController(): setting shipping/billing address", address);
+                        $rootScope.session.client.addresses.move(index, 0);
+                        $scope.profile.shipping = address;
+                        $scope.profile.billing = address;
+                    }
+                });
+            }
+            // set default payment method
+            if ($rootScope.session.client && $rootScope.session.client.lastUsedCreditCardId) {
+                $.each($rootScope.session.client.creditCards, function(index, creditCard) {
+                    if (creditCard.id == $rootScope.session.client.lastUsedCreditCardId) {
+                        $log.debug("CheckoutController(): setting card", creditCard);
+                        $rootScope.session.client.creditCards.move(index, 0);
+                        $scope.profile.card = creditCard;
+                    }
+                });
+            }
         }
-
-        // set default payment method
-        if ($rootScope.session.client && $rootScope.session.client.lastUsedCreditCardId) {
-            $log.debug("CheckoutController(): have last credit card id");
-            $.each($rootScope.session.client.creditCards, function(index, creditCard) {
-                if (creditCard.id == $rootScope.session.client.lastUsedCreditCardId) {
-                    $log.debug("CheckoutController(): setting card", creditCard);
-                    $rootScope.session.client.creditCards.move(index, 0);
-                    $scope.profile.card = creditCard;
-                    $log.debug("CheckoutController(): DEBUG card", $scope.profile.card);
-                }
-            });
-        }
+        // call on init
+        setDefaultPreviousCheckoutInfo();
 
         $scope.shippingAddressError = null;
         $scope.billingAddressError = null;

@@ -99,21 +99,6 @@ angular.module('app.services', ['ngResource'])
             }
         });
 
-        //var sessionLastUpdated = null;
-        //$rootScope.$on('LocalStorageModule.notification.setitem', function (event, data) {
-        //    if (data.key == 'session') {
-        //        // if the date is empty or doesn't equal out last timestamp update, then add timestamp
-        //        if (data.value && (data.value.timestamp == null || data.value.timestamp != sessionLastUpdated)) {
-        //            // session was updated, set a timestamp since we want to expire our localstorage
-        //            data.value.timestamp = new Date().getTime();
-        //
-        //            // ensure this update doesn't trigger another update recursively
-        //            sessionLastUpdated = data.value.timestamp;
-        //            $log.debug("sessionService(): setting last session update time", sessionLastUpdated);
-        //        }
-        //    }
-        //});
-
         // INITIALIZATION
         function initialize() {
             $log.debug("sessionService(): initialize(): loading session from server");
