@@ -575,6 +575,8 @@
     "SPONSOR-CITY-LABEL": "City",
     "SPONSOR-ACTION-LABEL": "Action",
 
+    "SPONSOR-SEARCH-BTN-ZIP": "Lookup By Zip Code",
+    "SPONSOR-SEARCH-BTN-NAME": "Lookup by Name",
     "SPONSOR-SEARCH-INPUT-ERROR": "Search either by Zip Code OR Name",
     "SPONSORS-SEARCH-NO-SPONSORS-FOUND": "No Sponsors Found",
     "SPONSORS-SEARCH-UNKNOWN-ERROR": "Error Searching for Sponsors",

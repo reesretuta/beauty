@@ -576,11 +576,12 @@
     "SPONSOR-CITY-LABEL": "Ciudad",
     "SPONSOR-ACTION-LABEL": "Acción",
 
+    "SPONSOR-SEARCH-BTN-ZIP": "Operaciones de búsqueda por código postal",
+    "SPONSOR-SEARCH-BTN-NAME": "Operaciones de búsqueda por Nombre",
     "SPONSOR-SEARCH-INPUT-ERROR": "Buscar sea por código postal o nombre",
     "SPONSORS-SEARCH-NO-SPONSORS-FOUND": "No se han encontrado Patrocinadores",
     "SPONSORS-SEARCH-UNKNOWN-ERROR": "Error Busca Patrocinadores",
     "SPONSORS-SEARCH-FOUND-ZIP": "Encontradas {{ count }} patrocinadores cerca código postal {{ zip }}",
     "SPONSORS-SEARCH-FOUND-NAME": "Encontradas {{ count }} patrocinadores vinculados \"{{ firstName }}\" \"{{ lastName }}\"",
-    "SPONSORS-SEARCH-FOUND-NAME": "Found {{ count }} sponsors matching \"{{ firstName }}\" \"{{ lastName }}\""
 
 }
