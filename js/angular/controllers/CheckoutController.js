@@ -70,6 +70,11 @@ angular.module('app.controllers.checkout')
             shipping: null,
             newShippingAddress: {},
             newBillingAddress: {},
+            // default, on
+            notificationPreferences: {
+                email : 1,
+                sms   : 1
+            },
             billSame: true,
             agree: true,
             newCard: {},
