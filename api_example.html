@@ -1,8 +1,10 @@
-<h1 id="jcs-lvi-apis">JCS / LVI APIs</h1>
+<h1 id="jcs-api-lvi-platform-api">JCS API &amp; LVI Platform API</h1>
 
 <p><strong>Table of Contents</strong>   </p>
 
 <ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#conventions">Conventions</a></li>
 <li><a href="#authenticate">Authenticate</a></li>
 <li><a href="#get-client">Get Client</a></li>
 <li><a href="#create-client">Create Client</a></li>
@@ -31,16 +33,31 @@
 <li><a href="#check-clientconsultant-email">Check Client/Consultant Email</a></li>
 </ul>
 
+<h1 id="introduction">Introduction</h1>
+
+<p>This document covers the APIs which are provided for:</p>
+
+<ul>
+<li>LVI Platform communication with the Jafra JCS backend server running on the AS/400.</li>
+<li>Online Sponsoring &amp; Client Direct client-side requests to the LVI Platform backend</li>
+</ul>
+
+<p>Most of the request &amp; response data, success and error codes from the JCS API are mirrored in the LVI API.  The LVI API serves as a proxy between the client and the Jafra system, providing some unique additions and caching to help with scaling.  Additional information on this can be found in the LVI Web Stack architecture documents.</p>
+
+
+
+<h1 id="conventions">Conventions</h1>
+
+<p>Where different, the LVI Platform URI (URI) will be listed separately from the corresponding JCS API URI (JCS URI).  This is also the case for the HTTP verb/method used for each service.</p>
+
 
 
 <h1 id="authenticate">Authenticate</h1>
 
 <p><strong>Method</strong>: POST <br>
-<strong>URL</strong>: /api/clients/authenticate <br>
-<strong>JCS URL</strong>: /cgidev2/JCD05001P.pgm <br>
+<strong>URI</strong>: /api/clients/authenticate <br>
+<strong>JCS URI</strong>: /cgidev2/JCD05001P.pgm <br>
 <strong>Request</strong>:  </p>
-
-
 
 <pre class="prettyprint"><code class="language-json hljs ">{
   "<span class="hljs-attribute">email</span>": <span class="hljs-value"><span class="hljs-string">"jsmith@gmail.com"</span></span>, // required
@@ -81,8 +98,8 @@
 <h1 id="get-client">Get Client</h1>
 
 <p><strong>Method</strong>: GET <br>
-<strong>URL</strong>: /api/clients/{clientId} <br>
-<strong>JCS URL</strong>: /cgidev2/JCD05007P.pgm?clientId={clientId} <br>
+<strong>URI</strong>: /api/clients/{clientId} <br>
+<strong>JCS URI</strong>: /cgidev2/JCD05007P.pgm?clientId={clientId} <br>
 <strong>Info</strong>: Get client data <br>
 <strong>Request</strong>:  </p>
 
@@ -139,8 +156,8 @@
 <h1 id="create-client">Create Client</h1>
 
 <p><strong>Method</strong>: POST <br>
-<strong>URL</strong>: /api/clients <br>
-<strong>JCS URL</strong>: /cgidev2/JCD05002P.pgm <br>
+<strong>URI</strong>: /api/clients <br>
+<strong>JCS URI</strong>: /cgidev2/JCD05002P.pgm <br>
 <strong>Info</strong>: Create a new client record, which can be used to authenticate into Client Direct &amp; future systems <br>
 <strong>Request</strong>:  </p>
 
@@ -232,8 +249,8 @@
 <h1 id="get-consultant">Get Consultant</h1>
 
 <p><strong>Method</strong>: GET <br>
-<strong>URL</strong>: /api/consultants/{consultantId} <br>
-<strong>JCS URL</strong>: /cgidev2/JOS05007P.pgm?consultantId={consultantId} <br>
+<strong>URI</strong>: /api/consultants/{consultantId} <br>
+<strong>JCS URI</strong>: /cgidev2/JOS05007P.pgm?consultantId={consultantId} <br>
 <strong>Info</strong>: Get consultant data <br>
 <strong>Request</strong>:  </p>
 
@@ -273,8 +290,8 @@
 <h1 id="create-consultant">Create Consultant</h1>
 
 <p><strong>Method</strong>: POST <br>
-<strong>URL</strong>: /api/consultants <br>
-<strong>JCS URL</strong>: /cgidev2/JOS05002P.pgm <br>
+<strong>URI</strong>: /api/consultants <br>
+<strong>JCS URI</strong>: /cgidev2/JOS05002P.pgm <br>
 <strong>Info</strong>: This is similar to creating a Client, however a few more fields are required.  Create a consultant record, which can be used to authenticate into Jafra Biz &amp; eventually Client Direct/Online Ordering. <br>
 <strong>Request</strong>:  </p>
 
@@ -469,8 +486,8 @@
 <h1 id="lookup-consultant-by-ssn">Lookup Consultant by SSN</h1>
 
 <p><strong>Method</strong>: POST <br>
-<strong>URL</strong>: /api/ssn <br>
-<strong>JCS URL</strong>: /cgidev2/JOS05004P.pgm <br>
+<strong>URI</strong>: /api/ssn <br>
+<strong>JCS URI</strong>: /cgidev2/JOS05004P.pgm <br>
 <strong>Info</strong>: Determine if a consultant with an SSN exists <br>
 <strong>Request</strong>:  </p>
 
@@ -516,8 +533,8 @@
 <h1 id="create-lead">Create Lead</h1>
 
 <p><strong>Method</strong>: POST <br>
-<strong>URL</strong>: /api/leads <br>
-<strong>JCS URL</strong>: /cgidev2/JOS05005P.pgm <br>
+<strong>URI</strong>: /api/leads <br>
+<strong>JCS URI</strong>: /cgidev2/JOS05005P.pgm <br>
 <strong>Info</strong>: Created from basic info provided as new consultant is signing up <br>
 <strong>Request</strong>:  </p>
 
@@ -588,7 +605,7 @@
 
 <p><strong>Method</strong>: GET <br>
 <strong>URI</strong>: /api/clients/{clientId}/addresses <br>
-<strong>JCS URL</strong>: /cgidev2/JCD05005P.pgm?clientId={clientId}  </p>
+<strong>JCS URI</strong>: /cgidev2/JCD05005P.pgm?clientId={clientId}  </p>
 
 
 
@@ -648,7 +665,7 @@
 <p><strong>Info</strong>: Get a specific address for client by clientId and addressId <br>
 <strong>Method</strong>: GET <br>
 <strong>URI</strong>: /api/clients/{clientId}/addresses/{addressId} <br>
-<strong>JCS URL</strong>:  /cgidev2/JCD05005P.pgm?clientId={clientId}&amp;addressId={addressId}  </p>
+<strong>JCS URI</strong>:  /cgidev2/JCD05005P.pgm?clientId={clientId}&amp;addressId={addressId}  </p>
 
 
 
@@ -1485,8 +1502,6 @@
 <strong><em>token</em></strong>: used to link from email -&gt; db <br>
 <strong><em>url</em></strong>: the URL to submit the token to <br>
 <strong><em>language</em></strong>: language for reset email  </p>
-
-
 
 <h2 id="success-20">Success</h2>
 

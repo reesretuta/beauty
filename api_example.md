@@ -1,8 +1,10 @@
-JCS / LVI APIs
-===========
+JCS API & LVI Platform API
+=======================
 
 **Table of Contents**   
 
+- [Introduction](#introduction)
+- [Conventions](#conventions)
 - [Authenticate](#authenticate)
 - [Get Client](#get-client)
 - [Create Client](#create-client)
@@ -30,11 +32,26 @@ JCS / LVI APIs
 - [Get Inventory for Item (JCS)](#get-inventory-for-item-jcs)
 - [Check Client/Consultant Email](#check-clientconsultant-email)
 
+Introduction
+==========
+
+This document covers the APIs which are provided for:
+
+- LVI Platform communication with the Jafra JCS backend server running on the AS/400.
+- Online Sponsoring & Client Direct client-side requests to the LVI Platform backend
+
+Most of the request & response data, success and error codes from the JCS API are mirrored in the LVI API.  The LVI API serves as a proxy between the client and the Jafra system, providing some unique additions and caching to help with scaling.  Additional information on this can be found in the LVI Web Stack architecture documents.
+
+Conventions
+==========
+
+Where different, the LVI Platform URI (URI) will be listed separately from the corresponding JCS API URI (JCS URI).  This is also the case for the HTTP verb/method used for each service.
+
 Authenticate
 ============
 **Method**: POST  
-**URL**: /api/clients/authenticate  
-**JCS URL**: /cgidev2/JCD05001P.pgm  
+**URI**: /api/clients/authenticate  
+**JCS URI**: /cgidev2/JCD05001P.pgm  
 **Request**:  
 ```json
 {
@@ -69,8 +86,8 @@ Get Client
 ============
 
 **Method**: GET  
-**URL**: /api/clients/{clientId}  
-**JCS URL**: /cgidev2/JCD05007P.pgm?clientId={clientId}  
+**URI**: /api/clients/{clientId}  
+**JCS URI**: /cgidev2/JCD05007P.pgm?clientId={clientId}  
 **Info**: Get client data  
 **Request**:  
 
@@ -119,8 +136,8 @@ The client with the specified ***clientId*** was not found
 Create Client
 =============
 **Method**: POST  
-**URL**: /api/clients  
-**JCS URL**: /cgidev2/JCD05002P.pgm  
+**URI**: /api/clients  
+**JCS URI**: /cgidev2/JCD05002P.pgm  
 **Info**: Create a new client record, which can be used to authenticate into Client Direct & future systems  
 **Request**:  
 ```json
@@ -197,8 +214,8 @@ Get Consultant
 ============
 
 **Method**: GET  
-**URL**: /api/consultants/{consultantId}  
-**JCS URL**: /cgidev2/JOS05007P.pgm?consultantId={consultantId}  
+**URI**: /api/consultants/{consultantId}  
+**JCS URI**: /cgidev2/JOS05007P.pgm?consultantId={consultantId}  
 **Info**: Get consultant data  
 **Request**:  
 
@@ -232,8 +249,8 @@ Create Consultant
 =================
 
 **Method**: POST  
-**URL**: /api/consultants  
-**JCS URL**: /cgidev2/JOS05002P.pgm  
+**URI**: /api/consultants  
+**JCS URI**: /cgidev2/JOS05002P.pgm  
 **Info**: This is similar to creating a Client, however a few more fields are required.  Create a consultant record, which can be used to authenticate into Jafra Biz & eventually Client Direct/Online Ordering.  
 **Request**:  
 ```json
@@ -410,8 +427,8 @@ There was a conflict creating an account with the specified SSN, because it is a
 Lookup Consultant by SSN
 =====================
 **Method**: POST  
-**URL**: /api/ssn  
-**JCS URL**: /cgidev2/JOS05004P.pgm  
+**URI**: /api/ssn  
+**JCS URI**: /cgidev2/JOS05004P.pgm  
 **Info**: Determine if a consultant with an SSN exists  
 **Request**:  
 ```json
@@ -449,8 +466,8 @@ A generic message that simply tells us the server didn't like the data it receiv
 Create Lead
 ===========
 **Method**: POST  
-**URL**: /api/leads  
-**JCS URL**: /cgidev2/JOS05005P.pgm  
+**URI**: /api/leads  
+**JCS URI**: /cgidev2/JOS05005P.pgm  
 **Info**: Created from basic info provided as new consultant is signing up  
 **Request**:  
 ```json
@@ -513,7 +530,7 @@ Get Addresses
 
 **Method**: GET  
 **URI**: /api/clients/{clientId}/addresses  
-**JCS URL**: /cgidev2/JCD05005P.pgm?clientId={clientId}  
+**JCS URI**: /cgidev2/JCD05005P.pgm?clientId={clientId}  
 
 Success
 -------
@@ -567,7 +584,7 @@ Get Address
 **Info**: Get a specific address for client by clientId and addressId  
 **Method**: GET  
 **URI**: /api/clients/{clientId}/addresses/{addressId}  
-**JCS URL**:  /cgidev2/JCD05005P.pgm?clientId={clientId}&addressId={addressId}  
+**JCS URI**:  /cgidev2/JCD05005P.pgm?clientId={clientId}&addressId={addressId}  
 
 Success
 -------
