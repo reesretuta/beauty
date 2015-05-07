@@ -1,8 +1,6 @@
 JCS / LVI APIs
 ===========
 
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents** 
 
 - [Authenticate](#authenticate)
@@ -31,8 +29,6 @@ JCS / LVI APIs
 - [Get Inventory (JCS)](#get-inventory-jcs)
 - [Get Inventory for Item (JCS)](#get-inventory-for-item-jcs)
 - [Check Client/Consultant Email](#check-clientconsultant-email)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 Authenticate
 ============
