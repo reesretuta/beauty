@@ -36,8 +36,36 @@
       <div class="col-md-5 col-md-offset-1">
         <div class="kit-box">
           <img class="img-responsive" src="/img/19982_fragrance_pack_en.jpg" />
-          <div class="store-item-info">
-            <p class="store-item-sku ng-binding"><span ng-bind-html="'ITEM' | translate | unsafe" class="ng-binding">Item</span> #19982</p>
+          <h3>Fragrance Pack</h3>
+          <div ng-show="isInCart('19982')">
+            <span class="product-price"><small>Only<br></small> $300</span>
+            <button type="button" class="btn btn-primary btn-lg" ng-click="removeQncProduct('19982')" analytics-on="click" analytics-event="In-Page Buy $300 Fragrance Pack" analytics-category="Buttons">
+            Added <i class="fa fa-check"></i>
+            </button>
+          </div>
+
+          <div ng-show="!isInCart('19982')">
+            <span class="product-price"><small>Only<br></small> $300</span>
+            <button type="button" class="btn btn-primary btn-lg" ng-click="selectQncProduct('19982')" analytics-on="click" analytics-event="In-Page Buy $300 Fragrance Pack" analytics-category="Buttons">
+            Add <i class="fa fa-square-o"></i>
+            </button>
+          </div>
+          <br />
+          <p class="color-gold HelveticaNeueLTStd-BdCn kit-desc">
+            <span>Save 41%</span>
+          </p>
+          <p class="HelveticaNeueLTStd-Th kit-value ng-binding">Over $511 retail value</p>
+          
+          <p>Available to New Consultants in their first 60 days!</p>
+          
+          <a href="" class="seemore more-link more-link-alt collapsed" data-toggle="collapse" data-target="#fragrancepack-details" ng-bind-html="'KIT-DETAILS-TOGGLE' | translate | unsafe"></a>
+
+          <div id="fragrancepack-details" class="collapse">
+            <p> <!-- will need to refactor later -->
+              <ul><li>Royal Jelly Milk Balm Advanced</li><li>Royal Jelly Lift Concentrate, 7 vials</li><li>JAFRA PRO Face Lift SPF 20</li><li>JAFRA PRO Night Recovery Concentrate</li><li>New! Time Dynamics Time Delay Night Moisterizer</li><li>New! Time Dynamics Optimeyes Crème Gel </li><li>New! Brightening Dynamics Skin Brightner + </li><li>New! Brightening Dynamics Brightening Pen</li><li>New! Gold Dynamics Intensive Retinol Capsules</li><li>New! Gold Dynamics Elasticity Recovery Hydrogel + Firmiplex Complex</li></ul>
+            </p>
+          </div>
+            <!-- <p class="store-item-sku ng-binding"><span ng-bind-html="'ITEM' | translate | unsafe" class="ng-binding">Item</span> #19982</p>
             <p class="store-item-title">
               <a class="ng-binding" href="#"> Skin Care Pack - Save 40%</a>
             </p>
@@ -49,12 +77,12 @@
               </span>
               &nbsp;&nbsp;<span class="item-measure ng-binding">Retail Value $496</span>
             </p>
-          </div>
+          
           <p class="ng-scope">
             <a class="btn btn-primary primary-cta add-to-cart ng-scope" ng-click="selectQncProduct('19982')">
               <span class="ng-binding">Add to Order</span>
             </a>
-          </p>
+          </p> -->
         </div>
       </div>
       <div class="col-md-5">
