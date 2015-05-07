@@ -1,0 +1,1806 @@
+<h1 id="jcs-lvi-apis">JCS / LVI APIs</h1>
+
+<p><strong>Table of Contents</strong>   </p>
+
+<ul>
+<li><a href="#authenticate">Authenticate</a></li>
+<li><a href="#get-client">Get Client</a></li>
+<li><a href="#create-client">Create Client</a></li>
+<li><a href="#get-consultant">Get Consultant</a></li>
+<li><a href="#create-consultant">Create Consultant</a></li>
+<li><a href="#lookup-consultant-by-ssn">Lookup Consultant by SSN</a></li>
+<li><a href="#create-lead">Create Lead</a></li>
+<li><a href="#get-addresses">Get Addresses</a></li>
+<li><a href="#get-address">Get Address</a></li>
+<li><a href="#create-address">Create Address</a></li>
+<li><a href="#update-address">Update Address</a></li>
+<li><a href="#delete-address">Delete Address</a></li>
+<li><a href="#get-credit-cards">Get Credit Cards</a></li>
+<li><a href="#get-credit-card">Get Credit Card</a></li>
+<li><a href="#create-credit-card">Create Credit Card</a></li>
+<li><a href="#update-credit-card">Update Credit Card</a></li>
+<li><a href="#delete-credit-card">Delete Credit Card</a></li>
+<li><a href="#create-order">Create Order</a></li>
+<li><a href="#calculate-tax-&amp;-shipping">Calculate Tax &amp; Shipping</a></li>
+<li><a href="#password-reset-request-lvi">Password Reset Request (LVI)</a></li>
+<li><a href="#password-reset-request-jcs">Password Reset Request (JCS)</a></li>
+<li><a href="#change-password-lvi">Change Password (LVI)</a></li>
+<li><a href="#change-password-jcs">Change Password (JCS)</a></li>
+<li><a href="#get-inventory-jcs">Get Inventory (JCS)</a></li>
+<li><a href="#get-inventory-for-item-jcs">Get Inventory for Item (JCS)</a></li>
+<li><a href="#check-clientconsultant-email">Check Client/Consultant Email</a></li>
+</ul>
+
+
+
+<h1 id="authenticate">Authenticate</h1>
+
+<p><strong>Method</strong>: POST <br>
+<strong>URL</strong>: /api/clients/authenticate <br>
+<strong>JCS URL</strong>: /cgidev2/JCD05001P.pgm <br>
+<strong>Request</strong>:  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">email</span>": <span class="hljs-value"><span class="hljs-string">"jsmith@gmail.com"</span></span>, // required
+  "<span class="hljs-attribute">password</span>": <span class="hljs-value"><span class="hljs-string">"some password"</span>  // required
+</span>}
+</code></pre>
+
+
+
+<h2 id="success">Success</h2>
+
+<p><strong>Status Code</strong>: 200 <br>
+<strong>Response</strong>:  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">clientId</span>": <span class="hljs-value">&lt;clientId&gt;
+</span>}</code></pre>
+
+
+
+<h2 id="errors">Errors</h2>
+
+<p><strong>Status Code</strong>: 401 <br>
+<strong>Responses</strong>:  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+    "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">401</span></span>,
+    "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"invalidCredentials"</span></span>,
+    "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Invalid Credentials"</span>
+</span>}</code></pre>
+
+
+
+<h1 id="get-client">Get Client</h1>
+
+<p><strong>Method</strong>: GET <br>
+<strong>URL</strong>: /api/clients/{clientId} <br>
+<strong>JCS URL</strong>: /cgidev2/JCD05007P.pgm?clientId={clientId} <br>
+<strong>Info</strong>: Get client data <br>
+<strong>Request</strong>:  </p>
+
+<p><strong><em>clientId</em></strong> - this is the unique Jafra client ID  </p>
+
+
+
+<h2 id="success-1">Success</h2>
+
+<p><strong>Status Code</strong>: 200 <br>
+<strong>Response</strong>:  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">id</span>": <span class="hljs-value"><span class="hljs-number">1</span></span>,
+  "<span class="hljs-attribute">email</span>": <span class="hljs-value"><span class="hljs-string">"jsmith@gmail.com"</span></span>,
+  "<span class="hljs-attribute">firstName</span>": <span class="hljs-value"><span class="hljs-string">"John"</span></span>,
+  "<span class="hljs-attribute">lastName</span>": <span class="hljs-value"><span class="hljs-string">"Smith"</span></span>,
+  "<span class="hljs-attribute">consultantIds</span>": <span class="hljs-value">[
+    <span class="hljs-number">4657323</span>, <span class="hljs-number">4657324</span>
+  ]</span>,
+  "<span class="hljs-attribute">language</span>": <span class="hljs-value"><span class="hljs-string">"en_US"</span></span>,
+  "<span class="hljs-attribute">phone</span>": <span class="hljs-value"><span class="hljs-string">"555-555-4432"</span></span>,  
+  "<span class="hljs-attribute">dateOfBirth</span>": <span class="hljs-value"><span class="hljs-string">"12/01/1978"</span></span>,
+  "<span class="hljs-attribute">creditCards</span>": <span class="hljs-value">[]</span>,
+  "<span class="hljs-attribute">addresses</span>": <span class="hljs-value">[]</span>,
+  "<span class="hljs-attribute">notificationPreferences</span>": <span class="hljs-value">{
+    "<span class="hljs-attribute">sms</span>": <span class="hljs-value"><span class="hljs-number">0</span></span>,
+    "<span class="hljs-attribute">email</span>": <span class="hljs-value"><span class="hljs-number">1</span>
+  </span>}
+</span>}</code></pre>
+
+
+
+<h2 id="errors-1">Errors</h2>
+
+<p><strong>Status Code</strong>: 404 <br>
+<strong>Info</strong>: The client was not found <br>
+<strong>Responses</strong>:  </p>
+
+<p>The client with the specified <strong><em>clientId</em></strong> was not found  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+    "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">404</span></span>,
+    "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"clientNotFound"</span></span>,
+    "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Client not found"</span>
+</span>}</code></pre>
+
+
+
+<h1 id="create-client">Create Client</h1>
+
+<p><strong>Method</strong>: POST <br>
+<strong>URL</strong>: /api/clients <br>
+<strong>JCS URL</strong>: /cgidev2/JCD05002P.pgm <br>
+<strong>Info</strong>: Create a new client record, which can be used to authenticate into Client Direct &amp; future systems <br>
+<strong>Request</strong>:  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">email</span>": <span class="hljs-value"><span class="hljs-string">"jsmith@gmail.com"</span></span>, // required
+  "<span class="hljs-attribute">password</span>": <span class="hljs-value"><span class="hljs-string">"some password"</span></span>, // required
+  "<span class="hljs-attribute">firstName</span>": <span class="hljs-value"><span class="hljs-string">"John"</span></span>,         // optional
+  "<span class="hljs-attribute">lastName</span>": <span class="hljs-value"><span class="hljs-string">"Smith"</span></span>,         // optional
+  "<span class="hljs-attribute">phone</span>": <span class="hljs-value"><span class="hljs-string">"555-555-4432"</span></span>,     // optional
+  "<span class="hljs-attribute">dateOfBirth</span>": <span class="hljs-value"><span class="hljs-string">"12/01/1978"</span></span>, // optional
+  "<span class="hljs-attribute">consultantId</span>": <span class="hljs-value"><span class="hljs-number">4657323</span></span>,     // optional
+  "<span class="hljs-attribute">language</span>": <span class="hljs-value"><span class="hljs-string">"en_US"</span></span>,         // optional
+  "<span class="hljs-attribute">source</span>": <span class="hljs-value"><span class="hljs-string">"fb"</span></span>,              // optional
+  "<span class="hljs-attribute">notificationPreferences</span>": <span class="hljs-value">{
+    "<span class="hljs-attribute">sms</span>": <span class="hljs-value"><span class="hljs-number">0</span></span>,
+    "<span class="hljs-attribute">email</span>": <span class="hljs-value"><span class="hljs-number">1</span>
+  </span>}
+</span>}</code></pre>
+
+
+
+<h2 id="success-2">Success</h2>
+
+<p><strong>Status Code</strong>: 201 <br>
+<strong>Response</strong>:  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">clientId</span>": <span class="hljs-value">&lt;clientId&gt;
+</span>}
+</code></pre>
+
+
+
+<h2 id="errors-2">Errors</h2>
+
+<p><strong>Status Code</strong>: 400 <br>
+<strong>Info</strong>: Specified data was invalid and should be rejected by the server <br>
+<strong>Responses</strong>:  </p>
+
+<p>Only respond with this when the optional consultant ID is provided and it isn’t valid.  Ignore instead if empty</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+    "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">400</span></span>,
+    "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"invalidConsultantId"</span></span>,
+    "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Invalid consultant Id"</span>
+</span>}</code></pre>
+
+<p>Invalid email format, bad characters, etc.</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+    "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">400</span></span>,
+    "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"invalidEmailAddress"</span></span>,
+    "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Invalid email address"</span>
+</span>}</code></pre>
+
+<p>Password that doesn’t meet password requirements (length, variation, etc.)</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+    "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">400</span></span>,
+    "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"invalidPassword"</span></span>,
+    "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Invalid password"</span>
+</span>}</code></pre>
+
+<p><strong>Status Code</strong>: 409 <br>
+<strong>Responses</strong>:  </p>
+
+<p>There was a conflict creating an account with the specified email, because it is already in the system.</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+    "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">409</span></span>,
+    "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"emailAlreadyInUse"</span></span>,
+    "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Email address already in use"</span>
+</span>}</code></pre>
+
+
+
+<h1 id="get-consultant">Get Consultant</h1>
+
+<p><strong>Method</strong>: GET <br>
+<strong>URL</strong>: /api/consultants/{consultantId} <br>
+<strong>JCS URL</strong>: /cgidev2/JOS05007P.pgm?consultantId={consultantId} <br>
+<strong>Info</strong>: Get consultant data <br>
+<strong>Request</strong>:  </p>
+
+<p><strong><em>consultantId</em></strong> - this is the unique Jafra consultant ID  </p>
+
+
+
+<h2 id="success-3">Success</h2>
+
+<p><strong>Status Code</strong>: 201 <br>
+<strong>Response</strong>:  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+    "<span class="hljs-attribute">consultantId</span>": <span class="hljs-value">&lt;consultantId&gt;
+</span>}</code></pre>
+
+
+
+<h2 id="errors-3">Errors</h2>
+
+<p><strong>Status Code</strong>: 404 <br>
+<strong>Info</strong>: The consultant was not found <br>
+<strong>Responses</strong>:  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+    "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">404</span></span>,
+    "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"consultantNotFound"</span></span>,
+    "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Consultant not found"</span>
+</span>}</code></pre>
+
+
+
+<h1 id="create-consultant">Create Consultant</h1>
+
+<p><strong>Method</strong>: POST <br>
+<strong>URL</strong>: /api/consultants <br>
+<strong>JCS URL</strong>: /cgidev2/JOS05002P.pgm <br>
+<strong>Info</strong>: This is similar to creating a Client, however a few more fields are required.  Create a consultant record, which can be used to authenticate into Jafra Biz &amp; eventually Client Direct/Online Ordering. <br>
+<strong>Request</strong>:  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">email</span>" : <span class="hljs-value"><span class="hljs-string">"example@example.com"</span></span>,// required
+  "<span class="hljs-attribute">firstName</span>": <span class="hljs-value"><span class="hljs-string">"John"</span></span>,            // required
+  "<span class="hljs-attribute">lastName</span>": <span class="hljs-value"><span class="hljs-string">"Smith"</span></span>,            // required
+  "<span class="hljs-attribute">sponsorId</span>": <span class="hljs-value"><span class="hljs-string">"555678"</span></span>,          // optional
+  "<span class="hljs-attribute">language</span>": <span class="hljs-value"><span class="hljs-string">"en_US"</span></span>,            // required
+  "<span class="hljs-attribute">ssn</span>": <span class="hljs-value"><span class="hljs-string">"553-21-1923"</span></span>,           // required
+  "<span class="hljs-attribute">dateOfBirth</span>": <span class="hljs-value"><span class="hljs-string">"12/01/1978"</span></span>,    // required
+  "<span class="hljs-attribute">phone</span>": <span class="hljs-value"><span class="hljs-string">"555-333-2222"</span></span>,        // required
+  "<span class="hljs-attribute">notificationPreferences</span>": <span class="hljs-value">{    // required
+    "<span class="hljs-attribute">sms</span>": <span class="hljs-value"><span class="hljs-number">0</span></span>,
+    "<span class="hljs-attribute">email</span>": <span class="hljs-value"><span class="hljs-number">1</span>
+  </span>}</span>,
+  "<span class="hljs-attribute">billingAddress</span>": <span class="hljs-value">{             // required
+    "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"Joe Smith"</span></span>,
+    "<span class="hljs-attribute">address1</span>": <span class="hljs-value"><span class="hljs-string">"1111 Test Ln"</span></span>,
+    "<span class="hljs-attribute">address2</span>": <span class="hljs-value"><span class="hljs-string">""</span></span>,
+    "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"Corona"</span></span>,
+    "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"CA"</span></span>,
+    "<span class="hljs-attribute">zip</span>": <span class="hljs-value"><span class="hljs-string">"92880"</span></span>,
+    "<span class="hljs-attribute">county</span>": <span class="hljs-value"><span class="hljs-string">"Ventura"</span></span>,
+    "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"US"</span></span>,
+    "<span class="hljs-attribute">phone</span>": <span class="hljs-value"><span class="hljs-string">"555-333-2222"</span>
+  </span>}</span>,
+  "<span class="hljs-attribute">shippingAddress</span>": <span class="hljs-value">{            // required
+    "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"Joe Smith"</span></span>,
+    "<span class="hljs-attribute">address1</span>": <span class="hljs-value"><span class="hljs-string">"1111 Test Ln"</span></span>,
+    "<span class="hljs-attribute">address2</span>": <span class="hljs-value"><span class="hljs-string">""</span></span>,
+    "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"Corona"</span></span>,
+    "<span class="hljs-attribute">county</span>": <span class="hljs-value"><span class="hljs-string">"Ventura"</span></span>,
+    "<span class="hljs-attribute">geocode</span>": <span class="hljs-value"><span class="hljs-string">"000000000"</span></span>,
+    "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"CA"</span></span>,
+    "<span class="hljs-attribute">zip</span>": <span class="hljs-value"><span class="hljs-string">"92880"</span></span>,
+    "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"US"</span></span>,
+    "<span class="hljs-attribute">phone</span>": <span class="hljs-value"><span class="hljs-string">"555-333-2222"</span>
+  </span>}</span>,
+  "<span class="hljs-attribute">creditCard</span>": <span class="hljs-value">{                 // required
+    "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"Joe Smith"</span></span>,       
+    "<span class="hljs-attribute">card</span>": <span class="hljs-value"><span class="hljs-string">"4111111111111111"</span></span>,
+    "<span class="hljs-attribute">expMonth</span>": <span class="hljs-value"><span class="hljs-string">"12"</span></span>,
+    "<span class="hljs-attribute">expYear</span>": <span class="hljs-value"><span class="hljs-string">"2015"</span></span>,
+    "<span class="hljs-attribute">cvv</span>": <span class="hljs-value"><span class="hljs-string">"1111"</span>
+  </span>}</span>,
+  "<span class="hljs-attribute">agreementAccepted</span>": <span class="hljs-value"><span class="hljs-string">"true"</span></span>,    // required
+  "<span class="hljs-attribute">source</span>": <span class="hljs-value"><span class="hljs-string">"fb"</span></span>,                 // required
+  "<span class="hljs-attribute">total</span>": <span class="hljs-value"><span class="hljs-number">102.67</span></span>,                // required
+  "<span class="hljs-attribute">products</span>": <span class="hljs-value">[                   // required
+    {
+      "<span class="hljs-attribute">sku</span>": <span class="hljs-value"><span class="hljs-string">"25386"</span></span>,
+      "<span class="hljs-attribute">qty</span>": <span class="hljs-value"><span class="hljs-number">2</span>
+    </span>},
+    {
+      "<span class="hljs-attribute">sku</span>": <span class="hljs-value"><span class="hljs-string">"19193"</span></span>,
+      "<span class="hljs-attribute">qty</span>": <span class="hljs-value"><span class="hljs-number">1</span></span>,
+      "<span class="hljs-attribute">kitSelections</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">NUPL19193</span>": <span class="hljs-value">[{       // each kit group
+          "<span class="hljs-attribute">sku</span>": <span class="hljs-value"><span class="hljs-string">"12026"</span></span>,     // product sku
+          "<span class="hljs-attribute">qty</span>": <span class="hljs-value"><span class="hljs-number">1</span>            // quantity
+        </span>}, {
+          "<span class="hljs-attribute">sku</span>": <span class="hljs-value"><span class="hljs-string">"12029"</span></span>,     // product sku
+          "<span class="hljs-attribute">qty</span>": <span class="hljs-value"><span class="hljs-number">1</span>            // quantity
+        </span>}]
+      </span>}
+    </span>}
+  ]
+</span>}</code></pre>
+
+<p><strong><em>sponsorId</em></strong> - initially create as a house account when not specified, send information to CRT for contact and manual sponsor assignment. <br>
+<strong><em>source</em></strong> - can be one of {mb, pws}  </p>
+
+
+
+<h2 id="success-4">Success</h2>
+
+<p><strong>Status Code</strong>: 201 <br>
+<strong>Response</strong>:  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+    "<span class="hljs-attribute">consultantId</span>": <span class="hljs-value">&lt;consultantId&gt;
+</span>}</code></pre>
+
+
+
+<h2 id="errors-4">Errors</h2>
+
+<p><strong>Status Code</strong>: 400 <br>
+<strong>Info</strong>: Specified data was invalid and should be rejected by the server <br>
+<strong>Responses</strong>:  </p>
+
+<p>The SSN was not properly formatted or was otherwise invalid.</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+    "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">400</span></span>,
+    "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"invalidSSN"</span></span>,
+    "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Invalid SSN"</span>
+</span>}</code></pre>
+
+<p>Only respond with this when the optional sponsor ID is provided and it isn’t valid.  Ignore instead if empty</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+    "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">400</span></span>,
+    "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"invalidSponsorId"</span></span>,
+    "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Invalid sponsor Id"</span>
+</span>}</code></pre>
+
+<p>Invalid email format, bad characters, etc.</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+    "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">400</span></span>,
+    "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"invalidEmailAddress"</span></span>,
+    "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Invalid email address"</span>
+</span>}</code></pre>
+
+<p>Password that doesn’t meet password requirements (length, variation, etc.)</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+    "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">400</span></span>,
+    "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"invalidPassword"</span></span>,
+    "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Invalid password"</span>
+</span>}</code></pre>
+
+<p><strong>Status Code</strong>: 402 <br>
+<strong>Responses</strong>:  </p>
+
+<p>The credit card specified is invalid.</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+    "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">402</span></span>,
+    "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"InvalidCreditCard"</span></span>,
+    "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Invalid Credit Card"</span>
+</span>}</code></pre>
+
+<p>The credit card was declined (e.g. Merchant rejected - Elavon) <br>
+402 “{ <br>
+    “”statusCode”“: 402, <br>
+    “”errorCode”“: “”Declined”“, <br>
+    “”message”“: “”Declined credit card”” <br>
+}</p>
+
+<p>Call center error.</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+    "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">402</span></span>,
+    "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"CallAuthCenter"</span></span>,
+    "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Call Auth Center"</span>
+</span>}</code></pre>
+
+<p><strong>Status Code</strong>: 409 <br>
+<strong>Responses</strong>:  </p>
+
+<p>There was a conflict creating an account with the specified email, because it is already in the system.</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+    "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">409</span></span>,
+    "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"emailAlreadyInUse"</span></span>,
+    "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Email address already in use"</span>
+</span>}</code></pre>
+
+<p>There was a conflict creating an account with the specified SSN, because it is already in the system.</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+    "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">409</span></span>,
+    "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"ssnAlreadyInUse"</span></span>,
+    "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"SSN already in use"</span>
+</span>}</code></pre>
+
+
+
+<h1 id="lookup-consultant-by-ssn">Lookup Consultant by SSN</h1>
+
+<p><strong>Method</strong>: POST <br>
+<strong>URL</strong>: /api/ssn <br>
+<strong>JCS URL</strong>: /cgidev2/JOS05004P.pgm <br>
+<strong>Info</strong>: Determine if a consultant with an SSN exists <br>
+<strong>Request</strong>:  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">ssn</span>": <span class="hljs-value">&lt;ssn&gt;         // required</span>, encrypted
+}</code></pre>
+
+<p>This request is GPG (asymmetrically) encrypted and sent over to JCS, where it is decrypted and processed.</p>
+
+
+
+<h2 id="success-5">Success</h2>
+
+<p><strong>Status Code</strong>: 200  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">consultantId</span>": <span class="hljs-value">&lt;consultantId&gt;
+</span>}</code></pre>
+
+
+
+<h2 id="errors-5">Errors</h2>
+
+<p><strong>Status Code</strong>: 404 <br>
+<strong>Responses</strong>:  </p>
+
+<p>A generic message that simply tells us the server didn’t like the data it received and the lead was not saved. </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+    "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">404</span></span>,
+    "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"ssnNotFound"</span></span>,
+    "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"SSN not found"</span>
+</span>}</code></pre>
+
+
+
+<h1 id="create-lead">Create Lead</h1>
+
+<p><strong>Method</strong>: POST <br>
+<strong>URL</strong>: /api/leads <br>
+<strong>JCS URL</strong>: /cgidev2/JOS05005P.pgm <br>
+<strong>Info</strong>: Created from basic info provided as new consultant is signing up <br>
+<strong>Request</strong>:  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">firstName</span>": <span class="hljs-value"><span class="hljs-string">"John"</span></span>,         // required
+  "<span class="hljs-attribute">lastName</span>": <span class="hljs-value"><span class="hljs-string">"Smith"</span></span>,         // required
+  "<span class="hljs-attribute">email</span>": <span class="hljs-value"><span class="hljs-string">"jsmith@gmail.com"</span></span>, // required
+  "<span class="hljs-attribute">phone</span>": <span class="hljs-value"><span class="hljs-string">"555-234-1122"</span></span>,     // required
+  "<span class="hljs-attribute">language</span>": <span class="hljs-value"><span class="hljs-string">"en_US"</span>          // required
+  <span class="hljs-string">"type"</span>: free text (<span class="hljs-number">12</span> positions allowed) //Optional
+</span>}</code></pre>
+
+
+
+<h2 id="success-6">Success</h2>
+
+<p><strong>Status Code</strong>: 204 <br>
+<strong>Response:</strong>  </p>
+
+
+
+<pre class="prettyprint"><code class=" hljs "></code></pre>
+
+<p><strong>JCS Status Code</strong>: 200 <br>
+<strong>JCS Response:</strong>  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">leadId</span>": <span class="hljs-value">&lt;leadId&gt;
+</span>}</code></pre>
+
+
+
+<h2 id="errors-6">Errors</h2>
+
+<p><strong>Status Code</strong>: 400 <br>
+<strong>Responses</strong>:  </p>
+
+<p>A generic message that simply tells us the server didn’t like the data it received and the lead was not saved. </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+    "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">400</span></span>,
+    "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"invalidLeadData"</span></span>,
+    "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Invalid lead data"</span>
+</span>}</code></pre>
+
+<p><strong>Status Code</strong>: 409 <br>
+<strong>Responses</strong>:  </p>
+
+<p>The lead has already been saved in JCS</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+    statusCode: 409,
+    errorCode: "<span class="hljs-attribute">emailAlreadyInUse",
+    message: "Email address already in use"
+}</span></code></pre>
+
+
+
+<h1 id="get-addresses">Get Addresses</h1>
+
+<p><strong>Method</strong>: GET <br>
+<strong>URI</strong>: /api/clients/{clientId}/addresses <br>
+<strong>JCS URL</strong>: /cgidev2/JCD05005P.pgm?clientId={clientId}  </p>
+
+
+
+<h2 id="success-7">Success</h2>
+
+<p><strong>Status Code</strong>: 200 <br>
+<strong>Response Body</strong>:  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">[{
+  "<span class="hljs-attribute">id</span>": <span class="hljs-value"><span class="hljs-number">111</span></span>,
+  "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"Joe Smith"</span></span>,
+  "<span class="hljs-attribute">address1</span>": <span class="hljs-value"><span class="hljs-string">"1111 Test Ln"</span></span>,
+  "<span class="hljs-attribute">address2</span>": <span class="hljs-value"><span class="hljs-string">""</span></span>,
+  "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"Corona"</span></span>,
+  "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"CA"</span></span>,
+  "<span class="hljs-attribute">zip</span>": <span class="hljs-value"><span class="hljs-string">"92880"</span></span>,
+  "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"US"</span></span>,
+  "<span class="hljs-attribute">phone</span>": <span class="hljs-value"><span class="hljs-string">"555-333-2222"</span></span>,
+  "<span class="hljs-attribute">geocode</span>":<span class="hljs-value"><span class="hljs-string">"00000"</span></span>,
+  "<span class="hljs-attribute">stateDescription</span>":   <span class="hljs-value"><span class="hljs-string">"California"</span></span>,
+  "<span class="hljs-attribute">county</span>" : <span class="hljs-value"><span class="hljs-string">"Ventura"</span>
+</span>}]</code></pre>
+
+
+
+<h2 id="errors-7">Errors</h2>
+
+<p><strong>Status Code</strong>: 404 <br>
+<strong>Response Body</strong>:  </p>
+
+<p>The client ID was not found</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">404</span></span>,
+  "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"clientNotFound"</span></span>,
+  "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Client not found"</span>
+</span>}</code></pre>
+
+<p>Addresses not found</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">404</span></span>,
+  "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"addressNotFound"</span></span>,
+  "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Address not found"</span>
+</span>}</code></pre>
+
+
+
+<h1 id="get-address">Get Address</h1>
+
+<p><strong>Info</strong>: Get a specific address for client by clientId and addressId <br>
+<strong>Method</strong>: GET <br>
+<strong>URI</strong>: /api/clients/{clientId}/addresses/{addressId} <br>
+<strong>JCS URL</strong>:  /cgidev2/JCD05005P.pgm?clientId={clientId}&amp;addressId={addressId}  </p>
+
+
+
+<h2 id="success-8">Success</h2>
+
+<p><strong>Status Code</strong>: 200 <br>
+<strong>Response</strong>:  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">id</span>": <span class="hljs-value"><span class="hljs-number">111</span></span>,
+  "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"Joe Smith"</span></span>,
+  "<span class="hljs-attribute">address1</span>": <span class="hljs-value"><span class="hljs-string">"1111 Test Ln"</span></span>,
+  "<span class="hljs-attribute">address2</span>": <span class="hljs-value"><span class="hljs-string">""</span></span>,
+  "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"Corona"</span></span>,
+  "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"CA"</span></span>,
+  "<span class="hljs-attribute">zip</span>": <span class="hljs-value"><span class="hljs-string">"92880"</span></span>,
+  "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"US"</span></span>,
+  "<span class="hljs-attribute">phone</span>": <span class="hljs-value"><span class="hljs-string">"555-333-2222"</span></span>,
+  "<span class="hljs-attribute">geocode</span>":<span class="hljs-value"><span class="hljs-string">"00000"</span></span>,
+  "<span class="hljs-attribute">stateDescription</span>":   <span class="hljs-value"><span class="hljs-string">"California"</span></span>,
+  "<span class="hljs-attribute">county</span>" : <span class="hljs-value"><span class="hljs-string">"Ventura"</span>
+</span>}</code></pre>
+
+
+
+<h2 id="errors-8">Errors</h2>
+
+<p><strong>Status Code</strong>: 404 <br>
+<strong>Response Body</strong>:  </p>
+
+<p>The client ID was not found</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">404</span></span>,
+  "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"clientNotFound"</span></span>,
+  "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Client not found
+}</span></span></code></pre>
+
+<p>The address ID was not found</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">404</span></span>,
+  "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"addressNotFound"</span></span>,
+  "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Address not found
+}</span></span></code></pre>
+
+
+
+<h1 id="create-address">Create Address</h1>
+
+<p><strong>Method</strong>: POST <br>
+<strong>URI</strong>: /api/clients/{clientId}/addresses <br>
+<strong>JCS URI</strong>: /cgidev2/JCD05005P.pgm?clientId={clientId} <br>
+<strong>Request:</strong>  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"Joe"</span></span>,              // optional
+  "<span class="hljs-attribute">address1</span>": <span class="hljs-value"><span class="hljs-string">"1111 Test Ln"</span></span>, // required
+  "<span class="hljs-attribute">address2</span>": <span class="hljs-value"><span class="hljs-string">""</span></span>,             // optional
+  "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"Corona"</span></span>,           // required
+  "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"CA"</span></span>,              // required
+  "<span class="hljs-attribute">zip</span>": <span class="hljs-value"><span class="hljs-string">"92880"</span></span>,             // required
+  "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"US"</span></span>,            // required
+  "<span class="hljs-attribute">phone</span>": <span class="hljs-value"><span class="hljs-string">"555-333-2222"</span></span>,    // optional
+  "<span class="hljs-attribute">geocode</span>":<span class="hljs-value"><span class="hljs-string">"00000"</span></span>,          // required
+  "<span class="hljs-attribute">stateDescription</span>": <span class="hljs-value"><span class="hljs-string">"California"</span></span>, // optional
+  "<span class="hljs-attribute">county</span>" : <span class="hljs-value"><span class="hljs-string">"Ventura"</span></span>, // required
+}</code></pre>
+
+
+
+<h2 id="success-9">Success</h2>
+
+<p><strong>Status Code</strong>: 201 <br>
+<strong>Response</strong>:  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">addressId</span>": <span class="hljs-value">&lt;addressId&gt;
+</span>}</code></pre>
+
+
+
+<h2 id="errors-9">Errors</h2>
+
+<p><strong>Status Code</strong>: 400 <br>
+<strong>Response Body</strong>:  </p>
+
+<p>The address data was invalid or incomplete.</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">400</span></span>,
+  "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"addressError"</span></span>,
+  "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Address not created"</span>
+</span>}</code></pre>
+
+<p><strong>Status Code</strong>: 404 <br>
+<strong>Response Body</strong>:  </p>
+
+<p>The client ID was not found</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">404</span></span>,
+  "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"clientNotFound"</span></span>,
+  "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Client not found
+}</span></span></code></pre>
+
+
+
+<h1 id="update-address">Update Address</h1>
+
+<p><strong>Method</strong>: PUT <br>
+<strong>URI</strong>: /api/clients/{clientId}/addresses/{addressId} <br>
+<strong>JCS Method</strong>: POST <br>
+<strong>JCS URI</strong>: /cgidev2/JCD05005P.pgm?clientId={clientId}&amp;addressId={addressId} <br>
+<strong>Request:</strong>  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"Joe"</span></span>,                    // optional
+  "<span class="hljs-attribute">address1</span>": <span class="hljs-value"><span class="hljs-string">"1111 Test Ln"</span></span>,       // required
+  "<span class="hljs-attribute">address2</span>": <span class="hljs-value"><span class="hljs-string">""</span></span>,                   // optional
+  "<span class="hljs-attribute">city</span>": <span class="hljs-value"><span class="hljs-string">"Corona"</span></span>,                 // required
+  "<span class="hljs-attribute">state</span>": <span class="hljs-value"><span class="hljs-string">"CA"</span></span>,                    // required
+  "<span class="hljs-attribute">zip</span>": <span class="hljs-value"><span class="hljs-string">"92880"</span></span>,                   // required
+  "<span class="hljs-attribute">country</span>": <span class="hljs-value"><span class="hljs-string">"US"</span></span>,                  // required
+  "<span class="hljs-attribute">phone</span>": <span class="hljs-value"><span class="hljs-string">"555-333-2222"</span></span>,          // optional
+  "<span class="hljs-attribute">geocode</span>":<span class="hljs-value"><span class="hljs-string">"00000"</span></span>,                // required
+  "<span class="hljs-attribute">stateDescription</span>": <span class="hljs-value"><span class="hljs-string">"California"</span></span>, // optional
+  "<span class="hljs-attribute">county</span>" : <span class="hljs-value"><span class="hljs-string">"Ventura"</span></span>,             // required
+}</code></pre>
+
+
+
+<h2 id="success-10">Success</h2>
+
+<p><strong>Status Code</strong>: 204 <br>
+<strong>Response Body</strong>:  </p>
+
+
+
+<pre class="prettyprint"><code class=" hljs "></code></pre>
+
+<p><strong>JCS Status Code</strong>: 201 <br>
+<strong>JCS Response Body</strong>:  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">addressId</span>": <span class="hljs-value">&lt;addressId&gt;
+</span>}</code></pre>
+
+
+
+<h2 id="errors-10">Errors</h2>
+
+<p><strong>Status Code</strong>: 404 <br>
+<strong>Response Body</strong>:  </p>
+
+<p>The client ID was not found</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">404</span></span>,
+  "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"clientNotFound"</span></span>,
+  "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Client not found
+}</span></span></code></pre>
+
+<p><strong>Status Code</strong>: 400 <br>
+<strong>Response Body</strong>:  </p>
+
+<p>The address data was invalid or incomplete.</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">400</span></span>,
+  "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"addressError"</span></span>,
+  "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Address not created"</span>
+</span>}</code></pre>
+
+
+
+<h1 id="delete-address">Delete Address</h1>
+
+<p><strong>Method</strong>: DELETE <br>
+<strong>URI</strong>: /api/clients/{clientId}/addresses/{addressId} <br>
+<strong>JCS URI</strong>: /cgidev2/JCD05005P.pgm?clientId={clientId}&amp;addressId={addressId}  </p>
+
+
+
+<h2 id="success-11">Success</h2>
+
+<p><strong>Status Code</strong>: 204  </p>
+
+
+
+<h2 id="errors-11">Errors</h2>
+
+<p><strong>Status Code</strong>: 404 <br>
+<strong>Response Body</strong>:  </p>
+
+<p>The client ID was not found</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">404</span></span>,
+  "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"clientNotFound"</span></span>,
+  "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Client not found
+}</span></span></code></pre>
+
+<p>The address ID was not found</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">404</span></span>,
+  "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"addressNotFound"</span></span>,
+  "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Address not found
+}</span></span></code></pre>
+
+
+
+<h1 id="get-credit-cards">Get Credit Cards</h1>
+
+<p><strong>Method</strong>: GET <br>
+<strong>URI</strong>: /api/clients/{clientId}/creditCards <br>
+<strong>JCS URI</strong>: /cgidev2/JCD05008P.pgm?clientId={clientId}  </p>
+
+
+
+<h2 id="success-12">Success</h2>
+
+<p><strong>Status Code</strong>: 200 <br>
+<strong>Response Body</strong>:  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">[{
+  "<span class="hljs-attribute">id</span>": <span class="hljs-value"><span class="hljs-number">123</span></span>,
+  "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"Joe Smith"</span></span>,
+  "<span class="hljs-attribute">lastFour</span>": <span class="hljs-value"><span class="hljs-string">"1111"</span></span>,
+  "<span class="hljs-attribute">cardType</span>": <span class="hljs-value"><span class="hljs-string">"visa"</span></span>,
+  "<span class="hljs-attribute">expMonth</span>": <span class="hljs-value"><span class="hljs-string">"12"</span></span>,
+  "<span class="hljs-attribute">expYear</span>": <span class="hljs-value"><span class="hljs-string">"2015"</span>
+</span>}]</code></pre>
+
+
+
+<h2 id="errors-12">Errors</h2>
+
+<p><strong>Status Code</strong>: 404 <br>
+<strong>Response Body</strong>:  </p>
+
+<p>The client ID is not found</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">404</span></span>,
+  "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"clientNotFound"</span></span>,
+  "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Client not found
+}</span></span></code></pre>
+
+
+
+<h1 id="get-credit-card">Get Credit Card</h1>
+
+<p><strong>Info</strong>: Get a specific creditCard for client by clientId <br>
+<strong>Method</strong>: GET <br>
+<strong>URI</strong>: /api/clients/{clientId}/creditCards/{creditCardId} <br>
+<strong>JCS URI</strong>: /cgidev2/JCD05008P.pgm?clientId={clientId}&amp;cardId={cardId}  </p>
+
+
+
+<h2 id="success-13">Success</h2>
+
+<p><strong>Status Code</strong>: 200 <br>
+<strong>Response</strong>:  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">id</span>": <span class="hljs-value"><span class="hljs-number">123</span></span>,
+  "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"Joe Smith"</span></span>,
+  "<span class="hljs-attribute">lastFour</span>": <span class="hljs-value"><span class="hljs-string">"1111"</span></span>,
+  "<span class="hljs-attribute">cardType</span>": <span class="hljs-value"><span class="hljs-string">"visa"</span></span>,
+  "<span class="hljs-attribute">expMonth</span>": <span class="hljs-value"><span class="hljs-string">"12"</span></span>,
+  "<span class="hljs-attribute">expYear</span>": <span class="hljs-value"><span class="hljs-string">"2015"</span>
+</span>}</code></pre>
+
+
+
+<h2 id="errors-13">Errors</h2>
+
+<p><strong>Status Code</strong>: 404 <br>
+<strong>Response Body</strong>:  </p>
+
+<p>The client ID was not found</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">404</span></span>,
+  "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"clientNotFound"</span></span>,
+  "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Client not found
+}</span></span></code></pre>
+
+<p>The creditCard ID was not found</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">404</span></span>,
+  "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"clientNotFound"</span></span>,
+  "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Client not found
+}</span></span></code></pre>
+
+
+
+<h1 id="create-credit-card">Create Credit Card</h1>
+
+<p><strong>Method</strong>: POST <br>
+<strong>URI</strong>: /api/clients/{clientId}/creditCards <br>
+<strong>JCS URI</strong>: /cgidev2/JCD05008P.pgm?clientId={clientId} <br>
+<strong>Request:</strong>  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"Joe Smith"</span></span>,               // required
+  "<span class="hljs-attribute">card</span>": <span class="hljs-value"><span class="hljs-string">"4111111111111111"</span></span>,        // required
+  "<span class="hljs-attribute">expMonth</span>": <span class="hljs-value"><span class="hljs-string">"12"</span></span>,                  // required
+  "<span class="hljs-attribute">expYear</span>": <span class="hljs-value"><span class="hljs-string">"2015"</span></span>,                 // required
+  "<span class="hljs-attribute">cvv</span>": <span class="hljs-value"><span class="hljs-string">"1111"</span></span>,                     // required
+  "<span class="hljs-attribute">cardType</span>": <span class="hljs-value"><span class="hljs-string">"visa"</span>                 // optional 
+</span>}</code></pre>
+
+
+
+<h2 id="success-14">Success</h2>
+
+<p><strong>Status Code</strong>: 201 <br>
+<strong>Response</strong>:  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">creditCardId</span>": <span class="hljs-value">&lt;creditCardId&gt;
+</span>}</code></pre>
+
+
+
+<h2 id="errors-14">Errors</h2>
+
+<p><strong>Status Code</strong>: 404 <br>
+<strong>Response Body</strong>:  </p>
+
+<p>The client ID was not found</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">404</span></span>,
+  "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"clientNotFound"</span></span>,
+  "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Client not found
+}</span></span></code></pre>
+
+<p><strong>Status Code</strong>: 400 <br>
+<strong>Response Body</strong>:  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">400</span></span>,
+  "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"creditCardError"</span></span>,
+  "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Credit card not created"</span>
+</span>}</code></pre>
+
+
+
+<h1 id="update-credit-card">Update Credit Card</h1>
+
+<p><strong>Method</strong>: PUT <br>
+<strong>URI</strong>: /api/clients/{clientId}/creditCards/{creditCardId} <br>
+<strong>JCS Method</strong>: POST <br>
+<strong>JCS URI</strong>: /cgidev2/JCD05008P.pgm?clientId={clientId}&amp;cardId={cardId} <br>
+<strong>Request:</strong>  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"Joe Smith"</span></span>,               // required
+  "<span class="hljs-attribute">card</span>": <span class="hljs-value"><span class="hljs-string">"4111111111111111"</span></span>,        // required
+  "<span class="hljs-attribute">expMonth</span>": <span class="hljs-value"><span class="hljs-string">"12"</span></span>,                  // required
+  "<span class="hljs-attribute">expYear</span>": <span class="hljs-value"><span class="hljs-string">"2015"</span></span>,                 // required
+  "<span class="hljs-attribute">cvv</span>": <span class="hljs-value"><span class="hljs-string">"1111"</span>                      // required
+  <span class="hljs-string">"cardType"</span>: <span class="hljs-string">"visa"</span>                 // optional
+</span>}</code></pre>
+
+
+
+<h2 id="success-15">Success</h2>
+
+<p><strong>Status Code</strong>: 200 <br>
+<strong>Response Body</strong>:  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">id</span>": <span class="hljs-value"><span class="hljs-number">123</span></span>,
+  "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"Joe Smith"</span></span>,
+  "<span class="hljs-attribute">lastFour</span>": <span class="hljs-value"><span class="hljs-string">"1111"</span></span>,
+  "<span class="hljs-attribute">cardType</span>": <span class="hljs-value"><span class="hljs-string">"visa"</span></span>,
+  "<span class="hljs-attribute">expMonth</span>": <span class="hljs-value"><span class="hljs-string">"12"</span></span>,
+  "<span class="hljs-attribute">expYear</span>": <span class="hljs-value"><span class="hljs-string">"2015"</span>
+</span>}</code></pre>
+
+
+
+<h2 id="errors-15">Errors</h2>
+
+<p><strong>Status Code</strong>: 404 <br>
+<strong>Response Body</strong>:  </p>
+
+<p>The client ID was not found</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">404</span></span>,
+  "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"clientNotFound"</span></span>,
+  "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Client not found
+}</span></span></code></pre>
+
+<p>The creditCard ID was not found</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">404</span></span>,
+  "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"creditCardNotFound"</span></span>,
+  "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Credit card not found"</span>
+</span>}</code></pre>
+
+
+
+<h1 id="delete-credit-card">Delete Credit Card</h1>
+
+<p><strong>Method</strong>: DELETE <br>
+<strong>URI</strong>: /api/clients/{clientId}/creditCards/{creditCardId} <br>
+<strong>JCS URI</strong>: /cgidev2/JCD05008P.pgm?clientId={clientId}&amp;cardId={cardId}  </p>
+
+
+
+<h2 id="success-16">Success</h2>
+
+<p><strong>Status Code</strong>: 204  </p>
+
+
+
+<h2 id="errors-16">Errors</h2>
+
+<p><strong>Status Code</strong>: 404 <br>
+<strong>Response Body</strong>:  </p>
+
+<p>The client ID was not found</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">404</span></span>,
+  "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"clientNotFound"</span></span>,
+  "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Client not found
+}</span></span></code></pre>
+
+<p>The creditCard ID was not found</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">404</span></span>,
+  "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"creditCardNotFound"</span></span>,
+  "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Credit card not found"</span>
+</span>}</code></pre>
+
+
+
+<h1 id="create-order">Create Order</h1>
+
+<p><strong>Method</strong>: POST <br>
+<strong>URI</strong>: /api/orders <br>
+<strong>JCS URI</strong>: /cgidev2/JCD05020P.pgm <br>
+<strong>Info</strong>: Process a client order for the specified SKUs (including any kit selections) <br>
+<strong>Request</strong>:  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">firstName</span>": <span class="hljs-value"><span class="hljs-string">"John"</span></span>,         // required
+  "<span class="hljs-attribute">lastName</span>": <span class="hljs-value"><span class="hljs-string">"Smith"</span></span>,         // required
+  "<span class="hljs-attribute">clientId</span>": <span class="hljs-value"><span class="hljs-number">237654</span></span>,          // required
+  "<span class="hljs-attribute">consultantId</span>": <span class="hljs-value"><span class="hljs-number">11111</span></span>,       // optional
+  "<span class="hljs-attribute">language</span>": <span class="hljs-value"><span class="hljs-string">"en_US"</span></span>,         // required
+  "<span class="hljs-attribute">billingAddressId</span>": <span class="hljs-value"><span class="hljs-number">326754</span></span>,  // required
+  "<span class="hljs-attribute">shippingAddressId</span>": <span class="hljs-value"><span class="hljs-number">326755</span></span>, // required
+  "<span class="hljs-attribute">creditCardId</span>": <span class="hljs-value"><span class="hljs-number">74545</span></span>,       // required
+  "<span class="hljs-attribute">source</span>": <span class="hljs-value"><span class="hljs-string">"fb"</span></span>,              // required
+  "<span class="hljs-attribute">total</span>": <span class="hljs-value"><span class="hljs-number">102.67</span></span>,             // required
+  "<span class="hljs-attribute">products</span>": <span class="hljs-value">[                // required
+    {
+      "<span class="hljs-attribute">sku</span>": <span class="hljs-value"><span class="hljs-string">"25386"</span></span>,
+      "<span class="hljs-attribute">qty</span>": <span class="hljs-value"><span class="hljs-number">2</span>
+    </span>},
+    {
+      "<span class="hljs-attribute">sku</span>": <span class="hljs-value"><span class="hljs-string">"19193"</span></span>,
+      "<span class="hljs-attribute">qty</span>": <span class="hljs-value"><span class="hljs-number">1</span></span>,
+      "<span class="hljs-attribute">kitSelections</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">NUPL19193</span>": <span class="hljs-value">[{        // each kit group
+          "<span class="hljs-attribute">sku</span>": <span class="hljs-value"><span class="hljs-string">"12026"</span></span>,      // product sku
+          "<span class="hljs-attribute">qty</span>": <span class="hljs-value"><span class="hljs-number">1</span>             // quantity
+        </span>}, {
+          "<span class="hljs-attribute">sku</span>": <span class="hljs-value"><span class="hljs-string">"12029"</span></span>,      // product sku
+          "<span class="hljs-attribute">qty</span>": <span class="hljs-value"><span class="hljs-number">1</span>             // quantity
+        </span>}]
+      </span>}
+    </span>}
+  ]
+</span>}</code></pre>
+
+<p><strong><em>clientId</em></strong> - this field will be used to associate with a previously created client <br>
+<strong><em>products</em></strong> - list of products with optional configurations.  TBD: include quantity or simply have multiple items? <br>
+<strong><em>creditCardId</em></strong> - the ID of the credit card to use, as loaded in the client data <br>
+<strong><em>consultantId</em></strong> - the ID of the consultant to attribute this order to <br>
+<strong><em>billingAddressId</em></strong> - the ID of the billing address to use, as loaded in the client data <br>
+<strong><em>shippingAddressId</em></strong> - the ID of the shipping address to use, as loaded in the client data <br>
+<strong><em>source</em></strong> - fb, pws <br>
+<strong><em>total</em></strong> - used to compare the total the user sees on the front-end with what JCS processes.  The order should fail if the numbers do not match.  This number is retrieved via the calculateTax method from JCS  </p>
+
+
+
+<h2 id="success-17">Success</h2>
+
+<p><strong>Status Code</strong>: 201 <br>
+<strong>Response</strong>:  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+    "<span class="hljs-attribute">orderId</span>": <span class="hljs-value">&lt;orderId&gt;
+</span>}</code></pre>
+
+
+
+<h2 id="errors-17">Errors</h2>
+
+<p><strong>Status Code</strong>: 400 <br>
+<strong>Info</strong>: Specified data was invalid and should be rejected by the server <br>
+<strong>Responses</strong>:  </p>
+
+<p>A client with clientId was not found.</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+    "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">400</span></span>,
+    "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"clientNotFound"</span></span>,
+    "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Client not found"</span>
+</span>}</code></pre>
+
+<p>A billing address with billingAddressId was not found.</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+    "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">400</span></span>,
+    "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"billingAddressNotFound"</span></span>,
+    "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Billing Address not found"</span>
+</span>}</code></pre>
+
+<p>A shipping address with shippingAddressId was not found.</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+    "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">400</span></span>,
+    "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"shippingAddressNotFound"</span></span>,
+    "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Shipping Address not found"</span>
+</span>}</code></pre>
+
+<p>A credit card with creditCardId was not found.</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+    "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">400</span></span>,
+    "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"creditCardNotFound"</span></span>,
+    "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Credit Card not found"</span>
+</span>}</code></pre>
+
+<p>A consultant with consultantId was not found.</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+    "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">400</span></span>,
+    "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"consultantNotFound"</span></span>,
+    "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Consultant not found"</span>
+</span>}</code></pre>
+
+<p>One of the products specified was not found.</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+    "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">400</span></span>,
+    "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"failedGetItems"</span></span>,
+    "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Failed to get the Items"</span>
+</span>}</code></pre>
+
+<p>One of the products specified is out of stock.</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+    "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">400</span></span>,
+    "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"errorValidateItemsInv"</span></span>,
+    "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Error in Validate items and inventory"</span>
+</span>}</code></pre>
+
+<p>There was an error while processing taxes, shipping &amp; handling charges.</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+    "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">400</span></span>,
+    "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"errorTaxShipping"</span></span>,
+    "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Error in Get Tax and Shipping and Handling"</span>
+</span>}</code></pre>
+
+<p>The card specified by creditCardId was not found.</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+    "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">400</span></span>,
+    "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"errorNumberCard"</span></span>,
+    "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Error in Get Number of card"</span>
+</span>}</code></pre>
+
+<p>There was a merchant error while processing the order.</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+    "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">400</span></span>,
+    "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"requestElavonError"</span></span>,
+    "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Error in Set variables to sending request to Elavon"</span>
+</span>}</code></pre>
+
+<p>There was an error with the payment method used.  Invalid credit card data or unable to charge.</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+    "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">400</span></span>,
+    "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"applyPaymentError"</span></span>,
+    "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Error in Apply Payment"</span>
+</span>}</code></pre>
+
+
+
+<h1 id="calculate-tax-shipping">Calculate Tax &amp; Shipping</h1>
+
+<p><strong>Method</strong>: POST <br>
+<strong>URI</strong> : /api/shippingTax <br>
+<strong>JCS URI</strong>: /cgidev2/JCD05022P.pgm <br>
+<strong>Info</strong>: Calculate the tax and shipping <br>
+<strong>Request Body</strong>:  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+   "<span class="hljs-attribute">clientId</span>":<span class="hljs-value">&lt;clientId&gt;</span>,         //Required in CD OE 
+   "<span class="hljs-attribute">consultantId</span>":<span class="hljs-value">&lt;consultantId&gt;</span>, //Required
+   "<span class="hljs-attribute">geocode</span>" : <span class="hljs-value">&lt;geocode&gt;</span>,         //Required
+   "<span class="hljs-attribute">typeOrder</span>": <span class="hljs-value">&lt;typeOrder&gt;</span>,      //Required
+   "<span class="hljs-attribute">source</span>"   : <span class="hljs-value">&lt;source&gt;          //Required
+   <span class="hljs-string">"products"</span> : []                //Required
+
+</span>}</code></pre>
+
+<p><strong><em>clientId</em></strong>:  set clientId to zeros when typeOrder is online sponsoring <br>
+<strong><em>consultantId</em></strong>: set consultantId to zeros when typeOrder is online sponsoring <br>
+<strong><em>geocode</em></strong>: a geocode which matches the shipping address of the user (from StrikeIron) <br>
+<strong><em>typeOrder</em></strong>: 1414 = Online sponsoring, 1510 = Order entry <br>
+<strong><em>source</em></strong>: “P”  =  Online sponsoring, “Y”  =  Order entry <br>
+<strong><em>products</em></strong> - an array of sku/qty items and any relevant kitSelections  </p>
+
+
+
+<h2 id="success-18">Success</h2>
+
+<p><strong>Status Code</strong>: 200 <br>
+<strong>Response</strong>:  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">SubTotal</span>": <span class="hljs-value"><span class="hljs-number">10.50</span></span>,
+  "<span class="hljs-attribute">SH</span>": <span class="hljs-value"><span class="hljs-number">5.00</span></span>,
+  "<span class="hljs-attribute">TaxRate</span>": <span class="hljs-value"><span class="hljs-number">10.50</span></span>,
+  "<span class="hljs-attribute">TotalBeforeTax</span>": <span class="hljs-value"><span class="hljs-number">15.50</span></span>,
+  "<span class="hljs-attribute">TaxAmount</span>": <span class="hljs-value"><span class="hljs-number">2.25</span></span>,
+  "<span class="hljs-attribute">Total</span>": <span class="hljs-value"><span class="hljs-number">17.75</span></span>,
+  "<span class="hljs-attribute">Carrier</span>":<span class="hljs-value"><span class="hljs-string">"UPS"</span>
+</span>}</code></pre>
+
+
+
+<h2 id="errors-18">Errors</h2>
+
+<p><strong>Status Code</strong>: 404 <br>
+<strong>Info</strong>: The specified product was not found. <br>
+<strong>Responses</strong>:  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">404</span></span>,
+  "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"taxNotFound"</span></span>,
+  "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Tax and S&amp;H not found"</span>
+</span>}</code></pre>
+
+
+
+<h1 id="password-reset-request-lvi">Password Reset Request (LVI)</h1>
+
+<p><strong>Method</strong>: GET <br>
+<strong>URI</strong> : /api/clients/passwordReset <br>
+<strong>Info</strong>:  Generates a reset link sent to the user’s email address in the form: {baseUrl}?email={email}&amp;token={token}.  See password reset sequence diagram for details.  No more than one password reset can be requested within a 15 minute period.  </p>
+
+<p>Example: <a href="https://usa.jafra.com/reset?email=joe@jafra.com&amp;token=a88hf87913g79f63g971g176381g6187">https://usa.jafra.com/reset?email=joe@jafra.com&amp;token=a88hf87913g79f63g971g176381g6187</a></p>
+
+<p><strong>Request Body</strong>:  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">email</span>": <span class="hljs-value"><span class="hljs-string">"joe@jafra.com"</span></span>,                    // the email address of the user
+  "<span class="hljs-attribute">language</span>" : <span class="hljs-value"><span class="hljs-string">"en_US"</span>                         // language for reset email
+</span>}</code></pre>
+
+<p><strong><em>email</em></strong>:  the email address of the user <br>
+<strong><em>token</em></strong>: used to link from email -&gt; db  </p>
+
+
+
+<h2 id="success-19">Success</h2>
+
+<p><strong>Status Code</strong>: 204 <br>
+<strong>Response</strong>:  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs "></code></pre>
+
+
+
+<h2 id="errors-19">Errors</h2>
+
+<p><strong>Status Code</strong>: 400 <br>
+<strong>Info</strong>: The specified data was invalid <br>
+<strong>Responses</strong>:  </p>
+
+<p>The password didn’t meet the server requirements (8 characters long).</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">400</span></span>,
+  "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"passwordResetInvalidData"</span></span>,
+  "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Invalid data for password reset"</span>
+</span>}</code></pre>
+
+<p>The email address was not found in the user database.</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">404</span></span>,
+  "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"clientEmailNotFound"</span></span>,
+  "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Client email not found"</span>
+</span>}</code></pre>
+
+
+
+<h1 id="password-reset-request-jcs">Password Reset Request (JCS)</h1>
+
+<p><strong>JCS Method</strong>: POST <br>
+<strong>JCS URI</strong>: /cgidev2/JCD05009P.pgm <br>
+<strong>Info</strong>:  Generates a reset link sent to the user’s email address in the form: {baseUrl}?email={email}&amp;token={token}.  See password reset sequence diagram for details.  No more than one password reset can be requested within a 15 minute period.  </p>
+
+<p>Example: <a href="https://usa.jafra.com/reset?email=joe@jafra.com&amp;token=a88hf87913g79f63g971g176381g6187">https://usa.jafra.com/reset?email=joe@jafra.com&amp;token=a88hf87913g79f63g971g176381g6187</a></p>
+
+<p><strong>Request Body</strong>:  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">email</span>": <span class="hljs-value"><span class="hljs-string">"joe@jafra.com"</span></span>,                    
+  "<span class="hljs-attribute">token</span>": <span class="hljs-value"><span class="hljs-string">"a88hf87913g79f63g971g176381g6187"</span></span>,
+  "<span class="hljs-attribute">url</span>": <span class="hljs-value"><span class="hljs-string">"https://usa.jafra.com/reset"</span></span>,        
+  "<span class="hljs-attribute">language</span>" : <span class="hljs-value"><span class="hljs-string">"en_US"</span>
+</span>}</code></pre>
+
+<p><strong><em>email</em></strong>:  the email address of the user <br>
+<strong><em>token</em></strong>: used to link from email -&gt; db <br>
+<strong><em>url</em></strong>: the URL to submit the token to <br>
+<strong><em>language</em></strong>: language for reset email  </p>
+
+
+
+<h2 id="success-20">Success</h2>
+
+<p><strong>Status Code</strong>: 204 <br>
+<strong>Response</strong>:  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs "></code></pre>
+
+
+
+<h2 id="errors-20">Errors</h2>
+
+<p><strong>Status Code</strong>: 400 <br>
+<strong>Info</strong>: The specified data was invalid <br>
+<strong>Responses</strong>:  </p>
+
+<p>The password didn’t meet the server requirements (8 characters long).</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">400</span></span>,
+  "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"passwordResetInvalidData"</span></span>,
+  "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Invalid data for password reset"</span>
+</span>}</code></pre>
+
+<p>The email address was not found in the user database.</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">404</span></span>,
+  "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"clientEmailNotFound"</span></span>,
+  "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Client email not found"</span>
+</span>}</code></pre>
+
+
+
+<h1 id="change-password-lvi">Change Password (LVI)</h1>
+
+<p><strong>Method</strong>: POST <br>
+<strong>URI</strong> : /api/clients/passwordReset <br>
+<strong>Info</strong>:  Set the user password  </p>
+
+<p><strong>Request Body</strong>:  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">email</span>": <span class="hljs-value"><span class="hljs-string">"joe@jafra.com"</span></span>,
+  "<span class="hljs-attribute">password</span>": <span class="hljs-value"><span class="hljs-string">"somepassword"</span></span>,
+  "<span class="hljs-attribute">token</span>": <span class="hljs-value"><span class="hljs-string">"a88hf87913g79f63g971g176381g6187"</span>
+</span>}</code></pre>
+
+<p><strong><em>email</em></strong>:  the email address of the user <br>
+<strong><em>password</em></strong>: the new password for the user <br>
+<strong><em>token</em></strong>: the token from the password reset request  </p>
+
+
+
+<h2 id="success-21">Success</h2>
+
+<p><strong>Status Code</strong>: 204 <br>
+<strong>Response</strong>:  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs "></code></pre>
+
+
+
+<h2 id="errors-21">Errors</h2>
+
+<p><strong>Status Code</strong>: 400 <br>
+<strong>Info</strong>: The specified data was invalid <br>
+<strong>Responses</strong>:  </p>
+
+<p>The password didn’t meet the server requirements (8 characters long).</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">400</span></span>,
+  "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"invalidPassword"</span></span>,
+  "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Invalid password"</span>
+</span>}
+</code></pre>
+
+<p>The email address was not found in the user database.</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">404</span></span>,
+  "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">""</span>clientEmailNotFound<span class="hljs-string">",
+  "</span>message<span class="hljs-string">": "</span><span class="hljs-string">"Client email not found"</span>
+</span>}</code></pre>
+
+<p><strong>Status Code</strong>: 500 <br>
+<strong>Info</strong>:  Internal error while processing password change. <br>
+<strong>Responses</strong>:  </p>
+
+<p>The specified token was expired. <br>
+{ <br>
+    “statusCode”: 500, <br>
+    “errorCode”: “passwordResetTokenExpired”, <br>
+    “message”: “Password Reset token expired” <br>
+}</p>
+
+
+
+<h1 id="change-password-jcs">Change Password (JCS)</h1>
+
+<p><strong>Method</strong>: POST <br>
+<strong>URI</strong> : /api/clients/passwordReset <br>
+<strong>Info</strong>:  Set the user password  </p>
+
+<p><strong>Request Body</strong>:  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">email</span>": <span class="hljs-value"><span class="hljs-string">"joe@jafra.com"</span></span>,
+  "<span class="hljs-attribute">password</span>": <span class="hljs-value"><span class="hljs-string">"somepassword"</span>
+</span>}</code></pre>
+
+<p><strong><em>email</em></strong>:  the email address of the user <br>
+<strong><em>password</em></strong>: the new password for the user  </p>
+
+
+
+<h2 id="success-22">Success</h2>
+
+<p><strong>Status Code</strong>: 204 <br>
+<strong>Response</strong>:  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs "></code></pre>
+
+
+
+<h2 id="errors-22">Errors</h2>
+
+<p><strong>Status Code</strong>: 400 <br>
+<strong>Info</strong>: The specified data was invalid <br>
+<strong>Responses</strong>:  </p>
+
+<p>The password didn’t meet the server requirements (8 characters long).</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">400</span></span>,
+  "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"invalidPassword"</span></span>,
+  "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Invalid password"</span>
+</span>}
+</code></pre>
+
+<p>The email address was not found in the user database.</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">404</span></span>,
+  "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">""</span>clientEmailNotFound<span class="hljs-string">",
+  "</span>message<span class="hljs-string">": "</span><span class="hljs-string">"Client email not found"</span>
+</span>}</code></pre>
+
+
+
+<h1 id="get-inventory-jcs">Get Inventory (JCS)</h1>
+
+<p><strong>JCS Method</strong>: GET <br>
+<strong>JCS URI</strong>: /cgidev2/JCD05012P.pgm <br>
+<strong>Info</strong>: Get the current full inventory from JCS.  This provides LVI with a way to determine current inventory levels and display out of stock messages in Client Direct.   </p>
+
+<p>Notes: the numbers returned have a built in reserved inventory deducted, which prevents frequent phone/order entry purchases from causing inventory availability issues at checkout.  JCS is updated nightly by JDE and occasionally will be updated manually. LVI polls this data every 4 hours by default, but can force a sync as needed.</p>
+
+
+
+<h2 id="success-23">Success</h2>
+
+<p><strong>Status Code</strong>: 200 <br>
+<strong>Response</strong>:  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+    "<span class="hljs-attribute">inventory</span>" : <span class="hljs-value">{
+        "<span class="hljs-attribute">11335</span>": <span class="hljs-value"><span class="hljs-number">59</span></span>,
+        "<span class="hljs-attribute">55263</span>": <span class="hljs-value"><span class="hljs-number">9</span></span>,
+        "<span class="hljs-attribute">26463</span>": <span class="hljs-value"><span class="hljs-number">9</span></span>,
+        "<span class="hljs-attribute">98364</span>": <span class="hljs-value"><span class="hljs-number">9</span></span>,
+        "<span class="hljs-attribute">17365</span>": <span class="hljs-value"><span class="hljs-number">9</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">lastUpdated</span>": <span class="hljs-value"><span class="hljs-string">"1417759530"</span>   // Unix time in seconds
+</span>}</code></pre>
+
+
+
+<h2 id="errors-23">Errors</h2>
+
+<p><strong>Status Code</strong>: 500 <br>
+<strong>Info</strong>: Specified data was invalid and should be rejected by the server <br>
+<strong>Responses</strong>:  </p>
+
+<p>An unknown error occurred while retrieving inventory.</p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">500</span></span>,
+  "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"inventoryLookupFailed"</span></span>,
+  "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Inventory lookup failed"</span>
+</span>}</code></pre>
+
+
+
+<h1 id="get-inventory-for-item-jcs">Get Inventory for Item (JCS)</h1>
+
+<p><strong>JCS Method</strong>: GET <br>
+<strong>JCS URI</strong>: /cgidev2/JCD05021P.pgm?productId={productId} <br>
+<strong>Info</strong>: Get the current inventory for a specific product from JCS.  This provides LVI with a way to determine current inventory levels and display out of stock messages in Client Direct.   </p>
+
+<p>Notes: the numbers returned have a built in reserved inventory deducted, which prevents frequent phone/order entry purchases from causing inventory availability issues at checkout.  JCS is updated nightly by JDE and occasionally will be updated manually. </p>
+
+<p><strong><em>productId</em></strong> - the product ID of the product to get inventory levels for  </p>
+
+
+
+<h2 id="success-24">Success</h2>
+
+<p><strong>Status Code</strong>: 200 <br>
+<strong>Response</strong>:  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">availableInventory</span>": <span class="hljs-value"><span class="hljs-number">10</span>
+</span>}</code></pre>
+
+
+
+<h2 id="errors-24">Errors</h2>
+
+<p><strong>Status Code</strong>: 404 <br>
+<strong>Info</strong>: The specified product was not found. <br>
+<strong>Responses</strong>:  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">404</span></span>,
+  "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"productNotFound"</span></span>,
+  "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Product not found"</span>
+</span>}</code></pre>
+
+
+
+<h1 id="check-clientconsultant-email">Check Client/Consultant Email</h1>
+
+<p><strong>Method</strong>: GET <br>
+<strong>URI</strong> : /api/consultants/{consultantId} or /api/clients/{clientId} <br>
+<strong><em>JCS URI</em></strong>: /cgidev2/JCD05011P.pgm?email={email}&amp;type={type} <br>
+<strong>Info</strong>:  Lookup consultant or client by email address  </p>
+
+<p><strong><em>consultantId</em></strong> or <strong><em>clientId</em></strong>: email address of the consultant or client, respectively <br>
+<strong><em>type</em></strong>: 1 = Consultant email, 2 = Client email  </p>
+
+<p><strong>Request Body</strong>:  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+  "<span class="hljs-attribute">clientId</span>": <span class="hljs-value">&lt;clientId&gt;
+</span>}
+
+Or
+
+{
+  "<span class="hljs-attribute">consultantId</span>": <span class="hljs-value">&lt;consultantId&gt;
+</span>}</code></pre>
+
+<p><strong><em>email</em></strong>:  the email address of the user <br>
+<strong><em>password</em></strong>: the new password for the user  </p>
+
+
+
+<h2 id="success-25">Success</h2>
+
+<p><strong>Status Code</strong>: 200 <br>
+<strong>Response</strong>:  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs "></code></pre>
+
+
+
+<h2 id="errors-25">Errors</h2>
+
+<p><strong>Status Code</strong>: 404 <br>
+<strong>Info</strong>: The client or consultant was not found <br>
+<strong><em>Info:</em></strong>   </p>
+
+<p><strong>Responses</strong>:  </p>
+
+
+
+<pre class="prettyprint"><code class="language-json hljs ">{
+    "<span class="hljs-attribute">statusCode</span>": <span class="hljs-value"><span class="hljs-number">404</span></span>,
+    "<span class="hljs-attribute">errorCode</span>": <span class="hljs-value"><span class="hljs-string">"emailNotFound"</span></span>,
+    "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Email address not found"</span>
+</span>}</code></pre>
