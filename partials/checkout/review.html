@@ -159,7 +159,8 @@
                 <!--online sponsoring QNC products-->
                 <div ng-if="isOnlineSponsoring && !$first">
                   <span ng-bind-html="session.language=='en_US' ? item.product.name : item.product.name_es_US | unsafe"></span>
-                  <a ng-click="removeQncProduct(item.sku)">({{ 'REMOVE' | translate }})</a>
+                  <a ng-click="removeQncProduct(item.sku)"><i class="fa fa-times"></i> <span ng-bind-html="'BTN_REMOVE' | translate | unsafe"></span></a>
+                
                 </div>
               </p>
             </td>
