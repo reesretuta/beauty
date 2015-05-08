@@ -304,8 +304,11 @@ angular.module('app.controllers.checkout')
                         $log.debug("CheckoutController(): client direct");
                         $scope.APP_BASE_URL = STORE_BASE_URL;
                     }
-
+                    
+                    $scope.getQncProducts();
+                    $scope.getKits();
                     populateDebugData();
+                    
                     
                     $timeout(function() {
                         WizardHandler.wizard('checkoutWizard').goTo(urlStep);
@@ -1483,13 +1486,15 @@ angular.module('app.controllers.checkout')
         }
         
         $scope.isInCart = function(sku){
-              var isInCart = false;
-              for (var i = 0; i < $scope.cart.length; i++) {
-                  if ($scope.cart[i].sku == sku) {
-                      isInCart = true;
-                  }
-              }
-              return isInCart;
+            if ($scope.cart) {
+                var isInCart = false;
+                for (var i = 0; i < $scope.cart.length; i++) {
+                    if ($scope.cart[i].sku == sku) {
+                        isInCart = true;
+                    }
+                }  
+                return isInCart;
+            }
         }
         
         
