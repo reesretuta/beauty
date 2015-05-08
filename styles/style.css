@@ -902,6 +902,10 @@ h3.cart-item-prod-title{
     line-height:18px;
 }
 
+.kit-box .dropdown button span{
+    color: #c3002f;
+}
+
 .kit-box .more-link-alt.collapsed:after{
     -moz-transform: rotate(-90deg) !important;
     -webkit-transform: rotate(-90deg) !important;
