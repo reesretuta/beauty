@@ -49,8 +49,34 @@
                     </div>
                 </div>
             </div>
-            <!-- <div class="row text-center mobile_tablet_centerfix">
-                <a class="btn btn-primary HelveticaNeueLTStd-BdCn btn-lg" analytics-on="click" analytics-event="Testimonials CTA" analytics-category="Buttons" data-toggle="modal" role="button" data-target=".bs-example-modal-lg"><span ng-bind-html="'OS-TESTIMONIAL-START-A-CAREER' | translate | unsafe"></span></a>
-            </div> -->
+            <div class="row text-center mobile_tablet_centerfix">
+                <a class="btn btn-primary HelveticaNeueLTStd-BdCn btn-lg" analytics-on="click" analytics-event="Testimonials Video CTA" analytics-category="Buttons" data-toggle="modal" role="button" data-target="#videoModalTestimonials"><i class="fa fa-play"><i> &nbsp;<span ng-bind-html="'BTN_WATCH_VIDEO' | translate | unsafe"></span></a>
+            </div>
+            <!-- Video Modal -->
+            <div class="modal fade video-modal-lg" id="videoModalTestimonials" tabindex="-1" role="dialog" aria-labelledby="videoModalTestimonialsLabel" aria-hidden="true">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+
+                  <a href="#" class="jaf-modal-close" data-dismiss="modal">x</a>
+                  
+                  <div class="modal-body">
+                    <div class="embed-responsive embed-responsive-16by9">
+                      <iframe ng-if="session.language == 'en_US'" class="embed-responsive-item" width="853" height="480" src="https://www.youtube.com/embed/Jws-j4F4coI" frameborder="0" allowfullscreen></iframe>
+                      <iframe ng-if="session.language == 'es_US'" class="embed-responsive-item" width="853" height="480" src="https://www.youtube.com/embed/uDIEG3CLevo" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+            <script>
+              $(function(){ 
+                // stop video from playing when modal closes
+                $('#videoModalTestimonials').on('hide.bs.modal', function (e) {
+                  $("#videoModalTestimonials iframe").attr("src", $("#videoModalTestimonials iframe").attr("src"));
+                })
+
+              });
+            </script>
         </div>
     </section>
