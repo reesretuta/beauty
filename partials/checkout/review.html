@@ -4,7 +4,7 @@
     <div ng-if="orderError" class="alert alert-danger" role="alert" ng-bind="orderError"></div>
   </div>
   <!--QNC-->
-  <div id="upsell" class="encapsulated col-md-10 col-md-offset-1">
+  <div ng-if="isOnlineSponsoring" id="upsell" class="encapsulated col-md-10 col-md-offset-1">
     <!--QNC progress bar-->
       <div class="encapsulated-content">        
         <h1 class="encapsulated-title"><span>{{ 'QNC-ENCAPSULATED-TITLE' | translate }}</span></h1>
@@ -160,7 +160,7 @@
                 <div ng-if="isOnlineSponsoring && !$first">
                   <span ng-bind-html="session.language=='en_US' ? item.product.name : item.product.name_es_US | unsafe"></span>
                   <a ng-click="removeQncProduct(item.sku)"><i class="fa fa-times"></i> <span ng-bind-html="'BTN_REMOVE' | translate | unsafe"></span></a>
-                
+
                 </div>
               </p>
             </td>
