@@ -1,5 +1,8 @@
 <div class="container">
     
+  <div class="col-md-10 col-md-offset-1 alert-container">
+    <div ng-if="orderError" class="alert alert-danger" role="alert" ng-bind="orderError"></div>
+  </div>
   <!--QNC-->
   <div id="upsell" class="encapsulated col-md-10 col-md-offset-1">
     <!--QNC progress bar-->
@@ -32,7 +35,6 @@
         <p class="pull-left"><strong>$0</strong></p>
         <p class="pull-right"><strong>$300</strong></p>
         <!-- <div class="clear-both"></div> -->
-        <div ng-if="orderError" class="alert alert-danger" role="alert" ng-bind="orderError"></div>
       </div>
     <div id="panel-1" class="" ng-show="!profile.qnc">
       <button type="button" id="yes-order" class="btn btn-primary btn-lg center-block" ng-click="toggleQnc(1)">
