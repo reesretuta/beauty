@@ -16,8 +16,10 @@ var randomString = require('random-string');
 var moment = require('moment');
 var util = require('util');
 var geonames = require('node-geonames-client');
-var geonameClient = new geonames({ username : 'jafra' });
-//var toposort = require('toposort');
+var geonameClient = new geonames({
+    country  : 'US',
+    username : 'jafra'
+});
 
 var port = process.env.PORT || 8090;
 var BASE_URL = "https://" + (process.env.JCS_API_URL || config.jcs_api_ip) + "/cgidev2";
@@ -267,17 +269,6 @@ function authenticate(email, password) {
 
     return deferred.promise;
 }
-//authenticate('vilchis40@gmail.com', 'ferrari').then(function(r) {
-//    logger.debug("auth", r.status, r.result);
-//}, function(r) {
-//    logger.error("auth", r.status, r.result);
-//});
-
-//authenticate('davidcastro@lavisual.com', 'testpass').then(function(r) {
-//    logger.debug(r.response.statusCode, r.body);
-//}, function(r) {
-//    logger.error(r.response.statusCode, r.body);
-//});
 
 // ?clientId=
 function getClient(clientId) {
@@ -1451,9 +1442,10 @@ function findNearbyPostalCodesByPostCode (zip, rows) {
     var placeNames = [], zipCodes = [], deferred = Q.defer();
     rows = rows || 20;
     geonameClient.findNearbyPostalCodesByPostCode({ 
-        postalCode : zip,
-        maxRows    : rows,
-        radius     : 30
+        countryCode : 'US',
+        postalCode  : zip,
+        maxRows     : rows,
+        radius      : 30
     }, function (error, response) {
         if (error) {
             logger.error('[JAFRA] > findNearbyPostalCodesByPostCode(): error fetching geonames findNearbyPostalCodesByPostCode');
@@ -1466,8 +1458,8 @@ function findNearbyPostalCodesByPostCode (zip, rows) {
                     placeName : location.placeName
                 };
             });
-            logger.debug('[JAFRA] > findNearbyPostalCodesByPostCode(): got zipCodes (%d)', zipCodes.length);
-            logger.debug('[JAFRA] > findNearbyPostalCodesByPostCode(): got placenames (%d)', placeNames.length);
+            logger.debug('[JAFRA] > findNearbyPostalCodesByPostCode(): got zipCodes', zipCodes);
+            logger.debug('[JAFRA] > findNearbyPostalCodesByPostCode(): got placenames', placeNames);
             deferred.resolve({
                 placeNames : placeNames, 
                 zipCodes   : zipCodes
