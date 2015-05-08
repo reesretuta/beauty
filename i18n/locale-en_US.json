@@ -581,6 +581,10 @@
     "SPONSORS-SEARCH-NO-SPONSORS-FOUND": "No Sponsors Found",
     "SPONSORS-SEARCH-UNKNOWN-ERROR": "Error Searching for Sponsors",
     "SPONSORS-SEARCH-FOUND-ZIP": "Found {{ count }} sponsors near {{ zip }} zip code",
-    "SPONSORS-SEARCH-FOUND-NAME": "Found {{ count }} sponsors matching \"{{ firstName }}\" \"{{ lastName }}\""
+    "SPONSORS-SEARCH-FOUND-NAME": "Found {{ count }} sponsors matching \"{{ firstName }}\" \"{{ lastName }}\"",
+
+    "QNC-UNTIL-NEXT-LEVEL": "UNTIL NEXT LEVEL",
+    "QNC-GET-QUALIFIED": "Get Qualified",
+    "QNC-QUALIFIED": "Qualified!"
 
 }

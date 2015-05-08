@@ -687,36 +687,36 @@ angular.module('app.controllers.checkout')
             return d.promise;
         }
         
-        $scope.getQncProgressPercent = function(){
+        $scope.getQncProgressPercent = function () {
             if ($scope.salesTaxInfo) {
                 var percent = $scope.salesTaxInfo.SubTotal/300 * 100;
                 return ( percent < 100) ? percent : 100;
-            }
-            
-        }
+            }  
+        };
         
-        $scope.getQncProgressText = function(){
+        $scope.getQncProgressText = function () {
             if ($scope.salesTaxInfo) {
-                return (300 - $scope.salesTaxInfo.SubTotal > 0) ? '$' + $scope.salesTaxInfo.SubTotal : 'Qualified!';
+                $translate('QNC-QUALIFIED').then(function (message) {
+                    return (300 - $scope.salesTaxInfo.SubTotal > 0) ? '$' + $scope.salesTaxInfo.SubTotal : message;
+                });
             }
-        }
+        };
         
-        $scope.getUntilNextLevel = function(){
+        $scope.getUntilNextLevel = function () {
             if ($scope.salesTaxInfo) {
                 var orderTotal = $scope.salesTaxInfo.SubTotal;
                 return ((300 - orderTotal) > 0) ? (300 - orderTotal) : 0;
             }
-        }
+        };
         
-        $scope.toggleQnc = function(value){
+        $scope.toggleQnc = function (value) {
             if (value === 1) {
                 $log.debug("CheckoutController(): toggleQnc(): value",value);
                 $scope.profile.qnc = true;
-            }else{
+            } else {
                 $scope.profile.qnc = false;
             }
-            
-        }
+        };
         
         // load the checkout data from the session
         function loadCheckout() {

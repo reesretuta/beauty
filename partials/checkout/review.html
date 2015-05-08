@@ -1,4 +1,6 @@
+
 <br/><br/><br/><br/>
+
 <div class="container">
     
   <!--QNC-->
@@ -9,10 +11,10 @@
         <div class="clear-both"></div>
         <div class="progress">
             <div class="progress-bar progress-bar-custom" style="min-width: 2em; width: {{getQncProgressPercent()}}%;">
-                {{getQncProgressText()}}
+              {{ getQncProgressText() }}
             </div>
              <div class="progress-bar progress-bar-remainder" style="width: {{100 - getQncProgressPercent()}}%">
-                &nbsp;{{getUntilNextLevel() | currency}} UNTIL NEXT LEVEL
+                &nbsp;{{ getUntilNextLevel() | currency }} {{ 'QNC-UNTIL-NEXT-LEVEL' | translate }}
             </div>
         </div>
         <p class="pull-left"><strong>$0</strong></p>
@@ -27,11 +29,12 @@
     
     <div id="panel-1" class="row" ng-show="!profile.qnc">
         <button type="button" id="yes-order" class="btn btn-primary btn-lg center-block" ng-click="toggleQnc(1)">
-          <span>Get Qualified</span>
+          <span>{{ 'QNC-GET-QUALIFIED' | translate }}</span>
         </button>
     </div>
 
     <!-- ADD-ON KIT SELECTION -->
+
     <div id="panel-2" class="row" ng-show="profile.qnc">
       <div class="col-md-5 col-md-offset-1">
         <div class="kit-box">
@@ -69,24 +72,6 @@
               </ul>
             </p>
           </div>
-            <!-- <p class="store-item-sku ng-binding"><span ng-bind-html="'ITEM' | translate | unsafe" class="ng-binding">Item</span> #19982</p>
-            <p class="store-item-title">
-              <a class="ng-binding" href="#"> Skin Care Pack - Save 40%</a>
-            </p>
-            <p class="store-item-price ng-scope">
-              <span class="ng-scope">
-                <span class="item-price ng-binding">
-                  $300.00
-                </span>
-              </span>
-              &nbsp;&nbsp;<span class="item-measure ng-binding">Retail Value $496</span>
-            </p>
-          
-          <p class="ng-scope">
-            <a class="btn btn-primary primary-cta add-to-cart ng-scope" ng-click="selectQncProduct('19982')">
-              <span class="ng-binding">Add to Order</span>
-            </a>
-          </p> -->
         </div>
       </div>
       <div class="col-md-5">

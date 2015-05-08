@@ -582,6 +582,10 @@
     "SPONSORS-SEARCH-NO-SPONSORS-FOUND": "No se han encontrado Patrocinadores",
     "SPONSORS-SEARCH-UNKNOWN-ERROR": "Error Busca Patrocinadores",
     "SPONSORS-SEARCH-FOUND-ZIP": "Encontradas {{ count }} patrocinadores cerca código postal {{ zip }}",
-    "SPONSORS-SEARCH-FOUND-NAME": "Encontradas {{ count }} patrocinadores vinculados \"{{ firstName }}\" \"{{ lastName }}\""
+    "SPONSORS-SEARCH-FOUND-NAME": "Encontradas {{ count }} patrocinadores vinculados \"{{ firstName }}\" \"{{ lastName }}\"",
+
+    "QNC-UNTIL-NEXT-LEVEL": "HASTA SIGUIENTE NIVEL",
+    "QNC-GET-QUALIFIED": "Obtén Calificado",
+    "QNC-QUALIFIED": "Calificado !"
 
 }
