@@ -1966,12 +1966,7 @@ angular.module('app.controllers.checkout')
                     notificationPreferences: $scope.profile.notificationPreferences
                 }
                 
-                // {
-                //     "sku": $scope.cart[0].product.sku,
-                //     "qty": 1,
-                //     "kitSelections": {},
-                //     "components": components
-                // }
+                
                 // add starterkit to consultant.products
                 var starterKit = _.findWhere($scope.starterKits, {sku: $scope.cart[0].product.sku});
                 console.log('starterKit',starterKit);
@@ -1981,12 +1976,19 @@ angular.module('app.controllers.checkout')
                         {sku: starterKit.contains[i].productId, qty: starterKit.contains[i].quantity}
                     );
                 }
+                consultant.products.push({
+                    qty: 1,
+                    sku: starterKit.id,
+                    kitSelections: {},
+                    components: components
+                });
+                
                 
                 $log.debug('QNC DEBUG! consultant.products:', consultant.products);
                 // add qnc products to consultant.products
                 if ($scope.profile.qnc) {
                     $log.debug('QNC: $scope.cart.length',$scope.cart.length);
-                    for (var i = 0; i < $scope.cart.length; i++) {
+                    for (var i = 1; i < $scope.cart.length; i++) { //must start at index = 1 first!
                         var qncProduct = _.findWhere($scope.qncProducts, {
                             sku : $scope.cart[i].product.sku
                         });

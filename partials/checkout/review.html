@@ -62,7 +62,11 @@
 
           <div id="fragrancepack-details" class="collapse">
             <p> <!-- will need to refactor later -->
-              <ul><li>Royal Jelly Milk Balm Advanced</li><li>Royal Jelly Lift Concentrate, 7 vials</li><li>JAFRA PRO Face Lift SPF 20</li><li>JAFRA PRO Night Recovery Concentrate</li><li>New! Time Dynamics Time Delay Night Moisterizer</li><li>New! Time Dynamics Optimeyes Crème Gel </li><li>New! Brightening Dynamics Skin Brightner + </li><li>New! Brightening Dynamics Brightening Pen</li><li>New! Gold Dynamics Intensive Retinol Capsules</li><li>New! Gold Dynamics Elasticity Recovery Hydrogel + Firmiplex Complex</li></ul>
+              <ul>
+                  <li ng-repeat="component in qncProducts[0].contains">
+                      <span>{{component.product.name}}</span>
+                    </li>
+              </ul>
             </p>
           </div>
             <!-- <p class="store-item-sku ng-binding"><span ng-bind-html="'ITEM' | translate | unsafe" class="ng-binding">Item</span> #19982</p>
@@ -88,7 +92,40 @@
       <div class="col-md-5">
         <div class="kit-box">
           <img class="img-responsive" src="/img/19985_skin_care_pack_en.jpg" />
-          <div class="store-item-info">
+          <h3>Skin Care Pack</h3>
+          <div ng-show="isInCart('19985')">
+            <span class="product-price"><small>Only<br></small> $300</span>
+            <button type="button" class="btn btn-primary btn-lg" ng-click="removeQncProduct('19985')" analytics-on="click" analytics-event="In-Page Buy $300 Fragrance Pack" analytics-category="Buttons">
+            Added <i class="fa fa-check"></i>
+            </button>
+          </div>
+
+          <div ng-show="!isInCart('19985')">
+            <span class="product-price"><small>Only<br></small> $300</span>
+            <button type="button" class="btn btn-primary btn-lg" ng-click="selectQncProduct('19985')" analytics-on="click" analytics-event="In-Page Buy $300 Fragrance Pack" analytics-category="Buttons">
+            Add <i class="fa fa-square-o"></i>
+            </button>
+          </div>
+          <br />
+          <p class="color-gold HelveticaNeueLTStd-BdCn kit-desc">
+            <span>Save 41%</span>
+          </p>
+          <p class="HelveticaNeueLTStd-Th kit-value ng-binding">Over $511 retail value</p>
+          
+          <p>Available to New Consultants in their first 60 days!</p>
+          
+          <a href="" class="seemore more-link more-link-alt collapsed" data-toggle="collapse" data-target="#skincarepack-details" ng-bind-html="'KIT-DETAILS-TOGGLE' | translate | unsafe"></a>
+
+          <div id="skincarepack-details" class="collapse">
+            <p> <!-- will need to refactor later -->
+              <ul>
+                  <li ng-repeat="component in qncProducts[1].contains">
+                      <span>{{component.product.name}}</span>
+                    </li>
+              </ul>
+            </p>
+          </div>
+          <!-- <div class="store-item-info">
             <p class="store-item-sku ng-binding"><span ng-bind-html="'ITEM' | translate | unsafe" class="ng-binding">Item</span> #19985</p>
             <p class="store-item-title">
               <a class="ng-binding" href="#"> Fragrance Pack - Save 41%</a>
@@ -106,8 +143,8 @@
             <a class="btn btn-primary primary-cta add-to-cart ng-scope" ng-click="selectQncProduct('19985')">
               <span class="ng-binding">Add to Order</span>
             </a>
-          </p>
-        </div>
+          </p> -->
+        </div><!-- end kit box-->
       </div>
     
   </div>
