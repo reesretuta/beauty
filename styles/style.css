@@ -909,7 +909,28 @@ h3.cart-item-prod-title{
     -ms-transform: rotate(-90deg) !important;
     transform: rotate(-90deg) !important;
 }
+p.com-label {
+  margin-bottom: 4px;
+}
+.encapsulated {
+  clear: both;
+  background: none;
+  border: 1px solid #460d66;
+  padding: 0 40px;
+  margin-top: 4em;
+}
 
+#upsell .encapsulated-title {
+  display: block;
+  margin-top: -15px;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 36px;
+}
+#upsell .encapsulated-title span{
+  background: #fff;
+  padding: 0 1em;
+}
 
 .progress {
   background: rgba(245, 245, 245, 1); 

@@ -1,13 +1,16 @@
-
-<br/><br/><br/><br/>
-
 <div class="container">
     
   <!--QNC-->
-  <div class="col-md-12">
+  <div id="upsell" class="encapsulated col-md-10 col-md-offset-1">
     <!--QNC progress bar-->
-    <div class="row">
-      <div class="col-md-10 col-md-offset-1">
+      <div class="encapsulated-content">        
+        <h1 class="encapsulated-title"><span>Earn your 50% commission faster!</span></h1>
+        <p>We noticed you’re new around here – and we think that’s great!</p>
+        <p>Since it’s your first month, you have the opportunity to become a QNC – a Qualified New Consultant.  This means earning 50% commission and being eligible for special offers and promotions!</p>
+        <p>Just make one $300 order in your first month with JAFRA, and you’ll be on your way to a more rewarding career. </p>
+        
+        <p class="pull-left com-label">30%</p>
+        <p class="pull-right com-label">50%</p>
         <div class="clear-both"></div>
         <div class="progress">
           <div class="progress-bar progress-bar-custom" style="min-width: 2em; width: {{ getQncProgressPercent() }}%;">
@@ -29,7 +32,6 @@
         <div class="clear-both"></div>
         <div ng-if="orderError" class="alert alert-danger" role="alert" ng-bind="orderError"></div>
       </div>
-    </div>
 
     <div id="panel-1" class="row" ng-show="!profile.qnc">
       <button type="button" id="yes-order" class="btn btn-primary btn-lg center-block" ng-click="toggleQnc(1)">
@@ -39,8 +41,9 @@
 
     <!-- ADD-ON KIT SELECTION -->
 
+    <div class="clear-both"></div>
     <div id="panel-2" class="row" ng-show="profile.qnc">
-      <div class="col-md-5 col-md-offset-1">
+      <div class="col-md-5">
         <div class="kit-box">
           <img ng-if="session.language == 'en_US'" class='img-responsive center-block' ng-src='{{ CDN_URL }}/img/19982_fragrance_pack_en.jpg' />
           <img ng-if="session.language == 'es_US'" class='img-responsive center-block' ng-src='{{ CDN_URL }}/img/19982_fragrance_pack_es.jpg' />
@@ -110,6 +113,7 @@
           </div>
         </div><!-- end kit box-->
       </div>
+    </div>
   </div>
 
   <div class="col-md-offset-1 col-md-10">
