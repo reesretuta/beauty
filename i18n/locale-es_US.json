@@ -584,7 +584,11 @@
     "SPONSORS-SEARCH-FOUND-ZIP": "Encontradas {{ count }} patrocinadores cerca código postal {{ zip }}",
     "SPONSORS-SEARCH-FOUND-NAME": "Encontradas {{ count }} patrocinadores vinculados \"{{ firstName }}\" \"{{ lastName }}\"",
 
-    "QNC-UNTIL-NEXT-LEVEL": "HASTA SIGUIENTE NIVEL",
+    "QNC-ENCAPSULATED-TITLE": "Gana su comisión del 50% más rápido!",
+    "QNC-ENCAPSULATED-PARAGRAPH1": "Hemos notado que eres nuevo por aquí - y creemos que eso es genial!",
+    "QNC-ENCAPSULATED-PARAGRAPH2": "Ya que es su primer mes, usted tiene la oportunidad de convertirse en un QNC - un nuevo Consultor Calificado. Esto significa ganar 50% de comisión y ser elegibles para ofertas y promociones especiales!",
+    "QNC-ENCAPSULATED-PARAGRAPH3": "Simplemente haga uno $ 300 orden en su primer mes con JAFRA, y usted estará en su camino a una carrera más gratificante.",
+    "QNC-UNTIL-NEXT-LEVEL": "HASTA QNC",
     "QNC-GET-QUALIFIED": "Obtén Calificado",
     "QNC-QUALIFIED": "Calificado !",
 
