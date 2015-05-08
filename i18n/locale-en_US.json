@@ -585,6 +585,17 @@
 
     "QNC-UNTIL-NEXT-LEVEL": "UNTIL NEXT LEVEL",
     "QNC-GET-QUALIFIED": "Get Qualified",
-    "QNC-QUALIFIED": "Qualified!"
+    "QNC-QUALIFIED": "Qualified!",
+
+    "QNC-FRAGRANCE-PACK": "Fragrance Pack",
+    "QNC-ONLY": "Only",
+    "QNC-ADDED": "Added",
+    "QNC-ADD": "Add",
+    "QNC-SAVE": "Save",
+    "QNC-OVER-X-RETAIL-VALUE": "Over {{ value }} retail value",
+    "QNC-AVAILABLE-IN": "Available to New Consultants in their first 60 days!",
+    "QNC-SKIN-CARE-PACK": "Skin Care Pack"
+
+
 
 }

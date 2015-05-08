@@ -586,6 +586,15 @@
 
     "QNC-UNTIL-NEXT-LEVEL": "HASTA SIGUIENTE NIVEL",
     "QNC-GET-QUALIFIED": "Obtén Calificado",
-    "QNC-QUALIFIED": "Calificado !"
+    "QNC-QUALIFIED": "Calificado !",
+
+    "QNC-FRAGRANCE-PACK": "Fragancia Paquete",
+    "QNC-ONLY": "Solamente",
+    "QNC-ADDED": "Adicional",
+    "QNC-ADD": "Añadir",
+    "QNC-SAVE": "Guardar",
+    "QNC-OVER-X-RETAIL-VALUE": "Con el {{ value }} valor de venta",
+    "QNC-AVAILABLE-IN": "Disponible para Nuevas Consultoras en sus primeros 60 días !",
+    "QNC-SKIN-CARE-PACK": "Piel Care Pack"
 
 }
