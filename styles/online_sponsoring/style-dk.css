@@ -96,7 +96,7 @@ section#why_jafra_products {
 	margin-bottom: 50px;
 }
 section#why_jafra_testimonials .btn-lg {
-	margin: 50px 0px -25px;
+	margin: 0px 0px -25px;
 	position: relative; /* since parent is relative, so shall you be! */
 }
 
