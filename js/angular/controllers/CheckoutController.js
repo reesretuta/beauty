@@ -1771,130 +1771,7 @@ angular.module('app.controllers.checkout')
                 $scope.profile.shipping.phone = phone;
                 $scope.profile.billing.phone = phone;
 
-                // generate the components
-                var components = [];
-
-                var productComponentMap = {
-                    "20498" : [
-                        { "sku" : "25192", "qty" : 1 },
-                        { "sku" : "25195", "qty" : 1 },
-                        { "sku" : "25193", "qty" : 1 },
-                        { "sku" : "25194", "qty" : 1 },
-                        { "sku" : "15522", "qty" : 1 },
-                        { "sku" : "25625", "qty" : 1 },
-                        { "sku" : "19861", "qty" : 1 },
-                        { "sku" : "20402", "qty" : 1 },
-                        { "sku" : "19975", "qty" : 1 },
-                        { "sku" : "20083", "qty" : 1 },
-                        { "sku" : "19980", "qty" : 1 },
-                        { "sku" : "20378", "qty" : 1 },
-                        { "sku" : "20456", "qty" : 1 },
-                        { "sku" : "20385", "qty" : 1 },
-                        { "sku" : "20553", "qty" : 1 },
-                        { "sku" : "20383", "qty" : 1 },
-                        { "sku" : "19540", "qty" : 1 }
-                    ],
-                    "20495" : [
-                        { "sku" : "25192", "qty" : 1 },
-                        { "sku" : "25195", "qty" : 1 },
-                        { "sku" : "25193", "qty" : 1 },
-                        { "sku" : "25194", "qty" : 1 },
-                        { "sku" : "25628", "qty" : 1 },
-                        { "sku" : "25625", "qty" : 1 },
-                        { "sku" : "25627", "qty" : 1 },
-                        { "sku" : "25629", "qty" : 1 },
-                        { "sku" : "12032", "qty" : 1 },
-                        { "sku" : "25620", "qty" : 1 },
-                        { "sku" : "15522", "qty" : 1 },
-                        { "sku" : "25542", "qty" : 1 },
-                        { "sku" : "12253", "qty" : 1 },
-                        { "sku" : "9289", "qty" : 1 },
-                        { "sku" : "2062", "qty" : 1 },
-                        { "sku" : "11286", "qty" : 1 },
-                        { "sku" : "124", "qty" : 1 },
-                        { "sku" : "19862", "qty" : 1 },
-                        { "sku" : "16724", "qty" : 1 },
-                        { "sku" : "20529", "qty" : 1 },
-                        { "sku" : "20403", "qty" : 1 },
-                        { "sku" : "19976", "qty" : 1 },
-                        { "sku" : "20085", "qty" : 1 },
-                        { "sku" : "19981", "qty" : 1 },
-                        { "sku" : "20379", "qty" : 1 },
-                        { "sku" : "18373", "qty" : 1 },
-                        { "sku" : "20554", "qty" : 1 },
-                        { "sku" : "20386", "qty" : 1 },
-                        { "sku" : "20384", "qty" : 1 },
-                        { "sku" : "19541", "qty" : 1 }
-                    ],
-                    "20494" : [
-                        { "sku" : "25192", "qty" : 1 },
-                        { "sku" : "25195", "qty" : 1 },
-                        { "sku" : "25193", "qty" : 1 },
-                        { "sku" : "25194", "qty" : 1 },
-                        { "sku" : "25628", "qty" : 1 },
-                        { "sku" : "25625", "qty" : 1 },
-                        { "sku" : "25627", "qty" : 1 },
-                        { "sku" : "25629", "qty" : 1 },
-                        { "sku" : "12032", "qty" : 1 },
-                        { "sku" : "25620", "qty" : 1 },
-                        { "sku" : "15522", "qty" : 1 },
-                        { "sku" : "25542", "qty" : 1 },
-                        { "sku" : "12253", "qty" : 1 },
-                        { "sku" : "9289", "qty" : 1 },
-                        { "sku" : "2062", "qty" : 1 },
-                        { "sku" : "11286", "qty" : 1 },
-                        { "sku" : "124", "qty" : 1 },
-                        { "sku" : "19862", "qty" : 1 },
-                        { "sku" : "16724", "qty" : 1 },
-                        { "sku" : "20528", "qty" : 1 },
-                        { "sku" : "20402", "qty" : 1 },
-                        { "sku" : "19975", "qty" : 1 },
-                        { "sku" : "20083", "qty" : 1 },
-                        { "sku" : "19980", "qty" : 1 },
-                        { "sku" : "20378", "qty" : 1 },
-                        { "sku" : "20456", "qty" : 1 },
-                        { "sku" : "20385", "qty" : 1 },
-                        { "sku" : "20553", "qty" : 1 },
-                        { "sku" : "20383", "qty" : 1 },
-                        { "sku" : "19540", "qty" : 1 }
-                    ],
-                    "20499" : [
-                        { "sku" : "25192", "qty" : 1 },
-                        { "sku" : "25195", "qty" : 1 },
-                        { "sku" : "25193", "qty" : 1 },
-                        { "sku" : "25194", "qty" : 1 },
-                        { "sku" : "15522", "qty" : 1 },
-                        { "sku" : "25625", "qty" : 1 },
-                        { "sku" : "19861", "qty" : 1 },
-                        { "sku" : "20403", "qty" : 1 },
-                        { "sku" : "19976", "qty" : 1 },
-                        { "sku" : "20085", "qty" : 1 },
-                        { "sku" : "19981", "qty" : 1 },
-                        { "sku" : "20379", "qty" : 1 },
-                        { "sku" : "18373", "qty" : 1 },
-                        { "sku" : "20554", "qty" : 1 },
-                        { "sku" : "20386", "qty" : 1 },
-                        { "sku" : "20384", "qty" : 1 },
-                        { "sku" : "19541", "qty" : 1 }
-
-                    ]
-                }
                 
-                
-                // 25214, 25208, 25212, and 25210 - qty 3
-                
-                // var productComponents = productComponentMap[$scope.cart[0].product.sku];
-                //$scope.cart[0].product.sku is not part of productCompnentMap? 
-                var productComponents = productComponentMap[$scope.cart[0].product.sku];
-                $log.debug("CheckoutController(): processOrder(): cart item", $scope.cart[0].product.sku, $scope.cart[0], "components", productComponents);
-
-                for (var i=0; i < productComponents.length; i++) {
-                    components.push({
-                        sku: productComponents[i].sku,
-                        qty: productComponents[i].qty
-                    });
-                }
-
                 // uppercase everything we need for JCS (names, addresses)
                 var billing = angular.copy($scope.profile.billing);
                 billing.address1 ? billing.address1 = billing.address1.toUpperCase(): false;
@@ -2001,7 +1878,6 @@ angular.module('app.controllers.checkout')
                         });
                     }
                 }
-                $log.debug('QNC DEBUG! consultant.products:', consultant.products);
                 
                 $log.debug("CheckoutController(): processOrder(): consultant.products", consultant.products);
 
