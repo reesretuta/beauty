@@ -1364,8 +1364,8 @@ function deleteAddress(clientId, addressId) {
 function findSponsorsByName (data) {
     var query, defer = Q.defer();
     query = { 
-        firstName : new RegExp(data.firstName, 'i'),
-        lastName  : new RegExp(data.lastName, 'i'),
+        firstName : data.firstName.toUpperCase(),
+        lastName  : data.lastName.toUpperCase(),
         isActive  : 1
     };
     models.Sponsors.find(query, function (error, docs) {
