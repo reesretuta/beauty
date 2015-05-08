@@ -1072,7 +1072,8 @@ angular.module('app.controllers.checkout')
                         return $scope.isOnlineSponsoring;
                     },
                     namePlaceholder: function () {
-                        return $rootScope.session.client.firstName + ' ' + $rootScope.session.client.lastName;
+                        // return $rootScope.session.client.firstName + ' ' + $rootScope.session.client.lastName;
+                        return '';
                     }
                 }
             });
