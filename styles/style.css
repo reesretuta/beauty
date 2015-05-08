@@ -919,6 +919,9 @@ p.com-label {
   padding: 0 40px;
   margin-top: 4em;
 }
+.encapsulated-progress {
+  padding: 1em 0;
+}
 
 #upsell .encapsulated-title {
   display: block;
@@ -930,6 +933,9 @@ p.com-label {
 #upsell .encapsulated-title span{
   background: #fff;
   padding: 0 1em;
+}
+#upsell #panel-1, #upsell #panel-2 {
+  padding: 1em 0;
 }
 
 .progress {

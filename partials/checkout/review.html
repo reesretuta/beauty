@@ -4,15 +4,17 @@
   <div id="upsell" class="encapsulated col-md-10 col-md-offset-1">
     <!--QNC progress bar-->
       <div class="encapsulated-content">        
-        <h1 class="encapsulated-title"><span>Earn your 50% commission faster!</span></h1>
-        <p>We noticed you’re new around here – and we think that’s great!</p>
-        <p>Since it’s your first month, you have the opportunity to become a QNC – a Qualified New Consultant.  This means earning 50% commission and being eligible for special offers and promotions!</p>
-        <p>Just make one $300 order in your first month with JAFRA, and you’ll be on your way to a more rewarding career. </p>
+        <h1 class="encapsulated-title"><span>{{ 'QNC-ENCAPSULATED-TITLE' | translate }}</span></h1>
+        <p>{{ 'QNC-ENCAPSULATED-PARAGRAPH1' | translate }}</p>
+        <p>{{ 'QNC-ENCAPSULATED-PARAGRAPH2' | translate }}</p>
+        <p>{{ 'QNC-ENCAPSULATED-PARAGRAPH3' | translate }}</p>
         
+      </div>
+      <div class="encapsulated-progress">
         <p class="pull-left com-label">30%</p>
         <p class="pull-right com-label">50%</p>
-        <div class="clear-both"></div>
-        <div class="progress">
+        <!-- <div class="clear-both"></div> -->
+        <div class="progress clear-both">
           <div class="progress-bar progress-bar-custom" style="min-width: 2em; width: {{ getQncProgressPercent() }}%;">
             <div ng-if='salesTaxInfo'>
               <div ng-show='((300 - salesTaxInfo.SubTotal) > 0)'>
@@ -29,11 +31,10 @@
         </div>
         <p class="pull-left"><strong>$0</strong></p>
         <p class="pull-right"><strong>$300</strong></p>
-        <div class="clear-both"></div>
+        <!-- <div class="clear-both"></div> -->
         <div ng-if="orderError" class="alert alert-danger" role="alert" ng-bind="orderError"></div>
       </div>
-
-    <div id="panel-1" class="row" ng-show="!profile.qnc">
+    <div id="panel-1" class="" ng-show="!profile.qnc">
       <button type="button" id="yes-order" class="btn btn-primary btn-lg center-block" ng-click="toggleQnc(1)">
         <span>{{ 'QNC-GET-QUALIFIED' | translate }}</span>
       </button>
@@ -42,7 +43,7 @@
     <!-- ADD-ON KIT SELECTION -->
 
     <div class="clear-both"></div>
-    <div id="panel-2" class="row" ng-show="profile.qnc">
+    <div id="panel-2" class="clearfix" ng-show="profile.qnc">
       <div class="col-md-5">
         <div class="kit-box">
           <img ng-if="session.language == 'en_US'" class='img-responsive center-block' ng-src='{{ CDN_URL }}/img/19982_fragrance_pack_en.jpg' />
@@ -99,7 +100,7 @@
           <p class="color-gold HelveticaNeueLTStd-BdCn kit-desc">
             <span>{{ 'QNC-SAVE' | translate }} 41%</span>
           </p>
-          <p class="HelveticaNeueLTStd-Th kit-value ng-binding">{{ 'QNC-OVER-X-RETAIL-VALUE' | translate:'{ value: 511 }' }}</p>
+          <p class="HelveticaNeueLTStd-Th kit-value ng-binding">{{ 'QNC-OVER-X-RETAIL-VALUE' | translate:'{ value: 496 }' }}</p>
           <p>{{ 'QNC-AVAILABLE-IN' | translate }}</p>
           <a href="" class="seemore more-link more-link-alt collapsed" data-toggle="collapse" data-target="#skincarepack-details" ng-bind-html="'KIT-DETAILS-TOGGLE' | translate | unsafe"></a>
           <div id="skincarepack-details" class="collapse">
