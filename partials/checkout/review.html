@@ -11,7 +11,14 @@
         <div class="clear-both"></div>
         <div class="progress">
           <div class="progress-bar progress-bar-custom" style="min-width: 2em; width: {{ getQncProgressPercent() }}%;">
-            {{ getQncProgressText() }}
+            <div ng-if='salesTaxInfo'>
+              <div ng-show='((300 - salesTaxInfo.SubTotal) > 0)'>
+                ${{ salesTaxInfo.SubTotal }}
+              </div>
+              <div ng-show='((300 - salesTaxInfo.SubTotal) <= 0)'>
+                {{ 'QNC-QUALIFIED' | translate }}
+              </div>
+            </div>
           </div>
            <div class="progress-bar progress-bar-remainder" style="width: {{ 100 - getQncProgressPercent() }}%">
             &nbsp;{{ getUntilNextLevel() | currency }} {{ 'QNC-UNTIL-NEXT-LEVEL' | translate }}
@@ -103,7 +110,6 @@
           </div>
         </div><!-- end kit box-->
       </div>
-    
   </div>
 
   <div class="col-md-offset-1 col-md-10">

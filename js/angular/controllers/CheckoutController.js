@@ -694,14 +694,6 @@ angular.module('app.controllers.checkout')
             }  
         };
         
-        $scope.getQncProgressText = function () {
-            if ($scope.salesTaxInfo) {
-                $translate('QNC-QUALIFIED').then(function (message) {
-                    return (300 - $scope.salesTaxInfo.SubTotal > 0) ? '$' + $scope.salesTaxInfo.SubTotal : message;
-                });
-            }
-        };
-        
         $scope.getUntilNextLevel = function () {
             if ($scope.salesTaxInfo) {
                 var orderTotal = $scope.salesTaxInfo.SubTotal;

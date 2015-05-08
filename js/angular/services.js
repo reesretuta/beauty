@@ -1422,7 +1422,7 @@ angular.module('app.services', ['ngResource'])
             var dd = $q.defer();
             var d = $modal.open({
                 backdrop: true,
-                keyboard: true, // we will handle ESC in the modal for cleanup
+                keyboard: true,
                 windowClass: "addressCorrectionModal",
                 templateUrl: '/partials/checkout/address-correction-modal.html',
                 controller: 'AddressCorrectionModalController',
