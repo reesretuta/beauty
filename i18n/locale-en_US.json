@@ -596,7 +596,7 @@
     "QNC-ADDED": "Added",
     "QNC-ADD": "Add",
     "QNC-SAVE": "Save",
-    "QNC-OVER-X-RETAIL-VALUE": "Over {{ value }} retail value",
+    "QNC-OVER-X-RETAIL-VALUE": "Over ${{ value }} retail value",
     "QNC-AVAILABLE-IN": "Available to New Consultants in their first 60 days!",
     "QNC-SKIN-CARE-PACK": "Skin Care Pack"
 
