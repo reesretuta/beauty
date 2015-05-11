@@ -949,7 +949,7 @@ angular.module('app.services', ['ngResource'])
                         }
              */
             var priceSelected = false;
-
+            $log.debug("PRICEDEBUG: cartService(): loadProducts(): selectCurrentPrice (): product", product);
             if (Array.isArray(product.prices)) {
                 $.each(product.prices, function (index2, price) {
                     $log.debug("cartService(): loadProducts(): processing price", price);
@@ -965,7 +965,7 @@ angular.module('app.services', ['ngResource'])
                     }
                 });
 
-                $log.debug("cartService(): loadProducts(): priceSelected?", priceSelected, product.prices);
+                $log.debug("PRICEDEBUG: cartService(): loadProducts(): priceSelected?", priceSelected, product.prices, product.currentPrice);
             } else {
                 $log.warn("cartService(): loadProducts(): priceSelected? no prices found");
             }

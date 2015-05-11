@@ -88,6 +88,9 @@ angular.module('app.controllers.checkout')
         $scope.starterKitsSkus = ['20494','20495','20498','20499'];
         $scope.starterKits = null;
         
+        $scope.qncTotalPrice = 0;
+        
+        
         // set current step
         $scope.currentStep = 'Start';
 
@@ -643,6 +646,9 @@ angular.module('app.controllers.checkout')
                     var d = $q.defer();
                     Cart.removeFromCart({sku: $scope.cart[1].sku}).then(function(cart){
                         d.resolve(cart);
+                        //remove QNC price
+                        updateQncTotalPrice(qncProduct.sku,'remove');
+                        $log.debug("CheckoutController(): selectQncProduct(): remove qncProduct", $scope.qncTotalPrice);
                         addQncProduct(qncProduct);
                     }, function(error){
                         $log.error("CheckoutController(): removeQncProduct(): failed to remove to cart, redirecting", error);
@@ -670,9 +676,12 @@ angular.module('app.controllers.checkout')
                     quantity: 1
                 }).then(function(cart) {
                     $log.debug("CheckoutController(): selectQncProduct(): SKU loaded & added to cart", cart);
-
                     $scope.cart = cart;
-
+                    //add QNC price
+                    updateQncTotalPrice(qncProduct.sku,'add');
+                    $log.debug("CheckoutController(): selectQncProduct(): add $scope.qncTotalPrice", $scope.qncTotalPrice);
+                    
+                    
                     loadCheckout().then(function() { //this also updates new sales tax
                         d.resolve(cart);
                     });
@@ -696,6 +705,7 @@ angular.module('app.controllers.checkout')
                 $scope.cart = cart;
                 loadCheckout().then(function() { //this also updates new sales tax
                     d.resolve(cart);
+                    updateQncTotalPrice(sku,'remove');
                 });
             }, function(error){
                 $log.error("CheckoutController(): removeQncProduct(): failed to remove to cart, redirecting", error);
@@ -708,18 +718,31 @@ angular.module('app.controllers.checkout')
             return d.promise;
         }
         
+        function updateQncTotalPrice(sku,addOrRemove){
+            $log.debug("CheckoutController(): updateQncTotalPrice(): $scope.qncTotalPrice", $scope.qncTotalPrice);
+            for (var i = 0; i < $scope.qncProducts.length; i++) {
+                if (sku == $scope.qncProducts[i].sku) {
+                    var qncProduct = $scope.qncProducts[i];
+                }
+            }
+            if (addOrRemove === 'add') {
+                $scope.qncTotalPrice += qncProduct.currentPrice.price;
+            }else{
+                
+                $scope.qncTotalPrice -= qncProduct.currentPrice.price;
+            }
+            
+            $log.debug("CheckoutController(): updateQncTotalPrice(): $scope.qncTotalPrice", $scope.qncTotalPrice);
+            
+        }
+        
         $scope.getQncProgressPercent = function () {
-            if ($scope.salesTaxInfo) {
-                var percent = $scope.salesTaxInfo.SubTotal/300 * 100;
+                var percent = $scope.qncTotalPrice/300 * 100;
                 return ( percent < 100) ? percent : 100;
-            }  
         };
         
         $scope.getUntilNextLevel = function () {
-            if ($scope.salesTaxInfo) {
-                var orderTotal = $scope.salesTaxInfo.SubTotal;
-                return ((300 - orderTotal) > 0) ? (300 - orderTotal) : 0;
-            }
+            return ((300 - $scope.qncTotalPrice) > 0) ? (300 - $scope.qncTotalPrice) : 0;
         };
         
         $scope.toggleQnc = function (value) {

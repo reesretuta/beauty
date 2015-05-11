@@ -11,7 +11,6 @@
         <p>{{ 'QNC-ENCAPSULATED-PARAGRAPH1' | translate }}</p>
         <p>{{ 'QNC-ENCAPSULATED-PARAGRAPH2' | translate }}</p>
         <p>{{ 'QNC-ENCAPSULATED-PARAGRAPH3' | translate }}</p>
-        
       </div>
       <div class="encapsulated-progress">
         <p class="pull-left com-label">30%</p>
@@ -21,7 +20,7 @@
           <div class="progress-bar progress-bar-custom" style="min-width: 2em; width: {{ getQncProgressPercent() }}%;">
             <div ng-if='salesTaxInfo'>
               <div ng-show='((300 - salesTaxInfo.SubTotal) > 0)'>
-                ${{ salesTaxInfo.SubTotal }}
+                ${{ qncTotalPrice }}
               </div>
               <div ng-show='((300 - salesTaxInfo.SubTotal) <= 0)'>
                 {{ 'QNC-QUALIFIED' | translate }}
