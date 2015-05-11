@@ -593,8 +593,8 @@
 
     "QNC-FRAGRANCE-PACK": "Fragrance Pack",
     "QNC-ONLY": "Only",
-    "QNC-ADDED": "Added",
-    "QNC-ADD": "Add",
+    "QNC-SELECTED": "Selected",
+    "QNC-SELECT": "Select",
     "QNC-SAVE": "Save",
     "QNC-OVER-X-RETAIL-VALUE": "Over ${{ value }} retail value",
     "QNC-AVAILABLE-IN": "Available to New Consultants in their first 60 days!",

@@ -913,6 +913,12 @@ h3.cart-item-prod-title{
     -ms-transform: rotate(-90deg) !important;
     transform: rotate(-90deg) !important;
 }
+
+.kit-box.kit1 > img{
+    margin:56px 0;
+}
+
+
 p.com-label {
   margin-bottom: 4px;
 }
@@ -942,7 +948,11 @@ p.com-label {
   padding: 0 1em;
 }
 #upsell #panel-1, #upsell #panel-2 {
-  padding: 1em 0;
+  padding: 3em 0;
+}
+
+#upsell .encapsulated-content p{
+    font-size:14px;
 }
 
 .progress {

@@ -13,8 +13,8 @@
         <p>{{ 'QNC-ENCAPSULATED-PARAGRAPH3' | translate }}</p>
       </div>
       <div class="encapsulated-progress">
-        <p class="pull-left com-label">30%</p>
-        <p class="pull-right com-label">50%</p>
+        <p class="pull-left com-label">30% commission&nbsp;</p>
+        <p class="pull-right com-label">&nbsp;50% commission</p>
         <!-- <div class="clear-both"></div> -->
         <div class="progress clear-both">
           <div class="progress-bar progress-bar-custom" style="min-width: 2em; width: {{ getQncProgressPercent() }}%;">
@@ -45,21 +45,21 @@
 
     <div class="clear-both"></div>
     <div id="panel-2" class="clearfix" ng-show="profile.qnc">
-      <div class="col-md-5">
-        <div class="kit-box">
+      <div class="col-md-5 col-md-offset-1">
+        <div class="kit-box kit1">
           <img ng-if="session.language == 'en_US'" class='img-responsive center-block' ng-src='/img/19982_fragrance_pack_en.jpg' />
           <img ng-if="session.language == 'es_US'" class='img-responsive center-block' ng-src='/img/19982_fragrance_pack_es.jpg' />
           <h3>{{ 'QNC-FRAGRANCE-PACK' | translate }}</h3>
           <div ng-show="isInCart('19982')">
             <span class="product-price"><small>{{ 'QNC-ONLY' | translate }}<br></small> $300</span>
             <button type="button" class="btn btn-primary btn-lg" ng-click="removeQncProduct('19982')" analytics-on="click" analytics-event="In-Page Buy $300 Fragrance Pack" analytics-category="Buttons">
-            {{ 'QNC-ADDED' | translate }} <i class="fa fa-check"></i>
+            {{ 'QNC-SELECTED' | translate }} <i class="fa fa-check"></i>
             </button>
           </div>
           <div ng-show="!isInCart('19982')">
             <span class="product-price"><small>{{ 'QNC-ONLY' | translate }}<br></small> $300</span>
             <button type="button" class="btn btn-primary btn-lg" ng-click="selectQncProduct('19982')" analytics-on="click" analytics-event="In-Page Buy $300 Fragrance Pack" analytics-category="Buttons">
-            {{ 'QNC-ADD' | translate }} <i class="fa fa-square-o"></i>
+            {{ 'QNC-SELECT' | translate }} <i class="fa fa-square-o"></i>
             </button>
           </div>
           <br />
@@ -88,13 +88,13 @@
           <div ng-show="isInCart('19985')">
             <span class="product-price"><small>{{ 'QNC-ONLY' | translate }}<br></small> $300</span>
             <button type="button" class="btn btn-primary btn-lg" ng-click="removeQncProduct('19985')" analytics-on="click" analytics-event="In-Page Buy $300 Fragrance Pack" analytics-category="Buttons">
-            {{ 'QNC-ADDED' | translate }} <i class="fa fa-check"></i>
+            {{ 'QNC-SELECTED' | translate }} <i class="fa fa-check"></i>
             </button>
           </div>
           <div ng-show="!isInCart('19985')">
             <span class="product-price"><small>{{ 'QNC-ONLY' | translate }}<br></small> $300</span>
             <button type="button" class="btn btn-primary btn-lg" ng-click="selectQncProduct('19985')" analytics-on="click" analytics-event="In-Page Buy $300 Fragrance Pack" analytics-category="Buttons">
-            {{ 'QNC-ADD' | translate }} <i class="fa fa-square-o"></i>
+            {{ 'QNC-SELECT' | translate }} <i class="fa fa-square-o"></i>
             </button>
           </div>
           <br />
