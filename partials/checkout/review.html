@@ -12,9 +12,12 @@
         <p>{{ 'QNC-ENCAPSULATED-PARAGRAPH2' | translate }}</p>
         <p>{{ 'QNC-ENCAPSULATED-PARAGRAPH3' | translate }}</p>
       </div>
+      <div class="encapsulated-commission">
+        <p class="pull-left com-label">30% commission</p>
+        <p class="pull-right com-label">50% commission</p>  
+      </div>
       <div class="encapsulated-progress">
-        <p class="pull-left com-label">30% commission&nbsp;</p>
-        <p class="pull-right com-label">&nbsp;50% commission</p>
+        
         <!-- <div class="clear-both"></div> -->
         <div class="progress clear-both">
           <div class="progress-bar progress-bar-custom" style="min-width: 2em; width: {{ getQncProgressPercent() }}%;">
@@ -46,7 +49,7 @@
     <div class="clear-both"></div>
     <div id="panel-2" class="clearfix" ng-show="profile.qnc">
       <div class="col-md-5 col-md-offset-1">
-        <div class="kit-box kit1">
+        <div class="kit-box kit1" ng-class="{active: cart[1].sku == '19982'}">
           <img ng-if="session.language == 'en_US'" class='img-responsive center-block' ng-src='/img/19982_fragrance_pack_en.jpg' />
           <img ng-if="session.language == 'es_US'" class='img-responsive center-block' ng-src='/img/19982_fragrance_pack_es.jpg' />
           <h3>{{ 'QNC-FRAGRANCE-PACK' | translate }}</h3>
@@ -81,7 +84,7 @@
         </div>
       </div>
       <div class="col-md-5">
-        <div class="kit-box">
+        <div class="kit-box" ng-class="{active: cart[1].sku == '19985'}">
           <img ng-if="session.language == 'en_US'" class='img-responsive center-block' ng-src='/img/19985_skin_care_pack_en.jpg' />
           <img ng-if="session.language == 'es_US'" class='img-responsive center-block' ng-src='/img/19985_skin_care_pack_es.jpg' />
           <h3>{{ 'QNC-SKIN-CARE-PACK' | translate }}</h3>

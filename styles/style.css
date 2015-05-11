@@ -859,7 +859,7 @@ h3.cart-item-prod-title{
 .kit-box{
     border:1px solid #eee;
     padding:10px;
-    /*opacity: 0.5;*/
+    opacity: 0.5;
     text-align:center;
 }
 
@@ -868,9 +868,9 @@ h3.cart-item-prod-title{
     text-align:center;
 }
 
-/*.kit-box:hover{
+.kit-box:hover{
     opacity: 1;
-}*/
+}
 .kit-box.active{
     opacity: 1;
     border-color:rgba(195,0,47,1);
@@ -932,6 +932,10 @@ p.com-label {
   padding: 0 40px;
   margin-top: 4em;
 }
+
+.encapsulated-commission{
+    font-weight:bold;
+}
 .encapsulated-progress {
   padding: 1em 0;
 }
@@ -962,6 +966,7 @@ p.com-label {
   height: 25px;
   margin-bottom: 4px;
   padding:2px;
+  clear:both;
 }
 .progress-bar-custom {
   background: #867527;
