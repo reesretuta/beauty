@@ -594,8 +594,8 @@
 
     "QNC-FRAGRANCE-PACK": "Fragancia Paquete",
     "QNC-ONLY": "Solamente",
-    "QNC-SELECTED": "Adicional",
-    "QNC-SELECT": "Añadir",
+    "QNC-SELECTED": "Seleccionado",
+    "QNC-SELECT": "Selecciona",
     "QNC-SAVE": "Guardar",
     "QNC-OVER-X-RETAIL-VALUE": "Con el ${{ value }} valor de venta",
     "QNC-AVAILABLE-IN": "Disponible para Nuevas Consultoras en sus primeros 60 días !",
