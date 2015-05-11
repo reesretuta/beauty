@@ -624,49 +624,70 @@ angular.module('app.controllers.checkout')
                     alreadyInCart = true;
                 }
             }
-            //if QNC products already in cart, do nothin
+            //if QNC products already in cart, do nothing
             if (alreadyInCart) {
                 return false;
             }else{
-                
+                //get QNC product details
                 for (var i = 0; i < $scope.qncProducts.length; i++) {
                     if (sku == $scope.qncProducts[i].sku) {
                         var qncProduct = $scope.qncProducts[i];
                     }
-                    
+                }
+                
+                
+                if ($scope.cart.length === 1) { //add new QNC
+                    addQncProduct(qncProduct);
+                }else{
+                    // remove existing QNC then add new QNC
+                    var d = $q.defer();
+                    Cart.removeFromCart({sku: $scope.cart[1].sku}).then(function(cart){
+                        d.resolve(cart);
+                        addQncProduct(qncProduct);
+                    }, function(error){
+                        $log.error("CheckoutController(): removeQncProduct(): failed to remove to cart, redirecting", error);
+                        $scope.orderError = "Failed to add product to cart";
+                        $scope.salesTaxInfo = null;
+                        $scope.alert("ERR101: Error loading products in cart");
+                        d.reject(error);
+                    });
+                    return d.promise;
                 }
             }
             
+            function addQncProduct(qncProduct){
+                var d = $q.defer();
             
-            var d = $q.defer();
-            
-            $scope.orderError = null;
+                $scope.orderError = null;
 
-            $log.debug("CheckoutController(): selectQncProduct(): loading product with sku=", sku);
+                $log.debug("CheckoutController(): selectQncProduct(): loading product with sku=", sku);
 
-            Cart.addToCart({
-                name: qncProduct.name,
-                name_es_US: qncProduct.name_es_US, //name_es_US does not get passed back from service
-                sku: qncProduct.sku,
-                kitSelections: qncProduct.kitSelections,
-                quantity: 1
-            }).then(function(cart) {
-                $log.debug("CheckoutController(): selectQncProduct(): SKU loaded & added to cart", cart);
+                Cart.addToCart({
+                    name: qncProduct.name,
+                    name_es_US: qncProduct.name_es_US, //name_es_US does not get passed back from service
+                    sku: qncProduct.sku,
+                    kitSelections: qncProduct.kitSelections,
+                    quantity: 1
+                }).then(function(cart) {
+                    $log.debug("CheckoutController(): selectQncProduct(): SKU loaded & added to cart", cart);
 
-                $scope.cart = cart;
+                    $scope.cart = cart;
 
-                loadCheckout().then(function() { //this also updates new sales tax
-                    d.resolve(cart);
+                    loadCheckout().then(function() { //this also updates new sales tax
+                        d.resolve(cart);
+                    });
+                }, function(error) {
+                    $log.error("CheckoutController(): selectQncProduct(): failed to add to cart, redirecting", error);
+                    $scope.orderError = "Failed to add product to cart";
+                    $scope.salesTaxInfo = null;
+                    $scope.alert("ERR101: Error loading products in cart");
+                    d.reject(error);
                 });
-            }, function(error) {
-                $log.error("CheckoutController(): selectQncProduct(): failed to add to cart, redirecting", error);
-                $scope.orderError = "Failed to add product to cart";
-                $scope.salesTaxInfo = null;
-                $scope.alert("ERR101: Error loading products in cart");
-                d.reject(error);
-            });
 
-            return d.promise;
+                return d.promise;
+            }
+            
+            
         }
         
         $scope.removeQncProduct = function(sku){
