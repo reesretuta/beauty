@@ -638,27 +638,8 @@ angular.module('app.controllers.checkout')
                     }
                 }
                 
+                addQncProduct(qncProduct);
                 
-                if ($scope.cart.length === 1) { //add new QNC
-                    addQncProduct(qncProduct);
-                }else{
-                    // remove existing QNC then add new QNC
-                    var d = $q.defer();
-                    Cart.removeFromCart({sku: $scope.cart[1].sku}).then(function(cart){
-                        d.resolve(cart);
-                        //remove QNC price
-                        updateQncTotalPrice(qncProduct.sku,'remove');
-                        $log.debug("CheckoutController(): selectQncProduct(): remove qncProduct", $scope.qncTotalPrice);
-                        addQncProduct(qncProduct);
-                    }, function(error){
-                        $log.error("CheckoutController(): removeQncProduct(): failed to remove to cart, redirecting", error);
-                        $scope.orderError = "Failed to add product to cart";
-                        $scope.salesTaxInfo = null;
-                        $scope.alert("ERR101: Error loading products in cart");
-                        d.reject(error);
-                    });
-                    return d.promise;
-                }
             }
             
             function addQncProduct(qncProduct){
