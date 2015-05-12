@@ -110,10 +110,11 @@ angular.module('app.controllers.onlineSponsor')
         };
         $log.debug("OnlineSponsorLandingController(): addLead(): creating lead", leadData);
         
+        $analytics.pageTrack('/leads/collected');
+        
         Leads.save(leadData).$promise.then(function(lead) {
             $log.debug("OnlineSponsorLandingController(): addLead(): lead created", lead);
             $log.debug('OnlineSponsorLandingController() addLead(): analytics:');
-            $analytics.pageTrack('/leads/collected');
             // FIXME do something here
         }, function(error) {
             $log.error("OnlineSponsorLandingController(): addLead(): failed to create lead", error);
