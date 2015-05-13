@@ -1212,7 +1212,7 @@ There was an error with the payment method used.  Invalid credit card data or un
 {
     "statusCode": 400,
     "errorCode": "applyPaymentError",
-    "message": "Error in Apply Payment"
+    "message": "There was an error processing your payment"
 }
 ```
 
