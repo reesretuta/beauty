@@ -9,7 +9,9 @@ angular.module('app.controllers.onlineSponsor')
     $scope.showThanks = false;
     
     $scope.fromLead = false;
-
+    
+    setInterval
+    
     // this page will watch for URL changes for back/forward that require it to change anything needed (like search)
     var cancelChangeListener;
     function createListener() {

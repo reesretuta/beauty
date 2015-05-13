@@ -292,7 +292,7 @@
 </div>
 
 <!-- jafra chat widget -->
-<div ng-if='isChatAvailable' id="jaf_chat">
+<div ng-if='isChatAvailable && session.language == "en_US"' id="jaf_chat">
   <div class="jaf-chat-holder">
     <div class="jaf-chat-header">
       <h4 ng-if="session.language == 'en_US'" class="jaf-chat-title">Chat with us!</h4>
@@ -307,7 +307,7 @@
 </div>
 
 <!-- jafra chat is unavailable -->
-<div ng-if='!isChatAvailable' id="jaf_chat" class='jaf_chat_unavailable'>
+<div ng-if='!isChatAvailable && session.language == "en_US"' id="jaf_chat" class='jaf_chat_unavailable'>
   <div class="jaf-chat-holder">
     <div class="jaf-chat-header">
       <h4 ng-if="session.language == 'en_US'" class="jaf-chat-title">Chat is available 8am-6pm PST</h4>
@@ -320,8 +320,6 @@
     </div> <!-- /div #content -->
 
     <!-- JavaScript -->
-    <script src="/js/jafrachat.js"></script>
-
     <script src="/lib/newrelic-timing/newrelic-timing.min.js"></script>
     <script src="/lib/newrelic-timing/newrelic-timing-angular.min.js"></script>
     <script src="/lib/jquery-resize/jquery.ba-resize.min.js"></script>
@@ -374,6 +372,8 @@
     <script src="/js/config.js"></script>
     <script src="/js/util.js"></script>
     <script src="/js/pgp_key.js"></script>
+    
+    <script src="/js/jafrachat.js"></script>
 
     <script src="/js/angular/controllers/controllers.js"></script>
     <script src="/js/angular/controllers/TopController.js"></script>

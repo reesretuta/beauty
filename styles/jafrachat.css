@@ -128,3 +128,11 @@
 #jaf_chat #jaf_chat_frame {
 
 }
+
+
+/* hide on small (generally mobile) screens */
+@media screen and (max-width: 768px) {
+    #jaf_chat {
+        display: none;
+    }
+}
