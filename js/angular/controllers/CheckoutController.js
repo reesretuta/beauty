@@ -2169,7 +2169,8 @@ angular.module('app.controllers.checkout')
                 } else if ($rootScope.session.client.consultantIds && $rootScope.session.client.consultantIds.length > 0) {
                     consultantId = $rootScope.session.client.consultantIds[0].id;
                 } else if ($rootScope.session.client.lastConsultantId && consultantId == null) {
-                    consultantId = $rootScope.session.client.lastConsultantId;
+                    // consultantId = $rootScope.session.client.lastConsultantId; //lastConsultantId not defined!
+                    consultantId = 0;
                 }
             }
             $log.debug('CheckoutController(): getConsultantId(): consultantId:', consultantId);
