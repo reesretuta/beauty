@@ -2164,14 +2164,22 @@ angular.module('app.controllers.checkout')
         }
 
         function getConsultantId() {
+            $log.debug('CheckoutController(): getConsultantId(): $rootScope.session.consultantId:', $rootScope.session.consultantId);
             var consultantId = $rootScope.session.consultantId;
+            $log.debug('CheckoutController(): getConsultantId(): consultantId:', consultantId);
             if (!consultantId) {
+                // FIXME - handle multiple consultant IDs - dialog?
+                $log.debug('CheckoutController(): getConsultantId(): consultantId:', consultantId);
                 if ($scope.consultantIdSelection) {
                     consultantId = $scope.consultantIdSelection;
+                    $log.debug('CheckoutController(): getConsultantId(): $scope.consultantIdSelection:', $scope.consultantIdSelection);
                 } else if ($rootScope.session.client.consultantIds && $rootScope.session.client.consultantIds.length > 0) {
                     consultantId = $rootScope.session.client.consultantIds[0].id;
+                    $log.debug('CheckoutController(): getConsultantId(): consultantId:', consultantId);
                 } else if ($rootScope.session.client.lastConsultantId && consultantId == null) {
-                    consultantId = $rootScope.session.client.lastConsultantId;
+                    // consultantId = $rootScope.session.client.lastConsultantId; //lastConsultantId not defined!
+                    $log.debug('CheckoutController(): getConsultantId(): last else:', consultantId);
+                    consultantId = 0;
                 }
             }
             $log.debug('CheckoutController(): getConsultantId(): consultantId:', consultantId);

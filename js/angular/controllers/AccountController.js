@@ -180,9 +180,11 @@ angular.module('app.controllers.account')
                 });
                 body = $document.find('html, body');
                 d.result.then(function(result) {
-                    $log.debug('AccountController(): editAddress(): edit profile modal: saved: result.profile:', result.profile);
-                    $scope.profile = angular.copy(result.profile);
-                    $rootScope.session.client = angular.copy(result.profile);
+                    if (!result.canceled) {
+                        $log.debug('AccountController(): editAddress(): edit profile modal: saved: result.profile:', result.profile);
+                        $scope.profile = angular.copy(result.profile);
+                        $rootScope.session.client = angular.copy(result.profile);
+                    }
                     dd.resolve();
                     body.css('overflow-y', 'auto');
                 });
