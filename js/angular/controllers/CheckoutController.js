@@ -157,6 +157,8 @@ angular.module('app.controllers.checkout')
         $scope.profile.loginEmail = params.loginEmail;
         $scope.profile.phoneNumber = params.phoneNumber;
 
+        $scope.fromModal = (params.firstName) ? true:false;
+
         delete $location.$$search.firstName;
         delete $location.$$search.lastName;
         delete $location.$$search.loginEmail;
