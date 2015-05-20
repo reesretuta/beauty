@@ -1,6 +1,6 @@
 
 angular.module('app.controllers.onlineSponsor')
-.controller('OnlineSponsorLandingController', function ($scope, $window, $document, $location, $translate, $rootScope, $routeParams, $log, $analytics, Session, JOIN_BASE_URL, Categories, Product, Leads) {
+.controller('OnlineSponsorLandingController', function ($scope, $window, $document, $location, $translate, $rootScope, $routeParams, $log, $analytics, Session, JOIN_BASE_URL, Categories, Product, Leads, Addresses) {
     
     $rootScope.title = 'JOIN_JAFRA_TITLE';
 
@@ -97,8 +97,18 @@ angular.module('app.controllers.onlineSponsor')
 
     $scope.joinFirstStep = function() {
         $log.debug("OnlineSponsorLandingController(): joinFirstStep()", $scope.profile.firstName, $scope.profile.lastName, $scope.profile.loginEmail, $scope.profile.phoneNumber);
-        $scope.fromLead = true;
-        $scope.showThanks = true;
+        
+        Addresses.validateEmail($scope.profile.loginEmail).then(function(a){
+            $log.debug("OnlineSponsorLandingController(): success: a", a);
+            $scope.fromLead = true;
+            $scope.showThanks = true;
+            $scope.emailError = false;
+        },function(data){
+            $log.debug("OnlineSponsorLandingController(): error: data", data);
+            $scope.emailError = data.message;
+        });
+
+
     }
 
     $scope.addLead = function() {
