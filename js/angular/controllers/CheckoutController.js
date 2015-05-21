@@ -843,6 +843,11 @@ angular.module('app.controllers.checkout')
         }
 
         $scope.validateStartAndReview = function(email){
+            $log.debug("CheckoutController(): validateStartAndReview(): $scope.profile.consultantIdSelection ",$scope.profile.consultantIdSelection);
+            $log.debug("CheckoutController(): validateStartAndReview(): $rootScope.session.client.consultantIds ",$rootScope.session.client.consultantIds);
+            
+            return false;
+            
             if ($scope.isOnlineSponsoring) {
                 $scope.validateEmailAndContinue(email); //checks of email already in use
             }else{
@@ -1302,7 +1307,7 @@ angular.module('app.controllers.checkout')
 
         $scope.checkoutUpdated = function() {
             $log.debug("CheckoutController(): checkoutUpdated(): checkout updated", $scope.checkout);
-
+            $log.debug("CheckoutController(): checkoutUpdated(): $scope.profile", $scope.profile);
             var checkout = angular.copy($scope.checkout);
 
             Checkout.setCheckout(checkout);
@@ -2164,15 +2169,16 @@ angular.module('app.controllers.checkout')
         }
 
         function getConsultantId() {
+            $log.debug('CheckoutController(): getConsultantId(): $scope.profile:', $scope.profile);
             $log.debug('CheckoutController(): getConsultantId(): $rootScope.session.consultantId:', $rootScope.session.consultantId);
             var consultantId = $rootScope.session.consultantId;
             $log.debug('CheckoutController(): getConsultantId(): consultantId:', consultantId);
             if (!consultantId) {
                 // FIXME - handle multiple consultant IDs - dialog?
-                $log.debug('CheckoutController(): getConsultantId(): consultantId:', consultantId);
-                if ($scope.consultantIdSelection) {
-                    consultantId = $scope.consultantIdSelection;
-                    $log.debug('CheckoutController(): getConsultantId(): $scope.consultantIdSelection:', $scope.consultantIdSelection);
+                $log.debug('CheckoutController(): getConsultantId(): $scope.profile.consultantIdSelection:', $scope.profile.consultantIdSelection);
+                if ($scope.profile.consultantIdSelection) {
+                    consultantId = $scope.profile.consultantIdSelection;
+                    $log.debug('CheckoutController(): getConsultantId(): $scope.consultantIdSelection:', $scope.profile.consultantIdSelection);
                 } else if ($rootScope.session.client.consultantIds && $rootScope.session.client.consultantIds.length > 0) {
                     consultantId = $rootScope.session.client.consultantIds[0].id;
                     $log.debug('CheckoutController(): getConsultantId(): consultantId:', consultantId);

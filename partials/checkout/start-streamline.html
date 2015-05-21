@@ -617,8 +617,11 @@
     <div class='row form-group'>
       <div class='col-sm-7 col-md-7 col-lg-7 col-md-offset-3 col-lg-offset-3'>
         <select id='consultantIdSelection' name='consultantIdSelection' ng-model='profile.consultantIdSelection' class='form-control'>
-          <option ng-repeat='consultant in session.client.consultantIds' value='{{ session.client.consultantIds[$index].id }}' ng-selected='{{ $index === (session.client.consultantIds.length - 1) }}'>{{ consultant.firstName + ' ' + consultant.lastName }}</option>
+          <option ng-repeat='consultant in session.client.consultantIds' value='{{ session.client.consultantIds[$index].id }}'>{{ consultant.firstName + ' ' + consultant.lastName }}</option>
         </select>
+        <!-- ng-selected='{{ $index === (session.client.consultantIds.length - 1) }}' -->
+
+
       </div>
     </div>
     <div class='col-md-offset-3'>
